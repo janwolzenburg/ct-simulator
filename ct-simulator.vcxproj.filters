@@ -13,5 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\Generel">
+      <UniqueIdentifier>{f8421204-9155-43fa-ae64-f57eb33adf7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Generel">
+      <UniqueIdentifier>{de98b23c-5f41-4cd6-8501-10eb850c4c8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Math">
+      <UniqueIdentifier>{03502783-3148-403b-82ef-505dc4903d27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math">
+      <UniqueIdentifier>{04c88842-2072-49e3-a4b6-b5e03aa42002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Math\Linear algebra">
+      <UniqueIdentifier>{123198b1-3557-4140-9a87-9a26f5100a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Math\Linear algebra">
+      <UniqueIdentifier>{ed97129a-f34c-4c5a-9ffc-2c50a27f51cc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="generelMath.h">
+      <Filter>Headerdateien\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="generelMath.hpp">
+      <Filter>Quelldateien\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="vectorAlgotrithm.h">
+      <Filter>Headerdateien\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="generel.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="generel.hpp">
+      <Filter>Quelldateien\Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="cartesian.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3D.fwd.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="line.fwd.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="surf.fwd.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="vec3D.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="line.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="surf.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="equationSystem.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="cartesian.fwd.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="tests_linear_algebra.h">
+      <Filter>Headerdateien\Math\Linear algebra</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="generelMath.cpp">
+      <Filter>Quelldateien\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="vectorAlgotrithm.cpp">
+      <Filter>Quelldateien\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Quelldateien\Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="generel.cpp">
+      <Filter>Quelldateien\Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="cartesian.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="vec3D.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="line.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="surf.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="equationSystem.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="tests_linear_algebra.cpp">
+      <Filter>Quelldateien\Math\Linear algebra</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

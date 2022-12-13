@@ -1,0 +1,136 @@
+#pragma once
+/*********************************************************************
+ * @file   generel.h
+ * @brief  Generel definitions and useful functions
+ *
+ * @author Jan Wolzenburg
+ * @date   December 2022
+ *********************************************************************/
+
+
+  /*********************************************************************
+	Includes
+ *********************************************************************/
+#include <type_traits>
+#include <vector>
+using std::vector;
+
+#include <string>
+using std::string;
+
+
+
+ /*********************************************************************
+	Definitions
+ *********************************************************************/
+
+/*!
+ * @brief Class for 2D indices
+*/
+class idx2{
+	public:
+	size_t x = 0;
+	size_t y = 0;
+ };
+
+ /*!
+ * @brief Class for 3D indices
+*/
+class idx3 : public idx2{
+	public:
+	size_t z = 0;
+};
+
+/*!
+ * @brief Class for 2D vector
+*/
+class vec2{
+	public:
+	vec2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
+	vec2( void ) : vec2(0, 0) {};
+
+	double x;
+	double y;
+};
+
+/*!
+* @brief Class for 3D vector
+*/
+class vec3 : public vec2{
+	public:
+	vec3( const double x_, const double y_, const double z_ ) : vec2( x_, y_ ), z( z_ ){};
+	vec3( void ) : vec3( 0, 0, 0) {};
+
+	double z;
+};
+
+
+
+/*********************************************************************
+	Functions
+ *********************************************************************/
+
+/*!
+ * @brief Converts variable to underlying type
+ * @tparam T Type of var
+ * @param var Variable
+ * @return Value of var cast to underlying type
+*/
+template <typename T>
+typename std::underlying_type_t<T> toUnderlying( T var );
+
+/*!
+ * @brief Postincrement operator for enumeratable variable
+ * @tparam T Type of var
+ * @param var Reference to variable
+ * @return Incremented variable
+*/
+template <typename T>
+typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
+
+/*!
+ * @brief Substraction operator for enum classes. Assumes value 1 is greater than value 2
+ * @tparam T Type of values
+ * @param val1 Value 1
+ * @param val2 Value 2
+ * @return Difference val1 - val2 cast to its their underlying type
+*/
+template <typename T>
+typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 );
+
+/*!
+ * @brief Serialize build in datatype
+ * @tparam T Type of variable
+ * @param val Value
+ * @param binData Vector to append binary data
+ * @return Amount of bytes appended
+*/
+template< typename T >
+size_t serializeBuildIn( const T val, vector<char>& binData );
+
+/*!
+ * @brief Deserialize build in data type
+ * @tparam T Expected type
+ * @param val Reference to write value to
+ * @param it Iterator to start reading from. Will be advanced
+ * @return Amount of bytes read
+*/
+template< typename T >
+size_t deSerializeBuildIn( T& val, vector<char>::const_iterator& it );
+
+/*!
+ * @brief Export serial data to file
+ * @param fileName Filename
+ * @param binData Vector with binary data
+ * @return True at success
+*/
+bool exportSerialized( const string fileName, const vector<char> binData );
+
+/*!
+ * @brief Import serial data from file
+ * @param fileName Filename
+ * @return Vector with data
+*/
+vector<char> importSerialized( const string fileName );
+
+#include "generel.hpp"

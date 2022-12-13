@@ -1,0 +1,119 @@
+/*********************************************************************
+ * @file   surf.cpp
+ * @brief  Implementations
+ *
+ * @author Jan Wolzenburg
+ * @date   December 2022
+ *********************************************************************/
+
+
+/*********************************************************************
+	Includes
+ *********************************************************************/
+#include <string>
+using std::string;
+
+#include "cartesian.h"
+#include "vec3D.h"
+#include "line.h"
+#include "surf.h"
+
+
+
+/*********************************************************************
+   Implementations
+*********************************************************************/
+
+
+
+/*
+	surf implementation
+*/
+
+surf::surf( const uvec3D v1, const uvec3D v2, const pnt3D p )
+	: r1( v1 ),
+	r2( v2 ),
+	o( p ){
+	if( iseqErr( r1.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector r1  must have length!" );
+	if( iseqErr( r2.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector r2 must have length!" );
+	if( !r1.sameSystem( o ) || !r2.sameSystem( o ) ||
+		!r1.sameSystem( r2 ) ) checkErr( MATH_ERR::INPUT, "Surface origin and trajectories must be defined in the same coordinate system!" );
+
+	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
+};
+
+std::string surf::toStr( const unsigned int newLineTabulators ) const{
+	std::string str;
+	std::string newLine = { '\n' };
+
+	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+
+	str += "r1=" + r1.toStr() + newLine + "r2=" + r2.toStr() + newLine + "u=" + o.toStr();
+
+	return str;
+}
+
+pnt3D surf::getPnt( const double surfParaA, const double surfParaB ) const{
+	return  o + ( r1 * surfParaA + r2 * surfParaB );
+}
+
+uvec3D surf::Normal( void ) const{
+	return  r1 ^ r2;
+};
+
+surf surf::convertTo( const cartCSys* const cSys_ ) const{
+	return surf( r1.convertTo( cSys_ ), r2.convertTo( cSys_ ), o.convertTo( cSys_ ) );
+}
+
+bool surf::parasInBounds( [[maybe_unused]] const double a, [[maybe_unused]] const double b ) const{
+	return true;
+}
+
+
+
+/*
+	surfLim implementation
+*/
+
+surfLim::surfLim( const uvec3D v1, const uvec3D v2, const pnt3D p,
+				  const double aMin, const double aMax,
+				  const double bMin, const double bMax )
+	: surf( v1, v2, p ),
+	pAMin( aMin ), pAMax( aMax ),
+	pBMin( bMin ), pBMax( bMax ){
+	// Check limits
+	if( pAMin >= pAMax ) checkErr( MATH_ERR::INPUT, "Minimum limit A must be smaller than maximum limit!" );
+	if( pBMin >= pBMax ) checkErr( MATH_ERR::INPUT, "Minimum limit B must be smaller than maximum limit!" );
+};
+
+surfLim::surfLim( const surf s,
+				  const double aMin, const double aMax,
+				  const double bMin, const double bMax )
+	: surfLim( s.R1(), s.R2(), s.O(),
+			   aMin, aMax, bMin, bMax ){}
+
+std::string surfLim::toStr( const unsigned int newLineTabulators ) const{
+	char tempCharArray[ 256 ];
+	snprintf( tempCharArray, 256, "aMin=%.6f;aMax=%.6f;bMin=%.6f;bMax=%.6f", pAMin, pAMax, pBMin, pBMax );
+
+	std::string str;
+	std::string newLine = { '\n' };
+
+	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+
+	str += surf::toStr() + newLine + tempCharArray;
+
+	return str;
+}
+
+surfLim surfLim::convertTo( const cartCSys* const cSys_ ) const{
+	return surfLim{ this->surf::convertTo( cSys_ ), pAMin, pAMax, pBMin, pBMax };
+}
+
+bool surfLim::parasInBounds( const double a, const double b ) const{
+	return pAMin <= a && a <= pAMax && pBMin <= b && b <= pBMax;
+}
+
+pnt3D surfLim::getCenter( void ) const{
+	return this->getPnt( ( pAMax + pAMin ) / 2, ( pBMax + pBMin ) / 2 );
+}
