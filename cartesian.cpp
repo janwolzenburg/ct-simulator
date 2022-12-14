@@ -10,18 +10,18 @@
 /*********************************************************************
 	Includes
  *********************************************************************/
- #include <cmath>
- #include <string>
- using std::string;
- #include <format>
+#include <cmath>
+#include <string>
+using std::string;
+#include <format>
 
- #include "generel.h"
- #include "generelMath.h"
- #include "cartesian.h"
- #include "vec3D.h"
- #include "line.h"
- #include "surf.h"
- #include "equationSystem.h"
+#include "generel.h"
+#include "generelMath.h"
+#include "cartesian.h"
+#include "vec3D.h"
+#include "line.h"
+#include "surf.h"
+#include "equationSystem.h"
 
 
  /*********************************************************************
@@ -29,15 +29,15 @@
  *********************************************************************/
 
 
- cSysTree& CSYS_TREE( void ){
-	 return cSysTree::getInstance();
- }
+cSysTree& CSYS_TREE( void ){
+	return cSysTree::getInstance();
+}
  
- const cartCSys* GLOBAL_CSYS( void ){
-	 return CSYS_TREE().getGlobal();
- }
+const cartCSys* GLOBAL_CSYS( void ){
+	return CSYS_TREE().getGlobal();
+}
 
- const cartCSys* DUMMY_CSYS( void ){
+const cartCSys* DUMMY_CSYS( void ){
 	 return CSYS_TREE().getDummy();
  }
 

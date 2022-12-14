@@ -150,8 +150,10 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
+    <ClInclude Include="operations.h" />
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
+    <ClInclude Include="rays.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surf.h" />
     <ClInclude Include="tests_linear_algebra.h" />
@@ -166,6 +168,7 @@
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="operations.cpp" />
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="vec3D.cpp" />

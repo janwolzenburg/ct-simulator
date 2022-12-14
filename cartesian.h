@@ -29,14 +29,14 @@
 	Definitions
  *********************************************************************/
 
-
+ // Maximum amount of Coordinate systems in tree
  constexpr size_t MAX_CSYS_IN_TREE = 32;
 
 /*!
  * @brief Get singleton instance of cartesian system tree
  * @return Reference to tree
 */
-cSysTree& CSYS_TREE( void );
+ cSysTree& CSYS_TREE( void );
 
 /*!
  * @brief Get global coordinate system

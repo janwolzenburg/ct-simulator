@@ -126,6 +126,7 @@ class line : virtual public mathObj{
 	*/
 	//radonPoint getRadonCoords( const cartCSys* const cSys ) const;
 
+	inline bool paraInBounds( const double para ) const { return true; };
 
 	protected:
 	uvec3 r;			/*!< Line trajectory */
