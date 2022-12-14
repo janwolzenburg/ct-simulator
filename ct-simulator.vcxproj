@@ -169,6 +169,7 @@
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="operations.cpp" />
+    <ClCompile Include="rays.cpp" />
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="vec3D.cpp" />

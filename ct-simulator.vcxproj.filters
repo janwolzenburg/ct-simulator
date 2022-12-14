@@ -125,5 +125,8 @@
     <ClCompile Include="operations.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
+    <ClCompile Include="rays.cpp">
+      <Filter>Quelldateien\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
