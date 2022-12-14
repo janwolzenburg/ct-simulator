@@ -5,8 +5,10 @@
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
+#include <iostream>
+using std::cerr;  using std::endl;
 
- #include "tests.h"
+ #include "tests_linear_algebra.h"
 
 
 
@@ -17,6 +19,7 @@
 */
 int main( void ){
 
+	if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
 
 	return 0;
 }

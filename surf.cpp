@@ -30,7 +30,7 @@ using std::string;
 	surf implementation
 */
 
-surf::surf( const uvec3D v1, const uvec3D v2, const pnt3D p )
+surf::surf( const uvec3 v1, const uvec3 v2, const pnt3 p )
 	: r1( v1 ),
 	r2( v2 ),
 	o( p ){
@@ -53,11 +53,11 @@ std::string surf::toStr( const unsigned int newLineTabulators ) const{
 	return str;
 }
 
-pnt3D surf::getPnt( const double surfParaA, const double surfParaB ) const{
+pnt3 surf::getPnt( const double surfParaA, const double surfParaB ) const{
 	return  o + ( r1 * surfParaA + r2 * surfParaB );
 }
 
-uvec3D surf::Normal( void ) const{
+uvec3 surf::Normal( void ) const{
 	return  r1 ^ r2;
 };
 
@@ -75,7 +75,7 @@ bool surf::parasInBounds( [[maybe_unused]] const double a, [[maybe_unused]] cons
 	surfLim implementation
 */
 
-surfLim::surfLim( const uvec3D v1, const uvec3D v2, const pnt3D p,
+surfLim::surfLim( const uvec3 v1, const uvec3 v2, const pnt3 p,
 				  const double aMin, const double aMax,
 				  const double bMin, const double bMax )
 	: surf( v1, v2, p ),
@@ -114,6 +114,6 @@ bool surfLim::parasInBounds( const double a, const double b ) const{
 	return pAMin <= a && a <= pAMax && pBMin <= b && b <= pBMax;
 }
 
-pnt3D surfLim::getCenter( void ) const{
+pnt3 surfLim::getCenter( void ) const{
 	return this->getPnt( ( pAMax + pAMin ) / 2, ( pBMax + pBMin ) / 2 );
 }

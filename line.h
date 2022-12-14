@@ -34,7 +34,7 @@ class line : virtual public mathObj{
 	 * @param v Line direction
 	 * @param p O
 	*/
-	explicit line( const vec3D v, const pnt3D p );
+	explicit line( const vec3 v, const pnt3 p );
 
 	/*!
 	 * @brief Convert line's data to string
@@ -46,13 +46,13 @@ class line : virtual public mathObj{
 	 * @brief Get origin of line
 	 * @return O
 	*/
-	pnt3D O( void ) const;//{ return o; };
+	pnt3 O( void ) const;//{ return o; };
 
 	/*!
 	 * @brief Get line trajectory
 	 * @return Trajectory
 	*/
-	uvec3D R( void ) const;//{ return r; };
+	uvec3 R( void ) const;//{ return r; };
 
 	/*!
 	 * @brief Convert line components to different coordinate system
@@ -66,7 +66,7 @@ class line : virtual public mathObj{
 	 * @param linPara Line parameter t
 	 * @return Point p = o + r*t
 	*/
-	pnt3D getPnt( const double linPara ) const;
+	pnt3 getPnt( const double linPara ) const;
 
 	/*!
 	 * @brief Get line parameter corresponding to point
@@ -74,7 +74,7 @@ class line : virtual public mathObj{
 	 * @param success Is set to true when the given point lies on the line. False if not
 	 * @return Line parameter
 	*/
-	double getPara( const pnt3D p, bool* const success ) const;
+	double getPara( const pnt3 p, bool* const success ) const;
 
 	/*!
 	 * @brief Get angle between line and surface
@@ -88,14 +88,14 @@ class line : virtual public mathObj{
 	 * @param p Point to get the lot to
 	 * @return To this line perpendicular vector connecting this line and point p
 	*/
-	vec3D getLot( const pnt3D p ) const;
+	vec3 getLot( const pnt3 p ) const;
 
 	/*!
 	 * @brief Get shortest distance between line and point
 	 * @param p Point
 	 * @return Distance in this line's unit
 	*/
-	double getDistance( const pnt3D p ) const;
+	double getDistance( const pnt3 p ) const;
 
 	/*!
 	 * @brief Get shortest distance between two lines
@@ -128,6 +128,6 @@ class line : virtual public mathObj{
 
 
 	protected:
-	uvec3D r;			/*!< Line trajectory */
-	pnt3D o;		 	/*!< Line origin */
+	uvec3 r;			/*!< Line trajectory */
+	pnt3 o;		 	/*!< Line origin */
 };

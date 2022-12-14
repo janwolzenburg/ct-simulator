@@ -6,6 +6,6 @@
  * @date   December 2022
  *********************************************************************/
 
-class vec3D;
-class pnt3D;
-class uvec3D;
+class vec3;
+class pnt3;
+class uvec3;

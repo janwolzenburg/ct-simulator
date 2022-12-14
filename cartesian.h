@@ -29,14 +29,32 @@
 	Definitions
  *********************************************************************/
 
-constexpr size_t MAX_CSYS_IN_TREE = 32;
-#define GLOBAL_CSYS cSysTree::getInstance().getGlobal()
-#define DUMMY_CSYS cSysTree::getInstance().getDummy()
+
+ constexpr size_t MAX_CSYS_IN_TREE = 32;
+
+/*!
+ * @brief Get singleton instance of cartesian system tree
+ * @return Reference to tree
+*/
+cSysTree& CSYS_TREE( void );
+
+/*!
+ * @brief Get global coordinate system
+ * @return Pointer to global system
+*/
+const cartCSys* GLOBAL_CSYS( void );
+
+/*!
+ * @brief Get dummy system
+ * @return Pointer to dummy system
+*/
+const cartCSys* DUMMY_CSYS( void );
+
 
 /*!
  * @brief Class for a primitve 3D Vector with some operations
 */
-class primitiveVec3 : public vec3, virtual public mathObj{
+class primitiveVec3 : public v3, virtual public mathObj{
 
 	public:
 
@@ -46,7 +64,7 @@ class primitiveVec3 : public vec3, virtual public mathObj{
 	 * @param y_ y value
 	 * @param z_ z value
 	*/
-	primitiveVec3( const vec3 xyz );
+	primitiveVec3( const v3 xyz );
 
 	primitiveVec3( const double x_, const double y_, const double z_ );
 
@@ -266,13 +284,13 @@ class cSysTree : virtual public mathObj{
 	 * @brief Get dummy system
 	 * @return Pointer to dummy
 	*/
-	cartCSys* getDummy( void );
+	const cartCSys* getDummy( void );
 
 	/*!
 	 * @brief Get global system
 	 * @return Pointer to global system
 	*/
-	cartCSys* getGlobal( void );
+	const cartCSys* getGlobal( void );
 
 	/*!
 	 * @brief Check if pointed to system is valid
@@ -354,13 +372,6 @@ class cartCSys : private primitiveCartCSys {
 	inline bool isGlobal( void ) const{ return parent == nullptr; };
 
 	/*!
-	 * @brief Checks if coordinate systems are part of the same tree
-	 * @param cSys System to check
-	 * @return True when both systems are part of the same tree
-	*/
-	inline bool sameTree( const cartCSys* const cSys ) const{ return this->tree == cSys->tree; };
-
-	/*!
 	 * @brief Create copy of this system
 	 * @param newName Name of new system
 	 * @return Pointer to new coordiante system with same baseCartSystem and parent as this
@@ -419,31 +430,31 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get origin point in this system's context
 	 * @return Point of system's origin
 	*/
-	pnt3D OPnt( void ) const;
+	pnt3 OPnt( void ) const;
 
 	/*!
 	 * @brief Get origin point in this parent's context
 	 * @return Point of system's origin
 	*/
-	pnt3D OPntPrnt( void ) const;
+	pnt3 OPntPrnt( void ) const;
 
 	/*!
 	 * @brief Get unit vector of x-axis in this system's context
 	 * @return x-axis unit vector
 	*/
-	uvec3D ExVec( void ) const;
+	uvec3 ExVec( void ) const;
 
 	/*!
 	 * @brief Get unit vector of y-axis in this system's context
 	 * @return y-axis unit vector
 	*/
-	uvec3D EyVec( void ) const;
+	uvec3 EyVec( void ) const;
 
 	/*!
 	 * @brief Get unit vector of z-axis in this system's context
 	 * @return z-axis unit vector
 	*/
-	uvec3D EzVec( void ) const;
+	uvec3 EzVec( void ) const;
 
 	/*!
 	 * @brief Get x-axis in parent coordinate system
@@ -493,7 +504,7 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Translate coordinate system
 	 * @param dV Translation vector
 	*/
-	MATH_ERR translateM( const vec3D dV );
+	MATH_ERR translateM( const vec3 dV );
 
 	/*!
 	 * @brief Rotate coordinate system around vector
@@ -501,7 +512,7 @@ class cartCSys : private primitiveCartCSys {
 	 * @param phi Angle
 	 * @return Error code
 	*/
-	MATH_ERR rotateM( const uvec3D n, const double phi );
+	MATH_ERR rotateM( const uvec3 n, const double phi );
 
 	/*!
 	 * @brief Rotate coordinate system
@@ -513,7 +524,6 @@ class cartCSys : private primitiveCartCSys {
 
 
 	private:
-	cSysTree* tree;				/*!<Pointer to tree this system is part of */
 	const cartCSys* parent;		/*!<Pointer to parent system*/
 	string name;			/*!<Name of system*/
 };
@@ -537,7 +547,7 @@ class coordinates : protected primitiveVec3{
 	 * @brief Constructor initializing coordinate system to global system
 	 * @param vec3_ Values
 	*/
-	coordinates( const vec3 vec3_, const cartCSys* const cSys_ );
+	coordinates( const v3 vec3_, const cartCSys* const cSys_ );
 
 	/*!
 	 * @brief Convert coordinate's data to string

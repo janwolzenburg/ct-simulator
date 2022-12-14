@@ -31,6 +31,9 @@
     <Filter Include="Quelldateien\Math\Linear algebra">
       <UniqueIdentifier>{ed97129a-f34c-4c5a-9ffc-2c50a27f51cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Physics">
+      <UniqueIdentifier>{00ad0c42-5a9f-4e9a-89c7-e7991765368e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">

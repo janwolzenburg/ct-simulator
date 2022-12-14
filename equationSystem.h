@@ -180,7 +180,7 @@ class eqnSys : private matx{
 	 * @param v Vector to populate column with
 	 * @return Error code
 	*/
-	MATH_ERR populateColumn( const vec3 v );
+	MATH_ERR populateColumn( const v3 v );
 
 	/*!
 	 * @brief Check population status

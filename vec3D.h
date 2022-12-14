@@ -23,7 +23,7 @@
 /*!
  * @brief Class for vectors in three dimensional cartesian coordinate systems
 */
-class vec3D : protected coordinates{
+class vec3 : protected coordinates{
 
 	protected:
 	double len;				/*!< Length */
@@ -35,19 +35,19 @@ class vec3D : protected coordinates{
 	 * @brief Constructor
 	 * @param coords Coordinates of vector
 	*/
-	vec3D( const coordinates coords );
+	vec3( const coordinates coords );
 
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ Components of vector
 	 * @param cSys_ Coordinate system of components
 	*/
-	vec3D( const vec3 xyz_, const cartCSys* const cSys_ );
+	vec3( const v3 xyz_, const cartCSys* const cSys_ );
 
 	/*!
 	 * @brief Default constructor initializing components to zero coordinate system to global
 	*/
-	vec3D( void );
+	vec3( void );
 
 	/*!
 	 * @brief Convert vector's data to string
@@ -60,55 +60,55 @@ class vec3D : protected coordinates{
 	 * @param v2 Vector to compare with
 	 * @return True when all components are equal
 	*/
-	bool operator== ( const vec3D v2 ) const;
+	bool operator== ( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Addition operator
 	 * @param v2 Vector to add
 	 * @return Sum of vectors in unit of this vector
 	*/
-	vec3D operator+ ( const vec3D v2 ) const;
+	vec3 operator+ ( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Substraction operator
 	 * @param v2 Vector to substract
 	 * @return Difference (v1 - v2) of vectors in unit of this vector
 	*/
-	vec3D operator- ( const vec3D v2 ) const;
+	vec3 operator- ( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Negation operator
 	 * @return Negated vector
 	*/
-	vec3D operator- ( void ) const;
+	vec3 operator- ( void ) const;
 
 	/*!
 	 * @brief Scale vector
 	 * @param scalar Factor
 	 * @return Scaled vector
 	*/
-	vec3D operator* ( const double scalar ) const;
+	vec3 operator* ( const double scalar ) const;
 
 	/*!
 	 * @brief Divide vector
 	 * @param divisor Divisor
 	 * @return Divided vector
 	*/
-	vec3D operator/ ( const double divisor ) const;
+	vec3 operator/ ( const double divisor ) const;
 
 	/*!
 	 * @brief Calculate dot product between to vectors
 	 * @param v2 Second vector
 	 * @return Dot product in unit of this vector squared
 	*/
-	double operator* ( const vec3D v2 ) const;
+	double operator* ( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Calculate cross product
 	 * @param v2 Second vector
 	 * @return Cross product this * v2 in unit of this vector
 	*/
-	vec3D operator^( const vec3D v2 ) const;
+	vec3 operator^( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Get x component
@@ -145,35 +145,35 @@ class vec3D : protected coordinates{
 	 * @param v Second vector
 	 * @return true when this and vector v are defined in the same coordinate system
 	*/
-	bool sameSystem( const vec3D v ) const;
+	bool sameSystem( const vec3 v ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param target_cSys System to convert to
 	 * @return Converted vector
 	*/
-	vec3D convertTo( const cartCSys* const target_cSys ) const;
+	vec3 convertTo( const cartCSys* const target_cSys ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param v Vector to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3D convertTo( const vec3D v ) const;
+	vec3 convertTo( const vec3 v ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param l Line to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3D convertTo( const line l ) const;
+	vec3 convertTo( const line l ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param s Surface to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3D convertTo( const surf s ) const;
+	vec3 convertTo( const surf s ) const;
 
 	/*!
 	 * @brief Get x,y and z component
@@ -193,7 +193,7 @@ class vec3D : protected coordinates{
 	 * @param targetV Vector with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const vec3D targetV ) const;
+	primitiveVec3 XYZ( const vec3 targetV ) const;
 
 	/*!
 	 * @brief Get global x,y and z component
@@ -265,35 +265,35 @@ class vec3D : protected coordinates{
 	 * @param x_ Value to add in vector's unit
 	 * @return Vector with added value
 	*/
-	vec3D addX( const double x_ ) const;
+	vec3 addX( const double x_ ) const;
 
 	/*!
 	 * @brief Add value to y component
 	 * @param y_ Value to add in vector's unit
 	 * @return Vector with added value
 	*/
-	vec3D addY( const double y_ ) const;
+	vec3 addY( const double y_ ) const;
 
 	/*!
 	 * @brief Add value to z component
 	 * @param z_ Value to add in vector's unit
 	 * @return Vector with added value
 	*/
-	vec3D addZ( const double z_ ) const;
+	vec3 addZ( const double z_ ) const;
 
 	/*!
 	 * @brief Calculate angle between this and another vector
 	 * @param v2 Second vector
 	 * @return Angle in radians
 	*/
-	double angle( const vec3D v2 ) const;
+	double angle( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Checks whether two vectors are orthogonal
 	 * @param v2 Second vector
 	 * @return True when vectors are orthogonal
 	*/
-	bool isOrtho( const vec3D v2 ) const;
+	bool isOrtho( const vec3 v2 ) const;
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
@@ -345,21 +345,21 @@ class vec3D : protected coordinates{
 	 * @param phi Angle in radians
 	 * @return Rotated vector
 	*/
-	vec3D rotX( const double phi ) const;
+	vec3 rotX( const double phi ) const;
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around y-axis
 	 * @param phi Angle in radians
 	 * @return Rotated vector
 	*/
-	vec3D rotY( const double phi ) const;
+	vec3 rotY( const double phi ) const;
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around z-axis
 	 * @param phi Angle in radians
 	 * @return Rotated vector
 	*/
-	vec3D rotZ( const double phi ) const;
+	vec3 rotZ( const double phi ) const;
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around second vector
@@ -367,7 +367,7 @@ class vec3D : protected coordinates{
 	 * @param phi Angle in radians
 	 * @return Error code
 	*/
-	MATH_ERR rotNM( const vec3D n, const double phi );
+	MATH_ERR rotNM( const vec3 n, const double phi );
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around second vector
@@ -375,14 +375,14 @@ class vec3D : protected coordinates{
 	 * @param phi Angle in radians
 	 * @return Rotated vector
 	*/
-	vec3D rotN( const vec3D n, const double phi ) const;
+	vec3 rotN( const vec3 n, const double phi ) const;
 
 	/*!
 	 * @brief Project vector on XY plane of given coordinate system
 	 * @param cSys Coordinate system
 	 * @return Projected vector
 	*/
-	vec3D projectOnXYPlane( const cartCSys* const cSys ) const;
+	vec3 projectOnXYPlane( const cartCSys* const cSys ) const;
 };
 
 
@@ -390,7 +390,7 @@ class vec3D : protected coordinates{
 /*!
  * @brief Class for unit vectors with length one
 */
-class uvec3D : public vec3D{
+class uvec3 : public vec3{
 
 	public:
 
@@ -398,14 +398,14 @@ class uvec3D : public vec3D{
 	 * @brief Converting constructor from vector
 	 * @param v Vector to convert
 	*/
-	uvec3D( const vec3D v );
+	uvec3( const vec3 v );
 
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ Components
 	 * @param cSys_ Coordinate system
 	*/
-	uvec3D( const vec3 xyz_, const cartCSys* const cSys_ );
+	uvec3( const v3 xyz_, const cartCSys* const cSys_ );
 
 	/*!
 	 * @brief Scaling unit vector does not have an effect
@@ -441,8 +441,8 @@ class uvec3D : public vec3D{
 /*!
  * @brief Class for points in cartesian coordinate system
 */
-class pnt3D : public vec3D{
-	using vec3D::vec3D;
+class pnt3 : public vec3{
+	using vec3::vec3;
 
 	public:
 
@@ -450,7 +450,7 @@ class pnt3D : public vec3D{
 	 * @brief Converting constructor
 	 * @param v Vector to convert from
 	*/
-	pnt3D( const vec3D v );
+	pnt3( const vec3 v );
 
 	/*!
 	 * @brief Convert point's data to string
@@ -463,14 +463,14 @@ class pnt3D : public vec3D{
 	 * @param target_cSys Target system
 	 * @return Converted point
 	*/
-	pnt3D convertTo( const cartCSys* const target_cSys ) const;
+	pnt3 convertTo( const cartCSys* const target_cSys ) const;
 
 	/*!
 	 * @brief Convert point to different coordinate system
 	 * @param targetP Point with target system
 	 * @return Converted point
 	*/
-	pnt3D convertTo( const pnt3D targetP ) const;
+	pnt3 convertTo( const pnt3 targetP ) const;
 
 	/*!
 	 * @brief Get x,y and z component
@@ -490,7 +490,7 @@ class pnt3D : public vec3D{
 	 * @param targetV Point with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const pnt3D targetP ) const;
+	primitiveVec3 XYZ( const pnt3 targetP ) const;
 
 	/*!
 	 * @brief Get global x component
@@ -528,5 +528,5 @@ class pnt3D : public vec3D{
 	 * @param cSys Coordinate system
 	 * @return Projected point
 	*/
-	pnt3D projectOnXYPlane( const cartCSys* const cSys ) const;
+	pnt3 projectOnXYPlane( const cartCSys* const cSys ) const;
 };

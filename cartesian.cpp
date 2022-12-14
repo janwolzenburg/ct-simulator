@@ -29,14 +29,28 @@
  *********************************************************************/
 
 
+ cSysTree& CSYS_TREE( void ){
+	 return cSysTree::getInstance();
+ }
+ 
+ const cartCSys* GLOBAL_CSYS( void ){
+	 return CSYS_TREE().getGlobal();
+ }
+
+ const cartCSys* DUMMY_CSYS( void ){
+	 return CSYS_TREE().getDummy();
+ }
+
+
+
 /*
 	primitiveVec3 implementation
 */
 
-primitiveVec3::primitiveVec3( vec3 xyz ) : vec3( xyz )
+primitiveVec3::primitiveVec3( v3 xyz ) : v3( xyz )
 {}
 
-primitiveVec3::primitiveVec3( const double x_, const double y_, const double z_ ) : primitiveVec3( vec3{ x_, y_, z_ } )
+primitiveVec3::primitiveVec3( const double x_, const double y_, const double z_ ) : primitiveVec3( v3{ x_, y_, z_ } )
 {}
 
 string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
@@ -285,14 +299,14 @@ cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex
 };
 
 cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ ){
-	return addCSys( origin_, ex_, ey_, ez_, GLOBAL_CSYS, name_ );
+	return addCSys( origin_, ex_, ey_, ez_, GLOBAL_CSYS(), name_ );
 }
 
-cartCSys* cSysTree::getDummy( void ) {
+const cartCSys* cSysTree::getDummy( void ) {
 	return &systems[0];
 }
 
-cartCSys* cSysTree::getGlobal( void ){
+const cartCSys* cSysTree::getGlobal( void ){
 	return &systems[ 1 ];
 }
 
@@ -332,11 +346,11 @@ string cartCSys::toStr( const unsigned int newLineTabulators ) const{
 }
 
 cartCSys* cartCSys::createCopy( const string newName ) const{
-	return tree->addCSys( origin, ex, ey, ez, parent, newName );
+	return CSYS_TREE().addCSys( origin, ex, ey, ez, parent, newName );
 }
 
 cartCSys* cartCSys::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ ) const{
-	return tree->addCSys( origin_, ex_, ey_, ez_, this, name_ );
+	return CSYS_TREE().addCSys( origin_, ex_, ey_, ez_, this, name_ );
 }
 
 vector<const cartCSys*> cartCSys::getPathFromGlobal( void ) const{
@@ -359,70 +373,70 @@ vector<const cartCSys*> cartCSys::getPathFromGlobal( void ) const{
 };
 
 
-pnt3D cartCSys::OPnt( void ) const{
-	return pnt3D{ vec3{0, 0, 0}, this };
+pnt3 cartCSys::OPnt( void ) const{
+	return pnt3{ v3{0, 0, 0}, this };
 };
 
-pnt3D cartCSys::OPntPrnt( void ) const{
-	if( this->isGlobal() ) return pnt3D{ origin, this };
-	return pnt3D{ origin, parent };
+pnt3 cartCSys::OPntPrnt( void ) const{
+	if( this->isGlobal() ) return pnt3{ origin, this };
+	return pnt3{ origin, parent };
 };
 
-uvec3D cartCSys::ExVec( void ) const{
-	return uvec3D{ vec3{1, 0, 0},  this };
+uvec3 cartCSys::ExVec( void ) const{
+	return uvec3{ v3{1, 0, 0},  this };
 };
 
-uvec3D cartCSys::EyVec( void ) const{
-	return uvec3D{ vec3{0, 1, 0},   this };
+uvec3 cartCSys::EyVec( void ) const{
+	return uvec3{ v3{0, 1, 0},   this };
 };
 
-uvec3D cartCSys::EzVec( void ) const{
-	return uvec3D{ vec3{0, 0, 1},  this };
+uvec3 cartCSys::EzVec( void ) const{
+	return uvec3{ v3{0, 0, 1},  this };
 };
 
 line cartCSys::xAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return line{ vec3D{ex, parent_ptr},  pnt3D{origin, parent_ptr} };
+	return line{ vec3{ex, parent_ptr},  pnt3{origin, parent_ptr} };
 };
 
 line cartCSys::yAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return line{ vec3D{ey, parent_ptr},  pnt3D{origin, parent_ptr} };
+	return line{ vec3{ey, parent_ptr},  pnt3{origin, parent_ptr} };
 };
 
 line cartCSys::zAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return line{ vec3D{ez, parent_ptr},  pnt3D{origin, parent_ptr} };
+	return line{ vec3{ez, parent_ptr},  pnt3{origin, parent_ptr} };
 };
 
 surf cartCSys::xyPlane( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return surf{ vec3D{ex, parent_ptr}, vec3D{ey, parent_ptr}, pnt3D{origin, parent_ptr } };
+	return surf{ vec3{ex, parent_ptr}, vec3{ey, parent_ptr}, pnt3{origin, parent_ptr } };
 }
 
 surf cartCSys::yzPlane( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return surf{ vec3D{ey, parent_ptr}, vec3D{ez, parent_ptr}, pnt3D{origin, parent_ptr } };
+	return surf{ vec3{ey, parent_ptr}, vec3{ez, parent_ptr}, pnt3{origin, parent_ptr } };
 }
 
 surf cartCSys::xzPlane( void ) const{
 	const cartCSys* parent_ptr = parent;
-	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS;
+	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
-	return surf{ vec3D{ex, parent_ptr}, vec3D{ez, parent_ptr}, pnt3D{origin, parent_ptr } };
+	return surf{ vec3{ex, parent_ptr}, vec3{ez, parent_ptr}, pnt3{origin, parent_ptr } };
 }
 
-mathObj::MATH_ERR cartCSys::translateM( const vec3D dV ){
+mathObj::MATH_ERR cartCSys::translateM( const vec3 dV ){
 	if( this->isGlobal() ){
 		return checkErr( MATH_ERR::OPERATION, "Global coordinate system cannot be translated!" );
 	}
@@ -432,7 +446,7 @@ mathObj::MATH_ERR cartCSys::translateM( const vec3D dV ){
 	return MATH_ERR::OK;
 }
 
-mathObj::MATH_ERR cartCSys::rotateM( const uvec3D n, const double phi ){
+mathObj::MATH_ERR cartCSys::rotateM( const uvec3 n, const double phi ){
 	if( this->isGlobal() ){
 		return checkErr( MATH_ERR::OPERATION, "Global coordinate system cannot be rotated!" );
 	}
@@ -465,7 +479,7 @@ mathObj::MATH_ERR cartCSys::rotateM( const line l, const double phi ){
 	coordinates implementation
 */
 
-coordinates::coordinates( const vec3 vec3_, const cartCSys* const cSys_ )
+coordinates::coordinates( const v3 vec3_, const cartCSys* const cSys_ )
 	: primitiveVec3( vec3_ ),
 	  cSys( cSys_ ){}
 
@@ -489,8 +503,8 @@ bool coordinates::operator== ( const coordinates coords ) const{
 	if( this->sameSystem( coords ) ) return this->primitiveVec3::operator==( coords );
 
 	// Convert both coordinates to global system
-	coordinates globalCoords_1 = this->convertTo( GLOBAL_CSYS );
-	coordinates globalCoords_2 = coords.convertTo( GLOBAL_CSYS );
+	coordinates globalCoords_1 = this->convertTo( GLOBAL_CSYS() );
+	coordinates globalCoords_2 = coords.convertTo( GLOBAL_CSYS() );
 
 	// Compare components
 	return globalCoords_1.primitiveVec3::operator==( globalCoords_2 );
@@ -581,5 +595,5 @@ coordinates coordinates::toChildcSys( const cartCSys* const child_cSys ) const{
 	eqnSysSolution tEqnSysSol = tEqnSys.solve();
 
 	// System solution are new coordinates
-	return coordinates{ vec3{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_cSys };
+	return coordinates{ v3{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_cSys };
 }

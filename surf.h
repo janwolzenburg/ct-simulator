@@ -35,7 +35,7 @@ class surf : virtual public mathObj{
 	 * @param v2 Second direction vector. Must be orthogonal to first vector
 	 * @param p O
 	*/
-	explicit surf( const uvec3D  v1, const uvec3D  v2, const pnt3D  p );
+	explicit surf( const uvec3  v1, const uvec3  v2, const pnt3  p );
 
 	/*!
 	 * @brief Convert surface's data to string
@@ -48,19 +48,19 @@ class surf : virtual public mathObj{
 	 * @brief Get origin of surface
 	 * @return Origing
 	*/
-	inline pnt3D  O( void ) const{ return o; };
+	inline pnt3  O( void ) const{ return o; };
 
 	/*!
 	 * @brief Get first direction vector
 	 * @return r1 of surface
 	*/
-	inline uvec3D  R1( void ) const{ return r1; };
+	inline uvec3  R1( void ) const{ return r1; };
 
 	/*!
 	 * @brief Get second direction vector
 	 * @return r2 of surface
 	*/
-	inline uvec3D  R2( void ) const{ return r2; };
+	inline uvec3  R2( void ) const{ return r2; };
 
 	/*!
 	 * @brief Get point on the surface based on parameters
@@ -68,13 +68,13 @@ class surf : virtual public mathObj{
 	 * @param surfParaB Surface parameter b
 	 * @return Point p = o + r1*a + r2*b
 	*/
-	pnt3D  getPnt( const double surfParaA, const double surfParaB ) const;
+	pnt3  getPnt( const double surfParaA, const double surfParaB ) const;
 
 	/*!
 	 * @brief Get surface normal by cross product
 	 * @return Surface normal
 	*/
-	uvec3D  Normal( void ) const;
+	uvec3  Normal( void ) const;
 
 	/*!
 	 * @brief Convert surface to different coordinate system
@@ -94,9 +94,9 @@ class surf : virtual public mathObj{
 
 	// Protected properties
 	protected:
-	uvec3D  r1;					/*!<First direction vector*/
-	uvec3D  r2;					/*!<Second direction vector*/
-	pnt3D  o;						/*!<O*/
+	uvec3  r1;					/*!<First direction vector*/
+	uvec3  r2;					/*!<Second direction vector*/
+	pnt3  o;						/*!<O*/
 };
 
 
@@ -118,7 +118,7 @@ class surfLim : public surf{
 	 * @param bMin Lower limit for parameter b
 	 * @param bMax Upper limit for parameter b
 	*/
-	explicit surfLim( const uvec3D  v1, const uvec3D  v2, const pnt3D  p,
+	explicit surfLim( const uvec3  v1, const uvec3  v2, const pnt3  p,
 					  const double aMin, const double aMax,
 					  const double bMin, const double bMax );
 
@@ -184,7 +184,7 @@ class surfLim : public surf{
 	 * @brief Get center point of limited surface
 	 * @return The center point
 	*/
-	pnt3D  getCenter( void ) const;
+	pnt3  getCenter( void ) const;
 
 
 	// Private properties

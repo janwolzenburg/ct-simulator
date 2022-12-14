@@ -30,8 +30,8 @@ using std::string;
 	line implementation
 */
 
-line::line( const vec3D v, const pnt3D p )
-	: r( uvec3D{ v } ),
+line::line( const vec3 v, const pnt3 p )
+	: r( uvec3{ v } ),
 	o( p ){
 	if( iseqErr( r.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vec3Dtor must have length!" );
 	if( !v.sameSystem( p ) ) checkErr( MATH_ERR::INPUT, "Line origin and trajectory must be defined in the same coordinate system!" );
@@ -47,11 +47,11 @@ std::string line::toStr( unsigned int newLineTabulators ) const{
 	return str;
 }
 
-pnt3D line::O( void ) const { 
+pnt3 line::O( void ) const { 
 	return o;
 };
 
-uvec3D line::R( void ) const { 
+uvec3 line::R( void ) const { 
 	return r;
 };
 
@@ -59,13 +59,13 @@ line line::convertTo( const cartCSys* const target ) const{
 	return line{ r.convertTo( target ), o.convertTo( target ) };
 };
 
-pnt3D line::getPnt( const double linPara ) const{
-	pnt3D p{ o + ( r * linPara ) };
+pnt3 line::getPnt( const double linPara ) const{
+	pnt3 p{ o + ( r * linPara ) };
 	return  p;
 }
 
-double line::getPara( const pnt3D p, bool* const success ) const{
-	pnt3D cP = p.convertTo( o );
+double line::getPara( const pnt3 p, bool* const success ) const{
+	pnt3 cP = p.convertTo( o );
 
 	double t = ( cP.X() - o.X() ) / r.X();
 
@@ -77,20 +77,20 @@ double line::getAngle( const surf s ) const{
 	return PI / 2 - r.angle( s.Normal() );
 };
 
-vec3D line::getLot( const pnt3D p ) const{
-	vec3D vP{ p.convertTo( r.CSys() ) };
+vec3 line::getLot( const pnt3 p ) const{
+	vec3 vP{ p.convertTo( r.CSys() ) };
 
 	double linePara = ( r * vP - r * o );
-	vec3D s{ o + r * linePara };
+	vec3 s{ o + r * linePara };
 	return s - vP;
 }
 
-double line::getDistance( const pnt3D p ) const{
+double line::getDistance( const pnt3 p ) const{
 	return getLot( p ).Length();
 };
 
 double line::getDistance( const line l ) const{
-	vec3D n{ r ^ l.r };
+	vec3 n{ r ^ l.r };
 	return abs( ( l.o - o ) * n ) / n.Length();
 }
 

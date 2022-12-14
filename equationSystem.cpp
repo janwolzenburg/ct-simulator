@@ -216,7 +216,7 @@ std::string eqnSys::toStr( const unsigned int newLineTabulators ) const{
 
 }
 
-mathObj::MATH_ERR eqnSys::populateColumn( const vec3 v ){
+mathObj::MATH_ERR eqnSys::populateColumn( const v3 v ){
 
 	// For now only implemented with three vars
 	if( isPopulated() || varNum != 3 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to three!" );

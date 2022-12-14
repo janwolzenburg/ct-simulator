@@ -44,10 +44,10 @@ class idx3 : public idx2{
 /*!
  * @brief Class for 2D vector
 */
-class vec2{
+class v2{
 	public:
-	vec2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
-	vec2( void ) : vec2(0, 0) {};
+	v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
+	v2( void ) : v2(0, 0) {};
 
 	double x;
 	double y;
@@ -56,10 +56,10 @@ class vec2{
 /*!
 * @brief Class for 3D vector
 */
-class vec3 : public vec2{
+class v3 : public v2{
 	public:
-	vec3( const double x_, const double y_, const double z_ ) : vec2( x_, y_ ), z( z_ ){};
-	vec3( void ) : vec3( 0, 0, 0) {};
+	v3( const double x_, const double y_, const double z_ ) : v2( x_, y_ ), z( z_ ){};
+	v3( void ) : v3( 0, 0, 0) {};
 
 	double z;
 };
