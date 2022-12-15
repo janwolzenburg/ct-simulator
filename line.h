@@ -130,5 +130,5 @@ class line : virtual public mathObj{
 
 	protected:
 	uvec3 r;			/*!< Line trajectory */
-	pnt3 o;		 	/*!< Line origin */
+	pnt3 o;		 		/*!< Line origin */
 };

@@ -20,6 +20,7 @@
  #include "equationSystem.h"
 
 
+
  /*********************************************************************
 	Implementations
  *********************************************************************/
@@ -83,11 +84,9 @@ double& matx::operator() ( const size_t row, const size_t col ) {
 	return A[m * row + col];
 };
 
-
 double& matx::operator() ( const idx2 idx ) {
 	return (*this)(idx.y, idx.x);
 };
-
 
 double matx::operator() ( const size_t row, const size_t col ) const {
 	if (row >= n) { checkErr( MATH_ERR::INPUT, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
@@ -95,11 +94,9 @@ double matx::operator() ( const size_t row, const size_t col ) const {
 	return A[m * row + col];
 };
 
-
 double matx::operator() ( const idx2 idx ) const {
 	return (*this)( idx.y, idx.x );
 };
-
 
 mathObj::MATH_ERR matx::swapCols( const size_t c1, const size_t c2 ) {
 	if (c1 >= m || c2 >= m) return checkErr( MATH_ERR::BOUNDS, "Column or row indices exceed matrix size!" );
@@ -116,7 +113,6 @@ mathObj::MATH_ERR matx::swapCols( const size_t c1, const size_t c2 ) {
 	return MATH_ERR::OK;
 }
 
-
 mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
 	if (r1 >= n || r2 >= n) return checkErr( MATH_ERR::BOUNDS, "Column or row indices exceed matrix size!" );
 
@@ -131,7 +127,6 @@ mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
 
 	return MATH_ERR::OK;
 }
-
 
 idx2 matx::findMax( const idx2 topCorner, const idx2 botCorner ) {
 	double curMax = 0, curVal;
@@ -161,7 +156,6 @@ idx2 matx::findMax( const idx2 topCorner, const idx2 botCorner ) {
 	return curMaxIndx;
 }
 
-
 mathObj::MATH_ERR matx::scaleRow( const size_t r, const double scalar ) {
 	if (r >= n) return checkErr( MATH_ERR::BOUNDS, "Row index exceeds matrix size!" );
 	// Iterate all columns
@@ -171,7 +165,6 @@ mathObj::MATH_ERR matx::scaleRow( const size_t r, const double scalar ) {
 
 	return MATH_ERR::OK;
 }
-
 
 mathObj::MATH_ERR matx::subRows( const size_t r1, const size_t r2 ) {
 	if (r1 >= n || r2 >= n) return checkErr( MATH_ERR::BOUNDS, "Row index exceeds matrix size!" );
@@ -183,8 +176,6 @@ mathObj::MATH_ERR matx::subRows( const size_t r1, const size_t r2 ) {
 
 	return MATH_ERR::OK;
 }
-
-
 
 
 
@@ -312,8 +303,6 @@ eqnSysSolution eqnSys::solve( void ){
 	}
 
 
-
-
 	size_t varsIndx;
 	// Copy result column entries to var-array
 	for( size_t i = 0; i < rows; i++ ){
@@ -352,9 +341,9 @@ eqnSysSolution::~eqnSysSolution( void ){
 	delete[] vars;
 }
 
-std::string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
-	std::string str;
-	std::string newLine = { '\n' };
+string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 

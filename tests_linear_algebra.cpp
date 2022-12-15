@@ -28,30 +28,30 @@
 
  bool test_linear_algebra( void ){
 
-	 cartCSys* sys1 = cSysTree::getInstance().addCSys( primitiveVec3{ 1, 1, 1 },
-													   primitiveVec3{ 1, 0, 0 }, 
-													   primitiveVec3{ 0, 1, 0 }, 
-													   primitiveVec3{ 0, 0, 1 }, 
+	 cartCSys* sys1 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
+													   primitiveVec3{ v3{ 1, 0, 0 }}, 
+													   primitiveVec3{ v3{ 0, 1, 0 }}, 
+													   primitiveVec3{ v3{ 0, 0, 1 }}, 
 													   "Sys 1");
 	 vec3 vect1{ v3{ 2, 2, 2 }, sys1 };
 	 vec3 vect2 = vect1.convertTo( GLOBAL_CSYS() );
 	 if( vect2 != vec3{ v3{ 2, 2, 2 }, GLOBAL_CSYS() } ) return false;
 
 
-	 cartCSys* sys2 = cSysTree::getInstance().addCSys( primitiveVec3{ 0, 0, 0 },
-													   primitiveVec3{ -1, 0, 0 },
-													   primitiveVec3{ 0, 1, 0 },
-													   primitiveVec3{ 0, 0, 1 },
+	 cartCSys* sys2 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 0, 0, 0 }},
+													   primitiveVec3{ v3{ -1, 0, 0 }},
+													   primitiveVec3{ v3{ 0, 1, 0 }},
+													   primitiveVec3{ v3{ 0, 0, 1 }},
 													   "Sys 2" );
 	 vec3 vect3{ v3{ 2, 2, 2 }, sys2 };
 	 vec3 vect4 = vect3.convertTo( GLOBAL_CSYS() );
 	 if( vect4 != vec3{ v3{ -2, 2, 2 }, GLOBAL_CSYS() } ) return false;
 
 
-	 cartCSys* sys3 = cSysTree::getInstance().addCSys( primitiveVec3{ 1, 1, 1 },
-													   primitiveVec3{ 1, 0, 0 },
-													   primitiveVec3{ 0, 1, 0 },
-													   primitiveVec3{ 0, 0, 1 },
+	 cartCSys* sys3 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
+													   primitiveVec3{ v3{ 1, 0, 0 }},
+													   primitiveVec3{ v3{ 0, 1, 0 }},
+													   primitiveVec3{ v3{ 0, 0, 1 }},
 													   sys2,  "Sys 3" );
 	vec3 vect6{ v3{ 1, 0, 0 }, sys3 };
 	vec3 vect7 = vect6.convertTo( sys1 );

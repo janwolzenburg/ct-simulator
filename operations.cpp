@@ -16,7 +16,7 @@ using std::string;
  #include "vec3D.h"
  #include "line.h"
  #include "surf.h"
- #include"equationSystem.h"
+ #include "equationSystem.h"
  #include "operations.h"
 
 
@@ -27,7 +27,7 @@ using std::string;
 
 
 /*
-	linSurf_Intersection_Result implementation
+	linSurf_Intersection_Result
 */
 
 linSurf_Intersection_Result::linSurf_Intersection_Result( void )
@@ -49,41 +49,113 @@ string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) cons
 
 
 /*
-	linSurfIntersection implementation
+	rayVox_Intersection_Result
 */
 
-linSurfIntersection::linSurfIntersection( const line l_, const surf s_ ) :
-	l( l_ ),
-	s( s_ )
+rayVox_Intersection_Result::rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
+	linSurf_Intersection_Result( res_ ),
+	face( FACE_ID::INVALID )
 {
 
-	// Create system of equations with three variables
-	eqnSys sys( 3 );
-	sys.populateColumn( s.R1().XYZ( l.R() ) );
-	sys.populateColumn( s.R2().XYZ( l.R() ) );
-	sys.populateColumn( -( l.R().XYZ() ) );
-	sys.populateColumn( l.R().XYZ() - s.O().XYZ( l.O() ) );
+}
 
-	// Solve system
-	eqnSysSolution sysSol = sys.solve();
+rayVox_Intersection_Result::rayVox_Intersection_Result( void ) :
+	//linSurf_Intersection_Result( linSurf_Intersection_Result{} ),
+	face( FACE_ID::INVALID )
+{}
 
-	// No solution found
-	if( !sysSol.Success() ){
-		return;
+
+
+/*
+	rayVoxelIntersection
+*/
+
+rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
+	v( v_ ),
+	r( r_ )
+{
+
+	// Components of ray trajectory in voxel coordinate system
+	v3 comps = r.R().XYZ( v.O() );
+	bool facePossible = true;
+
+	// Find Entrance
+
+	// Ray origin inside voxel
+	if(  v.contains( r.O() ) ){
+		entrance.hasSolution = true;
+		entrance.linPara = 0;
+		entrance.isectPnt = r.O();
+		entrance.face = FACE_ID::INVALID;
+	}
+	else{
+
+		// Iterate all faces
+		for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
+			facePossible = true;
+
+			// Check if face can be an entrance face of the tRay
+			switch( i ){
+				case FACE_ID::YZ_Xp:
+				if( comps.x >= 0 ) facePossible = false; break;
+				case FACE_ID::YZ_Xm:
+				if( comps.x <= 0 ) facePossible = false; break;
+
+				case FACE_ID::XZ_Yp:
+				if( comps.y >= 0 ) facePossible = false; break;
+				case FACE_ID::XZ_Ym:
+				if( comps.y <= 0 ) facePossible = false; break;
+
+				case FACE_ID::XY_Zp:
+				if( comps.z >= 0 ) facePossible = false; break;
+				case FACE_ID::XY_Zm:
+				if( comps.z <= 0 ) facePossible = false; break;
+
+				default: break;
+			}
+
+			if( facePossible ){
+				// Check  if tRay intersects current face
+				entrance = linSurfIntersection{ r, v.getFace( i ) }.Result();
+				if( entrance.hasSolution ){
+					entrance.face = i; break;
+				}
+			}
+		}
 	}
 
-	// Copy result
-	result.hasSolution = true;						// Solution found
-	result.linPara = sysSol.getVar( 2 );			// Line parameter
 
-	result.surfParaA = sysSol.getVar( 0 );			// Surface parameter A
-	result.surfParaB = sysSol.getVar( 1 );			// Surface parameter B
+	// Find exit
 
-	result.isectPnt = l.getPnt( result.linPara );	// Point of intersection
+	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
+		facePossible = true;
 
+		// Check if face can be an exit face of the tRay
+		switch( i ){
+			case FACE_ID::YZ_Xp:
+			if( comps.x <= 0 ) facePossible = false; break;
+			case FACE_ID::YZ_Xm:
+			if( comps.x >= 0 ) facePossible = false; break;
 
-	// Surface parameters outside allowed bounds of surface
-	if( !s.parasInBounds( result.surfParaA, result.surfParaB ) ) result.hasSolution = false;
-	if( !l.paraInBounds( result.linPara ) ) result.hasSolution = false;
+			case FACE_ID::XZ_Yp:
+			if( comps.y <= 0 ) facePossible = false; break;
+			case FACE_ID::XZ_Ym:
+			if( comps.y >= 0 ) facePossible = false; break;
 
+			case FACE_ID::XY_Zp:
+			if( comps.z <= 0 ) facePossible = false; break;
+			case FACE_ID::XY_Zm:
+			if( comps.z >= 0 ) facePossible = false; break;
+
+			default: break;
+		}
+
+		if( facePossible ){
+			// Check  if tRay intersects current face
+			exit = linSurfIntersection{ r, v.getFace( i ) }.Result();
+			if( exit.hasSolution ){
+				exit.face = i; break;
+			}
+		}
+	}
 }

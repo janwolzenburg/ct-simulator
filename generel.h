@@ -77,7 +77,7 @@ class v3 : public v2{
  * @return Value of var cast to underlying type
 */
 template <typename T>
-typename std::underlying_type_t<T> toUnderlying( T var );
+constexpr typename std::underlying_type_t<T> toUnderlying( T var );
 
 /*!
  * @brief Postincrement operator for enumeratable variable

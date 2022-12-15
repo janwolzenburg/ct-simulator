@@ -48,7 +48,7 @@ const cartCSys* GLOBAL_CSYS( void );
  * @brief Get dummy system
  * @return Pointer to dummy system
 */
-const cartCSys* DUMMY_CSYS( void );
+cartCSys* DUMMY_CSYS( void );
 
 
 /*!
@@ -66,14 +66,12 @@ class primitiveVec3 : public v3, virtual public mathObj{
 	*/
 	primitiveVec3( const v3 xyz );
 
-	primitiveVec3( const double x_, const double y_, const double z_ );
-
 	/*!
 	 * @brief Convert data to string
 	 * @param newLineTabulators
 	 * @return String with data
 	*/
-	std::string toStr( [[maybe_unused]] const unsigned int newLineTabulators = 0 ) const override;
+	string toStr( const unsigned int newLineTabulators = 0 ) const override;
 
 	/*!
 	 * @brief Comparison operator
@@ -284,7 +282,7 @@ class cSysTree : virtual public mathObj{
 	 * @brief Get dummy system
 	 * @return Pointer to dummy
 	*/
-	const cartCSys* getDummy( void );
+	cartCSys* getDummy( void );
 
 	/*!
 	 * @brief Get global system
@@ -301,6 +299,7 @@ class cSysTree : virtual public mathObj{
 
 
 	private:
+
 	/*!
 	 * @brief Default Constructor
 	 * @details Initializes all systems in array to default cartCSys
@@ -318,8 +317,8 @@ class cSysTree : virtual public mathObj{
 	cSysTree& operator=( const cSysTree& tree_ ) = delete;
 	
 	private:
-	size_t numSystems;						  /*!< Number of systems in tree*/
-	cartCSys* systems;		/*!< Array with all systems*/
+	size_t numSystems;			/*!< Number of systems in tree*/
+	cartCSys* systems;			/*!< Array with all systems*/
 };
 
 
@@ -329,7 +328,6 @@ class cSysTree : virtual public mathObj{
 class cartCSys : private primitiveCartCSys {
 	friend class cSysTree;
 
-	// Private functions
 	private:
 
 	/*!
@@ -350,7 +348,6 @@ class cartCSys : private primitiveCartCSys {
 	cartCSys( void );
 
 
-	// Public functions
 	public:
 
 	/*!
@@ -493,14 +490,6 @@ class cartCSys : private primitiveCartCSys {
 	surf xzPlane( void ) const;
 
 	/*!
-	 * @brief Translate coordiante system
-	 * @param x Translation in x-direction
-	 * @param y Translation in y-direction
-	 * @param z Translation in z-direction
-	*/
-	//void translateM( const double x, const double y, const double z );
-
-	/*!
 	 * @brief Translate coordinate system
 	 * @param dV Translation vector
 	*/
@@ -525,7 +514,7 @@ class cartCSys : private primitiveCartCSys {
 
 	private:
 	const cartCSys* parent;		/*!<Pointer to parent system*/
-	string name;			/*!<Name of system*/
+	string name;				/*!<Name of system*/
 };
 
 
@@ -621,7 +610,7 @@ class coordinates : protected primitiveVec3{
 	 * @brief Get components of coordinates
 	 * @return Componenets
 	*/
-	inline primitiveVec3 XYZ( void ) const{ return primitiveVec3{ x, y, z }; };
+	inline primitiveVec3 XYZ( void ) const{ return primitiveVec3{ v3{ x, y, z } }; };
 
 
 	private:

@@ -22,7 +22,7 @@
 *********************************************************************/
 
 class matx : virtual public mathObj{
-	// Public functions
+
 	public:
 
 	/*!
@@ -141,8 +141,8 @@ class matx : virtual public mathObj{
 
 	// Private properties
 	private:
-	size_t n;			/*!<Rows*/
-	size_t m;			/*!<Columns*/
+	size_t n;				/*!<Rows*/
+	size_t m;				/*!<Columns*/
 	double* A;				/*!<Data-> Access with [m  * row + col] left to right - top to bottom*/
 };
 
@@ -155,7 +155,6 @@ class matx : virtual public mathObj{
 class eqnSys : private matx{
 	friend class eqnSysSolution;
 
-	// Public functions
 	public:
 
 	/*!
@@ -207,7 +206,7 @@ class eqnSys : private matx{
  * @brief Class describing solution of linear system of equations
 */
 class eqnSysSolution : virtual public mathObj{
-	// Public functions
+
 	public:
 
 	/*!
@@ -243,7 +242,7 @@ class eqnSysSolution : virtual public mathObj{
 	 * @brief Convert solutions's data to string
 	 * @return String with solutions's data
 	*/
-	std::string toStr( unsigned int newLineTabulators = 0 ) const override;
+	string toStr( unsigned int newLineTabulators = 0 ) const override;
 
 	/*!
 	 * @brief Get amount of variables

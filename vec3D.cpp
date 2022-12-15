@@ -13,9 +13,9 @@
 #include <string>
 using std::string;
  
- #include "cartesian.h"
- #include "vec3D.h"
- #include "line.h"
+#include "cartesian.h"
+#include "vec3D.h"
+#include "line.h"
 #include "surf.h"
 
 
@@ -39,8 +39,8 @@ vec3::vec3( const v3 xyz_, const cartCSys* const cSys_ ) :
 
 vec3::vec3( void ) : vec3( v3{ 0 ,0 ,0 }, DUMMY_CSYS() ){}
 
-std::string vec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
-	std::string str;
+string vec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
+	string str;
 	char tempCharArr[ 256 ];
 	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f) l=%.6f", X(), Y(), Z(), Length() );
 
@@ -281,6 +281,8 @@ vec3 vec3::projectOnXYPlane( const cartCSys* const cSys_ ) const{
 
 	return projectedVec;
 }
+
+
 
 /*
 	uvec3D implementation

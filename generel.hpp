@@ -12,7 +12,7 @@
 
 
 template <typename T>
-typename std::underlying_type_t<T> toUnderlying( T var ){
+constexpr typename std::underlying_type_t<T> toUnderlying( T var ){
 	return static_cast<typename std::underlying_type_t<T>>( var );
 }
 

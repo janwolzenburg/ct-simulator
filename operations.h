@@ -18,6 +18,8 @@ using std::string;
 #include "vec3D.h"
 #include "line.h"
 #include "surf.h"
+#include "rays.h"
+#include "voxel.h"
 
 
  /*********************************************************************
@@ -55,16 +57,64 @@ class linSurf_Intersection_Result : virtual public mathObj{
 /*!
  * @brief Class for calculation the intersection of a line and a surface
 */
-class linSurfIntersection : virtual public mathObj{
+template<class L, class S>
+class linSurfIntersection {
 
-	linSurfIntersection( const line l_, const surf s_ );
+	public:
+	linSurfIntersection( const L l_, const S s_ );
 
 	inline linSurf_Intersection_Result Result( void ) const { return result; };
 
 	public:
-	line l;
-	surf s;
+	L l;
+	S s;
 	linSurf_Intersection_Result result;
 	
 
 };
+
+
+
+/*!
+ * @brief Class describing iuntersection of one voxel face with ray
+*/
+class rayVox_Intersection_Result : public linSurf_Intersection_Result{
+
+	//using linSurf_Intersection_Result::linSurf_Intersection_Result;
+
+	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param res_ Instance of parent class
+	*/
+	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ );
+
+	rayVox_Intersection_Result( void );
+
+	public:
+	FACE_ID face;	/*!<ID of face for which the result is valid*/
+};
+
+
+/*!
+ * @brief Class for calculation the intersection of a line and a surface
+*/
+class rayVoxelIntersection {
+
+	public:
+	rayVoxelIntersection( const vox v_, const ray r_ );
+
+	inline rayVox_Intersection_Result Entrance( void ) const{ return entrance; };
+
+	inline rayVox_Intersection_Result Exit( void ) const{ return exit; };
+
+	public:
+	vox v;
+	ray r;
+	rayVox_Intersection_Result entrance;
+	rayVox_Intersection_Result exit;
+
+};
+
+#include "operations.hpp"

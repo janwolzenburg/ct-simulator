@@ -150,9 +150,11 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="operations.h" />
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
+    <ClInclude Include="operations.hpp" />
     <ClInclude Include="rays.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surf.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="vec3D.fwd.h" />
     <ClInclude Include="vec3D.h" />
     <ClInclude Include="vectorAlgotrithm.h" />
+    <ClInclude Include="voxel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cartesian.cpp" />
@@ -168,12 +171,14 @@
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="operations.cpp" />
     <ClCompile Include="rays.cpp" />
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="vec3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
+    <ClCompile Include="voxel.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

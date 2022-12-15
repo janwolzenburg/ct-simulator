@@ -24,10 +24,10 @@ using std::string;
 #include "equationSystem.h"
 
 
+
  /*********************************************************************
 	Implementations
  *********************************************************************/
-
 
 cSysTree& CSYS_TREE( void ){
 	return cSysTree::getInstance();
@@ -37,7 +37,7 @@ const cartCSys* GLOBAL_CSYS( void ){
 	return CSYS_TREE().getGlobal();
 }
 
-const cartCSys* DUMMY_CSYS( void ){
+cartCSys* DUMMY_CSYS( void ){
 	 return CSYS_TREE().getDummy();
  }
 
@@ -48,9 +48,6 @@ const cartCSys* DUMMY_CSYS( void ){
 */
 
 primitiveVec3::primitiveVec3( v3 xyz ) : v3( xyz )
-{}
-
-primitiveVec3::primitiveVec3( const double x_, const double y_, const double z_ ) : primitiveVec3( v3{ x_, y_, z_ } )
 {}
 
 string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
@@ -75,24 +72,24 @@ bool primitiveVec3::operator!= ( const primitiveVec3 v ) const{
 };
 
 primitiveVec3 primitiveVec3::operator+ ( const primitiveVec3 v ) const{
-	return primitiveVec3{x + v.x, y + v.y, z + v.z};
+	return primitiveVec3{ v3{ x + v.x, y + v.y, z + v.z} };
 }
 
 primitiveVec3 primitiveVec3::operator- ( const primitiveVec3 v ) const{
-	return primitiveVec3{x - v.x, y - v.y, z - v.z};
+	return primitiveVec3{ v3{ x - v.x, y - v.y, z - v.z } };
 }
 
 primitiveVec3 primitiveVec3::operator- ( void ) const{
-	return primitiveVec3{ -x, -y, -z};
+	return primitiveVec3{ v3{ -x, -y, -z } };
 }
 
 primitiveVec3 primitiveVec3::operator* ( const double scalar ) const{
-	return primitiveVec3{ scalar* x, scalar* y, scalar* z };
+	return primitiveVec3{ v3{ scalar* x, scalar* y, scalar* z } };
 };
 
 primitiveVec3 primitiveVec3::operator/ ( const double divisor ) const{
 	if( divisor == 0 ) return *this;
-	return primitiveVec3{x / divisor, y / divisor, z / divisor};
+	return primitiveVec3{ v3{ x / divisor, y / divisor, z / divisor } };
 };
 
 void primitiveVec3::scale( const double scalar ){
@@ -161,7 +158,7 @@ mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi 
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( n == primitiveVec3{ 0, 0, 0 } ) return checkErr( MATH_ERR::INPUT, "Rotation axis must have length!" );
+	if( n == primitiveVec3{ v3{ 0, 0, 0 } } ) return checkErr( MATH_ERR::INPUT, "Rotation axis must have length!" );
 
 	// Create copy and normalize
 	primitiveVec3 nCpy{ n };
@@ -274,8 +271,8 @@ string cSysTree::toStr( const unsigned int newLineTabulators ) const{
 }
 
 cSysTree::cSysTree( void ){
-	cartCSys dummySys{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 0, 0, 1 }, nullptr, "Dummy system" };
-	cartCSys globalSys{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 0, 0, 1 }, nullptr, "Global system" };
+	cartCSys dummySys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Dummy system" };
+	cartCSys globalSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Global system" };
 	
 	systems = new cartCSys[ MAX_CSYS_IN_TREE ];
 
@@ -302,7 +299,7 @@ cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex
 	return addCSys( origin_, ex_, ey_, ez_, GLOBAL_CSYS(), name_ );
 }
 
-const cartCSys* cSysTree::getDummy( void ) {
+cartCSys* cSysTree::getDummy( void ) {
 	return &systems[0];
 }
 
@@ -331,7 +328,7 @@ cartCSys::cartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const 
 	name( name_ ){};
 
 cartCSys::cartCSys( void )
-	: cartCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 0, 0, 1 }, nullptr, "Uninitialised system" ){};
+	: cartCSys( primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
 
 string cartCSys::toStr( const unsigned int newLineTabulators ) const{
 	string str;

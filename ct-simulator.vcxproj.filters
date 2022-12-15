@@ -87,8 +87,17 @@
     <ClInclude Include="rays.h">
       <Filter>Headerdateien\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="voxel.h">
+      <Filter>Headerdateien\Physics\Model</Filter>
+    </ClInclude>
     <ClInclude Include="operations.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="operations.hpp">
+      <Filter>Quelldateien\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +131,17 @@
     <ClCompile Include="vectorAlgotrithm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="operations.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
-    </ClCompile>
     <ClCompile Include="rays.cpp">
       <Filter>Quelldateien\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="operations.cpp">
+      <Filter>Quelldateien\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="voxel.cpp">
+      <Filter>Quelldateien\Physics\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Quelldateien\Physics\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
