@@ -46,3 +46,9 @@ double ray::getPara( const pnt3 p, bool* const success ) const{
 ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 	return ray{ this->line::projectOnXYPlane( cSys ), this->properties };
 }
+
+void ray::updateProperties( const voxData data, const double distance ){
+
+	properties.intensity *= exp( -data.k * distance );
+
+}

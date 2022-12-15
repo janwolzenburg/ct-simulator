@@ -218,9 +218,9 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 		// Calculate distance between entrance and exit
 		distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
 
-		// Calculate roentgen reduction in model with lambert beer
-		currentRay = ray{ currentRay.R(), currentRay.O(), rayProperties{ currentRay.Properties().intensity * exp( -currentVox.Data().k * distance ) } };
-
+		// Update ray properties
+		currentRay.updateProperties( currentVox.Data(), distance );
+	
 		// Exit of this voxel is entrance of next voxel
 		rayEntrance = rayExit;
 
@@ -230,7 +230,7 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 	}
 
 	// New origin "outside" the model to return
-	currentRay = ray{ currentRay.R(), currentPntOnRay.convertTo( currentRay.R() ), rayProperties{ currentRay.Properties().intensity } };
+	currentRay.O( currentPntOnRay );
 	rays.push_back( currentRay );
 
 	return rays;

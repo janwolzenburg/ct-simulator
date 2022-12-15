@@ -46,9 +46,9 @@ vox::vox( void )
 vox::vox( const vox& v )
 	: vox( v.o, v.size, v.data ){};
 
-std::string vox::toStr( unsigned int newLineTabulators ) const{
-	std::string str;
-	std::string newLine = { '\n' };
+string vox::toStr( unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 
@@ -57,7 +57,7 @@ std::string vox::toStr( unsigned int newLineTabulators ) const{
 	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f)", size.x, size.y, size.z );
 
 	str += "o=" + newLine + o.toStr( newLineTabulators + 1 );
-	str += "size=" + std::string( tempCharArr );
+	str += "size=" + string( tempCharArr );
 	str += newLine + "data=" + std::to_string( data.k );
 	str += newLine + "face[0]=" + newLine + faces[ 0 ].toStr( newLineTabulators + 1 );
 	str += newLine + "face[1]=" + newLine + faces[ 1 ].toStr( newLineTabulators + 1 );

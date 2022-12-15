@@ -13,6 +13,7 @@
 	Includes
  *********************************************************************/
  #include "line.h"
+ #include "voxel.h"
  //#include "operations.h"
 
 
@@ -78,6 +79,8 @@ class ray : public line{
 	 * @return Instersection result
 	*/
 	//linSurf_Intersection_Result isectSurf( const surfLim sur ) const;
+
+	void updateProperties( const voxData data, const double distance );
 
 	/*!
 	 * @brief Project ray on XY plane of coordinate system

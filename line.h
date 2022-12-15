@@ -48,6 +48,8 @@ class line : virtual public mathObj{
 	*/
 	pnt3 O( void ) const;//{ return o; };
 
+	pnt3 O( const pnt3 newO ) { return o = newO.convertTo( r ); };
+
 	/*!
 	 * @brief Get line trajectory
 	 * @return Trajectory
