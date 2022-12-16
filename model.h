@@ -28,8 +28,6 @@ constexpr double rayStepSize = 10e-6;				/*!<Stepsize during ray iteration in ra
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
-
-
 /*!
  * @brief Class for 3D-Models
 */
@@ -222,3 +220,8 @@ class model : virtual public mathObj{
 	*/
 	idx3 getVoxelIndices( const v3 locCoords ) const;
 };
+
+
+
+/*!*/
+model getTestModel( const cartCSys* const parent );
