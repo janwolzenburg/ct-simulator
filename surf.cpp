@@ -10,8 +10,6 @@
 /*********************************************************************
 	Includes
  *********************************************************************/
-#include <string>
-using std::string;
 
 #include "cartesian.h"
 #include "vec3D.h"
@@ -42,9 +40,9 @@ surf::surf( const uvec3 v1, const uvec3 v2, const pnt3 p )
 	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
 };
 
-std::string surf::toStr( const unsigned int newLineTabulators ) const{
-	std::string str;
-	std::string newLine = { '\n' };
+string surf::toStr( const unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 
@@ -92,12 +90,12 @@ surfLim::surfLim( const surf s,
 	: surfLim( s.R1(), s.R2(), s.O(),
 			   aMin, aMax, bMin, bMax ){}
 
-std::string surfLim::toStr( const unsigned int newLineTabulators ) const{
+string surfLim::toStr( const unsigned int newLineTabulators ) const{
 	char tempCharArray[ 256 ];
 	snprintf( tempCharArray, 256, "aMin=%.6f;aMax=%.6f;bMin=%.6f;bMax=%.6f", pAMin, pAMax, pBMin, pBMax );
 
-	std::string str;
-	std::string newLine = { '\n' };
+	string str;
+	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 

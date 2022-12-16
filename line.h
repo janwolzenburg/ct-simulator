@@ -46,15 +46,20 @@ class line : virtual public mathObj{
 	 * @brief Get origin of line
 	 * @return O
 	*/
-	pnt3 O( void ) const;//{ return o; };
+	pnt3 O( void ) const;
 
-	pnt3 O( const pnt3 newO ) { return o = newO.convertTo( r ); };
+	/*!
+	 * @brief Set origin
+	 * @param newO New origin
+	 * @return Set origin
+	*/
+	pnt3 O( const pnt3 newO );
 
 	/*!
 	 * @brief Get line trajectory
 	 * @return Trajectory
 	*/
-	uvec3 R( void ) const;//{ return r; };
+	uvec3 R( void ) const;
 
 	/*!
 	 * @brief Convert line components to different coordinate system

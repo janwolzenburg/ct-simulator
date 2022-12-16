@@ -36,8 +36,10 @@ class idx2{
  /*!
  * @brief Class for 3D indices
 */
-class idx3 : public idx2{
+class idx3{
 	public:
+	size_t x = 0;
+	size_t y = 0;
 	size_t z = 0;
 };
 
@@ -47,21 +49,21 @@ class idx3 : public idx2{
 class v2{
 	public:
 	v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
-	v2( void ) : v2(0, 0) {};
-
-	double x;
-	double y;
+	v2( void ) : v2( 0, 0 ){};
+	double x = 0;
+	double y = 0;
 };
 
 /*!
 * @brief Class for 3D vector
 */
-class v3 : public v2{
+class v3{
 	public:
-	v3( const double x_, const double y_, const double z_ ) : v2( x_, y_ ), z( z_ ){};
-	v3( void ) : v3( 0, 0, 0) {};
-
-	double z;
+	v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
+	v3( void ) : v3( 0, 0, 0 ){};
+	double x = 0;
+	double y = 0;
+	double z = 0;
 };
 
 

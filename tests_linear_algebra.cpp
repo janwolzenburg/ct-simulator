@@ -15,6 +15,7 @@
 
  #include "generelMath.h"
  #include "cartesian.h"
+ #include "cSysTree.h"
  #include "vec3D.h"
  #include "tests_linear_algebra.h"
 
@@ -28,7 +29,7 @@
 
  bool test_linear_algebra( void ){
 
-	 cartCSys* sys1 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
+	 cartCSys* sys1 = CSYS_TREE().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
 													   primitiveVec3{ v3{ 1, 0, 0 }}, 
 													   primitiveVec3{ v3{ 0, 1, 0 }}, 
 													   primitiveVec3{ v3{ 0, 0, 1 }}, 
@@ -38,7 +39,7 @@
 	 if( vect2 != vec3{ v3{ 2, 2, 2 }, GLOBAL_CSYS() } ) return false;
 
 
-	 cartCSys* sys2 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 0, 0, 0 }},
+	 cartCSys* sys2 = CSYS_TREE().addCSys( primitiveVec3{ v3{ 0, 0, 0 }},
 													   primitiveVec3{ v3{ -1, 0, 0 }},
 													   primitiveVec3{ v3{ 0, 1, 0 }},
 													   primitiveVec3{ v3{ 0, 0, 1 }},
@@ -48,7 +49,7 @@
 	 if( vect4 != vec3{ v3{ -2, 2, 2 }, GLOBAL_CSYS() } ) return false;
 
 
-	 cartCSys* sys3 = cSysTree::getInstance().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
+	 cartCSys* sys3 = CSYS_TREE().addCSys( primitiveVec3{ v3{ 1, 1, 1 }},
 													   primitiveVec3{ v3{ 1, 0, 0 }},
 													   primitiveVec3{ v3{ 0, 1, 0 }},
 													   primitiveVec3{ v3{ 0, 0, 1 }},

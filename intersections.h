@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   operations.h
+ * @file   intersections.h
  * @brief  Classes for operations on mathematical objects
  *
  * @author Jan Wolzenburg
@@ -117,4 +117,4 @@ class rayVoxelIntersection {
 
 };
 
-#include "operations.hpp"
+#include "intersections.hpp"

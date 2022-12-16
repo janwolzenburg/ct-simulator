@@ -15,6 +15,7 @@
  *********************************************************************/
 
 #include <string>
+using std::string;
 #include <iostream>
 
 
@@ -131,21 +132,21 @@ class mathObj{
 	 * @return String with object's data
 	 * @details Virtual for object specific implementation
 	*/
-	virtual std::string toStr( [[maybe_unused]] const unsigned int newLineTabulators = 0 ) const = 0;
+	virtual string toStr( [[maybe_unused]] const unsigned int newLineTabulators = 0 ) const = 0;
 
 	/*!
 	 * @brief Dump object's type and data to output stream
 	 * @param output Output stream to dump to
 	 * @param objName Name of the object to include in the dump
 	*/
-	void dump( std::ostream& output, const std::string objName ) const;
+	void dump( std::ostream& output, const string objName ) const;
 
 	/*!
 	 * @brief Convert last error to string<
 	 * @param code Error code
 	 * @return String describing error
 	*/
-	std::string errStr( const MATH_ERR code ) const;
+	string errStr( const MATH_ERR code ) const;
 
 	/*!
 	 * @brief Outputs error string to stream when it's not MATH_ERR::OK
@@ -160,7 +161,7 @@ class mathObj{
 	 * @param message Message to output on mathErrOut
 	 * @return Same as code
 	*/
-	MATH_ERR checkErr( const MATH_ERR code, const std::string message ) const;
+	MATH_ERR checkErr( const MATH_ERR code, const string message ) const;
 };
 
 #include "generelMath.hpp"

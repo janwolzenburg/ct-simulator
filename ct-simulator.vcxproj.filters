@@ -37,6 +37,15 @@
     <Filter Include="Quelldateien\Physics\Model">
       <UniqueIdentifier>{020ddcb7-a4c9-4568-8989-6f4207d17140}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Device">
+      <UniqueIdentifier>{243430df-ac49-4c18-a102-97257a93e4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Physics\Linear algebra\Cartesian">
+      <UniqueIdentifier>{d199b2c1-e0fe-40f5-b001-7cf884265856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Physics\Linear algebra\Cartesian">
+      <UniqueIdentifier>{edab5e0b-3e22-4b15-af67-d8c0b051dffc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -50,9 +59,6 @@
     </ClInclude>
     <ClInclude Include="generel.hpp">
       <Filter>Quelldateien\Generel</Filter>
-    </ClInclude>
-    <ClInclude Include="cartesian.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="vec3D.fwd.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
@@ -75,9 +81,6 @@
     <ClInclude Include="equationSystem.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="cartesian.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
-    </ClInclude>
     <ClInclude Include="tests_linear_algebra.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
@@ -90,14 +93,35 @@
     <ClInclude Include="voxel.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
-    <ClInclude Include="operations.h">
+    <ClInclude Include="intersections.h">
       <Filter>Headerdateien\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="operations.hpp">
+    <ClInclude Include="intersections.hpp">
       <Filter>Quelldateien\Physics</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="cartesian.fwd.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="cartesian.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="primitiveVec3.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="primitiveCartCSys.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="cSysTree.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="cSysTree.fwd.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClInclude>
+    <ClInclude Include="coordinates.h">
+      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +133,6 @@
     </ClCompile>
     <ClCompile Include="generel.cpp">
       <Filter>Quelldateien\Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="cartesian.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="vec3D.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
@@ -134,7 +155,7 @@
     <ClCompile Include="rays.cpp">
       <Filter>Quelldateien\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="operations.cpp">
+    <ClCompile Include="intersections.cpp">
       <Filter>Quelldateien\Physics</Filter>
     </ClCompile>
     <ClCompile Include="voxel.cpp">
@@ -142,6 +163,21 @@
     </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="primitiveVec3.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClCompile>
+    <ClCompile Include="cartesian.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClCompile>
+    <ClCompile Include="primitiveCartCSys.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClCompile>
+    <ClCompile Include="cSysTree.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClCompile>
+    <ClCompile Include="coordinates.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

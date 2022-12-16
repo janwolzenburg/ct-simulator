@@ -25,7 +25,6 @@ using std::string;
 *********************************************************************/
 
 
-
 /*
 	line implementation
 */
@@ -37,9 +36,9 @@ line::line( const vec3 v, const pnt3 p )
 	if( !v.sameSystem( p ) ) checkErr( MATH_ERR::INPUT, "Line origin and trajectory must be defined in the same coordinate system!" );
 }
 
-std::string line::toStr( unsigned int newLineTabulators ) const{
-	std::string str;
-	std::string newLine = { '\n' };
+string line::toStr( unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 
@@ -49,6 +48,10 @@ std::string line::toStr( unsigned int newLineTabulators ) const{
 
 pnt3 line::O( void ) const { 
 	return o;
+};
+
+pnt3 line::O( const pnt3 newO ){ 
+	return o = newO.convertTo( r ); 
 };
 
 uvec3 line::R( void ) const { 

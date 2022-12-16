@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 #include "vec3D.fwd.h"
-#include "cartesian.h"
+#include "coordinates.h"
 
 
 
@@ -515,13 +515,6 @@ class pnt3 : public vec3{
 	 * @return x, y and z component in global coordinate system
 	*/
 	primitiveVec3 gXYZ( void ) const;
-
-	/*!
-	 * @brief Checks if point is inside a voxel
-	 * @param v Voxel to check
-	 * @return True when the point lies within the voxel
-	*/
-	//bool isInside( const vox v ) const;
 
 	/*!
 	 * @brief Project point on XY plane of given coordinate system

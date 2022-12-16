@@ -13,8 +13,9 @@
  *********************************************************************/
 #include <fstream>
 #include "model.h"
+#include "cSysTree.h"
 #include "rays.h"
-#include "operations.h"
+#include "intersections.h"
 
 
 

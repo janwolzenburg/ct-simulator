@@ -10,10 +10,8 @@
 /*********************************************************************
 	Includes
  *********************************************************************/
-#include <string>
-using std::string;
- 
-#include "cartesian.h"
+#include "cSysTree.h"
+#include "coordinates.h"
 #include "vec3D.h"
 #include "line.h"
 #include "surf.h"
@@ -35,9 +33,11 @@ vec3::vec3( const coordinates coords ) :
 }
 
 vec3::vec3( const v3 xyz_, const cartCSys* const cSys_ ) :
-	vec3( coordinates{ xyz_, cSys_ } ){}
+	vec3( coordinates{ xyz_, cSys_ } )
+{}
 
-vec3::vec3( void ) : vec3( v3{ 0 ,0 ,0 }, DUMMY_CSYS() ){}
+vec3::vec3( void ) : vec3( coordinates{} ) 
+{}
 
 string vec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	string str;
@@ -111,8 +111,8 @@ vec3 vec3::convertTo( const surf s ) const{
 };
 
 primitiveVec3 vec3::XYZ( void ) const{
-	return coordinates::XYZ();
-}
+	return v3{ x, y, z};
+} 
 
 primitiveVec3 vec3::XYZ( const cartCSys* const target ) const{
 	return vec3::convertTo( target ).XYZ();
@@ -378,19 +378,6 @@ double pnt3::gY( void ) const{
 double pnt3::gZ( void ) const{
 	return this->pnt3::gXYZ().z;
 }
-
-/*
-bool pnt3D::isInside( const vox v ) const{
-	// Create copy of this point in voxel's coordinate system
-	pnt3D p{ this->convertTo( v.O() ) };
-	// O
-	pnt3D O = v.O();
-
-	// Check all components
-	return	O.x <= p.x && p.x <= O.x + v.Size().x &&
-		O.y <= p.y && p.y <= O.y + v.Size().y &&
-		O.z <= p.z && p.z <= O.z + v.Size().z;
-};*/
 
 pnt3 pnt3::projectOnXYPlane( const cartCSys* const cSys_ ) const{
 	pnt3 projectedPnt = this->convertTo( cSys_ );

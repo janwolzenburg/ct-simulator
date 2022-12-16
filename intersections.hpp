@@ -1,6 +1,6 @@
 
 /*********************************************************************
- * @file   operations.hpp
+ * @file   intersections.hpp
  * @brief  Template implementations
  *
  * @author Jan Wolzenburg
@@ -11,7 +11,7 @@
 	Includes
  *********************************************************************/
 
- #include "operations.h"
+ #include "intersections.h"
  #include "equationSystem.h"
 
 

@@ -17,7 +17,7 @@ using std::string;
  #include "line.h"
  #include "surf.h"
  #include "equationSystem.h"
- #include "operations.h"
+ #include "intersections.h"
 
 
 
