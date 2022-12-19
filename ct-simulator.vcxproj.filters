@@ -46,6 +46,9 @@
     <Filter Include="Quelldateien\Physics\Linear algebra\Cartesian">
       <UniqueIdentifier>{edab5e0b-3e22-4b15-af67-d8c0b051dffc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Device">
+      <UniqueIdentifier>{a3211d33-2fdf-4145-ad82-4b40a623be58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -123,6 +126,9 @@
     <ClInclude Include="coordinates.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
+    <ClInclude Include="detectorPixel.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -178,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="coordinates.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+    </ClCompile>
+    <ClCompile Include="detectorPixel.cpp">
+      <Filter>Quelldateien\Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

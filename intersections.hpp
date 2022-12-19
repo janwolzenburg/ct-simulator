@@ -29,6 +29,7 @@ linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 	l( l_ ),
 	s( s_ ){
 
+
 	// Create system of equations with three variables
 	eqnSys sys( 3 );
 	sys.populateColumn( s.R1().XYZ( l.R() ) );

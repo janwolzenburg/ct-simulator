@@ -148,6 +148,7 @@
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="cSysTree.fwd.h" />
     <ClInclude Include="cSysTree.h" />
+    <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="cartesian.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="cSysTree.cpp" />
+    <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />

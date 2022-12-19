@@ -13,6 +13,7 @@
  *********************************************************************/
 #include<string>
 using std::string;
+#include <type_traits>
 
 #include "generelMath.h"
 #include "vec3D.h"
@@ -54,21 +55,36 @@ class linSurf_Intersection_Result : virtual public mathObj{
 
 };
 
+
+
 /*!
  * @brief Class for calculation the intersection of a line and a surface
 */
 template<class L, class S>
 class linSurfIntersection {
 
+	static_assert( std::is_base_of_v< surf, S > );
+	static_assert( std::is_base_of_v< line, L > );
+
 	public:
+	/*!
+	 * @brief Constructor
+	 * @param l_ Object derived from class line
+	 * @param s_ Object derived from class surf
+	*/
 	linSurfIntersection( const L l_, const S s_ );
 
+	/*!
+	 * @brief Get the intersetion result
+	 * @return Intersection result
+	*/
 	inline linSurf_Intersection_Result Result( void ) const { return result; };
 
+
 	public:
-	L l;
-	S s;
-	linSurf_Intersection_Result result;
+	L l;									/*!<Line*/
+	S s;									/*!<Surface*/
+	linSurf_Intersection_Result result;		/*!<Calculated result*/
 	
 
 };
@@ -80,8 +96,6 @@ class linSurfIntersection {
 */
 class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 
-	//using linSurf_Intersection_Result::linSurf_Intersection_Result;
-
 	public:
 
 	/*!
@@ -90,11 +104,15 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 	*/
 	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ );
 
+	/*!
+	 * @brief Default constructor
+	*/
 	rayVox_Intersection_Result( void );
 
 	public:
 	FACE_ID face;	/*!<ID of face for which the result is valid*/
 };
+
 
 
 /*!
@@ -103,17 +121,31 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 class rayVoxelIntersection {
 
 	public:
+	/*!
+	 * @brief Constructor
+	 * @param v_ Voxel
+	 * @param r_ Ray
+	*/
 	rayVoxelIntersection( const vox v_, const ray r_ );
 
+	/*!
+	 * @brief Get entrance into voxel
+	 * @return Intersection result of entrance
+	*/
 	inline rayVox_Intersection_Result Entrance( void ) const{ return entrance; };
 
+	/*!
+	 * @brief Get exit into voxel
+	 * @return Intersection result of exit
+	*/
 	inline rayVox_Intersection_Result Exit( void ) const{ return exit; };
 
+
 	public:
-	vox v;
-	ray r;
-	rayVox_Intersection_Result entrance;
-	rayVox_Intersection_Result exit;
+	vox v;										/*!<Voxel*/
+	ray r;										/*!<Ray*/
+	rayVox_Intersection_Result entrance;		/*!<Entrance*/
+	rayVox_Intersection_Result exit;			/*!Exit*/
 
 };
 
