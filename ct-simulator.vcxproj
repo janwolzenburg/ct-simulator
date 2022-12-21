@@ -165,6 +165,7 @@
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surf.h" />
     <ClInclude Include="tests_linear_algebra.h" />
+    <ClInclude Include="tube.h" />
     <ClInclude Include="vec3D.fwd.h" />
     <ClInclude Include="vec3D.h" />
     <ClInclude Include="vectorAlgotrithm.h" />
