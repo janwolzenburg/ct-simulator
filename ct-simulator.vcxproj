@@ -162,6 +162,7 @@
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="rays.h" />
+    <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surf.h" />
     <ClInclude Include="tests_linear_algebra.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />
+    <ClCompile Include="tube.cpp" />
     <ClCompile Include="vec3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />

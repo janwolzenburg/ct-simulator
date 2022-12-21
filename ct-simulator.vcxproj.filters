@@ -138,6 +138,9 @@
     <ClInclude Include="test_all.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="spectrum.h">
+      <Filter>Headerdateien\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -198,6 +201,9 @@
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="test_device.cpp">
+      <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="tube.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
   </ItemGroup>
