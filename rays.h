@@ -14,6 +14,7 @@
  *********************************************************************/
  #include "line.h"
  #include "voxel.h"
+ #include "spectrum.h"
  //#include "operations.h"
 
 
@@ -28,6 +29,7 @@
 class rayProperties{
 	public:
 	double intensity = 0;		/*!< Intensity of ray */
+	spectrum raySpectrum;
 };
 
 

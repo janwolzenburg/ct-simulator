@@ -1,21 +1,21 @@
+#pragma once
 /*********************************************************************
- * @file   spectrum.h
- * @brief  Class for x ray spectrum
+ * @file   fanBeam.h
+ * @brief  Class for a fanned beam of rays
  *
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
 
 
-
  /*********************************************************************
    Includes
 *********************************************************************/
-
 #include <vector>
 using std::vector;
 
-#include "generel.h"
+#include "cartesian.h"
+#include "rays.h"
 
 
 
@@ -23,19 +23,14 @@ using std::vector;
    Definitions
 *********************************************************************/
 
-class spectrum {
 
-public:
+class fanBeam {
 
-	spectrum(void);
+	fanBeam( cartCSys* const cSys_, const size_t numRays_, const spectrum spectrum_, const double angle_ );
 
-	spectrum(const vector<double> X, const vector<double> Y);
-
-	spectrum getScaled( const double factor ) const;
-
-
-public:
-	vector<v2> data;
-
+	
+	protected:
+	cartCSys* cSys;				/*!<Coordinate system of beam*/
+	vector<ray> rays;			/*!<All rays in beam in local coordinate system*/
 
 };

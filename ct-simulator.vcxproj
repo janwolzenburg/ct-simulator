@@ -150,6 +150,7 @@
     <ClInclude Include="cSysTree.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
+    <ClInclude Include="fanBeam.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="cSysTree.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="fanBeam.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="line.cpp" />
@@ -189,6 +191,7 @@
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
     <ClCompile Include="rays.cpp" />
+    <ClCompile Include="spectrum.cpp" />
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />

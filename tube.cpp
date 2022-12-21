@@ -12,6 +12,7 @@
    Includes
 *********************************************************************/
 
+#include "vectorAlgotrithm.h"
 #include "tube.h" 
 
 
