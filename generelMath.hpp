@@ -10,26 +10,26 @@
 
 
 template <typename T>
-bool isEven( const T integer ){ 
+typename std::enable_if_t<std::is_arithmetic_v<T>, bool> isEven( const T integer ){
 	return integer % 2 == 0;
 }
 
 
 template <typename T>
-T max( const T a, const T b ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T> max( const T a, const T b ){
 	if( a >= b ) return a;
 	return b;
 }
 
 
 template <typename T>
-T Fmin1( T a ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fmin1( T a ){
 	return max( (T) 1, a );
 }
 
 
 template <typename T>
-T Fpos( T a ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fpos( T a ){
 	if( a <= (T) 0 ) return (T) 1;
 	return a;
 }

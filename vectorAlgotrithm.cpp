@@ -26,6 +26,35 @@ using std::vector;
 	Functions
  *********************************************************************/
 
+
+vector<double> linearSpace(const double start, const double end, const size_t numPoints) {
+
+	if (start > end || numPoints < 2) return vector<double>{ start };
+
+	vector<double> vec;
+	const double delta = ( end - start ) / ( (double) numPoints - 1 );
+
+	for (size_t i = 0; i < numPoints; i++) {
+		vec.push_back( start + (double) i * delta );
+	}
+
+	return vec;
+}
+
+double sum(const vector<double> vec) {
+
+	return std::accumulate( vec.begin(), vec.end(), 0 );
+
+}
+
+
+void scale(vector<double>& vec, const double factor) {
+
+	std::for_each( vec.begin(), vec.end(), [&]( double& d ) { d *= factor; } );
+
+}
+
+
 size_t closest( const vector<double> vec, const double val ){
 
 	//std::sort( vec.begin(), vec.end() );
