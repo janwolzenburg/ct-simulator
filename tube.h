@@ -89,7 +89,6 @@ class tube{
 			double bremsGradient = -1;											// Gradient of brems spectrum
 			double filterGradient = alFilterGradiantFactor * bremsGradient;		// Gradient of filter spectrum
 
-
 			// Filter dominates
 			if (*freqIt < changeFrequency) {
 				spectralPower.at( curIdx ) = ( *freqIt - frequencies.front() ) * filterGradient;
@@ -98,7 +97,6 @@ class tube{
 
 			// Bremsspectrum dominates
 			spectralPower.at(curIdx) = ( frequencies.back() - *freqIt ) * ( - bremsGradient );
-
 		}
 
 

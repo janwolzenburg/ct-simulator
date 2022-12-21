@@ -132,6 +132,12 @@
     <ClInclude Include="tube.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="test_device.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="test_all.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -189,6 +195,9 @@
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="detectorPixel.cpp">
+      <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="test_device.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
   </ItemGroup>
