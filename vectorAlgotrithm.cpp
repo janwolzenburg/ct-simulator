@@ -41,9 +41,9 @@ vector<double> linearSpace(const double start, const double end, const size_t nu
 	return vec;
 }
 
-double sum(const vector<double> vec) {
+double sum( const vector<double> vec ) {
 
-	return std::accumulate( vec.begin(), vec.end(), 0 );
+	return std::accumulate( vec.begin(), vec.end(), 0. );
 
 }
 
