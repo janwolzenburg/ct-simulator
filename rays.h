@@ -29,6 +29,7 @@
 class rayProperties{
 	public:
 	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
+	rayProperties( void ) : powerSpectrum( spectrum{} ) {};
 	//double intensity = 0;		/*!< Intensity of ray */
 	spectrum powerSpectrum;
 };

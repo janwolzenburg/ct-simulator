@@ -34,6 +34,7 @@ class rayPix_Intersection_Result : public linSurf_Intersection_Result{
 
 	using linSurf_Intersection_Result::linSurf_Intersection_Result;
 
+
 	public:
 	rayProperties rayProps;  /*!< Properties of rays that hit the pixel*/
 	

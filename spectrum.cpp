@@ -39,13 +39,21 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 
 };
 
+
+void spectrum::scale( const double factor ){
+
+	std::for_each( data.begin(), data.end(), [ & ] ( v2& v ) { v.y *= factor; } );
+
+}
+
+
 spectrum spectrum::getScaled(const double factor) const {
 
 	spectrum scaledSpectrum{ *this };
 
 	//for (size_t i = 0; i < scaledSpectrum.data.size(); i++) scaledSpectrum.data.at( i ).y *= factor;
 	
-	std::for_each(scaledSpectrum.data.begin(), scaledSpectrum.data.end(), [&]( v2& v ) { v.y *= factor; });
+	scaledSpectrum.scale( factor );
 
 	return scaledSpectrum;
 
