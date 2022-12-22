@@ -150,7 +150,6 @@
     <ClInclude Include="cSysTree.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
-    <ClInclude Include="fanBeam.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
@@ -181,7 +180,6 @@
     <ClCompile Include="cSysTree.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
-    <ClCompile Include="fanBeam.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="line.cpp" />

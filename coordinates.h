@@ -33,7 +33,7 @@ class coordinates : protected primitiveVec3{
 	public:
 
 	/*!
-	 * @brief Constructor initializing coordinate system to global system
+	 * @brief Constructor
 	 * @param vec3_ Values
 	*/
 	coordinates( const v3 vec3_, const cartCSys* const cSys_ );

@@ -141,9 +141,6 @@
     <ClInclude Include="spectrum.h">
       <Filter>Headerdateien\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="fanBeam.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -207,9 +204,6 @@
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="tube.cpp">
-      <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="fanBeam.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="spectrum.cpp">

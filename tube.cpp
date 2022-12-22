@@ -22,7 +22,8 @@
    Implementation
 *********************************************************************/
 
-tube::tube(const double anodeVoltage_, const double anodeCurrent_, const size_t anodeAtomicNumber_) :
+tube::tube(const double anodeVoltage_, const double anodeCurrent_, const size_t anodeAtomicNumber_, cartCSys* const cSys_ ) :
+	cSys( cSys_ ),
 	anodeVoltage_V(Fpos(anodeVoltage_)),
 	anodeCurrent_A(Fpos(anodeCurrent_)),
 	anodeAtomicNumber(Fpos(anodeAtomicNumber_)),
@@ -35,7 +36,6 @@ tube::tube(const double anodeVoltage_, const double anodeCurrent_, const size_t 
 
 	// Values
 	vector<double> spectralPower(frequencies.size(), 0.);
-
 
 
 	// Frequency to which the filter dominates spectral behavious
@@ -70,3 +70,35 @@ tube::tube(const double anodeVoltage_, const double anodeCurrent_, const size_t 
 	xRay_spectrum = spectrum{ frequencies, spectralPower };
 
 };
+
+
+vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ){
+
+	// Split spectrum into the ray spectra
+	spectrum raySpectrum = xRay_spectrum.getScaled( 1. / (double) numRays_ );
+
+	// Properties of created rays
+	rayProperties beamProperties{ raySpectrum };
+
+
+	// Vector with rays
+	vector<ray> rays;
+
+	// Create rays on circular arc 
+	const double dAngle = beamAngle / ( (double) ( numRays_ - 1 ) );				// Angle between two rays
+
+	// Iterate all rays to create
+	for( size_t i = 0; i < numRays_; i++ ){
+		const double yAngle = -( beamAngle / 2 ) + (double) i * dAngle;		// Angle between current ray and y-axis
+
+		vec3 direction{ cSys->EyVec() };									// Start with y-axis as direction
+		direction.rotZM( yAngle );											// Rotate vector around z-axis
+
+		const ray r{ direction, cSys->OPnt(), beamProperties };				// Create ray
+
+		rays.push_back( r );													// Store ray in ray collection
+	}
+
+	return rays;
+
+}
