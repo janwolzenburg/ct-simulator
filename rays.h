@@ -28,8 +28,9 @@
 */
 class rayProperties{
 	public:
-	double intensity = 0;		/*!< Intensity of ray */
-	spectrum raySpectrum;
+	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
+	//double intensity = 0;		/*!< Intensity of ray */
+	spectrum powerSpectrum;
 };
 
 

@@ -24,6 +24,9 @@ using std::vector;
 *********************************************************************/
 
 
+/*!
+ * @brief Fan beam of rays in XY plane of local coordinate system symmetrical to y-axis
+*/
 class fanBeam {
 
 	fanBeam( cartCSys* const cSys_, const size_t numRays_, const spectrum spectrum_, const double angle_ );
