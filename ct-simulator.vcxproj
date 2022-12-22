@@ -159,6 +159,7 @@
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
+    <ClInclude Include="plotting.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="rays.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="intersections.cpp" />
+    <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
     <ClCompile Include="rays.cpp" />

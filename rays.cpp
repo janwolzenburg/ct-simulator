@@ -49,6 +49,7 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 
 void ray::updateProperties( const voxData data, const double distance ){
 
+	// Equally scale powerspectrum
 	properties.powerSpectrum.scale( exp( -data.k * distance ) );
 
 }

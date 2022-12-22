@@ -141,6 +141,9 @@
     <ClInclude Include="spectrum.h">
       <Filter>Headerdateien\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="plotting.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="spectrum.cpp">
       <Filter>Quelldateien\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="plotting.cpp">
+      <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
