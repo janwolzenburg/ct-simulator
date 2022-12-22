@@ -35,9 +35,9 @@ template<class C, typename T>
 string getObjectString( const C object, const T additional );
 
 template<class C, typename T>
-void addObject( ofstream axis, const string name, const C object, const string parameter, const T additional ){
+void addObject( ofstream& axis, const string name, const C object, const string parameter, const T additional ){
 
 	axis << name;
-	axis << ": " << getObjString( object, additional ) << ' ' << parameter << '\n';
+	axis << ": " << getObjectString( object, additional ) << ' ' << parameter << '\n';
 
 }
