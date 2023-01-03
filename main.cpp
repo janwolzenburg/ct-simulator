@@ -8,7 +8,7 @@
 #include <iostream>
 using std::cerr;  using std::endl;
 
- #include "tests_linear_algebra.h"
+ #include "test_all.h"
 
 
 
@@ -20,6 +20,9 @@ using std::cerr;  using std::endl;
 int main( void ){
 
 	if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
+
+	if( !test_tube() ) cerr << "Test for xRay tube failed!";
+
 
 	return 0;
 }

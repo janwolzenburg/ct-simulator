@@ -23,6 +23,23 @@ using std::vector;
  *********************************************************************/
 
 
+vector<double> linearSpace(const double start, const double end, const size_t numPoints);
+
+double sum( const vector<double> vec );
+
+void scale( vector<double>& vec, const double factor );
+
+
+
+
+
+
+
+
+
+
+
+
 /*!
  * @brief Search element in vector closest to value
  * @param vec Vector to search. Must be sorted ascending

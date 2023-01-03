@@ -132,6 +132,18 @@
     <ClInclude Include="tube.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="test_device.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="test_all.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="spectrum.h">
+      <Filter>Headerdateien\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="plotting.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -190,6 +202,18 @@
     </ClCompile>
     <ClCompile Include="detectorPixel.cpp">
       <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="test_device.cpp">
+      <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="tube.cpp">
+      <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="spectrum.cpp">
+      <Filter>Quelldateien\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="plotting.cpp">
+      <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
