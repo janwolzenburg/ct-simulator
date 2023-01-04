@@ -84,6 +84,11 @@ class ray : public line{
 	*/
 	//linSurf_Intersection_Result isectSurf( const surfLim sur ) const;
 
+	/*!
+	 * @brief Update ray properties passing through voxel for specific distance
+	 * @param data Voxel properties
+	 * @param distance Distance the ray is inside voxel
+	*/
 	void updateProperties( const voxData data, const double distance );
 
 	/*!
@@ -93,7 +98,12 @@ class ray : public line{
 	*/
 	ray projectOnXYPlane( const cartCSys* const cSys ) const;
 
-	inline bool paraInBounds( const double para ) const{ return para >= 0; };
+	/*!
+	 * @brief Checks if parameter is greater than one
+	 * @param para Parameter
+	 * @return True when parameter is valid
+	*/
+	bool paraInBounds( const double para ) const;
 
 
 	private:

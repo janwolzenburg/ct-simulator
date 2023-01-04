@@ -200,9 +200,9 @@ class model : virtual public mathObj{
 
 
 	private:
-	idx3 numVox3D;						/*!<Amount of voxels in each dimension*/
-	v3 voxSize3D;						/*!<Voxelsize in each dimension in mm*/
-	v3 size3D;						/*!<Size of complete model in mm*/
+	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
+	v3 voxSize3D;								/*!<Voxelsize in each dimension in mm*/
+	v3 size3D;									/*!<Size of complete model in mm*/
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	bool importSuccess;							/*!<Model construction from file succeeded*/

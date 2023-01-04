@@ -53,3 +53,5 @@ void ray::updateProperties( const voxData data, const double distance ){
 	properties.powerSpectrum.scale( exp( -data.k * distance ) );
 
 }
+
+bool ray::paraInBounds(const double para) const { return para >= 0; };
