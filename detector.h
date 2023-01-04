@@ -24,9 +24,19 @@
 *********************************************************************/
 
 
-class detector : virtual public mathObj {
+class detector {
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param cSys_ Coordinate system
+	 * @param rows_ Amount of pixel rows
+	 * @param columns_ Amount of pixel columns
+	 * @param pxSize_ Size of one pixel
+	 * @param radius_ Radius of detector arc
+	 * @param structured_ Add anti scatter structure
+	*/
 	detector(cartCSys* const cSys_, const size_t rows_, const size_t columns_, const t2 pxSize_, const double radius_, const bool structured_);
 
 

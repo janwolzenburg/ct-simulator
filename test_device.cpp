@@ -20,6 +20,7 @@ using std::vector;
 #include "cSysTree.h"
 #include "test_device.h"
 #include "tube.h"
+#include "detector.h"
 #include "plotting.h"
 
 
@@ -37,4 +38,12 @@ bool test_tube(void) {
 	closeAxis( ax1 );
 
 	return true;
+}
+
+bool test_device(void) {
+
+	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"),2, 11, t2{ 2, 2}, 500, false };
+
+
+
 }
