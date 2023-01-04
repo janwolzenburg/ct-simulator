@@ -43,11 +43,32 @@ string getObjectString<ray, double>(const ray r, const double length) {
 	return string{ tempCharArr };
 
 }
+
+template<>
+string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
+
+	char tempCharArr[256];
+	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.O().gX(), s.O().gY(), s.O().gZ(), s.R1().gX(), s.R1().gY(), s.R1().gZ(), s.R2().gX(), s.R2().gY(), s.R2().gZ(), s.AMin(), s.AMax(), s.BMin(), s.BMax(), alpha );
+
+	return string{ tempCharArr };
+
+}
+
+
 template<>
 void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
 
 	for (auto r : rays) {
 		addSingleObject(axis, name, r, parameter, length);
+	}
+
+}
+
+template<>
+void addObject<vector<surfLim>, double>(ofstream& axis, const string name, const vector<surfLim> surfaces, const string parameter, const double alpha) {
+
+	for (auto s : surfaces) {
+		addSingleObject(axis, name, s, parameter, alpha );
 	}
 
 }

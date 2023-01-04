@@ -23,6 +23,7 @@ int main( void ){
 
 	if( !test_tube() ) cerr << "Test for xRay tube failed!";
 
+	if (!test_detector()) cerr << "Test for detector failed!";
 
 	return 0;
 }

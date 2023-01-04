@@ -83,4 +83,9 @@ detector::detector( cartCSys* const cSys_, const size_t rows_, const size_t colu
 	}
 
 
-};
+}
+
+
+vector<vector<pixel>> detector::getPixel(void) const {
+	return allPixel;
+}

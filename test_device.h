@@ -9,3 +9,5 @@
 
 
 bool test_tube(void);
+
+bool test_detector( void );

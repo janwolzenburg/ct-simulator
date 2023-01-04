@@ -39,6 +39,7 @@ class detector {
 	*/
 	detector(cartCSys* const cSys_, const size_t rows_, const size_t columns_, const t2 pxSize_, const double radius_, const bool structured_);
 
+	vector<vector<pixel>> getPixel( void ) const;
 
 
 	private:
