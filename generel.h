@@ -69,6 +69,16 @@ class v3{
 };
 
 
+/*!
+ * @brief Class for table
+*/
+class t2 {
+	public:
+	t2(const double c_, const double r_) : c(c_), r(r_) {};
+	t2(void) : t2(0, 0) {};
+	double c = 0;
+	double r = 0;
+};
 
 /*********************************************************************
 	Functions

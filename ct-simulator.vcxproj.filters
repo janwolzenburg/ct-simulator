@@ -147,6 +147,9 @@
     <ClInclude Include="plotting.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="detector.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="plotting.cpp">
       <Filter>Quelldateien\Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="detector.cpp">
+      <Filter>Quelldateien\Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
