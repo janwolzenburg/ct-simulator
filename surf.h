@@ -38,11 +38,16 @@ class surf : virtual public mathObj{
 	explicit surf( const uvec3  v1, const uvec3  v2, const pnt3  p );
 
 	/*!
+	 * @brief Default constructor
+	*/
+	surf( void );
+
+	/*!
 	 * @brief Convert surface's data to string
 	 * @param newLineTabulators Amount of tabulators to insert after each line break
 	 * @return String with surface's data
 	*/
-	std::string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string toStr( const unsigned int newLineTabulators = 0 ) const override;
 
 	/*!
 	 * @brief Get origin of surface
@@ -133,6 +138,12 @@ class surfLim : public surf{
 	explicit surfLim( const surf s,
 					  const double aMin, const double aMax,
 					  const double bMin, const double bMax );
+
+	/*!
+	 * @brief Default constructor
+	*/
+	surfLim( void );
+
 
 	/*!
 	 * @brief Convert surface's data to string

@@ -12,6 +12,7 @@
  *********************************************************************/
 
 #include "cartesian.h"
+#include "cSysTree.h"
 #include "vec3D.h"
 #include "line.h"
 #include "surf.h"
@@ -39,6 +40,10 @@ surf::surf( const uvec3 v1, const uvec3 v2, const pnt3 p )
 
 	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
 };
+
+surf::surf( void ) : 
+surf( uvec3{ v3{1,0,0}, GLOBAL_CSYS() }, uvec3{ v3{0,1,0}, GLOBAL_CSYS() }, pnt3{ v3{0,0,0}, GLOBAL_CSYS() })
+{}
 
 string surf::toStr( const unsigned int newLineTabulators ) const{
 	string str;
@@ -89,6 +94,10 @@ surfLim::surfLim( const surf s,
 				  const double bMin, const double bMax )
 	: surfLim( s.R1(), s.R2(), s.O(),
 			   aMin, aMax, bMin, bMax ){}
+
+surfLim::surfLim( void ) : 
+	surfLim( surf{}, 0,1,0,1)
+{}
 
 string surfLim::toStr( const unsigned int newLineTabulators ) const{
 	char tempCharArray[ 256 ];

@@ -64,19 +64,12 @@ detector::detector( cartCSys* const cSys_, const size_t rows_, const size_t colu
 			// Rotation angle
 			rotAngle = -angleDelta * ((double)(columns - 1) / 2) + (double)col * angleDelta;
 		}
-
-		// Normal vector for row pixel in one column
-		uvec3 n{ cSys->EyVec().rotZ(rotAngle) };
-
-		// Pixel in one column and all rows
-		vector<pixel> rowPixel;
-
-
+		
+		const uvec3 n{ cSys->EyVec().rotZ(rotAngle) };		// Normal vector for row pixel in one column
 		const uvec3 r2 = cSys->EzVec();						// z-axis is r2 of surface
 		const pnt3 o = n * (2 * radius);					// Origin point of surface
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
-		vector<surfLim> rowPixel;
 		for (size_t row = 0; row < rows; row++) {
 			const pnt3 oTrans = o.addZ((double)row * pxSize.r);			// Translate pixel in z-direction
 
