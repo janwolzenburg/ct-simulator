@@ -57,6 +57,11 @@ bool cartCSys::isGlobal( void ) const{
 }
 
 cartCSys* cartCSys::createCopy( const string newName ) const{
+	// Only one global coordinate system allowed! Parent of copy will be global system
+	if (this->isGlobal()) {
+		return CSYS_TREE().addCSys(origin, ex, ey, ez, this, newName);
+	}
+
 	return CSYS_TREE().addCSys( origin, ex, ey, ez, parent, newName );
 }
 
