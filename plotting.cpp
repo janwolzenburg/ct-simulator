@@ -12,7 +12,7 @@
   *********************************************************************/
 
 #include "plotting.h"
-#include "rays.h"
+
 
 
   /*********************************************************************
@@ -33,13 +33,21 @@ void closeAxis( ofstream& axis ){
 	axis.close();
 }
 
-template<>
-string getObjectString<ray, double>( const ray r, const double length ){
 
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f) ", r.O().gX(), r.O().gY(), r.O().gZ(), r.R().gX(), r.R().gY(), r.R().gZ(), length );
+template<>
+string getObjectString<ray, double>(const ray r, const double length) {
+
+	char tempCharArr[256];
+	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f) ", r.O().gX(), r.O().gY(), r.O().gZ(), r.R().gX(), r.R().gY(), r.R().gZ(), length);
 
 	return string{ tempCharArr };
 
 }
+template<>
+void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
 
+	for (auto r : rays) {
+		addSingleObject(axis, name, r, parameter, length);
+	}
+
+}

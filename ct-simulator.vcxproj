@@ -160,6 +160,7 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
     <ClInclude Include="plotting.h" />
+    <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="rays.h" />

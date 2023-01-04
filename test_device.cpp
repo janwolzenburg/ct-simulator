@@ -32,7 +32,7 @@ bool test_tube(void) {
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 
-	addObject( ax1, "First ray", beam.at(0), "r", 1. );
+	addObject( ax1, "Beam", beam, "r", 1. );
 
 	closeAxis( ax1 );
 

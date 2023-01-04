@@ -144,6 +144,9 @@
     <ClInclude Include="plotting.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="plotting.hpp">
+      <Filter>Quelldateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

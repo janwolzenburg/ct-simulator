@@ -268,7 +268,7 @@ eqnSysSolution eqnSys::solve( void ){
 			// Variable in columns swapped
 			unsigned int temp = varIdx.at( k );
 			varIdx.at( k ) = varIdx.at( maxIndx.x );
-			varIdx.at( temp );
+			varIdx.at( maxIndx.x ) = temp;
 		}
 
 		scaleRow( k, 1 / maxVal );			// Scale k-row by reciprocal of (k, k) value
