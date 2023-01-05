@@ -25,5 +25,7 @@ int main( void ){
 
 	if (!test_detector()) cerr << "Test for detector failed!";
 
+	if( !test_gantry() ) cerr << "Test for detector failed!";
+
 	return 0;
 }

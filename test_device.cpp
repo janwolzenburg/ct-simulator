@@ -75,9 +75,9 @@ bool test_gantry( void ){
 								.anodeAtomicNumber = 74 };
 
 	detectorParameter detectorParas{	.rows = 2,
-										.columns = 11,
-										.rowSize = 2,
-										.colSize = 2,
+										.columns = 51,
+										.rowSize = 5,
+										.colSize = 10,
 										.structured = false };
 
 
