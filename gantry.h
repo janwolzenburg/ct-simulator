@@ -30,11 +30,11 @@ using std::vector;
 class gantry {
 
 	public:
-	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );
+	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );
 
 
 	vector<ray> getBeam( void ) const;
-	detector getDetector( void ) const;
+	vector<vector<pixel>> getPixel( void ) const;
 
 
 	private:
@@ -42,6 +42,7 @@ class gantry {
 	double radius;
 
 	tube raySource;
+	size_t numRaysInBeam;
 	double beamAngle;
 
 	detector rayDetector;
