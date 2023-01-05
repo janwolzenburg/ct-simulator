@@ -33,6 +33,15 @@ void closeAxis( ofstream& axis ){
 	axis.close();
 }
 
+template<>
+string getObjectString<pnt3>( const pnt3 p ){
+
+	char tempCharArr[ 256 ];
+	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f) ", p.gX(), p.gY(), p.gZ() );
+
+	return string{ tempCharArr };
+
+}
 
 template<>
 string getObjectString<ray, double>(const ray r, const double length) {
@@ -81,5 +90,6 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 
 	addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
 	addObject( axis, name + "Detector", gantry.getPixel(), parameter, .2 );
-	
+	addSingleObject( axis, name + "Center", gantry.Center(), parameter );
+
 }

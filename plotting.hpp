@@ -21,6 +21,14 @@
   *********************************************************************/
 
 
+template<class C>
+void addSingleObject<C>( ofstream& axis, const string name, const C object, const string parameter ){
+
+	axis << name;
+	axis << ": " << getObjectString( object ) << ' ' << parameter << '\n';
+
+}
+
 template<class C, typename T>
 void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string parameter, const T additional) {
 
