@@ -29,7 +29,7 @@ gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAn
 	raySource{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay tube" ), tubeParameters_ },
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
 	beamAngle( Fpos( beamAngle_ ) ),
-	rayDetector{ cSys->addCSys( primitiveVec3{ 0, -radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ), radius, detectorParameters_ }
+	rayDetector{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ), radius, detectorParameters_ }
 {
 
 	//cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay tube" );
