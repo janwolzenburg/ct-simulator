@@ -30,6 +30,7 @@ using std::vector;
 class gantry {
 
 	public:
+	//TODO: Put beam angle and amount of rays into struct
 	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );
 
 
