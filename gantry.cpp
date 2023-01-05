@@ -55,7 +55,7 @@ double gantry::Radius( void ) const{
 	return radius;
 }
 
-void gantry::rotateClockwise( const double angle ){
+void gantry::rotateCounterClockwise( const double angle ){
 
 	this->cSys->rotateM( cSys->zAxis(), angle );
 
