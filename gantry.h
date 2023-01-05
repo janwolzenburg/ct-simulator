@@ -18,12 +18,14 @@ using std::vector;
 #include "generelMath.h"
 #include "tube.h"
 #include "detector.h"
+#include "model.h"
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
 
+constexpr size_t maxRadiationLoops = 16;
 
 
 /*!
@@ -74,6 +76,14 @@ class gantry {
 	 * @param angle Rotation angle
 	*/
 	void rotateCounterClockwise( const double angle );
+
+	/*!
+	 * @brief Radiate model with beam
+	 * @param radModel Model to radiate
+	 * @return Detection results
+	*/
+	vector<vector<rayPix_Intersection_Result>> radiate( const model& radModel ) const;
+
 
 
 	private:

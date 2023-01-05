@@ -66,3 +66,41 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 
 }
+
+vector<vector<rayPix_Intersection_Result>> gantry::radiate( const model& radModel ) const{
+
+	vector<ray> rays = this->getBeam();		// Current rays. Start with rays from source
+	vector<ray> raysToDetect;				// Rays to detect
+
+	// Loop until maximum loop depth is reached or no more rays are left to transmit
+	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
+
+		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
+
+		// Iterate over all rays in current ray collection
+		for( const ray currentRay : rays ){
+		
+			vector<ray> returnedRays;									// Rays that have been scattered or left the model
+			returnedRays = radModel.rayTransmission( currentRay );		// Transmit ray through model
+			
+			// When current ray does not intersect model add it for detection
+			//if( returnedRays.empty() ) raysToDetect.push_back( currentRay );
+
+			// Iterate all rays scattered or transmitted through model
+			for( const ray returnedRay : returnedRays ){
+			
+				// Is the ray outside the model
+				if( !radModel.pntInside( returnedRay.O() ) ) raysToDetect.push_back( returnedRay );	// Add ray for detection
+				else raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
+
+			}
+		}
+
+		// Copy rays to vector
+		rays = raysForNextIteration;
+
+	}
+
+
+	// TODO: Detection of rays
+}
