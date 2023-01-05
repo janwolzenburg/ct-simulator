@@ -37,7 +37,7 @@ template<>
 string getObjectString<pnt3>( const pnt3 p ){
 
 	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f) ", p.gX(), p.gY(), p.gZ() );
+	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f)", p.gX(), p.gY(), p.gZ() );
 
 	return string{ tempCharArr };
 
