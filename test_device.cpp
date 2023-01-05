@@ -23,7 +23,7 @@ using std::vector;
 #include "tube.h"
 #include "detector.h"
 #include "plotting.h"
-
+#include "gantry.h"
 
 
 bool test_tube(void) {
@@ -74,4 +74,23 @@ bool test_detector(void) {
 	
 	return true;
 
+}
+
+
+bool test_gantry( void ){
+
+	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
+								.anodeCurrent_A = 0.2,
+								.anodeAtomicNumber = 74 };
+
+	detectorParameter detectorParas{	.rows = 2,
+										.columns = 11,
+										.rowSize = 2,
+										.colSize = 2,
+										.structured = false };
+
+
+	gantry testGantry{ GLOBAL_CSYS()->createCopy("Gantry system"), 300, tubeParas, detectorParas };
+
+	return true;
 }
