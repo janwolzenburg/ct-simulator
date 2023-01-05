@@ -22,11 +22,11 @@
    Implementation
 *********************************************************************/
 
-tube::tube(const double anodeVoltage_, const double anodeCurrent_, const size_t anodeAtomicNumber_, cartCSys* const cSys_ ) :
+tube::tube( cartCSys* const cSys_, const tubeParameters parameter_ ) :
 	cSys( cSys_ ),
-	anodeVoltage_V(Fpos(anodeVoltage_)),
-	anodeCurrent_A(Fpos(anodeCurrent_)),
-	anodeAtomicNumber(Fpos(anodeAtomicNumber_)),
+	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),
+	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),
+	anodeAtomicNumber(Fpos( parameter_.anodeAtomicNumber )),
 	totalPower_W(k_1PerV* anodeAtomicNumber* anodeCurrent_A* pow(anodeVoltage_V, 2)),
 	maxRadiationFrequency_Hz(e_As* anodeVoltage_V / h_Js)
 {

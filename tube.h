@@ -33,6 +33,11 @@ constexpr double alFilterCutOffFrequency = 16000. * e_As / h_Js;	// Cut of energ
 constexpr double alFilterGradiantFactor = -3.5;						// Quotient of filter gradient to bremsstrahlung gradient
 
 
+struct tubeParameters {
+	double anodeVoltage_V;
+	double anodeCurrent_A;
+	size_t anodeAtomicNumber;
+};
 
 
 class tube{
@@ -45,7 +50,7 @@ class tube{
 	 * @param anodeCurrent_	Anode Current in ampere
 	 * @param anodeAtomicNumber_ Atomic Number of anode material
 	*/
-	tube( const double anodeVoltage_, const double anodeCurrent_, const size_t anodeAtomicNumber_, cartCSys* const cSys_ ) ;
+	tube( cartCSys* const cSys_, const tubeParameters parameter_ );
 
 	/*!
 	 * @brief Get beam created by tube
