@@ -26,7 +26,7 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	cSys( cSys_ ),
 	rows( Fpos( parameter.rows ) ),
 	columns( Fpos( parameter.columns ) ),
-	pxSize( t2{ parameter.colSize, parameter.rowSize } ),
+	pxSize( v2RC{ parameter.colSize, parameter.rowSize } ),
 	radius( Fpos( radius_ )),
 	structured( parameter.structured )
 {

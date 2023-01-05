@@ -28,7 +28,7 @@ using std::vector;
 
 bool test_tube(void) {
 
-	tubeParameters tubeParas{	.anodeVoltage_V = 53000,
+	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 

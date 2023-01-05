@@ -36,7 +36,7 @@ constexpr double alFilterGradiantFactor = -3.5;						// Quotient of filter gradi
 /*!
  * @brief Parameter for x-ray tube
 */
-struct tubeParameters {
+struct tubeParameter {
 	double anodeVoltage_V;
 	double anodeCurrent_A;
 	size_t anodeAtomicNumber;
@@ -53,7 +53,7 @@ class tube{
 	 * @param anodeCurrent_	Anode Current in ampere
 	 * @param anodeAtomicNumber_ Atomic Number of anode material
 	*/
-	tube( cartCSys* const cSys_, const tubeParameters parameter_ );
+	tube( cartCSys* const cSys_, const tubeParameter parameter_ );
 
 	/*!
 	 * @brief Get beam created by tube

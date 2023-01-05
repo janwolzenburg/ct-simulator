@@ -22,7 +22,7 @@
    Implementation
 *********************************************************************/
 
-tube::tube( cartCSys* const cSys_, const tubeParameters parameter_ ) :
+tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),
 	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),
 	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),

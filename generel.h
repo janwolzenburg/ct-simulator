@@ -78,10 +78,10 @@ class idx2RC{
 /*!
  * @brief Class for table
 */
-class t2 {
+class v2RC {
 	public:
-	t2(const double c_, const double r_) : c(c_), r(r_) {};
-	t2(void) : t2(0, 0) {};
+	v2RC(const double c_, const double r_) : c(c_), r(r_) {};
+	v2RC(void) : v2RC(0, 0) {};
 	double c = 0;
 	double r = 0;
 };

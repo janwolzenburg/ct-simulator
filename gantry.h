@@ -28,7 +28,7 @@ using std::vector;
 
 class gantry {
 
-	gantry( cartCSys* const cSys_, const double radius, const tubeParameters tubeParameters_, const detectorParameter detectorParameters_ );
+	gantry( cartCSys* const cSys_, const double radius, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );
 
 
 
