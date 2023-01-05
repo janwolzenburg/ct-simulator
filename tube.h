@@ -33,6 +33,9 @@ constexpr double alFilterCutOffFrequency = 16000. * e_As / h_Js;	// Cut of energ
 constexpr double alFilterGradiantFactor = -3.5;						// Quotient of filter gradient to bremsstrahlung gradient
 
 
+/*!
+ * @brief Parameter for x-ray tube
+*/
 struct tubeParameters {
 	double anodeVoltage_V;
 	double anodeCurrent_A;
