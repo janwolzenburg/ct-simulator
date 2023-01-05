@@ -37,6 +37,7 @@ class gantry {
 	vector<ray> getBeam( void ) const;
 	vector<vector<pixel>> getPixel( void ) const;
 	double Radius( void ) const;
+	pnt3 Center( void ) const;
 	void rotateCounterClockwise( const double angle );
 
 	private:
