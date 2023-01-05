@@ -26,6 +26,7 @@ using std::vector;
 
 
 
+//TODO: Add comments and descriptions
 class gantry {
 
 	gantry( cartCSys* const cSys_, const double radius, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );

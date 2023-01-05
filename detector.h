@@ -19,10 +19,12 @@
 #include "detectorPixel.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
 
+//TODO: Add description
 struct detectorParameter{
 
 	size_t rows;
@@ -41,7 +43,7 @@ struct detectorParameter{
 class detector {
 
 	public:
-
+	// TODO: Change comments
 	/*!
 	 * @brief Constructor
 	 * @param cSys_ Coordinate system
