@@ -54,3 +54,9 @@ vector<vector<pixel>> gantry::getPixel( void ) const{
 double gantry::Radius( void ) const{
 	return radius;
 }
+
+void gantry::rotateClockwise( const double angle ){
+
+	this->cSys->rotateM( cSys->zAxis(), angle );
+
+}
