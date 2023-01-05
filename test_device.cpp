@@ -87,7 +87,7 @@ bool test_gantry( void ){
 
 	addObject( ax1, "Gantry", testGantry, "r", 0 );
 
-	testGantry.rotateClockwise( 2.*PI/3 );
+	testGantry.rotateCounterClockwise( 2.*PI/3 );
 
 	addObject( ax1, "Gantry", testGantry, "r", 0 );
 
