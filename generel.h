@@ -69,6 +69,12 @@ class v3{
 };
 
 
+class idx2RC{
+	public:
+	size_t c = 0;
+	size_t r = 0;
+};
+
 /*!
  * @brief Class for table
 */

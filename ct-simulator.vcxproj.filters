@@ -150,6 +150,9 @@
     <ClInclude Include="detector.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="gantry.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

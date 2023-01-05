@@ -10,6 +10,7 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
+
 #include <iostream>
 using std::cerr; using std::cout; using std::endl;
 
@@ -22,6 +23,7 @@ using std::vector;
 #include "tube.h"
 #include "detector.h"
 #include "plotting.h"
+
 
 
 bool test_tube(void) {
@@ -42,7 +44,7 @@ bool test_tube(void) {
 
 bool test_detector(void) {
 
-	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"),2, 11, t2{ 2, 2}, 500, false };
+	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"),2, 11, t2{ 2, 2}, 50, false };
 
 	vector<vector<pixel>> allPixel = test_detector.getPixel();
 
