@@ -72,7 +72,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 };
 
 
-vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ){
+vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ) const{
 
 	// Split spectrum into the ray spectra
 	spectrum raySpectrum = xRay_spectrum.getScaled( 1. / (double) numRays_ );

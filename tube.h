@@ -62,7 +62,7 @@ class tube{
 	 * @param numRays_ Amount of rays
 	 * @return Vector with rays in XY-plane of tube's coordinate system and symmetrical to y-axis
 	*/
-	vector<ray> getBeam( const double beamAngle, const size_t numRays_ );
+	vector<ray> getBeam( const double beamAngle, const size_t numRays_ ) const;
 
 
 
