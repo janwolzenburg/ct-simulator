@@ -31,7 +31,7 @@ struct detectorParameter{
 	double rowSize;
 	double colSize;
 
-	double radius;
+	//double radius;
 
 	bool structured;
 
@@ -51,7 +51,7 @@ class detector {
 	 * @param radius_ Radius of detector arc
 	 * @param structured_ Add anti scatter structure
 	*/
-	detector(cartCSys* const cSys_, const detectorParameter parameter );
+	detector(cartCSys* const cSys_, const double radius_, const detectorParameter parameter );
 
 	/*!
 	 * @brief Get all detector pixel

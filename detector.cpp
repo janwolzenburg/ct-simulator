@@ -22,12 +22,12 @@
   Implementations
 *********************************************************************/
 
-detector::detector( cartCSys* const cSys_, const detectorParameter parameter ) :
+detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameter parameter ) :
 	cSys( cSys_ ),
 	rows( Fpos( parameter.rows ) ),
 	columns( Fpos( parameter.columns ) ),
 	pxSize( t2{ parameter.colSize, parameter.rowSize } ),
-	radius( Fpos( parameter.radius )),
+	radius( Fpos( radius_ )),
 	structured( parameter.structured )
 {
 	pxSize.r = Fpos( pxSize.r );
