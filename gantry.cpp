@@ -50,3 +50,7 @@ vector<vector<pixel>> gantry::getPixel( void ) const{
 	return rayDetector.getPixel();
 
 }
+
+double gantry::Radius( void ) const{
+	return radius;
+}

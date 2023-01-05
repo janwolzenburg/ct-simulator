@@ -35,7 +35,7 @@ class gantry {
 
 	vector<ray> getBeam( void ) const;
 	vector<vector<pixel>> getPixel( void ) const;
-
+	double Radius( void ) const;
 
 	private:
 	cartCSys* cSys;
