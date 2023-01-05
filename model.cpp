@@ -181,7 +181,7 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 	rayVoxelIntersection modelIsect{ Vox(), tRay };
 
 	rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
-	if( !rayEntrance.hasSolution ) return rays;			// Return if ray does not intersect model
+	if( !rayEntrance.hasSolution ) return vector<ray>{0};			// Return if ray does not intersect model
 
 
 	// Iteration through model
@@ -210,7 +210,7 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 
 		if( !rayExit.hasSolution ){
 			checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
-			return rays;
+			return vector<ray>{0};
 		}
 
 		// Get ray parameter of voxel exit
@@ -228,6 +228,8 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 		// "Enter" next voxel
 		currentRayStep += rayStepSize;
 		currentPntOnRay = currentRay.getPnt( currentRayStep );
+
+		//TODO: Scattering on voxel surfaces
 	}
 
 	// New origin "outside" the model to return
