@@ -59,16 +59,7 @@ bool test_detector(void) {
 
 	ofstream ax1 = openAxis(path("./test_detector.txt"), true);
 
-	for (auto rowIt = allPixel.begin(); rowIt < allPixel.end(); rowIt++) {
-		
-		vector<surfLim> rowPixel;
-		for (auto pxIt = rowIt->begin(); pxIt < rowIt->end(); pxIt++) {
-			rowPixel.push_back( *pxIt );
-		}
-
-		addObject(ax1, "Detector", rowPixel, "r", .2);
-
-	}
+	addObject( ax1, "Detector", allPixel, "r", .2 );
 	
 	closeAxis(ax1);
 	
@@ -90,7 +81,13 @@ bool test_gantry( void ){
 										.structured = false };
 
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy("Gantry system"), 300, tubeParas, detectorParas };
+	gantry testGantry{ GLOBAL_CSYS()->createCopy("Gantry system"), 300., PI/4., 10, tubeParas, detectorParas };
+
+	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
+
+	addObject( ax1, "Gantry", testGantry, "r", 0 );
+
+	closeAxis( ax1 );
 
 	return true;
 }

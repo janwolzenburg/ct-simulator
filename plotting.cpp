@@ -12,7 +12,7 @@
   *********************************************************************/
 
 #include "plotting.h"
-
+#include "gantry.h"
 
 
   /*********************************************************************
@@ -65,10 +65,21 @@ void addObject<vector<ray>, double>(ofstream& axis, const string name, const vec
 }
 
 template<>
-void addObject<vector<surfLim>, double>(ofstream& axis, const string name, const vector<surfLim> surfaces, const string parameter, const double alpha) {
+void addObject<vector<vector<pixel>>, double>( ofstream& axis, const string name, const vector<vector<pixel>> allPixels, const string parameter, const double alpha ){
 
-	for (auto s : surfaces) {
-		addSingleObject(axis, name, s, parameter, alpha );
+	for( auto rowPixel : allPixels ){
+
+		for( auto singlePx : rowPixel ){
+			addSingleObject( axis, name, surfLim{ singlePx }, parameter, alpha );
+		}
 	}
 
+}
+
+template<>
+void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string parameter, const int specifiers ){
+
+	addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
+	addObject( axis, name + "Detector", gantry.getPixel(), parameter, .2 );
+	
 }
