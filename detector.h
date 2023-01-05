@@ -23,6 +23,20 @@
    Definitions
 *********************************************************************/
 
+struct detectorParameter{
+
+	size_t rows;
+	size_t columns;
+
+	double rowSize;
+	double colSize;
+
+	double radius;
+
+	bool structured;
+
+};
+
 
 class detector {
 
@@ -37,14 +51,18 @@ class detector {
 	 * @param radius_ Radius of detector arc
 	 * @param structured_ Add anti scatter structure
 	*/
-	detector(cartCSys* const cSys_, const size_t rows_, const size_t columns_, const t2 pxSize_, const double radius_, const bool structured_);
+	detector(cartCSys* const cSys_, const detectorParameter parameter );
 
+	/*!
+	 * @brief Get all detector pixel
+	 * @return Vector of pixels in one row
+	*/
 	vector<vector<pixel>> getPixel( void ) const;
 
 
 	private:
 	cartCSys* cSys;							/*!<Local coordinate system*/
-	vector<vector<pixel>> allPixel;			/*!<Pixels of detector*/
+	vector<vector<pixel>> allPixel;			/*!<Pixels of detector. Is a vector of pixels in one row*/
 
 	size_t rows;							/*!<Amount of rows ( arc along z- axis )*/
 	size_t columns;							/*!<Amount of columns ( pixel along one arc ) */

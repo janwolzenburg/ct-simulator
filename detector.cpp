@@ -22,13 +22,13 @@
   Implementations
 *********************************************************************/
 
-detector::detector( cartCSys* const cSys_, const size_t rows_, const size_t columns_, const t2 pxSize_, const double radius_, const bool structured_ ) : 
+detector::detector( cartCSys* const cSys_, const detectorParameter parameter ) :
 	cSys( cSys_ ),
-	rows( Fpos( rows_ ) ),
-	columns( Fpos( columns_ ) ),
-	pxSize( pxSize_ ),
-	radius( Fpos( radius_ )),
-	structured( structured_ )
+	rows( Fpos( parameter.rows ) ),
+	columns( Fpos( parameter.columns ) ),
+	pxSize( t2{ parameter.colSize, parameter.rowSize } ),
+	radius( Fpos( parameter.radius )),
+	structured( parameter.structured )
 {
 	pxSize.r = Fpos( pxSize.r );
 	pxSize.c = Fpos( pxSize.c );
