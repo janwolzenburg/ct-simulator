@@ -185,6 +185,7 @@
     <ClCompile Include="detector.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="line.cpp" />

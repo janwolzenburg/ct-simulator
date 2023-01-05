@@ -28,8 +28,11 @@ using std::vector;
 
 bool test_tube(void) {
 
-	
-	tube testTube{ 53000, 0.2, 74, GLOBAL_CSYS()->createCopy( "Tube system" )};
+	tubeParameters tubeParas{	.anodeVoltage_V = 53000,
+								.anodeCurrent_A = 0.2,
+								.anodeAtomicNumber = 74 };
+
+	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
 
 	vector<ray> beam = testTube.getBeam( PI/4, 20 );
 
@@ -44,7 +47,13 @@ bool test_tube(void) {
 
 bool test_detector(void) {
 
-	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"),2, 11, t2{ 2, 2}, 50, false };
+	detectorParameter detectorParas{	.rows = 2,
+										.columns = 11,
+										.rowSize = 2,
+										.colSize = 2,
+										.structured = false };
+
+	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"), 50, detectorParas };
 
 	vector<vector<pixel>> allPixel = test_detector.getPixel();
 

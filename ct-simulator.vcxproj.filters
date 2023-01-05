@@ -227,5 +227,8 @@
     <ClCompile Include="detector.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
+    <ClCompile Include="gantry.cpp">
+      <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
