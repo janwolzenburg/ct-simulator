@@ -24,34 +24,34 @@
    Definitions
 *********************************************************************/
 
-//TODO: Add description
+/*!
+ * @brief Struct for detector parameters
+*/
 struct detectorParameter{
 
-	size_t rows;
-	size_t columns;
+	size_t rows;		/*!<Amount of rows*/
+	size_t columns;		/*!<Amount of columns*/
+			
+	double rowSize;		/*!<Size of pixel in direction of row*/
+	double colSize;		/*!<Size of pixel in direction of columns*/
 
-	double rowSize;
-	double colSize;
-
-	//double radius;
-
-	bool structured;
+	bool structured;	/*!<Flag for anti scatter structure*/
 
 };
 
 
+
+/*!
+ * @brief Class for ray detector
+*/
 class detector {
 
 	public:
-	// TODO: Change comments
+
 	/*!
 	 * @brief Constructor
 	 * @param cSys_ Coordinate system
-	 * @param rows_ Amount of pixel rows
-	 * @param columns_ Amount of pixel columns
-	 * @param pxSize_ Size of one pixel
-	 * @param radius_ Radius of detector arc
-	 * @param structured_ Add anti scatter structure
+	 * @param parameter Detector parameter
 	*/
 	detector(cartCSys* const cSys_, const double radius_, const detectorParameter parameter );
 
@@ -69,10 +69,9 @@ class detector {
 	size_t rows;							/*!<Amount of rows ( arc along z- axis )*/
 	size_t columns;							/*!<Amount of columns ( pixel along one arc ) */
 
-	v2RC pxSize;								/*!<Size of one pixel*/
+	v2RC pxSize;							/*!<Size of one pixel*/
 
 	double radius;							/*!<Radius of arc*/
-	//double angle;							/*!<Angle of arc*/
 		
 	bool structured;						/*!<Anti scatter structure*/
 
