@@ -87,12 +87,14 @@ bool test_modelTransmission( void ){
 
 	testGantry.radiate( mod );
 	vector<pixel> detectorPixel = testGantry.getPixel();
-	vector<double> primitiveDetectionResult( detectorPixel.size(), 0.);
+	vector<v2> primitiveDetectionResult( detectorPixel.size(), v2{0, 0});
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
+		primitiveDetectionResult.at( i ).x = (double) i;
+
 		for( rayProperties currentProperties : detectorPixel.at( i ).detectedRayProperties ){
 
-			primitiveDetectionResult.at( i ) += currentProperties.powerSpectrum.getIntegral();
+			primitiveDetectionResult.at( i ).y += currentProperties.powerSpectrum.getIntegral();
 
 		}
 	}	
@@ -107,7 +109,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
-	addSingleObject( ax2, "Result", primitiveDetectionResult );
+	addSingleObject( ax2, "Result", primitiveDetectionResult, "PixelNum;Result");
 	closeAxis( ax2 );
 
 	return true;
