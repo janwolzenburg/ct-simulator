@@ -53,6 +53,7 @@ class spectrum {
 	*/
 	void scale( const double factor );
 
+	double getIntegral( void ) const;
 
 	public:
 	vector<v2> data;		/*!<2D point data*/

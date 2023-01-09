@@ -63,3 +63,21 @@ spectrum spectrum::getScaled(const double factor) const {
 	return scaledSpectrum;
 
 }
+
+
+double spectrum::getIntegral( void ) const{
+
+	double integral = 0.;
+
+	// Iterate all data
+	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
+
+		double xDelta = (dataIt + 1)->x - dataIt->x;
+		double yValue = dataIt->y;
+
+		integral += xDelta * yValue;
+
+	}
+
+	return integral;
+}
