@@ -80,11 +80,12 @@ vector<vector<rayPix_Intersection_Result>> gantry::radiate( const model& radMode
 		// Iterate over all rays in current ray collection
 		for( const ray currentRay : rays ){
 		
-			vector<ray> returnedRays;									// Rays that have been scattered or left the model
-			returnedRays = radModel.rayTransmission( currentRay );		// Transmit ray through model
+			vector<ray> returnedRays;												// Rays that have been scattered or left the model
+			bool enableScattering = currentLoop < maxRadiationLoops;				// No scattering in last iteration
+			returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
 			
 			// When current ray does not intersect model add it for detection
-			//if( returnedRays.empty() ) raysToDetect.push_back( currentRay );
+			if( returnedRays.empty() ) raysToDetect.push_back( currentRay );
 
 			// Iterate all rays scattered or transmitted through model
 			for( const ray returnedRay : returnedRays ){
