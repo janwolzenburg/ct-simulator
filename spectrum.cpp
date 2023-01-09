@@ -55,8 +55,6 @@ void spectrum::scale( const double factor ){
 spectrum spectrum::getScaled(const double factor) const {
 
 	spectrum scaledSpectrum{ *this };
-
-	//for (size_t i = 0; i < scaledSpectrum.data.size(); i++) scaledSpectrum.data.at( i ).y *= factor;
 	
 	scaledSpectrum.scale( factor );
 
