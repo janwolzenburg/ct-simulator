@@ -28,7 +28,15 @@ class pixel : public surfLim{
 	using surfLim::surfLim;
 
 	public:
-	vector<ray> detectedRays;
+
+	/*!
+	 * @brief Reset detected rays
+	*/
+	void reset( void );
+
+
+	public:
+	vector<ray> detectedRays;		/*!<Rays detected with this pixel*/
 
  };
 
