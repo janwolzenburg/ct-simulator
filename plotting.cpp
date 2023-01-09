@@ -67,7 +67,7 @@ string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
 template<>
 void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
 
-	for (auto r : rays) {
+	for (const ray r : rays) {
 		addSingleObject(axis, name, r, parameter, length);
 	}
 
@@ -75,7 +75,7 @@ void addObject<vector<ray>, double>(ofstream& axis, const string name, const vec
 
 template<>
 void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string parameter, const double alpha ){
-	for( auto singlePx : allPixels ){
+	for( const pixel singlePx : allPixels ){
 		addSingleObject( axis, name, surfLim{ singlePx }, parameter, alpha );
 	}
 }

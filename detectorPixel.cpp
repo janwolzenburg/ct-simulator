@@ -25,7 +25,7 @@
 */
 
 void pixel::reset( void ){
-	detectedRays.clear();
+	detectedRayProperties.clear();
 }
 
 

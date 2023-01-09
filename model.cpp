@@ -175,13 +175,13 @@ bool model::pntInside( const pnt3 p ) const{
 }
 
 vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering ) const{
-	vector<ray> rays;									// Vector of rays after/during transmission to be processed further
+	vector<ray> rays(0);									// Vector of rays after/during transmission to be processed further
 
 	// Find entrance in model
 	rayVoxelIntersection modelIsect{ Vox(), tRay };
 
 	rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
-	if( !rayEntrance.hasSolution ) return vector<ray>{0};			// Return if ray does not intersect model
+	if( !rayEntrance.hasSolution ) return vector<ray>(0);			// Return if ray does not intersect model
 
 
 	// Iteration through model
@@ -210,7 +210,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 		if( !rayExit.hasSolution ){
 			checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
-			return vector<ray>{0};
+			return vector<ray>(0);
 		}
 
 		// Get ray parameter of voxel exit

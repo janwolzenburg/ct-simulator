@@ -34,7 +34,6 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	
 	// Initialise vectors
 	allPixel = vector<pixel>( columns );
-	detectedRays = vector<vector<rayProperties>>( columns, vector<rayProperties> () );
 
 
 	// Amount of detectors in one row must be odd
@@ -87,7 +86,7 @@ vector<pixel> detector::getPixel(void) const {
 
 void detector::reset( void ){
 
-	for( auto& currentPixel : allPixel ){
+	for( pixel& currentPixel : allPixel ){
 
 		currentPixel.reset();
 
@@ -98,7 +97,7 @@ void detector::reset( void ){
 void detector::detectRay( const ray r ){
 
 	// Iterate all pixel in detector
-	for( auto& currentPixel : allPixel){
+	for( pixel& currentPixel : allPixel){
 
 		// Check for intersection of ray with current pixel
 		rayPix_Intersection pixelHit{ r, currentPixel };
