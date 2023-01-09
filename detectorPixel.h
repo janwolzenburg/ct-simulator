@@ -48,6 +48,7 @@ class rayPix_Intersection_Result : public linSurf_Intersection_Result{
 
 	using linSurf_Intersection_Result::linSurf_Intersection_Result;
 
+	// TODO: Clean up and refactor ray pixel intersection and heritage
 	public:
 	rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult ) : linSurf_Intersection_Result( linSurfResult ){};
 

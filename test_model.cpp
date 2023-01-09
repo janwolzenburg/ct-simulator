@@ -75,9 +75,9 @@ bool test_modelTransmission( void ){
 							.anodeCurrent_A = 0.2,
 							.anodeAtomicNumber = 74 };
 
-	detectorParameter detectorParas{ .columns = 51,
-										.rowSize = 5,
-										.colSize = 10,
+	detectorParameter detectorParas{ .columns = 5,
+										.rowSize = 10,
+										.colSize = 100,
 										.structured = false };
 
 
@@ -109,7 +109,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
-	addSingleObject( ax2, "Result", primitiveDetectionResult, "PixelNum;Result");
+	addSingleObject( ax2, "Result", primitiveDetectionResult, "PixelNum;Result;Dots");
 	closeAxis( ax2 );
 
 	return true;
