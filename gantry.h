@@ -55,7 +55,7 @@ class gantry {
 
 	/*!
 	 * @brief Get all pixel from detector 
-	 * @return Vector of vectors with pixel
+	 * @return Vector with pixel
 	*/
 	vector<pixel> getPixel( void ) const;
 
