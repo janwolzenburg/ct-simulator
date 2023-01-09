@@ -60,6 +60,17 @@ class detector {
 	*/
 	vector<pixel> getPixel( void ) const;
 
+	/*!
+	 * @brief Reset all pixel
+	*/
+	void reset( void );
+
+	/*!
+	 * @brief Detect ray
+	 * @param r Ray to detect
+	*/
+	void detectRay( const ray r );
+
 
 	private:
 	cartCSys* cSys;								/*!<Local coordinate system*/

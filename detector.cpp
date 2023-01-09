@@ -84,3 +84,31 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 vector<pixel> detector::getPixel(void) const {
 	return allPixel;
 }
+
+void detector::reset( void ){
+
+	for( auto& currentPixel : allPixel ){
+
+		currentPixel.reset();
+
+	}
+
+}
+
+void detector::detectRay( const ray r ){
+
+	// Iterate all pixel in detector
+	for( auto& currentPixel : allPixel){
+
+		// Check for intersection of ray with current pixel
+		rayPix_Intersection pixelHit{ r, currentPixel };
+
+		// Do they intersect?
+		if( pixelHit.Result().hasSolution ){
+			currentPixel.detectedRays.push_back( r );		// Add detected ray to pixel
+		}
+	
+		//TODO: Check anti scattering structuring
+
+	}
+}
