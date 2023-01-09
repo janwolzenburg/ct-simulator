@@ -27,6 +27,9 @@ class pixel : public surfLim{
 
 	using surfLim::surfLim;
 
+	public:
+	vector<ray> detectedRays;
+
  };
 
 

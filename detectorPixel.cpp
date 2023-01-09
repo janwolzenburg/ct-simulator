@@ -20,6 +20,15 @@
 *********************************************************************/
 
 
+/*
+	pixel implementation
+*/
+
+void pixel::reset( void ){
+	detectedRays.clear();
+}
+
+
 
 /*
 	rayPix_Intersection implementation
