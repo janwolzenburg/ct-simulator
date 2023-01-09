@@ -44,6 +44,9 @@ void addSingleObject( ofstream& axis, const string name, const C object, const s
 template<class C, typename T>
 void addSingleObject( ofstream& axis, const string name, const C object, const string parameter, const T additional );
 
+template<class C>
+void addSingleObject( ofstream& axis, const string name, const C object );
+
 template<class C, typename T>
 void addObject(ofstream& axis, const string name, const C object, const string parameter, const T additional);
 
