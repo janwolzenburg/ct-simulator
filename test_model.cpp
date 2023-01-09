@@ -14,6 +14,8 @@
 #include "plotting.h"
 #include "test_model.h"
 #include "cSysTree.h"
+#include "gantry.h"
+
 
   /*********************************************************************
 	 Implementations
@@ -60,6 +62,36 @@ bool test_testModel( void ){
 	ofstream ax1 = openAxis( path( "./test_testModel.txt" ), true );
 
 	addObject( ax1, "TestModel", mod, "g", 0.015 );
+
+	closeAxis( ax1 );
+
+	return true;
+}
+
+
+bool test_modelTransmission( void ){
+
+	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
+							.anodeCurrent_A = 0.2,
+							.anodeAtomicNumber = 74 };
+
+	detectorParameter detectorParas{ .columns = 51,
+										.rowSize = 5,
+										.colSize = 10,
+										.structured = false };
+
+
+
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 300., PI / 4., 10, tubeParas, detectorParas };
+	model mod = getTestModel( GLOBAL_CSYS() );
+
+	testGantry.radiate( mod );
+
+	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
+
+	addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "TestModel", mod, "g", 0.015 );
+	
 
 	closeAxis( ax1 );
 

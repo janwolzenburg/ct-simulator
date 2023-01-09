@@ -13,3 +13,5 @@
 model getTestModel( const cartCSys* const parent );
 
 bool test_testModel( void );
+
+bool test_modelTransmission( void );

@@ -29,5 +29,7 @@ int main( void ){
 
 	if( !test_testModel() ) cerr << "Test for test model failed!";
 
+	if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
+
 	return 0;
 }
