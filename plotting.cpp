@@ -63,6 +63,29 @@ string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
 
 }
 
+template<>
+string getObjectString<vector<v2>>( const vector<v2> data ){
+
+	string str = "plot ";
+
+	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
+		str += std::to_string( valIt->x );
+
+		if( valIt < data.cend() - 1 ) str += ',';
+	}
+
+	str += ";";
+
+	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
+		str += std::to_string( valIt->y );
+
+		if( valIt < data.cend() - 1 ) str += ',';
+	}
+
+	
+	return str;
+
+}
 
 template<>
 void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
