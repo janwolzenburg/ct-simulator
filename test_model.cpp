@@ -86,14 +86,29 @@ bool test_modelTransmission( void ){
 	model mod = getTestModel( GLOBAL_CSYS() );
 
 	testGantry.radiate( mod );
+	vector<pixel> detectorPixel = testGantry.getPixel();
+	vector<double> primitiveDetectionResult( detectorPixel.size(), 0.);
+
+	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
+		for( rayProperties currentProperties : detectorPixel.at( i ).detectedRayProperties ){
+
+			primitiveDetectionResult.at( i ) += currentProperties.powerSpectrum.getIntegral();
+
+		}
+	}	
+
+
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
 
 	addObject( ax1, "Gantry", testGantry, "r", 0 );
 	addObject( ax1, "TestModel", mod, "g", 0.015 );
-	
 
 	closeAxis( ax1 );
+
+	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
+	addSingleObject( ax2, "Result", primitiveDetectionResult );
+	closeAxis( ax2 );
 
 	return true;
 }
