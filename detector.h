@@ -75,7 +75,6 @@ class detector {
 	private:
 	cartCSys* cSys;								/*!<Local coordinate system*/
 	vector<pixel> allPixel;						/*!<Pixels of detector*/
-	vector<vector<rayProperties>> detectedRays;	/*!<Properties of detected rays*/
 
 	size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
 

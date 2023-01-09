@@ -36,7 +36,7 @@ class pixel : public surfLim{
 
 
 	public:
-	vector<ray> detectedRays;		/*!<Rays detected with this pixel*/
+	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
 
  };
 

@@ -105,7 +105,7 @@ void detector::detectRay( const ray r ){
 
 		// Do they intersect?
 		if( pixelHit.Result().hasSolution ){
-			currentPixel.detectedRays.push_back( r );		// Add detected ray to pixel
+			currentPixel.detectedRayProperties.push_back( r.Properties() );		// Add detected ray properties to pixel
 		}
 	
 		//TODO: Check anti scattering structuring
