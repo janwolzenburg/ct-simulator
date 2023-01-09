@@ -13,6 +13,8 @@
 *********************************************************************/
 
 #include <algorithm>
+using std::sort;
+using std::for_each;
 
 #include "spectrum.h"
 
@@ -37,12 +39,15 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 		data.push_back(v2{ X.at(i), Y.at(i) });
 	}
 
+	// Sort data by x value
+	sort( data.begin(), data.end(), []( const v2& d1, const v2& d2) { return d1.x < d2.x; } );
+
 };
 
 
 void spectrum::scale( const double factor ){
 
-	std::for_each( data.begin(), data.end(), [ & ] ( v2& v ) { v.y *= factor; } );
+	for_each( data.begin(), data.end(), [ & ] ( v2& v ) { v.y *= factor; } );
 
 }
 
