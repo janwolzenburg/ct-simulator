@@ -37,6 +37,6 @@ void pixel::reset( void ){
 rayPix_Intersection::rayPix_Intersection( const ray r, const pixel px ) :
 	linSurfIntersection<ray, pixel>( r, px )
 {
-	linSurf_Intersection_Result linSurfResult = linSurfIntersection<ray, pixel>::Result();
+	result = linSurfIntersection<ray, pixel>::Result();
 	result.rayProps = r.Properties();
 }
