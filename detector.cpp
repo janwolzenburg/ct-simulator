@@ -32,8 +32,10 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	pxSize.r = Fpos( pxSize.r );
 	pxSize.c = Fpos( pxSize.c );
 	
-	// Initialise 2D vector
+	// Initialise vectors
 	allPixel = vector<pixel>( columns );
+	detectedRays = vector<vector<rayProperties>>( columns, vector<rayProperties> () );
+
 
 	// Amount of detectors in one row must be odd
 	if (isEven(columns)) columns++;

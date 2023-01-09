@@ -62,16 +62,17 @@ class detector {
 
 
 	private:
-	cartCSys* cSys;							/*!<Local coordinate system*/
-	vector<pixel> allPixel;					/*!<Pixels of detector*/
+	cartCSys* cSys;								/*!<Local coordinate system*/
+	vector<pixel> allPixel;						/*!<Pixels of detector*/
+	vector<vector<rayProperties>> detectedRays;	/*!<Properties of detected rays*/
 
-	size_t columns;							/*!<Amount of columns ( pixel along one arc ) */
+	size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
 
-	v2RC pxSize;							/*!<Size of one pixel*/
+	v2RC pxSize;								/*!<Size of one pixel*/
 
-	double radius;							/*!<Radius of arc*/
+	double radius;								/*!<Radius of arc*/
 		
-	bool structured;						/*!<Anti scatter structure*/
+	bool structured;							/*!<Anti scatter structure*/
 
 };
 
