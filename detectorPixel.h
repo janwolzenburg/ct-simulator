@@ -48,6 +48,8 @@ class rayPix_Intersection_Result : public linSurf_Intersection_Result{
 */
 class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
 
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param r Ray
