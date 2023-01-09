@@ -88,3 +88,23 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 	addSingleObject( axis, name + "Center", gantry.Center(), parameter );
 
 }
+
+
+template<>
+void addObject<model, double>( std::ofstream& axis, std::string name, model mod, std::string parameter, double threshold ){
+	vox modVox = mod.Vox();
+	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
+		addSingleObject( axis, "modelFace" + std::to_string( toUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
+	}
+
+	for( size_t iX = 0; iX < mod.NumVox().x; iX++ ){
+		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
+			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
+				vox voxel = mod.getVoxel( idx3{ iX, iY, iZ } );
+				if( voxel.Data().k >= (double) threshold ){
+					addSingleObject( axis, "voxel(" + std::to_string( iX ) + "," + std::to_string( iY ) + "," + std::to_string( iZ ) + ")", voxel.getCenter(), parameter );
+				}
+			}
+		}
+	}
+}

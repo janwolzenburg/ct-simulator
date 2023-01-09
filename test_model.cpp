@@ -13,7 +13,7 @@
 
 #include "plotting.h"
 #include "test_model.h"
-
+#include "cSysTree.h"
 
   /*********************************************************************
 	 Implementations
@@ -48,4 +48,20 @@ model getTestModel( const cartCSys* const parent ){
 	}
 
 	return mod;
+}
+
+
+
+bool test_testModel( void ){
+
+	
+	model mod = getTestModel( GLOBAL_CSYS() );
+
+	ofstream ax1 = openAxis( path( "./test_testModel.txt" ), true );
+
+	addObject( ax1, "TestModel", mod, "g", 0.015 );
+
+	closeAxis( ax1 );
+
+	return true;
 }
