@@ -82,7 +82,7 @@ class gantry {
 	 * @param radModel Model to radiate
 	 * @return Detection results
 	*/
-	vector<rayPix_Intersection_Result> radiate( const model& radModel ) const;
+	vector<rayPix_Intersection_Result> radiate( const model& radModel ) ;
 
 
 
