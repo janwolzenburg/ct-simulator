@@ -153,6 +153,9 @@
     <ClInclude Include="gantry.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="test_model.h">
+      <Filter>Headerdateien\Physics\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -229,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="gantry.cpp">
       <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="test_model.cpp">
+      <Filter>Quelldateien\Physics\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

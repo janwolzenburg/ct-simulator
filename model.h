@@ -221,8 +221,3 @@ class model : virtual public mathObj{
 	*/
 	idx3 getVoxelIndices( const v3 locCoords ) const;
 };
-
-
-
-/*!*/
-model getTestModel( const cartCSys* const parent );

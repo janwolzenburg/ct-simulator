@@ -172,6 +172,7 @@
     <ClInclude Include="tests_linear_algebra.h" />
     <ClInclude Include="test_all.h" />
     <ClInclude Include="test_device.h" />
+    <ClInclude Include="test_model.h" />
     <ClInclude Include="tube.h" />
     <ClInclude Include="vec3D.fwd.h" />
     <ClInclude Include="vec3D.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="surf.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />
+    <ClCompile Include="test_model.cpp" />
     <ClCompile Include="tube.cpp" />
     <ClCompile Include="vec3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
