@@ -57,7 +57,7 @@ class gantry {
 	 * @brief Get all pixel from detector 
 	 * @return Vector of vectors with pixel
 	*/
-	vector<vector<pixel>> getPixel( void ) const;
+	vector<pixel> getPixel( void ) const;
 
 	/*!
 	 * @brief Get radius of gantry
@@ -82,7 +82,7 @@ class gantry {
 	 * @param radModel Model to radiate
 	 * @return Detection results
 	*/
-	vector<vector<rayPix_Intersection_Result>> radiate( const model& radModel ) const;
+	vector<rayPix_Intersection_Result> radiate( const model& radModel ) const;
 
 
 

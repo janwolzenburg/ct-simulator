@@ -74,15 +74,10 @@ void addObject<vector<ray>, double>(ofstream& axis, const string name, const vec
 }
 
 template<>
-void addObject<vector<vector<pixel>>, double>( ofstream& axis, const string name, const vector<vector<pixel>> allPixels, const string parameter, const double alpha ){
-
-	for( auto rowPixel : allPixels ){
-
-		for( auto singlePx : rowPixel ){
-			addSingleObject( axis, name, surfLim{ singlePx }, parameter, alpha );
-		}
+void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string parameter, const double alpha ){
+	for( auto singlePx : allPixels ){
+		addSingleObject( axis, name, surfLim{ singlePx }, parameter, alpha );
 	}
-
 }
 
 template<>

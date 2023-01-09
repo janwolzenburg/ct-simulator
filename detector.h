@@ -29,7 +29,6 @@
 */
 struct detectorParameter{
 
-	size_t rows;		/*!<Amount of rows*/
 	size_t columns;		/*!<Amount of columns*/
 			
 	double rowSize;		/*!<Size of pixel in direction of row*/
@@ -59,14 +58,13 @@ class detector {
 	 * @brief Get all detector pixel
 	 * @return Vector of pixels in one row
 	*/
-	vector<vector<pixel>> getPixel( void ) const;
+	vector<pixel> getPixel( void ) const;
 
 
 	private:
 	cartCSys* cSys;							/*!<Local coordinate system*/
-	vector<vector<pixel>> allPixel;			/*!<Pixels of detector. Is a vector of pixels in one row*/
+	vector<pixel> allPixel;					/*!<Pixels of detector*/
 
-	size_t rows;							/*!<Amount of rows ( arc along z- axis )*/
 	size_t columns;							/*!<Amount of columns ( pixel along one arc ) */
 
 	v2RC pxSize;							/*!<Size of one pixel*/

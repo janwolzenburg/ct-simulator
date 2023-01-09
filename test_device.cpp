@@ -47,15 +47,14 @@ bool test_tube(void) {
 
 bool test_detector(void) {
 
-	detectorParameter detectorParas{	.rows = 2,
-										.columns = 11,
+	detectorParameter detectorParas{	.columns = 11,
 										.rowSize = 2,
 										.colSize = 2,
 										.structured = false };
 
 	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"), 50, detectorParas };
 
-	vector<vector<pixel>> allPixel = test_detector.getPixel();
+	vector<pixel> allPixel = test_detector.getPixel();
 
 	ofstream ax1 = openAxis(path("./test_detector.txt"), true);
 
@@ -74,8 +73,7 @@ bool test_gantry( void ){
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 
-	detectorParameter detectorParas{	.rows = 2,
-										.columns = 51,
+	detectorParameter detectorParas{	.columns = 51,
 										.rowSize = 5,
 										.colSize = 10,
 										.structured = false };

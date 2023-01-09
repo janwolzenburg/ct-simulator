@@ -24,7 +24,6 @@
 
 detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameter parameter ) :
 	cSys( cSys_ ),
-	rows( Fpos( parameter.rows ) ),
 	columns( Fpos( parameter.columns ) ),
 	pxSize( v2RC{ parameter.colSize, parameter.rowSize } ),
 	radius( Fpos( radius_ )),
@@ -34,7 +33,7 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	pxSize.c = Fpos( pxSize.c );
 	
 	// Initialise 2D vector
-	allPixel = vector<vector<pixel>>( rows, vector<pixel>( columns ) );
+	allPixel = vector<pixel>( columns );
 
 	// Amount of detectors in one row must be odd
 	if (isEven(columns)) columns++;
@@ -70,22 +69,16 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 		const pnt3 o = n * (2 * radius);					// Origin point of surface
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
-		for (size_t row = 0; row < rows; row++) {
-			const pnt3 oTrans = o.addZ((double)row * pxSize.r);			// Translate pixel in z-direction
+		// Pixel with given normal vector centered at o + dZ
+		const pixel px{ r1, r2, o,  -pxSize.c / 2, pxSize.c / 2, -pxSize.r / 2, pxSize.r / 2 };
 
-			// Pixel with given normal vector centered at o + dZ
-			const pixel px{ r1, r2, oTrans,  -pxSize.c / 2, pxSize.c / 2, -pxSize.r / 2, pxSize.r / 2 };
-
-			allPixel.at( row ).at( col ) = px;
-
-		}
+		allPixel.at( col ) = px;
 
 	}
-
 
 }
 
 
-vector<vector<pixel>> detector::getPixel(void) const {
+vector<pixel> detector::getPixel(void) const {
 	return allPixel;
 }

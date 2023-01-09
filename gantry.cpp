@@ -45,7 +45,7 @@ vector<ray> gantry::getBeam( void ) const{
 
 
 
-vector<vector<pixel>> gantry::getPixel( void ) const{
+vector<pixel> gantry::getPixel( void ) const{
 
 	return rayDetector.getPixel();
 
@@ -67,7 +67,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 
 }
 
-vector<vector<rayPix_Intersection_Result>> gantry::radiate( const model& radModel ) const{
+vector<rayPix_Intersection_Result> gantry::radiate( const model& radModel ) const{
 
 	vector<ray> rays = this->getBeam();		// Current rays. Start with rays from source
 	vector<ray> raysToDetect;				// Rays to detect
