@@ -14,7 +14,7 @@
 using std::string;
 
 #include "rays.h"
-
+#include "cSysTree.h"
 
 /*********************************************************************
    Implementations
@@ -32,6 +32,12 @@ ray::ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ )
 ray::ray( const line line_, const rayProperties  properties_ )
 	: line( line_ ),
 	properties( properties_ ){};
+
+ray::ray( void ) :
+	ray(vec3{ v3{ 1, 0, 0 }, DUMMY_CSYS()}, pnt3{v3{ 0, 0, 0}, DUMMY_CSYS() }, rayProperties{})
+{
+
+}
 
 ray ray::convertTo( const cartCSys* const target ) const{
 	return ray{ this->line::convertTo( target ), properties };

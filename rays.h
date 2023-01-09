@@ -57,6 +57,11 @@ class ray : public line{
 	explicit ray( const line line_, const rayProperties  properties_ );
 
 	/*!
+	 * @brief Default constructor
+	*/
+	ray( void );
+
+	/*!
 	 * @brief Get intensity
 	 * @return Intensity
 	*/
