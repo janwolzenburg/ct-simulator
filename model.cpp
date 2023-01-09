@@ -174,7 +174,7 @@ bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
 
-vector<ray> model::rayTransmission( const ray tRay ) const{
+vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering ) const{
 	vector<ray> rays;									// Vector of rays after/during transmission to be processed further
 
 	// Find entrance in model
@@ -230,6 +230,11 @@ vector<ray> model::rayTransmission( const ray tRay ) const{
 		currentPntOnRay = currentRay.getPnt( currentRayStep );
 
 		//TODO: Scattering on voxel surfaces
+		if( enableScattering ){
+			// Do scattering
+		}
+
+
 	}
 
 	// New origin "outside" the model to return

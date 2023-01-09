@@ -179,9 +179,10 @@ class model : virtual public mathObj{
 	/*!
 	 * @brief Calculate ray transmission through model
 	 * @param r Transmitting ray in model's coordiante system
+	 * @param enableScattering Flag indicating if ray can be scattered
 	 * @return Vector of ray exiting model or created in model
 	*/
-	vector<ray> rayTransmission( const ray tRay ) const;
+	vector<ray> rayTransmission( const ray tRay, const bool enableScattering ) const;
 
 	/*!
 	 * @brief Export model to file
