@@ -100,7 +100,8 @@ inline bool coordinates::sameSystem( const coordinates c ) const{
 }
 
 coordinates coordinates::convertTo( const cartCSys* const target_cSys ) const{
-	coordinates tempC = *this;
+	
+	coordinates tempC{ v3{ x, y, z }, this->cSys };
 
 	if( this->sameSystem( target_cSys ) ) return tempC;
 
