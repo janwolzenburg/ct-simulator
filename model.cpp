@@ -177,6 +177,8 @@ bool model::pntInside( const pnt3 p ) const{
 vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering ) const{
 	vector<ray> rays(0);									// Vector of rays after/during transmission to be processed further
 
+	// TODO: Optimise 
+
 	// Find entrance in model
 	rayVoxelIntersection modelIsect{ Vox(), tRay };
 
