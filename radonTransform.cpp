@@ -122,3 +122,23 @@ double grid::operator()( const idx2RC index ) const{
 	return data.at( index.c ).at( index.r );
 }
 
+idx2RC grid::getIndex( const v2RC coordinates ) const{
+
+	idx2RC index;
+
+	index.c = (size_t) floor( ( coordinates.c - start.c ) / resolution.c + 0.5 );
+	index.r = (size_t) floor( ( coordinates.r - start.r ) / resolution.r + 0.5 );
+
+	if( index.c >= size.c ) index.c = size.c - 1;
+	if( index.r >= size.r ) index.r = size.r - 1;
+
+	return index;
+}
+
+double grid::operator()( const v2RC coordinates ) const{
+	return this->operator()( getIndex( coordinates ) );
+}
+
+double& grid::operator()( const v2RC coordinates ){
+	return this->operator()( getIndex( coordinates ) );
+}

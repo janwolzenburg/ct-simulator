@@ -57,6 +57,9 @@ class grid {
 
 	double& operator()( const idx2RC index );
 
+	double operator()( const v2RC index ) const;
+
+	double& operator()( const v2RC index );
 
 	private:
 
