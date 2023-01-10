@@ -79,3 +79,15 @@ double spectrum::getIntegral( void ) const{
 
 	return integral;
 }
+
+
+double spectrum::getSum( void ) const{
+
+	double sum = 0.;
+
+	// Iterate all data
+	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
+		sum += dataIt->y;
+	}
+	return sum;
+}

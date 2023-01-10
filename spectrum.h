@@ -53,7 +53,18 @@ class spectrum {
 	*/
 	void scale( const double factor );
 
+	/*!
+	 * @brief Get the intregral of spectrum
+	 * @return Integral
+	*/
 	double getIntegral( void ) const;
+
+	/*!
+	 * @brief Get sum of all y values
+	 * @return Sum of all y values
+	*/
+	double getSum( void ) const;
+
 
 	public:
 	vector<v2> data;		/*!<2D point data*/
