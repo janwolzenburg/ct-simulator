@@ -177,7 +177,7 @@
     <ClInclude Include="tube.h" />
     <ClInclude Include="vec3D.fwd.h" />
     <ClInclude Include="vec3D.h" />
-    <ClInclude Include="vectorAlgotrithm.h" />
+    <ClInclude Include="vectorAlgorithm.h" />
     <ClInclude Include="voxel.h" />
   </ItemGroup>
   <ItemGroup>

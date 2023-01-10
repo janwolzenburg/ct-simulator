@@ -93,7 +93,7 @@
     <ClInclude Include="tests_linear_algebra.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="vectorAlgotrithm.h">
+    <ClInclude Include="vectorAlgorithm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="rays.h">

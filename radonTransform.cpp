@@ -12,6 +12,7 @@
    Includes
 *********************************************************************/
 
+#include "vectorAlgorithm.h"
 #include "radonTransform.h"
 
 
@@ -76,3 +77,48 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 	coordinates( coordinates_ ),
 	value( value_ )
 {}
+
+
+grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ ) :
+	size( size_ ),
+	resolution( resolution_ ),
+	start( start_ )
+{
+	// Force size and resolution to positive value 
+	size.c = Fpos( size.c );
+	size.r = Fpos( size.r );
+
+	resolution.c = Fpos( resolution.c );
+	resolution.r = Fpos( resolution.r );
+
+
+	// Fill axis
+	columnPoints =	linearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
+	rowPoints =		linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
+	
+	// Create data structure
+	data = vector<vector<double>>( size.c, vector<double>( size.r ));
+}
+
+bool grid::checkIndex( const idx2RC index ) const{
+	
+	if( index.r >= size.r || index.c >= size.c ){
+		std::cerr << "Invalid grid index!";
+		return false;
+	}
+	return true;
+}
+
+
+double& grid::operator()( const idx2RC index ){
+	// Check the index for validity
+	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
+	return data.at( index.c ).at( index.r );
+}
+
+double grid::operator()( const idx2RC index ) const{
+	// Check the index for validity
+	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
+	return data.at( index.c ).at( index.r );
+}
+

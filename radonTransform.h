@@ -44,3 +44,28 @@ class radonPoint{
 	double value;
 
 };
+
+
+class grid {
+
+	public:
+	grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ );
+
+	bool checkIndex( const idx2RC index ) const;
+
+	double operator()( const idx2RC index ) const;
+
+	double& operator()( const idx2RC index );
+
+
+	private:
+
+	idx2RC size;
+	v2RC start;
+	v2RC resolution;
+
+	vector<double> columnPoints;
+	vector<double> rowPoints;
+	vector<vector<double>> data;
+
+};
