@@ -49,6 +49,12 @@
     <Filter Include="Quelldateien\Device">
       <UniqueIdentifier>{a3211d33-2fdf-4145-ad82-4b40a623be58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Processing">
+      <UniqueIdentifier>{f222f2ad-6376-4460-91b4-7775d54d93d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Processing">
+      <UniqueIdentifier>{cd191329-df7a-485b-97af-2db7f650c7c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -156,6 +162,9 @@
     <ClInclude Include="test_model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
+    <ClInclude Include="radonTransform.h">
+      <Filter>Headerdateien\Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -235,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="test_model.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="radonTransform.cpp">
+      <Filter>Quelldateien\Processing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

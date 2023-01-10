@@ -165,6 +165,7 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="radonTransform.h" />
     <ClInclude Include="rays.h" />
     <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
@@ -196,6 +197,7 @@
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
+    <ClCompile Include="radonTransform.cpp" />
     <ClCompile Include="rays.cpp" />
     <ClCompile Include="spectrum.cpp" />
     <ClCompile Include="surf.cpp" />
