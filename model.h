@@ -24,7 +24,7 @@ using std::filesystem::path;
  *********************************************************************/
 
 
-constexpr double rayStepSize = 10e-6;				/*!<Stepsize during ray iteration in ray direction vector's unit*/
+constexpr double rayStepSize = 5e-2;				/*!<Stepsize during ray iteration in ray direction vector's unit*/
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
