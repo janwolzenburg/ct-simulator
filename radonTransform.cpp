@@ -142,3 +142,15 @@ double grid::operator()( const v2RC coordinates ) const{
 double& grid::operator()( const v2RC coordinates ){
 	return this->operator()( getIndex( coordinates ) );
 }
+
+
+
+radonTransformed::radonTransformed( const size_t sizeDistance, const double startDistance, const v2RC resolution_ ) :
+	dataGrid(	idx2RC{ .c = (size_t) ( PI / resolution_.c ) + 1,
+						.r = sizeDistance }, 
+				v2RC{	0., 
+						startDistance },
+				resolution_ )
+{
+
+}

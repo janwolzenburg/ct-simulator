@@ -16,6 +16,7 @@
 #include "line.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -57,9 +58,12 @@ class grid {
 
 	double& operator()( const idx2RC index );
 
+	idx2RC getIndex( const v2RC coordinate ) const;
+
 	double operator()( const v2RC index ) const;
 
 	double& operator()( const v2RC index );
+
 
 	private:
 
@@ -71,4 +75,13 @@ class grid {
 	vector<double> rowPoints;
 	vector<vector<double>> data;
 
+};
+
+
+class radonTransformed{
+
+	radonTransformed( const size_t sizeDistance, const double startDistance, const v2RC resolution_ );
+
+	private:
+	grid dataGrid;
 };
