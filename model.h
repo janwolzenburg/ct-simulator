@@ -70,7 +70,7 @@ class model : virtual public mathObj{
 	 * @param newLineTabulators Amount of tabulators to insert after each line break
 	 * @return String with model's data
 	*/
-	std::string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string toStr( const unsigned int newLineTabulators = 0 ) const override;
 
 	/*!
 	 * @brief Assignment oeprator
