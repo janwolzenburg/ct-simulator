@@ -149,7 +149,7 @@ bool model::checkIndices( const idx3 indices ) const{
 
 bool model::validCoords( const v3 voxCoords ) const{
 	return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
-		voxCoords.x < size3D.x&& voxCoords.y < size3D.y&& voxCoords.z < size3D.z;
+		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
 }
 
 idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
@@ -189,24 +189,19 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 	ray currentRay = tRay;											// Current ray in model's coordinate system
 	double currentRayStep = rayEntrance.linPara + rayStepSize;		// Ray parameter at model entrance
+	
 	pnt3 currentPntOnRay = currentRay.getPnt( currentRayStep );		// Point of model entrance
-
-	rayVox_Intersection_Result rayExit;						// Exit of ray
-	idx3 currentVoxIndices{ 0, 0, 0 };						// Indices of current voxel
-	vox currentVox;											// Current voxel
-
-	double distance;										// Distance of ray inside voxel
 
 
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
 		// Get current voxel
-		currentVoxIndices = getVoxelIndices( currentPntOnRay );
-		currentVox = getVoxel( currentVoxIndices );
+		idx3 currentVoxIndices = getVoxelIndices( currentPntOnRay );
+		vox currentVox = getVoxel( currentVoxIndices );
 
 		// Find exit
 
-		rayExit = rayVoxelIntersection{ currentVox, currentRay }.Exit();
+		rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, currentRay }.Exit();
 
 		if( !rayExit.hasSolution ){
 			checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
@@ -217,7 +212,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 		currentRayStep = rayExit.linPara;
 
 		// Calculate distance between entrance and exit
-		distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
+		double distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
 
 		// Update ray properties
 		currentRay.updateProperties( currentVox.Data(), distance );
