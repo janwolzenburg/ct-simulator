@@ -35,7 +35,7 @@ linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 	sys.populateColumn( s.R1().XYZ( l.R() ) );
 	sys.populateColumn( s.R2().XYZ( l.R() ) );
 	sys.populateColumn( -( l.R().XYZ() ) );
-	sys.populateColumn( l.R().XYZ() - s.O().XYZ( l.O() ) );
+	sys.populateColumn( l.O().XYZ() - s.O().XYZ( l.O() ) );
 
 	// Solve system
 	eqnSysSolution sysSol = sys.solve();
