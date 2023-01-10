@@ -70,5 +70,31 @@
 
 
 
+
+	cartCSys* cSys1 = GLOBAL_CSYS()->addCSys(	primitiveVec3{ v3{ 1, 1, 1 } },
+												primitiveVec3{ v3{ 0, 1, 0 } },
+												primitiveVec3{ v3{ 0, 0, 1 } },
+												primitiveVec3{ v3{ 1, 0, 0 } },
+												"System 1" );
+
+	cartCSys* cSys11 = cSys1->addCSys(	primitiveVec3{ v3{ 2, 2, 2 } },
+										primitiveVec3{ v3{ sqrt( 2 )/2, sqrt( 2 ) / 2, 0 } },
+										primitiveVec3{ v3{ -sqrt( 2 ) / 2, sqrt( 2 ) / 2, 0 } },
+										primitiveVec3{ v3{ 0, 0, 1 } },
+										   "System 1.1" );
+
+	cartCSys* cSys2 = GLOBAL_CSYS()->addCSys( primitiveVec3{ v3{ -1, -1, -1 } },
+											  primitiveVec3{ v3{ 0, 0, 1 } },
+											  primitiveVec3{ v3{ 0, 1, 0 } },
+											  primitiveVec3{ v3{ 1, 0, 0 } },
+											  "System 2" );
+	pnt3 P1{ v3{ 3, 3, 3 }, cSys11 };
+	pnt3 P2 = P1.convertTo( cSys1 );
+	pnt3 P3 = P1.convertTo( GLOBAL_CSYS() );
+	pnt3 P4 = P1.convertTo( cSys2 );
+
+	pnt3 expectedP4{ v3{ 4+3*sqrt(2), 4, 7 }, cSys2 };
+	if( P4 != expectedP4 ) return false;
+
 	 return true;
  }

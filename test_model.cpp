@@ -85,6 +85,28 @@ bool test_modelTransmission( void ){
 	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 300., PI / 4., 10, tubeParas, detectorParas };
 	model mod = getTestModel( GLOBAL_CSYS() );
 
+	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
+
+	addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "TestModel", mod, "g", 0.015 );
+
+
+	for( const ray r : testGantry.getBeam() ){
+		
+		rayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
+		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
+		rayVox_Intersection_Result exit = rayVoxIsect.Exit();
+
+		addSingleObject( ax1, "Entrance", entrance.isectPnt, "g" );
+		addSingleObject( ax1, "Exit", exit.isectPnt, "r" );
+	}
+
+
+	closeAxis( ax1 );
+
+
+
+
 	testGantry.radiate( mod );
 	vector<pixel> detectorPixel = testGantry.getPixel();
 	vector<v2> primitiveDetectionResult( detectorPixel.size(), v2{0, 0});
@@ -101,12 +123,6 @@ bool test_modelTransmission( void ){
 
 
 
-	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
-
-	addObject( ax1, "Gantry", testGantry, "r", 0 );
-	addObject( ax1, "TestModel", mod, "g", 0.015 );
-
-	closeAxis( ax1 );
 
 	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
 	addSingleObject( ax2, "Result", primitiveDetectionResult, "PixelNum;Result;Dots");

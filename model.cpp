@@ -179,8 +179,10 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 	// TODO: Optimise 
 
+	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
+
 	// Find entrance in model
-	rayVoxelIntersection modelIsect{ Vox(), tRay };
+	rayVoxelIntersection modelIsect{ Vox(), modelRay };
 
 	rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
 	if( !rayEntrance.hasSolution ) return vector<ray>(0);			// Return if ray does not intersect model
@@ -189,16 +191,15 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	ray currentRay = tRay;											// Current ray in model's coordinate system
 	double currentRayStep = rayEntrance.linPara + rayStepSize;		// Ray parameter at model entrance
 
 	// Get first point inside the model
-	while( !pntInside( currentRay.getPnt( currentRayStep ) ) ){
+	while( !pntInside( modelRay.getPnt( currentRayStep ) ) ){
 		currentRayStep += rayStepSize;
 	}
 
 	// Current point on the ray
-	pnt3 currentPntOnRay = currentRay.getPnt( currentRayStep );		// Point of model entrance
+	pnt3 currentPntOnRay = modelRay.getPnt( currentRayStep );		// Point of model entrance
 
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
@@ -208,7 +209,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 		// Find exit
 
-		rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, currentRay }.Exit();
+		rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, modelRay }.Exit();
 
 		if( !rayExit.hasSolution ){
 			checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
@@ -222,14 +223,14 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 		double distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
 
 		// Update ray properties
-		currentRay.updateProperties( currentVox.Data(), distance );
+		modelRay.updateProperties( currentVox.Data(), distance );
 	
 		// Exit of this voxel is entrance of next voxel
 		rayEntrance = rayExit;
 
 		// "Enter" next voxel
 		currentRayStep += rayStepSize;
-		currentPntOnRay = currentRay.getPnt( currentRayStep );
+		currentPntOnRay = modelRay.getPnt( currentRayStep );
 
 		//TODO: Scattering on voxel surfaces
 		if( enableScattering ){
@@ -240,8 +241,8 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	}
 
 	// New origin "outside" the model to return
-	currentRay.O( currentPntOnRay );
-	rays.push_back( currentRay );
+	modelRay.O( currentPntOnRay );
+	rays.push_back( modelRay );
 
 	return rays;
 }
