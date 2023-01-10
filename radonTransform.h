@@ -35,3 +35,12 @@ class radonCoords{
 	
 };
 
+class radonPoint{
+
+	radonPoint( const radonCoords coordinates_, const double value_ );
+	
+	public:
+	radonCoords coordinates;
+	double value;
+
+};

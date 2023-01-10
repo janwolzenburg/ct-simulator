@@ -70,3 +70,9 @@ radonCoords::radonCoords( const cartCSys* const cSys, const line l )
 
 radonCoords::radonCoords( void ) : radonCoords( 0, 0 )
 {}
+
+
+radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
+	coordinates( coordinates_ ),
+	value( value_ )
+{}
