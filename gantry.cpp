@@ -82,7 +82,6 @@ void gantry::radiate( const model& radModel ) {
 		
 			vector<ray> returnedRays;												// Rays that have been scattered or left the model
 			bool enableScattering = currentLoop < maxRadiationLoops;				// No scattering in last iteration
-			// TODO: Find out if rays get correctly attenuated
 			returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
 			
 			// When current ray does not intersect model add it for detection
@@ -108,10 +107,8 @@ void gantry::radiate( const model& radModel ) {
 
 	// Iterate all rays
 	for( const ray currentRay : raysToDetect ){
-
 		// Detect ray
 		rayDetector.detectRay( currentRay );
-
 	}
 
 }
