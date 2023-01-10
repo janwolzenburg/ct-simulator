@@ -21,6 +21,8 @@
    Definitions
 *********************************************************************/
 
+// TODO: split into files and add comments
+// TODO: create radon transformed from detection result
 
 class radonCoords{
 
@@ -80,6 +82,7 @@ class grid {
 
 class radonTransformed{
 
+	public:
 	radonTransformed( const size_t sizeDistance, const double startDistance, const v2RC resolution_ );
 
 	private:
