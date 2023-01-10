@@ -189,9 +189,14 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 	ray currentRay = tRay;											// Current ray in model's coordinate system
 	double currentRayStep = rayEntrance.linPara + rayStepSize;		// Ray parameter at model entrance
-	
-	pnt3 currentPntOnRay = currentRay.getPnt( currentRayStep );		// Point of model entrance
 
+	// Get first point inside the model
+	while( !pntInside( currentRay.getPnt( currentRayStep ) ) ){
+		currentRayStep += rayStepSize;
+	}
+
+	// Current point on the ray
+	pnt3 currentPntOnRay = currentRay.getPnt( currentRayStep );		// Point of model entrance
 
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
