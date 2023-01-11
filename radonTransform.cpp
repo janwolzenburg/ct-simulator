@@ -79,7 +79,7 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 {}
 
 
-grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ ) :
+grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, double defaultValue ) :
 	size( size_ ),
 	resolution( resolution_ ),
 	start( start_ )
@@ -97,7 +97,7 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ ) :
 	rowPoints =		linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
 	
 	// Create data structure
-	data = vector<vector<double>>( size.c, vector<double>( size.r ));
+	data = vector<vector<double>>( size.c, vector<double>( size.r, defaultValue ));
 }
 
 idx2RC grid::Size( void ) const{
@@ -162,7 +162,8 @@ radonTransformed::radonTransformed( const range distanceRange, const v2RC resolu
 						(size_t) ( ( distanceRange.end - distanceRange.start ) / resolution_.r ) + 1 },
 				v2RC{	0., 
 						distanceRange.start },
-				resolution_ )
+				resolution_, 
+				0. )
 {
 
 }

@@ -52,7 +52,7 @@ class radonPoint{
 class grid {
 
 	public:
-	grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ );
+	grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, double defaultValue = 0 );
 
 	idx2RC Size( void ) const;
 	v2RC Start( void ) const;
