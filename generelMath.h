@@ -101,6 +101,9 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
 Fpos( T a );
 
+template <typename T>
+typename std::enable_if_t<std::is_integral_v<T>, T>
+FOdd( T a );
 
 
 /*********************************************************************

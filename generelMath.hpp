@@ -33,3 +33,9 @@ typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fpos( T a ){
 	if( a <= (T) 0 ) return (T) 1;
 	return a;
 }
+
+template <typename T>
+typename std::enable_if_t<std::is_integral_v<T>, T>  FOdd( T a ){
+	if( a % 2 == 0 ) return a + 1;
+	return a;
+}
