@@ -101,7 +101,7 @@ string getObjectString<grid>( const grid data, const bool image ){
 
 		for( size_t row = 0; row < data.Size().r; row++ ){
 			for( size_t column = 0; column < data.Size().c; column++ ){
-				str += to_string( data( idx2RC{ column, row } ) ) + ",";
+				str += to_string( data( idx2CR{ column, row } ) ) + ",";
 			}
 		}
 		str.pop_back();
@@ -115,11 +115,11 @@ string getObjectString<grid>( const grid data, const bool image ){
 		for( size_t row = 0; row < data.Size().r; row++ ){
 			for( size_t column = 0; column < data.Size().c; column++ ){
 
-				v2RC coordinates = data.getCoordinates( idx2RC{ column, row });
+				v2CR coordinates = data.getCoordinates( idx2CR{ column, row });
 
 				XValues.push_back( coordinates.c );
 				YValues.push_back( coordinates.r );
-				DataValues.push_back( data( idx2RC{ column, row } ) );
+				DataValues.push_back( data( idx2CR{ column, row } ) );
 
 			}
 		}
