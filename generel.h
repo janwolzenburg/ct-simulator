@@ -28,6 +28,8 @@ using std::cerr; using std::endl;
 	Definitions
  *********************************************************************/
 
+ // TODO: split into definition and implementation - and comment
+
 /*!
  * @brief Class for 2D indices
 */
