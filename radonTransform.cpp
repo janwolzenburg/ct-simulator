@@ -155,6 +155,15 @@ double& grid::operator()( const v2RC coordinates ){
 	return this->operator()( getIndex( coordinates ) );
 }
 
+v2RC grid::getCoordinates( const idx2RC index ) const{
+
+	if( !checkIndex( index) ) return v2RC{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
+
+	double column = columnPoints.at( index.c );
+	double row = rowPoints.at( index.r );
+
+	return v2RC{ column, row };
+}
 
 
 radonTransformed::radonTransformed( const range distanceRange, const v2RC resolution_ ) :

@@ -66,6 +66,8 @@ class grid {
 
 	idx2RC getIndex( const v2RC coordinate ) const;
 
+	v2RC getCoordinates( const idx2RC index ) const;
+
 	double operator()( const v2RC index ) const;
 
 	double& operator()( const v2RC index );
