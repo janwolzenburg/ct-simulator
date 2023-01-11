@@ -78,7 +78,7 @@ class detector {
 
 	size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
 
-	v2RC pxSize;								/*!<Size of one pixel*/
+	v2CR pxSize;								/*!<Size of one pixel*/
 
 	double radius;								/*!<Radius of arc*/
 		

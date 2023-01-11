@@ -52,27 +52,27 @@ class radonPoint{
 class grid {
 
 	public:
-	grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, double defaultValue = 0 );
+	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue = 0 );
 
-	grid( const range columnRange, const range rowRange, const v2RC resolution_, double defaultValue = 0);
+	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0);
 
-	idx2RC Size( void ) const;
-	v2RC Start( void ) const;
-	v2RC Resolution( void ) const;
+	idx2CR Size( void ) const;
+	v2CR Start( void ) const;
+	v2CR Resolution( void ) const;
 
-	bool checkIndex( const idx2RC index ) const;
+	bool checkIndex( const idx2CR index ) const;
 
-	double operator()( const idx2RC index ) const;
+	double operator()( const idx2CR index ) const;
 
-	double& operator()( const idx2RC index );
+	double& operator()( const idx2CR index );
 
-	idx2RC getIndex( const v2RC coordinate ) const;
+	idx2CR getIndex( const v2CR coordinate ) const;
 
-	v2RC getCoordinates( const idx2RC index ) const;
+	v2CR getCoordinates( const idx2CR index ) const;
 
-	double operator()( const v2RC index ) const;
+	double operator()( const v2CR index ) const;
 
-	double& operator()( const v2RC index );
+	double& operator()( const v2CR index );
 
 
 	private:
@@ -80,9 +80,9 @@ class grid {
 
 	private:
 
-	idx2RC size;
-	v2RC start;
-	v2RC resolution;
+	idx2CR size;
+	v2CR start;
+	v2CR resolution;
 
 	vector<double> columnPoints;
 	vector<double> rowPoints;
@@ -94,7 +94,7 @@ class grid {
 class radonTransformed{
 
 	public:
-	radonTransformed( const range distanceRange, const v2RC resolution_ );
+	radonTransformed( const range distanceRange, const v2CR resolution_ );
 
 	grid Data( void ) const;
 

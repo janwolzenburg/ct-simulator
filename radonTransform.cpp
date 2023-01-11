@@ -79,7 +79,7 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 {}
 
 
-grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, double defaultValue ) :
+grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue ) :
 	size( size_ ),
 	resolution( resolution_ ),
 	start( start_ )
@@ -87,12 +87,12 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, doubl
 	fillVectors( defaultValue );
 }
 
-grid::grid( const range columnRange, const range rowRange, const v2RC resolution_, double defaultValue ) : 
-	size(		idx2RC{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.c ) + 1,
+grid::grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue ) : 
+	size(		idx2CR{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.c ) + 1,
 						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.r ) + 1 } ),
-	start(		v2RC{	columnRange.start,
+	start(		v2CR{	columnRange.start,
 						rowRange.start } ),
-	resolution(	v2RC{	( columnRange.end - start.c ) / (double) ( size.c - 1 ),
+	resolution(	v2CR{	( columnRange.end - start.c ) / (double) ( size.c - 1 ),
 						( rowRange.end    - start.r ) / (double) ( size.r - 1) } )
 
 	
@@ -118,19 +118,19 @@ void grid::fillVectors( const double defaultValue ){
 	data = vector<vector<double>>( size.c, vector<double>( size.r, defaultValue ) );
 }
 
-idx2RC grid::Size( void ) const{
+idx2CR grid::Size( void ) const{
 	return size;
 }
 
-v2RC grid::Start( void ) const{
+v2CR grid::Start( void ) const{
 	return start;
 }
 
-v2RC grid::Resolution( void ) const{
+v2CR grid::Resolution( void ) const{
 	return resolution;
 }
 
-bool grid::checkIndex( const idx2RC index ) const{
+bool grid::checkIndex( const idx2CR index ) const{
 	
 	if( index.r >= size.r || index.c >= size.c ){
 		std::cerr << "Invalid grid index!";
@@ -140,21 +140,21 @@ bool grid::checkIndex( const idx2RC index ) const{
 }
 
 
-double& grid::operator()( const idx2RC index ){
+double& grid::operator()( const idx2CR index ){
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
 	return data.at( index.c ).at( index.r );
 }
 
-double grid::operator()( const idx2RC index ) const{
+double grid::operator()( const idx2CR index ) const{
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
 	return data.at( index.c ).at( index.r );
 }
 
-idx2RC grid::getIndex( const v2RC coordinates ) const{
+idx2CR grid::getIndex( const v2CR coordinates ) const{
 
-	idx2RC index;
+	idx2CR index;
 
 	index.c = (size_t) floor( ( coordinates.c - start.c ) / resolution.c + 0.5 );
 	index.r = (size_t) floor( ( coordinates.r - start.r ) / resolution.r + 0.5 );
@@ -165,26 +165,26 @@ idx2RC grid::getIndex( const v2RC coordinates ) const{
 	return index;
 }
 
-double grid::operator()( const v2RC coordinates ) const{
+double grid::operator()( const v2CR coordinates ) const{
 	return this->operator()( getIndex( coordinates ) );
 }
 
-double& grid::operator()( const v2RC coordinates ){
+double& grid::operator()( const v2CR coordinates ){
 	return this->operator()( getIndex( coordinates ) );
 }
 
-v2RC grid::getCoordinates( const idx2RC index ) const{
+v2CR grid::getCoordinates( const idx2CR index ) const{
 
-	if( !checkIndex( index) ) return v2RC{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
+	if( !checkIndex( index) ) return v2CR{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
 
 	double column = columnPoints.at( index.c );
 	double row = rowPoints.at( index.r );
 
-	return v2RC{ column, row };
+	return v2CR{ column, row };
 }
 
 
-radonTransformed::radonTransformed( const range distanceRange, const v2RC resolution_ ) :
+radonTransformed::radonTransformed( const range distanceRange, const v2CR resolution_ ) :
 	dataGrid(
 		range{ 0., PI },
 		distanceRange,

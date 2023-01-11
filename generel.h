@@ -71,10 +71,10 @@ class v3{
 };
 
 
-class idx2RC{
+class idx2CR{
 	public:
-	idx2RC( const size_t c_, const size_t r_ ) : c( c_ ), r( r_ ){};
-	idx2RC( void ) : idx2RC( 0, 0 ){};
+	idx2CR( const size_t c_, const size_t r_ ) : c( c_ ), r( r_ ){};
+	idx2CR( void ) : idx2CR( 0, 0 ){};
 	size_t c = 0;
 	size_t r = 0;
 };
@@ -82,10 +82,10 @@ class idx2RC{
 /*!
  * @brief Class for table
 */
-class v2RC {
+class v2CR {
 	public:
-	v2RC(const double c_, const double r_) : c(c_), r(r_) {};
-	v2RC(void) : v2RC(0, 0) {};
+	v2CR(const double c_, const double r_) : c(c_), r(r_) {};
+	v2CR(void) : v2CR(0, 0) {};
 	double c = 0;
 	double r = 0;
 };

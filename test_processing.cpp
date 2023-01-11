@@ -26,7 +26,7 @@ bool test_radonTransform( void ){
 	range distanceRange{ -25., 25 };
 	double distanceResolution = 4;
 
-	radonTransformed test_Sinogram{ distanceRange, v2RC{ PI / 26, distanceResolution }};
+	radonTransformed test_Sinogram{ distanceRange, v2CR{ PI / 26, distanceResolution }};
 
 	ofstream ax1 = openAxis( path( "./test_radonTransform.txt" ), true );
 
