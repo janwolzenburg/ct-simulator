@@ -22,6 +22,7 @@
   Implementations
 *********************************************************************/
 
+// TODO: add calculation of signal parameters
 detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter ) :
 	cSys( cSys_ ),
 	columns( Fpos( parameter.columns ) ),

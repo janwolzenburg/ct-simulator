@@ -92,6 +92,8 @@ class detector {
 
 	double radius;								/*!<Radius of arc*/
 		
+	detectorParameterSignal signalParameters;
+
 	bool structured;							/*!<Anti scatter structure*/
 
 };
