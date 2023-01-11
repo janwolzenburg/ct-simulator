@@ -97,8 +97,8 @@ bool test_modelTransmission( void ){
 		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
 		rayVox_Intersection_Result exit = rayVoxIsect.Exit();
 
-		addSingleObject( ax1, "Entrance", entrance.isectPnt, "g" );
-		addSingleObject( ax1, "Exit", exit.isectPnt, "r" );
+		addSingleObject( ax1, "Entrance", entrance.isectPnt, string{ "g" } );
+		addSingleObject( ax1, "Exit", exit.isectPnt, string{ "r" } );
 	}
 
 
@@ -117,7 +117,7 @@ bool test_modelTransmission( void ){
 	}	
 
 	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
-	addSingleObject( ax2, "Result", primitiveDetectionResult, "PixelNum;Result;Dots");
+	addSingleObject( ax2, "Result", primitiveDetectionResult, string{ "PixelNum;Result;Dots" });
 	closeAxis( ax2 );
 
 	return true;

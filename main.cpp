@@ -19,7 +19,7 @@ using std::cerr;  using std::endl;
 */
 int main( void ){
 
-	if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
+	//if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
 
 	//if( !test_tube() ) cerr << "Test for xRay tube failed!";
 
@@ -29,7 +29,9 @@ int main( void ){
 
 	//if( !test_testModel() ) cerr << "Test for test model failed!";
 
-	if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
+	//if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
+
+	if( !test_radonTransform() ) cerr << "Test for radon transformed failed!";
 
 	return 0;
 }

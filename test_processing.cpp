@@ -14,6 +14,7 @@
 *********************************************************************/
 #include "test_processing.h"
 #include "radonTransform.h"
+#include "plotting.h"
 
 
 /*********************************************************************
@@ -26,6 +27,12 @@ bool test_radonTransform( void ){
 	double distanceResolution = 4;
 
 	radonTransformed test_Sinogram{ distanceRange, v2RC{ PI / 26, distanceResolution }};
+
+	ofstream ax1 = openAxis( path( "./test_radonTransform.txt" ), true );
+
+	addSingleObject( ax1, "Sinogram", test_Sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+
+	closeAxis( ax1 );
 
 	return true;
 }
