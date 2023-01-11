@@ -39,7 +39,6 @@ struct detectorParameter{
 };
 
 
-
 /*!
  * @brief Class for ray detector
 */

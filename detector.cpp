@@ -22,7 +22,7 @@
   Implementations
 *********************************************************************/
 
-detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameter parameter ) :
+detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter ) :
 	cSys( cSys_ ),
 	columns( Fpos( parameter.columns ) ),
 	pxSize( v2CR{ parameter.colSize, parameter.rowSize } ),

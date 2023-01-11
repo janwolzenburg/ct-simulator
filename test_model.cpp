@@ -75,7 +75,7 @@ bool test_modelTransmission( void ){
 							.anodeCurrent_A = 0.2,
 							.anodeAtomicNumber = 74 };
 
-	detectorParameter detectorParas{ .columns = 25,
+	detectorParameterPhysical detectorParas{ .columns = 25,
 										.rowSize = 10,
 										.colSize = 20,
 										.structured = false };

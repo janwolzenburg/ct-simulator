@@ -22,7 +22,7 @@
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ ) :
+gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameterPhysical detectorParameters_ ) :
 
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),

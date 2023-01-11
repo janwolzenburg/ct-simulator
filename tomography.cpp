@@ -15,11 +15,23 @@
 #include "tomography.h"
 
 
+
 /*********************************************************************
    Implemnetations
 *********************************************************************/
 
 
+
 radonTransformed tomography::recordSlice( void ){
+
+	radonTransformed sinogram{  };
+
+	gantry.reset();
+
+
+	gantry.radiate( model );
+	vector<pixel> detectionPixel = gantry.getPixel();
+
+	
 
 }

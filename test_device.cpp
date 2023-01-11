@@ -47,7 +47,7 @@ bool test_tube(void) {
 
 bool test_detector(void) {
 
-	detectorParameter detectorParas{	.columns = 11,
+	detectorParameterPhysical detectorParas{	.columns = 11,
 										.rowSize = 2,
 										.colSize = 2,
 										.structured = false };
@@ -73,7 +73,7 @@ bool test_gantry( void ){
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 
-	detectorParameter detectorParas{	.columns = 51,
+	detectorParameterPhysical detectorParas{	.columns = 51,
 										.rowSize = 5,
 										.colSize = 10,
 										.structured = false };

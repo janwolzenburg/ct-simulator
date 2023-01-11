@@ -45,7 +45,7 @@ class gantry {
 	 * @param tubeParameters_ Parameter of xRay tube
 	 * @param detectorParameters_ Parameter of xRay detector
 	*/
-	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ );
+	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameterPhysical detectorParameters_ );
 
 	/*!
 	 * @brief Get all rays from tube
@@ -86,6 +86,10 @@ class gantry {
 	void reset( void );
 
 	vector<pixel> getPixel( void ) const;
+
+	range getDetector( void ) const;
+
+	v2CR getResolution( void ) const;
 
 
 	private:
