@@ -25,6 +25,12 @@
  * @brief Class describing a right-handed cartesian coordinate system
 */
 class primitiveCartCSys : virtual public mathObj{
+	
+	public:
+	primitiveVec3 O( void ) const;
+	primitiveVec3 Ex( void ) const;
+	primitiveVec3 Ey( void ) const;
+	primitiveVec3 Ez( void ) const;
 
 	protected:
 
@@ -63,7 +69,6 @@ class primitiveCartCSys : virtual public mathObj{
 	 * @param phi Rotation angle
 	*/
 	MATH_ERR rotateM( const primitiveVec3 n, const double phi );
-
 
 	protected:
 	primitiveVec3 origin;		/*!< Origin point */

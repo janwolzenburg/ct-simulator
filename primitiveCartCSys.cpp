@@ -24,6 +24,22 @@
 	primitiveCartCSys implementation
 */
 
+primitiveVec3 primitiveCartCSys::O( void ) const{
+	return origin;
+}
+
+primitiveVec3 primitiveCartCSys::Ex( void ) const{
+	return ex;
+}
+
+primitiveVec3 primitiveCartCSys::Ey( void ) const{
+	return ey;
+}
+
+primitiveVec3 primitiveCartCSys::Ez( void ) const{
+	return ez;
+}
+
 primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_ )
 	: origin( origin_ ),
 	ex( ex_ ),
