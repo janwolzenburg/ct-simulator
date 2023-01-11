@@ -1,4 +1,3 @@
-#pragma once
 /*********************************************************************
  * @file   test_processing.cpp
  * @brief  Tests Implementation
