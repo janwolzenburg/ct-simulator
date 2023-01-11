@@ -18,7 +18,7 @@ using std::vector;
 
 #include <string>
 using std::string;
-
+using std::to_string;
 
 
 
@@ -71,6 +71,8 @@ class v3{
 
 class idx2RC{
 	public:
+	idx2RC( const size_t c_, const size_t r_ ) : c( c_ ), r( r_ ){};
+	idx2RC( void ) : idx2RC( 0, 0 ){};
 	size_t c = 0;
 	size_t r = 0;
 };
