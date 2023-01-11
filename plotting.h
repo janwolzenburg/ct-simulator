@@ -39,6 +39,9 @@ template<class C, typename T>
 string getObjectString( const C object, const T additional );
 
 template<class C>
+void addSingleObject( ofstream& axis, const string name, const C object );
+
+template<class C>
 void addSingleObject( ofstream& axis, const string name, const C object, const string parameter );
 
 template<class C, typename T>

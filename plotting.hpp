@@ -20,6 +20,13 @@
 	 implementations
   *********************************************************************/
 
+template<class C>
+void addSingleObject<C>( ofstream& axis, const string name, const C object ){
+
+	axis << name;
+	axis << ": " << getObjectString( object ) << '\n';
+
+}
 
 template<class C>
 void addSingleObject<C>( ofstream& axis, const string name, const C object, const string parameter ){
