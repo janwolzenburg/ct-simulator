@@ -82,11 +82,14 @@ class gantry {
 	 * @param radModel Model to radiate
 	*/
 	void radiate( const model& radModel ) ;
-
+	
+	// TODO: comment
 	void reset( void );
 
 	vector<pixel> getPixel( void ) const;
 
+
+	// TODO: implement
 	range getDetector( void ) const;
 
 	v2CR getResolution( void ) const;

@@ -24,7 +24,7 @@
 
 radonTransformed tomography::recordSlice( void ){
 
-	radonTransformed sinogram{  };
+	//radonTransformed sinogram{  };
 
 	gantry.reset();
 
@@ -32,6 +32,7 @@ radonTransformed tomography::recordSlice( void ){
 	gantry.radiate( model );
 	vector<pixel> detectionPixel = gantry.getPixel();
 
+	// TODO: get sinogram from radiation resul
 	
 
 }

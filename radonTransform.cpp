@@ -22,7 +22,7 @@
   Implementations
 *********************************************************************/
 
-
+// TODO: add comments
 
 radonCoords::radonCoords( const double theta_, const double distance_ ) : 
 	theta( theta_ ), distance( distance_ )

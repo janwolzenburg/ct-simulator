@@ -21,6 +21,7 @@
    Definitions
 *********************************************************************/
 
+// TODO: add comments
 class tomography{
 
 	public:
