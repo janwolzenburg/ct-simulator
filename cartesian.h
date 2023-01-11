@@ -215,6 +215,7 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	MATH_ERR rotateM( const line l, const double phi );
 
+	primitiveCartCSys getPrimitive( void ) const;
 
 	private:
 	const cartCSys* parent;		/*!<Pointer to parent system*/

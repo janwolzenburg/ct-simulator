@@ -205,3 +205,8 @@ mathObj::MATH_ERR cartCSys::rotateM( const line l, const double phi ){
 
 	return errCode;
 }
+
+
+primitiveCartCSys cartCSys::getPrimitive( void ) const{
+	return (primitiveCartCSys) *this;
+}
