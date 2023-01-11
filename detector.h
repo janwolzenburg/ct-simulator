@@ -71,6 +71,9 @@ class detector {
 	*/
 	void detectRay( const ray r );
 
+	range getDistanceRange( void ) const;
+
+	v2CR getResolution( void ) const;
 
 	private:
 	cartCSys* cSys;								/*!<Local coordinate system*/
