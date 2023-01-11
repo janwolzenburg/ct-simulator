@@ -198,3 +198,8 @@ radonTransformed::radonTransformed( const range distanceRange, const v2CR resolu
 grid radonTransformed::Data( void ) const{
 	return dataGrid;
 }
+
+
+void radonTransformed::assignData( const radonPoint data ){
+	dataGrid( v2CR{ data.coordinates.theta, data.coordinates.distance }) = data.value;
+}
