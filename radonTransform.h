@@ -89,6 +89,8 @@ class radonTransformed{
 	public:
 	radonTransformed( const range distanceRange, const v2RC resolution_ );
 
+	grid Data( void ) const;
+
 	private:
 	grid dataGrid;
 };

@@ -167,3 +167,7 @@ radonTransformed::radonTransformed( const range distanceRange, const v2RC resolu
 {
 
 }
+
+grid radonTransformed::Data( void ) const{
+	return dataGrid;
+}
