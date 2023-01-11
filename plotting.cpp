@@ -13,6 +13,9 @@
 
 #include "plotting.h"
 #include "gantry.h"
+#include "radonTransform.h"
+
+
 
 
   /*********************************************************************
@@ -69,7 +72,7 @@ string getObjectString<vector<v2>>( const vector<v2> data ){
 	string str = "plot ";
 
 	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
-		str += std::to_string( valIt->x );
+		str += to_string( valIt->x );
 
 		if( valIt < data.cend() - 1 ) str += ',';
 	}
@@ -77,7 +80,7 @@ string getObjectString<vector<v2>>( const vector<v2> data ){
 	str += ";";
 
 	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
-		str += std::to_string( valIt->y );
+		str += to_string( valIt->y );
 
 		if( valIt < data.cend() - 1 ) str += ',';
 	}
@@ -85,6 +88,24 @@ string getObjectString<vector<v2>>( const vector<v2> data ){
 	
 	return str;
 
+}
+
+template<>
+string getObjectString<grid>( const grid data ){
+
+	string str = "image ";
+
+	str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
+	str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
+
+	for( size_t row = 0; row < data.Size().r; row++ ){
+		for( size_t column = 0; column < data.Size().c; column++ ){
+			str += to_string( data( idx2RC{ column, row } ) ) + ",";
+		}
+	}
+	str.pop_back();
+
+	return str;
 }
 
 template<>
@@ -117,7 +138,7 @@ template<>
 void addObject<model, double>( std::ofstream& axis, std::string name, model mod, std::string parameter, double threshold ){
 	vox modVox = mod.Vox();
 	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
-		addSingleObject( axis, "modelFace" + std::to_string( toUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
+		addSingleObject( axis, "modelFace" + to_string( toUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
 	}
 
 	for( size_t iX = 0; iX < mod.NumVox().x; iX++ ){
@@ -125,7 +146,7 @@ void addObject<model, double>( std::ofstream& axis, std::string name, model mod,
 			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
 				vox voxel = mod.getVoxel( idx3{ iX, iY, iZ } );
 				if( voxel.Data().k >= (double) threshold ){
-					addSingleObject( axis, "voxel(" + std::to_string( iX ) + "," + std::to_string( iY ) + "," + std::to_string( iZ ) + ")", voxel.getCenter(), parameter );
+					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.getCenter(), parameter );
 				}
 			}
 		}
