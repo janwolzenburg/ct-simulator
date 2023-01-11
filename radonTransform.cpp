@@ -87,7 +87,7 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, doubl
 	fillVectors( defaultValue );
 }
 
-grid::grid( const range columnRange, const range rowRange, const v2RC resolution_, double defaultValue = 0 ) : 
+grid::grid( const range columnRange, const range rowRange, const v2RC resolution_, double defaultValue ) : 
 	size(		idx2RC{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.c ) + 1,
 						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.r ) + 1 } ),
 	start(		v2RC{	columnRange.start,
@@ -185,12 +185,12 @@ v2RC grid::getCoordinates( const idx2RC index ) const{
 
 
 radonTransformed::radonTransformed( const range distanceRange, const v2RC resolution_ ) :
-	dataGrid(	idx2RC{ (size_t) ( PI / resolution_.c ) + 1,
-						(size_t) ( ( distanceRange.end - distanceRange.start ) / resolution_.r ) + 1 },
-				v2RC{	0., 
-						distanceRange.start },
-				resolution_, 
-				0. )
+	dataGrid(
+		range{ 0., PI },
+		distanceRange,
+		resolution_,
+		0.
+	)
 {
 
 }
