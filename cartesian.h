@@ -217,6 +217,8 @@ class cartCSys : private primitiveCartCSys {
 
 	primitiveCartCSys getPrimitive( void ) const;
 
+	void setPrimitive( const primitiveCartCSys primitiveCSys );
+
 	private:
 	const cartCSys* parent;		/*!<Pointer to parent system*/
 	string name;				/*!<Name of system*/

@@ -210,3 +210,13 @@ mathObj::MATH_ERR cartCSys::rotateM( const line l, const double phi ){
 primitiveCartCSys cartCSys::getPrimitive( void ) const{
 	return (primitiveCartCSys) *this;
 }
+
+void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){
+
+	this->origin = primitiveCSys.O();
+	this->ex = primitiveCSys.Ex();
+	this->ey = primitiveCSys.Ey();
+	this->ez = primitiveCSys.Ez();
+
+
+}
