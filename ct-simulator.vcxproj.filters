@@ -165,6 +165,9 @@
     <ClInclude Include="radonTransform.h">
       <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="test_processing.h">
+      <Filter>Headerdateien\Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -246,6 +249,9 @@
       <Filter>Quelldateien\Physics\Model</Filter>
     </ClCompile>
     <ClCompile Include="radonTransform.cpp">
+      <Filter>Quelldateien\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="test_processing.cpp">
       <Filter>Quelldateien\Processing</Filter>
     </ClCompile>
   </ItemGroup>
