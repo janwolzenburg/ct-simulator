@@ -27,7 +27,7 @@
 /*!
  * @brief Struct for detector parameters
 */
-struct detectorParameter{
+struct detectorParameterPhysical{
 
 	size_t columns;		/*!<Amount of columns*/
 			
@@ -35,6 +35,14 @@ struct detectorParameter{
 	double colSize;		/*!<Size of pixel in direction of columns*/
 
 	bool structured;	/*!<Flag for anti scatter structure*/
+
+};
+
+struct detectorParameterSignal{
+
+	double deltaTheta;
+	double deltaDistance;
+	range distanceRange;
 
 };
 
@@ -51,7 +59,7 @@ class detector {
 	 * @param cSys_ Coordinate system
 	 * @param parameter Detector parameter
 	*/
-	detector(cartCSys* const cSys_, const double radius_, const detectorParameter parameter );
+	detector(cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter );
 
 	/*!
 	 * @brief Get all detector pixel
