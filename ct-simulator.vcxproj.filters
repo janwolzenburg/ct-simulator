@@ -168,6 +168,9 @@
     <ClInclude Include="test_processing.h">
       <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="tomography.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -253,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="test_processing.cpp">
       <Filter>Quelldateien\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="tomography.cpp">
+      <Filter>Quelldateien\Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
