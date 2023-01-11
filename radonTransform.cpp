@@ -14,7 +14,7 @@
 
 #include "vectorAlgorithm.h"
 #include "radonTransform.h"
-
+#include "generelMath.h"
 
 
 
@@ -100,6 +100,18 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ ) :
 	data = vector<vector<double>>( size.c, vector<double>( size.r ));
 }
 
+idx2RC grid::Size( void ) const{
+	return size;
+}
+
+v2RC grid::Start( void ) const{
+	return start;
+}
+
+v2RC grid::Resolution( void ) const{
+	return resolution;
+}
+
 bool grid::checkIndex( const idx2RC index ) const{
 	
 	if( index.r >= size.r || index.c >= size.c ){
@@ -145,11 +157,11 @@ double& grid::operator()( const v2RC coordinates ){
 
 
 
-radonTransformed::radonTransformed( const size_t sizeDistance, const double startDistance, const v2RC resolution_ ) :
-	dataGrid(	idx2RC{ .c = (size_t) ( PI / resolution_.c ) + 1,
-						.r = sizeDistance }, 
+radonTransformed::radonTransformed( const range distanceRange, const v2RC resolution_ ) :
+	dataGrid(	idx2RC{ (size_t) ( PI / resolution_.c ) + 1,
+						(size_t) ( ( distanceRange.end - distanceRange.start ) / resolution_.r ) + 1 },
 				v2RC{	0., 
-						startDistance },
+						distanceRange.start },
 				resolution_ )
 {
 

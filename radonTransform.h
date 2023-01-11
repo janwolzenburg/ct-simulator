@@ -54,6 +54,10 @@ class grid {
 	public:
 	grid( const idx2RC size_, const v2RC start_, const v2RC resolution_ );
 
+	idx2RC Size( void ) const;
+	v2RC Start( void ) const;
+	v2RC Resolution( void ) const;
+
 	bool checkIndex( const idx2RC index ) const;
 
 	double operator()( const idx2RC index ) const;
@@ -83,7 +87,7 @@ class grid {
 class radonTransformed{
 
 	public:
-	radonTransformed( const size_t sizeDistance, const double startDistance, const v2RC resolution_ );
+	radonTransformed( const range distanceRange, const v2RC resolution_ );
 
 	private:
 	grid dataGrid;
