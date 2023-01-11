@@ -83,10 +83,12 @@ class gantry {
 	*/
 	void radiate( const model& radModel ) ;
 
-
+	void reset( void );
 
 	private:
+	
 	cartCSys* cSys;			/*!<Coordinate system*/
+	primitiveCartCSys resetPostition;
 	double radius;			/*!<Radius of gantry*/
 
 	tube raySource;			/*!<xRay source*/

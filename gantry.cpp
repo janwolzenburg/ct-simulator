@@ -25,6 +25,7 @@
 gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameter detectorParameters_ ) :
 
 	cSys( cSys_ ),
+	resetPostition( cSys->getPrimitive() ),
 	radius( Fpos( radius_ ) ),
 	raySource{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay tube" ), tubeParameters_ },
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
@@ -110,5 +111,12 @@ void gantry::radiate( const model& radModel ) {
 		// Detect ray
 		rayDetector.detectRay( currentRay );
 	}
+
+}
+
+void gantry::reset( void ){
+	
+	cSys->setPrimitive( resetPostition );
+	rayDetector.reset();
 
 }
