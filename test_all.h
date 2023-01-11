@@ -11,3 +11,4 @@
 #include "tests_linear_algebra.h"
 #include "test_device.h"
 #include "test_model.h"
+#include "test_processing.h"

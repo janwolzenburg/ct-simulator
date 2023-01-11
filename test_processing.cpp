@@ -27,5 +27,5 @@ bool test_radonTransform( void ){
 
 	radonTransformed test_Sinogram{ distanceRange, v2RC{ PI / 26, distanceResolution }};
 
-
+	return true;
 }
