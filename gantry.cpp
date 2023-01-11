@@ -120,3 +120,7 @@ void gantry::reset( void ){
 	rayDetector.reset();
 
 }
+
+vector<pixel> gantry::getPixel( void ) const{
+	return rayDetector.getPixel();
+}

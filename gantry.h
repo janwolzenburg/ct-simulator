@@ -85,6 +85,9 @@ class gantry {
 
 	void reset( void );
 
+	vector<pixel> getPixel( void ) const;
+
+
 	private:
 	
 	cartCSys* cSys;			/*!<Coordinate system*/
