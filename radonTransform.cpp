@@ -84,6 +84,24 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, doubl
 	resolution( resolution_ ),
 	start( start_ )
 {
+	fillVectors( defaultValue );
+}
+
+grid::grid( const range columnRange, const range rowRange, const v2RC resolution_, double defaultValue = 0 ) : 
+	size(		idx2RC{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.c ) + 1,
+						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.r ) + 1 } ),
+	start(		v2RC{	columnRange.start,
+						rowRange.start } ),
+	resolution(	v2RC{	( columnRange.end - start.c ) / (double) ( size.c - 1 ),
+						( rowRange.end    - start.r ) / (double) ( size.r - 1) } )
+
+	
+
+{
+	fillVectors( defaultValue );
+}
+
+void grid::fillVectors( const double defaultValue ){
 	// Force size and resolution to positive value 
 	size.c = Fpos( size.c );
 	size.r = Fpos( size.r );
@@ -93,11 +111,11 @@ grid::grid( const idx2RC size_, const v2RC start_, const v2RC resolution_, doubl
 
 
 	// Fill axis
-	columnPoints =	linearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
-	rowPoints =		linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
-	
+	columnPoints = linearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
+	rowPoints = linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
+
 	// Create data structure
-	data = vector<vector<double>>( size.c, vector<double>( size.r, defaultValue ));
+	data = vector<vector<double>>( size.c, vector<double>( size.r, defaultValue ) );
 }
 
 idx2RC grid::Size( void ) const{
