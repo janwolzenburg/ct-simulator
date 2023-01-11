@@ -20,6 +20,8 @@ using std::vector;
 using std::string;
 using std::to_string;
 
+#include <iostream>
+using std::cerr; using std::endl;
 
 
  /*********************************************************************
@@ -89,6 +91,14 @@ class v2RC {
 };
 
 class range{
+	public:
+	range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
+		if( start >= end ){ 
+			cerr << "Start must be less than end!" << endl;
+			start = end - 1.;
+		}
+	};
+	range( void ) : range( 0, 1 ){};
 	double start;
 	double end;
 };
