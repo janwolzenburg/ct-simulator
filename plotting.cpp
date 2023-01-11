@@ -91,21 +91,50 @@ string getObjectString<vector<v2>>( const vector<v2> data ){
 }
 
 template<>
-string getObjectString<grid>( const grid data ){
+string getObjectString<grid>( const grid data, const bool image ){
 
-	string str = "image ";
+	if( image ){
 
-	str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
-	str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
+		string str = "image ";
+		str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
+		str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
 
-	for( size_t row = 0; row < data.Size().r; row++ ){
-		for( size_t column = 0; column < data.Size().c; column++ ){
-			str += to_string( data( idx2RC{ column, row } ) ) + ",";
+		for( size_t row = 0; row < data.Size().r; row++ ){
+			for( size_t column = 0; column < data.Size().c; column++ ){
+				str += to_string( data( idx2RC{ column, row } ) ) + ",";
+			}
 		}
+		str.pop_back();
+		return str;
 	}
-	str.pop_back();
+	else{
+		string str = "plotS ";
 
-	return str;
+		vector<double> XValues, YValues, DataValues;
+
+		for( size_t row = 0; row < data.Size().r; row++ ){
+			for( size_t column = 0; column < data.Size().c; column++ ){
+
+				v2RC coordinates = data.getCoordinates( idx2RC{ column, row });
+
+				XValues.push_back( coordinates.c );
+				YValues.push_back( coordinates.r );
+				DataValues.push_back( data( idx2RC{ column, row } ) );
+
+			}
+		}
+
+		for( auto xVal : XValues ) str += to_string( xVal ) + ',';
+		str.back() = ';';
+
+		for( auto yVal : YValues ) str += to_string( yVal ) + ',';
+		str.back() = ';';
+
+		for( auto dataVal : DataValues ) str += to_string( dataVal ) + ',';
+		str.pop_back();
+
+		return str;
+	}
 }
 
 template<>
