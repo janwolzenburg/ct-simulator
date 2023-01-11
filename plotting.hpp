@@ -36,11 +36,6 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object, cons
 
 }
 
-template<class C, typename T>
-void addSingleObject<C, T>( ofstream& axis, const string name, const C object, const T additional ){
-	axis << name;
-	axis << ": " << getObjectString( object, additional ) << '\n';
-}
 
 template<class C, typename T>
 void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string parameter, const T additional) {
