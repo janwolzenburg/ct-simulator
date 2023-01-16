@@ -14,7 +14,7 @@
 *********************************************************************/
 
 #include "line.h"
-
+#include "detector.h"
 
 
 /*********************************************************************
@@ -94,7 +94,7 @@ class grid {
 class radonTransformed{
 
 	public:
-	radonTransformed( const range distanceRange, const v2CR resolution_ );
+	radonTransformed( const detectorParameterSignal detectorParameter );
 
 	grid Data( void ) const;
 

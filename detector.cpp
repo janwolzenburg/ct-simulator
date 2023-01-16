@@ -78,6 +78,9 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 
 	}
 
+
+	// TODO: Acquire signal parameters from pixel collection
+
 }
 
 
@@ -111,4 +114,9 @@ void detector::detectRay( const ray r ){
 		//TODO: Check anti scattering structuring
 
 	}
+}
+
+
+detectorParameterSignal detector::getSignalParameter( void ) const{
+	return signalParameters;
 }

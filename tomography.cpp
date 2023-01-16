@@ -24,7 +24,7 @@
 
 radonTransformed tomography::recordSlice( void ){
 
-	//radonTransformed sinogram{  };
+	radonTransformed sinogram{ gantry.getDetectorParameter() };
 
 	gantry.reset();
 

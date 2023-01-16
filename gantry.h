@@ -89,10 +89,9 @@ class gantry {
 	vector<pixel> getPixel( void ) const;
 
 
-	// TODO: implement
-	range getDetector( void ) const;
+	detectorParameterSignal getDetectorParameter( void ) const;
 
-	v2CR getResolution( void ) const;
+	//v2CR getResolution( void ) const;
 
 
 	private:

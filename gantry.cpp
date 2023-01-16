@@ -124,3 +124,8 @@ void gantry::reset( void ){
 vector<pixel> gantry::getPixel( void ) const{
 	return rayDetector.getPixel();
 }
+
+
+detectorParameterSignal gantry::getDetectorParameter( void ) const{
+	return rayDetector.getSignalParameter();
+}
