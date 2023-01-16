@@ -102,6 +102,7 @@ class radonTransformed{
 	*/
 	void assignData( const radonPoint data );
 
+
 	private:
 	grid dataGrid;		/*!<The data grid*/
 };
