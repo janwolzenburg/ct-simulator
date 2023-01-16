@@ -29,6 +29,17 @@ void pixel::reset( void ){
 }
 
 
+double pixel::getSinogramValue( void ) const{
+
+	double intensitySum = 0;
+
+	// Iterate all detected ray properties
+	for( rayProperties currentRay : detectedRayProperties ){
+		intensitySum += currentRay.powerSpectrum.getSum();
+	}
+	return intensitySum;
+}
+
 
 /*
 	rayPix_Intersection implementation

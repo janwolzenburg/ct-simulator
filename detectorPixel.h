@@ -34,6 +34,7 @@ class pixel : public surfLim{
 	*/
 	void reset( void );
 
+	double getSinogramValue( void ) const;
 
 	public:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
