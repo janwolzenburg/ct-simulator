@@ -121,9 +121,6 @@ void gantry::reset( void ){
 
 }
 
-vector<pixel> gantry::getPixel( void ) const{
-	return rayDetector.getPixel();
-}
 
 
 detectorRadonParameter gantry::getDetectorParameter( const cartCSys* const cSys ) const{

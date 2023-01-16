@@ -86,7 +86,7 @@ class gantry {
 	// TODO: comment
 	void reset( void );
 
-	vector<pixel> getPixel( void ) const;
+	//vector<pixel> getPixel( void ) const;
 
 	cartCSys* CSys( void ) const;
 
