@@ -35,6 +35,7 @@ radonTransformed tomography::recordSlice( void ){
 
 
 
+	// TODO:Check filling of sinogram
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 
 		gantry.radiate( model );
