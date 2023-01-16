@@ -40,6 +40,7 @@ class radonCoords{
 
 class radonPoint{
 
+	public:
 	radonPoint( const radonCoords coordinates_, const double value_ );
 	
 	public:
