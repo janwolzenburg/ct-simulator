@@ -29,22 +29,34 @@ radonTransformed tomography::recordSlice( void ){
 
 	this->radonCSys->setPrimitive( gantry.CSys()->getPrimitive() );
 
-	radonTransformed sinogram{ gantry.getDetectorParameter( this->radonCSys ) };
+	detectorRadonParameter radonParameter = gantry.getDetectorParameter( this->radonCSys );
 
-	gantry.radiate( model );
-	vector<pixel> detectionPixel = gantry.getPixel();
-
-	// TODO: Rotate gantry
+	radonTransformed sinogram{ radonParameter };
 
 
-	// Iterate all pixel
-	for( pixel currentPixel : detectionPixel ){
 
-		radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
+	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 
-		radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getSinogramValue() };
-		sinogram.assignData( newRadonPoint );
+		gantry.radiate( model );
+		vector<pixel> detectionPixel = gantry.getPixel();
 
+		// TODO: Rotate gantry
+
+
+		// Iterate all pixel
+		for( pixel currentPixel : detectionPixel ){
+
+			radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
+
+			radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getSinogramValue() };
+			sinogram.assignData( newRadonPoint );
+
+		}
+
+		gantry.rotateCounterClockwise( radonParameter.deltaTheta );
 	}
+
+
+
 	return sinogram;
 }

@@ -43,7 +43,7 @@ struct detectorRadonParameter{
 	double deltaTheta = PI / 16;
 	double deltaDistance = 1;
 	range distanceRange;
-
+	size_t framesToFillSinogram = 1;
 };
 
 

@@ -130,7 +130,9 @@ detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys 
 	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );
 	parameter.distanceRange = range{ firstPixel.distance, lastPixel.distance };
 
-	
+
+	size_t framesPerRotation = (size_t) ( 2. * floor( PI / parameter.deltaTheta ) );
+	parameter.framesToFillSinogram = framesPerRotation / 2 + columns - 1;
 
 
 	return parameter;
