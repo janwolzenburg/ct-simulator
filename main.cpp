@@ -31,7 +31,9 @@ int main( void ){
 
 	//if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
 
-	if( !test_radonTransform() ) cerr << "Test for radon transformed failed!";
+	//if( !test_radonTransform() ) cerr << "Test for radon transformed failed!";
+
+	if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	return 0;
 }

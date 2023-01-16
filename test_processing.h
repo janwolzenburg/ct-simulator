@@ -20,3 +20,5 @@
 *********************************************************************/
 
 bool test_radonTransform( void );
+
+bool test_Tomography( void );
