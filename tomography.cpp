@@ -40,8 +40,6 @@ radonTransformed tomography::recordSlice( void ){
 		gantry.radiate( model );
 		vector<pixel> detectionPixel = gantry.getPixel();
 
-		// TODO: Rotate gantry
-
 
 		// Iterate all pixel
 		for( pixel currentPixel : detectionPixel ){

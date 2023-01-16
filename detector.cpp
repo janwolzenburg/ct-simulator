@@ -128,7 +128,9 @@ detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys 
 	// TODO: Acquire signal parameters from pixel collection
 	parameter.deltaTheta = abs( secondPixel.theta - firstPixel.theta );
 	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );
-	parameter.distanceRange = range{ firstPixel.distance, lastPixel.distance };
+	
+	if( firstPixel.distance < lastPixel.distance ) parameter.distanceRange = range{ firstPixel.distance, lastPixel.distance };
+	else parameter.distanceRange = range{ lastPixel.distance, firstPixel.distance };
 
 
 	size_t framesPerRotation = (size_t) ( 2. * floor( PI / parameter.deltaTheta ) );
