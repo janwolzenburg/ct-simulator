@@ -40,8 +40,8 @@ struct detectorParameterPhysical{
 
 struct detectorRadonParameter{
 
-	double deltaTheta;
-	double deltaDistance;
+	double deltaTheta = PI / 16;
+	double deltaDistance = 1;
 	range distanceRange;
 
 };

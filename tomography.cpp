@@ -35,6 +35,16 @@ radonTransformed tomography::recordSlice( void ){
 	vector<pixel> detectionPixel = gantry.getPixel();
 
 	// TODO: get sinogram from radiation result
-	
 
+
+	// Iterate all pixel
+	for( pixel currentPixel : detectionPixel ){
+
+		radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
+
+		radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getSinogramValue() };
+		sinogram.assignData( newRadonPoint );
+
+	}
+	return sinogram;
 }
