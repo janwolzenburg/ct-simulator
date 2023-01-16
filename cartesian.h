@@ -78,7 +78,7 @@ class cartCSys : private primitiveCartCSys {
 	 * @return Pointer to new coordiante system with same baseCartSystem and parent as this
 	*/
 	cartCSys* createCopy( const string newName ) const;
-
+	
 	/*!
 	 * @brief Add coordinate system to this system's tree
 	 * @param origin_ O of coordinate system

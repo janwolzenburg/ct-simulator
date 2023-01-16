@@ -94,7 +94,7 @@ class grid {
 class radonTransformed{
 
 	public:
-	radonTransformed( const detectorParameterSignal detectorParameter );
+	radonTransformed( const detectorRadonParameter detectorParameter );
 
 	grid Data( void ) const;
 

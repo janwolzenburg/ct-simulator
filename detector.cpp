@@ -15,7 +15,7 @@
 #include "vec3D.h"
 
 #include "detector.h"
-
+#include "radonTransform.h"
 
 
 /*********************************************************************
@@ -79,7 +79,6 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	}
 
 
-	// TODO: Acquire signal parameters from pixel collection
 
 }
 
@@ -117,6 +116,22 @@ void detector::detectRay( const ray r ){
 }
 
 
-detectorParameterSignal detector::getSignalParameter( void ) const{
-	return signalParameters;
+detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys ) const{
+	
+	detectorRadonParameter parameter;
+	
+
+	radonCoords firstPixel{ cSys, allPixel.front().NormalLine()};
+	radonCoords secondPixel{ cSys, ( allPixel.begin() + 1 )->NormalLine()};
+	radonCoords lastPixel{ cSys, allPixel.back().NormalLine()};
+
+	// TODO: Acquire signal parameters from pixel collection
+	parameter.deltaTheta = abs( secondPixel.theta - firstPixel.theta );
+	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );
+	parameter.distanceRange = range{ firstPixel.distance, lastPixel.distance };
+
+	
+
+
+	return parameter;
 }

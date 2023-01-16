@@ -88,8 +88,9 @@ class gantry {
 
 	vector<pixel> getPixel( void ) const;
 
+	cartCSys* CSys( void ) const;
 
-	detectorParameterSignal getDetectorParameter( void ) const;
+	detectorRadonParameter getDetectorParameter( const cartCSys* const cSys ) const;
 
 	//v2CR getResolution( void ) const;
 

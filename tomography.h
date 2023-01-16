@@ -27,7 +27,8 @@ class tomography{
 	public:
 	tomography( const gantry gantry_, model& model_ ) : 
 	gantry(gantry_),
-	model( model_ )
+	model( model_ ),
+	radonCSys( gantry.CSys()->createCopy( "Radon System" ))
 	{};
 
 	radonTransformed recordSlice( void );
@@ -35,6 +36,6 @@ class tomography{
 	private:
 	gantry gantry;
 	model& model;
-
+	cartCSys* radonCSys;
 };
 

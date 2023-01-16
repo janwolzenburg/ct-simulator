@@ -24,15 +24,17 @@
 
 radonTransformed tomography::recordSlice( void ){
 
-	radonTransformed sinogram{ gantry.getDetectorParameter() };
-
 	gantry.reset();
+	// TODO: Translate in z direction
 
+	this->radonCSys->setPrimitive( gantry.CSys()->getPrimitive() );
+
+	radonTransformed sinogram{ gantry.getDetectorParameter( this->radonCSys ) };
 
 	gantry.radiate( model );
 	vector<pixel> detectionPixel = gantry.getPixel();
 
-	// TODO: get sinogram from radiation resul
+	// TODO: get sinogram from radiation result
 	
 
 }

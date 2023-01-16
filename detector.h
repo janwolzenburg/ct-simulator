@@ -38,7 +38,7 @@ struct detectorParameterPhysical{
 
 };
 
-struct detectorParameterSignal{
+struct detectorRadonParameter{
 
 	double deltaTheta;
 	double deltaDistance;
@@ -78,7 +78,7 @@ class detector {
 	*/
 	void detectRay( const ray r );
 
-	detectorParameterSignal getSignalParameter( void ) const;
+	detectorRadonParameter getSignalParameter( const cartCSys* const cSys ) const;
 	//range getDistanceRange( void ) const;
 
 	//v2CR getResolution( void ) const;
@@ -93,7 +93,7 @@ class detector {
 
 	double radius;								/*!<Radius of arc*/
 		
-	detectorParameterSignal signalParameters;
+	//detectorParameterSignal signalParameters;
 
 	bool structured;							/*!<Anti scatter structure*/
 

@@ -184,7 +184,7 @@ v2CR grid::getCoordinates( const idx2CR index ) const{
 }
 
 
-radonTransformed::radonTransformed( const detectorParameterSignal detectorParameter ) :
+radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
 	dataGrid(
 		range{ 0., PI },
 		detectorParameter.distanceRange,
