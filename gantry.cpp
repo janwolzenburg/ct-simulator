@@ -31,25 +31,16 @@ gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAn
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
 	beamAngle( Fpos( beamAngle_ ) ),
 	rayDetector{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ), radius, detectorParameters_ }
-{
-
-	//cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay tube" );
-
-}
+{}
 
 
 vector<ray> gantry::getBeam( void ) const{
-
 	return raySource.getBeam( beamAngle, numRaysInBeam ); 
-
 }
 
 
-
 vector<pixel> gantry::getPixel( void ) const{
-
 	return rayDetector.getPixel();
-
 }
 
 double gantry::Radius( void ) const{
@@ -57,15 +48,11 @@ double gantry::Radius( void ) const{
 }
 
 pnt3 gantry::Center( void ) const{
-
 	return cSys->OPnt();
-
 }
 
 void gantry::rotateCounterClockwise( const double angle ){
-
 	this->cSys->rotateM( cSys->zAxis(), angle );
-
 }
 
 void gantry::radiate( const model& radModel ) {
@@ -116,7 +103,10 @@ void gantry::radiate( const model& radModel ) {
 
 void gantry::reset( void ){
 	
+	// Set to initial position
 	cSys->setPrimitive( resetPostition );
+
+	// Reset detector
 	rayDetector.reset();
 
 }
@@ -128,6 +118,6 @@ detectorRadonParameter gantry::getDetectorParameter( const cartCSys* const cSys 
 }
 
 
-cartCSys* gantry::CSys( void ) const{
+const cartCSys* gantry::CSys( void ) const{
 	return cSys;
 }

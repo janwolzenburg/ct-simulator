@@ -29,7 +29,7 @@ void pixel::reset( void ){
 }
 
 
-double pixel::getSinogramValue( void ) const{
+double pixel::getRadonValue( void ) const{
 
 	double intensitySum = 0;
 
@@ -39,6 +39,17 @@ double pixel::getSinogramValue( void ) const{
 	}
 	return intensitySum;
 }
+
+
+
+/*
+	rayPix_Intersection_Result implementation
+*/
+
+rayPix_Intersection_Result::rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult ) : 
+	linSurf_Intersection_Result( linSurfResult )
+{}
+
 
 
 /*

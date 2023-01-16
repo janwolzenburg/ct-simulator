@@ -21,41 +21,56 @@
 *********************************************************************/
 
 
+tomography::tomography( const gantry gantry_, model& model_ ) :
+	Gantry( gantry_ ),
+	Model( model_ ),
+	radonCSys( Gantry.CSys()->createCopy( "Radon System" ) )
+{}
+
 
 radonTransformed tomography::recordSlice( void ){
 
-	gantry.reset();
+	// Reset gantry to its initial position
+	Gantry.reset();
 	// TODO: Translate in z direction
 
-	this->radonCSys->setPrimitive( gantry.CSys()->getPrimitive() );
+	// Set the radon coordinate system to current gantry postion
+	this->radonCSys->setPrimitive( Gantry.CSys()->getPrimitive() );
 
-	detectorRadonParameter radonParameter = gantry.getDetectorParameter( this->radonCSys );
+	// Get the radon paramters for the detector
+	detectorRadonParameter radonParameter = Gantry.getDetectorParameter( this->radonCSys );
 
+	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
 
-
-
 	// TODO:Check filling of sinogram
+
+	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 
-		gantry.radiate( model );
-		vector<pixel> detectionPixel = gantry.getPixel();
+		// Radiate
+		Gantry.radiate( Model );
+		
+		// Get the detection result
+		vector<pixel> detectionPixel = Gantry.getPixel();
 
 
 		// Iterate all pixel
 		for( pixel currentPixel : detectionPixel ){
 
+			// Get coordinates for pixel
 			radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
 
-			radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getSinogramValue() };
+			// Get the radon point
+			radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
+			
+			// Assign the data to sinogram
 			sinogram.assignData( newRadonPoint );
-
 		}
 
-		gantry.rotateCounterClockwise( radonParameter.deltaTheta );
+		// Rotate gantry
+		Gantry.rotateCounterClockwise( radonParameter.deltaTheta );
 	}
-
-
 
 	return sinogram;
 }

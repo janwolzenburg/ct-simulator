@@ -171,6 +171,9 @@
     <ClInclude Include="tomography.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="grid.h">
+      <Filter>Headerdateien\Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="tomography.cpp">
       <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Quelldateien\Processing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

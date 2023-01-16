@@ -17,25 +17,34 @@
 #include "radonTransform.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
 
-// TODO: add comments
+/*!
+ * @brief Class for computed tomography
+ * 
+*/
 class tomography{
 
 	public:
-	tomography( const gantry gantry_, model& model_ ) : 
-	gantry(gantry_),
-	model( model_ ),
-	radonCSys( gantry.CSys()->createCopy( "Radon System" ))
-	{};
+	/*!
+	 * @brief Constructor
+	 * @param gantry_ 
+	 * @param model_ 
+	*/
+	tomography( const gantry gantry_, model& model_ );
 
+	/*!
+	 * @brief Record a slice
+	 * @return Radon transformed of model slice
+	*/
 	radonTransformed recordSlice( void );
 
 	private:
-	gantry gantry;
-	model& model;
-	cartCSys* radonCSys;
+	gantry Gantry;				/*!<Gantry*/
+	model& Model;				/*!<Model*/
+	cartCSys* radonCSys;		/*!<Coordinate system to use as reference for radon coordinates calculation*/
 };
 

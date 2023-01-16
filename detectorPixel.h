@@ -34,7 +34,11 @@ class pixel : public surfLim{
 	*/
 	void reset( void );
 
-	double getSinogramValue( void ) const;
+	/*!
+	 * @brief Get the value of radon point from detected ray properties
+	 * @return Value of radon point
+	*/
+	double getRadonValue( void ) const;
 
 	public:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
@@ -49,9 +53,12 @@ class rayPix_Intersection_Result : public linSurf_Intersection_Result{
 
 	using linSurf_Intersection_Result::linSurf_Intersection_Result;
 
-	// TODO: Clean up and refactor ray pixel intersection and heritage
 	public:
-	rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult ) : linSurf_Intersection_Result( linSurfResult ){};
+	/*!
+	 * @brief Constructor
+	 * @param linSurfResult Line surface intersection result
+	*/
+	rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult );
 
 	public:
 	rayProperties rayProps;  /*!< Properties of rays that hit the pixel*/
@@ -78,6 +85,7 @@ class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
 	 * @return Result
 	*/
 	inline rayPix_Intersection_Result Result( void ) const{ return result; };
+
 
 	public:
 	rayPix_Intersection_Result result;			/*!<Result of intersection*/

@@ -156,6 +156,7 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
+    <ClInclude Include="grid.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="intersections.h" />
     <ClInclude Include="line.fwd.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
+    <ClCompile Include="grid.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />

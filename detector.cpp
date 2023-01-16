@@ -18,11 +18,13 @@
 #include "radonTransform.h"
 
 
+
 /*********************************************************************
   Implementations
 *********************************************************************/
 
-// TODO: add calculation of signal parameters
+
+
 detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter ) :
 	cSys( cSys_ ),
 	columns( Fpos( parameter.columns ) ),
@@ -77,9 +79,6 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 		allPixel.at( col ) = px;
 
 	}
-
-
-
 }
 
 
@@ -115,28 +114,28 @@ void detector::detectRay( const ray r ){
 	}
 }
 
-
 detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys ) const{
 	
+	// Parameters of detector in sinogram
 	detectorRadonParameter parameter;
-	
 
-	radonCoords firstPixel{ cSys, allPixel.front().NormalLine()};
-	radonCoords secondPixel{ cSys, ( allPixel.begin() + 1 )->NormalLine()};
-	radonCoords lastPixel{ cSys, allPixel.back().NormalLine()};
+	radonCoords firstPixel{ cSys, allPixel.front().NormalLine()};				// First pixel
+	radonCoords secondPixel{ cSys, ( allPixel.begin() + 1 )->NormalLine()};		// Seconds pixel
+	radonCoords lastPixel{ cSys, allPixel.back().NormalLine()};					// Last pixel
 
-	// TODO: Acquire signal parameters from pixel collection
-	parameter.deltaTheta = abs( secondPixel.theta - firstPixel.theta );
-	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );
+	parameter.deltaTheta = abs( secondPixel.theta - firstPixel.theta );			// Angle resolution
+	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );// Distance resolution
 	
-	if( firstPixel.distance < lastPixel.distance ) parameter.distanceRange = range{ -abs( lastPixel.distance ), abs( lastPixel.distance ) };
+	// Get distance range
+	if( firstPixel.distance > lastPixel.distance ) parameter.distanceRange = range{ -abs( lastPixel.distance ), abs( lastPixel.distance ) };
 	else parameter.distanceRange = range{ -abs( firstPixel.distance ), abs( firstPixel.distance ) };
 
+	// Recalculate the distance range for an odd number of distances in sinogram
 	size_t numDistances = (size_t) ( ( parameter.distanceRange.end - parameter.distanceRange.start ) / parameter.deltaDistance ) + 1;
 	if ( isEven( numDistances ) ) numDistances--;
 	parameter.deltaDistance = ( parameter.distanceRange.end - parameter.distanceRange.start ) / (double) ( numDistances - 1 );
 
-
+	// Calculate the amount of frames necessary to fill sinogram
 	size_t framesPerRotation = (size_t) ( 2. * floor( PI / parameter.deltaTheta ) );
 	parameter.framesToFillSinogram = framesPerRotation / 2 + columns - 1;
 

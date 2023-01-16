@@ -197,7 +197,10 @@ class surfLim : public surf{
 	*/
 	pnt3  getCenter( void ) const;
 
-	//TODO:comment
+	/*!
+	 * @brief Get the surfaces normal as line through its center
+	 * @return Normal line
+	*/
 	line  NormalLine( void ) const;
 
 

@@ -83,28 +83,36 @@ class gantry {
 	*/
 	void radiate( const model& radModel ) ;
 	
-	// TODO: comment
+	/*!
+	 * @brief Reset ganrtry to its initial position
+	*/
 	void reset( void );
 
-	//vector<pixel> getPixel( void ) const;
+	/*!
+	 * @brief Get the coordinate system of gantry
+	 * @return Coordinate system of this gantry
+	*/
+	const cartCSys* CSys( void ) const;
 
-	cartCSys* CSys( void ) const;
-
+	/*!
+	 * @brief Get the detector radon parameters
+	 * @param cSys Reference coordinate system for radon transform
+	 * @return 
+	*/
 	detectorRadonParameter getDetectorParameter( const cartCSys* const cSys ) const;
 
-	//v2CR getResolution( void ) const;
 
 
 	private:
 	
-	cartCSys* cSys;			/*!<Coordinate system*/
-	primitiveCartCSys resetPostition;
-	double radius;			/*!<Radius of gantry*/
+	cartCSys* cSys;						/*!<Coordinate system*/
+	primitiveCartCSys resetPostition;	/*!<Initial position of coordinate system*/
+	double radius;						/*!<Radius of gantry*/
 
-	tube raySource;			/*!<xRay source*/
-	size_t numRaysInBeam;	/*!<Amount of rays in beam*/
-	double beamAngle;		/*!<Beam angle*/
+	tube raySource;						/*!<xRay source*/
+	size_t numRaysInBeam;				/*!<Amount of rays in beam*/
+	double beamAngle;					/*!<Beam angle*/
 
-	detector rayDetector;	/*!<Ray detector*/
+	detector rayDetector;				/*!<Ray detector*/
 
 };

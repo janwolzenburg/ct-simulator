@@ -15,92 +15,93 @@
 
 #include "line.h"
 #include "detector.h"
+#include "grid.h"
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
 
-// TODO: split into files and add comments
-// TODO: create radon transformed from detection result
 
+/*!
+ * @brief Class for radon coordinates
+*/
 class radonCoords{
 
 	public:
+	/*!
+	 * @brief Constructor
+	 * @param theta_ Angle
+	 * @param distance_ Distance
+	*/
 	radonCoords( const double theta_, const double distance_ );
 
+	/*!
+	 * @brief Constructor
+	 * @param cSys Reference coordinate system
+	 * @param l Line
+	*/
 	radonCoords( const cartCSys* const cSys, const line l );
 
+	/*!
+	 * @brief Default constructor
+	*/
 	radonCoords( void );
 
-	double theta = 0;
-	double distance = 0;
+
+	public:
+	double theta = 0;		/*!<Angle*/
+	double distance = 0;	/*!<Distance*/
 	
 };
 
+
+/*!
+ * @brief Radon point
+*/
 class radonPoint{
 
 	public:
+	/*!
+	 * @brief Cosntructor
+	 * @param coordinates_ Coordinates 
+	 * @param value_ Value
+	*/
 	radonPoint( const radonCoords coordinates_, const double value_ );
 	
+
 	public:
-	radonCoords coordinates;
-	double value;
+	radonCoords coordinates;	/*!<Coordiantes*/
+	double value;				/*!<Value*/
 
 };
 
 
-class grid {
-
-	public:
-	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue = 0 );
-
-	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0);
-
-	idx2CR Size( void ) const;
-	v2CR Start( void ) const;
-	v2CR Resolution( void ) const;
-
-	bool checkIndex( const idx2CR index ) const;
-
-	double operator()( const idx2CR index ) const;
-
-	double& operator()( const idx2CR index );
-
-	idx2CR getIndex( const v2CR coordinate ) const;
-
-	v2CR getCoordinates( const idx2CR index ) const;
-
-	double operator()( const v2CR index ) const;
-
-	double& operator()( const v2CR index );
-
-
-	private:
-	void fillVectors( const double defaultValue );
-
-	private:
-
-	idx2CR size;
-	v2CR start;
-	v2CR resolution;
-
-	vector<double> columnPoints;
-	vector<double> rowPoints;
-	vector<vector<double>> data;
-
-};
-
-
+/*!
+ * @brief Class for a radon transformation
+*/
 class radonTransformed{
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param detectorParameter Parameters to get the grid dimension from
+	*/
 	radonTransformed( const detectorRadonParameter detectorParameter );
 
+	/*!
+	 * @brief Get grid data
+	 * @return Grid data
+	*/
 	grid Data( void ) const;
-
+	
+	/*!
+	 * @brief Assign data to grid
+	 * @param data Data point
+	*/
 	void assignData( const radonPoint data );
 
 	private:
-	grid dataGrid;
+	grid dataGrid;		/*!<The data grid*/
 };
