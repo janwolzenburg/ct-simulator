@@ -124,3 +124,9 @@ bool surfLim::parasInBounds( const double a, const double b ) const{
 pnt3 surfLim::getCenter( void ) const{
 	return this->getPnt( ( pAMax + pAMin ) / 2, ( pBMax + pBMin ) / 2 );
 }
+
+line  surfLim::NormalLine( void ) const{
+
+	return line{ this->Normal(), this->getCenter() };
+
+}

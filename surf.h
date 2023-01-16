@@ -197,6 +197,9 @@ class surfLim : public surf{
 	*/
 	pnt3  getCenter( void ) const;
 
+	//TODO:comment
+	line  NormalLine( void ) const;
+
 
 	// Private properties
 	private:
