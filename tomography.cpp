@@ -34,7 +34,7 @@ radonTransformed tomography::recordSlice( void ){
 	gantry.radiate( model );
 	vector<pixel> detectionPixel = gantry.getPixel();
 
-	// TODO: get sinogram from radiation result
+	// TODO: Rotate gantry
 
 
 	// Iterate all pixel
