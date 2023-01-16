@@ -100,7 +100,7 @@ class range{
 			start = end - 1.;
 		}
 	};
-	range( void ) : range( 0, 1 ){};
+	range( void ) : range( 0., 1. ){};
 	double start;
 	double end;
 };
