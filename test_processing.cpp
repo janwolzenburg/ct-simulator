@@ -49,19 +49,27 @@ bool test_Tomography( void ){
 							.anodeCurrent_A = 0.2,
 							.anodeAtomicNumber = 74 };
 
-	detectorParameterPhysical detectorParas{ .columns = 25,
+	detectorParameterPhysical detectorParas{ .columns = 13,
 										.rowSize = 10,
-										.colSize = 20,
+										.colSize = 25,
 										.structured = false };
 
 
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 300., PI / 4., 60, tubeParas, detectorParas };
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 300., PI / 8., 40, tubeParas, detectorParas };
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };
 
+	ofstream ax2 = openAxis( path( "./test_Tomography_gantry.txt" ), true );
+
+	addObject( ax2, "Gantry", testGantry, "r", 0 );
+	addObject( ax2, "TestModel", mod, "g", 0.015 );
+
+	closeAxis( ax2 );
+
 	radonTransformed sinogram = testTomography.recordSlice();
+
 
 	ofstream ax1 = openAxis( path( "./test_Tomography.txt" ), true );
 
