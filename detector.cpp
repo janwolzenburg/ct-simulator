@@ -43,7 +43,7 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	if (isEven(columns)) columns++;
 
 	// Calculate angle delta from pixel size along arc and arc radius 
-	double angleDelta = 2 * atan( pxSize.c / ( 4 * radius ) );
+	double angleDelta = 2 * atan( pxSize.r / ( 4 * radius ) );
 
 	// Calaculate the frames per rotation based on the angle delta. This is the amount of steps necessary for a complete rotation when rotations by angleDelta each step
 	size_t framesPerRotation = (size_t) ( 2. * floor( PI / angleDelta ) );
@@ -52,7 +52,7 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 	angleDelta = 2 * PI / (double) framesPerRotation;
 
 	// So must the pixel size be updated
-	pxSize.c = tan( angleDelta / 2. ) * 4. * radius;
+	pxSize.r = tan( angleDelta / 2. ) * 4. * radius;
 
 	// This is the amount of frames necessary for the first pixel normal to align with the last pixel normal's position in the first frame
 	size_t fprSinogramFilled = framesPerRotation / 2 + columns - 1;
@@ -74,7 +74,7 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
 		// Pixel with given normal vector centered at o + dZ
-		const pixel px{ r1, r2, o,  -pxSize.c / 2, pxSize.c / 2, -pxSize.r / 2, pxSize.r / 2 };
+		const pixel px{ r1, r2, o,  -pxSize.r / 2, pxSize.r / 2, -pxSize.c / 2, pxSize.c / 2 };
 
 		allPixel.at( col ) = px;
 

@@ -24,26 +24,55 @@
    Definitions
 *********************************************************************/
 
+class detectorRadonParameter{
+
+	public:
+	
+	detectorRadonParameter( const idx2CR numberPoints_, const double maxAbsoluteDistance_ ) :
+		numberPoints(  numberPoints_ ),
+		distanceRange( 2. * Fpos( maxAbsoluteDistance_ ) ),
+		resolution{ v2CR{	PI / ( 2. * (double) ( numberPoints.c - 1 ) ), 
+							distanceRange / (double) ( numberPoints.r - 1 ) }},
+		framesToFillSinogram( 3 * numberPoints.c - 3 )
+	{};
+
+	public:
+
+	idx2CR numberPoints;
+	double distanceRange;
+	v2CR resolution;
+	//double deltaTheta;
+	//double deltaDistance;
+	
+	size_t framesToFillSinogram;
+};
+
 /*!
  * @brief Struct for detector parameters
 */
-struct detectorParameterPhysical{
+class detectorParameterPhysical{
 
-	size_t columns;		/*!<Amount of columns*/
-			
+	public:
+	detectorParameterPhysical( const detectorRadonParameter radonParameter, const double radius_, const double colSize_, const bool structured_ ) :
+		numberColumns( radonParameter.numberPoints.r ),
+		radius( radius_ ),
+		angle( 2. *  asin( radonParameter.distanceRange / ( 4. * radius ) )),
+		rowSize( 4. * radius * tan( radonParameter.resolution.c / 2. ) ),
+		colSize( colSize_ ),
+		structured( structured_ )
+	{};
+
+	public:
+
+	size_t numberColumns;		/*!<Amount of columns*/
+
+	double radius;
+	double angle;
 	double rowSize;		/*!<Size of pixel in direction of row*/
 	double colSize;		/*!<Size of pixel in direction of columns*/
 
 	bool structured;	/*!<Flag for anti scatter structure*/
 
-};
-
-struct detectorRadonParameter{
-
-	double deltaTheta = PI / 16;
-	double deltaDistance = 1;
-	range distanceRange;
-	size_t framesToFillSinogram = 1;
 };
 
 
