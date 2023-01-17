@@ -27,6 +27,9 @@
 // TODO: Split implementiation and comment
 // TODO: Maybe encapsulate some physical parameters further
 
+/*!
+ * @brief Class for detector parameters 
+*/
 class detectorRadonParameter{
 
 	public:
@@ -40,7 +43,7 @@ class detectorRadonParameter{
 	{};
 
 	double getRadius( const double angle ) const {
-		return distanceRange / ( 4. * sin( angle / 2 ) );
+		return distanceRange / 2. / ( 2. * sin( angle / 2 ) );
 	};
 
 	double getRowSize( const double radius ) const{
@@ -48,14 +51,10 @@ class detectorRadonParameter{
 	};
 
 	public:
-
-	idx2CR numberPoints;
-	double distanceRange;
-	v2CR resolution;
-	//double deltaTheta;
-	//double deltaDistance;
-	
-	size_t framesToFillSinogram;
+	idx2CR numberPoints;			/*!<Number of points on the axis*/
+	double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
+	v2CR resolution;				/*!Resolution of the axis*/
+	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };
 
 /*!
