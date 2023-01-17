@@ -38,7 +38,7 @@ radonTransformed tomography::recordSlice( void ){
 	this->radonCSys->setPrimitive( Gantry.CSys()->getPrimitive() );
 
 	// Get the radon paramters for the detector
-	detectorRadonParameter radonParameter = Gantry.getDetectorParameter( this->radonCSys );
+	detectorRadonParameter radonParameter = Gantry.getDetectorParameter( );
 
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
@@ -69,7 +69,7 @@ radonTransformed tomography::recordSlice( void ){
 		}
 
 		// Rotate gantry
-		Gantry.rotateCounterClockwise( radonParameter.deltaTheta );
+		Gantry.rotateCounterClockwise( radonParameter.resolution.c );
 	}
 
 	return sinogram;

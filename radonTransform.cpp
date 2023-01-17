@@ -79,9 +79,9 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
 	dataGrid(
-		range{ 0., PI - detectorParameter.deltaTheta },
-		detectorParameter.distanceRange,
-		v2CR{ detectorParameter.deltaTheta, detectorParameter.deltaDistance } ,
+		range{ 0., PI - detectorParameter.resolution.c },
+		range{ -detectorParameter.distanceRange, detectorParameter.distanceRange },
+		v2CR{ detectorParameter.resolution } ,
 		0.
 	)
 {
