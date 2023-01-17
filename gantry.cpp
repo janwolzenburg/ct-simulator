@@ -22,16 +22,19 @@
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameterPhysical detectorParameters_ ) :
+gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorRadonParameter detectorParameters_,
+				size_t numRows_, const double angle_, const double columnSize, const bool structered ) :
 
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
-	radius( Fpos( radius_ ) ),
-	raySource{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay tube" ), tubeParameters_ },
+	//radius( Fpos( radius_ ) ),
+	raySource{ cSys->addCSys( primitiveVec3{ 0, detectorParameters_.getRadius( angle_ ) , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameters_},
+	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  detectorParameters_.getRadius( angle_ ), 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
+					detectorParameters_, numRows_, angle_, columnSize, structered },
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
-	beamAngle( Fpos( beamAngle_ ) ),
-	rayDetector{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ), radius, detectorParameters_ }
-{
+	beamAngle( 1.1 * angle_ ),
+	radius( rayDetector.getPhysicalParameters().radius )
+	{
 	// Align detector - tube axis with x axis
 
 	primitiveCartCSys xAxisALigned{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 0, 1 } };
@@ -119,8 +122,8 @@ void gantry::reset( void ){
 
 
 
-detectorRadonParameter gantry::getDetectorParameter( const cartCSys* const cSys ) const{
-	return rayDetector.getSignalParameter( cSys );
+detectorRadonParameter gantry::getDetectorParameter(void) const{
+	return rayDetector.getSignalParameter( );
 }
 
 

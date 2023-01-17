@@ -36,6 +36,10 @@ class detectorRadonParameter{
 		framesToFillSinogram( 3 * numberPoints.c - 3 )
 	{};
 
+	double getRadius( const double angle ) const {
+		return distanceRange / ( 2. * sin( angle / 2 ) );
+	};
+
 	public:
 
 	idx2CR numberPoints;
@@ -110,7 +114,8 @@ class detector {
 	*/
 	void detectRay( const ray r );
 
-	detectorRadonParameter getSignalParameter( const cartCSys* const cSys ) const;
+	detectorRadonParameter getSignalParameter( void ) const;
+	detectorParameterPhysical getPhysicalParameters( void ) const;
 	//range getDistanceRange( void ) const;
 
 	//v2CR getResolution( void ) const;

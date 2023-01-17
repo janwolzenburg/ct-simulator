@@ -45,7 +45,8 @@ class gantry {
 	 * @param tubeParameters_ Parameter of xRay tube
 	 * @param detectorParameters_ Parameter of xRay detector
 	*/
-	gantry( cartCSys* const cSys_, const double radius_, const double beamAngle_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorParameterPhysical detectorParameters_ );
+	gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorRadonParameter detectorParameters_, 
+			size_t numRows_, const double angle_, const double columnSize, const bool structered );
 
 	/*!
 	 * @brief Get all rays from tube
@@ -99,7 +100,7 @@ class gantry {
 	 * @param cSys Reference coordinate system for radon transform
 	 * @return 
 	*/
-	detectorRadonParameter getDetectorParameter( const cartCSys* const cSys ) const;
+	detectorRadonParameter getDetectorParameter(void) const;
 
 
 
@@ -107,12 +108,13 @@ class gantry {
 	
 	cartCSys* cSys;						/*!<Coordinate system*/
 	primitiveCartCSys resetPostition;	/*!<Initial position of coordinate system*/
-	double radius;						/*!<Radius of gantry*/
 
 	tube raySource;						/*!<xRay source*/
+	detector rayDetector;				/*!<Ray detector*/
+
 	size_t numRaysInBeam;				/*!<Amount of rays in beam*/
 	double beamAngle;					/*!<Beam angle*/
+	double radius;						/*!<Radius of gantry*/
 
-	detector rayDetector;				/*!<Ray detector*/
 
 };

@@ -55,6 +55,8 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter paramete
 
 	// Iterate all columns
 	size_t columns = physicalParameters.numberColumns;
+	v2CR pxSize{ physicalParameters.colSize, physicalParameters.rowSize };
+
 	for (size_t col = 0; col < columns; col++) {
 		double rotAngle = 0;
 
@@ -70,7 +72,6 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter paramete
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
 		// Pixel with given normal vector centered at o + dZ
-		v2CR pxSize { physicalParameters.colSize, physicalParameters.rowSize };
 		const pixel px{ r1, r2, o,    -pxSize.r / 2, pxSize.r / 2, -pxSize.c / 2, pxSize.c / 2 };
 
 		allPixel.at( col ) = px;
@@ -84,13 +85,7 @@ vector<pixel> detector::getPixel(void) const {
 }
 
 void detector::reset( void ){
-
-	for( pixel& currentPixel : allPixel ){
-
-		currentPixel.reset();
-
-	}
-
+	for( pixel& currentPixel : allPixel ) currentPixel.reset();
 }
 
 void detector::detectRay( const ray r ){
@@ -111,7 +106,7 @@ void detector::detectRay( const ray r ){
 	}
 }
 
-detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys ) const{
+detectorRadonParameter detector::getSignalParameter( void ) const{
 	
 	/*
 	// Parameters of detector in sinogram
@@ -139,4 +134,9 @@ detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys 
 	*/
 
 	return radonParameters;// parameter;
+}
+
+
+detectorParameterPhysical detector::getPhysicalParameters( void ) const{
+	return physicalParameters;
 }
