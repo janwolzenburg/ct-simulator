@@ -53,8 +53,9 @@ class detectorRadonParameter{
 class detectorParameterPhysical{
 
 	public:
-	detectorParameterPhysical( const detectorRadonParameter radonParameter, const double radius_, const double colSize_, const bool structured_ ) :
+	detectorParameterPhysical( const detectorRadonParameter radonParameter, size_t numRows_, const double radius_, const double colSize_, const bool structured_ ) :
 		numberColumns( radonParameter.numberPoints.r ),
+		numberRows( numRows_ ),
 		radius( radius_ ),
 		angle( 2. *  asin( radonParameter.distanceRange / ( 4. * radius ) )),
 		rowSize( 4. * radius * tan( radonParameter.resolution.c / 2. ) ),
@@ -65,6 +66,7 @@ class detectorParameterPhysical{
 	public:
 
 	size_t numberColumns;		/*!<Amount of columns*/
+	size_t numberRows;
 
 	double radius;
 	double angle;
@@ -88,7 +90,7 @@ class detector {
 	 * @param cSys_ Coordinate system
 	 * @param parameter Detector parameter
 	*/
-	detector(cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter );
+	detector(cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double radius_, const double columnSize, const bool structered );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -116,15 +118,16 @@ class detector {
 	cartCSys* cSys;								/*!<Local coordinate system*/
 	vector<pixel> allPixel;						/*!<Pixels of detector*/
 
-	size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
+	//size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
 
-	v2CR pxSize;								/*!<Size of one pixel*/
+	//v2CR pxSize;								/*!<Size of one pixel*/
 
-	double radius;								/*!<Radius of arc*/
-		
-	//detectorParameterSignal signalParameters;
+	//double radius;								/*!<Radius of arc*/
+	
+	detectorParameterPhysical physicalParameters;
+	detectorRadonParameter radonParameters;
 
-	bool structured;							/*!<Anti scatter structure*/
+	//bool structured;							/*!<Anti scatter structure*/
 
 };
 

@@ -25,40 +25,36 @@
 
 
 
-detector::detector( cartCSys* const cSys_, const double radius_, const detectorParameterPhysical parameter ) :
+detector::detector( cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double radius_, const double columnSize, const bool structered ) :
 	cSys( cSys_ ),
-	columns( Fpos( parameter.columns ) ),
-	pxSize( v2CR{ parameter.colSize, parameter.rowSize } ),
-	radius( Fpos( radius_ )),
-	structured( parameter.structured )
+	radonParameters( parameter ),
+	physicalParameters( parameter, numRows_, radius_, columnSize, structered )
 {
-	pxSize.r = Fpos( pxSize.r );
-	pxSize.c = Fpos( pxSize.c );
-	
 	// Initialise vectors
-	allPixel = vector<pixel>( columns );
+	allPixel = vector<pixel>( physicalParameters.numberColumns );
 
 
 	// Amount of detectors in one row must be odd
-	if (isEven(columns)) columns++;
+	//if (isEven(columns)) columns++;
 
 	// Calculate angle delta from pixel size along arc and arc radius 
-	double angleDelta = 2 * atan( pxSize.r / ( 4 * radius ) );
+	double angleDelta =  parameter.resolution.c;// 2 * atan( pxSize.r / ( 4 * radius ) );
 
 	// Calaculate the frames per rotation based on the angle delta. This is the amount of steps necessary for a complete rotation when rotations by angleDelta each step
-	size_t framesPerRotation = (size_t) ( 2. * floor( PI / angleDelta ) );
+	//size_t framesPerRotation = (size_t) ( 2. * floor( PI / angleDelta ) );
 
 	// Since the frames per rotation is a whole number - angleDelta must be corrected
-	angleDelta = 2 * PI / (double) framesPerRotation;
+	//angleDelta = 2 * PI / (double) framesPerRotation;
 
 	// So must the pixel size be updated
-	pxSize.r = tan( angleDelta / 2. ) * 4. * radius;
+	//pxSize.r = tan( angleDelta / 2. ) * 4. * radius;
 
 	// This is the amount of frames necessary for the first pixel normal to align with the last pixel normal's position in the first frame
-	size_t fprSinogramFilled = framesPerRotation / 2 + columns - 1;
+	//size_t fprSinogramFilled = framesPerRotation / 2 + columns - 1;
 
 
 	// Iterate all columns
+	size_t columns = physicalParameters.numberColumns;
 	for (size_t col = 0; col < columns; col++) {
 		double rotAngle = 0;
 
@@ -70,11 +66,12 @@ detector::detector( cartCSys* const cSys_, const double radius_, const detectorP
 		
 		const uvec3 n{ cSys->EyVec().rotZ(rotAngle) };		// Normal vector for row pixel in one column
 		const uvec3 r2 = cSys->EzVec();						// z-axis is r2 of surface
-		const pnt3 o = n * (2 * radius);					// Origin point of surface
+		const pnt3 o = n * ( 2 * physicalParameters.radius );					// Origin point of surface
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
 		// Pixel with given normal vector centered at o + dZ
-		const pixel px{ r1, r2, o,  -pxSize.r / 2, pxSize.r / 2, -pxSize.c / 2, pxSize.c / 2 };
+		v2CR pxSize { physicalParameters.colSize, physicalParameters.rowSize };
+		const pixel px{ r1, r2, o,    -pxSize.r / 2, pxSize.r / 2, -pxSize.c / 2, pxSize.c / 2 };
 
 		allPixel.at( col ) = px;
 
@@ -116,6 +113,7 @@ void detector::detectRay( const ray r ){
 
 detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys ) const{
 	
+	/*
 	// Parameters of detector in sinogram
 	detectorRadonParameter parameter;
 
@@ -138,7 +136,7 @@ detectorRadonParameter detector::getSignalParameter( const cartCSys* const cSys 
 	// Calculate the amount of frames necessary to fill sinogram
 	size_t framesPerRotation = (size_t) ( 2. * floor( PI / parameter.deltaTheta ) );
 	parameter.framesToFillSinogram = framesPerRotation / 2 + columns - 1;
+	*/
 
-
-	return parameter;
+	return radonParameters;// parameter;
 }

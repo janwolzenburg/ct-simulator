@@ -48,9 +48,9 @@ bool test_tube(void) {
 bool test_detector(void) {
 
 	detectorParameterPhysical detectorParas{	.columns = 11,
-										.rowSize = 2,
-										.colSize = 2,
-										.structured = false };
+												.rowSize = 2,
+												.colSize = 2,
+												.structured = false };
 
 	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"), 50, detectorParas };
 
