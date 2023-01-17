@@ -25,10 +25,10 @@
 
 
 
-detector::detector( cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double radius_, const double columnSize, const bool structered ) :
+detector::detector( cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double angle_, const double columnSize, const bool structered ) :
 	cSys( cSys_ ),
 	radonParameters( parameter ),
-	physicalParameters( parameter, numRows_, radius_, columnSize, structered )
+	physicalParameters( parameter, numRows_, angle_, columnSize, structered )
 {
 	// Initialise vectors
 	allPixel = vector<pixel>( physicalParameters.numberColumns );

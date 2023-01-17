@@ -53,11 +53,11 @@ class detectorRadonParameter{
 class detectorParameterPhysical{
 
 	public:
-	detectorParameterPhysical( const detectorRadonParameter radonParameter, size_t numRows_, const double radius_, const double colSize_, const bool structured_ ) :
+	detectorParameterPhysical( const detectorRadonParameter radonParameter, size_t numRows_, const double angle_, const double colSize_, const bool structured_ ) :
 		numberColumns( radonParameter.numberPoints.r ),
 		numberRows( numRows_ ),
-		radius( radius_ ),
-		angle( 2. *  asin( radonParameter.distanceRange / ( 4. * radius ) )),
+		angle( angle_ ),
+		radius( radonParameter.distanceRange / ( 2. * sin( angle / 2 ) )),
 		rowSize( 4. * radius * tan( radonParameter.resolution.c / 2. ) ),
 		colSize( colSize_ ),
 		structured( structured_ )
@@ -68,8 +68,9 @@ class detectorParameterPhysical{
 	size_t numberColumns;		/*!<Amount of columns*/
 	size_t numberRows;
 
-	double radius;
+
 	double angle;
+	double radius;
 	double rowSize;		/*!<Size of pixel in direction of row*/
 	double colSize;		/*!<Size of pixel in direction of columns*/
 
@@ -90,7 +91,7 @@ class detector {
 	 * @param cSys_ Coordinate system
 	 * @param parameter Detector parameter
 	*/
-	detector(cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double radius_, const double columnSize, const bool structered );
+	detector(cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double angle_, const double columnSize, const bool structered );
 
 	/*!
 	 * @brief Get all detector pixel

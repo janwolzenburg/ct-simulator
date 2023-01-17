@@ -45,14 +45,24 @@ bool test_tube(void) {
 	return true;
 }
 
+detector getTestDetector( void ){
+	// 64 x 32 points in radon space
+	// 500mm measure field
+	detectorRadonParameter radonParameter{
+											idx2CR{ 64, 32 },
+											500
+	};
+
+	// 50 degree angle
+	detector testDetector{ GLOBAL_CSYS()->createCopy( "Detector system" ), radonParameter, 1, 2*PI*( 50./360. ), 1, false };
+
+	return testDetector;
+}
+
 bool test_detector(void) {
 
-	detectorParameterPhysical detectorParas{	.columns = 11,
-												.rowSize = 2,
-												.colSize = 2,
-												.structured = false };
 
-	detector test_detector{ GLOBAL_CSYS()->createCopy("Detector system"), 50, detectorParas };
+	detector test_detector = getTestDetector();
 
 	vector<pixel> allPixel = test_detector.getPixel();
 
@@ -73,10 +83,7 @@ bool test_gantry( void ){
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 
-	detectorParameterPhysical detectorParas{	.columns = 51,
-										.rowSize = 5,
-										.colSize = 10,
-										.structured = false };
+	
 
 
 	gantry testGantry{ GLOBAL_CSYS()->createCopy("Gantry system"), 300., PI/4., 10, tubeParas, detectorParas };
