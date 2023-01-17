@@ -27,7 +27,7 @@ using std::vector;
 
 constexpr size_t maxRadiationLoops = 16;
 
-
+// TODO: Clean up construction
 /*!
  * @brief Class for a gantry with xRay source and detector
 */

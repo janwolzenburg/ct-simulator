@@ -24,6 +24,9 @@
    Definitions
 *********************************************************************/
 
+// TODO: Split implementiation and comment
+// TODO: Maybe encapsulate some physical parameters further
+
 class detectorRadonParameter{
 
 	public:
