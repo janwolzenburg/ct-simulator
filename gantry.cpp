@@ -34,12 +34,11 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubePa
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
 	beamAngle( 1.01 * angle_ ),
 	radius( rayDetector.getPhysicalParameters().radius )
-	{
-	// Align detector - tube axis with x axis
 
+{
+	// Align detector - tube axis with x axis
 	primitiveCartCSys xAxisALigned{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 0, 1 } };
 	cSys->setPrimitive( xAxisALigned );
-
 }
 
 
@@ -117,15 +116,11 @@ void gantry::reset( void ){
 
 	// Reset detector
 	rayDetector.reset();
-
 }
-
-
 
 detectorRadonParameter gantry::getDetectorParameter(void) const{
 	return rayDetector.getSignalParameter( );
 }
-
 
 const cartCSys* gantry::CSys( void ) const{
 	return cSys;
