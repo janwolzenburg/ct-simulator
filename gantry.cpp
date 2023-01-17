@@ -31,7 +31,13 @@ gantry::gantry( cartCSys* const cSys_, const double radius_, const double beamAn
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
 	beamAngle( Fpos( beamAngle_ ) ),
 	rayDetector{ cSys->addCSys( primitiveVec3{ 0, radius, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ), radius, detectorParameters_ }
-{}
+{
+	// Align detector - tube axis with x axis
+
+	primitiveCartCSys xAxisALigned{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 0, 1 } };
+	cSys->setPrimitive( xAxisALigned );
+
+}
 
 
 vector<ray> gantry::getBeam( void ) const{

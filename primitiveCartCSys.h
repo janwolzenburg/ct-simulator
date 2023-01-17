@@ -27,12 +27,12 @@
 class primitiveCartCSys : virtual public mathObj{
 	
 	public:
+	// TODO: Comments
 	primitiveVec3 O( void ) const;
 	primitiveVec3 Ex( void ) const;
 	primitiveVec3 Ey( void ) const;
 	primitiveVec3 Ez( void ) const;
 
-	protected:
 
 	/*!
 	 * @brief Constructor
@@ -49,6 +49,8 @@ class primitiveCartCSys : virtual public mathObj{
 	 * @return String with coordinate system's data
 	*/
 	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+
+	protected:
 
 	/*!
 	 * @brief Set origin
