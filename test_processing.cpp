@@ -18,6 +18,7 @@
 #include "test_model.h"
 #include "model.h"
 #include "cSysTree.h"
+#include "test_device.h"
 
 
 /*********************************************************************
@@ -29,9 +30,12 @@ bool test_radonTransform( void ){
 	range distanceRange{ -25., 25 };
 	double distanceResolution = 4;
 
-	detectorRadonParameter radonParameters{ PI / 26, distanceResolution, distanceRange, 2 };
+	detectorRadonParameter radonParameter{
+											idx2CR{ 64, 32 },
+											500
+	};
 
-	radonTransformed test_Sinogram{ radonParameters };
+	radonTransformed test_Sinogram{ radonParameter };
 
 	ofstream ax1 = openAxis( path( "./test_radonTransform.txt" ), true );
 
@@ -44,23 +48,7 @@ bool test_radonTransform( void ){
 
 bool test_Tomography( void ){
 
-
-	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
-							.anodeCurrent_A = 0.2,
-							.anodeAtomicNumber = 74 };
-
-	detectorParameterPhysical detectorParas{ .columns = 31,
-										.rowSize = 25,
-										.colSize = 25,
-										.structured = false };
-
-
-
-	double measureField = 500;
-	double detectorAngle = 2.*PI*( 50./360. );
-	double gantryRadius = measureField/2/sin(  detectorAngle/2 );
-
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ),gantryRadius , 1.1 * detectorAngle, 40, tubeParas, detectorParas};
+	gantry testGantry = getTestGantry();
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };

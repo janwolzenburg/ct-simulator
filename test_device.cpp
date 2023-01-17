@@ -76,6 +76,21 @@ bool test_detector(void) {
 
 }
 
+gantry getTestGantry( void ){
+	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
+								.anodeCurrent_A = 0.2,
+								.anodeAtomicNumber = 74 };
+
+
+	detectorRadonParameter radonParameter{
+											idx2CR{ 64, 32 },
+											500
+	};
+
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 100, tubeParas, radonParameter, 1, 2 * PI * ( 50. / 360. ), 1, false };
+
+	return testGantry;
+}
 
 bool test_gantry( void ){
 
@@ -84,9 +99,12 @@ bool test_gantry( void ){
 								.anodeAtomicNumber = 74 };
 
 	
+	detectorRadonParameter radonParameter{
+											idx2CR{ 64, 32 },
+											500
+	};
 
-
-	gantry testGantry{ GLOBAL_CSYS()->createCopy("Gantry system"), 300., PI/4., 10, tubeParas, detectorParas };
+	gantry testGantry = getTestGantry();
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 
