@@ -49,14 +49,18 @@ bool test_Tomography( void ){
 							.anodeCurrent_A = 0.2,
 							.anodeAtomicNumber = 74 };
 
-	detectorParameterPhysical detectorParas{ .columns = 13,
-										.rowSize = 10,
+	detectorParameterPhysical detectorParas{ .columns = 31,
+										.rowSize = 25,
 										.colSize = 25,
 										.structured = false };
 
 
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 300., PI / 8., 40, tubeParas, detectorParas };
+	double measureField = 500;
+	double detectorAngle = 2.*PI*( 50./360. );
+	double gantryRadius = measureField/2/sin(  detectorAngle/2 );
+
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ),gantryRadius , 1.1 * detectorAngle, 40, tubeParas, detectorParas};
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };
@@ -68,12 +72,15 @@ bool test_Tomography( void ){
 
 	closeAxis( ax2 );
 
-	radonTransformed sinogram = testTomography.recordSlice();
+	//radonTransformed sinogram = testTomography.recordSlice();
+
+
+
 
 
 	ofstream ax1 = openAxis( path( "./test_Tomography.txt" ), true );
 
-	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+	//addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
 	closeAxis( ax1 );
 
