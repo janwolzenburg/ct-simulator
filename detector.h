@@ -40,7 +40,11 @@ class detectorRadonParameter{
 	{};
 
 	double getRadius( const double angle ) const {
-		return distanceRange / ( 2. * sin( angle / 2 ) );
+		return distanceRange / ( 4. * sin( angle / 2 ) );
+	};
+
+	double getRowSize( const double radius ) const{
+		return 4. * radius * tan( resolution.c / 2. );
 	};
 
 	public:
@@ -64,8 +68,8 @@ class detectorParameterPhysical{
 		numberColumns( radonParameter.numberPoints.r ),
 		numberRows( numRows_ ),
 		angle( angle_ ),
-		radius( radonParameter.distanceRange / ( 2. * sin( angle / 2 ) )),
-		rowSize( 4. * radius * tan( radonParameter.resolution.c / 2. ) ),
+		radius( radonParameter.getRadius( angle_ )),
+		rowSize( radonParameter.getRowSize( radius ) ),
 		colSize( colSize_ ),
 		structured( structured_ )
 	{};

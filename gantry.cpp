@@ -32,7 +32,7 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubePa
 	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  detectorParameters_.getRadius( angle_ ), 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					detectorParameters_, numRows_, angle_, columnSize, structered },
 	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
-	beamAngle( 1.1 * angle_ ),
+	beamAngle( 1.01 * angle_ ),
 	radius( rayDetector.getPhysicalParameters().radius )
 	{
 	// Align detector - tube axis with x axis
