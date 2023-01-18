@@ -130,7 +130,7 @@ mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
 
 idx2 matx::findMax( const idx2 topCorner, const idx2 botCorner ) {
 	double curMax = 0, curVal;
-	idx2 curMaxIndx = { .x = topCorner.x, .y = topCorner.y};
+	idx2 curMaxIndx = topCorner;
 
 
 	if (topCorner.y >= n || topCorner.x >= m || botCorner.y >= n || botCorner.x >= m) {
@@ -233,7 +233,7 @@ eqnSysSolution eqnSys::solve( void ){
 
 
 	idx2 topC{};										// Top-left corner of submatrix						
-	idx2 botC{ .x = rows - 1, .y = rows - 1 };				// Bottom-right corner of submatrix			
+	idx2 botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
 
 	idx2 maxIndx;							// Indices of maximum in submatrix
 	double maxVal;							// Value of maximum in submatrix

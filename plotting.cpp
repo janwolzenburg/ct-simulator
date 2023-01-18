@@ -96,11 +96,11 @@ string getObjectString<grid>( const grid data, const bool image ){
 	if( image ){
 
 		string str = "image ";
-		str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
-		str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
+		str += to_string( data.Size().col ) + "," + to_string( data.Start().col ) + "," + to_string( data.Resolution().col ) + ";";
+		str += to_string( data.Size().row ) + "," + to_string( data.Start().row ) + "," + to_string( data.Resolution().row ) + ";";
 
-		for( size_t row = 0; row < data.Size().r; row++ ){
-			for( size_t column = 0; column < data.Size().c; column++ ){
+		for( size_t row = 0; row < data.Size().row; row++ ){
+			for( size_t column = 0; column < data.Size().col; column++ ){
 				str += to_string( data( idx2CR{ column, row } ) ) + ",";
 			}
 		}
@@ -112,13 +112,13 @@ string getObjectString<grid>( const grid data, const bool image ){
 
 		vector<double> XValues, YValues, DataValues;
 
-		for( size_t row = 0; row < data.Size().r; row++ ){
-			for( size_t column = 0; column < data.Size().c; column++ ){
+		for( size_t row = 0; row < data.Size().row; row++ ){
+			for( size_t column = 0; column < data.Size().col; column++ ){
 
 				v2CR coordinates = data.getCoordinates( idx2CR{ column, row });
 
-				XValues.push_back( coordinates.c );
-				YValues.push_back( coordinates.r );
+				XValues.push_back( coordinates.col );
+				YValues.push_back( coordinates.row );
 				DataValues.push_back( data( idx2CR{ column, row } ) );
 
 			}
