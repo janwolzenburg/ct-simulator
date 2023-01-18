@@ -27,6 +27,11 @@ typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fmin1( T a ){
 	return max( (T) 1, a );
 }
 
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+Fmin( T a, T minValue ){
+	return max( minValue, a );
+}
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fpos( T a ){

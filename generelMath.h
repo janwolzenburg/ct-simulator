@@ -90,6 +90,16 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
 Fmin1( T a );
 
+/*!
+ * @brief Force a minimum value
+ * @tparam T Arithmetic type
+ * @param a Value a
+ * @param minValue minimum value
+ * @return a or minValue when a is less than minValue
+*/
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+Fmin( T a, T minValue );
 
 /*!
  * @brief Force value to be positive
