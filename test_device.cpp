@@ -49,12 +49,18 @@ detector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
 	detectorRadonParameter radonParameter{
-											idx2CR{ 64, 32 },
-											500
+		idx2CR{ 64, 32 },
+		500
+	};
+
+	detectorIndipendentParameter indipendentParameter{
+		2 * PI * ( 50. / 360. ),
+		1, 
+		false
 	};
 
 	// 50 degree angle
-	detector testDetector{ GLOBAL_CSYS()->createCopy( "Detector system" ), radonParameter, 1, 2*PI*( 50./360. ), 1, false };
+	detector testDetector{ GLOBAL_CSYS()->createCopy( "Detector system" ), radonParameter, indipendentParameter };
 
 	return testDetector;
 }
@@ -83,25 +89,39 @@ gantry getTestGantry( void ){
 
 
 	detectorRadonParameter radonParameter{
-											idx2CR{ 64, 32 },
-											500
+		idx2CR{ 64, 32 },
+		500
 	};
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 100, tubeParas, radonParameter, 1, 2 * PI * ( 50. / 360. ), 1, false };
+	detectorIndipendentParameter indipendentParameter{
+		2 * PI * ( 50. / 360. ),
+		1,
+		false
+	};
+
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 100, tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }
 
 bool test_gantry( void ){
 
-	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
+	tubeParameter tubeParas{	
+		.anodeVoltage_V = 53000,
+		.anodeCurrent_A = 0.2,
+		.anodeAtomicNumber = 74 
+	};
 
 	
 	detectorRadonParameter radonParameter{
-											idx2CR{ 64, 32 },
-											500
+		idx2CR{ 64, 32 },
+		500
+	};
+
+	detectorIndipendentParameter indipendentParameter{
+		2 * PI * ( 50. / 360. ),
+		1,
+		false
 	};
 
 	gantry testGantry = getTestGantry();
