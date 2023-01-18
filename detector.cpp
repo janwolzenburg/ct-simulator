@@ -11,6 +11,7 @@
  /*********************************************************************
    Includes
 *********************************************************************/
+
 #include "generel.h"
 #include "vec3D.h"
 
@@ -24,7 +25,6 @@
 *********************************************************************/
 
 
-
 detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	radonParameters( radonParameter ),
@@ -33,25 +33,8 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	// Initialise vectors
 	allPixel = vector<pixel>( physicalParameters.number.c );
 
-
-	// Amount of detectors in one row must be odd
-	//if (isEven(columns)) columns++;
-
 	// Calculate angle delta from pixel size along arc and arc radius 
 	double angleDelta = radonParameter.resolution.c;// 2 * atan( pxSize.r / ( 4 * radius ) );
-
-	// Calaculate the frames per rotation based on the angle delta. This is the amount of steps necessary for a complete rotation when rotations by angleDelta each step
-	//size_t framesPerRotation = (size_t) ( 2. * floor( PI / angleDelta ) );
-
-	// Since the frames per rotation is a whole number - angleDelta must be corrected
-	//angleDelta = 2 * PI / (double) framesPerRotation;
-
-	// So must the pixel size be updated
-	//pxSize.r = tan( angleDelta / 2. ) * 4. * radius;
-
-	// This is the amount of frames necessary for the first pixel normal to align with the last pixel normal's position in the first frame
-	//size_t fprSinogramFilled = framesPerRotation / 2 + columns - 1;
-
 
 	// Iterate all columns
 	size_t columns = physicalParameters.number.c;
@@ -84,9 +67,11 @@ vector<pixel> detector::getPixel(void) const {
 	return allPixel;
 }
 
+
 void detector::reset( void ){
 	for( pixel& currentPixel : allPixel ) currentPixel.reset();
 }
+
 
 void detector::detectRay( const ray r ){
 
@@ -106,34 +91,9 @@ void detector::detectRay( const ray r ){
 	}
 }
 
+
 detectorRadonParameter detector::getSignalParameter( void ) const{
-	
-	/*
-	// Parameters of detector in sinogram
-	detectorRadonParameter parameter;
-
-	radonCoords firstPixel{ cSys, allPixel.front().NormalLine()};				// First pixel
-	radonCoords secondPixel{ cSys, ( allPixel.begin() + 1 )->NormalLine()};		// Seconds pixel
-	radonCoords lastPixel{ cSys, allPixel.back().NormalLine()};					// Last pixel
-
-	parameter.deltaTheta = abs( secondPixel.theta - firstPixel.theta );			// Angle resolution
-	parameter.deltaDistance = abs( secondPixel.distance - firstPixel.distance );// Distance resolution
-	
-	// Get distance range
-	if( firstPixel.distance > lastPixel.distance ) parameter.distanceRange = range{ -abs( lastPixel.distance ), abs( lastPixel.distance ) };
-	else parameter.distanceRange = range{ -abs( firstPixel.distance ), abs( firstPixel.distance ) };
-
-	// Recalculate the distance range for an odd number of distances in sinogram
-	size_t numDistances = (size_t) ( ( parameter.distanceRange.end - parameter.distanceRange.start ) / parameter.deltaDistance ) + 1;
-	if ( isEven( numDistances ) ) numDistances--;
-	parameter.deltaDistance = ( parameter.distanceRange.end - parameter.distanceRange.start ) / (double) ( numDistances - 1 );
-
-	// Calculate the amount of frames necessary to fill sinogram
-	size_t framesPerRotation = (size_t) ( 2. * floor( PI / parameter.deltaTheta ) );
-	parameter.framesToFillSinogram = framesPerRotation / 2 + columns - 1;
-	*/
-
-	return radonParameters;// parameter;
+	return radonParameters;
 }
 
 

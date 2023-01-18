@@ -149,6 +149,7 @@
     <ClInclude Include="cSysTree.fwd.h" />
     <ClInclude Include="cSysTree.h" />
     <ClInclude Include="detector.h" />
+    <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
     <ClInclude Include="gantry.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="cSysTree.cpp" />
     <ClCompile Include="detector.cpp" />
+    <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
     <ClCompile Include="gantry.cpp" />
