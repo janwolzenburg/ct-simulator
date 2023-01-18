@@ -25,7 +25,7 @@ using std::vector;
 #include "plotting.h"
 #include "gantry.h"
 
-//TODO: fix tests
+
 bool test_tube(void) {
 
 	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
