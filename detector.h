@@ -77,7 +77,20 @@ class detectorRadonParameter{
 
 class detectorIndipendentParameter{
 
+	public:
+
+	detectorIndipendentParameter( const double angle_, const double columnSize_, const bool structured_ ) : 
+		angle( angle_ ),
+		columnSize( columnSize_ ),
+		structured( structured_ )
+	{};
+
+	double angle;
+	double columnSize;
+	bool structured;
+
 };
+
 
 /*!
  * @brief Struct for detector parameters
@@ -94,12 +107,12 @@ class detectorPhysicalParameter{
 	 * @param colSize_ 
 	 * @param structured_ 
 	*/
-	detectorPhysicalParameter( const detectorRadonParameter radonParameter, size_t numRows_, const double angle_, const double colSize_, const bool structured_ ) :
-		number{ radonParameter.numberPoints.c, numRows_ },
-		angle( angle_ ),
-		radius( radonParameter.getRadius( angle_ )),
-		pixelSize{ colSize_, radonParameter.getRowSize( radius ) },
-		structured( structured_ )
+	detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+		number{ radonParameter.numberPoints.c, 1 },
+		angle( indipendentParameter.angle ),
+		radius( radonParameter.getRadius( angle )),
+		pixelSize{ indipendentParameter.columnSize, radonParameter.getRowSize( radius ) },
+		structured( indipendentParameter.structured )
 	{};
 
 	public:
