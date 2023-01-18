@@ -16,23 +16,20 @@
 
 
 
-
 /*********************************************************************
   Implementations
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubeParameter tubeParameters_, const detectorRadonParameter detectorParameters_,
-				size_t numRows_, const double angle_, const double columnSize, const bool structered ) :
-
+gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
+				const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
-	//radius( Fpos( radius_ ) ),
-	raySource{ cSys->addCSys( primitiveVec3{ 0, detectorParameters_.getRadius( angle_ ) , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameters_},
-	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  detectorParameters_.getRadius( angle_ ), 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
-					detectorParameters_, numRows_, angle_, columnSize, structered },
-	numRaysInBeam( Fpos( numRaysInBeam_ ) ),
-	beamAngle( 1.01 * angle_ ),
+	raySource{ cSys->addCSys( primitiveVec3{ 0, radonParameter.getRadius( indipendentParameter.angle ) , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
+	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  radonParameter.getRadius( indipendentParameter.angle ), 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
+					radonParameter, indipendentParameter },
+	numberRaysInBeam( Fpos( numRaysInBeam ) ),
+	beamAngle( 1.01 * indipendentParameter.angle ),
 	radius( rayDetector.getPhysicalParameters().radius )
 
 {
@@ -43,7 +40,7 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam_, const tubePa
 
 
 vector<ray> gantry::getBeam( void ) const{
-	return raySource.getBeam( beamAngle, numRaysInBeam ); 
+	return raySource.getBeam( beamAngle, numberRaysInBeam ); 
 }
 
 
@@ -51,17 +48,21 @@ vector<pixel> gantry::getPixel( void ) const{
 	return rayDetector.getPixel();
 }
 
+
 double gantry::Radius( void ) const{
 	return radius;
 }
+
 
 pnt3 gantry::Center( void ) const{
 	return cSys->OPnt();
 }
 
+
 void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
+
 
 void gantry::radiate( const model& radModel ) {
 
@@ -109,6 +110,7 @@ void gantry::radiate( const model& radModel ) {
 
 }
 
+
 void gantry::reset( void ){
 	
 	// Set to initial position
@@ -118,9 +120,11 @@ void gantry::reset( void ){
 	rayDetector.reset();
 }
 
+
 detectorRadonParameter gantry::getDetectorParameter(void) const{
 	return rayDetector.getSignalParameter( );
 }
+
 
 const cartCSys* gantry::CSys( void ) const{
 	return cSys;
