@@ -30,6 +30,10 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	radonParameters( radonParameter ),
 	physicalParameters{ radonParameter, indipendentParameter }
 {
+
+	// Check parameters
+
+
 	// Initialise vectors
 	allPixel = vector<pixel>( physicalParameters.number.col );
 
@@ -51,7 +55,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		
 		const uvec3 n{ cSys->EyVec().rotZ(rotAngle) };		// Normal vector for row pixel in one column
 		const uvec3 r2 = cSys->EzVec();						// z-axis is r2 of surface
-		const pnt3 o = n * ( 2 * physicalParameters.radius );					// Origin point of surface
+		const pnt3 o = n * ( physicalParameters.detectorFocusDistance );					// Origin point of surface
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
 		// Pixel with given normal vector centered at o + dZ

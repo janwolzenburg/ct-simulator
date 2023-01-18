@@ -89,13 +89,13 @@ gantry getTestGantry( void ){
 
 
 	detectorRadonParameter radonParameter{
-		idx2CR{ 64, 32 },
+		idx2CR{ 63, 31 },
 		500
 	};
 
 	detectorIndipendentParameter indipendentParameter{
 		2 * PI * ( 50. / 360. ),
-		1,
+		15.,
 		false
 	};
 
@@ -112,17 +112,6 @@ bool test_gantry( void ){
 		.anodeAtomicNumber = 74 
 	};
 
-	
-	detectorRadonParameter radonParameter{
-		idx2CR{ 64, 32 },
-		500
-	};
-
-	detectorIndipendentParameter indipendentParameter{
-		2 * PI * ( 50. / 360. ),
-		1,
-		false
-	};
 
 	gantry testGantry = getTestGantry();
 

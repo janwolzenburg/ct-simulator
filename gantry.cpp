@@ -25,12 +25,12 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubePar
 				const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
-	raySource{ cSys->addCSys( primitiveVec3{ 0, radonParameter.getRadius( indipendentParameter.angle ) , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  radonParameter.getRadius( indipendentParameter.angle ), 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
+	raySource{ cSys->addCSys( primitiveVec3{ 0, radonParameter.getDetectorFocusDistance( indipendentParameter.angle ) / 2 , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
+	rayDetector{	cSys->addCSys( primitiveVec3{ 0,  radonParameter.getDetectorFocusDistance( indipendentParameter.angle ) / 2, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	numberRaysInBeam( Fpos( numRaysInBeam ) ),
 	beamAngle( 1.01 * indipendentParameter.angle ),
-	radius( rayDetector.getPhysicalParameters().radius )
+	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2)
 
 {
 	// Align detector - tube axis with x axis

@@ -33,23 +33,23 @@ class detectorRadonParameter{
 	/*!
 	 * @brief Constructor
 	 * @param numberPoints_ Amount of point in radon transformed
-	 * @param maxAbsoluteDistance_ Maximum absoulte distance in radon transformed
+	 * @param distanceRange Distance range
 	*/
-	detectorRadonParameter( const idx2CR numberPoints_, const double maxAbsoluteDistance_ );
+	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
 	/*!
 	 * @brief Get the necessary detector radius based on the angle
 	 * @param angle Angle between the outer detector normals
 	 * @return Radius of detector
 	*/
-	double getRadius( const double angle ) const;
+	double getDetectorFocusDistance( const double angle ) const;
 
 	/*!
 	 * @brief Get the necessary pixel size along a row
 	 * @param radius The detector radius
 	 * @return Row size of pixel
 	*/
-	double getRowSize( const double radius ) const;
+	//double getRowSize( const double radius ) const;
 
 
 	public:
@@ -102,12 +102,12 @@ class detectorPhysicalParameter{
 
 	public:
 
-	idx2CR number;		/*!<Amount of pixel in each dimension*/
+	idx2CR number;					/*!<Amount of pixel in each dimension*/
 
 	double angle;
-	double radius;		/*!Radius of detector arc*/
-	v2CR pixelSize;		/*!<Size of one pixel*/
+	double detectorFocusDistance;	/*!Radius of detector arc*/
+	v2CR pixelSize;					/*!<Size of one pixel*/
 
-	bool structured;	/*!<Flag for anti scatter structure*/
+	bool structured;				/*!<Flag for anti scatter structure*/
 
 };
