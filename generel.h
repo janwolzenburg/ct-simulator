@@ -24,19 +24,22 @@ using std::to_string;
 using std::cerr; using std::endl;
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
 
- // TODO: Split into definition and implementation - and comment
 
 /*!
  * @brief Class for 2D indices
 */
 class idx2{
 	public:
-	size_t x = 0;
-	size_t y = 0;
+	idx2( const size_t x_, const size_t y_ );
+	idx2( void );
+
+	size_t x;
+	size_t y;
  };
 
  /*!
@@ -44,9 +47,12 @@ class idx2{
 */
 class idx3{
 	public:
-	size_t x = 0;
-	size_t y = 0;
-	size_t z = 0;
+	idx3( const size_t x_, const size_t y_, const size_t z_ );
+	idx3( void );
+
+	size_t x;
+	size_t y;
+	size_t z;
 };
 
 /*!
@@ -54,10 +60,11 @@ class idx3{
 */
 class v2{
 	public:
-	v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
-	v2( void ) : v2( 0, 0 ){};
-	double x = 0;
-	double y = 0;
+	v2( const double x_, const double y_ );
+	v2( void );
+
+	double x;
+	double y;
 };
 
 /*!
@@ -65,20 +72,22 @@ class v2{
 */
 class v3{
 	public:
-	v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
-	v3( void ) : v3( 0, 0, 0 ){};
-	double x = 0;
-	double y = 0;
-	double z = 0;
+	v3( const double x_, const double y_, const double z_ );
+	v3( void );
+
+	double x;
+	double y;
+	double z;
 };
 
 
 class idx2CR{
 	public:
-	idx2CR( const size_t c_, const size_t r_ ) : c( c_ ), r( r_ ){};
-	idx2CR( void ) : idx2CR( 0, 0 ){};
-	size_t c = 0;
-	size_t r = 0;
+	idx2CR( const size_t c_, const size_t r_ );
+	idx2CR( void );
+
+	size_t col;
+	size_t row;
 };
 
 /*!
@@ -86,24 +95,23 @@ class idx2CR{
 */
 class v2CR {
 	public:
-	v2CR(const double c_, const double r_) : c(c_), r(r_) {};
-	v2CR(void) : v2CR(0, 0) {};
-	double c = 0;
-	double r = 0;
+	v2CR(const double c_, const double r_);
+	v2CR(void);
+
+	double col;
+	double row;
 };
 
 class range{
 	public:
-	range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
-		if( start >= end ){ 
-			cerr << "Start must be less than end!" << endl;
-			start = end - 1.;
-		}
-	};
-	range( void ) : range( 0., 1. ){};
+	range( const double start_, const double end_ );
+	range( void );
+
 	double start;
 	double end;
 };
+
+
 
 /*********************************************************************
 	Functions

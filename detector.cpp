@@ -31,13 +31,13 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	physicalParameters{ radonParameter, indipendentParameter }
 {
 	// Initialise vectors
-	allPixel = vector<pixel>( physicalParameters.number.c );
+	allPixel = vector<pixel>( physicalParameters.number.col );
 
 	// Calculate angle delta from pixel size along arc and arc radius 
-	double angleDelta = radonParameter.resolution.c;// 2 * atan( pxSize.r / ( 4 * radius ) );
+	double angleDelta = radonParameter.resolution.col;// 2 * atan( pxSize.r / ( 4 * radius ) );
 
 	// Iterate all columns
-	size_t columns = physicalParameters.number.c;
+	size_t columns = physicalParameters.number.col;
 	v2CR pxSize = physicalParameters.pixelSize;
 
 	for (size_t col = 0; col < columns; col++) {
@@ -55,7 +55,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		const uvec3 r1 = n ^ r2;							// First direction vector
 
 		// Pixel with given normal vector centered at o + dZ
-		const pixel px{ r1, r2, o,    -pxSize.r / 2, pxSize.r / 2, -pxSize.c / 2, pxSize.c / 2 };
+		const pixel px{ r1, r2, o,    -pxSize.row / 2, pxSize.row / 2, -pxSize.col / 2, pxSize.col / 2 };
 
 		allPixel.at( col ) = px;
 

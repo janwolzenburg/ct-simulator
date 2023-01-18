@@ -69,7 +69,7 @@ radonTransformed tomography::recordSlice( void ){
 		}
 
 		// Rotate gantry
-		Gantry.rotateCounterClockwise( radonParameter.resolution.c );
+		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
 	}
 
 	return sinogram;

@@ -26,6 +26,42 @@ using std::string;
 	Implementations
  *********************************************************************/
 
+
+
+/*!
+ * Indices and vector implementation
+*/
+
+idx2::idx2( const size_t x_, const size_t y_ ) : x( x_ ), y( y_ ){};
+idx2::idx2( void ) : x( 0 ), y( 0 ){};
+
+idx3::idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ){};
+idx3::idx3( void ) : x( 0 ), y( 0 ), z( 0 ){};
+
+v2::v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
+v2::v2( void ) : v2( 0, 0 ){};
+
+v3::v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
+v3::v3( void ) : v3( 0, 0, 0 ){};
+
+idx2CR::idx2CR( const size_t c_, const size_t r_ ) : col( c_ ), row( r_ ){};
+idx2CR::idx2CR( void ) : idx2CR( 0, 0 ){};
+
+v2CR::v2CR( const double c_, const double r_ ) : col( c_ ), row( r_ ){};
+v2CR::v2CR( void ) : v2CR( 0, 0 ){};
+
+range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
+	if( start >= end ){
+		cerr << "Start must be less than end!" << endl;
+		start = end - 1.;
+	}
+};
+
+
+
+/*!
+ * Serialization implementation
+*/
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle
 	std::ofstream outFile;

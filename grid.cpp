@@ -30,12 +30,12 @@ grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, doubl
 }
 
 grid::grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue ) :
-	size( idx2CR{ (size_t) ( ( columnRange.end - columnRange.start ) / resolution_.c ) + 1,
-						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.r ) + 1 } ),
+	size( idx2CR{ (size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
+						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } ),
 	start( v2CR{ columnRange.start,
 						rowRange.start } ),
-	resolution( v2CR{ ( columnRange.end - start.c ) / (double) ( size.c - 1 ),
-						( rowRange.end - start.r ) / (double) ( size.r - 1 ) } )
+	resolution( v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
+						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } )
 
 {
 	fillVectors( defaultValue );
@@ -44,19 +44,19 @@ grid::grid( const range columnRange, const range rowRange, const v2CR resolution
 void grid::fillVectors( const double defaultValue ){
 
 	// Force size and resolution to positive value 
-	size.c = Fpos( size.c );
-	size.r = Fpos( size.r );
+	size.col = Fpos( size.col );
+	size.row = Fpos( size.row );
 
-	resolution.c = Fpos( resolution.c );
-	resolution.r = Fpos( resolution.r );
+	resolution.col = Fpos( resolution.col );
+	resolution.row = Fpos( resolution.row );
 
 
 	// Fill axis
-	columnPoints = linearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
-	rowPoints = linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
+	columnPoints = linearSpace( start.col, start.col + (double) ( size.col - 1 ) * resolution.col, size.col );
+	rowPoints = linearSpace( start.row, start.row + (double) ( size.row - 1 ) * resolution.row, size.row );
 
 	// Create data structure
-	data = vector<vector<double>>( size.c, vector<double>( size.r, defaultValue ) );
+	data = vector<vector<double>>( size.col, vector<double>( size.row, defaultValue ) );
 }
 
 idx2CR grid::Size( void ) const{
@@ -73,7 +73,7 @@ v2CR grid::Resolution( void ) const{
 
 bool grid::checkIndex( const idx2CR index ) const{
 
-	if( index.r >= size.r || index.c >= size.c ){
+	if( index.row >= size.row || index.col >= size.col ){
 		std::cerr << "Invalid grid index!";
 		return false;
 	}
@@ -84,24 +84,24 @@ bool grid::checkIndex( const idx2CR index ) const{
 double& grid::operator()( const idx2CR index ){
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
-	return data.at( index.c ).at( index.r );
+	return data.at( index.col ).at( index.row );
 }
 
 double grid::operator()( const idx2CR index ) const{
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
-	return data.at( index.c ).at( index.r );
+	return data.at( index.col ).at( index.row );
 }
 
 idx2CR grid::getIndex( const v2CR coordinates ) const{
 
 	idx2CR index;
 
-	index.c = (size_t) floor( ( coordinates.c - start.c ) / resolution.c + 0.5 );
-	index.r = (size_t) floor( ( coordinates.r - start.r ) / resolution.r + 0.5 );
+	index.col = (size_t) floor( ( coordinates.col - start.col ) / resolution.col + 0.5 );
+	index.row = (size_t) floor( ( coordinates.row - start.row ) / resolution.row + 0.5 );
 
-	if( index.c >= size.c ) index.c = size.c - 1;
-	if( index.r >= size.r ) index.r = size.r - 1;
+	if( index.col >= size.col ) index.col = size.col - 1;
+	if( index.row >= size.row ) index.row = size.row - 1;
 
 	return index;
 }
@@ -118,8 +118,8 @@ v2CR grid::getCoordinates( const idx2CR index ) const{
 
 	if( !checkIndex( index ) ) return v2CR{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
 
-	double column = columnPoints.at( index.c );
-	double row = rowPoints.at( index.r );
+	double column = columnPoints.at( index.col );
+	double row = rowPoints.at( index.row );
 
 	return v2CR{ column, row };
 }

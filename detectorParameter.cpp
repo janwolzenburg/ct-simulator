@@ -28,9 +28,9 @@
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double maxAbsoluteDistance_ ) :
 	numberPoints( numberPoints_ ),
 	distanceRange( 2. * Fpos( maxAbsoluteDistance_ ) ),
-	resolution{ v2CR{	PI / ( 2. * (double) ( numberPoints.c - 1 ) ),
-						distanceRange / (double) ( numberPoints.r - 1 ) } },
-	framesToFillSinogram( 3 * numberPoints.c - 3 )
+	resolution{ v2CR{	PI / ( 2. * (double) ( numberPoints.col - 1 ) ),
+						distanceRange / (double) ( numberPoints.row - 1 ) } },
+	framesToFillSinogram( 3 * numberPoints.col - 3 )
 {}
 
 double detectorRadonParameter::getRadius( const double angle ) const{
@@ -38,7 +38,7 @@ double detectorRadonParameter::getRadius( const double angle ) const{
 };
 
 double detectorRadonParameter::getRowSize( const double radius ) const{
-	return 4. * radius * tan( resolution.c / 2. );
+	return 4. * radius * tan( resolution.col / 2. );
 };
 
 
@@ -60,7 +60,7 @@ detectorIndipendentParameter::detectorIndipendentParameter( const double angle_,
 */
 
 detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	number{ radonParameter.numberPoints.c, 1 },
+	number{ radonParameter.numberPoints.col, 1 },
 	angle( indipendentParameter.angle ),
 	radius( radonParameter.getRadius( angle ) ),
 	pixelSize{ indipendentParameter.columnSize, radonParameter.getRowSize( radius ) },
