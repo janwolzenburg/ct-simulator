@@ -74,20 +74,28 @@ class detectorRadonParameter{
 };
 
 
-
+/*!
+ * @brief Class for physical detector parameters which are not dependent on the radon parameters
+*/
 class detectorIndipendentParameter{
 
 	public:
 
+	/*!
+	 * @brief Constructor
+	 * @param angle_ Detector angle
+	 * @param columnSize_ Size of pixel in column direction
+	 * @param structured_ Flag for anti scatter structure
+	*/
 	detectorIndipendentParameter( const double angle_, const double columnSize_, const bool structured_ ) : 
 		angle( angle_ ),
 		columnSize( columnSize_ ),
 		structured( structured_ )
 	{};
 
-	double angle;
-	double columnSize;
-	bool structured;
+	double angle;			/*!<Angle between the outer detector normals*/
+	double columnSize;		/*!<Size of one pixel in column direction*/
+	bool structured;		/*!<Flag for anti scatter structure*/
 
 };
 
@@ -119,7 +127,7 @@ class detectorPhysicalParameter{
 
 	idx2CR number;		/*!<Amount of pixel in each dimension*/
 
-	double angle;		/*!<Angle between the outer detector normals*/
+	double angle;		
 	double radius;		/*!Radius of detector arc*/
 	v2CR pixelSize;		/*!<Size of one pixel*/
 
