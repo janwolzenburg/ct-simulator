@@ -137,6 +137,6 @@ detectorRadonParameter detector::getSignalParameter( void ) const{
 }
 
 
-detectorParameterPhysical detector::getPhysicalParameters( void ) const{
+detectorPhysicalParameter detector::getPhysicalParameters( void ) const{
 	return physicalParameters;
 }

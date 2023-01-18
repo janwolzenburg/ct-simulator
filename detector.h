@@ -64,17 +64,25 @@ class detectorRadonParameter{
 		return 4. * radius * tan( resolution.c / 2. );
 	};
 
+
 	public:
+
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
 	double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };
 
+
+
+class detectorIndipendentParameter{
+
+};
+
 /*!
  * @brief Struct for detector parameters
 */
-class detectorParameterPhysical{
+class detectorPhysicalParameter{
 
 	public:
 
@@ -86,7 +94,7 @@ class detectorParameterPhysical{
 	 * @param colSize_ 
 	 * @param structured_ 
 	*/
-	detectorParameterPhysical( const detectorRadonParameter radonParameter, size_t numRows_, const double angle_, const double colSize_, const bool structured_ ) :
+	detectorPhysicalParameter( const detectorRadonParameter radonParameter, size_t numRows_, const double angle_, const double colSize_, const bool structured_ ) :
 		number{ radonParameter.numberPoints.c, numRows_ },
 		angle( angle_ ),
 		radius( radonParameter.getRadius( angle_ )),
@@ -148,7 +156,7 @@ class detector {
 	 * @brief Get the physical parameters of detector
 	 * @return Physical parameters of detector
 	*/
-	detectorParameterPhysical getPhysicalParameters( void ) const;
+	detectorPhysicalParameter getPhysicalParameters( void ) const;
 
 
 	private:
@@ -156,7 +164,7 @@ class detector {
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
-	detectorParameterPhysical physicalParameters;	/*!<Physical parameters*/
+	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/
 
 
 };
