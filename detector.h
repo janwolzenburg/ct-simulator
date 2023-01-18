@@ -109,11 +109,8 @@ class detectorPhysicalParameter{
 
 	/*!
 	 * @brief Constructor
-	 * @param radonParameter 
-	 * @param numRows_ 
-	 * @param angle_ 
-	 * @param colSize_ 
-	 * @param structured_ 
+	 * @param radonParameter Radon parameters
+	 * @param indipendentParameter Other detector parameters
 	*/
 	detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 		number{ radonParameter.numberPoints.c, 1 },
@@ -122,6 +119,7 @@ class detectorPhysicalParameter{
 		pixelSize{ indipendentParameter.columnSize, radonParameter.getRowSize( radius ) },
 		structured( indipendentParameter.structured )
 	{};
+
 
 	public:
 
@@ -148,7 +146,7 @@ class detector {
 	 * @param cSys_ Coordinate system
 	 * @param parameter Detector parameter
 	*/
-	detector(cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double angle_, const double columnSize, const bool structered );
+	detector(cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -181,6 +179,7 @@ class detector {
 
 
 	private:
+
 	cartCSys* cSys;									/*!<Local coordinate system*/
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 

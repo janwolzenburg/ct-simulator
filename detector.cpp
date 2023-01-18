@@ -25,20 +25,20 @@
 
 
 
-detector::detector( cartCSys* const cSys_, const detectorRadonParameter parameter, size_t numRows_, const double angle_, const double columnSize, const bool structered ) :
+detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
-	radonParameters( parameter ),
-	physicalParameters( parameter, numRows_, angle_, columnSize, structered )
+	radonParameters( radonParameter ),
+	physicalParameters{ radonParameter, indipendentParameter }
 {
 	// Initialise vectors
-	allPixel = vector<pixel>( physicalParameters.numberColumns );
+	allPixel = vector<pixel>( physicalParameters.number.c );
 
 
 	// Amount of detectors in one row must be odd
 	//if (isEven(columns)) columns++;
 
 	// Calculate angle delta from pixel size along arc and arc radius 
-	double angleDelta =  parameter.resolution.c;// 2 * atan( pxSize.r / ( 4 * radius ) );
+	double angleDelta = radonParameter.resolution.c;// 2 * atan( pxSize.r / ( 4 * radius ) );
 
 	// Calaculate the frames per rotation based on the angle delta. This is the amount of steps necessary for a complete rotation when rotations by angleDelta each step
 	//size_t framesPerRotation = (size_t) ( 2. * floor( PI / angleDelta ) );
@@ -54,8 +54,8 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter paramete
 
 
 	// Iterate all columns
-	size_t columns = physicalParameters.numberColumns;
-	v2CR pxSize{ physicalParameters.colSize, physicalParameters.rowSize };
+	size_t columns = physicalParameters.number.c;
+	v2CR pxSize = physicalParameters.pixelSize;
 
 	for (size_t col = 0; col < columns; col++) {
 		double rotAngle = 0;
