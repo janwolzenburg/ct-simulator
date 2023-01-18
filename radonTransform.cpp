@@ -22,6 +22,12 @@
   Implementations
 *********************************************************************/
 
+
+
+/*!
+ * radonCoords implementation
+*/
+
 radonCoords::radonCoords( const double theta_, const double distance_ ) : 
 	theta( theta_ ), distance( distance_ )
 {}
@@ -67,8 +73,10 @@ radonCoords::radonCoords( const cartCSys* const cSys, const line l )
 
 }
 
+
 radonCoords::radonCoords( void ) : radonCoords( 0, 0 )
 {}
+
 
 radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 	coordinates( coordinates_ ),
@@ -77,6 +85,10 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 
 
 
+/*!
+ * radonTransformed implementation
+*/
+
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
 	dataGrid(
 		range{ 0., PI - detectorParameter.resolution.col },
@@ -84,9 +96,8 @@ radonTransformed::radonTransformed( const detectorRadonParameter detectorParamet
 		v2CR{ detectorParameter.resolution } ,
 		0.
 	)
-{
+{}
 
-}
 
 grid radonTransformed::Data( void ) const{
 	return dataGrid;

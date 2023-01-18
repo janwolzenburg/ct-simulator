@@ -29,7 +29,6 @@ using std::cerr; using std::endl;
 	Definitions
  *********************************************************************/
 
-
 /*!
  * @brief Class for 2D indices
 */
