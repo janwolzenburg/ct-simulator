@@ -27,13 +27,7 @@
 class primitiveCartCSys : virtual public mathObj{
 	
 	public:
-	// TODO: Comments
-	primitiveVec3 O( void ) const;
-	primitiveVec3 Ex( void ) const;
-	primitiveVec3 Ey( void ) const;
-	primitiveVec3 Ez( void ) const;
-
-
+	
 	/*!
 	 * @brief Constructor
 	 * @param origin_ O of coordinate system
@@ -49,6 +43,31 @@ class primitiveCartCSys : virtual public mathObj{
 	 * @return String with coordinate system's data
 	*/
 	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+
+	/*!
+	 * @brief Get primitive origin
+	 * @return Primitive represantation of the origin
+	*/
+	primitiveVec3 O( void ) const;
+
+	/*!
+	 * @brief Get primitive x Axis
+	 * @return Primitive represantation of the x Axis
+	*/
+	primitiveVec3 Ex( void ) const;
+
+	/*!
+	 * @brief Get primitive y Axis
+	 * @return Primitive represantation of the y Axis
+	*/
+	primitiveVec3 Ey( void ) const;
+
+	/*!
+	 * @brief Get primitive z Axis
+	 * @return Primitive represantation of the z Axis
+	*/
+	primitiveVec3 Ez( void ) const;
+
 
 	protected:
 
@@ -72,7 +91,9 @@ class primitiveCartCSys : virtual public mathObj{
 	*/
 	MATH_ERR rotateM( const primitiveVec3 n, const double phi );
 
+
 	protected:
+
 	primitiveVec3 origin;		/*!< Origin point */
 	primitiveVec3 ex;			/*!< x-axis unit vector */
 	primitiveVec3 ey;			/*!< y-axis unit vector */
