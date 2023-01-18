@@ -33,7 +33,11 @@
 class detectorRadonParameter{
 
 	public:
-	
+	/*!
+	 * @brief Constructor
+	 * @param numberPoints_ Amount of point in radon transformed
+	 * @param maxAbsoluteDistance_ Maximum absoulte distance in radon transformed
+	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double maxAbsoluteDistance_ ) :
 		numberPoints(  numberPoints_ ),
 		distanceRange( 2. * Fpos( maxAbsoluteDistance_ ) ),
@@ -42,10 +46,20 @@ class detectorRadonParameter{
 		framesToFillSinogram( 3 * numberPoints.c - 3 )
 	{};
 
+	/*!
+	 * @brief Get the necessary detector radius based on the angle
+	 * @param angle Angle between the outer detector normals
+	 * @return Radius of detector
+	*/
 	double getRadius( const double angle ) const {
 		return distanceRange / 2. / ( 2. * sin( angle / 2 ) );
 	};
 
+	/*!
+	 * @brief Get the necessary pixel size along a row
+	 * @param radius The detector radius
+	 * @return Row size of pixel
+	*/
 	double getRowSize( const double radius ) const{
 		return 4. * radius * tan( resolution.c / 2. );
 	};
@@ -63,26 +77,30 @@ class detectorRadonParameter{
 class detectorParameterPhysical{
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param radonParameter 
+	 * @param numRows_ 
+	 * @param angle_ 
+	 * @param colSize_ 
+	 * @param structured_ 
+	*/
 	detectorParameterPhysical( const detectorRadonParameter radonParameter, size_t numRows_, const double angle_, const double colSize_, const bool structured_ ) :
-		numberColumns( radonParameter.numberPoints.r ),
-		numberRows( numRows_ ),
+		number{ radonParameter.numberPoints.c, numRows_ },
 		angle( angle_ ),
 		radius( radonParameter.getRadius( angle_ )),
-		rowSize( radonParameter.getRowSize( radius ) ),
-		colSize( colSize_ ),
+		pixelSize{ colSize_, radonParameter.getRowSize( radius ) },
 		structured( structured_ )
 	{};
 
 	public:
 
-	size_t numberColumns;		/*!<Amount of columns*/
-	size_t numberRows;
+	idx2CR number;		/*!<Amount of pixel in each dimension*/
 
-
-	double angle;
-	double radius;
-	double rowSize;		/*!<Size of pixel in direction of row*/
-	double colSize;		/*!<Size of pixel in direction of columns*/
+	double angle;		/*!<Angle between the outer detector normals*/
+	double radius;		/*!Radius of detector arc*/
+	v2CR pixelSize;		/*!<Size of one pixel*/
 
 	bool structured;	/*!<Flag for anti scatter structure*/
 
@@ -120,26 +138,26 @@ class detector {
 	*/
 	void detectRay( const ray r );
 
+	/*!
+	 * @brief Get the radon parameters of detector
+	 * @return Radon parameters of detector
+	*/
 	detectorRadonParameter getSignalParameter( void ) const;
-	detectorParameterPhysical getPhysicalParameters( void ) const;
-	//range getDistanceRange( void ) const;
 
-	//v2CR getResolution( void ) const;
+	/*!
+	 * @brief Get the physical parameters of detector
+	 * @return Physical parameters of detector
+	*/
+	detectorParameterPhysical getPhysicalParameters( void ) const;
+
 
 	private:
-	cartCSys* cSys;								/*!<Local coordinate system*/
-	vector<pixel> allPixel;						/*!<Pixels of detector*/
+	cartCSys* cSys;									/*!<Local coordinate system*/
+	vector<pixel> allPixel;							/*!<Pixels of detector*/
 
-	//size_t columns;								/*!<Amount of columns ( pixel along one arc ) */
+	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
+	detectorParameterPhysical physicalParameters;	/*!<Physical parameters*/
 
-	//v2CR pxSize;								/*!<Size of one pixel*/
-
-	//double radius;								/*!<Radius of arc*/
-	
-	detectorParameterPhysical physicalParameters;
-	detectorRadonParameter radonParameters;
-
-	//bool structured;							/*!<Anti scatter structure*/
 
 };
 
