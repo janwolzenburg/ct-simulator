@@ -117,11 +117,11 @@ bool test_gantry( void ){
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 
-	addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
 	testGantry.rotateCounterClockwise( 2.*PI/3 );
 
-	addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
 	closeAxis( ax1 );
 

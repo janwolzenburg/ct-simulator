@@ -27,6 +27,13 @@ using std::ofstream;
 	Definitions
  *********************************************************************/
 
+enum GANTRY_SPECIFIERS{
+	ORIGIN =			0x01 << 0,
+	BEAMS =				0x01 << 1,
+	DETECTOR_SURFACES = 0x01 << 2,
+	DETECTOR_NORMALS =	0x01 << 3
+ };
+
 
 ofstream openAxis( path fileName, const bool reset );
 

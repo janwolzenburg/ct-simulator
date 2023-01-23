@@ -47,6 +47,16 @@ string getObjectString<pnt3>( const pnt3 p ){
 }
 
 template<>
+string getObjectString<line, double>( const line l, const double length ){
+
+	char tempCharArr[ 256 ];
+	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.O().gX(), l.O().gY(), l.O().gZ(), l.R().gX(), l.R().gY(), l.R().gZ(), length );
+
+	return string{ tempCharArr };
+
+}
+
+template<>
 string getObjectString<ray, double>(const ray r, const double length) {
 
 	char tempCharArr[256];
@@ -138,10 +148,19 @@ string getObjectString<grid>( const grid data, const bool image ){
 }
 
 template<>
+void addObject<vector<line>, double>( ofstream& axis, const string name, const vector<line> lines, const string parameter, const double length ){
+
+	for( const line l : lines ){
+		addSingleObject( axis, name, l, parameter, length );
+	}
+
+}
+
+template<>
 void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
 
 	for (const ray r : rays) {
-		addSingleObject(axis, name, r, parameter, length);
+		addSingleObject(axis, name, line{ r }, parameter, length);
 	}
 
 }
@@ -156,9 +175,24 @@ void addObject<vector<pixel>, double>( ofstream& axis, const string name, const 
 template<>
 void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string parameter, const int specifiers ){
 
-	addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
-	addObject( axis, name + "Detector", gantry.getPixel(), parameter, .2 );
-	addSingleObject( axis, name + "Center", gantry.Center(), parameter );
+	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
+		addSingleObject( axis, name + "Center", gantry.Center(), parameter );
+
+	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
+		addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
+	
+	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
+		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), parameter, .2 );
+
+	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
+		vector<line> pixelNormals;
+
+		for( pixel currentPixel : gantry.getPixel() ){
+			pixelNormals.push_back( currentPixel.NormalLine() );
+		}
+
+		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2. * gantry.Radius() );
+	}
 
 }
 
