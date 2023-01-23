@@ -42,8 +42,8 @@ class gantry {
 	 * @param radonParameters Radon parameter of xRay detector
 	 * @param indipendentParameter Other parameter
 	*/
-	gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
-			const detectorIndipendentParameter indipendentParameter );
+	gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubeParameter tubeParameter_, detectorRadonParameter& radonParameter,
+			detectorIndipendentParameter& indipendentParameter );
 
 	/*!
 	 * @brief Get all rays from tube

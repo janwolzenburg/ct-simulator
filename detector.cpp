@@ -25,7 +25,7 @@
 *********************************************************************/
 
 
-detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter ) :
 	cSys( cSys_ ),
 	radonParameters( radonParameter ),
 	physicalParameters{ radonParameter, indipendentParameter }
@@ -38,7 +38,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	allPixel = vector<pixel>( physicalParameters.number.col );
 
 	// Calculate angle delta from pixel size along arc and arc radius 
-	double angleDelta = radonParameter.resolution.col;// 2 * atan( pxSize.r / ( 4 * radius ) );
+	double angleDelta = radonParameters.resolution.col;// 2 * atan( pxSize.r / ( 4 * radius ) );
 
 	// Iterate all columns
 	size_t columns = physicalParameters.number.col;

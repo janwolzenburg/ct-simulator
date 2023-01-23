@@ -97,7 +97,7 @@ class detectorPhysicalParameter{
 	 * @param radonParameter Radon parameters
 	 * @param indipendentParameter Other detector parameters
 	*/
-	detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
+	detectorPhysicalParameter( detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter );
 
 
 	public:

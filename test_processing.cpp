@@ -48,7 +48,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry();
+	gantry testGantry = getTestGantry( idx2CR{ 31, 15 } );
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
 	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
@@ -85,7 +85,7 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
-	gantry testGantry = getTestGantry();
+	gantry testGantry = getTestGantry( idx2CR{ 63, 31 } );
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };

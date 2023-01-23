@@ -71,7 +71,7 @@ bool test_testModel( void ){
 
 bool test_modelTransmission( void ){
 
-	gantry testGantry = getTestGantry();
+	gantry testGantry = getTestGantry( idx2CR{ 63, 31 } );
 	model mod = getTestModel( GLOBAL_CSYS() );
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );

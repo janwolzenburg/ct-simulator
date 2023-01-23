@@ -38,7 +38,7 @@ class detector {
 	 * @param cSys_ Coordinate system
 	 * @param parameter Detector parameter
 	*/
-	detector(cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
+	detector(cartCSys* const cSys_, detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter );
 
 	/*!
 	 * @brief Get all detector pixel
