@@ -90,12 +90,10 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 */
 
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
-	dataGrid(
-		range{ 0., PI - detectorParameter.resolution.col },
-		range{ -detectorParameter.distanceRange, detectorParameter.distanceRange },
-		v2CR{ detectorParameter.resolution } ,
-		0.
-	)
+	dataGrid{	detectorParameter.numberPoints, 
+				v2CR{ 0, -detectorParameter.distanceRange / 2 },
+				detectorParameter.resolution,
+				0 }
 {}
 
 

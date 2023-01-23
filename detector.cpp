@@ -31,7 +31,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	physicalParameters{ radonParameter, indipendentParameter }
 {
 
-	// Check parameters
+	// Update radon parameters
 
 
 	// Initialise vectors

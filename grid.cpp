@@ -30,10 +30,10 @@ grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, doubl
 }
 
 grid::grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue ) :
-	size( idx2CR{ (size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
-						(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } ),
-	start( v2CR{ columnRange.start,
-						rowRange.start } ),
+	size( idx2CR{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
+					(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } ),
+	start( v2CR{	columnRange.start,
+					rowRange.start } ),
 	resolution( v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
 						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } )
 
