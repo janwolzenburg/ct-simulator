@@ -102,3 +102,7 @@ vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ) const
 	return rays;
 
 }
+
+cartCSys* tube::CSys( void ) const{
+	return cSys;
+}

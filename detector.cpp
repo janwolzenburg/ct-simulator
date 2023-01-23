@@ -96,6 +96,10 @@ void detector::detectRay( const ray r ){
 }
 
 
+cartCSys* detector::CSys( void ) const{
+	return cSys;
+}
+
 detectorRadonParameter detector::getSignalParameter( void ) const{
 	return radonParameters;
 }

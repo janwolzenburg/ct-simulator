@@ -61,7 +61,7 @@ class tube{
 	*/
 	vector<ray> getBeam( const double beamAngle, const size_t numRays_ ) const;
 
-
+	cartCSys* CSys( void ) const;
 
 	private:
 

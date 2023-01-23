@@ -69,6 +69,7 @@ class detector {
 	*/
 	detectorPhysicalParameter getPhysicalParameters( void ) const;
 
+	cartCSys* CSys( void ) const;
 
 	private:
 

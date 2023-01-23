@@ -25,11 +25,11 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubePar
 				detectorIndipendentParameter& indipendentParameter ) :
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
-	raySource{ cSys->addCSys( primitiveVec3{ 0, 0 , 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
+	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	rayDetector{	cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	numberRaysInBeam( Fpos( numRaysInBeam ) ),
-	beamAngle( 1.01 * rayDetector.getPhysicalParameters().angle ),
+	beamAngle( 1.01 * ( rayDetector.getPhysicalParameters().angle + rayDetector.getSignalParameter().resolution.col ) ),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 )
 
 {
@@ -38,6 +38,8 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubePar
 	cSys->setPrimitive( xAxisALigned );
 
 	// TODO: Move source and detector coordinate system to final position
+	raySource.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	rayDetector.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
 }
 
 
