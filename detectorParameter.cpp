@@ -100,6 +100,8 @@ detectorPhysicalParameter::detectorPhysicalParameter( detectorRadonParameter& ra
 		// Recalculate angle
 		angle = ( (double) ( number.col - 1 ) * radonParameter.resolution.col );
 
+
+		radonParameter.framesToFillSinogram = 3 * radonParameter.numberPoints.col - 3;
 	}
 
 	indipendentParameter.angle = angle;
