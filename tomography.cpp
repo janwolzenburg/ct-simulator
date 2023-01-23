@@ -13,7 +13,7 @@
   Includes
 *********************************************************************/
 #include "tomography.h"
-
+#include "generel.h"
 
 
 /*********************************************************************
@@ -43,11 +43,14 @@ radonTransformed tomography::recordSlice( void ){
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
 
-	//TODO: Add status output
+
+	cout << endl;
 
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
-
+		
+		cout << '\r' << "Radiating frame " << currentFrame + 1 << " of " << radonParameter.framesToFillSinogram;
+		
 		// Radiate
 		Gantry.radiate( Model );
 		
