@@ -17,6 +17,8 @@
 #include "gantry.h"
 #include "test_device.h"
 
+//TODO: Change test model / crop to VOI
+
   /*********************************************************************
 	 Implementations
   *********************************************************************/
