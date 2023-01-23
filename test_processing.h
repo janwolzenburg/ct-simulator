@@ -21,4 +21,6 @@
 
 bool test_radonTransform( void );
 
+bool test_detector_to_sinogram( void );
+
 bool test_Tomography( void );

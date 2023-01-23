@@ -104,14 +104,8 @@ gantry getTestGantry( void ){
 	return testGantry;
 }
 
+
 bool test_gantry( void ){
-
-	tubeParameter tubeParas{	
-		.anodeVoltage_V = 53000,
-		.anodeCurrent_A = 0.2,
-		.anodeAtomicNumber = 74 
-	};
-
 
 	gantry testGantry = getTestGantry();
 

@@ -46,6 +46,43 @@ bool test_radonTransform( void ){
 	return true;
 }
 
+bool test_detector_to_sinogram( void ){
+
+	gantry testGantry = getTestGantry();
+	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
+	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
+
+	// Create sinogram 
+	radonTransformed sinogram{ radonParameter };
+
+	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
+		// Get the detection result
+		vector<pixel> detectionPixel = testGantry.getPixel();
+
+		// Iterate all pixel
+		for( pixel currentPixel : detectionPixel ){
+			// Get coordinates for pixel
+			radonCoords newRadonCoordinates{ radonCSys, currentPixel.NormalLine() };
+			// Get the radon point
+			radonPoint newRadonPoint{ newRadonCoordinates, 1 };
+			// Assign the data to sinogram
+			sinogram.assignData( newRadonPoint );
+		}
+
+		// Rotate gantry
+		testGantry.rotateCounterClockwise( radonParameter.resolution.col );
+	}
+
+
+
+	ofstream ax1 = openAxis( path( "./test_detector_to_sinogram.txt" ), true );
+	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+	closeAxis( ax1 );
+
+	return true;
+}
+
+
 bool test_Tomography( void ){
 
 	gantry testGantry = getTestGantry();
