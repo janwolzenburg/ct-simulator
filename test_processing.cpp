@@ -48,7 +48,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 21, 9 } );
+	gantry testGantry = getTestGantry( idx2CR{ 15, 7 } );
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
 	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
@@ -69,15 +69,21 @@ bool test_detector_to_sinogram( void ){
 			sinogram.assignData( newRadonPoint );
 		}
 
+		string filename = "./test_detector_to_sinogram_";
+		filename += to_string(currentFrame) + ".txt";
+
+		ofstream ax1 = openAxis( path( filename ), true );
+		addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+		closeAxis( ax1 );
+
+
 		// Rotate gantry
 		testGantry.rotateCounterClockwise( radonParameter.resolution.col );
 	}
 
 
 
-	ofstream ax1 = openAxis( path( "./test_detector_to_sinogram.txt" ), true );
-	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
-	closeAxis( ax1 );
+	
 
 	return true;
 }
