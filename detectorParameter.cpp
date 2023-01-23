@@ -31,7 +31,7 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	distanceRange( Fpos( distanceRange_ ) ),
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
 				distanceRange / (double) ( numberPoints.row - 1 ) },
-	framesToFillSinogram( 3 * numberPoints.col - 3 )
+	framesToFillSinogram( 2 * numberPoints.col )
 {}
 
 /*
@@ -101,7 +101,7 @@ detectorPhysicalParameter::detectorPhysicalParameter( detectorRadonParameter& ra
 		angle = ( (double) ( number.col - 1 ) * radonParameter.resolution.col );
 
 
-		radonParameter.framesToFillSinogram = 3 * radonParameter.numberPoints.col - 3;
+		radonParameter.framesToFillSinogram = 2 * radonParameter.numberPoints.col;
 	}
 
 	indipendentParameter.angle = angle;
