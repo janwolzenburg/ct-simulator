@@ -20,6 +20,7 @@
 *********************************************************************/
 
 //  TODO: Add detailed comments about calculations
+// CleanUp
 
 /*!
  * detectorRadonParameter implementation

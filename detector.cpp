@@ -31,9 +31,6 @@ detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParamete
 	radonParameters( radonParameter )
 {
 
-	// Update radon parameters
-
-
 	// Initialise vectors
 	allPixel = vector<pixel>( physicalParameters.number.col );
 

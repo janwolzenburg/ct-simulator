@@ -33,9 +33,9 @@ int main( void ){
 
 	//if( !test_radonTransform() ) cerr << "Test for radon transformed failed!";
 
-	if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
+	//if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
 
-	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
+	if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	return 0;
 }
