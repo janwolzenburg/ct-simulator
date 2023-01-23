@@ -48,7 +48,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 15, 7 } );
+	gantry testGantry = getTestGantry( idx2CR{ 39, 17 } );
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
 	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
