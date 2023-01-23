@@ -75,8 +75,8 @@ class detector {
 	cartCSys* cSys;									/*!<Local coordinate system*/
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 
+	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is importanct since physicalParameters constructor changes radonParameters
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
-	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/
 
 
 };
