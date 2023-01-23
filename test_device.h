@@ -15,4 +15,4 @@ bool test_detector( void );
 
 bool test_gantry( void );
 
-gantry getTestGantry( void );
+gantry getTestGantry( const idx2CR sinogramSize );

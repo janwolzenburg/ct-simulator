@@ -82,14 +82,15 @@ bool test_detector(void) {
 
 }
 
-gantry getTestGantry( void ){
+gantry getTestGantry( const idx2CR sinogramSize ){
+
 	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 
 
 	detectorRadonParameter radonParameter{
-		idx2CR{ 63, 31 },
+		sinogramSize,
 		500
 	};
 
@@ -107,7 +108,7 @@ gantry getTestGantry( void ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry();
+	gantry testGantry = getTestGantry( idx2CR{ 63, 31 });
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 
