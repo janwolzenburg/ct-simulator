@@ -49,7 +49,7 @@ detector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
 	detectorRadonParameter radonParameter{
-		idx2CR{ 64, 32 },
+		idx2CR{ 63, 31 },
 		500
 	};
 
@@ -119,9 +119,9 @@ bool test_gantry( void ){
 
 	addObject( ax1, "Gantry", testGantry, "r", 0 );
 
-	//testGantry.rotateCounterClockwise( 2.*PI/3 );
+	testGantry.rotateCounterClockwise( 2.*PI/3 );
 
-	//addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "Gantry", testGantry, "r", 0 );
 
 	closeAxis( ax1 );
 

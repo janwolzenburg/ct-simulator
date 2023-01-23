@@ -27,7 +27,7 @@
 
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
-					Fmin( numberPoints_.row, (size_t) 2 ) },
+					Fmin( FOdd ( numberPoints_.row ), (size_t) 3 ) },
 	distanceRange( Fpos( distanceRange_ ) ),
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
 				distanceRange / (double) ( numberPoints.row - 1 ) },
@@ -61,9 +61,9 @@ detectorIndipendentParameter::detectorIndipendentParameter( const double angle_,
 */
 
 detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	number{ Fmin( (size_t) ( indipendentParameter.angle / radonParameter.resolution.col ), (size_t) 2 ), 1 },
+	number{ Fmin( FOdd ( (size_t) ( indipendentParameter.angle / radonParameter.resolution.col ) ), (size_t) 3 ), 1 },
 	angle( (double) ( number.col - 1 ) * radonParameter.resolution.col ),
-	detectorFocusDistance( radonParameter.getDetectorFocusDistance( angle ) ),
+	detectorFocusDistance( radonParameter.getDetectorFocusDistance( indipendentParameter.angle ) ),		// Must be independentParameter.angle
 	pixelSize{ indipendentParameter.columnSize, 2. * detectorFocusDistance * tan( angle / (double) ( number.col - 1 ) / 2. ) },
 	structured( indipendentParameter.structured )
 {}
