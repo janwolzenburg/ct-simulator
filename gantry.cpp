@@ -71,6 +71,12 @@ void gantry::rotateCounterClockwise( const double angle ){
 void gantry::radiate( const model& radModel ) {
 
 	vector<ray> rays = this->getBeam();		// Current rays. Start with rays from source
+	
+	// Convert rays to model coordinate system
+	for( ray& currentRay : rays ){
+		currentRay = currentRay.convertTo( radModel.CSys());
+	}
+	
 	vector<ray> raysToDetect;				// Rays to detect
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
