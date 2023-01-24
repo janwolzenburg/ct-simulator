@@ -91,12 +91,12 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 127, 31 }, 1 );
+	gantry testGantry = getTestGantry( idx2CR{ 189, 63 }, 1 );
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };
 
-	ofstream ax2 = openAxis( path( "./test_Tomography_gantry.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_189x63_1.txt" ), true );
 
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	addObject( ax2, "TestModel", mod, "g", 0.015 );
@@ -105,7 +105,11 @@ bool test_Tomography( void ){
 
 	radonTransformed sinogram = testTomography.recordSlice();
 
-	ofstream ax1 = openAxis( path( "./test_Tomography.txt" ), true );
+	vector<char> serializedData;
+	sinogram.serialize( serializedData );
+	exportSerialized( "test_Tomography_serialized_sinogram_189x63_1.txt", serializedData );
+
+	ofstream ax1 = openAxis( path( "./test_Tomography_189x63_1.txt" ), true );
 
 	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
