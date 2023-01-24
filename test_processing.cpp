@@ -91,7 +91,7 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 127, 31 }, 2 );
+	gantry testGantry = getTestGantry( idx2CR{ 127, 31 }, 1 );
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };
