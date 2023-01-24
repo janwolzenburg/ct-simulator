@@ -82,11 +82,17 @@ void gantry::radiate( const model& radModel ) {
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
 
+		cout << "Loop: " << currentLoop + 1 << endl;
+
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
+
+		size_t rayNum = 0;
 
 		// Iterate over all rays in current ray collection
 		for( const ray currentRay : rays ){
 		
+			cout << '\r' << "Ray: " << rayNum++ + 1 << " of " << rays.size() << "           ";
+
 			vector<ray> returnedRays;												// Rays that have been scattered or left the model
 			bool enableScattering = currentLoop < maxRadiationLoops;				// No scattering in last iteration
 			returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
@@ -103,6 +109,7 @@ void gantry::radiate( const model& radModel ) {
 
 			}
 		}
+		cout << endl;
 
 		// Copy rays to vector
 		rays = raysForNextIteration;
