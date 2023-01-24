@@ -109,5 +109,6 @@ class radonTransformed{
 	size_t serialize( vector<char>& binData ) const;
 
 	private:
-	grid dataGrid;		/*!<The data grid*/
+	grid dataGrid;				/*!<The data grid*/
+	vector<vector<v2CR>> gridErrors;
 };

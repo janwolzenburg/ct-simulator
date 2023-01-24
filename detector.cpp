@@ -61,6 +61,8 @@ detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParamete
 		allPixel.at( col ) = px;
 
 	}
+
+
 }
 
 

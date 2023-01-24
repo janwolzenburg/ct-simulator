@@ -40,6 +40,11 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 
 	raySource.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
 	rayDetector.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+
+	// Get the real field of measure
+	double realMinDistance = rayDetector.getPixel().front().NormalLine().getDistance( cSys->OPnt() );
+	double realMaxDistance = rayDetector.getPixel().back().NormalLine().getDistance( cSys->OPnt() );
+
 }
 
 

@@ -95,7 +95,9 @@ radonTransformed::radonTransformed( const detectorRadonParameter detectorParamet
 				v2CR{ 0, -detectorParameter.distanceRange / 2 },
 				detectorParameter.resolution,
 				0 }
-{}
+{
+	gridErrors = vector<vector<v2CR>>( dataGrid.Size().col, vector<v2CR>( dataGrid.Size().row, v2CR{ INFINITY, INFINITY }));
+}
 
 
 grid radonTransformed::Data( void ) const{
@@ -107,7 +109,18 @@ void radonTransformed::assignData( const idx2CR index, const double value ){
 }
 
 void radonTransformed::assignData( const radonPoint data ){
-	dataGrid( v2CR{ data.coordinates.theta, data.coordinates.distance }) = data.value;
+
+	v2CR point{ data.coordinates.theta, data.coordinates.distance };
+	idx2CR index = dataGrid.getIndex( point );
+	v2CR gridPoint{ dataGrid.getCoordinates( index )};
+
+	v2CR error{
+		gridPoint.col - point.col,
+		gridPoint.row - point.row
+	};
+
+	gridErrors.at( index.col ).at( index.row ) = error;
+	dataGrid( index ) = data.value;
 }
 
 

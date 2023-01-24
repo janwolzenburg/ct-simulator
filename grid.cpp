@@ -95,10 +95,10 @@ double grid::operator()( const idx2CR index ) const{
 
 idx2CR grid::getIndex( const v2CR coordinates ) const{
 
-	idx2CR index;
-
-	index.col = (size_t) floor( ( coordinates.col - start.col ) / resolution.col + 0.5 );
-	index.row = (size_t) floor( ( coordinates.row - start.row ) / resolution.row + 0.5 );
+	idx2CR index{
+		(size_t) floor( ( coordinates.col - start.col ) / resolution.col + 0.5 ),
+		(size_t) floor( ( coordinates.row - start.row ) / resolution.row + 0.5 )
+	};
 
 	if( index.col >= size.col ) index.col = size.col - 1;
 	if( index.row >= size.row ) index.row = size.row - 1;
