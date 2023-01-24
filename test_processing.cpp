@@ -113,3 +113,28 @@ bool test_Tomography( void ){
 
 	return true;
 }
+
+
+bool test_serialisation( void ){
+
+	detectorRadonParameter radonParameter{
+											idx2CR{ 8, 8 },
+											500
+	};
+
+	radonTransformed testSinogram{ radonParameter };
+
+	for( size_t col = 0; col < testSinogram.Data().Size().col; col++ ){
+		for( size_t row = 0; row < testSinogram.Data().Size().row; row++ ){
+			testSinogram.assignData( idx2CR{ col, row }, 1. * (double) (col * testSinogram.Data().Size().row + row ));
+		}
+	}
+
+	vector<char> serializedData;
+	testSinogram.serialize( serializedData );
+
+	exportSerialized( "test_serialisation.txt", serializedData );
+
+	return true;
+
+}

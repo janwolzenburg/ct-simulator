@@ -98,6 +98,8 @@ class radonTransformed{
 	*/
 	grid Data( void ) const;
 	
+	void assignData( const idx2CR index, const double value );
+
 	/*!
 	 * @brief Assign data to grid
 	 * @param data Data point
