@@ -82,7 +82,7 @@ bool test_detector(void) {
 
 }
 
-gantry getTestGantry( const idx2CR sinogramSize ){
+gantry getTestGantry( const idx2CR sinogramSize, const size_t raysInBeam ){
 
 	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
 								.anodeCurrent_A = 0.2,
@@ -100,7 +100,7 @@ gantry getTestGantry( const idx2CR sinogramSize ){
 		false
 	};
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), 100, tubeParas, radonParameter, indipendentParameter };
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), raysInBeam, tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }
@@ -108,7 +108,7 @@ gantry getTestGantry( const idx2CR sinogramSize ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 125, 31 });
+	gantry testGantry = getTestGantry( idx2CR{ 125, 31 }, 62 );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 

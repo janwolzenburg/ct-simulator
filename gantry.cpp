@@ -29,7 +29,7 @@ gantry::gantry( cartCSys* const cSys_, const size_t numRaysInBeam, const tubePar
 	rayDetector{	cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	numberRaysInBeam( Fpos( numRaysInBeam ) ),
-	beamAngle( 1.01 * ( rayDetector.getPhysicalParameters().angle + rayDetector.getSignalParameter().resolution.col ) ),
+	beamAngle( rayDetector.getPhysicalParameters().angle + 0.99 * rayDetector.getSignalParameter().resolution.col ),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 )
 
 {

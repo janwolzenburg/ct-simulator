@@ -32,12 +32,12 @@ model getTestModel( const cartCSys* const parent ){
 
 	voxData bgData = { 0.0 };
 
-	pnt3 sp1_center = { v3{ 100, 100, 200 }, mod.CSys() };
-	double sp1_radius = 25;
+	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
+	double sp1_radius = 60;
 	voxData sp1_data = { 0.02 };
 
-	pnt3 sp2_center = { v3{ 300, 300, 200 }, mod.CSys() };
-	double sp2_radius = 15;
+	pnt3 sp2_center = { v3{ 280, 280, 200 }, mod.CSys() };
+	double sp2_radius = 70;
 	voxData sp2_data = { 0.06 };
 
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
@@ -73,7 +73,7 @@ bool test_testModel( void ){
 
 bool test_modelTransmission( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 63, 31 } );
+	gantry testGantry = getTestGantry( idx2CR{ 63, 31 }, 62 );
 	model mod = getTestModel( GLOBAL_CSYS() );
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
