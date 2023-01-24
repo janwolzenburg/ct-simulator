@@ -90,6 +90,8 @@ class radonTransformed{
 	*/
 	radonTransformed( const detectorRadonParameter detectorParameter );
 
+	radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it );
+
 	/*!
 	 * @brief Get grid data
 	 * @return Grid data
@@ -102,6 +104,7 @@ class radonTransformed{
 	*/
 	void assignData( const radonPoint data );
 
+	size_t serialize( vector<char>& binData ) const;
 
 	private:
 	grid dataGrid;		/*!<The data grid*/

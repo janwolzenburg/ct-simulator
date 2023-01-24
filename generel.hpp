@@ -38,14 +38,18 @@ size_t serializeBuildIn( const T val, vector<char>& binData ){
 }
 
 template< typename T >
-size_t deSerializeBuildIn( T& val, vector<char>::const_iterator& it ){
+size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
 
 	val = 0;
 
 	size_t i = 0;
-	for( ; i < sizeof( T ); i++ ){
+	for( ; i < sizeof( T ) && it != binData.cend(); i++ ){
 		char* byte = (char*) &val + ( sizeof( T ) - 1 - i );
 		*byte = *( it++ );
 	}
-	return sizeof( T );
+
+	// Set to default val
+	if( i != sizeof( T ) - 1 ) val = defaultVal;
+
+	return i;
 }

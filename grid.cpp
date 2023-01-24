@@ -123,3 +123,32 @@ v2CR grid::getCoordinates( const idx2CR index ) const{
 
 	return v2CR{ column, row };
 }
+
+
+size_t grid::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += size.serialize( binData );
+	numBytes += start.serialize( binData );
+	numBytes += resolution.serialize( binData );
+
+	for( vector<double> column : data ){
+		for( double rowData : column ){
+			numBytes += serializeBuildIn( rowData, binData );
+		}
+	}
+
+	return numBytes;
+}
+
+grid::grid( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	grid{ idx2CR{ binData, it }, v2CR{ binData, it }, v2CR{ binData, it }, 0 }
+{
+
+	for( vector<double>& column : data ){
+		for( double& rowData : column ){
+			deSerializeBuildIn( rowData, 0., binData, it );
+		}
+	}
+
+}

@@ -83,7 +83,10 @@ class v3{
 class idx2CR{
 	public:
 	idx2CR( const size_t c_, const size_t r_ );
+	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 	idx2CR( void );
+
+	size_t serialize( vector<char>& binData ) const;
 
 	size_t col;
 	size_t row;
@@ -95,7 +98,10 @@ class idx2CR{
 class v2CR {
 	public:
 	v2CR(const double c_, const double r_);
+	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 	v2CR(void);
+
+	size_t serialize( vector<char>& binData ) const;
 
 	double col;
 	double row;
@@ -158,11 +164,12 @@ size_t serializeBuildIn( const T val, vector<char>& binData );
  * @brief Deserialize build in data type
  * @tparam T Expected type
  * @param val Reference to write value to
+ * @param binData Vector with binary data
  * @param it Iterator to start reading from. Will be advanced
  * @return Amount of bytes read
 */
 template< typename T >
-size_t deSerializeBuildIn( T& val, vector<char>::const_iterator& it );
+size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
 /*!
  * @brief Export serial data to file

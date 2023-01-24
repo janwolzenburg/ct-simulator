@@ -47,8 +47,43 @@ v3::v3( void ) : v3( 0, 0, 0 ){};
 idx2CR::idx2CR( const size_t c_, const size_t r_ ) : col( c_ ), row( r_ ){};
 idx2CR::idx2CR( void ) : idx2CR( 0, 0 ){};
 
+idx2CR::idx2CR( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	deSerializeBuildIn( this->col, (size_t) 0, binData, it );
+	deSerializeBuildIn( this->row, (size_t) 0, binData, it );
+
+}
+
+size_t idx2CR::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( this->col, binData );
+	numBytes += serializeBuildIn( this->row, binData );
+
+	return numBytes;
+}
+
+
 v2CR::v2CR( const double c_, const double r_ ) : col( c_ ), row( r_ ){};
 v2CR::v2CR( void ) : v2CR( 0, 0 ){};
+
+v2CR::v2CR( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	deSerializeBuildIn( this->col, (double) 0, binData, it );
+	deSerializeBuildIn( this->row, (double) 0, binData, it );
+
+}
+
+size_t v2CR::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( this->col, binData );
+	numBytes += serializeBuildIn( this->row, binData );
+
+	return numBytes;
+}
+
+
 
 range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){

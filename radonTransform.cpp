@@ -106,3 +106,17 @@ grid radonTransformed::Data( void ) const{
 void radonTransformed::assignData( const radonPoint data ){
 	dataGrid( v2CR{ data.coordinates.theta, data.coordinates.distance }) = data.value;
 }
+
+
+size_t radonTransformed::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+	numBytes += dataGrid.serialize( binData );
+	return numBytes;
+}
+
+
+radonTransformed::radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	dataGrid{ binData, it }
+{
+	
+}

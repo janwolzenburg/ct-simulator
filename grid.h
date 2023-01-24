@@ -46,6 +46,8 @@ class grid{
 	*/
 	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0 );
 
+	grid( const vector<char>& binData, vector<char>::const_iterator& it );
+
 	/*!
 	 * @brief Get size of gird
 	 * @return Size of grid
@@ -112,6 +114,9 @@ class grid{
 	 * @return Reference to element value
 	*/
 	double& operator()( const v2CR point );
+
+
+	size_t serialize( vector<char>& binData ) const;
 
 
 	private:
