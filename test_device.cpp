@@ -108,7 +108,7 @@ gantry getTestGantry( const idx2CR sinogramSize ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 63, 31 });
+	gantry testGantry = getTestGantry( idx2CR{ 125, 31 });
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 

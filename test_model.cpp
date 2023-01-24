@@ -28,17 +28,17 @@ model getTestModel( const cartCSys* const parent ){
 
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, idx3 {40, 40, 40}, v3 {10., 10., 10.} };
+	model mod{ modelSys, idx3 {20, 20, 20}, v3 {20., 20., 20.} };
 
 	voxData bgData = { 0.0 };
 
-	pnt3 sp1_center = { v3{ 150, 150, 190 }, mod.CSys() };
-	double sp1_radius = 50;
+	pnt3 sp1_center = { v3{ 100, 100, 200 }, mod.CSys() };
+	double sp1_radius = 25;
 	voxData sp1_data = { 0.02 };
 
-	pnt3 sp2_center = { v3{ 200,220, 200 }, mod.CSys() };
-	double sp2_radius = 20;
-	voxData sp2_data = { 0.04 };
+	pnt3 sp2_center = { v3{ 300, 300, 200 }, mod.CSys() };
+	double sp2_radius = 15;
+	voxData sp2_data = { 0.06 };
 
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
 		for( size_t y = 0; y < mod.NumVox().y; y++ ){
