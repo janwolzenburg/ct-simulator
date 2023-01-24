@@ -49,7 +49,7 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 	}
 
 	// Set to default val
-	if( i != sizeof( T ) - 1 ) val = defaultVal;
+	if( i != sizeof( T ) ) val = defaultVal;
 
 	return i;
 }

@@ -135,6 +135,28 @@ bool test_serialisation( void ){
 
 	exportSerialized( "test_serialisation.txt", serializedData );
 
+	vector<char> importedData = importSerialized( "test_serialisation.txt" );
+
+	vector<char>::const_iterator readStart = importedData.cbegin();
+	radonTransformed importedSinogram{ importedData, readStart };
+
+
+	if( testSinogram.Data().Size().col != importedSinogram.Data().Size().col ) return false;
+	if( testSinogram.Data().Size().row != importedSinogram.Data().Size().row ) return false;
+
+	if( testSinogram.Data().Start().col != importedSinogram.Data().Start().col ) return false;
+	if( testSinogram.Data().Start().row != importedSinogram.Data().Start().row ) return false;
+
+	if( testSinogram.Data().Resolution().col != importedSinogram.Data().Resolution().col ) return false;
+	if( testSinogram.Data().Resolution().row != importedSinogram.Data().Resolution().row ) return false;
+
+
+	for( size_t col = 0; col < testSinogram.Data().Size().col; col++ ){
+		for( size_t row = 0; row < testSinogram.Data().Size().row; row++ ){
+			if( testSinogram.Data().operator()( idx2CR{ col, row }) != importedSinogram.Data().operator()( idx2CR{ col, row } ) ) return false;
+		}
+	}
+
 	return true;
 
 }
