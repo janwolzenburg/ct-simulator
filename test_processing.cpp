@@ -103,13 +103,13 @@ bool test_Tomography( void ){
 
 	closeAxis( ax2 );
 
-	//radonTransformed sinogram = testTomography.recordSlice();
+	radonTransformed sinogram = testTomography.recordSlice();
 
-	//ofstream ax1 = openAxis( path( "./test_Tomography.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_Tomography.txt" ), true );
 
-	//addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
-	//closeAxis( ax1 );
+	closeAxis( ax1 );
 
 	return true;
 }
