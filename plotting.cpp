@@ -47,6 +47,23 @@ string getObjectString<pnt3>( const pnt3 p ){
 }
 
 template<>
+string getObjectString<vec3, pnt3>( const vec3 v, const pnt3 o ){
+
+	char tempCharArr[256];
+	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.gX(), v.gY(), v.gZ(), o.gX(), o.gY(), o.gZ() );
+
+	return string{ tempCharArr };
+
+}
+
+template<>
+string getObjectString<uvec3, pnt3>( const uvec3 v, const pnt3 o ){
+
+	return getObjectString<vec3, pnt3>( vec3{ v }, o );
+
+}
+
+template<>
 string getObjectString<line, double>( const line l, const double length ){
 
 	char tempCharArr[ 256 ];
