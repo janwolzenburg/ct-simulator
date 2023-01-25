@@ -31,8 +31,72 @@ detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParamete
 	radonParameters( radonParameter )
 {
 
+	const size_t nTheta = 20;
+	const size_t nDistance = FOdd( 11 );
+
+	const double distanceRange = 10;
+	const double arcRadius = 20;
+
+	const double deltaTheta = PI / (double) ( nTheta - 1 );
+	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
+
+	const uvec3 middleNormal = -cSys->EyVec();			// Middle normal is the negative y axis
+	const uvec3 rotationAxis = cSys->EzVec();				//Rotation axis is z axis
+
+	vector<line> pixelNormals;						// All normals
+	pixelNormals.push_back( line{ middleNormal, pnt3{ vec3{ -middleNormal } * arcRadius / 2 } } );			// The middle normal pointing from pixel to origin
+
+	//allPixel = vector<pixel>( nDistance );
+	//allPixel.push_back( pixel{  } )
+
+	// Iterate one "half" of normals
+	for( size_t currentIndex = 0; currentIndex < ( nDistance - 1 ) / 2; currentIndex++ ){
+
+		// Rotation angle to rotate the middle normal by
+		const double rotationAngle = (double) ( currentIndex + 1 ) * deltaTheta;
+
+		// Rotated normal
+		const uvec3 currentNormalVec = middleNormal.rotN( rotationAxis, rotationAngle );
+
+		// Lot on normal perpendicualr to rotation axis
+		vec3 normalLot = currentNormalVec ^ rotationAxis;
+		normalLot.normalize();	// Set length to one
+
+		// Distance from origin to normal
+		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2  - currentIndex - 1 ) * deltaDistance;
+
+		// Set lot length to distance
+		normalLot.scale( currentDistance );
+
+		// Point on Normal
+		const pnt3 normalPoint{ normalLot };
+
+		// Get point on pixel which lies on an arc with radius R
+		const primitiveVec3 o = normalPoint.XYZ();
+		const primitiveVec3 r = currentNormalVec.XYZ();
+		const double R = arcRadius;
+
+		const double p = ( 2*o.y*r.y + r.y*R + r.x ) / ( pow( r.y, 2 ) );
+		const double q = ( o.x + o.y*R + pow( o.y, 2 ) - 3/4*pow( R, 2 ) ) / pow( r.y, 2 );
+
+		const double lambda = -p/2 + sqrt( pow( p / 2, 2 ) - q );
+		
+		// The normal line of current pixel
+		const line currentNormal{ currentNormalVec, normalPoint };
+		pixelNormals.push_back( currentNormal );
+
+		// Point on Pixel
+		//const pnt3 pointOnPixel = currentNormal.getPnt( lambda );
+
+		//const uvec3 surfVec1 = rotationAxis;
+		//const uvec3 surfVec2 = surfVec1 ^ currentNormalVec;
+
+		//const surf pixelSurface{ surfVec1, surfVec2, pointOnPixel };
+
+	}
+
 	// Initialise vectors
-	allPixel = vector<pixel>( physicalParameters.number.col );
+	/*allPixel = vector<pixel>(physicalParameters.number.col);
 
 	// Calculate angle delta from pixel size along arc and arc radius 
 	double angleDelta = radonParameters.resolution.col;// 2 * atan( pxSize.r / ( 4 * radius ) );
@@ -60,7 +124,7 @@ detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParamete
 
 		allPixel.at( col ) = px;
 
-	}
+	}*/
 
 
 }

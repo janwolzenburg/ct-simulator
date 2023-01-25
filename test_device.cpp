@@ -65,6 +65,14 @@ detector getTestDetector( void ){
 	return testDetector;
 }
 
+bool test_nonUniformDetector( void ){
+
+	detector test_detector = getTestDetector();
+
+	return true;
+
+}
+
 bool test_detector(void) {
 
 
