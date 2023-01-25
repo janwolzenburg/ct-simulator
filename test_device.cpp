@@ -170,7 +170,7 @@ bool test_nonUniformDetector( void ){
 
 	}
 
-
+	// TODO: Create pixel from normals
 	
 
 //	addObject( ax1, "Detector", pixelNormals, "r", 1.5 * arcRadius );
