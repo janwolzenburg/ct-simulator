@@ -50,21 +50,25 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 
 
 	// Create system of equations with two variables
-	eqnSys sys( 3 );
-	sys.populateColumn( l1.R().XYZ() );
-	sys.populateColumn( -l2.R().XYZ( l1.R() ) );
-	sys.populateColumn( v3{ 0, 0, 0} );
-	sys.populateColumn( l2.O().XYZ( l1.O() ) - l1.O().XYZ() );
+	eqnSys sys( 2 );
+
+	v3 column0 = l1.R().XYZ();
+	v3 column1 = -l2.R().XYZ( l1.R() );
+	v3 column2 = l2.O().XYZ( l1.O() ) - l1.O().XYZ();
+
+	sys.populateColumn( v2{ column0.x, column0.y } );
+	sys.populateColumn( v2{ column1.x, column1.y } );
+	sys.populateColumn( v2{ column2.x, column2.y } );
 
 	// Solve system
 	eqnSysSolution sysSol = sys.solve();
 
-	// Check third equation
-
 	// No solution found
-	if( !sysSol.Success() ){
+	if( !sysSol.Success() || 
+		!iseqErr( sysSol.getVar( 0 ) * column0.z + sysSol.getVar( 1 ) * column1.z, column0.z ) ){
 		return;
 	}
+
 
 	// Copy result
 	result.hasSolution = true;						// Solution found
