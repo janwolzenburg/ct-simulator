@@ -190,6 +190,13 @@ void addObject<vector<pixel>, double>( ofstream& axis, const string name, const 
 }
 
 template<>
+void addObject<vector<surfLim>, double>( ofstream& axis, const string name, const vector<surfLim> surfaces, const string parameter, const double alpha ){
+	for( const surfLim surface : surfaces ){
+		addSingleObject( axis, name, surface, parameter, alpha );
+	}
+}
+
+template<>
 void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string parameter, const int specifiers ){
 
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )

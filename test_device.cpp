@@ -71,11 +71,11 @@ bool test_nonUniformDetector( void ){
 
 	cartCSys* cSys = GLOBAL_CSYS()->createCopy( "Detector system" );
 
-	const size_t nTheta = 20;
-	const size_t nDistance = FOdd( 9 );
+	const size_t nTheta = 100;
+	const size_t nDistance = FOdd( 33 );
 
-	const double distanceRange = 10;
-	const double arcRadius = 20;
+	const double distanceRange = 500;
+	const double arcRadius = 1000;
 
 	const double deltaTheta = PI / (double) ( nTheta - 1 );
 	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
@@ -85,9 +85,8 @@ bool test_nonUniformDetector( void ){
 
 	const line middleNormal{ middleNormalVec, cSys->OPnt() };
 
-	addSingleObject( ax1, "MiddleNormal", middleNormal, "r", arcRadius / 2 );
 
-	//vector<line> pixelNormals;							// All normals
+	vector<line> pixelNormals( nDistance );							// All normals
 	//pixelNormals.push_back( line{ middleNormal, pnt3{ vec3{ middleNormal } * arcRadius / 2 } } );			// The middle normal pointing from pixel to origin
 
 	//allPixel = vector<pixel>( nDistance );
@@ -143,19 +142,26 @@ bool test_nonUniformDetector( void ){
 		//addSingleObject( ax1, "PixelPoint", pointOnPixel, "c" );
 		
 		const line pixelNormal{ -currentNormalVec, pointOnPixel };
-		addSingleObject( ax1, "NormalLine", pixelNormal, "b", arcRadius );
+
+		
 
 		// Other side => flip x values
 		if( currentIndex > 0 ){
+
+			pixelNormals.at( ( nDistance - 1 ) / 2 - currentIndex ) = pixelNormal;
 
 			const line symPixelNormal{
 				uvec3 { v3{ -pixelNormal.R().X(), pixelNormal.R().Y(), pixelNormal.R().Z() }, pixelNormal.R().CSys() },
 				pnt3 { v3{ -pixelNormal.O().X(), pixelNormal.O().Y(), pixelNormal.O().Z() }, pixelNormal.O().CSys() }
 			};
 
+			pixelNormals.at( ( nDistance - 1 ) / 2 + currentIndex ) = symPixelNormal;
 
-			addSingleObject( ax1, "SymNormalLine", symPixelNormal, "b", arcRadius );
 
+		}
+		else{
+		// Middle normal
+			pixelNormals.at( ( nDistance - 1 ) / 2 ) = pixelNormal;
 		}
 
 		//pixelNormals.push_back( line{ currentNormalVec, pointOnPixel } );
@@ -170,10 +176,101 @@ bool test_nonUniformDetector( void ){
 
 	}
 
-	// TODO: Create pixel from normals
+
 	
 
-//	addObject( ax1, "Detector", pixelNormals, "r", 1.5 * arcRadius );
+	// TODO: Create pixel from normals
+	
+	vector<surfLim> surfaces;
+	double rowSize = 40;
+
+	// 
+	for( auto currentNormalIt = pixelNormals.cbegin() + 1; currentNormalIt < pixelNormals.cend() - 1; currentNormalIt++ ){
+		auto previousNormalIt = currentNormalIt - 1;
+		auto nextNormalIt = currentNormalIt + 1;
+		
+		// point in z-direction
+		//const uvec3 surfVec2 = rotationAxis;
+
+		// Point to the next normal
+		//const uvec3 surfVec1 = surfVec2 ^ currentNormalIt->R();
+
+		// Center point of surface
+		//const pnt3 centerPoint = currentNormalIt->O();
+
+
+		// Find size of pixel
+
+		// Where do surface vector of neighbooring pixel meet?
+
+		//addSingleObject( ax1, "CurrentNormalLine", *currentNormalIt, "c", arcRadius );
+
+		const line lCurrentToPrevious{ -rotationAxis ^ currentNormalIt->R(), currentNormalIt->O() };
+		const line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->R(), previousNormalIt->O() };
+		//addSingleObject( ax1, "CurrentToPrevious", lCurrentToPrevious, "b", ( previousNormalIt->O() - currentNormalIt->O() ).Length() );
+		//addSingleObject( ax1, "PreviousToCurrent", lPreviousToCurrent, "b", ( previousNormalIt->O() - currentNormalIt->O() ).Length() );
+
+		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
+		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.Result().intersectionPoint;
+		//addSingleObject( ax1, "InterssectionPoint", currentPreviousIntersectionPoint, "b" );
+
+		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
+
+
+		const line lCurrentToNext{ rotationAxis ^ currentNormalIt->R(), currentNormalIt->O() };
+		const line lNextToCurrent{ -rotationAxis ^ nextNormalIt->R(), nextNormalIt->O() };
+		//addSingleObject( ax1, "CurrentToPrevious", lCurrentToNext, "b", ( nextNormalIt->O() - currentNormalIt->O() ).Length() );
+		//addSingleObject( ax1, "PreviousToCurrent", lNextToCurrent, "b", ( nextNormalIt->O() - currentNormalIt->O() ).Length() );
+
+		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
+		const pnt3 currentNextIntersectionPoint = currentNextIntersection.Result().intersectionPoint;
+		//addSingleObject( ax1, "InterssectionPoint", currentNextIntersectionPoint, "b" );
+
+		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
+
+
+		if( currentNormalIt == pixelNormals.cbegin() + 1 ){
+			
+			const surfLim previousSurface{ rotationAxis ^ previousNormalIt->R(),
+											rotationAxis,
+											previousNormalIt->O(),
+											currentPreviousParameter,
+											( currentPreviousIntersectionPoint - previousNormalIt->O() ).Length(),
+											-rowSize / 2,
+											rowSize / 2 };
+			surfaces.push_back( previousSurface );
+		}
+
+
+
+
+		const surfLim currentSurface{	rotationAxis ^ currentNormalIt->R(), 
+										rotationAxis,
+										currentNormalIt->O(),
+										currentPreviousParameter,
+										currentNextParameter,
+										-rowSize/2,
+										rowSize/2 };
+		surfaces.push_back( currentSurface );
+
+		if( currentNormalIt == pixelNormals.cend() - 2 ){
+
+			const surfLim nextSurface{ rotationAxis ^ nextNormalIt->R(),
+											rotationAxis,
+											nextNormalIt->O(),
+											-( currentNextIntersectionPoint - nextNormalIt->O() ).Length(),
+											currentNextParameter,
+											-rowSize / 2,
+											rowSize / 2 };
+			surfaces.push_back( nextSurface );
+		}
+
+	
+	}
+
+
+	addObject( ax1, "Normals", pixelNormals, "r", arcRadius );
+	addObject( ax1, "Pixel", surfaces, "g", 0.5 );
 
 	closeAxis( ax1 );
 
