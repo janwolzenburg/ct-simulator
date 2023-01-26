@@ -221,6 +221,19 @@ mathObj::MATH_ERR eqnSys::populateColumn( const v3 v ){
 	return MATH_ERR::OK;
 }
 
+mathObj::MATH_ERR eqnSys::populateColumn( const v2 v ){
+
+	// For now only implemented with three vars
+	if( isPopulated() || varNum != 2 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to two!" );
+
+	// Assign vector values to matrix columns
+	( *this )( 0, numPopulatedColumns ) = v.x;
+	( *this )( 1, numPopulatedColumns ) = v.y;
+	numPopulatedColumns++;
+
+	return MATH_ERR::OK;
+}
+
 eqnSysSolution eqnSys::solve( void ){
 
 	eqnSysSolution sol( *this );			// Create solution instance
