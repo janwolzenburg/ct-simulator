@@ -26,6 +26,56 @@ using std::string;
 *********************************************************************/
 
 
+lineLine_Intersection_Result::lineLine_Intersection_Result( void )
+	: hasSolution( false ),
+	lineParameter1( 0 ), lineParameter2( 0 ),
+	intersectionPoint( pnt3{} ){}
+
+string lineLine_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
+
+	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+
+	str += "solution=" + hasSolution;
+	str += newLine + intersectionPoint.toStr();
+	return str;
+}
+
+
+lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
+	l1( l1_ ),
+	l2( l2_ )
+{
+
+
+	// Create system of equations with two variables
+	eqnSys sys( 3 );
+	sys.populateColumn( l1.R().XYZ() );
+	sys.populateColumn( -l2.R().XYZ( l1.R() ) );
+	sys.populateColumn( v3{ 0, 0, 0} );
+	sys.populateColumn( l2.O().XYZ( l1.O() ) - l1.O().XYZ() );
+
+	// Solve system
+	eqnSysSolution sysSol = sys.solve();
+
+	// Check third equation
+
+	// No solution found
+	if( !sysSol.Success() ){
+		return;
+	}
+
+	// Copy result
+	result.hasSolution = true;						// Solution found
+	result.lineParameter1 = sysSol.getVar( 0 );			// Surface parameter A
+	result.lineParameter2 = sysSol.getVar( 1 );			// Surface parameter B
+
+	result.intersectionPoint = l1.getPnt( result.lineParameter1 );	// Point of intersection
+
+};
+
+
 /*
 	linSurf_Intersection_Result
 */
