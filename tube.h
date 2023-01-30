@@ -19,7 +19,7 @@ using std::vector;
 #include "cartesian.h"
 #include "spectrum.h"
 #include "rays.h"
-
+#include "detectorPixel.h"
 
 
 
@@ -55,13 +55,18 @@ class tube{
 
 	/*!
 	 * @brief Get beam created by tube
-	 * @param beamAngle Beam angle
-	 * @param numRays_ Amount of rays
-	 * @return Vector with rays in XY-plane of tube's coordinate system and symmetrical to y-axis
+	 * @param detectorPixel Vector with all pixel
+	 * @param raysPerPixel Amount of rays per pixel
+	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<ray> getBeam( const double beamAngle, const size_t numRays_ ) const;
+	vector<ray> getBeam( const vector<pixel> detectorPixel, const size_t raysPerPixel ) const;
 
+	/*!
+	 * @brief Get coordinate system
+	 * @return Pointer to coordinate system
+	*/
 	cartCSys* CSys( void ) const;
+
 
 	private:
 
