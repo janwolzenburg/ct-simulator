@@ -25,7 +25,6 @@
 /*!
  * detectorRadonParameter implementation
 */
-
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
 					Fmin( FOdd ( numberPoints_.row ), (size_t) 3 ) },
@@ -33,7 +32,27 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
 				distanceRange / (double) ( numberPoints.row - 1 ) },
 	framesToFillSinogram( numberPoints.col - 1 + numberPoints.row - 1)
-{}
+{
+
+	// Check angle
+	double currentAngle = (double) ( numberPoints.row - 1 ) * resolution.row;
+
+	// Store current number of angles 
+	size_t newNumberPointsCol = numberPoints.col;
+
+	// Angle exceeds maximum or minimum
+	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsCol = MAX_DETECTOR_ANGLE / resolution.row + 1.;
+	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsCol = MIN_DETECTOR_ANGLE / resolution.row + 1.;
+
+	// Recalculate if number of point changed
+	if( newNumberPointsCol != numberPoints.col ){
+		numberPoints.col = Fmin( FOdd( newNumberPointsCol ), (size_t) 2 );
+		resolution.col = PI / (double) ( numberPoints.col - 1 );
+		framesToFillSinogram = numberPoints.col - 1 + numberPoints.row - 1;
+	}
+
+
+}
 
 /*
 double detectorRadonParameter::getDetectorFocusDistance( const double angle ) const{
@@ -50,8 +69,8 @@ double detectorRadonParameter::getDetectorFocusDistance( const double angle ) co
  * detectorIndipendentParameter implementation
 */
 
-detectorIndipendentParameter::detectorIndipendentParameter( const double angle_, const double columnSize_, const bool structured_ ) :
-	angle( ( angle_ >= 2. * PI * ( 40. / 360. ) && angle_ <= 2. * PI * ( 60. / 360. ) ) ? angle_ : 2. * PI * ( 50. / 360. )),
+detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ ) :
+	arcRadius( arcRadius_ ),
 	columnSize( Fpos( columnSize_ ) ),
 	structured( structured_ )
 {}
@@ -62,55 +81,11 @@ detectorIndipendentParameter::detectorIndipendentParameter( const double angle_,
  * detectorPhysicalParameter implementation
 */
 
-detectorPhysicalParameter::detectorPhysicalParameter( detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter ) :
+detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+	number{ radonParameter.numberPoints.col, 1 },
+	angle( (double) ( radonParameter.numberPoints.row - 1 )* radonParameter.resolution.row ),
+	detectorFocusDistance( indipendentParameter.arcRadius ),
 	structured( indipendentParameter.structured )
 {
-	number.col = radonParameter.numberPoints.row;		// Amount of pixel columns is equal to amount of points on distance (row) axis in sinogram
-	number.row = 1;										// One detector row
-
-	angle = ( (double) ( number.col - 1 ) * radonParameter.resolution.col );		// Angle between outer pixel normals
-
-
-	int recalculate = 0;
-
-	// Angle to small
-	if( angle < 2. * PI * ( 40. / 360. ) ){
-		angle = 2. * PI * ( 40. / 360. );
-		recalculate = -1;
-	}
-
-	// Angle to big
-	if( angle > 2. * PI * ( 60. / 360. ) ){
-		angle = 2. * PI * ( 60. / 360. );
-		recalculate = 1;
-	}
-
-	if( recalculate != 0 ){
-		// New resolution
-		radonParameter.resolution.col = angle / (double) ( number.col - 1 );	
-
-		// New number of angles
-		if( recalculate == -1 )
-			radonParameter.numberPoints.col = (size_t) ceil( PI / radonParameter.resolution.col ) + 1;
-		if( recalculate == 1 )
-			radonParameter.numberPoints.col = (size_t) floor( PI / radonParameter.resolution.col ) + 1;
-
-		// numberPonints.col is integer => recalculate resolution
-		radonParameter.resolution.col = PI / (double) ( radonParameter.numberPoints.col - 1 );
-
-		// Recalculate angle
-		angle = ( (double) ( number.col - 1 ) * radonParameter.resolution.col );
-
-		radonParameter.framesToFillSinogram = radonParameter.numberPoints.col - 1 + radonParameter.numberPoints.row - 1;
-
-	}
-
-	indipendentParameter.angle = angle;
-
-	detectorFocusDistance = radonParameter.distanceRange / ( sin( angle / 2 ) );	// Focus Detector distance
-
-	pixelSize.col = indipendentParameter.columnSize;
-	pixelSize.row = 2. * detectorFocusDistance * tan( angle / (double) ( number.col - 1 ) / 2. );	// Pixel size
-
-
+	
 }
