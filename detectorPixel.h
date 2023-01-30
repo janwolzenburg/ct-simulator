@@ -40,6 +40,8 @@ class pixel : public surfLim{
 	*/
 	double getRadonValue( void ) const;
 
+	line NormalLine( void ) const;
+
 	public:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
 

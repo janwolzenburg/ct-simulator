@@ -21,16 +21,14 @@
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubeParameter tubeParameter_, detectorRadonParameter& radonParameter,
-				detectorIndipendentParameter& indipendentParameter ) :
+gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubeParameter tubeParameter_, 
+				const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
-	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	rayDetector{	cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
+	rayDetector{ cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
+	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	raysPerPixel( Fpos( raysPerPixel_ )),
-	numberRaysInBeam( raysPerPixel * rayDetector.getPhysicalParameters().number.col ),
-	beamAngle( rayDetector.getPhysicalParameters().angle + 2. * (double) ( raysPerPixel - 1 ) / ( 2. * (double) raysPerPixel ) * rayDetector.getSignalParameter().resolution.col ),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 )
 
 {
@@ -39,17 +37,17 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 	cSys->setPrimitive( xAxisALigned );
 
 	raySource.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
-	rayDetector.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	
 
 	// Get the real field of measure
-	double realMinDistance = rayDetector.getPixel().front().NormalLine().getDistance( cSys->OPnt() );
-	double realMaxDistance = rayDetector.getPixel().back().NormalLine().getDistance( cSys->OPnt() );
+	//double realMinDistance = rayDetector.getPixel().front().NormalLine().getDistance( cSys->OPnt() );
+	//double realMaxDistance = rayDetector.getPixel().back().NormalLine().getDistance( cSys->OPnt() );
 
 }
 
 
 vector<ray> gantry::getBeam( void ) const{
-	return raySource.getBeam( beamAngle, numberRaysInBeam ); 
+	return raySource.getBeam( rayDetector.getPixel(), raysPerPixel ); 
 }
 
 

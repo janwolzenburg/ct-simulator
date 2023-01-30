@@ -26,6 +26,60 @@ using std::string;
 *********************************************************************/
 
 
+lineLine_Intersection_Result::lineLine_Intersection_Result( void )
+	: hasSolution( false ),
+	lineParameter1( 0 ), lineParameter2( 0 ),
+	intersectionPoint( pnt3{} ){}
+
+string lineLine_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
+	string str;
+	string newLine = { '\n' };
+
+	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+
+	str += "solution=" + hasSolution;
+	str += newLine + intersectionPoint.toStr();
+	return str;
+}
+
+
+lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
+	l1( l1_ ),
+	l2( l2_ )
+{
+
+
+	// Create system of equations with two variables
+	eqnSys sys( 2 );
+
+	v3 column0 = l1.R().XYZ();
+	v3 column1 = -l2.R().XYZ( l1.R() );
+	v3 column2 = l2.O().XYZ( l1.O() ) - l1.O().XYZ();
+
+	sys.populateColumn( v2{ column0.x, column0.y } );
+	sys.populateColumn( v2{ column1.x, column1.y } );
+	sys.populateColumn( v2{ column2.x, column2.y } );
+
+	// Solve system
+	eqnSysSolution sysSol = sys.solve();
+
+	// No solution found
+	if( !sysSol.Success() || 
+		!iseqErr( sysSol.getVar( 0 ) * column0.z + sysSol.getVar( 1 ) * column1.z, column0.z ) ){
+		return;
+	}
+
+
+	// Copy result
+	result.hasSolution = true;						// Solution found
+	result.lineParameter1 = sysSol.getVar( 0 );			// Surface parameter A
+	result.lineParameter2 = sysSol.getVar( 1 );			// Surface parameter B
+
+	result.intersectionPoint = l1.getPnt( result.lineParameter1 );	// Point of intersection
+
+};
+
+
 /*
 	linSurf_Intersection_Result
 */

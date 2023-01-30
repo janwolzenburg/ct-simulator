@@ -181,6 +181,8 @@ class eqnSys : private matx{
 	*/
 	MATH_ERR populateColumn( const v3 v );
 
+	MATH_ERR populateColumn( const v2 v );
+
 	/*!
 	 * @brief Check population status
 	 * @return True when all columns are populated and system is ready to be solved

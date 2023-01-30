@@ -36,6 +36,8 @@ class line : virtual public mathObj{
 	*/
 	explicit line( const vec3 v, const pnt3 p );
 
+	line( void );
+
 	/*!
 	 * @brief Convert line's data to string
 	 * @return String with line's data

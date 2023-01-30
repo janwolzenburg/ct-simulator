@@ -22,6 +22,8 @@
    Definitions
 *********************************************************************/
 
+constexpr double MAX_DETECTOR_ANGLE = 2. * PI * ( 60./360. );
+constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );
 
 
 /*!
@@ -42,7 +44,7 @@ class detectorRadonParameter{
 	 * @param angle Angle between the outer detector normals
 	 * @return Radius of detector
 	*/
-	double getDetectorFocusDistance( const double angle ) const;
+	//double getDetectorFocusDistance( const double angle ) const;
 
 	/*!
 	 * @brief Get the necessary pixel size along a row
@@ -55,7 +57,7 @@ class detectorRadonParameter{
 	public:
 
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
-	double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
+	//double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };
@@ -75,9 +77,12 @@ class detectorIndipendentParameter{
 	 * @param columnSize_ Size of pixel in column direction
 	 * @param structured_ Flag for anti scatter structure
 	*/
-	detectorIndipendentParameter( const double angle_, const double columnSize_, const bool structured_ );
+	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ );
 
-	double angle;			/*!<Angle between the outer detector normals*/
+
+	public:
+
+	double arcRadius;		/*!<Radius of arc where the pixels lie on*/
 	double columnSize;		/*!<Size of one pixel in column direction*/
 	bool structured;		/*!<Flag for anti scatter structure*/
 
@@ -97,17 +102,14 @@ class detectorPhysicalParameter{
 	 * @param radonParameter Radon parameters
 	 * @param indipendentParameter Other detector parameters
 	*/
-	detectorPhysicalParameter( detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter );
+	detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 
 	public:
 
 	idx2CR number;					/*!<Amount of pixel in each dimension*/
-
-	double angle;
-	double detectorFocusDistance;	/*!Radius of detector arc*/
-	v2CR pixelSize;					/*!<Size of one pixel*/
-
+	double angle;					/*!<Angle between outer normals*/
+	double detectorFocusDistance;	/*!Distance of focus and detector pixel*/
 	bool structured;				/*!<Flag for anti scatter structure*/
 
 };

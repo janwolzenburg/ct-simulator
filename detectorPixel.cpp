@@ -40,6 +40,11 @@ double pixel::getRadonValue( void ) const{
 	return intensitySum;
 }
 
+line  pixel::NormalLine( void ) const{
+
+	return line{ this->Normal(), this->o };		// Line origin is surface origin for pixel and not the middle center!
+
+}
 
 
 /*
