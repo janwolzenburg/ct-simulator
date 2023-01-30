@@ -19,8 +19,7 @@
   Implementations
 *********************************************************************/
 
-//  TODO: Add detailed comments about calculations
-// CleanUp
+
 
 /*!
  * detectorRadonParameter implementation
@@ -53,15 +52,6 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 
 
 }
-
-/*
-double detectorRadonParameter::getDetectorFocusDistance( const double angle ) const{
-	return distanceRange / ( sin( angle / 2 ) );
-};*/
-
-//double detectorRadonParameter::getRowSize( const double detectorFocusDistance ) const{
-	//return 2. * detectorFocusDistance * tan( resolution.col / 2. );
-//};
 
 
 
