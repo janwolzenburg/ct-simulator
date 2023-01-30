@@ -55,7 +55,7 @@ detector getTestDetector( void ){
 
 	detectorIndipendentParameter indipendentParameter{
 		1000.,
-		1, 
+		10, 
 		false
 	};
 
@@ -290,6 +290,14 @@ bool test_detector(void) {
 
 	addObject( ax1, "Detector", allPixel, "r", .2 );
 	
+	vector<line> pixelNormals;
+
+	for( pixel currentPixel : allPixel ){
+		pixelNormals.push_back( currentPixel.NormalLine() );
+	}
+
+	addObject( ax1, "DetectorNormals", pixelNormals, "r", test_detector.getPhysicalParameters().detectorFocusDistance );
+
 	closeAxis(ax1);
 	
 	return true;

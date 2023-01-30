@@ -94,7 +94,6 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		// Get the point which lies on the circla and the current normal
 		const pnt3 pointOnPixel = currentNormal.getPnt( lambda );
 
-
 		// Current pixel normal pointing to the center 
 		const line pixelNormal{ -currentNormalVector, pointOnPixel };
 
@@ -144,7 +143,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		const uvec3 currentSurfaceVector = currentNormalIt->R() ^ rotationVector;
 
 		// Vector which lies on previous surface and in xy-plane
-		const uvec3 previousSurfaceVector = previousNormalIt->R() ^ rotationVector;
+		const uvec3 previousSurfaceVector = -previousNormalIt->R() ^ rotationVector;
 
 		// Intersection of previous and current surface
 		const lineLine_Intersection currentPreviousIntersection{ 
@@ -170,7 +169,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		};
 
 		// The point of intersection
-		const pnt3 currentNextIntersectionPoint = currentPreviousIntersection.Result().intersectionPoint;
+		const pnt3 currentNextIntersectionPoint = currentNextIntersection.Result().intersectionPoint;
 
 		// Large surface parameter as distance between intersection point and current surface's normal
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
@@ -184,7 +183,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		// First surface. Add previous surface
 		if( currentNormalIt == allNormals.cbegin() + 1 ){
 
-			allPixel.emplace_back(	-currentSurfaceVector,
+			allPixel.emplace_back(	previousSurfaceVector,
 									rotationVector,
 									previousNormalIt->O(),
 									currentPreviousParameter,
@@ -204,7 +203,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 									colSize / 2 );
 
 
-		// Last surfac. Add next surface			
+		// Last surface. Add next surface			
 		if( currentNormalIt == allNormals.cend() - 2 ){
 
 			allPixel.emplace_back(	-nextSurfaceVector,
