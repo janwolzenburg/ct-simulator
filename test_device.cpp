@@ -83,7 +83,7 @@ bool test_nonUniformDetector( void ){
 	const uvec3 middleNormalVec = cSys->EyVec();			// Middle normal is the negative y axis
 	const uvec3 rotationAxis = cSys->EzVec();			//Rotation axis is z axis
 
-	const line middleNormal{ middleNormalVec, cSys->OPnt() };
+	//const line middleNormal{ middleNormalVec, cSys->OPnt() };
 
 
 	vector<line> pixelNormals( nDistance );							// All normals

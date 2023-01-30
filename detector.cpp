@@ -25,13 +25,109 @@
 *********************************************************************/
 
 
-detector::detector( cartCSys* const cSys_, detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter ) :
+detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	physicalParameters{ radonParameter, indipendentParameter },
 	radonParameters( radonParameter )
 {
 
-	const size_t nTheta = 20;
+	// Important parameter
+	const size_t nDistance = radonParameters.numberPoints.row;									// Amount of distances or pixel
+	const double distanceRange = (double) ( nDistance - 1) * radonParameters.resolution.row;	// Covered field of measure
+
+	const double deltaTheta = radonParameters.resolution.col;		// Angle resolution
+	const double deltaDistance = radonParameters.resolution.row;	// Distance resolution
+
+
+	// Important vectors
+	const uvec3 middleNormalVector = cSys->EyVec();					// y-axis of coordinate system is the middle normal vector
+	const uvec3 rotationVector = cSys->EzVec();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+
+
+	// All pixel normals
+	vector<line> allNormals( nDistance );
+
+
+	// Iterate through half of pixel normals. Second half is created by symmetry
+	// Normals will be created inside to outside
+	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
+	
+		// Angle to rotate the middle normal vector by
+		const double rotationAngle = (double) (currentIndex) * deltaTheta;
+	
+		// Middle normal vector rotation by rotation angle around rotation vector
+		const uvec3 currentNormalVector = middleNormalVector.rotN( rotationVector, rotationAngle );
+
+
+
+		// Find a point with the distance corresponding to distance in sinogram
+		// The point's origin vector must be perpendicular to the current normal vector
+
+		// The lot is perpendicular to the current normal vector and it lies in xy-plane
+		const uvec3 normalLot = rotationVector ^ currentNormalVector;
+
+		// Distance from origin to normal. Is the distance in the sinogram
+		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
+
+		// Point which lies on the current normal and has the correct distance from the origin 
+		const pnt3 normalPoint = vec3{ normalLot } * currentDistance;
+
+		// The current normal 
+		const line currentNormal{ currentNormalVector, normalPoint };
+
+
+		
+		// Calculate the point which lies on the pixel based on the normal vector, normal point and the arc radius
+		// The point must lie on a circle in xy-plane with the arc radius and a center on y=arcRadius/2
+
+		const v3 o = normalPoint.XYZ();						// Components of normal point
+		const v3 r = currentNormalVector.XYZ();				// Components of normal vector
+		const double R = indipendentParameter.arcRadius;	// The arc radius
+	
+		// Solve quadradic equation
+		const double p = ( 2. * o.y * r.y + r.y * R + 2. * o.x * r.x ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
+		const double q = ( pow( o.y, 2. ) + pow( o.x, 2. ) + o.y * R - 3. / 4. * pow( R, 2. ) ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
+
+		// The line parameter where the point lies
+		const double lambda = -p / 2. + sqrt( pow( p / 2., 2. ) - q );
+
+		// Get the point which lies on the circla and the current normal
+		const pnt3 pointOnPixel = currentNormal.getPnt( lambda );
+
+
+		// Current pixel normal pointing to the center 
+		const line pixelNormal{ -currentNormalVector, pointOnPixel };
+
+		
+
+		// Add pixel normal to vector
+		// If it is not the middle normal create the symmetrical normal
+	
+		// Current normal is  the middle normal
+		if( currentIndex == 0 ){
+			const size_t currentNormalIndex = ( nDistance - 1 ) / 2;
+			allNormals.at( currentNormalIndex ) = pixelNormal;
+			continue;
+		}
+
+		// Add the current normal to vector
+		const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
+		allNormals.at( currentNormalIndex ) = pixelNormal;
+
+		// Mirror current normal around y-axis
+		const line mirroredPixelNormal{
+			pixelNormal.R().negateX(),
+			pixelNormal.O().negateX()
+		};
+
+		// Add mirrored normal
+		const size_t mirroredNormalIndex = ( nDistance - 1 ) / 2 + currentIndex;
+		allNormals.at( mirroredNormalIndex ) = mirroredPixelNormal;
+
+	}
+
+
+	/*const size_t nTheta = 20;
 	const size_t nDistance = FOdd( 11 );
 
 	const double distanceRange = 10;
