@@ -215,7 +215,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2. * gantry.Radius() );
+		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2.1 * gantry.Radius() );
 	}
 
 }
