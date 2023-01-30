@@ -41,8 +41,8 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	size_t newNumberPointsCol = numberPoints.col;
 
 	// Angle exceeds maximum or minimum
-	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsCol = MAX_DETECTOR_ANGLE / resolution.row + 1.;
-	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsCol = MIN_DETECTOR_ANGLE / resolution.row + 1.;
+	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsCol = (size_t) MAX_DETECTOR_ANGLE / resolution.row + 1.;
+	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsCol = (size_t) MIN_DETECTOR_ANGLE / resolution.row + 1.;
 
 	// Recalculate if number of point changed
 	if( newNumberPointsCol != numberPoints.col ){
