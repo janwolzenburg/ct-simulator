@@ -99,7 +99,7 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, size_t raysPerPixe
 		const line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).Length();								// Distance between edge points
-		const double rayOriginDistanceDelta = (double) (raysPerPixel + 1 ) / edgeDistance;	// Offset of ray origins on pixel
+		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of ray origins on pixel
 
 		// Iterate all rays hitting current pixel
 		for( size_t currentRayIndex = 0; currentRayIndex < raysPerPixel; currentRayIndex++ ){
