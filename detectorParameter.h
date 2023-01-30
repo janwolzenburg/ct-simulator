@@ -57,7 +57,7 @@ class detectorRadonParameter{
 	public:
 
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
-	double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
+	//double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };
@@ -108,10 +108,8 @@ class detectorPhysicalParameter{
 	public:
 
 	idx2CR number;					/*!<Amount of pixel in each dimension*/
-
 	double angle;					/*!<Angle between outer normals*/
 	double detectorFocusDistance;	/*!Distance of focus and detector pixel*/
-
 	bool structured;				/*!<Flag for anti scatter structure*/
 
 };

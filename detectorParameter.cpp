@@ -28,9 +28,9 @@
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
 					Fmin( FOdd ( numberPoints_.row ), (size_t) 3 ) },
-	distanceRange( Fpos( distanceRange_ ) ),
+	//distanceRange( Fpos( distanceRange_ ) ),
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
-				distanceRange / (double) ( numberPoints.row - 1 ) },
+				Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 ) },
 	framesToFillSinogram( numberPoints.col - 1 + numberPoints.row - 1)
 {
 
