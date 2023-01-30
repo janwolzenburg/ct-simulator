@@ -383,6 +383,13 @@ class vec3 : protected coordinates{
 	 * @return Projected vector
 	*/
 	vec3 projectOnXYPlane( const cartCSys* const cSys ) const;
+
+	/*!
+	 * @brief Flip x-values
+	 * @return Vector with negated x values
+	*/
+	vec3 negateX( void ) const;
+
 };
 
 

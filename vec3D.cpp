@@ -283,6 +283,10 @@ vec3 vec3::projectOnXYPlane( const cartCSys* const cSys_ ) const{
 }
 
 
+vec3 vec3::negateX( void ) const{
+	return vec3{ v3{ -this->x, this->y, this->z }, this->cSys };
+}
+
 
 /*
 	uvec3D implementation
