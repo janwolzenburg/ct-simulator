@@ -26,25 +26,6 @@ using std::vector;
 #include "gantry.h"
 
 
-bool test_tube(void) {
-
-	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
-
-	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
-
-	vector<ray> beam = testTube.getBeam( PI/4, 20 );
-
-	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
-
-	addObject( ax1, "Beam", beam, "r", 1. );
-
-	closeAxis( ax1 );
-
-	return true;
-}
-
 detector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
@@ -55,7 +36,7 @@ detector getTestDetector( void ){
 
 	detectorIndipendentParameter indipendentParameter{
 		1000.,
-		10, 
+		10,
 		false
 	};
 
@@ -64,6 +45,32 @@ detector getTestDetector( void ){
 
 	return testDetector;
 }
+
+bool test_tube(void) {
+
+	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
+								.anodeCurrent_A = 0.2,
+								.anodeAtomicNumber = 74 };
+
+	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
+
+
+	detector test_detector = getTestDetector();
+
+	vector<pixel> allPixel = test_detector.getPixel();
+
+	vector<ray> beam = testTube.getBeam( allPixel, 2 );
+
+	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
+
+	addObject( ax1, "Beam", beam, "r", 1. );
+
+	closeAxis( ax1 );
+
+	return true;
+}
+
+
 
 bool test_nonUniformDetector( void ){
 
@@ -83,14 +90,9 @@ bool test_nonUniformDetector( void ){
 	const uvec3 middleNormalVec = cSys->EyVec();			// Middle normal is the negative y axis
 	const uvec3 rotationAxis = cSys->EzVec();			//Rotation axis is z axis
 
-	//const line middleNormal{ middleNormalVec, cSys->OPnt() };
 
 
 	vector<line> pixelNormals( nDistance );							// All normals
-	//pixelNormals.push_back( line{ middleNormal, pnt3{ vec3{ middleNormal } * arcRadius / 2 } } );			// The middle normal pointing from pixel to origin
-
-	//allPixel = vector<pixel>( nDistance );
-	//allPixel.push_back( pixel{  } )
 
 	// Iterate one "half" of normals
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
@@ -125,8 +127,6 @@ bool test_nonUniformDetector( void ){
 		const primitiveVec3 r = currentNormalVec.XYZ();
 		const double R = arcRadius;
 
-		//const double p = ( 2. * o.y * r.y + r.y * R + r.x ) / ( pow( r.y, 2. ) );
-		//const double q = ( o.x + o.y * R + pow( o.y, 2. ) - 3. / 4. * pow( R, 2 ) ) / pow( r.y, 2. );
 
 		const double p = ( 2.*o.y*r.y + r.y*R + 2.*o.x*r.x ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
 		const double q = ( pow( o.y, 2. ) + pow( o.x, 2. ) + o.y*R - 3./4.* pow( R, 2. ) ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
@@ -163,24 +163,8 @@ bool test_nonUniformDetector( void ){
 		// Middle normal
 			pixelNormals.at( ( nDistance - 1 ) / 2 ) = pixelNormal;
 		}
-
-		//pixelNormals.push_back( line{ currentNormalVec, pointOnPixel } );
-
-
-		//const uvec3 surfVec1 = rotationAxis;
-		//const uvec3 surfVec2 = surfVec1 ^ currentNormalVec;
-
-		//const surf pixelSurface{ surfVec1, surfVec2, pointOnPixel };
-
-
-
 	}
 
-
-	
-
-	// TODO: Create pixel from normals
-	
 	vector<surfLim> surfaces;
 	double rowSize = 40;
 
@@ -188,43 +172,21 @@ bool test_nonUniformDetector( void ){
 	for( auto currentNormalIt = pixelNormals.cbegin() + 1; currentNormalIt < pixelNormals.cend() - 1; currentNormalIt++ ){
 		auto previousNormalIt = currentNormalIt - 1;
 		auto nextNormalIt = currentNormalIt + 1;
-		
-		// point in z-direction
-		//const uvec3 surfVec2 = rotationAxis;
-
-		// Point to the next normal
-		//const uvec3 surfVec1 = surfVec2 ^ currentNormalIt->R();
-
-		// Center point of surface
-		//const pnt3 centerPoint = currentNormalIt->O();
-
-
-		// Find size of pixel
-
-		// Where do surface vector of neighbooring pixel meet?
-
-		//addSingleObject( ax1, "CurrentNormalLine", *currentNormalIt, "c", arcRadius );
 
 		const line lCurrentToPrevious{ -rotationAxis ^ currentNormalIt->R(), currentNormalIt->O() };
 		const line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->R(), previousNormalIt->O() };
-		//addSingleObject( ax1, "CurrentToPrevious", lCurrentToPrevious, "b", ( previousNormalIt->O() - currentNormalIt->O() ).Length() );
-		//addSingleObject( ax1, "PreviousToCurrent", lPreviousToCurrent, "b", ( previousNormalIt->O() - currentNormalIt->O() ).Length() );
 
 		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
 		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.Result().intersectionPoint;
-		//addSingleObject( ax1, "InterssectionPoint", currentPreviousIntersectionPoint, "b" );
 
 		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
 
 
 		const line lCurrentToNext{ rotationAxis ^ currentNormalIt->R(), currentNormalIt->O() };
 		const line lNextToCurrent{ -rotationAxis ^ nextNormalIt->R(), nextNormalIt->O() };
-		//addSingleObject( ax1, "CurrentToPrevious", lCurrentToNext, "b", ( nextNormalIt->O() - currentNormalIt->O() ).Length() );
-		//addSingleObject( ax1, "PreviousToCurrent", lNextToCurrent, "b", ( nextNormalIt->O() - currentNormalIt->O() ).Length() );
 
 		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
 		const pnt3 currentNextIntersectionPoint = currentNextIntersection.Result().intersectionPoint;
-		//addSingleObject( ax1, "InterssectionPoint", currentNextIntersectionPoint, "b" );
 
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
 
@@ -240,8 +202,6 @@ bool test_nonUniformDetector( void ){
 											rowSize / 2 };
 			surfaces.push_back( previousSurface );
 		}
-
-
 
 
 		const surfLim currentSurface{	rotationAxis ^ currentNormalIt->R(), 
@@ -312,13 +272,13 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 
 	detectorRadonParameter radonParameter{
-		sinogramSize,
+		idx2CR{ 63, 21 },
 		500
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		2 * PI * ( 50. / 360. ),
-		15.,
+		1000.,
+		10,
 		false
 	};
 
