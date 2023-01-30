@@ -272,7 +272,7 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 
 	detectorRadonParameter radonParameter{
-		idx2CR{ 63, 21 },
+		sinogramSize,
 		500
 	};
 
@@ -290,11 +290,11 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 125, 31 }, 2 );
+	gantry testGantry = getTestGantry( idx2CR{ 125, 41 }, 2 );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 
-	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::BEAMS );
 
 	testGantry.rotateCounterClockwise( 2.*PI/3 );
 
