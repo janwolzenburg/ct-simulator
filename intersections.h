@@ -27,6 +27,56 @@ using std::string;
 	Definitions
  *********************************************************************/
 
+ class lineLine_Intersection_Result : virtual public mathObj{
+ 
+	public:
+	pnt3 intersectionPoint;
+	bool hasSolution;
+	double lineParameter1;
+	double lineParameter2;
+
+
+	 public:
+
+	 /*!
+	  * @brief Default constructor
+	 */
+	 lineLine_Intersection_Result( void );
+
+	 /*!
+	  * @brief Convert result's data to string
+	  * @return String with result's data
+	 */
+	 string toStr( const unsigned int newLineTabulators = 0 ) const override;
+ };
+
+
+ class lineLine_Intersection{
+
+	 public:
+	 /*!
+	  * @brief Constructor
+	  * @param l_ Object derived from class line
+	  * @param s_ Object derived from class surf
+	 */
+	 lineLine_Intersection( const line l1_, const line l2_ );
+
+	 /*!
+	  * @brief Get the intersetion result
+	  * @return Intersection result
+	 */
+	 inline lineLine_Intersection_Result Result( void ) const{ return result; };
+
+
+	 public:
+	 line l1;									/*!<Line*/
+	 line l2;									
+	 lineLine_Intersection_Result result;		/*!<Calculated result*/
+
+ };
+
+
+
 /*!
  * @brief Class describing the intersection result of a line and surface
 */

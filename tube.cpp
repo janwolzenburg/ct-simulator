@@ -14,7 +14,7 @@
 
 #include "vectorAlgorithm.h"
 #include "tube.h" 
-
+#include "detectorPixel.h"
 
 
 
@@ -72,10 +72,15 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 };
 
 
-vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ) const{
+vector<ray> tube::getBeam( const vector<pixel> detectorPixel, size_t raysPerPixel ) const{
+
+	// Force minimum of one
+	raysPerPixel = Fmin1( raysPerPixel );
+
+	size_t numRays = raysPerPixel * detectorPixel.size();
 
 	// Split spectrum into the ray spectra
-	spectrum raySpectrum = xRay_spectrum.getScaled( 1. / (double) numRays_ );
+	spectrum raySpectrum = xRay_spectrum.getScaled( 1. / (double) numRays );
 
 	// Properties of created rays
 	rayProperties beamProperties{ raySpectrum };
@@ -84,20 +89,35 @@ vector<ray> tube::getBeam( const double beamAngle, const size_t numRays_ ) const
 	// Vector with rays
 	vector<ray> rays;
 
-	// Create rays on circular arc 
-	const double dAngle = beamAngle / ( (double) ( numRays_ - 1 ) );				// Angle between two rays
+	// Iterate all pixel
+	for( const pixel currentPixel : detectorPixel ){
+		
+		// Get points on the edge of pixel
 
-	// Iterate all rays to create
-	for( size_t i = 0; i < numRays_; i++ ){
-		const double yAngle = -( beamAngle / 2 ) + (double) i * dAngle;		// Angle between current ray and y-axis
+		const pnt3 pMin = currentPixel.getPnt( currentPixel.AMin(), 0);		// Point on "minimum" edge
+		const pnt3 pMax = currentPixel.getPnt( currentPixel.AMax(), 0 );	// Point on "maximum" edge
+		const line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
-		vec3 direction{ cSys->EyVec() };									// Start with y-axis as direction
-		direction.rotZM( yAngle );											// Rotate vector around z-axis
+		const double edgeDistance = ( pMax - pMin ).Length();								// Distance between edge points
+		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of ray origins on pixel
 
-		const ray r{ direction, cSys->OPnt(), beamProperties };				// Create ray
+		// Iterate all rays hitting current pixel
+		for( size_t currentRayIndex = 0; currentRayIndex < raysPerPixel; currentRayIndex++ ){
+			
+			// Offset of current ray origin
+			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
 
-		rays.push_back( r );													// Store ray in ray collection
+			// Current ray origin
+			const pnt3 currentOrigin = connectionLine.getPnt( currentOffset );
+
+
+			// Add ray in tube's coordinate system to vector
+			rays.emplace_back( currentPixel.Normal().convertTo( cSys ), currentOrigin.convertTo( cSys ), beamProperties);
+
+		}
+
 	}
+
 
 	return rays;
 

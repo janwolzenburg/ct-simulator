@@ -14,6 +14,7 @@
 using std::string;
 
 #include "cartesian.h"
+#include "cSysTree.h"
 #include "vec3D.h"
 #include "line.h"
 #include "surf.h"
@@ -32,8 +33,14 @@ using std::string;
 line::line( const vec3 v, const pnt3 p )
 	: r( uvec3{ v } ),
 	o( p ){
-	if( iseqErr( r.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vec3Dtor must have length!" );
+	if( iseqErr( r.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector must have length!" );
 	if( !v.sameSystem( p ) ) checkErr( MATH_ERR::INPUT, "Line origin and trajectory must be defined in the same coordinate system!" );
+}
+
+line::line( void ) : 
+	line{ vec3{ v3{1, 0, 0}, DUMMY_CSYS() }, pnt3{ v3{ 0, 0, 0 }, DUMMY_CSYS() }}
+{
+
 }
 
 string line::toStr( unsigned int newLineTabulators ) const{

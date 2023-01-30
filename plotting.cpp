@@ -47,6 +47,23 @@ string getObjectString<pnt3>( const pnt3 p ){
 }
 
 template<>
+string getObjectString<vec3, pnt3>( const vec3 v, const pnt3 o ){
+
+	char tempCharArr[256];
+	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.gX(), v.gY(), v.gZ(), o.gX(), o.gY(), o.gZ() );
+
+	return string{ tempCharArr };
+
+}
+
+template<>
+string getObjectString<uvec3, pnt3>( const uvec3 v, const pnt3 o ){
+
+	return getObjectString<vec3, pnt3>( vec3{ v }, o );
+
+}
+
+template<>
 string getObjectString<line, double>( const line l, const double length ){
 
 	char tempCharArr[ 256 ];
@@ -173,6 +190,13 @@ void addObject<vector<pixel>, double>( ofstream& axis, const string name, const 
 }
 
 template<>
+void addObject<vector<surfLim>, double>( ofstream& axis, const string name, const vector<surfLim> surfaces, const string parameter, const double alpha ){
+	for( const surfLim surface : surfaces ){
+		addSingleObject( axis, name, surface, parameter, alpha );
+	}
+}
+
+template<>
 void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string parameter, const int specifiers ){
 
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
@@ -191,7 +215,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2. * gantry.Radius() );
+		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2.1 * gantry.Radius() );
 	}
 
 }

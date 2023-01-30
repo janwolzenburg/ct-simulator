@@ -34,11 +34,12 @@ class detector {
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief Cnstructor
 	 * @param cSys_ Coordinate system
-	 * @param parameter Detector parameter
+	 * @param radonParameter Radon parameter
+	 * @param indipendentParameter Parameter indipendent of radon parameter
 	*/
-	detector(cartCSys* const cSys_, detectorRadonParameter& radonParameter, detectorIndipendentParameter& indipendentParameter );
+	detector(cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -69,7 +70,12 @@ class detector {
 	*/
 	detectorPhysicalParameter getPhysicalParameters( void ) const;
 
+	/*!
+	 * @brief Get coordinate system of detector
+	 * @return Pointer to coordinate system
+	*/
 	cartCSys* CSys( void ) const;
+
 
 	private:
 
