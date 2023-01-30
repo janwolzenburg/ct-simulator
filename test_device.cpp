@@ -49,12 +49,12 @@ detector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
 	detectorRadonParameter radonParameter{
-		idx2CR{ 63, 31 },
+		idx2CR{ 63, 21 },
 		500
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		2 * PI * ( 50. / 360. ),
+		1000.,
 		1, 
 		false
 	};

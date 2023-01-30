@@ -35,7 +35,7 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 {
 
 	// Check angle
-	double currentAngle = (double) ( numberPoints.row - 1 ) * resolution.row;
+	double currentAngle = (double) ( numberPoints.row - 1 ) * resolution.col;
 
 	// Store current number of angles 
 	size_t newNumberPointsCol = numberPoints.col;
@@ -83,7 +83,7 @@ detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadi
 
 detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	number{ radonParameter.numberPoints.col, 1 },
-	angle( (double) ( radonParameter.numberPoints.row - 1 )* radonParameter.resolution.row ),
+	angle( (double) ( radonParameter.numberPoints.row - 1 ) * radonParameter.resolution.col ),
 	detectorFocusDistance( indipendentParameter.arcRadius ),
 	structured( indipendentParameter.structured )
 {
