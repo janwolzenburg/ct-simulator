@@ -118,6 +118,35 @@ string getObjectString<vector<v2>>( const vector<v2> data ){
 }
 
 template<>
+string getObjectString<vector<radonPoint>>( const vector<radonPoint> data ){
+
+	string str = "plotS ";
+
+	vector<double> XValues, YValues, DataValues;
+
+	for( radonPoint p : data ){
+
+		XValues.push_back( p.coordinates.theta );
+		YValues.push_back( p.coordinates.distance );
+		DataValues.push_back( p.value );
+
+		
+	}
+
+	for( auto xVal : XValues ) str += to_string( xVal ) + ',';
+	str.back() = ';';
+
+	for( auto yVal : YValues ) str += to_string( yVal ) + ',';
+	str.back() = ';';
+
+	for( auto dataVal : DataValues ) str += to_string( dataVal ) + ',';
+	str.pop_back();
+
+	return str;
+
+}
+
+template<>
 string getObjectString<grid>( const grid data, const bool image ){
 
 	if( image ){
