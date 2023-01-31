@@ -10,7 +10,6 @@ using std::cerr;  using std::endl;
 
  #include "test_all.h"
 
- //TODO: Add serialization
 
 /*!
  * @brief Main function
