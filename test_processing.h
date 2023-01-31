@@ -25,4 +25,6 @@ bool test_detector_to_sinogram( void );
 
 bool test_Tomography( void );
 
+void serialisedToImage( void );
+
 bool test_serialisation( void );

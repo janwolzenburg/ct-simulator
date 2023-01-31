@@ -39,6 +39,8 @@ int main( void ){
 
 	if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
+	//serialisedToImage();
+
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";
 	
 	return 0;
