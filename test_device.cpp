@@ -24,7 +24,7 @@ using std::vector;
 #include "detector.h"
 #include "plotting.h"
 #include "gantry.h"
-
+#include "radonTransform.h"
 
 detector getTestDetector( void ){
 	// 64 x 32 points in radon space
@@ -290,17 +290,28 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 125, 41 }, 2 );
+	gantry testGantry = getTestGantry( idx2CR{ 125, 41 }, 1 );
+	const cartCSys* const radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_gantry_sinogram.txt" ), true );
 
-	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::BEAMS );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
+	
+	vector<radonPoint> points;
+	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
+	
 
-	testGantry.rotateCounterClockwise( 2.*PI/3 );
+	testGantry.rotateCounterClockwise( ( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
 
-	//addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
+	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
+	addSingleObject( ax2, "RadonPoints", points, "Angle;Distance;Energy;Dots" );
+
+	closeAxis( ax2 );
 	closeAxis( ax1 );
+
 
 	return true;
 }
