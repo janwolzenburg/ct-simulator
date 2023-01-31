@@ -48,6 +48,10 @@ bool test_detector_to_sinogram( void ){
 
 	gantry testGantry = getTestGantry( idx2CR{ 42, 15 }, 1 );
 
+	ofstream ax2 = openAxis( path( "test_detector_to_sinogram_gantry.txt" ), true );
+	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
+	closeAxis( ax2 );
+
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
 	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
