@@ -27,11 +27,9 @@
 
 bool test_radonTransform( void ){
 
-	range distanceRange{ -25., 25 };
-	double distanceResolution = 4;
 
 	detectorRadonParameter radonParameter{
-											idx2CR{ 64, 32 },
+											idx2CR{ 125, 41 },
 											500
 	};
 
@@ -48,7 +46,8 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 39, 17 }, 2 );
+	gantry testGantry = getTestGantry( idx2CR{ 42, 15 }, 1 );
+
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
 	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
@@ -64,10 +63,12 @@ bool test_detector_to_sinogram( void ){
 			// Get coordinates for pixel
 			radonCoords newRadonCoordinates{ radonCSys, currentPixel.NormalLine() };
 			// Get the radon point
-			radonPoint newRadonPoint{ newRadonCoordinates, 1 };
+			radonPoint newRadonPoint{ newRadonCoordinates, 1. };
 			// Assign the data to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
+
+
 
 		string filename = "./test_detector_to_sinogram_";
 		filename += to_string(currentFrame) + ".txt";
