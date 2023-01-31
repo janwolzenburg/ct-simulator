@@ -75,7 +75,6 @@ radonTransformed tomography::recordSlice( void ){
 		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
 	}
 
-	// TODO: Interpolate grid for missing values. DISTANCES ARE NOT EQUALLY SPACED!!!
 
 	return sinogram;
 }
