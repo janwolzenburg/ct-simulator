@@ -56,10 +56,11 @@ class tube{
 	/*!
 	 * @brief Get beam created by tube
 	 * @param detectorPixel Vector with all pixel
+	 * @param detectorFocusDistance Distance from pixel to focus (this tube)
 	 * @param raysPerPixel Amount of rays per pixel
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<ray> getBeam( const vector<pixel> detectorPixel, const size_t raysPerPixel ) const;
+	vector<ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel ) const;
 
 	/*!
 	 * @brief Get coordinate system

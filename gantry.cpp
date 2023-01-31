@@ -42,7 +42,7 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 
 
 vector<ray> gantry::getBeam( void ) const{
-	return raySource.getBeam( rayDetector.getPixel(), raysPerPixel ); 
+	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel);
 }
 
 

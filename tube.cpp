@@ -72,7 +72,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 };
 
 
-vector<ray> tube::getBeam( const vector<pixel> detectorPixel, size_t raysPerPixel ) const{
+vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel ) const{
 
 	// Force minimum of one
 	raysPerPixel = Fmin1( raysPerPixel );
@@ -110,9 +110,14 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, size_t raysPerPixe
 			// Current ray origin
 			const pnt3 currentOrigin = connectionLine.getPnt( currentOffset );
 
+			// Tempory line pointing from pixel to tube
+			const line tempLine{ currentPixel.Normal().convertTo( cSys ), currentOrigin.convertTo( cSys ) };
+
+			// Origin of ray with specific distance to pixel
+			const pnt3 rayOrigin = tempLine.getPnt( detectorFocusDistance );
 
 			// Add ray in tube's coordinate system to vector
-			rays.emplace_back( currentPixel.Normal().convertTo( cSys ), currentOrigin.convertTo( cSys ), beamProperties);
+			rays.emplace_back( -tempLine.R(), rayOrigin, beamProperties);
 
 		}
 
