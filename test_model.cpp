@@ -30,7 +30,7 @@ model getTestModel( const cartCSys* const parent ){
 
 	model mod{ modelSys, idx3 {20, 20, 20}, v3 {20., 20., 20.} };
 
-	voxData bgData = { 0.0 };
+	voxData bgData = { 0.001 };
 
 	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
