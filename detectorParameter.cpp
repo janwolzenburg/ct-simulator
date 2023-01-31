@@ -36,17 +36,17 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	// Check angle
 	double currentAngle = (double) ( numberPoints.row - 1 ) * resolution.col;
 
-	// Store current number of angles 
-	size_t newNumberPointsCol = numberPoints.col;
+	// Store current number of distances 
+	size_t newNumberPointsRow = numberPoints.row;
 
-	// Angle exceeds maximum or minimum
-	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsCol = (size_t) ( MAX_DETECTOR_ANGLE / resolution.col ) + 1;
-	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsCol = (size_t) ( MIN_DETECTOR_ANGLE / resolution.col ) + 1;
+	// Detector angle exceeds maximum or minimum
+	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) floor( MAX_DETECTOR_ANGLE / resolution.col ) + 1;
+	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) ceil( MIN_DETECTOR_ANGLE / resolution.col ) + 1;
 
 	// Recalculate if number of point changed
-	if( newNumberPointsCol != numberPoints.col ){
-		numberPoints.col = Fmin( FOdd( newNumberPointsCol ), (size_t) 2 );
-		resolution.col = PI / (double) ( numberPoints.col - 1 );
+	if( newNumberPointsRow != numberPoints.row ){
+		numberPoints.row = Fmin( FOdd( newNumberPointsRow ), (size_t) 3 );
+		resolution.row = Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 );
 		framesToFillSinogram = numberPoints.col - 1 + numberPoints.row - 1;
 	}
 
