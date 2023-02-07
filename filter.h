@@ -27,6 +27,8 @@ class discreteFilter{
 	
 	public:
 
+	vector<double> Values( void ) const;
+
 	double operator()( const signed long long Zidx ) const;
 
 	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
@@ -52,7 +54,7 @@ class discreteFilter{
  };
 
 
-class ramLakFilter : public virtual discreteFilter{
+class ramLakFilter : public discreteFilter{
 
 	using discreteFilter::discreteFilter;
 

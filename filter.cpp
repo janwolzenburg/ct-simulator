@@ -60,6 +60,9 @@ double discreteFilter::operator()( const signed long long Zidx ) const{
 	return this->operator()( getIndex( Zidx ) );
 }
 
+vector<double> discreteFilter::Values( void ) const{
+	return values;
+}
 
 void ramLakFilter::build( void ){
 	
