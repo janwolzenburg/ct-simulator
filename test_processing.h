@@ -28,3 +28,5 @@ bool test_Tomography( void );
 void serialisedToImage( void );
 
 bool test_serialisation( void );
+
+bool test_filter( void );

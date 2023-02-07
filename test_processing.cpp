@@ -19,6 +19,7 @@
 #include "model.h"
 #include "cSysTree.h"
 #include "test_device.h"
+#include "filter.h"
 
 
 /*********************************************************************
@@ -189,4 +190,26 @@ bool test_serialisation( void ){
 
 	return true;
 
+}
+
+
+bool test_filter( void ){
+
+	signed long long N = 101;
+	Zrange range{ -N + 1, N - 1 };
+	double samplingInterval = 5;
+
+	ramLakFilter h{ range, samplingInterval };
+
+	vector<v2> plot;
+
+	for( signed long long int n = h.Range().start; n <= h.Range().end; n++ ) plot.emplace_back( (double) n, h( n ) );
+
+	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
+
+	addSingleObject( ax, "RamLakFilter", plot, "n;h(n)" );
+
+	closeAxis( ax );
+
+	return true;
 }
