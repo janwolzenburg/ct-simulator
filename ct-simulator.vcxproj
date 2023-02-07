@@ -158,6 +158,7 @@
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
+    <ClInclude Include="filter.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="filter.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
