@@ -207,7 +207,7 @@ bool test_filter( void ){
 
 	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
 
-	addSingleObject( ax, "RamLakFilter", plot, "n;h(n)" );
+	addSingleObject( ax, "RamLakFilter", plot, "n;h(n);line" );
 
 	closeAxis( ax );
 

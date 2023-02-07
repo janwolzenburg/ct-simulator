@@ -36,11 +36,13 @@ int main( void ){
 
 	//if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
 
-	if( !test_Tomography() ) cerr << "Test for tomography failed!";
+	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	//serialisedToImage();
 
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";
 	
+	if( !test_filter() ) cerr << "Test for filters failed!";
+
 	return 0;
 }
