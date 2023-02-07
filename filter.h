@@ -33,7 +33,6 @@ class discreteFilter{
 
 	double operator()( const signed long long Zidx ) const;
 
-	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
 
 	protected:
 
@@ -43,8 +42,7 @@ class discreteFilter{
 	double& set( const size_t idx );
 	//double& operator()( const signed long long Zidx );
 
-	virtual void build( void );
-
+	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
 
 	protected:
 
@@ -58,18 +56,16 @@ class discreteFilter{
 
 class ramLakFilter : public discreteFilter{
 
-	using discreteFilter::discreteFilter;
+	public: 
+	ramLakFilter( const Zrange pointsRange_, const double samplingInterval_ );
 
-	private:
-	
-	void build( void );
 
  };
 
-class sheppLoganFilter : private virtual discreteFilter{
-
-	private:
-
-	void build( void );
-
-};
+//class sheppLoganFilter : private virtual discreteFilter{
+//
+//	private:
+//
+//	void build( void );
+//
+//};
