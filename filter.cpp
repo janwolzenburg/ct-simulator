@@ -41,12 +41,12 @@ size_t discreteFilter::getIndex( const signed long long Zidx ) const{
 	return Zidx - pointsRange.start;
 }
 
-double& discreteFilter::operator()( const size_t idx ){
+double& discreteFilter::set( const size_t idx ){
 	if( idx > numberPoints - 1 ) return values.at( idx );
 	return values.at( idx );
 }
 
-double discreteFilter::operator()( const size_t idx ) const{
+double discreteFilter::get( const size_t idx ) const{
 	if( idx > numberPoints - 1 ) return values.at( idx );
 	return values.at( idx );
 }
@@ -74,9 +74,9 @@ void ramLakFilter::build( void ){
 	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
 
 		// Conditions for filter calculation
-		if( n == 0 )				this->operator()( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
-		else if( isEven( n ) )		this->operator()( getIndex( n ) ) = 0.;
-		else						this->operator()( getIndex( n ) ) = 1 / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+		if( n == 0 )				this->set( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
+		else if( isEven( n ) )		this->set( getIndex( n ) ) = 0.;
+		else						this->set( getIndex( n ) ) = 1 / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
 												
 
 	}

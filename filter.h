@@ -39,8 +39,8 @@ class discreteFilter{
 
 	size_t getIndex( const signed long long Zidx ) const;
 
-	double operator()( const size_t idx ) const;
-	double& operator()( const size_t idx );
+	double get( const size_t idx ) const;
+	double& set( const size_t idx );
 	//double& operator()( const signed long long Zidx );
 
 	virtual void build( void );
