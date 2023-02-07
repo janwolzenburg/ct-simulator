@@ -26,29 +26,46 @@
 class discreteFilter{
 	
 	public:
-	
-	double& operator()( const size_t idx );
+
+	double operator()( const signed long long Zidx ) const;
+
+	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
+
+	protected:
+
+	size_t getIndex( const signed long long Zidx ) const;
 
 	double operator()( const size_t idx ) const;
-
-	discreteFilter( const size_t numberPoints_, const double samplingInterval_ );
+	double& operator()( const size_t idx );
+	double& operator()( const signed long long Zidx );
 
 	virtual void build( void );
 
 
-	private:
+	protected:
 
-	size_t numberPoints;		/*!<Amount of points*/
+	Zrange pointsRange;			/*!<Range of discrete sampling points*/
+	size_t numberPoints;		
 	double samplingInterval;	/*!<Sampling interval*/
 	vector<double> values;		/*!<Values*/
 
  };
 
 
-class ramLakFilter : private virtual discreteFilter{
+class ramLakFilter : public virtual discreteFilter{
 
-	public:
+	using discreteFilter::discreteFilter;
+
+	private:
 	
 	void build( void );
 
  };
+
+class sheppLoganFilter : private virtual discreteFilter{
+
+	private:
+
+	void build( void );
+
+};
