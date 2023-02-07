@@ -35,6 +35,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	// Create filter kernel
 	discreteFilter h{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
+	grid projectionsData = projections.Data();
 
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
@@ -47,7 +48,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 			for( size_t l = 0; l < nD; l++ ){
 
 				// projection value
-				double P_T = projections.Data().operator()( idx2CR{ t, l } );
+				double P_T = projectionsData( idx2CR{ t, l } );
 
 				// filter value
 				double h_n = h( ( signed long long ) n - ( signed long long ) l );
