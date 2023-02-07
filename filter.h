@@ -29,6 +29,8 @@ class discreteFilter{
 
 	vector<double> Values( void ) const;
 
+	Zrange Range( void ) const;
+
 	double operator()( const signed long long Zidx ) const;
 
 	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
@@ -39,7 +41,7 @@ class discreteFilter{
 
 	double operator()( const size_t idx ) const;
 	double& operator()( const size_t idx );
-	double& operator()( const signed long long Zidx );
+	//double& operator()( const signed long long Zidx );
 
 	virtual void build( void );
 

@@ -52,9 +52,9 @@ double discreteFilter::operator()( const size_t idx ) const{
 }
 
 
-double& discreteFilter::operator()( const signed long long Zidx ){
-	return this->operator()( getIndex( Zidx ) );
-}
+//double& discreteFilter::operator()( const signed long long Zidx ){
+//	return this->operator()( getIndex( Zidx ) );
+//}
 
 double discreteFilter::operator()( const signed long long Zidx ) const{
 	return this->operator()( getIndex( Zidx ) );
@@ -64,15 +64,19 @@ vector<double> discreteFilter::Values( void ) const{
 	return values;
 }
 
+Zrange discreteFilter::Range( void ) const{
+	return pointsRange;
+}
+
 void ramLakFilter::build( void ){
 	
 	// Iterate over all whole numbers in range
 	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
 
 		// Conditions for filter calculation
-		if( n == 0 )				this->operator()( n ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
-		else if( isEven( n ) )		this->operator()( n ) = 0.;
-		else						this->operator()( n ) = 1 / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+		if( n == 0 )				this->operator()( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
+		else if( isEven( n ) )		this->operator()( getIndex( n ) ) = 0.;
+		else						this->operator()( getIndex( n ) ) = 1 / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
 												
 
 	}
