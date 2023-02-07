@@ -63,8 +63,14 @@ double discreteFilter::operator()( const signed long long Zidx ) const{
 
 void ramLakFilter::build( void ){
 	
-	// Iterate over all necessary 
-	for( signed long long n = -numberPoints + 1; n < numberPoints - 1; n++ ){
+	// Iterate over all whole numbers in range
+	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
+
+		// Conditions for filter calculation
+		if( n == 0 )				this->operator()( n ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
+		else if( isEven( n ) )		this->operator()( n ) = 0.;
+		else						this->operator()( n ) = 1 / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+												
 
 	}
 
