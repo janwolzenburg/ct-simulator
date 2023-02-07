@@ -25,7 +25,15 @@
 */
 class discreteFilter{
 	
+
+
 	public:
+
+	enum TYPE{
+		ramLak
+	};
+
+	discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const TYPE type );
 
 	vector<double> Values( void ) const;
 
@@ -42,7 +50,7 @@ class discreteFilter{
 	double& set( const size_t idx );
 	//double& operator()( const signed long long Zidx );
 
-	discreteFilter( const Zrange pointsRange_, const double samplingInterval_ );
+	
 
 	protected:
 
@@ -53,14 +61,6 @@ class discreteFilter{
 
  };
 
-
-class ramLakFilter : public discreteFilter{
-
-	public: 
-	ramLakFilter( const Zrange pointsRange_, const double samplingInterval_ );
-
-
- };
 
 //class sheppLoganFilter : private virtual discreteFilter{
 //

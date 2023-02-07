@@ -20,12 +20,35 @@
    Implementations
 *********************************************************************/
 
-discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_ ) :
+discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type ) :
 	pointsRange( pointsRange_ ),
 	numberPoints( pointsRange.end - pointsRange.start + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
 	samplingInterval( samplingInterval_ ),
 	values( numberPoints, 0. )
 {
+
+	// Iterate over all whole numbers in range
+	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
+
+		switch( type ){
+			case discreteFilter::ramLak:
+
+				// Conditions for filter calculation
+				if( n == 0 )				this->set( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
+				else if( isEven( n ) )		this->set( getIndex( n ) ) = 0.;
+				else						this->set( getIndex( n ) ) = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+
+			break;
+
+
+			default:
+			break;
+		}
+
+	}
+
+
+
 }
 
 //void discreteFilter::build( void ){
@@ -65,21 +88,4 @@ vector<double> discreteFilter::Values( void ) const{
 
 Zrange discreteFilter::Range( void ) const{
 	return pointsRange;
-}
-
-ramLakFilter::ramLakFilter( const Zrange pointsRange_, const double samplingInterval_ ) : 
-	discreteFilter( pointsRange_, samplingInterval_ )
-{
-	
-	// Iterate over all whole numbers in range
-	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
-
-		// Conditions for filter calculation
-		if( n == 0 )				this->set( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
-		else if( isEven( n ) )		this->set( getIndex( n ) ) = 0.;
-		else						this->set( getIndex( n ) ) = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
-												
-
-	}
-
 }

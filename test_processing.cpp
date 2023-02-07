@@ -199,7 +199,7 @@ bool test_filter( void ){
 	Zrange range{ -N + 1, N - 1 };
 	double samplingInterval = 5;
 
-	ramLakFilter h{ range, samplingInterval };
+	discreteFilter h{ range, samplingInterval, discreteFilter::ramLak };
 
 	vector<v2> plot;
 
