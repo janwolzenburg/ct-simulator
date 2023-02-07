@@ -92,6 +92,12 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
+Zrange::Zrange( const signed long long start_, const signed long long end_ ) : start( start_ ), end( end_ ){
+	if( start >= end ){
+		cerr << "Start must be less than end!" << endl;
+		start = end - 1;
+	}
+};
 
 
 /*!
