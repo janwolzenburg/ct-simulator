@@ -124,7 +124,7 @@ string getObjectString<vector<radonPoint>>( const vector<radonPoint> data ){
 
 	vector<double> XValues, YValues, DataValues;
 
-	for( radonPoint p : data ){
+	for( const radonPoint& p : data ){
 
 		XValues.push_back( p.coordinates.theta );
 		YValues.push_back( p.coordinates.distance );
