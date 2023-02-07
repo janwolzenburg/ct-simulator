@@ -57,7 +57,7 @@ double discreteFilter::get( const size_t idx ) const{
 //}
 
 double discreteFilter::operator()( const signed long long Zidx ) const{
-	return this->operator()( getIndex( Zidx ) );
+	return this->get( getIndex( Zidx ) );
 }
 
 vector<double> discreteFilter::Values( void ) const{
