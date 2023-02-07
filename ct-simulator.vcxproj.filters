@@ -186,6 +186,9 @@
     <ClInclude Include="filter.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
+    <ClInclude Include="backprojection.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -282,6 +285,9 @@
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="filter.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    </ClCompile>
+    <ClCompile Include="backprojection.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
   </ItemGroup>

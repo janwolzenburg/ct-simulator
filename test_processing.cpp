@@ -20,6 +20,7 @@
 #include "cSysTree.h"
 #include "test_device.h"
 #include "filter.h"
+#include "backprojection.h"
 
 
 /*********************************************************************
@@ -210,6 +211,24 @@ bool test_filter( void ){
 	addSingleObject( ax, "RamLakFilter", plot, "n;h(n);line" );
 
 	closeAxis( ax );
+
+	return true;
+}
+
+bool test_filteredProjection( void ){
+
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+
+	vector<char>::const_iterator readStart = importedData.cbegin();
+	radonTransformed importedSinogram{ importedData, readStart };
+
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+
+	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
+
+	addSingleObject( ax1, "filteredProjections", Q.Data(), "Angle;Distance;Energy;Dots", true );
+
+	closeAxis( ax1 );
 
 	return true;
 }

@@ -42,7 +42,9 @@ int main( void ){
 
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";
 	
-	if( !test_filter() ) cerr << "Test for filters failed!";
+	//if( !test_filter() ) cerr << "Test for filters failed!";
+
+	if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
 
 	return 0;
 }

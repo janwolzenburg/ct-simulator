@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="backprojection.h" />
     <ClInclude Include="cartesian.fwd.h" />
     <ClInclude Include="cartesian.h" />
     <ClInclude Include="coordinates.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="voxel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="backprojection.cpp" />
     <ClCompile Include="cartesian.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="cSysTree.cpp" />
