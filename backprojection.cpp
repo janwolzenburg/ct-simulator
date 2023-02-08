@@ -105,10 +105,11 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 		  v2CR{ projections.Resolution().row, projections.Resolution().row }, 0. }
 {
 
-	size_t nT = Size().col;			// Number of angles
 	size_t nD = Size().row;			// Number of distances
 	double dD = Resolution().row;	// Distance resolution
-	double dT = Resolution().col;	// Distance resolution
+
+	size_t nT = projections.Size().col;			// Number of angles
+	double dT = projections.Resolution().col;	// Distance resolution
 
 	// Iterate all points on image. Points are spaced by the distance resolution in filtered projections
 	for( size_t xIdx = 0; xIdx < nD; xIdx++ ){
@@ -129,7 +130,7 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 				this->operator()( idx2CR{ xIdx, yIdx } ) += projectionValue;
 			}
 
-
+			this->operator()( idx2CR{ xIdx, yIdx } ) *= PI / (double) nT;
 		}
 	}
 
