@@ -67,6 +67,16 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, bool>
 isEven( const T integer );
 
+/*!
+ * @brief Return the minimum of two values
+ * @tparam T Arithmetic type
+ * @param a Value a
+ * @param b Value b
+ * @return Minimum value
+*/
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+´min( const T a, const T b );
 
 /*!
  * @brief Return the maximum of two values
@@ -79,6 +89,16 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
 max( const T a, const T b );
 
+/*!
+ * @brief Force a maximum value
+ * @tparam T Arithmetic type
+ * @param value Value to force 
+ * @param maximum upper bound of value
+ * @return value when value is smaller than maximum. Maximum otherwise
+*/
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+Fmax( const T value, const T maximum );
 
 /*!
  * @brief Force a minimum value of one
