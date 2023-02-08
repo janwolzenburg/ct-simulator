@@ -30,10 +30,3 @@ class filteredProjections : public grid {
 
 };
 
-
-class reconstrucedImage : public grid{
-
-	public:
-	reconstrucedImage( const filteredProjections projections );
-
-};
