@@ -27,6 +27,12 @@ class filteredProjections : public grid {
 	public:
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
 
-
 };
 
+
+class reconstrucedImage : public grid{
+
+	public:
+	reconstrucedImage( const filteredProjections projections );
+
+};

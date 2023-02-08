@@ -68,3 +68,36 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
+
+reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
+	grid{ projections.Size(), projections.Start(), projections.Resolution(), 0. }{
+
+	size_t nT = Size().col;			// Number of angles
+	size_t nD = Size().row;			// Number of distances
+	double dD = Resolution().row;	// Distance resolution
+	double dT = Resolution().col;	// Distance resolution
+
+	// Iterate all points on image. Points are spaced by the distance resolution in filtered projections
+	for( size_t xIdx = 0; xIdx < nD; xIdx++ ){
+		for( size_t yIdx = 0; yIdx < nD; yIdx++ ){
+
+			double x = (double) ( ( signed long long ) xIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// x value on image
+			double y = (double) ( ( signed long long ) yIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// y value on image
+
+			// Iterate and sum filtered projections over all angles
+			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
+
+				double angle = (double) angleIdx * dT;			// Current angle value
+				double t = x * cos( angle ) + y * sin( angle );	// Current "distance" or magnitude in polar coordinates
+
+				// Find the distance index in filtered projections corresponding to t
+				//TODO: complete routine
+
+			}
+
+
+		}
+	}
+
+}
+
