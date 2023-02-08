@@ -26,6 +26,8 @@ class filteredProjections : public grid {
 
 	public:
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
+	
+	double getValue( const size_t angleIdx, const double distance ) const;
 
 };
 

@@ -68,6 +68,36 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
+double filteredProjections::getValue( const size_t angleIdx, const double distance ) const{
+
+
+	double dD = Resolution().row;	// Distance resolution
+	size_t nD = Size().row;			// Number of distances
+
+	double exactDistanceIdx = distance / dD + ( (double) nD - 1. ) / 2.;		// Exact "index" of distance
+
+	// Index must be in bounds
+	exactDistanceIdx = Fmin( exactDistanceIdx, 0. );
+	exactDistanceIdx = Fmax( exactDistanceIdx, (double) nD - 1.);
+
+	// If the exact index is a whole number
+	if( iseqErr( round( exactDistanceIdx ), exactDistanceIdx ) ){
+		// Return value at distance index
+		return this->operator()( idx2CR{ angleIdx, (size_t) exactDistanceIdx });
+	}
+
+	// Interpolate
+	size_t distanceIdxFloor = (size_t) floor( exactDistanceIdx );		// Lower index
+	size_t distanceIdxCeil = (size_t) ceil( exactDistanceIdx );			// Upper index
+
+	double valueAtFloor = this->operator()( idx2CR{ angleIdx, distanceIdxFloor } );	// Value at floor index
+	double valueAtCeil = this->operator()( idx2CR{ angleIdx, distanceIdxCeil } );	// Value at ceil index
+
+	// Return the interpolated value
+	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( (double) distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - (double) distanceIdxFloor );
+
+}
+
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 	grid{ projections.Size(), projections.Start(), projections.Resolution(), 0. }{
