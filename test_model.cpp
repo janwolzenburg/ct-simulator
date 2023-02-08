@@ -28,7 +28,7 @@ model getTestModel( const cartCSys* const parent ){
 
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, idx3 {60, 60, 60}, v3 {10., 10., 10.} };
+	model mod{ modelSys, idx3 {60, 60, 60}, v3 {10./3.*2., 10. / 3. * 2., 10. / 3. * 2. } };
 
 	voxData bgData = { 0.001 };
 

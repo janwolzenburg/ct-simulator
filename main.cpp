@@ -26,7 +26,7 @@ int main( void ){
 
 	//if( !test_nonUniformDetector() ) cerr << "Test for non-uniform detector failed!";
 
-	//if( !test_gantry() ) cerr << "Test for detector failed!";
+	if( !test_gantry() ) cerr << "Test for detector failed!";
 
 	//if( !test_testModel() ) cerr << "Test for test model failed!";
 
@@ -36,7 +36,7 @@ int main( void ){
 
 	//if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
 
-	if( !test_Tomography() ) cerr << "Test for tomography failed!";
+	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	//serialisedToImage();
 
