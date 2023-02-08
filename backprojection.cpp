@@ -22,17 +22,17 @@
 
 
 filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType ) :
-	data{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. }		// Data grids have equal size
+	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. }		// Data grids have equal size
 {
 
 	// Define variables for easy access
 	
-	size_t nT = data.Size().col;		// Number of angles
-	size_t nD = data.Size().row;		// Number of distances
+	size_t nT = Size().col;		// Number of angles
+	size_t nD = Size().row;		// Number of distances
 
-	double dD = data.Resolution().row;
+	double dD = Resolution().row;	// Distance resolution
 
-	// Create filter kernel
+	// Create filter kernel. Range of discrete arguments must fir convolution
 	discreteFilter h{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
 	// Local copy of projection data
@@ -60,7 +60,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 			convolutionResult *= dD;
 
-			data( idx2CR{ t, n } ) = convolutionResult;
+			this->operator()( idx2CR{ t, n } )  = convolutionResult;
 
 		}
 
@@ -68,7 +68,3 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
-
-grid filteredProjections::Data( void ) const{
-	return data;
-}
