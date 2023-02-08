@@ -100,7 +100,10 @@ double filteredProjections::getValue( const size_t angleIdx, const double distan
 
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
-	grid{ projections.Size(), projections.Start(), projections.Resolution(), 0. }{
+	grid{ idx2CR{ projections.Size().row, projections.Size().row },
+		  v2CR{ projections.Start().row, projections.Start().row }, 
+		  v2CR{ projections.Resolution().row, projections.Resolution().row }, 0. }
+{
 
 	size_t nT = Size().col;			// Number of angles
 	size_t nD = Size().row;			// Number of distances
@@ -120,9 +123,10 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 				double angle = (double) angleIdx * dT;			// Current angle value
 				double t = x * cos( angle ) + y * sin( angle );	// Current "distance" or magnitude in polar coordinates
 
-				// Find the distance index in filtered projections corresponding to t
-				//TODO: complete routine
+				// Get the projection value
+				double projectionValue = projections.getValue( angleIdx, t );
 
+				this->operator()( idx2CR{ xIdx, yIdx } ) += projectionValue;
 			}
 
 
