@@ -116,6 +116,14 @@ class range{
 	double end;
 };
 
+class Zrange{
+	public:
+	Zrange( const signed long long start_, const signed long long end_ );
+	Zrange( void );
+
+	signed long long start;
+	signed long long end;
+};
 
 
 /*********************************************************************

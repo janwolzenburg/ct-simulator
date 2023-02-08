@@ -42,6 +42,7 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	// Detector angle exceeds maximum or minimum
 	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) floor( MAX_DETECTOR_ANGLE / resolution.col ) + 1;
 	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) ceil( MIN_DETECTOR_ANGLE / resolution.col ) + 1;
+	//newNumberPointsRow = FOdd( newNumberPointsRow );
 
 	// Recalculate if number of point changed
 	if( newNumberPointsRow != numberPoints.row ){
@@ -72,7 +73,7 @@ detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadi
 */
 
 detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	number{ radonParameter.numberPoints.col, 1 },
+	number{ radonParameter.numberPoints.row, 1 },
 	angle( (double) ( radonParameter.numberPoints.row - 1 ) * radonParameter.resolution.col ),
 	detectorFocusDistance( indipendentParameter.arcRadius ),
 	structured( indipendentParameter.structured )

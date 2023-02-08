@@ -277,8 +277,8 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		1000.,
-		10,
+		2000.,
+		50,
 		false
 	};
 
@@ -290,13 +290,13 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 125, 41 }, 1 );
+	gantry testGantry = getTestGantry( idx2CR{ 700, 200 }, 1 );
 	const cartCSys* const radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 	ofstream ax2 = openAxis( path( "./test_gantry_sinogram.txt" ), true );
 
-	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	
 	vector<radonPoint> points;
 	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
@@ -304,7 +304,7 @@ bool test_gantry( void ){
 
 	testGantry.rotateCounterClockwise( ( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
 
-	addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
 	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
 	addSingleObject( ax2, "RadonPoints", points, "Angle;Distance;Energy;Dots" );

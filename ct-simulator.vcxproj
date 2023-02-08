@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="backprojection.h" />
     <ClInclude Include="cartesian.fwd.h" />
     <ClInclude Include="cartesian.h" />
     <ClInclude Include="coordinates.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
+    <ClInclude Include="filter.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="voxel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="backprojection.cpp" />
     <ClCompile Include="cartesian.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="cSysTree.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="filter.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />

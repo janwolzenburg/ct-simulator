@@ -55,6 +55,12 @@
     <Filter Include="Quelldateien\Processing">
       <UniqueIdentifier>{cd191329-df7a-485b-97af-2db7f650c7c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Processing\Backprojection">
+      <UniqueIdentifier>{e8b1f761-fcb3-4457-bff9-70a41d25e071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Processing\Backprojection">
+      <UniqueIdentifier>{54e0f6ec-7d05-41c8-9ce9-85303d288b81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -177,6 +183,12 @@
     <ClInclude Include="detectorParameter.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
+    <ClInclude Include="filter.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
+    <ClInclude Include="backprojection.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -271,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="detectorParameter.cpp">
       <Filter>Quelldateien\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="filter.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    </ClCompile>
+    <ClCompile Include="backprojection.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

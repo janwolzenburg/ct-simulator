@@ -19,6 +19,8 @@
 #include "model.h"
 #include "cSysTree.h"
 #include "test_device.h"
+#include "filter.h"
+#include "backprojection.h"
 
 
 /*********************************************************************
@@ -96,12 +98,12 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 300, 100 }, 1 );
+	gantry testGantry = getTestGantry( idx2CR{ 600, 200 }, 1 );
 	model mod = getTestModel( GLOBAL_CSYS() );
 	
 	tomography testTomography{ testGantry, mod };
 
-	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_600x200_1_3xModelRes.txt" ), true );
 
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	addObject( ax2, "TestModel", mod, "g", 0.015 );
@@ -112,15 +114,15 @@ bool test_Tomography( void ){
 
 	vector<char> serializedData;
 	sinogram.serialize( serializedData );
-	exportSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt", serializedData );
+	exportSerialized( "test_Tomography_serialized_sinogram_600x200_1_3xModelRes.txt", serializedData );
 
-	ofstream ax1 = openAxis( path( "./test_Tomography_300x100_1.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_Tomography_600x200_1_3xModelRes.txt" ), true );
 
 	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
 	closeAxis( ax1 );
 
-	ofstream ax3 = openAxis( path( "./test_Tomography_300x100_1_image.txt" ), true );
+	ofstream ax3 = openAxis( path( "./test_Tomography_600x200_1_3xModelRes_image.txt" ), true );
 
 	addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
@@ -189,4 +191,64 @@ bool test_serialisation( void ){
 
 	return true;
 
+}
+
+
+bool test_filter( void ){
+
+	signed long long N = 101;
+	Zrange range{ -N + 1, N - 1 };
+	double samplingInterval = 5;
+
+	discreteFilter h{ range, samplingInterval, discreteFilter::ramLak };
+
+	vector<v2> plot;
+
+	for( signed long long int n = h.Range().start; n <= h.Range().end; n++ ) plot.emplace_back( (double) n, h( n ) );
+
+	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
+
+	addSingleObject( ax, "RamLakFilter", plot, "n;h(n);line" );
+
+	closeAxis( ax );
+
+	return true;
+}
+
+bool test_filteredProjection( void ){
+
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+
+	vector<char>::const_iterator readStart = importedData.cbegin();
+	radonTransformed importedSinogram{ importedData, readStart };
+
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+
+	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
+
+	addSingleObject( ax1, "filteredProjections", (grid) Q, "Angle;Distance;Energy;Dots", true );
+
+	closeAxis( ax1 );
+
+	return true;
+}
+
+bool test_reconstruction( void ){
+
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+
+	vector<char>::const_iterator readStart = importedData.cbegin();
+	radonTransformed importedSinogram{ importedData, readStart };
+
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+
+	reconstrucedImage image{ Q };
+
+	ofstream ax1 = openAxis( path( "./test_reconstruction_300x100_1.txt" ), true );
+
+	addSingleObject( ax1, "filteredProjections", (grid) image, "X;Y;Absorbtion;Dots", true );
+
+	closeAxis( ax1 );
+
+	return true;
 }
