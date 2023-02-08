@@ -32,3 +32,5 @@ bool test_serialisation( void );
 bool test_filter( void );
 
 bool test_filteredProjection( void );
+
+bool test_reconstruction( void );

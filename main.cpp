@@ -44,7 +44,9 @@ int main( void ){
 	
 	//if( !test_filter() ) cerr << "Test for filters failed!";
 
-	if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
+	//if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
+	
+	if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
 
 	return 0;
 }

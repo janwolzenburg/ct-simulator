@@ -232,3 +232,23 @@ bool test_filteredProjection( void ){
 
 	return true;
 }
+
+bool test_reconstruction( void ){
+
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+
+	vector<char>::const_iterator readStart = importedData.cbegin();
+	radonTransformed importedSinogram{ importedData, readStart };
+
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+
+	reconstrucedImage image{ Q };
+
+	ofstream ax1 = openAxis( path( "./test_reconstruction.txt" ), true );
+
+	addSingleObject( ax1, "filteredProjections", (grid) image, "X;Y;Absorbtion;Dots", true );
+
+	closeAxis( ax1 );
+
+	return true;
+}
