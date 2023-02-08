@@ -103,7 +103,7 @@ bool test_Tomography( void ){
 	
 	tomography testTomography{ testGantry, mod };
 
-	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1_2xModelRes.txt" ), true );
 
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	addObject( ax2, "TestModel", mod, "g", 0.015 );
@@ -114,15 +114,15 @@ bool test_Tomography( void ){
 
 	vector<char> serializedData;
 	sinogram.serialize( serializedData );
-	exportSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt", serializedData );
+	exportSerialized( "test_Tomography_serialized_sinogram_300x100_1_2xModelRes.txt", serializedData );
 
-	ofstream ax1 = openAxis( path( "./test_Tomography_300x100_1.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_Tomography_300x100_1_2xModelRes.txt" ), true );
 
 	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
 	closeAxis( ax1 );
 
-	ofstream ax3 = openAxis( path( "./test_Tomography_300x100_1_image.txt" ), true );
+	ofstream ax3 = openAxis( path( "./test_Tomography_300x100_1_2xModelRes_image.txt" ), true );
 
 	addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
@@ -235,7 +235,7 @@ bool test_filteredProjection( void ){
 
 bool test_reconstruction( void ){
 
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1_2xModelRes.txt" );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
