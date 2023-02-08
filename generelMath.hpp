@@ -10,18 +10,21 @@
 
 
 template <typename T>
-typename std::enable_if_t<std::is_arithmetic_v<T>, bool> isEven( const T integer ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, bool> 
+isEven( const T integer ){
 	return integer % 2 == 0;
 }
 
 template <typename T>
-typename std::enable_if_t<std::is_arithmetic_v<T>, T> min( const T a, const T b ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
+min( const T a, const T b ){
 	if( a < b ) return a;
 	return b;
 }
 
 template <typename T>
-typename std::enable_if_t<std::is_arithmetic_v<T>, T> max( const T a, const T b ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
+max( const T a, const T b ){
 	if( a >= b ) return a;
 	return b;
 }
@@ -30,11 +33,12 @@ typename std::enable_if_t<std::is_arithmetic_v<T>, T> max( const T a, const T b 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
 Fmax( const T value, const T maximum ){
-	return min( value, maximum )
+	return min( value, maximum );
 }
 
 template <typename T>
-typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fmin1( T a ){
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>  
+Fmin1( T a ){
 	return max( (T) 1, a );
 }
 
