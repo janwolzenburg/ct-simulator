@@ -226,7 +226,7 @@ bool test_filteredProjection( void ){
 
 	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
 
-	addSingleObject( ax1, "filteredProjections", Q.Data(), "Angle;Distance;Energy;Dots", true );
+	addSingleObject( ax1, "filteredProjections", (grid) Q, "Angle;Distance;Energy;Dots", true );
 
 	closeAxis( ax1 );
 

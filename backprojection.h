@@ -15,21 +15,25 @@
 #include "generel.h"
 #include "filter.h"
 #include "radonTransform.h"
-
+#include "grid.h"
 
 
 /*********************************************************************
   Definitions
 *********************************************************************/
 
-class filteredProjections{
+class filteredProjections : public grid {
 
 	public:
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
 
-	grid Data( void ) const;
 
-	private:
-	grid data;
+};
+
+
+class reconstrucedImage : public grid{
+
+	public:
+	reconstrucedImage( const filteredProjections projections );
 
 };
