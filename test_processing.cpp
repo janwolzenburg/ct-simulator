@@ -134,12 +134,12 @@ bool test_Tomography( void ){
 void serialisedToImage( void ){
 
 	
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_150x50_1.txt" );
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_600x200_1_3xModelRes.txt" );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
 
-	ofstream ax1 = openAxis( path( "./test_Tomography_150x50_1_image.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_reconstruction_600x200_1_3xModelRes.txt" ), true );
 
 	addSingleObject( ax1, "Sinogram", importedSinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
@@ -235,7 +235,7 @@ bool test_filteredProjection( void ){
 
 bool test_reconstruction( void ){
 
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_600x200_1_3xModelRes.txt" );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
@@ -244,7 +244,7 @@ bool test_reconstruction( void ){
 
 	reconstrucedImage image{ Q };
 
-	ofstream ax1 = openAxis( path( "./test_reconstruction_300x100_1.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_reconstruction_600x200_1_3xModelRes.txt" ), true );
 
 	addSingleObject( ax1, "filteredProjections", (grid) image, "X;Y;Absorbtion;Dots", true );
 

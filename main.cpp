@@ -26,7 +26,7 @@ int main( void ){
 
 	//if( !test_modifiedDetector() ) cerr << "Test for non-uniform detector failed!";
 
-	if( !test_gantry() ) cerr << "Test for detector failed!";
+	//if( !test_gantry() ) cerr << "Test for detector failed!";
 
 	//if( !test_testModel() ) cerr << "Test for test model failed!";
 
@@ -46,7 +46,7 @@ int main( void ){
 
 	//if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
 	
-	//if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
+	if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
 
 	return 0;
 }
