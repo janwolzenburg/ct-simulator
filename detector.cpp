@@ -38,26 +38,27 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	const double deltaTheta = radonParameters.resolution.col;		// Angle resolution
 	const double deltaDistance = radonParameters.resolution.row;	// Distance resolution
 
+	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin
 
 	// Important vectors
 	const uvec3 middleNormalVector = cSys->EyVec();					// y-axis of coordinate system is the middle normal vector
 	const uvec3 rotationVector = cSys->EzVec();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
-	// All pixel normals
-	vector<line> allNormals( nDistance );
+	// Persistent variables
+	line previousNormal;			// Normal of previous pixel
+	double previousPixelSize;		// Size of previous pixel
 
 
 	// Iterate through half of pixel normals. Second half is created by symmetry
 	// Normals will be created inside to outside
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
-	
+
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = (double) (currentIndex) * deltaTheta;
-	
+		const double rotationAngle = (double) (currentIndex) *deltaTheta;
+
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const uvec3 currentNormalVector = middleNormalVector.rotN( rotationVector, rotationAngle );
-
 
 
 		// Find a point with the distance corresponding to distance in sinogram
@@ -70,149 +71,79 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
 		// Point which lies on the current normal and has the correct distance from the origin 
-		const pnt3 normalPoint = vec3{ normalLot } * currentDistance;
+		const pnt3 normalPoint = vec3{ normalLot } *currentDistance;
 
 		// The current normal 
 		const line currentNormal{ currentNormalVector, normalPoint };
 
-
-		
-		// Calculate the point which lies on the pixel based on the normal vector, normal point and the arc radius
-		// The point must lie on a circle in xy-plane with the arc radius and a center on y=arcRadius/2
-
-		const v3 o = normalPoint.XYZ();						// Components of normal point
-		const v3 r = currentNormalVector.XYZ();				// Components of normal vector
-		const double R = indipendentParameter.arcRadius;	// The arc radius
-	
-		// Solve quadradic equation
-		const double p = ( 2. * o.y * r.y + r.y * R + 2. * o.x * r.x ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
-		const double q = ( pow( o.y, 2. ) + pow( o.x, 2. ) + o.y * R - 3. / 4. * pow( R, 2. ) ) / ( pow( r.x, 2. ) + pow( r.y, 2. ) );
-
-		// The line parameter where the point lies
-		const double lambda = -p / 2. + sqrt( pow( p / 2., 2. ) - q );
-
-		// Get the point which lies on the circla and the current normal
-		const pnt3 pointOnPixel = currentNormal.getPnt( lambda );
-
-		// Current pixel normal pointing to the center 
-		const line pixelNormal{ -currentNormalVector, pointOnPixel };
-
-		
-
-		// Add pixel normal to vector
-		// If it is not the middle normal create the symmetrical normal
-	
-		// Current normal is  the middle normal
-		if( currentIndex == 0 ){
-			const size_t currentNormalIndex = ( nDistance - 1 ) / 2;
-			allNormals.at( currentNormalIndex ) = pixelNormal;
-			continue;
-		}
-
-		// Add the current normal to vector
+		// Index of normal in vector
 		const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
-		allNormals.at( currentNormalIndex ) = pixelNormal;
-
-		// Mirror current normal around y-axis
-		const line mirroredPixelNormal{
-			pixelNormal.R().negateX(),
-			pixelNormal.O().negateX()
-		};
-
-		// Add mirrored normal
-		const size_t mirroredNormalIndex = ( nDistance - 1 ) / 2 + currentIndex;
-		allNormals.at( mirroredNormalIndex ) = mirroredPixelNormal;
-
-	}
 
 
-
-	// Create pixel surfaces from pixel normals
-
-	// Iterate all normals from second to penultimate normal
-	for( auto currentNormalIt = allNormals.cbegin() + 1; currentNormalIt < allNormals.cend() - 1; currentNormalIt++ ){
-		
-		auto previousNormalIt = currentNormalIt - 1;		// Previous normal
-		auto nextNormalIt = currentNormalIt + 1;			// Next normal
-	
-		
-
-		// To get the size of current pixel check intersection of neighbooring surface vectors
-
-		// Vector which lies on current surface and in xy-plane
-		const uvec3 currentSurfaceVector = currentNormalIt->R() ^ rotationVector;
-
-		// Vector which lies on previous surface and in xy-plane
-		const uvec3 previousSurfaceVector = -previousNormalIt->R() ^ rotationVector;
-
-		// Intersection of previous and current surface
-		const lineLine_Intersection currentPreviousIntersection{ 
-			line{ currentSurfaceVector, currentNormalIt->O() },
-			line{ previousSurfaceVector, previousNormalIt->O() }
-		};
-
-		// The point of intersection
-		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.Result().intersectionPoint;
-
-		// Small surface parameter as negative distance between intersection point and current surface's normal
-		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
+		pnt3 currentPixelOrigin;		// Origin of current pixel
+		double currentPixelSize;		// Size of current pixel
 
 
+		// "Middle" normal
+		if( currentIndex == 0 ){
+			// This is the starting point
+			currentPixelOrigin = currentNormal.getPnt( detectorCenterDistance );
 
-		// Vector which lies on next surface and in xy-plane
-		const uvec3 nextSurfaceVector = nextNormalIt->R() ^ rotationVector;
+			// First pixel size so that the neighbooring pixel intersects at half angle
+			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
-		// Intersection of next and current surface
-		const lineLine_Intersection currentNextIntersection{
-			line{ -currentSurfaceVector, currentNormalIt->O() },
-			line{ nextSurfaceVector, nextNormalIt->O() }
-		};
+		}
+		else{
+			// Intersection point of pixel
+			const pnt3 pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
 
-		// The point of intersection
-		const pnt3 currentNextIntersectionPoint = currentNextIntersection.Result().intersectionPoint;
+			// Lot vector from current normal to intersection point. Vector is pointing to the normal
+			const vec3 pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
 
-		// Large surface parameter as distance between intersection point and current surface's normal
-		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
+			// Get the pixel normal's origin which lies on the shortest line connection the intersection with current normal
+			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-
-
-		// Create surfaces with calculated parameters
-		
-		const double colSize = indipendentParameter.columnSize;
-
-		// First surface. Add previous surface
-		if( currentNormalIt == allNormals.cbegin() + 1 ){
-
-			allPixel.emplace_back(	previousSurfaceVector,
-									rotationVector,
-									previousNormalIt->O(),
-									currentPreviousParameter,
-									( currentPreviousIntersectionPoint - previousNormalIt->O() ).Length(),
-									-colSize / 2,
-								    colSize / 2 );
+			// Pixel size is double the lot length
+			currentPixelSize = 2 * pixelIntersectionLot.Length();
 		}
 
+		// Create current pixel normal pointing to center
+		const line pixelNormal{ -currentNormalVector, currentPixelOrigin };
 
-		// Add the current pixel
-		allPixel.emplace_back(		-currentSurfaceVector,
-									rotationVector,
-									currentNormalIt->O(),
-									currentPreviousParameter,
-									currentNextParameter,
-									-colSize / 2,
-									colSize / 2 );
+		// Store for next pixel
+		previousNormal = pixelNormal;
+		previousPixelSize = currentPixelSize;
 
+		// Vector perpendicualr to the normal pointing to the next pixel
+		const uvec3 currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
 
-		// Last surface. Add next surface			
-		if( currentNormalIt == allNormals.cend() - 2 ){
+		// Add pixel
+		allPixel.emplace_back( currentSurfaceVector,
+							   rotationVector,
+							   pixelNormal.O(),
+							   -currentPixelSize / 2,
+							   currentPixelSize / 2,
+							   -indipendentParameter.columnSize / 2.,
+							   indipendentParameter.columnSize / 2. );
 
-			allPixel.emplace_back(	-nextSurfaceVector,
-									rotationVector,
-									nextNormalIt->O(),
-									-( currentNextIntersectionPoint - nextNormalIt->O() ).Length(),
-									currentNextParameter,
-									-colSize / 2,
-									colSize / 2 );
+		// Add mirrored when not middle pixel
+		if( currentIndex > 0 ){
+
+			// Mirror current normal around y-axis
+			const line mirroredPixelNormal{
+				pixelNormal.R().negateX(),
+				pixelNormal.O().negateX()
+			};
+
+			// Add mirrored pixel
+			const uvec3 mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
+			allPixel.emplace_back( mirroredSurfaceVector,
+								   rotationVector,
+								   mirroredPixelNormal.O(),
+								   -currentPixelSize / 2,
+								   currentPixelSize / 2,
+								   -indipendentParameter.columnSize / 2.,
+								   indipendentParameter.columnSize / 2. );
 		}
 
 	}

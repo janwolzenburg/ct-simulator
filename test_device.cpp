@@ -369,7 +369,7 @@ bool test_modifiedDetector( void ){
 
 
 	vector<line> allNormals;
-	for( auto p : allPixel ){
+	for( auto& p : allPixel ){
 		allNormals.push_back( p.NormalLine() );
 	}
 
@@ -440,14 +440,14 @@ bool test_gantry( void ){
 	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	
 	vector<radonPoint> points;
-	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
+	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
 	testGantry.rotateCounterClockwise( ( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
 
 	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
-	for( auto px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
+	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
 	addSingleObject( ax2, "RadonPoints", points, "Angle;Distance;Energy;Dots" );
 
 	closeAxis( ax2 );
