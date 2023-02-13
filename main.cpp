@@ -24,7 +24,7 @@ int main( void ){
 
 	//if (!test_detector()) cerr << "Test for detector failed!";
 
-	//if( !test_nonUniformDetector() ) cerr << "Test for non-uniform detector failed!";
+	//if( !test_modifiedDetector() ) cerr << "Test for non-uniform detector failed!";
 
 	if( !test_gantry() ) cerr << "Test for detector failed!";
 
