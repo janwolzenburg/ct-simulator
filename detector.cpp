@@ -147,6 +147,9 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		}
 
 	}
+
+	// After constructing converted poixel are identcal to all
+	allPixelConverted = allPixel;
 }
 
 
@@ -162,9 +165,20 @@ void detector::reset( void ){
 
 void detector::detectRay( const ray r ){
 
-	// Iterate all pixel in detector
-	for( pixel& currentPixel : allPixel){
+	bool useConverted = false;
 
+	// Are converted pixels in the rays coordinate system
+	if( r.R().CSys() == this->CSys() ) useConverted = true;
+
+	// Iterate all pixel indices
+	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
+	
+		// Converted pixel
+		pixel currentPixel = allPixelConverted.at( pixelIdx );
+
+
+		if( !useConverted ) currentPixel = allPixel.at( pixelIdx );		// Not converted pixel
+	
 		// Check for intersection of ray with current pixel
 		rayPix_Intersection pixelHit{ r, currentPixel };
 
@@ -172,10 +186,11 @@ void detector::detectRay( const ray r ){
 		if( pixelHit.Result().hasSolution ){
 			currentPixel.detectedRayProperties.push_back( r.Properties() );		// Add detected ray properties to pixel
 		}
-	
+
 		//TODO: Check anti scattering structuring
 
 	}
+
 }
 
 
@@ -190,4 +205,15 @@ detectorRadonParameter detector::getSignalParameter( void ) const{
 
 detectorPhysicalParameter detector::getPhysicalParameters( void ) const{
 	return physicalParameters;
+}
+
+void detector::convertPixel( const cartCSys* const targetCSys ){
+
+	// Iterate all pixel in detector
+	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
+
+		allPixelConverted.at( pixelIdx ) = allPixel.at( pixelIdx ).convertTo( targetCSys );
+
+	}
+
 }
