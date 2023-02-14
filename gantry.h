@@ -49,7 +49,7 @@ class gantry {
 	 * @brief Get all rays from tube
 	 * @return Vector with all rays in beam
 	*/
-	vector<ray> getBeam( void ) const;
+	vector<ray> getBeam() const;
 
 	/*!
 	 * @brief Get all pixel from detector 

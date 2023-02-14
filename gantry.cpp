@@ -75,6 +75,9 @@ void gantry::radiate( const model& radModel ) {
 		currentRay = currentRay.convertTo( radModel.CSys());
 	}
 	
+	// Convert detector pixel to model coordinate system
+	rayDetector.convertPixel( radModel.CSys() );
+
 	vector<ray> raysToDetect;				// Rays to detect
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
@@ -114,7 +117,6 @@ void gantry::radiate( const model& radModel ) {
 
 	}
 
-	vector<pixel> detectorPixel = this->getPixel();		// All pixel in detector
 	rayDetector.reset();								// Reset all pixel
 
 	// Iterate all rays

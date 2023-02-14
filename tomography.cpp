@@ -53,7 +53,7 @@ radonTransformed tomography::recordSlice( void ){
 
 		// Radiate
 		Gantry.radiate( Model );
-		
+
 		// Get the detection result
 		vector<pixel> detectionPixel = Gantry.getPixel();
 
