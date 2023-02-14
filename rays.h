@@ -110,6 +110,11 @@ class ray : public line{
 	*/
 	bool paraInBounds( const double para ) const;
 
+	/*!
+	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit
+	 * @return Vector with possible face IDs
+	*/
+	vector<FACE_ID> getPossibleVoxelExits( void ) const;
 
 	private:
 	rayProperties properties;			/*!< Property of ray*/
