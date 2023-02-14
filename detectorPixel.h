@@ -29,6 +29,8 @@ class pixel : public surfLim{
 
 	public:
 
+	pixel( const surfLim surface );
+
 	/*!
 	 * @brief Reset detected rays
 	*/
@@ -41,6 +43,9 @@ class pixel : public surfLim{
 	double getRadonValue( void ) const;
 
 	line NormalLine( void ) const;
+
+	pixel convertTo( const cartCSys* const target_CSys ) const;
+
 
 	public:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/

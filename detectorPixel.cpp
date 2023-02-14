@@ -24,6 +24,12 @@
 	pixel implementation
 */
 
+pixel::pixel( const surfLim surface ) : 
+	surfLim{ surface }
+{
+
+}
+
 void pixel::reset( void ){
 	detectedRayProperties.clear();
 }
@@ -46,6 +52,11 @@ line  pixel::NormalLine( void ) const{
 
 }
 
+pixel pixel::convertTo( const cartCSys* const target_CSys ) const{
+
+	return pixel{ this->surfLim::convertTo( target_CSys ) };
+
+}
 
 /*
 	rayPix_Intersection_Result implementation
