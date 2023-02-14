@@ -36,7 +36,7 @@ int main( void ){
 
 	//if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
 
-	if( !test_Tomography() ) cerr << "Test for tomography failed!";
+	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	//serialisedToImage();
 
@@ -46,7 +46,7 @@ int main( void ){
 
 	//if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
 	
-	//if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
+	if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
 
 	return 0;
 }

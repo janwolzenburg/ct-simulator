@@ -168,7 +168,7 @@ void detector::detectRay( const ray r ){
 	bool useConverted = false;
 
 	// Are converted pixels in the rays coordinate system
-	if( r.R().CSys() == this->CSys() ) useConverted = true;
+	//if( r.R().CSys() == this->CSys() ) useConverted = true;
 
 	// Iterate all pixel indices
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
@@ -177,7 +177,7 @@ void detector::detectRay( const ray r ){
 		pixel currentPixel = allPixelConverted.at( pixelIdx );
 
 
-		if( !useConverted ) currentPixel = allPixel.at( pixelIdx );		// Not converted pixel
+		//if( currentPixel.R1().CSys() !=  ) currentPixel = allPixel.at( pixelIdx );		// Not converted pixel
 	
 		// Check for intersection of ray with current pixel
 		rayPix_Intersection pixelHit{ r, currentPixel };
