@@ -26,9 +26,11 @@
 
 model getTestModel( const cartCSys* const parent ){
 
+	size_t res = 1;
+
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, idx3 {60, 60, 60}, v3 {10./3.*2., 10. / 3. * 2., 10. / 3. * 2. } };
+	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res } };
 
 	voxData bgData = { 0.001 };
 
@@ -73,7 +75,7 @@ bool test_testModel( void ){
 
 bool test_modelTransmission( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 63, 31 }, 62 );
+	gantry testGantry = getTestGantry( idx2CR{ 70, 20 }, 1 );
 	model mod = getTestModel( GLOBAL_CSYS() );
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );

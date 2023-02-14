@@ -182,9 +182,9 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
 	// Find entrance in model
-	rayVoxelIntersection modelIsect{ Vox(), modelRay };
+	const rayVoxelIntersection modelIsect{ Vox(), modelRay };
 
-	rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
+	const rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
 	if( !rayEntrance.hasSolution ) return vector<ray>(0);			// Return if ray does not intersect model
 
 
@@ -192,7 +192,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	/* ---------------------------------------------------------------------------------------------------- */
 
 	double currentRayStep = rayEntrance.linPara;					// Ray parameter at model entrance
-	double lengthInModel = modelIsect.Exit().linPara - modelIsect.Entrance().linPara;
+	const double lengthInModel = modelIsect.Exit().linPara - modelIsect.Entrance().linPara;
 
 	// Get first point inside the model
 	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > rayStepSize ){
@@ -204,34 +204,105 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
-		// Get current voxel
-		idx3 currentVoxIndices = getVoxelIndices( currentPntOnRay );
-		vox currentVox = getVoxel( currentVoxIndices );
 
-		// Find exit
+		const idx3 currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, modelRay }.Exit();
+		const vector<FACE_ID> possibleFaces = modelRay.getPossibleVoxelExits();		// The possible exit faces
 
-		if( !rayExit.hasSolution ){
-			checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
-			return vector<ray>(0);
+		double rayParameter = INFINITY;		// The smallest ray parameter
+
+		// Iterate all possible faces and get the ray parameter at intersection
+		for( const FACE_ID& currentFace : possibleFaces ){
+
+			double currentRayParameter = INFINITY;			// Set to infinity 
+				
+			double planePosistion;							// Position of current face
+
+			
+			// Switch faces
+			switch( currentFace ){
+
+				case FACE_ID::YZ_Xp:
+					planePosistion = ( currentVoxelIndices.x + 1 ) * this->voxSize3D.x;		// Position of positive yz-plane
+					currentRayParameter = ( planePosistion - modelRay.O().X() ) / modelRay.R().X();		// Ray parameter at intersection
+					break;
+
+				case FACE_ID::YZ_Xm:
+					planePosistion = ( currentVoxelIndices.x     ) * this->voxSize3D.x;		// Position of negative yz-plane
+					currentRayParameter = ( planePosistion - modelRay.O().X() ) / modelRay.R().X();
+					break;
+
+				case FACE_ID::XZ_Yp:
+					planePosistion = ( currentVoxelIndices.y + 1 ) * this->voxSize3D.y;		// Position of positive xz-plane
+					currentRayParameter = ( planePosistion - modelRay.O().Y() ) / modelRay.R().Y();
+					break;
+
+				case FACE_ID::XZ_Ym:
+					planePosistion = ( currentVoxelIndices.y     ) * this->voxSize3D.y;		// Position of negative xz-plane
+					currentRayParameter = ( planePosistion - modelRay.O().Y() ) / modelRay.R().Y();
+					break;
+
+				case FACE_ID::XY_Zp:
+					planePosistion = ( currentVoxelIndices.z + 1 ) * this->voxSize3D.z;		// Position of positive xy-plane
+					currentRayParameter = ( planePosistion - modelRay.O().Z() ) / modelRay.R().Z();
+					break;
+
+				case FACE_ID::XY_Zm:
+					planePosistion = ( currentVoxelIndices.z    ) * this->voxSize3D.z;		// Position of negative xy-plane
+					currentRayParameter = ( planePosistion - modelRay.O().Z() ) / modelRay.R().Z();
+					break;
+
+				default: break;
+			}
+
+			// Set smallest ray parameter
+			if( currentRayParameter < rayParameter ) rayParameter = currentRayParameter;
+
 		}
+		
+		// Exit found
+		if( rayParameter < INFINITY ){
 
-		// Get ray parameter of voxel exit
-		currentRayStep = rayExit.linPara;
+			const double distance = rayParameter;		// The distance is the rayParameter
 
-		// Calculate distance between entrance and exit
-		double distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
+			// Update ray properties whith distance travelled in current voxel
+			modelRay.updateProperties( this->operator()( currentVoxelIndices ), distance);
 
-		// Update ray properties
-		modelRay.updateProperties( currentVox.Data(), distance );
+			currentRayStep += distance + rayStepSize;				// New Step on ray
+			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray
+		}
 	
-		// Exit of this voxel is entrance of next voxel
-		rayEntrance = rayExit;
 
-		// "Enter" next voxel
-		currentRayStep += rayStepSize;
-		currentPntOnRay = modelRay.getPnt( currentRayStep );
+
+
+		//// Get current voxel
+		//idx3 currentVoxIndices = getVoxelIndices( currentPntOnRay );
+		//vox currentVox = getVoxel( currentVoxIndices );
+
+		//// Find exit
+
+		//rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, modelRay }.Exit();
+
+		//if( !rayExit.hasSolution ){
+		//	checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
+		//	return vector<ray>(0);
+		//}
+
+		//// Get ray parameter of voxel exit
+		//currentRayStep = rayExit.linPara;
+
+		//// Calculate distance between entrance and exit
+		//double distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
+
+		//// Update ray properties
+		//modelRay.updateProperties( currentVox.Data(), distance );
+	
+		//// Exit of this voxel is entrance of next voxel
+		//rayEntrance = rayExit;
+
+		//// "Enter" next voxel
+		//currentRayStep += rayStepSize;
+		//currentPntOnRay = modelRay.getPnt( currentRayStep );
 
 		//TODO: Scattering on voxel surfaces
 		if( enableScattering ){
