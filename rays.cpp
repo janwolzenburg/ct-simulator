@@ -90,7 +90,7 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 
 			default: break;
 		}
-
+	}
 		return possibleFaces;
 
 }
