@@ -36,6 +36,8 @@ primitiveVec3::primitiveVec3( const v3 xyz ) : v3( xyz )
 primitiveVec3::primitiveVec3( const double x_, const double y_, const double z_ ) : v3( x_, y_, z_ )
 {}
 
+primitiveVec3::primitiveVec3( void ) : primitiveVec3( 0,0,0 ){}
+
 string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	string str;
 	char tempCharArr[ 64 ] = { 0 };

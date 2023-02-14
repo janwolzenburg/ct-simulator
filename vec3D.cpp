@@ -90,6 +90,9 @@ bool vec3::sameSystem( const vec3 v ) const{
 }
 
 vec3 vec3::convertTo( const cartCSys* const target_cSys ) const{
+
+	if( this->cSys == target_cSys ) return *this;	// Same system return copy of this
+
 	coordinates tipCoords = this->coordinates::convertTo( target_cSys );
 	pnt3 tipPoint{ tipCoords, target_cSys };
 
@@ -346,6 +349,9 @@ string pnt3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) cons
 }
 
 pnt3 pnt3::convertTo( const cartCSys* const target_cSys ) const{
+
+	if( this->cSys == target_cSys ) return *this;
+
 	coordinates convCoords = this->coordinates::convertTo( target_cSys );
 
 	return pnt3( convCoords, target_cSys );

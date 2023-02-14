@@ -76,11 +76,17 @@ class detector {
 	*/
 	cartCSys* CSys( void ) const;
 
+	/*!
+	 * @brief Convert all comnverted pixel to this system
+	 * @param targetCSys Target
+	*/
+	void convertPixel( const cartCSys* const targetCSys );
 
 	private:
 
 	cartCSys* cSys;									/*!<Local coordinate system*/
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
+	vector<pixel> allPixelConverted;				/*!<Pixel in different coordinate system*/
 
 	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is importanct since physicalParameters constructor changes radonParameters
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/

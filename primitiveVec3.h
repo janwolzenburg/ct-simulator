@@ -30,6 +30,8 @@ class primitiveVec3 : public v3, virtual public mathObj{
 
 	public:
 
+	primitiveVec3( void );
+
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ x, y and z values 

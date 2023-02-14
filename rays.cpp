@@ -61,3 +61,36 @@ void ray::updateProperties( const voxData data, const double distance ){
 }
 
 bool ray::paraInBounds(const double para) const { return para >= 0; };
+
+
+
+vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
+
+	vector<FACE_ID> possibleFaces;
+
+	// Iterate all faces of voxel
+	for( FACE_ID currentFace = FACE_ID::BEGIN; currentFace < FACE_ID::END; ++currentFace ){
+
+		// Check if face can be an exit face of the tRay
+		switch( currentFace ){
+			case FACE_ID::YZ_Xp:
+				if( r.X() > 0 ) possibleFaces.push_back( currentFace ); break;
+			case FACE_ID::YZ_Xm:
+				if( r.X() < 0 ) possibleFaces.push_back( currentFace ); break;
+
+			case FACE_ID::XZ_Yp:
+				if( r.Y() > 0 ) possibleFaces.push_back( currentFace ); break;
+			case FACE_ID::XZ_Ym:
+				if( r.Y() < 0 ) possibleFaces.push_back( currentFace ); break;
+
+			case FACE_ID::XY_Zp:
+				if( r.Z() > 0 ) possibleFaces.push_back( currentFace ); break;
+			case FACE_ID::XY_Zm:
+				if( r.Z() < 0 ) possibleFaces.push_back( currentFace ); break;
+
+			default: break;
+		}
+	}
+		return possibleFaces;
+
+}
