@@ -30,13 +30,13 @@ int main( void ){
 
 	//if( !test_testModel() ) cerr << "Test for test model failed!";
 
-	if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
+	//if( !test_modelTransmission() ) cerr << "Test for model transmission failed!";
 
 	//if( !test_radonTransform() ) cerr << "Test for radon transformed failed!";
 
 	//if( !test_detector_to_sinogram() ) cerr << "Test for tomography failed!";
 
-	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
+	if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
 	//serialisedToImage();
 

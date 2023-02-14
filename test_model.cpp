@@ -24,9 +24,7 @@
   *********************************************************************/
 
 
-model getTestModel( const cartCSys* const parent ){
-
-	size_t res = 3;
+model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
