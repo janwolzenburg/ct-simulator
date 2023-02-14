@@ -224,32 +224,32 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 				case FACE_ID::YZ_Xp:
 					planePosistion = ( currentVoxelIndices.x + 1 ) * this->voxSize3D.x;		// Position of positive yz-plane
-					currentRayParameter = ( planePosistion - modelRay.O().X() ) / modelRay.R().X();		// Ray parameter at intersection
+					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();		// Ray parameter at intersection
 					break;
 
 				case FACE_ID::YZ_Xm:
 					planePosistion = ( currentVoxelIndices.x     ) * this->voxSize3D.x;		// Position of negative yz-plane
-					currentRayParameter = ( planePosistion - modelRay.O().X() ) / modelRay.R().X();
+					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();
 					break;
 
 				case FACE_ID::XZ_Yp:
 					planePosistion = ( currentVoxelIndices.y + 1 ) * this->voxSize3D.y;		// Position of positive xz-plane
-					currentRayParameter = ( planePosistion - modelRay.O().Y() ) / modelRay.R().Y();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
 					break;
 
 				case FACE_ID::XZ_Ym:
 					planePosistion = ( currentVoxelIndices.y     ) * this->voxSize3D.y;		// Position of negative xz-plane
-					currentRayParameter = ( planePosistion - modelRay.O().Y() ) / modelRay.R().Y();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
 					break;
 
 				case FACE_ID::XY_Zp:
 					planePosistion = ( currentVoxelIndices.z + 1 ) * this->voxSize3D.z;		// Position of positive xy-plane
-					currentRayParameter = ( planePosistion - modelRay.O().Z() ) / modelRay.R().Z();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
 					break;
 
 				case FACE_ID::XY_Zm:
 					planePosistion = ( currentVoxelIndices.z    ) * this->voxSize3D.z;		// Position of negative xy-plane
-					currentRayParameter = ( planePosistion - modelRay.O().Z() ) / modelRay.R().Z();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
 					break;
 
 				default: break;
