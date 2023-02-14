@@ -29,13 +29,30 @@ linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 	l( l_ ),
 	s( s_ ){
 
+	primitiveVec3 surfaceO;
+	primitiveVec3 surfaceR1;
+	primitiveVec3 surfaceR2;
+	primitiveVec3 lineR = l.R().XYZ();
+	primitiveVec3 lineO = l.O().XYZ();
+
+	// Same system?
+	if( l.R().CSys() == s.R1().CSys() ){
+		surfaceO = s.O().XYZ();
+		surfaceR1 = s.R1().XYZ();
+		surfaceR2 = s.R2().XYZ();
+	}
+	else{
+		surfaceO = s.O().XYZ( l.R() );
+		surfaceR1 = s.R1().XYZ( l.R() );
+		surfaceR2 = s.R2().XYZ( l.R() );
+	}
 
 	// Create system of equations with three variables
 	eqnSys sys( 3 );
-	sys.populateColumn( s.R1().XYZ( l.R() ) );
-	sys.populateColumn( s.R2().XYZ( l.R() ) );
-	sys.populateColumn( -( l.R().XYZ() ) );
-	sys.populateColumn( l.O().XYZ() - s.O().XYZ( l.O() ) );
+	sys.populateColumn( surfaceR1 );
+	sys.populateColumn( surfaceR2 );
+	sys.populateColumn( -lineR );
+	sys.populateColumn( lineO - surfaceO );
 
 	// Solve system
 	eqnSysSolution sysSol = sys.solve();
