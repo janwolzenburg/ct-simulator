@@ -26,7 +26,7 @@
 
 model getTestModel( const cartCSys* const parent ){
 
-	size_t res = 1;
+	size_t res = 3;
 
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
@@ -80,8 +80,9 @@ bool test_modelTransmission( void ){
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
 
-	addObject( ax1, "Gantry", testGantry, "r", 0 );
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::BEAMS );
 	addObject( ax1, "TestModel", mod, "g", 0.015 );
+
 
 
 	for( const ray r : testGantry.getBeam() ){
@@ -100,6 +101,9 @@ bool test_modelTransmission( void ){
 
 	testGantry.radiate( mod );
 	vector<pixel> detectorPixel = testGantry.getPixel();
+
+	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });
+
 	vector<v2> primitiveDetectionResult( detectorPixel.size(), v2{0, 0});
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
@@ -109,7 +113,7 @@ bool test_modelTransmission( void ){
 		}
 	}	
 
-	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_modelTransmission_Result_newApproach.txt" ), true );
 	addSingleObject( ax2, "Result", primitiveDetectionResult, string{ "PixelNum;Result;Dots" });
 	closeAxis( ax2 );
 
