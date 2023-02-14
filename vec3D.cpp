@@ -349,6 +349,9 @@ string pnt3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) cons
 }
 
 pnt3 pnt3::convertTo( const cartCSys* const target_cSys ) const{
+
+	if( this->cSys == target_cSys ) return *this;
+
 	coordinates convCoords = this->coordinates::convertTo( target_cSys );
 
 	return pnt3( convCoords, target_cSys );
