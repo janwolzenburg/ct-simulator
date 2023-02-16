@@ -25,6 +25,9 @@ using std::vector;
    Definitions
 *********************************************************************/
 
+void threadFunction( const ray currentRay, const model& radModel, const bool enableScattering, vector<ray>& raysToDetect, vector<ray>& raysForNextIteration );
+
+
 constexpr size_t maxRadiationLoops = 16;
 
 /*!

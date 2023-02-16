@@ -13,8 +13,8 @@
 *********************************************************************/
 
 #include "gantry.h"
-
-
+#include <thread>
+#include <mutex>
 
 /*********************************************************************
   Implementations
@@ -65,6 +65,41 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
+void threadFunction( const ray currentRay, const model& radModel, const bool enableScattering, vector<ray>& raysToDetect, vector<ray>& raysForNextIteration ){
+
+	std::mutex mu;
+
+	vector<ray> returnedRays;												// Rays that have been scattered or left the model
+	returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
+
+	// When current ray does not intersect model add it for detection
+
+	if( returnedRays.empty() ){
+		mu.lock();
+		raysToDetect.push_back( currentRay );
+		mu.unlock();
+	}
+
+	// Iterate all rays scattered or transmitted through model
+	for( const ray returnedRay : returnedRays ){
+
+		// Is the ray outside the model
+		if( !radModel.pntInside( returnedRay.O() ) ){
+			mu.lock();
+			raysToDetect.push_back( returnedRay );	// Add ray for detection
+			mu.unlock();
+		}
+		else{
+			mu.lock();
+			raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
+			mu.unlock();
+		}
+
+	}
+
+	return;
+}
+
 
 void gantry::radiate( const model& radModel ) {
 
@@ -78,6 +113,7 @@ void gantry::radiate( const model& radModel ) {
 	// Convert pixel
 	rayDetector.convertPixel( radModel.CSys() );
 
+	// Thread var
 	vector<ray> raysToDetect;				// Rays to detect
 
 
@@ -87,32 +123,50 @@ void gantry::radiate( const model& radModel ) {
 
 		cout << "Loop: " << currentLoop + 1 << endl;
 
+
+		const bool enableScattering = currentLoop < maxRadiationLoops;	// No scattering in last iteration
+
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
 
 		size_t rayNum = 0;
 
-		// Iterate over all rays in current ray collection
+		// Start threads
+		
+		// Number of threads
+		constexpr size_t numThreads = 1;
+
+		// Start new threads while there are rays to transmit
+		while( rays.size() > 0 ){
+
+			vector<std::thread> threads;
+
+			// Assign rays to threads
+			for( size_t threadIdx = 0; threadIdx < numThreads && rays.size() > 0; threadIdx++ ){
+				
+				// Add thread to vector radiating last ray in vector
+				threads.emplace_back( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
+
+				// Remove ray from vector
+				rays.pop_back();
+			}
+
+
+
+			// Wait for threads to finish
+			for( std::thread& currentThread : threads ) currentThread.join();
+
+
+		}
+
+
+		/* Iterate over all rays in current ray collection
 		for( const ray currentRay : rays ){
 		
 			cout << '\r' << "Ray: " << rayNum++ + 1 << " of " << rays.size() << "           ";
 
-			vector<ray> returnedRays;												// Rays that have been scattered or left the model
-			bool enableScattering = currentLoop < maxRadiationLoops;				// No scattering in last iteration
-			returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
-			
-			// When current ray does not intersect model add it for detection
-			if( returnedRays.empty() ) raysToDetect.push_back( currentRay );
-
-			// Iterate all rays scattered or transmitted through model
-			for( const ray returnedRay : returnedRays ){
-			
-				// Is the ray outside the model
-				if( !radModel.pntInside( returnedRay.O() ) ) raysToDetect.push_back( returnedRay );	// Add ray for detection
-				else raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
-
-			}
+			threadFunction( currentRay, radModel, enableScattering, raysToDetect, raysForNextIteration );
 		}
-		cout << endl;
+		cout << endl;*/
 
 		// Copy rays to vector
 		rays = raysForNextIteration;
