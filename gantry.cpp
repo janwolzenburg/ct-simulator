@@ -128,7 +128,8 @@ void gantry::radiate( const model& radModel ) {
 	// Thread var
 	vector<ray> raysToDetect;				// Rays to detect
 
-
+	// Number of threads
+	constexpr size_t numThreads = 12;
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
@@ -144,37 +145,15 @@ void gantry::radiate( const model& radModel ) {
 
 		// Start threads
 		
-		// Number of threads
-		constexpr size_t numThreads = 2;
 
 		// Start new threads while there are rays to transmit
 		while( rays.size() > 0 ){
 
 			vector<std::thread> threads;
 
-			/*if( rays.size() > 1 ){
-				std::thread t1( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
-				rays.pop_back();
-
-				std::thread t2( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
-				rays.pop_back();
-
-				t1.join();
-				t2.join();
-			}
-			else{
-				std::thread t1( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
-				rays.pop_back();
-				t1.join();
-			}*/
-			
-
-
 			// Assign rays to threads
 			for( size_t threadIdx = 0; threadIdx < numThreads && rays.size() > 0; threadIdx++ ){
 				
-				//coutMutex.lock(); cout << "Computing ray " << rays.size() << endl; coutMutex.unlock();
-
 				// Add thread to vector radiating last ray in vector
 				threads.emplace_back( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
 
@@ -183,12 +162,8 @@ void gantry::radiate( const model& radModel ) {
 			}
 
 
-
 			// Wait for threads to finish
 			for( std::thread& currentThread : threads ) currentThread.join();
-			
-
-			//cout << "Threads finished" << endl;
 
 			cout << '\r' << rays.size() << " rays left " << "           ";
 		}
@@ -203,11 +178,35 @@ void gantry::radiate( const model& radModel ) {
 	rayDetector.reset();								// Reset all pixel
 
 	// Iterate all rays
-	for( const ray currentRay : raysToDetect ){
-		// Detect ray
-		rayDetector.detectRay( currentRay );
-	}
+	//for( const ray currentRay : raysToDetect ){
+	//	// Detect ray
+	//	rayDetector.detectRay( currentRay );
+	//}
 
+	while( raysToDetect.size() > 0 ){
+
+		vector<std::thread> threads;
+
+		// Assign rays to threads
+		for( size_t threadIdx = 0; threadIdx < numThreads && rays.size() > 0; threadIdx++ ){
+
+			// Add thread to vector radiating last ray in vector
+			threads.emplace_back( &detector::detectRay, rayDetector, raysToDetect.back() );
+
+			// Remove ray from vector
+			raysToDetect.pop_back();
+		}
+
+
+
+		// Wait for threads to finish
+		for( std::thread& currentThread : threads ) currentThread.join();
+
+
+		//cout << "Threads finished" << endl;
+
+		cout << '\r' << raysToDetect.size() << " detectable rays left " << "           ";
+	}
 }
 
 
