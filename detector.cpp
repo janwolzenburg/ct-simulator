@@ -165,26 +165,22 @@ void detector::reset( void ){
 
 void detector::detectRay( const ray r ){
 
-	bool useConverted = false;
-
-	// Are converted pixels in the rays coordinate system
-	//if( r.R().CSys() == this->CSys() ) useConverted = true;
 
 	// Iterate all pixel indices
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
 	
 		// Converted pixel
-		pixel currentPixel = allPixelConverted.at( pixelIdx );
+		const pixel currentPixel = allPixelConverted.at( pixelIdx );
 
-
-		//if( currentPixel.R1().CSys() !=  ) currentPixel = allPixel.at( pixelIdx );		// Not converted pixel
 	
 		// Check for intersection of ray with current pixel
-		rayPix_Intersection pixelHit{ r, currentPixel };
+		const rayPix_Intersection pixelHit{ r, currentPixel };
 
 		// Do they intersect?
 		if( pixelHit.Result().hasSolution ){
+			allPixelLock.lock();
 			allPixel.at( pixelIdx ).detectedRayProperties.push_back( r.Properties() );		// Add detected ray properties to pixel
+			allPixelLock.unlock();
 		}
 
 		//TODO: Check anti scattering structuring
