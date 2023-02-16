@@ -16,6 +16,11 @@
 #include <thread>
 #include <mutex>
 
+
+std::mutex detectMutex;
+std::mutex iterationMutex;
+std::mutex coutMutex;
+
 /*********************************************************************
   Implementations
 *********************************************************************/
@@ -69,15 +74,20 @@ void threadFunction( const ray currentRay, const model& radModel, const bool ena
 
 	std::mutex mu;
 
+	//coutMutex.lock();  cout << "Thread started" << endl; coutMutex.unlock();
+
+
 	vector<ray> returnedRays;												// Rays that have been scattered or left the model
 	returnedRays = radModel.rayTransmission( currentRay, enableScattering );// Transmit ray through model
+
+	//coutMutex.lock();  cout << "Ray transmitted" << endl; coutMutex.unlock();
 
 	// When current ray does not intersect model add it for detection
 
 	if( returnedRays.empty() ){
-		mu.lock();
+		detectMutex.lock();
 		raysToDetect.push_back( currentRay );
-		mu.unlock();
+		detectMutex.unlock();
 	}
 
 	// Iterate all rays scattered or transmitted through model
@@ -85,14 +95,16 @@ void threadFunction( const ray currentRay, const model& radModel, const bool ena
 
 		// Is the ray outside the model
 		if( !radModel.pntInside( returnedRay.O() ) ){
-			mu.lock();
+			detectMutex.lock();
 			raysToDetect.push_back( returnedRay );	// Add ray for detection
-			mu.unlock();
+			detectMutex.unlock();
+			//coutMutex.lock();  cout << "Added ray for detection" << endl; coutMutex.unlock();
 		}
 		else{
-			mu.lock();
+			iterationMutex.lock();
 			raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
-			mu.unlock();
+			iterationMutex.unlock();
+			//coutMutex.lock();  cout << "Stored ray for next iteration" << endl; coutMutex.unlock();
 		}
 
 	}
@@ -133,16 +145,36 @@ void gantry::radiate( const model& radModel ) {
 		// Start threads
 		
 		// Number of threads
-		constexpr size_t numThreads = 1;
+		constexpr size_t numThreads = 2;
 
 		// Start new threads while there are rays to transmit
 		while( rays.size() > 0 ){
 
 			vector<std::thread> threads;
 
+			/*if( rays.size() > 1 ){
+				std::thread t1( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
+				rays.pop_back();
+
+				std::thread t2( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
+				rays.pop_back();
+
+				t1.join();
+				t2.join();
+			}
+			else{
+				std::thread t1( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
+				rays.pop_back();
+				t1.join();
+			}*/
+			
+
+
 			// Assign rays to threads
 			for( size_t threadIdx = 0; threadIdx < numThreads && rays.size() > 0; threadIdx++ ){
 				
+				//coutMutex.lock(); cout << "Computing ray " << rays.size() << endl; coutMutex.unlock();
+
 				// Add thread to vector radiating last ray in vector
 				threads.emplace_back( threadFunction, rays.back(), std::cref( radModel ), enableScattering, std::ref( raysToDetect ), std::ref( raysForNextIteration ) );
 
@@ -154,6 +186,9 @@ void gantry::radiate( const model& radModel ) {
 
 			// Wait for threads to finish
 			for( std::thread& currentThread : threads ) currentThread.join();
+			
+
+			//cout << "Threads finished" << endl;
 
 			cout << '\r' << rays.size() << " rays left " << "           ";
 		}
