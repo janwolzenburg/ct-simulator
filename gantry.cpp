@@ -20,6 +20,7 @@
 std::mutex detectMutex;
 std::mutex iterationMutex;
 std::mutex coutMutex;
+std::mutex allPixelLock;
 
 /*********************************************************************
   Implementations
@@ -129,7 +130,7 @@ void gantry::radiate( const model& radModel ) {
 	vector<ray> raysToDetect;				// Rays to detect
 
 	// Number of threads
-	constexpr size_t numThreads = 12;
+	constexpr size_t numThreads = 8;
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
@@ -165,10 +166,10 @@ void gantry::radiate( const model& radModel ) {
 			// Wait for threads to finish
 			for( std::thread& currentThread : threads ) currentThread.join();
 
-			cout << '\r' << rays.size() << " rays left " << "           ";
+			//cout << '\r' << rays.size() << " rays left " << "           ";
 		}
 
-		cout << endl;
+		//cout << endl;
 
 		// Copy rays to vector
 		rays = raysForNextIteration;
@@ -188,10 +189,10 @@ void gantry::radiate( const model& radModel ) {
 		vector<std::thread> threads;
 
 		// Assign rays to threads
-		for( size_t threadIdx = 0; threadIdx < numThreads && rays.size() > 0; threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < numThreads && raysToDetect.size() > 0; threadIdx++ ){
 
 			// Add thread to vector radiating last ray in vector
-			threads.emplace_back( &detector::detectRay, rayDetector, raysToDetect.back() );
+			threads.emplace_back( &detector::detectRay, std::ref( rayDetector ), raysToDetect.back(), std::ref( allPixelLock ) );
 
 			// Remove ray from vector
 			raysToDetect.pop_back();
@@ -205,8 +206,12 @@ void gantry::radiate( const model& radModel ) {
 
 		//cout << "Threads finished" << endl;
 
-		cout << '\r' << raysToDetect.size() << " detectable rays left " << "           ";
+		//cout << '\r' << raysToDetect.size() << " detectable rays left " << "           ";
 	}
+	
+	//cout << endl;
+
+
 }
 
 
