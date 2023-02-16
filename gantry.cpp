@@ -155,18 +155,10 @@ void gantry::radiate( const model& radModel ) {
 			// Wait for threads to finish
 			for( std::thread& currentThread : threads ) currentThread.join();
 
-
+			cout << '\r' << rays.size() << " rays left " << "           ";
 		}
 
-
-		/* Iterate over all rays in current ray collection
-		for( const ray currentRay : rays ){
-		
-			cout << '\r' << "Ray: " << rayNum++ + 1 << " of " << rays.size() << "           ";
-
-			threadFunction( currentRay, radModel, enableScattering, raysToDetect, raysForNextIteration );
-		}
-		cout << endl;*/
+		cout << endl;
 
 		// Copy rays to vector
 		rays = raysForNextIteration;
