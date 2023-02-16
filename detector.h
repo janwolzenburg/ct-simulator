@@ -57,7 +57,7 @@ class detector {
 	 * @brief Detect ray
 	 * @param r Ray to detect
 	*/
-	void detectRay( const ray r );
+	void detectRay( const ray r, std::mutex& allPixelLock );
 
 	/*!
 	 * @brief Get the radon parameters of detector
@@ -92,6 +92,6 @@ class detector {
 	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is importanct since physicalParameters constructor changes radonParameters
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
 
-	std::mutex allPixelLock;						/*<Lock for allPixel property*/
+	//std::mutex allPixelLock;						/*<Lock for allPixel property*/
 };
 
