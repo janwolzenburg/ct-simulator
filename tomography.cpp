@@ -49,7 +49,7 @@ radonTransformed tomography::recordSlice( void ){
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 		
-		cout << endl << "Frame " << currentFrame + 1 << " of " << radonParameter.framesToFillSinogram << endl;
+		//cout << endl << "Frame " << currentFrame + 1 << " of " << radonParameter.framesToFillSinogram << endl;
 
 		// Radiate
 		Gantry.radiate( Model );

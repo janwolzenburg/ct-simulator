@@ -129,7 +129,7 @@ void gantry::radiate( const model& radModel ) {
 	rayDetector.convertPixel( radModel.CSys() );
 
 	// Number of threads
-	constexpr size_t numThreads = 8;
+	constexpr size_t numThreads = 10;
 
 	rayDetector.reset();								// Reset all pixel
 
@@ -142,7 +142,7 @@ void gantry::radiate( const model& radModel ) {
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
 
-		cout << "Loop: " << currentLoop + 1 << endl;
+		//cout << "Loop: " << currentLoop + 1 << endl;
 
 		const bool enableScattering = currentLoop < maxRadiationLoops;	// No scattering in last iteration
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration

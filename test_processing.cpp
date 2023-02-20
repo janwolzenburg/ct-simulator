@@ -11,6 +11,8 @@
  /*********************************************************************
   Includes
 *********************************************************************/
+#include <chrono>
+
 #include "test_processing.h"
 #include "radonTransform.h"
 #include "plotting.h"
@@ -98,31 +100,37 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 150, 60 }, 1 );
-	model mod = getTestModel( GLOBAL_CSYS(), 4 );
+	gantry testGantry = getTestGantry( idx2CR{ 300, 100 }, 1 );
+	model mod = getTestModel( GLOBAL_CSYS(), 10 );
 	
 	tomography testTomography{ testGantry, mod };
 
-	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_150x60_1_4xModelRes.txt" ), true );
+	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1_4xModelRes.txt" ), true );
 
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	addObject( ax2, "TestModel", mod, "g", 0.015 );
 
 	closeAxis( ax2 );
 
+	auto start = std::chrono::system_clock::now();
 	radonTransformed sinogram = testTomography.recordSlice();
+	auto end = std::chrono::system_clock::now();
+
+	std::chrono::duration<double> diff = end - start;
+	cout << "Time for slice: " << diff << endl;
+
 
 	vector<char> serializedData;
 	sinogram.serialize( serializedData );
-	exportSerialized( "test_Tomography_serialized_sinogram_150x60_1_4xModelRes.txt", serializedData );
+	exportSerialized( "test_Tomography_serialized_sinogram_300x100_1_4xModelRes.txt", serializedData );
 
-	ofstream ax1 = openAxis( path( "./test_Tomography_150x60_1_4xModelRes.txt" ), true );
+	ofstream ax1 = openAxis( path( "./test_Tomography_300x100_1_4xModelRes.txt" ), true );
 
 	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
 	closeAxis( ax1 );
 
-	ofstream ax3 = openAxis( path( "./test_Tomography_150x60_1_4xModelRes_image.txt" ), true );
+	ofstream ax3 = openAxis( path( "./test_Tomography_300x100_1_4xModelRes_image.txt" ), true );
 
 	addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
