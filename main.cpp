@@ -38,6 +38,8 @@ int main( void ){
 
 	if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
+	//save_testModel();
+
 	//serialisedToImage();
 
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";

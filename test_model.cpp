@@ -55,6 +55,12 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 }
 
 
+void save_testModel( void ){
+
+	model mod = getTestModel( GLOBAL_CSYS(), 10 );
+	mod.exportToFile( path( "testModel_10xRes.mod" ));
+
+}
 
 bool test_testModel( void ){
 
