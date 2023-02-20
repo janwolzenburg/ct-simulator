@@ -19,11 +19,19 @@ using std::vector;
 #include "tube.h"
 #include "detector.h"
 #include "model.h"
+#include <mutex>
+
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
+
+void threadFunction( const model& radModel, const bool enableScattering,
+					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
+					 vector<ray>& raysForNextIteration, std::mutex& detectorMutex,
+					 detector& rayDetector, std::mutex& iterationMutex );
+
 
 constexpr size_t maxRadiationLoops = 16;
 

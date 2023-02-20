@@ -38,7 +38,9 @@ int main( void ){
 
 	//if( !test_Tomography() ) cerr << "Test for tomography failed!";
 
-	//serialisedToImage();
+	//save_testModel();
+
+	serialisedToImage();
 
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";
 	
@@ -46,7 +48,7 @@ int main( void ){
 
 	//if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
 	
-	if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
+	//if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
 
 	return 0;
 }

@@ -11,6 +11,8 @@
  /*********************************************************************
   Includes
 *********************************************************************/
+#include <chrono>
+
 #include "test_processing.h"
 #include "radonTransform.h"
 #include "plotting.h"
@@ -98,52 +100,81 @@ bool test_detector_to_sinogram( void ){
 
 bool test_Tomography( void ){
 
+	auto start = std::chrono::system_clock::now();
 	gantry testGantry = getTestGantry( idx2CR{ 900, 300 }, 1 );
-	model mod = getTestModel( GLOBAL_CSYS(), 4 );
-	
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> diff = end - start;
+	cout << "Time for gantry construction: " << diff << endl;
+
+	start = std::chrono::system_clock::now();
+	model mod = getTestModel( GLOBAL_CSYS(), 10 );
+	end = std::chrono::system_clock::now();
+	diff = end - start;
+	cout << "Time for test model construction: " << diff << endl;
+
+	start = std::chrono::system_clock::now();
 	tomography testTomography{ testGantry, mod };
+	end = std::chrono::system_clock::now();
+	diff = end - start;
+	cout << "Time for test tomography construction: " << diff << endl;
 
-	ofstream ax2 = openAxis( path( "./test_Tomography_gantry_900_300_1_4xModelRes.txt" ), true );
+	//ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1_4xModelRes.txt" ), true );
 
-	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
-	addObject( ax2, "TestModel", mod, "g", 0.015 );
+	//addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	//addObject( ax2, "TestModel", mod, "g", 0.015 );
 
-	closeAxis( ax2 );
+	//closeAxis( ax2 );
 
+	start = std::chrono::system_clock::now();
 	radonTransformed sinogram = testTomography.recordSlice();
+	end = std::chrono::system_clock::now();
+	diff = end - start;
+	cout << "Time for slice: " << diff << endl;
 
+	start = std::chrono::system_clock::now();
 	vector<char> serializedData;
 	sinogram.serialize( serializedData );
-	exportSerialized( "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt", serializedData );
+	exportSerialized( "test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt", serializedData );
+	end = std::chrono::system_clock::now();
+	diff = end - start;
+	cout << "Time for test sinogram export: " << diff << endl;
 
-	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_4xModelRes.txt" ), true );
+	//ofstream ax1 = openAxis( path( "./test_Tomography_300x100_1_4xModelRes.txt" ), true );
 
-	addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
+	//addSingleObject( ax1, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", false );
 
-	closeAxis( ax1 );
+	//closeAxis( ax1 );
 
-	ofstream ax3 = openAxis( path( "./test_Tomography_900_300_1_4xModelRes_image.txt" ), true );
+	//ofstream ax3 = openAxis( path( "./test_Tomography_300x100_1_4xModelRes_image.txt" ), true );
 
-	addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
+	//addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
-	closeAxis( ax3 );
+	//closeAxis( ax3 );
 
 	return true;
 }
 
+
+
 void serialisedToImage( void ){
 
 	
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt" );
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
+
+
 	radonTransformed importedSinogram{ importedData, readStart };
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+	reconstrucedImage image{ Q };
 
-	ofstream ax1 = openAxis( path( "./test_reconstruction_900_300_1_4xModelRes.txt" ), true );
-
+	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
 	addSingleObject( ax1, "Sinogram", importedSinogram.Data(), "Angle;Distance;Energy;Dots", true );
-
 	closeAxis( ax1 );
+
+	ofstream ax2 = openAxis( path( "./test_Reconstruction_900_300_1_10xModelRes.txt" ), true );
+	addSingleObject( ax2, "ReconstrucedImage", (grid) image, "X;Y;Absorbtion;Dots", true );
+	closeAxis( ax2 );
 
 }
 
