@@ -154,19 +154,27 @@ bool test_Tomography( void ){
 	return true;
 }
 
+
+
 void serialisedToImage( void ){
 
 	
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt" );
+	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
+
+
 	radonTransformed importedSinogram{ importedData, readStart };
+	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+	reconstrucedImage image{ Q };
 
-	ofstream ax1 = openAxis( path( "./test_reconstruction_900_300_1_4xModelRes.txt" ), true );
-
+	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
 	addSingleObject( ax1, "Sinogram", importedSinogram.Data(), "Angle;Distance;Energy;Dots", true );
-
 	closeAxis( ax1 );
+
+	ofstream ax2 = openAxis( path( "./test_Reconstruction_900_300_1_10xModelRes.txt" ), true );
+	addSingleObject( ax2, "ReconstrucedImage", (grid) image, "X;Y;Absorbtion;Dots", true );
+	closeAxis( ax2 );
 
 }
 
