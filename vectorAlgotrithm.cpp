@@ -60,6 +60,19 @@ void scale(vector<double>& vec, const double factor) {
 }
 
 
+void scale( vector<v2>& vec, const double factor ){
+
+	std::for_each( vec.begin(), vec.end(), [&] ( v2& d ){ d.y *= factor; } );
+
+}
+
+
+void normalize( vector<v2>& vec ){
+
+	scale( vec, 1. / sum( vec ) );
+
+}
+
 size_t closest( const vector<double> vec, const double val ){
 
 	//std::sort( vec.begin(), vec.end() );
