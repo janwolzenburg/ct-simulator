@@ -76,7 +76,7 @@ isEven( const T integer );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-´min( const T a, const T b );
+min( const T a, const T b );
 
 /*!
  * @brief Return the maximum of two values
