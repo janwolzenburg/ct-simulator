@@ -16,6 +16,7 @@
 #include <vector>
 using std::vector;
 
+#include "generel.h"
 
 
  /*********************************************************************
@@ -26,6 +27,8 @@ using std::vector;
 vector<double> linearSpace(const double start, const double end, const size_t numPoints);
 
 double sum( const vector<double> vec );
+
+double sum( const vector<v2> vec );
 
 void scale( vector<double>& vec, const double factor );
 

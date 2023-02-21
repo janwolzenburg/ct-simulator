@@ -19,7 +19,7 @@ using std::vector;
 #include <numeric>
 
 #include "generelMath.h" 
-
+#include "generel.h"
 
 
  /*********************************************************************
@@ -47,6 +47,11 @@ double sum( const vector<double> vec ) {
 
 }
 
+double sum( const vector<v2> vec ){
+
+	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const v2& b ){ return a + b.y; } );
+
+}
 
 void scale(vector<double>& vec, const double factor) {
 
