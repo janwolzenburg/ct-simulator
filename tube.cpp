@@ -28,7 +28,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),
 	anodeAtomicNumber(Fpos( parameter_.anodeAtomicNumber )),
 	totalPower_W(k_1PerV* anodeAtomicNumber* anodeCurrent_A* pow(anodeVoltage_V, 2)),
-	maxRadiationFrequency_Hz(e_As* anodeVoltage_V / h_Js)
+	maxRadiationFrequency_Hz(e_As * anodeVoltage_V / h_Js)
 {
 
 	// Frequencies

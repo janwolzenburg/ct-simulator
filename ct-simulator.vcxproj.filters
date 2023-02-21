@@ -189,6 +189,9 @@
     <ClInclude Include="backprojection.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
+    <ClInclude Include="scattering.h">
+      <Filter>Headerdateien\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

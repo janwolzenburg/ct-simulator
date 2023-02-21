@@ -175,6 +175,7 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="scattering.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
     <ClInclude Include="radonTransform.h" />
