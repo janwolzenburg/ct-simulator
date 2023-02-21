@@ -177,8 +177,6 @@ bool model::pntInside( const pnt3 p ) const{
 vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering ) const{
 	vector<ray> rays(0);									// Vector of rays after/during transmission to be processed further
 
-	// TODO: Optimise 
-
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
 	// Find entrance in model
