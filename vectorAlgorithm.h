@@ -34,7 +34,9 @@ void scale( vector<double>& vec, const double factor );
 
 void scale( vector<v2>& vec, const double factor );
 
-void normalize( vector<v2>& vec );
+void normalizeThis( vector<v2>& vec );
+
+vector<v2> normalize( const vector<v2> vec );
 
 
 

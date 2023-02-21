@@ -67,9 +67,19 @@ void scale( vector<v2>& vec, const double factor ){
 }
 
 
-void normalize( vector<v2>& vec ){
+void normalizeThis( vector<v2>& vec ){
 
 	scale( vec, 1. / sum( vec ) );
+
+}
+
+vector<v2> normalize( const vector<v2> vec ){
+
+	vector<v2> normalizedVector = vec;
+
+	normalizeThis( normalizedVector );
+
+	return normalizedVector;
 
 }
 
