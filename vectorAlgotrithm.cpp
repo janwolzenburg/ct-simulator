@@ -83,7 +83,7 @@ vector<v2> normalize( const vector<v2> vec ){
 
 }
 
-size_t closest( const vector<double> vec, const double val ){
+size_t closest( const vector<double>& vec, const double val ){
 
 	//std::sort( vec.begin(), vec.end() );
 
@@ -107,27 +107,6 @@ void sortUnique( vector<double>& v ){
 	// Remove duplicates
 	vector<double>::const_iterator last = std::unique( v.begin(), v.end(), [] ( const double& d1, const double& d2 ){ return iseqErr( d1, d2 ); } );
 	v.erase( last, v.end() );
-}
-
-
-double sortUniqueMeanDiff( vector<double> v ){
-	sortUnique( v );
-
-	// Adjecent differences
-	vector<double> diff( v.size() );
-	std::adjacent_difference( v.begin(), v.end(), diff.begin() );
-	diff.erase( diff.begin() );
-
-	// Sort differences ascending
-	std::sort( diff.begin(), diff.end() );
-
-	size_t quantileStart = (size_t) ( 0.88 * (double) diff.size() );
-	size_t quantileEnd = (size_t) ( 0.98 * (double) diff.size() );
-
-	// Mean of differences
-	double meanDiff = std::accumulate( diff.begin() + quantileStart, diff.begin() + quantileEnd, 0. ) / (double) ( quantileEnd - quantileStart );
-
-	return meanDiff;
 }
 
 

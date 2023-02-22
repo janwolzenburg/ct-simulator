@@ -38,6 +38,8 @@ void normalizeThis( vector<v2>& vec );
 
 vector<v2> normalize( const vector<v2> vec );
 
+size_t closest( const vector<double>& vec, const double val )
+
 
 
 
