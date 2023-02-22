@@ -32,8 +32,8 @@ constexpr double h_Js = 6.626196E-34;							// Planck's constant
 
 constexpr double m_0c2_eV = 0.511E6;							// Compton Wavelength in eV
 
-constexpr double J_DIV_eV = 1. / e_As;	
-constexpr double m_0c2_J = m_0c2_eV * J_DIV_eV;
+constexpr double J_PER_eV = e_As;	
+constexpr double m_0c2_J = m_0c2_eV * J_PER_eV;
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& stdOut = std::cout;						/*!< Standard out stream*/

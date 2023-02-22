@@ -38,7 +38,7 @@ void normalizeThis( vector<v2>& vec );
 
 vector<v2> normalize( const vector<v2> vec );
 
-size_t closest( const vector<double>& vec, const double val )
+size_t closest( const vector<double>& vec, const double val );
 
 
 
@@ -54,7 +54,7 @@ size_t closest( const vector<double>& vec, const double val )
  * @param val Value to search for
  * @return Index of closest element in vector
 */
-size_t closest( const vector<double> vec, const double val );
+size_t closest( const vector<double>& vec, const double val );
 
 
 /*!
@@ -62,14 +62,6 @@ size_t closest( const vector<double> vec, const double val );
  * @param v Vector to process
 */
 void sortUnique( vector<double>& v );
-
-
-/*!
- * @brief Get average adjecent difference of vector when sorted ascending
- * @param v Vector to process
- * @return Average adjecent difference
-*/
-double sortUniqueMeanDiff( vector<double> v );
 
 
 /*!

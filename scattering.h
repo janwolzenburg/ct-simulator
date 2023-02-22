@@ -23,6 +23,8 @@ class scatteredAngles{
 
 	double getRandomAngle( const double frequency ) const;
 
+	vector<v2> getDistribution( const double frequency ) const;
+
 	private:
 	double angleResolution;
 	range frequencyRange;

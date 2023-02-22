@@ -22,10 +22,7 @@
    Implementation
 *********************************************************************/
 
-allRandomNumberGenerators& ALL_GENERATORS( void ){
-	return allRandomNumberGenerators::getInstance();
-}
-
+static randomNumberGenerator integerRNG{ 0, INT32_MAX };
 
 randomNumberGenerator::randomNumberGenerator( const int minValue, const int maxValue ) :
 	generator{ std::chrono::system_clock::now().time_since_epoch().count() },
@@ -35,36 +32,13 @@ randomNumberGenerator::randomNumberGenerator( const int minValue, const int maxV
 
 int randomNumberGenerator::getRandom( void ){
 	return distribution( generator );
-};
-
-
-allRandomNumberGenerators::allRandomNumberGenerators( void ){
-	allGenerators.reserve( MAX_GENERATORS );
-}
-
-randomNumberGenerator* allRandomNumberGenerators::addGenerator( const int minValue, const int maxValue ){
-	
-	if( allGenerators.size() < MAX_GENERATORS )
-		allGenerators.emplace_back( minValue, maxValue );
-
-	return &( allGenerators.back() );
 }
 
 
-propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins ) : 
-	generator( nullptr )
+
+
+propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins )
 {
-	construct( distribution, maxNumberOfBins );
-};
-
-//propabilityDistribution::propabilityDistribution( void ) :
-//	generator( nullptr )
-//{
-//
-//};
-
-void propabilityDistribution::construct( const vector<v2> distribution_, const size_t maxNumberOfBins ){
-
 	// Normalize 
 	distribution = normalize( distribution_ );
 
@@ -77,31 +51,34 @@ void propabilityDistribution::construct( const vector<v2> distribution_, const s
 
 	// Get the smallest probability
 	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const v2& a, const v2& b ){ return a.y < b.y; } );
-	double smallestPropability = sortedDistribution.begin()->y;
+	double smallestPropability = sortedDistribution.front().y;
 
 	// Check against maximum number of bins
-	if( 1. / smallestPropability > maxNumberOfBins ) smallestPropability = 1. / maxNumberOfBins;
+	//if( 1. / smallestPropability > maxNumberOfBins ) smallestPropability = 1. / maxNumberOfBins;
 
 	// Insert amount corrensponding to probability into uniform distribution
-	for( const v2& currentValue : sortedDistribution ){
+	for( const v2& currentValue : distribution ){
 
 		const double currentProbabilty = currentValue.y;
 
 		// How many elements of current value to add to vector
-		const size_t currentBinAmount = (size_t) currentProbabilty / smallestPropability;
+		const size_t currentBinAmount = (size_t) floor( 4. * currentProbabilty / smallestPropability + 0.5 );
 
 		// Insert into vector
 		uniformPropabilities.insert( uniformPropabilities.end(), currentBinAmount, currentValue.x );
 
 	}
-
-	generator = ALL_GENERATORS().addGenerator( 0, uniformPropabilities.size() );
-
 }
+
 
 double propabilityDistribution::getRandom( void ) const{
 	
-	size_t randomIndex = generator->getRandom();
+	size_t randomIndex = integerRNG.getRandom() % uniformPropabilities.size();
 	if( randomIndex >= uniformPropabilities.size() ) randomIndex = uniformPropabilities.size() - 1;
 	return uniformPropabilities.at( randomIndex );
-};
+}
+
+
+vector<v2> propabilityDistribution::getDistribution( void ) const{
+	return distribution;
+}

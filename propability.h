@@ -19,14 +19,12 @@ using std::vector;
 #include "propability.fwd.h"
 #include "generel.h"
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
 
 constexpr size_t MAX_GENERATORS = 20;
-
-allRandomNumberGenerators& ALL_GENERATORS( void );
-
 
 class randomNumberGenerator{
 
@@ -43,41 +41,6 @@ class randomNumberGenerator{
 };
 
 
-
-class allRandomNumberGenerators{
-
-	public:
-
-	static allRandomNumberGenerators& getInstance(){
-		static allRandomNumberGenerators instance;
-		return instance;
-	}
-
-	randomNumberGenerator* addGenerator( const int minValue, const int maxValue );
-
-
-	private:
-
-	allRandomNumberGenerators( void );
-
-	/*!
-	 * @brief Deleted copy constructor
-	*/
-	allRandomNumberGenerators( const allRandomNumberGenerators& tree_ ) = delete;
-
-	/*!
-	 * @brief Deleted assignment operator
-	*/
-	allRandomNumberGenerators& operator=( const allRandomNumberGenerators& tree_ ) = delete;
-
-
-	private:
-	vector<randomNumberGenerator> allGenerators;
-
-};
-
-
-
 class propabilityDistribution{
 
 
@@ -85,17 +48,13 @@ class propabilityDistribution{
 
 	propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins );
 
-	//propabilityDistribution( void );
-
-	void construct( const vector<v2> distribution_, const size_t maxNumberOfBins );
-
 	double getRandom( void ) const;
 
+	vector<v2> getDistribution( void ) const;
 
 	private:
 
 	vector<v2> distribution;
 	vector<double> uniformPropabilities;
-	randomNumberGenerator* generator;
 
 };
