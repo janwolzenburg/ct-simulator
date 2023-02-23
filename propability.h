@@ -24,8 +24,6 @@ using std::vector;
    Definitions
 *********************************************************************/
 
-static randomNumberGenerator integerRNG;
-
 
 class randomNumberGenerator{
 
@@ -34,6 +32,7 @@ class randomNumberGenerator{
 
 	unsigned int getRandom( void );
 
+	bool eventHappend( const double eventPropability );
 
 	private:
 	std::default_random_engine generator;
@@ -41,6 +40,8 @@ class randomNumberGenerator{
 
 };
 
+
+extern randomNumberGenerator integerRNG;
 
 class propabilityDistribution{
 

@@ -30,11 +30,26 @@ randomNumberGenerator::randomNumberGenerator( const unsigned int minValue, const
 {}
 
 
-unsigned randomNumberGenerator::getRandom( void ){
+unsigned int randomNumberGenerator::getRandom( void ){
 	return distribution( generator );
 }
 
+bool randomNumberGenerator::eventHappend( const double eventPropability ){
 
+	unsigned int numberInterval = distribution.max() - distribution.min();
+	
+	double singleValuePropability = 1. / (double) ( numberInterval + 1 );
+
+	unsigned int eventIntervalSize = eventPropability / singleValuePropability;
+
+
+	unsigned int randomInteger = getRandom();
+
+	if( randomInteger >= distribution.min() && randomInteger <= distribution.min() + eventIntervalSize ) return true;
+
+	return false;
+
+}
 
 
 propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins )
