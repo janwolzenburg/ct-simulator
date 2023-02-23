@@ -174,8 +174,7 @@ bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
 
-vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering ) const{
-	vector<ray> rays(0);									// Vector of rays after/during transmission to be processed further
+ray model::rayTransmission( const ray tRay, const bool enableScattering ) const{
 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
@@ -183,7 +182,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	const rayVoxelIntersection modelIsect{ Vox(), modelRay };
 
 	const rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
-	if( !rayEntrance.hasSolution ) return vector<ray>(0);			// Return if ray does not intersect model
+	if( !rayEntrance.hasSolution ) return modelRay;			// Return if ray does not intersect model
 
 
 	// Iteration through model
@@ -289,7 +288,7 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 				// Does the ray scatter?
 				if( integerRNG.eventHappend( scatterPropability ) ){
 					
-					// Scatter
+					// Scatter the ray
 
 				}
 
@@ -301,9 +300,8 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 
 	// New origin "outside" the model to return
 	modelRay.O( currentPntOnRay );
-	rays.push_back( modelRay );
 
-	return rays;
+	return modelRay;
 }
 
 bool model::exportToFile( const path file ) const{

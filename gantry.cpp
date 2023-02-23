@@ -88,28 +88,18 @@ void threadFunction(	const model& radModel, const bool enableScattering,
 		const ray currentRay = rays.at( currentRayIndex  );
 
 		// Transmit ray through model
-		const vector<ray> returnedRays = radModel.rayTransmission( currentRay, enableScattering );	
+		const ray returnedRay = radModel.rayTransmission( currentRay, enableScattering );	
 
-
-		// When current ray does not intersect model add it for detection
-		if( returnedRays.empty() ){
-			rayDetector.detectRay( currentRay, detectorMutex );
+		// Is the ray outside the model
+		if( !radModel.pntInside( returnedRay.O() ) ){
+			rayDetector.detectRay( returnedRay, detectorMutex );
+		}
+		else{
+			iterationMutex.lock();
+			raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
+			iterationMutex.unlock();
 		}
 
-		// Iterate all rays scattered or transmitted through model
-		for( const ray& returnedRay : returnedRays ){
-
-			// Is the ray outside the model
-			if( !radModel.pntInside( returnedRay.O() ) ){
-				rayDetector.detectRay( returnedRay, detectorMutex );
-			}
-			else{
-				iterationMutex.lock();
-				raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
-				iterationMutex.unlock();
-			}
-
-		}
 	}
 
 	return;
