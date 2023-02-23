@@ -9,21 +9,22 @@
 
 #include "generel.h"
 #include "propability.h"
+#include "rays.h"
 
-
-
-#include "tube.h"
 
 
 class scatteredAngles{
 	
 	public:
 
-	scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_ );
+	scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_, const uvec3 scatteredNormal_ );
+
+	ray scatterRay( const ray r, const pnt3 newOrigin, const double frequency ) const;
 
 	double getRandomAngle( const double frequency ) const;
 
 	vector<v2> getDistribution( const double frequency ) const;
+
 
 	private:
 	double angleResolution;
@@ -32,4 +33,6 @@ class scatteredAngles{
 
 	vector<propabilityDistribution> distributions;
 	vector<double> frequencies;
+
+	uvec3 scatteringNormal;
  };

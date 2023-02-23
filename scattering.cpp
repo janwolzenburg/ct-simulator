@@ -21,10 +21,12 @@
 
 
 
-scatteredAngles::scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_ ) :
+scatteredAngles::scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_, const uvec3 scatteredNormal_ ) :
 	angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
 	frequencyRange( frequencyRange_ ),
-	frequencyResolution( Fpos( frequencyResolution_ ) ){
+	frequencyResolution( Fpos( frequencyResolution_ ) ),
+	scatteringNormal( scatteredNormal_ )
+	{
 
 	// Iterate all frequencies
 	for( double currentFrequency = frequencyRange.start; currentFrequency < frequencyRange.end; currentFrequency += frequencyResolution ){
@@ -52,6 +54,13 @@ scatteredAngles::scatteredAngles( const double angleResolution_, const range fre
 
 };
 
+ray scatteredAngles::scatterRay( const ray r, const pnt3 newOrigin, const double frequency ) const{
+
+	const uvec3 newDirection = r.R().rotN( scatteringNormal, getRandomAngle( frequency ) );
+
+	return ray{ newDirection, newOrigin, r.Properties() };
+
+}
 
 double scatteredAngles::getRandomAngle( const double frequency ) const{
 
