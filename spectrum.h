@@ -66,8 +66,12 @@ class spectrum {
 	double getSum( void ) const;
 
 
-	public:
-	vector<v2> data;		/*!<2D point data*/
+	private:
 
+	void updateMean( void );
+
+	private:
+	vector<v2> data;		/*!<2D point data*/
+	double mean;			/*!<Mean Frequency of spectrum*/
 
 };

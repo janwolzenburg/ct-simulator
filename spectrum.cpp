@@ -16,6 +16,8 @@
 using std::sort;
 using std::for_each;
 
+#include <numeric>
+
 #include "spectrum.h"
 
 
@@ -24,7 +26,9 @@ using std::for_each;
    Implementations
 *********************************************************************/
 
-spectrum::spectrum(void) {
+spectrum::spectrum(void) : 
+	mean( 0. )
+{
 
 }
 
@@ -42,17 +46,18 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 	// Sort data by x value
 	sort( data.begin(), data.end(), []( const v2& d1, const v2& d2) { return d1.x < d2.x; } );
 
+	updateMean();
 };
 
 
 void spectrum::scale( const double factor ){
 
 	for_each( data.begin(), data.end(), [ & ] ( v2& v ) { v.y *= factor; } );
-
+	updateMean();
 }
 
 
-spectrum spectrum::getScaled(const double factor) const {
+spectrum spectrum::getScaled( const double factor ) const {
 
 	spectrum scaledSpectrum{ *this };
 	
@@ -68,7 +73,7 @@ double spectrum::getIntegral( void ) const{
 	double integral = 0.;
 
 	// Iterate all data
-	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
+	for( auto dataIt = data.cbegin(); dataIt < data.cend(); dataIt++ ){
 
 		double xDelta = (dataIt + 1)->x - dataIt->x;
 		double yValue = dataIt->y;
@@ -82,12 +87,14 @@ double spectrum::getIntegral( void ) const{
 
 
 double spectrum::getSum( void ) const{
+	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
+}
 
-	double sum = 0.;
 
-	// Iterate all data
-	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
-		sum += dataIt->y;
-	}
-	return sum;
+void spectrum::updateMean( void ){
+
+	// Get the sum of products. In principle an "expected value"
+	const double expectedValue = std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
+
+	mean = expectedValue / getSum();	
 }
