@@ -31,6 +31,10 @@ class rayProperties{
 	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
 	rayProperties( void ) : powerSpectrum( spectrum{} ) {};
 	//double intensity = 0;		/*!< Intensity of ray */
+
+	void scaleSpectrum( const double factor );
+
+	private:
 	spectrum powerSpectrum;
 };
 

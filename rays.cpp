@@ -20,6 +20,10 @@ using std::string;
    Implementations
 *********************************************************************/
 
+void rayProperties::scaleSpectrum( const double factor ) {
+	powerSpectrum.scale( factor );
+}
+
 
 /*
 	ray implementation
@@ -56,7 +60,7 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 void ray::updateProperties( const voxData data, const double distance ){
 
 	// Equally scale powerspectrum
-	properties.powerSpectrum.scale( exp( -data.k * distance ) );
+	properties.scaleSpectrum( exp( -data.k * distance ) );
 
 }
 
