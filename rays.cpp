@@ -20,14 +20,6 @@ using std::string;
    Implementations
 *********************************************************************/
 
-void rayProperties::scaleSpectrum( const double factor ) {
-	powerSpectrum.scale( factor );
-}
-
-double rayProperties::getMeanFrequency( void ) const{
-	return powerSpectrum.getMean();
-}
-
 /*
 	ray implementation
 */
@@ -63,7 +55,7 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 void ray::updateProperties( const voxData data, const double distance ){
 
 	// Equally scale powerspectrum
-	properties.scaleSpectrum( exp( -data.k * distance ) );
+	scaleSpectrum( exp( -data.k * distance ) );
 
 }
 
@@ -100,4 +92,12 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 	}
 		return possibleFaces;
 
+}
+
+void ray::scaleSpectrum( const double factor ){
+	properties.powerSpectrum.scale( factor );
+}
+
+double ray::getMeanFrequency( void ) const{
+	return properties.powerSpectrum.getMean();
 }
