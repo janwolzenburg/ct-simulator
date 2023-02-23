@@ -16,7 +16,7 @@
 #include "cSysTree.h"
 #include "rays.h"
 #include "intersections.h"
-
+#include "propability.h"
 
 
   /*********************************************************************
@@ -200,6 +200,14 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 	// Current point on the ray
 	pnt3 currentPntOnRay = modelRay.getPnt( currentRayStep );		// Point of model entrance
 
+
+	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
+	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
+	const double meanVoxelAmount = (size_t) ( ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
+
+	const double scatterConstant = completeModelScatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
+
+
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
 
@@ -264,47 +272,28 @@ vector<ray> model::rayTransmission( const ray tRay, const bool enableScattering 
 			const double distance = rayParameter;		// The distance is the rayParameter
 
 			// Update ray properties whith distance travelled in current voxel
-			modelRay.updateProperties( this->operator()( currentVoxelIndices ), distance);
+			modelRay.updateProperties( this->operator()( currentVoxelIndices ), distance );
 
 			currentRayStep += distance + rayStepSize;				// New Step on ray
 			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray
-		}
-	
+		
+			// Scattering
+			if( enableScattering ){
+			
+				// Mean frequency of ray
+				const double meanFrequency = modelRay.getMeanFrequency();
 
+				// Calculate propability that the ray is scattered
+				const double scatterPropability = distance / meanFrequency * scatterConstant;
 
+				// Does the ray scatter?
+				if( integerRNG.eventHappend( scatterPropability ) ){
+					
+					// Scatter
 
-		//// Get current voxel
-		//idx3 currentVoxIndices = getVoxelIndices( currentPntOnRay );
-		//vox currentVox = getVoxel( currentVoxIndices );
+				}
 
-		//// Find exit
-
-		//rayVox_Intersection_Result rayExit = rayVoxelIntersection{ currentVox, modelRay }.Exit();
-
-		//if( !rayExit.hasSolution ){
-		//	checkErr( MATH_ERR::OPERATION, "No exit out of current voxel found!" );
-		//	return vector<ray>(0);
-		//}
-
-		//// Get ray parameter of voxel exit
-		//currentRayStep = rayExit.linPara;
-
-		//// Calculate distance between entrance and exit
-		//double distance = ( rayEntrance.isectPnt - rayExit.isectPnt ).Length();
-
-		//// Update ray properties
-		//modelRay.updateProperties( currentVox.Data(), distance );
-	
-		//// Exit of this voxel is entrance of next voxel
-		//rayEntrance = rayExit;
-
-		//// "Enter" next voxel
-		//currentRayStep += rayStepSize;
-		//currentPntOnRay = modelRay.getPnt( currentRayStep );
-
-		//TODO: Scattering on voxel surfaces
-		if( enableScattering ){
-			// Do scattering
+			}
 		}
 
 
