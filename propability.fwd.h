@@ -1,3 +1,3 @@
 #pragma once
 
-class allRandomNumberGenerators;
+class randomNumberGenerator;

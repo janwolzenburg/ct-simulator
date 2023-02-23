@@ -22,15 +22,15 @@
    Implementation
 *********************************************************************/
 
-static randomNumberGenerator integerRNG{ 0, INT32_MAX };
+randomNumberGenerator integerRNG{ 0, UINT32_MAX };
 
-randomNumberGenerator::randomNumberGenerator( const int minValue, const int maxValue ) :
+randomNumberGenerator::randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue ) :
 	generator{ std::chrono::system_clock::now().time_since_epoch().count() },
 	distribution{ minValue, maxValue }
 {}
 
 
-int randomNumberGenerator::getRandom( void ){
+unsigned randomNumberGenerator::getRandom( void ){
 	return distribution( generator );
 }
 

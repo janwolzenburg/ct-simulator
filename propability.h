@@ -24,19 +24,20 @@ using std::vector;
    Definitions
 *********************************************************************/
 
-constexpr size_t MAX_GENERATORS = 20;
+static randomNumberGenerator integerRNG;
+
 
 class randomNumberGenerator{
 
 	public:
-	randomNumberGenerator( const int minValue, const int maxValue );
+	randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue );
 
-	int getRandom( void );
+	unsigned int getRandom( void );
 
 
 	private:
 	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution;
+	std::uniform_int_distribution<unsigned int> distribution;
 
 };
 
