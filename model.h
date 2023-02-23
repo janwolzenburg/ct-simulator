@@ -28,6 +28,8 @@ constexpr double rayStepSize = 5e-2;				/*!<Stepsize during ray iteration in ray
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
+constexpr double completeModelScatterPropability = 0.05;	/*!<Propability that a ray is scattered when transmitting through complete model*/
+
 /*!
  * @brief Class for 3D-Models
 */
