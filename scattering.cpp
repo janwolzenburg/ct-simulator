@@ -38,14 +38,14 @@ scatteredAngles::scatteredAngles( const double angleResolution_, const range fre
 		// Iterate all angles
 		for( double t = 0; t <= PI; t += angleResolution ){
 
-			double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
+			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
 
 			pseudoDistribution.emplace_back( t, pseudoProbability );
 
 		}
 
-		distributions.emplace_back( pseudoDistribution, 128 );
+		distributions.emplace_back( pseudoDistribution, 256 );
 		frequencies.emplace_back( currentFrequency );
 	}
 
