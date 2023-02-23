@@ -36,7 +36,7 @@ scatteredAngles::scatteredAngles( const double angleResolution_, const range fre
 		const double a = h_Js * currentFrequency / ( m_0c2_J );
 
 		// Iterate all angles
-		for( double t = 0; t <= PI; t += angleResolution ){
+		for( double t = -PI; t <= PI; t += angleResolution ){
 
 			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
