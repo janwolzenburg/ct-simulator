@@ -24,6 +24,9 @@ void rayProperties::scaleSpectrum( const double factor ) {
 	powerSpectrum.scale( factor );
 }
 
+double rayProperties::getMeanFrequency( void ) const{
+	return powerSpectrum.getMean();
+}
 
 /*
 	ray implementation

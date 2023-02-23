@@ -34,6 +34,8 @@ class rayProperties{
 
 	void scaleSpectrum( const double factor );
 
+	double getMeanFrequency( void ) const;
+
 	private:
 	spectrum powerSpectrum;
 };
