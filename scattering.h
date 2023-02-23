@@ -17,9 +17,9 @@ class scatteredAngles{
 	
 	public:
 
-	scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_, const uvec3 scatteredNormal_ );
+	scatteredAngles( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ );
 
-	ray scatterRay( const ray r, const pnt3 newOrigin, const double frequency ) const;
+	ray scatterRay( const ray r, const pnt3 newOrigin ) const;
 
 	double getRandomAngle( const double frequency ) const;
 
@@ -27,7 +27,8 @@ class scatteredAngles{
 
 
 	private:
-	double angleResolution;
+	//double angleResolution;
+	size_t frequencyAmount;
 	range frequencyRange;
 	double frequencyResolution;
 

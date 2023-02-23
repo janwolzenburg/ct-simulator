@@ -21,15 +21,17 @@
 
 
 
-scatteredAngles::scatteredAngles( const double angleResolution_, const range frequencyRange_, const double frequencyResolution_, const uvec3 scatteredNormal_ ) :
-	angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
+scatteredAngles::scatteredAngles( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ ) :
+	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
+	frequencyAmount( Fpos( frequencyAmount_ ) ),
 	frequencyRange( frequencyRange_ ),
-	frequencyResolution( Fpos( frequencyResolution_ ) ),
+	frequencyResolution( ( frequencyRange_.end - frequencyRange_.start ) / (double) ( frequencyAmount - 1 ) ),
 	scatteringNormal( scatteredNormal_ )
-	{
-
+{
 	// Iterate all frequencies
-	for( double currentFrequency = frequencyRange.start; currentFrequency < frequencyRange.end; currentFrequency += frequencyResolution ){
+	for( size_t currentFrequencyIndex = 0; currentFrequencyIndex < frequencyAmount; currentFrequencyIndex++ ){
+
+		const double currentFrequency = frequencyRange_.start + (double) currentFrequencyIndex * frequencyResolution;
 
 		// Calculate pseudo propability distribution
 		vector<v2> pseudoDistribution;
@@ -37,8 +39,13 @@ scatteredAngles::scatteredAngles( const double angleResolution_, const range fre
 		// Initial photon energy
 		const double a = h_Js * currentFrequency / ( m_0c2_J );
 
+
+		const double angleResolution = ( PI + PI ) / (double) ( anglesAmount - 1 );
+
 		// Iterate all angles
-		for( double t = -PI; t <= PI; t += angleResolution ){
+		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount - 1; currentAngleIndex++ ){
+
+			const double t = -PI + (double) currentAngleIndex * angleResolution;
 
 			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
@@ -54,9 +61,9 @@ scatteredAngles::scatteredAngles( const double angleResolution_, const range fre
 
 };
 
-ray scatteredAngles::scatterRay( const ray r, const pnt3 newOrigin, const double frequency ) const{
+ray scatteredAngles::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
-	const uvec3 newDirection = r.R().rotN( scatteringNormal, getRandomAngle( frequency ) );
+	const uvec3 newDirection = r.R().rotN( scatteringNormal, getRandomAngle( r.getMeanFrequency() ) );
 
 	return ray{ newDirection, newOrigin, r.Properties() };
 

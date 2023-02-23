@@ -71,6 +71,11 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 
 };
 
+range tube::getFrequencyRange( void ) const{
+	
+	return range{ xRay_spectrum.getMinFrequency(), xRay_spectrum.getMaxFrequency()};
+
+}
 
 vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel ) const{
 

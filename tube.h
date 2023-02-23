@@ -68,6 +68,7 @@ class tube{
 	*/
 	cartCSys* CSys( void ) const;
 
+	range getFrequencyRange( void ) const;
 
 	private:
 

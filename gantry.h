@@ -20,14 +20,14 @@ using std::vector;
 #include "detector.h"
 #include "model.h"
 #include <mutex>
-
+#include "scattering.h"
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
 
-void threadFunction( const model& radModel, const bool enableScattering,
+void threadFunction( const model& radModel, const bool enableScattering, const scatteredAngles& rayScatterAngles,
 					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
 					 vector<ray>& raysForNextIteration, std::mutex& detectorMutex,
 					 detector& rayDetector, std::mutex& iterationMutex );
@@ -119,5 +119,5 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-
+	scatteredAngles rayScatterAngles;
 };

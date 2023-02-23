@@ -67,6 +67,9 @@ class spectrum {
 
 	double getMean( void ) const;
 
+	double getMinFrequency( void ) const;
+	double getMaxFrequency( void ) const;
+
 	private:
 
 	void updateMean( void );

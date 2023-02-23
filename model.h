@@ -184,7 +184,7 @@ class model : virtual public mathObj{
 	 * @param enableScattering Flag indicating if ray can be scattered
 	 * @return Vector of ray exiting model or created in model
 	*/
-	ray rayTransmission( const ray tRay, const bool enableScattering ) const;
+	ray rayTransmission( const ray tRay, const bool enableScattering, const scatteredAngles& scatteringProperties ) const;
 
 	/*!
 	 * @brief Export model to file

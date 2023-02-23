@@ -101,3 +101,12 @@ void spectrum::updateMean( void ){
 
 	mean = expectedValue / getSum();	
 }
+
+
+double spectrum::getMinFrequency( void ) const{
+	return data.front().x;
+}
+
+double spectrum::getMaxFrequency( void ) const{
+	return data.back().x;
+}

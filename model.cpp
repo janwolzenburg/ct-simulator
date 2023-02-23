@@ -17,7 +17,7 @@
 #include "rays.h"
 #include "intersections.h"
 #include "propability.h"
-
+#include "scattering.h"
 
   /*********************************************************************
 	Implementations
@@ -174,7 +174,7 @@ bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
 
-ray model::rayTransmission( const ray tRay, const bool enableScattering ) const{
+ray model::rayTransmission( const ray tRay, const bool enableScattering, const scatteredAngles& scatteringProperties ) const{
 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
@@ -289,7 +289,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering ) const{
 				if( integerRNG.eventHappend( scatterPropability ) ){
 					
 					// Scatter the ray
-
+					return scatteringProperties.scatterRay( modelRay, currentPntOnRay );
 				}
 
 			}
