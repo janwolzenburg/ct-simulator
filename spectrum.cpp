@@ -73,7 +73,7 @@ double spectrum::getIntegral( void ) const{
 	double integral = 0.;
 
 	// Iterate all data
-	for( auto dataIt = data.cbegin(); dataIt < data.cend(); dataIt++ ){
+	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
 
 		double xDelta = (dataIt + 1)->x - dataIt->x;
 		double yValue = dataIt->y;
@@ -90,7 +90,7 @@ double spectrum::getSum( void ) const{
 	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
 }
 
-double spectrum : getMean( void ) const{
+double spectrum::getMean( void ) const{
 	return mean;
 }
 
