@@ -65,6 +65,7 @@ class spectrum {
 	*/
 	double getSum( void ) const;
 
+	double getMean( void ) const;
 
 	private:
 

@@ -90,6 +90,9 @@ double spectrum::getSum( void ) const{
 	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
 }
 
+double spectrum : getMean( void ) const{
+	return mean;
+}
 
 void spectrum::updateMean( void ){
 
