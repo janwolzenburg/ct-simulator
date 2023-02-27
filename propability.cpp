@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include <chrono>
+#include <mutex>
 
 #include "propability.h"
 #include "vectorAlgorithm.h"
@@ -36,14 +37,15 @@ unsigned int randomNumberGenerator::getRandom( void ){
 
 bool randomNumberGenerator::eventHappend( const double eventPropability ){
 
-	unsigned int numberInterval = distribution.max() - distribution.min();
+	const unsigned int numberInterval = distribution.max() - distribution.min();
 	
-	double singleValuePropability = 1. / (double) ( numberInterval + 1 );
+	const double singleValuePropability = 1. / (double) ( numberInterval + 1 );
 
-	unsigned int eventIntervalSize = eventPropability / singleValuePropability;
+	const unsigned int eventIntervalSize = eventPropability / singleValuePropability;
 
-
-	unsigned int randomInteger = getRandom();
+	mu.lock();
+	const unsigned int randomInteger = getRandom();
+	mu.unlock();
 
 	if( randomInteger >= distribution.min() && randomInteger <= distribution.min() + eventIntervalSize ) return true;
 

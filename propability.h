@@ -15,6 +15,7 @@
 #include <random>
 #include <vector>
 using std::vector;
+#include <mutex>
 
 #include "propability.fwd.h"
 #include "generel.h"
@@ -37,6 +38,7 @@ class randomNumberGenerator{
 	private:
 	std::default_random_engine generator;
 	std::uniform_int_distribution<unsigned int> distribution;
+	std::mutex mu;
 
 };
 
