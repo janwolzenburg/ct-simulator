@@ -32,7 +32,12 @@ randomNumberGenerator::randomNumberGenerator( const unsigned int minValue, const
 
 
 unsigned int randomNumberGenerator::getRandom( void ){
-	return distribution( generator );
+
+	mu.lock();
+	const unsigned int randomNumber = distribution( generator );
+	mu.unlock();
+
+	return randomNumber;
 }
 
 bool randomNumberGenerator::eventHappend( const double eventPropability ){
@@ -43,9 +48,8 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 
 	const unsigned int eventIntervalSize = eventPropability / singleValuePropability;
 
-	mu.lock();
 	const unsigned int randomInteger = getRandom();
-	mu.unlock();
+
 
 	if( randomInteger >= distribution.min() && randomInteger <= distribution.min() + eventIntervalSize ) return true;
 
