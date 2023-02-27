@@ -88,15 +88,17 @@ size_t closest( const vector<double>& vec, const double val ){
 	//std::sort( vec.begin(), vec.end() );
 
 	// Iterator to element which is greater or equal to value
-	vector<double>::const_iterator it_geq = std::lower_bound( vec.begin(), vec.end(), val );
+	vector<double>::const_iterator it_geq = std::lower_bound( vec.cbegin(), vec.cend(), val );
 
 	// First element in vec is greater or equal => return iterator to first element
-	if( it_geq == vec.begin() ) return 0;
+	if( it_geq == vec.cbegin() ) return 0;
+
+	if( it_geq == vec.cend() ) return vec.size() - 1;
 
 	// Compare differences to value for two consecutive elements
-	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.begin() ) - 1;
+	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.cbegin() ) - 1;
 
-	return it_geq - vec.begin();
+	return it_geq - vec.cbegin();
 }
 
 

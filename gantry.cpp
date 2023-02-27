@@ -33,7 +33,7 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	raysPerPixel( Fpos( raysPerPixel_ )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
-	rayScatterAngles{ 128, raySource.getFrequencyRange(), 64, cSys->EzVec() }
+	rayScatterAngles{ 127, raySource.getFrequencyRange(), 64, cSys->EzVec() }
 
 {
 	// Align detector - tube axis with x axis

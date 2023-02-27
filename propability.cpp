@@ -44,7 +44,7 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 
 	const unsigned int numberInterval = distribution.max() - distribution.min();
 	
-	const double singleValuePropability = 1. / (double) ( numberInterval + 1 );
+	const double singleValuePropability = 1. /  ( (double) numberInterval + 1. );
 
 	const unsigned int eventIntervalSize = eventPropability / singleValuePropability;
 
