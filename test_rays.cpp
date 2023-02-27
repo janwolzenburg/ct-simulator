@@ -27,7 +27,7 @@ bool test_scattered_angle_propabilities( void ){
 	size_t numFrequencies = 20;
 	double frequencyResolution = frequencyRange.Resolution( numFrequencies );
 
-	scatteredAngles anglePropabilites{ angleResolution, frequencyRange, frequencyResolution, uvec3{ v3{ 1, 0, 0 }, GLOBAL_CSYS() };
+	scatteredAngles anglePropabilites{ angleResolution, frequencyRange, frequencyResolution, uvec3{ v3{ 1, 0, 0 }, GLOBAL_CSYS() } };
 
 	const double testFrequency = e_As * 100000. / h_Js;
 	vector<v2> distribution = anglePropabilites.getDistribution( testFrequency );
