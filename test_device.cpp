@@ -407,7 +407,7 @@ bool test_detector(void) {
 
 gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
-	tubeParameter tubeParas{ .anodeVoltage_V = 53000,
+	tubeParameter tubeParas{ .anodeVoltage_V = 100000,
 								.anodeCurrent_A = 0.2,
 								.anodeAtomicNumber = 74 };
 

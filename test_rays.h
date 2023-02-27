@@ -9,3 +9,5 @@
 
 
  bool test_scattered_angle_propabilities( void );
+
+ bool test_ray_scattering( void );

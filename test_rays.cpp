@@ -17,6 +17,8 @@
   #include "vectorAlgorithm.h"
   #include "plotting.h"
   #include "cSysTree.h"
+  #include "test_device.h"
+  #include "test_model.h"
 
   #include "tube.h"
 
@@ -58,4 +60,53 @@ bool test_scattered_angle_propabilities( void ){
 
 	return true;
 
+}
+
+
+bool test_ray_scattering(void){
+
+	gantry testGantry = getTestGantry( idx2CR{ 70, 20 }, 3 );
+	model mod = getTestModel( GLOBAL_CSYS(), 1 );
+
+	ofstream ax1 = openAxis( path( "./test_ray_scattering.txt" ), true );
+
+	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	addObject( ax1, "TestModel", mod, "g", 0.015 );
+
+	vector<ray> rays = testGantry.getBeam();
+	for( ray &r : rays ) r = r.convertTo( mod.CSys()); 
+
+
+	size_t maxRadiationLoopsTest = 1;
+
+	for( size_t currentLoop = 0; currentLoop < maxRadiationLoopsTest && rays.size() > 0; currentLoop++ ){
+
+
+		const bool enableScattering = currentLoop < maxRadiationLoopsTest;	// No scattering in last iteration
+		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
+
+		for( const ray r : rays ){
+
+			const ray retRay = mod.rayTransmission( r, enableScattering, testGantry.rayScattering() );
+
+			if( mod.pntInside( retRay.O() ) ) raysForNextIteration.push_back( retRay );
+
+			double plotLength = (retRay.O() - r.O() ).Length();
+
+			addSingleObject( ax1, "Ray", r, "b", plotLength );
+
+		}
+
+		// Copy rays to vector
+		rays = raysForNextIteration;
+
+	}
+
+
+	for( ray r : rays ) addSingleObject( ax1, "Ray", r, "c", 200 );
+
+
+	closeAxis( ax1 );
+
+	return true;
 }
