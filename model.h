@@ -19,6 +19,7 @@ using std::filesystem::path;
  #include "voxel.h"
 
 
+
   /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -29,6 +30,7 @@ constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120k
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
 constexpr double completeModelScatterPropability = 0.05;	/*!<Propability that a ray is scattered when transmitting through complete model*/
+
 
 /*!
  * @brief Class for 3D-Models

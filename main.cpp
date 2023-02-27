@@ -50,7 +50,10 @@ int main( void ){
 	
 	//if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
 
-	test_scattered_angle_propabilities();
+	//test_scattered_angle_propabilities();
+
+
+	 test_ray_scattering(  );
 
 	return 0;
 }

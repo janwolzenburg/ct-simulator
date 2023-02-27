@@ -29,11 +29,13 @@
 class rayProperties{
 	
 	friend class ray;
+	friend class pixel;
 
 	public:
 	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
 	rayProperties( void ) : powerSpectrum( spectrum{} ) {};
 
+	spectrum PowerSpectrum( void ) const;
 
 	private:
 	spectrum powerSpectrum;

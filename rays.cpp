@@ -101,3 +101,7 @@ void ray::scaleSpectrum( const double factor ){
 double ray::getMeanFrequency( void ) const{
 	return properties.powerSpectrum.getMean();
 }
+
+spectrum rayProperties::PowerSpectrum( void ) const{
+	return powerSpectrum;
+}

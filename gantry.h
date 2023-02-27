@@ -108,6 +108,9 @@ class gantry {
 	detectorRadonParameter getDetectorParameter(void) const;
 
 
+	scatteredAngles& rayScattering( void ){ return rayScatterAngles; };
+
+
 	private:
 	
 	cartCSys* cSys;						/*!<Coordinate system*/
