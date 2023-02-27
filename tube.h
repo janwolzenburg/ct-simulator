@@ -68,6 +68,10 @@ class tube{
 	*/
 	cartCSys* CSys( void ) const;
 
+	/*!
+	 * @brief Get the range of frequencies the tube emits
+	 * @return Frequency Range
+	*/
 	range getFrequencyRange( void ) const;
 
 	private:

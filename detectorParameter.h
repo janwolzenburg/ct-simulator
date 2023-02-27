@@ -39,25 +39,10 @@ class detectorRadonParameter{
 	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
-	/*!
-	 * @brief Get the necessary detector radius based on the angle
-	 * @param angle Angle between the outer detector normals
-	 * @return Radius of detector
-	*/
-	//double getDetectorFocusDistance( const double angle ) const;
-
-	/*!
-	 * @brief Get the necessary pixel size along a row
-	 * @param radius The detector radius
-	 * @return Row size of pixel
-	*/
-	//double getRowSize( const double radius ) const;
-
 
 	public:
 
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
-	//double distanceRange;			/*!<Range of distances. Difference Dmax - Dmin*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };

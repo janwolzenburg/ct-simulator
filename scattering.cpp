@@ -21,7 +21,7 @@
 
 
 
-scatteredAngles::scatteredAngles( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ ) :
+rayScattering::rayScattering( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ ) :
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
 	frequencyAmount( Fpos( frequencyAmount_ ) ),
 	frequencyRange( frequencyRange_ ),
@@ -61,7 +61,7 @@ scatteredAngles::scatteredAngles( const size_t anglesAmount, const range frequen
 
 };
 
-ray scatteredAngles::scatterRay( const ray r, const pnt3 newOrigin ) const{
+ray rayScattering::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
 	const uvec3 newDirection = r.R().rotN( scatteringNormal, getRandomAngle( r.getMeanFrequency() ) );
 
@@ -69,7 +69,7 @@ ray scatteredAngles::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
 }
 
-double scatteredAngles::getRandomAngle( const double frequency ) const{
+double rayScattering::getRandomAngle( const double frequency ) const{
 
 	const size_t distributionIndex = Fmax( (size_t) floor( ( frequency - frequencyRange.start ) / frequencyResolution + 0.5 ), distributions.size() );
 	
@@ -77,7 +77,7 @@ double scatteredAngles::getRandomAngle( const double frequency ) const{
 
 }
 
-vector<v2> scatteredAngles::getDistribution( const double frequency ) const{
+vector<v2> rayScattering::getDistribution( const double frequency ) const{
 
 	const size_t distributionIndex = Fmax( (size_t) floor( ( frequency - frequencyRange.start ) / frequencyResolution + 0.5 ), distributions.size() );
 

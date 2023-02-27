@@ -23,17 +23,32 @@ using std::vector;
 #include "scattering.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
 
+
+constexpr size_t maxRadiationLoops = 16;		/*!<How often can a ray be scattered*/
+
+/*!
+ * @brief Thread function to speed up transmission of multiple rays through model
+ * @param radModel Reference to model
+ * @param enableScattering Flag that enables scattering
+ * @param rayScatterAngles Reference to object with information about ray scattering
+ * @param rays Reference to vector with rays to transmit
+ * @param sharedCurrentRayIndex Index of the next ray in vector to transmit. Will be changed at each call
+ * @param currentRayIndexMutex Mutex instance for ray index
+ * @param raysForNextIteration Reference to vector which hold the rays for the next iteration
+ * @param detectorMutex Mutex for the detector Object
+ * @param rayDetector Reference to ray detector
+ * @param iterationMutex Mutex for vector with rays for next iteration
+*/
 void threadFunction( const model& radModel, const bool enableScattering, const scatteredAngles& rayScatterAngles,
 					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
 					 vector<ray>& raysForNextIteration, std::mutex& detectorMutex,
 					 detector& rayDetector, std::mutex& iterationMutex );
 
-
-constexpr size_t maxRadiationLoops = 16;
 
 /*!
  * @brief Class for a gantry with xRay source and detector
@@ -107,7 +122,10 @@ class gantry {
 	*/
 	detectorRadonParameter getDetectorParameter(void) const;
 
-
+	/*!
+	 * @brief Get reference to scattering member object
+	 * @return Reference to member 
+	*/
 	scatteredAngles& rayScattering( void ){ return rayScatterAngles; };
 
 
@@ -122,5 +140,5 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	scatteredAngles rayScatterAngles;
+	scatteredAngles rayScatterAngles;	/*!<Object with information about scattering and ablge propabilities*/
 };

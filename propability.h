@@ -25,20 +25,37 @@ using std::vector;
    Definitions
 *********************************************************************/
 
-
+/*!
+ * @brief Class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
+*/
 class randomNumberGenerator{
 
 	public:
+	
+	/*!
+	 * @brief Constructor
+	 * @param minValue Minimum value
+	 * @param maxValue Maximum value
+	*/
 	randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue );
 
+	/*!
+	 * @brief Get a random number
+	 * @return Random integer
+	*/
 	unsigned int getRandom( void );
 
+	/*!
+	 * @brief Check if an event with given propability "happened"
+	 * @param eventPropability Event propabilitx 
+	 * @return True when event "happened"
+	*/
 	bool eventHappend( const double eventPropability );
 
 	private:
-	std::default_random_engine generator;
-	std::uniform_int_distribution<unsigned int> distribution;
-	std::mutex mu;
+	std::default_random_engine generator;						/*!<Generator*/
+	std::uniform_int_distribution<unsigned int> distribution;	/*!<Uniform distribution*/
+	std::mutex mu;												/*!<Mutex for thread safety*/
 
 };
 

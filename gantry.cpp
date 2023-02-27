@@ -69,7 +69,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
-void threadFunction(	const model& radModel, const bool enableScattering, const scatteredAngles& rayScatterAngles,
+void threadFunction(	const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
 						const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
 						vector<ray>& raysForNextIteration, std::mutex& iterationMutex,
 						detector& rayDetector, std::mutex& detectorMutex ){

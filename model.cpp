@@ -174,7 +174,7 @@ bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
 
-ray model::rayTransmission( const ray tRay, const bool enableScattering, const scatteredAngles& scatteringProperties ) const{
+ray model::rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const{
 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 

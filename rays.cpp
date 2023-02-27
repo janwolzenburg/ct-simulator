@@ -102,6 +102,9 @@ double ray::getMeanFrequency( void ) const{
 	return properties.powerSpectrum.getMean();
 }
 
+rayProperties::rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ){};
+rayProperties::rayProperties( void ) : powerSpectrum( spectrum{} ){};
+
 spectrum rayProperties::PowerSpectrum( void ) const{
 	return powerSpectrum;
 }

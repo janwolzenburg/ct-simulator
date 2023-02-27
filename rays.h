@@ -32,10 +32,12 @@ class rayProperties{
 	friend class pixel;
 
 	public:
-	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
-	rayProperties( void ) : powerSpectrum( spectrum{} ) {};
+	rayProperties( const spectrum spectrum_ );
+
+	rayProperties( void );
 
 	spectrum PowerSpectrum( void ) const;
+
 
 	private:
 	spectrum powerSpectrum;
@@ -88,13 +90,6 @@ class ray : public line{
 	 * @return Ray parameter
 	*/
 	double getPara( const pnt3 p, bool* const success ) const;
-
-	/*!
-	 * @brief Calculate intersection between this ray and surface
-	 * @param sur Surface to intersect with
-	 * @return Instersection result
-	*/
-	//linSurf_Intersection_Result isectSurf( const surfLim sur ) const;
 
 	/*!
 	 * @brief Update ray properties passing through voxel for specific distance

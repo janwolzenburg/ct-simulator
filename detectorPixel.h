@@ -29,6 +29,10 @@ class pixel : public surfLim{
 
 	public:
 
+	/*!
+	 * @brief Constructor
+	 * @param surface Surface as base object
+	*/
 	pixel( const surfLim surface );
 
 	/*!
@@ -42,8 +46,17 @@ class pixel : public surfLim{
 	*/
 	double getRadonValue( void ) const;
 
+	/*!
+	 * @brief Get the normal of the pixel
+	 * @return Line with pixel's center as origin an direction of surface normal
+	*/
 	line NormalLine( void ) const;
 
+	/*!
+	 * @brief Convert this pixel ot given coordinate system
+	 * @param target_CSys Target system 
+	 * @return This pixel in given coordiante system
+	*/
 	pixel convertTo( const cartCSys* const target_CSys ) const;
 
 

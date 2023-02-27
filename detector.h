@@ -21,6 +21,7 @@
 #include "detectorParameter.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -83,6 +84,7 @@ class detector {
 	*/
 	void convertPixel( const cartCSys* const targetCSys );
 
+
 	private:
 
 	cartCSys* cSys;									/*!<Local coordinate system*/
@@ -92,6 +94,5 @@ class detector {
 	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is importanct since physicalParameters constructor changes radonParameters
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
 
-	//std::mutex allPixelLock;						/*<Lock for allPixel property*/
 };
 

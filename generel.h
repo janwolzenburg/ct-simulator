@@ -112,7 +112,6 @@ class range{
 	range( const double start_, const double end_ );
 	range( void );
 
-	double Diff( void ) const;
 	double Resolution( const size_t number ) const;
 
 	double start;

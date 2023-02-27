@@ -29,7 +29,7 @@ bool test_scattered_angle_propabilities( void ){
 	size_t numFrequencies = 20;
 	double frequencyResolution = frequencyRange.Resolution( numFrequencies );
 
-	scatteredAngles anglePropabilites{ (size_t) (2.*PI / angleResolution), frequencyRange, numFrequencies, uvec3{v3{1., 0., 0.}, GLOBAL_CSYS()}};
+	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), frequencyRange, numFrequencies, uvec3{v3{1., 0., 0.}, GLOBAL_CSYS()}};
 
 	const double testFrequency = e_As * 100000. / h_Js;
 	vector<v2> distribution = anglePropabilites.getDistribution( testFrequency );
