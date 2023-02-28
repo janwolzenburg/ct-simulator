@@ -18,7 +18,7 @@ using std::filesystem::path;
  #include "cartesian.h"
  #include "voxel.h"
  #include "scattering.h"
-
+ #include "simulation.h"
 
 
   /*********************************************************************
@@ -26,11 +26,8 @@ using std::filesystem::path;
  *********************************************************************/
 
 
-constexpr double rayStepSize = 5e-2;				/*!<Stepsize during ray iteration in ray direction vector's unit*/
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
-
-constexpr double completeModelScatterPropability = 0.25;	/*!<Propability that a ray is scattered when transmitting through complete model*/
 
 
 /*!

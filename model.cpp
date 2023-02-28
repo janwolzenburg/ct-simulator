@@ -202,7 +202,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 
 	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
-	const double meanVoxelAmount = (size_t) ( ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
+	const double meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
 	const double scatterConstant = completeModelScatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
 

@@ -96,7 +96,7 @@ bool test_ray_scattering(void){
 
 		for( const ray r : rays ){
 
-			const ray retRay = mod.rayTransmission( r, enableScattering, testGantry.rayScattering() );
+			const ray retRay = mod.rayTransmission( r, enableScattering, testGantry.RayScattering() );
 
 			double plotLength = ( retRay.O() - r.O() ).Length();
 

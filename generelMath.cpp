@@ -14,7 +14,7 @@
 #include <cmath>
 
 #include "generelMath.h"
-
+#include "simulation.h"
 
 
 /*********************************************************************

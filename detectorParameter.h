@@ -15,6 +15,7 @@
 
  #include "generel.h"
  #include "generelMath.h"
+ #include "simulation.h"
 
 
 
@@ -22,8 +23,6 @@
    Definitions
 *********************************************************************/
 
-constexpr double MAX_DETECTOR_ANGLE = 2. * PI * ( 60./360. );
-constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );
 
 
 /*!

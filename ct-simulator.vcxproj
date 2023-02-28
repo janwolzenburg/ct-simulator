@@ -178,6 +178,7 @@
     <ClInclude Include="propability.fwd.h" />
     <ClInclude Include="propability.h" />
     <ClInclude Include="scattering.h" />
+    <ClInclude Include="simulation.h" />
     <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />

@@ -20,6 +20,7 @@ using std::vector;
 #include "spectrum.h"
 #include "rays.h"
 #include "detectorPixel.h"
+#include "simulation.h"
 
 
 
@@ -29,8 +30,6 @@ using std::vector;
 
 
 constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
-constexpr double alFilterCutOffFrequency = 16000. * e_As / h_Js;	// Cut of energy/frequency in roentgen spectrum by 2mm aluminium filter
-constexpr double alFilterGradiantFactor = -3.5;						// Quotient of filter gradient to bremsstrahlung gradient
 
 
 /*!

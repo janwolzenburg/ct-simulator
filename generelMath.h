@@ -19,12 +19,10 @@ using std::string;
 #include <iostream>
 
 
-
 /*********************************************************************
 	Definitions
  *********************************************************************/
 
-constexpr double EPSILON = 1E-9;								/*!< Error for equality determination of floating point numbers in mm */
 constexpr double PI = 3.1415926535897932384626433832795;		/*!< PI */
 constexpr double c_mPers = 299792456;							// Speed of light in m/s
 constexpr double e_As = 1.6021917E-19;							// Electron charge in As 

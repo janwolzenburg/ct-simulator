@@ -21,7 +21,7 @@ using std::vector;
 #include "model.h"
 #include <mutex>
 #include "scattering.h"
-
+#include "simulation.h"
 
 
 /*********************************************************************
@@ -29,7 +29,6 @@ using std::vector;
 *********************************************************************/
 
 
-constexpr size_t maxRadiationLoops = 16;		/*!<How often can a ray be scattered*/
 
 /*!
  * @brief Thread function to speed up transmission of multiple rays through model
@@ -126,7 +125,7 @@ class gantry {
 	 * @brief Get reference to scattering member object
 	 * @return Reference to member 
 	*/
-	rayScattering& rayScattering( void ){ return rayScatterAngles; };
+	rayScattering& RayScattering( void ){ return rayScatterAngles; };
 
 
 	private:

@@ -15,7 +15,6 @@
  #include "line.h"
  #include "voxel.h"
  #include "spectrum.h"
- //#include "operations.h"
 
 
 

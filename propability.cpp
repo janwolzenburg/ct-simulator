@@ -26,7 +26,7 @@
 randomNumberGenerator integerRNG{ 0, UINT32_MAX };
 
 randomNumberGenerator::randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue ) :
-	generator{ std::chrono::system_clock::now().time_since_epoch().count() },
+	generator{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() },
 	distribution{ minValue, maxValue }
 {}
 
@@ -46,7 +46,7 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 	
 	const double singleValuePropability = 1. /  ( (double) numberInterval + 1. );
 
-	const unsigned int eventIntervalSize = eventPropability / singleValuePropability;
+	const unsigned int eventIntervalSize = (unsigned int) (eventPropability / singleValuePropability);
 
 	const unsigned int randomInteger = getRandom();
 
