@@ -44,7 +44,7 @@ constexpr size_t maxRadiationLoops = 16;		/*!<How often can a ray be scattered*/
  * @param rayDetector Reference to ray detector
  * @param iterationMutex Mutex for vector with rays for next iteration
 */
-void threadFunction( const model& radModel, const bool enableScattering, const scatteredAngles& rayScatterAngles,
+void threadFunction( const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
 					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
 					 vector<ray>& raysForNextIteration, std::mutex& detectorMutex,
 					 detector& rayDetector, std::mutex& iterationMutex );
@@ -126,7 +126,7 @@ class gantry {
 	 * @brief Get reference to scattering member object
 	 * @return Reference to member 
 	*/
-	scatteredAngles& rayScattering( void ){ return rayScatterAngles; };
+	rayScattering& rayScattering( void ){ return rayScatterAngles; };
 
 
 	private:
@@ -140,5 +140,5 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	scatteredAngles rayScatterAngles;	/*!<Object with information about scattering and ablge propabilities*/
+	rayScattering rayScatterAngles;	/*!<Object with information about scattering and ablge propabilities*/
 };
