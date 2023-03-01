@@ -30,15 +30,17 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res } };
 
-	voxData bgData = { 0.001 };
+	double kWater = 0.01611970000;
+
+	voxData bgData = { 0.001, fAtRefE };
 
 	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
-	voxData sp1_data = { 0.02 };
+	voxData sp1_data = { 0.02, fAtRefE };
 
 	pnt3 sp2_center = { v3{ 280, 280, 200 }, mod.CSys() };
 	double sp2_radius = 70;
-	voxData sp2_data = { 0.06 };
+	voxData sp2_data = { 0.06, fAtRefE };
 
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
 		for( size_t y = 0; y < mod.NumVox().y; y++ ){

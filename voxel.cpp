@@ -59,7 +59,7 @@ string vox::toStr( unsigned int newLineTabulators ) const{
 
 	str += "o=" + newLine + o.toStr( newLineTabulators + 1 );
 	str += "size=" + string( tempCharArr );
-	str += newLine + "data=" + std::to_string( data.k );
+	str += newLine + "data=" + std::to_string( data.kAtRefE() );
 	str += newLine + "face[0]=" + newLine + faces[ 0 ].toStr( newLineTabulators + 1 );
 	str += newLine + "face[1]=" + newLine + faces[ 1 ].toStr( newLineTabulators + 1 );
 	str += newLine + "face[2]=" + newLine + faces[ 2 ].toStr( newLineTabulators + 1 );

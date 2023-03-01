@@ -37,6 +37,7 @@ class rayProperties{
 
 	spectrum PowerSpectrum( void ) const;
 
+	void attenuateSpectrum( const double kAtRefE, const double distance );
 
 	private:
 	spectrum powerSpectrum;

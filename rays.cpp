@@ -54,8 +54,11 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 
 void ray::updateProperties( const voxData data, const double distance ){
 
+	properties.attenuateSpectrum( data.kAtRefE(), distance );
+
+
 	// Equally scale powerspectrum
-	scaleSpectrum( exp( -data.k * distance ) );
+	//scaleSpectrum( exp( -data.k * distance ) );
 
 }
 
@@ -95,6 +98,9 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 }
 
 void ray::scaleSpectrum( const double factor ){
+
+
+
 	properties.powerSpectrum.scale( factor );
 }
 
@@ -107,4 +113,11 @@ rayProperties::rayProperties( void ) : powerSpectrum( spectrum{} ){};
 
 spectrum rayProperties::PowerSpectrum( void ) const{
 	return powerSpectrum;
+}
+
+
+void rayProperties::attenuateSpectrum( const double kAtRefE, const double distance ){
+
+	powerSpectrum.attenuate( kAtRefE, distance);
+
 }

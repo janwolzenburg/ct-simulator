@@ -17,7 +17,7 @@
 using std::vector;
 
 #include "generel.h"
-
+#include "voxel.h"
 
 
 /*********************************************************************
@@ -69,6 +69,20 @@ class spectrum {
 
 	double getMinFrequency( void ) const;
 	double getMaxFrequency( void ) const;
+
+	void attenuate( const double kAtRefE, const double distance ){
+
+		const double mu_f_3 = kAtRefE * fAtRefE_3;
+
+		for( v2& v : data ){
+
+			const double k = mu_f_3 / pow( v.x, 3 );
+
+			v.y *= exp( -k * distance );
+
+		}
+
+	}
 
 	private:
 

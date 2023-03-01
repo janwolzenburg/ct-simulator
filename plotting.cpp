@@ -261,7 +261,7 @@ void addObject<model, double>( std::ofstream& axis, std::string name, model mod,
 		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
 				vox voxel = mod.getVoxel( idx3{ iX, iY, iZ } );
-				if( voxel.Data().k >= (double) threshold ){
+				if( voxel.Data().kAtRefE() >= (double) threshold ){
 					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.getCenter(), parameter );
 				}
 			}

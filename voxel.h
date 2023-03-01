@@ -21,12 +21,42 @@
 	Definitions
  *********************************************************************/
 
+ constexpr double coefficientReferenceEnergy = 120000.;
+ constexpr double fAtRefE = coefficientReferenceEnergy / h_Js;
+ const double fAtRefE_3 = pow( fAtRefE, 3 );
 
 /*!
  * @brief Physical voxel data
 */
-struct voxData{
+class voxData{
+	
+	public:
+	voxData( const double kAtFrequency = -1., const double frequency = fAtRefE) : 
+	k( kAtRefE( kAtFrequency, frequency ) )
+	{};
+
+	double k_At( const double f ) const{
+
+		const double constant =  k * fAtRefE_3 ;
+
+		return constant * pow( f, 3 );
+	};
+
+	double kAtRefE( void ) const{ return k; };
+
+	private:
 	double k = -1;			/*!<Absorption coefficient at 120keV*/
+
+
+
+	private:
+	double kAtRefE( const double kAtF, const double f ) const{
+
+		return ( kAtF * pow( f, 3 ) )/ fAtRefE_3;
+
+	};
+
+
 };
 
 
