@@ -113,7 +113,7 @@ bool test_modelTransmission( void ){
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;
 		for( rayProperties currentProperties : detectorPixel.at( i ).detectedRayProperties ){
-			primitiveDetectionResult.at( i ).y += currentProperties.powerSpectrum.getSum();
+			primitiveDetectionResult.at( i ).y += currentProperties.PowerSpectrum().getSum();
 		}
 	}	
 

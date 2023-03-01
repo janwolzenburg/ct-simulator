@@ -19,7 +19,7 @@ using std::vector;
 #include <numeric>
 
 #include "generelMath.h" 
-
+#include "generel.h"
 
 
  /*********************************************************************
@@ -47,6 +47,11 @@ double sum( const vector<double> vec ) {
 
 }
 
+double sum( const vector<v2> vec ){
+
+	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const v2& b ){ return a + b.y; } );
+
+}
 
 void scale(vector<double>& vec, const double factor) {
 
@@ -55,20 +60,45 @@ void scale(vector<double>& vec, const double factor) {
 }
 
 
-size_t closest( const vector<double> vec, const double val ){
+void scale( vector<v2>& vec, const double factor ){
+
+	std::for_each( vec.begin(), vec.end(), [&] ( v2& d ){ d.y *= factor; } );
+
+}
+
+
+void normalizeThis( vector<v2>& vec ){
+
+	scale( vec, 1. / sum( vec ) );
+
+}
+
+vector<v2> normalize( const vector<v2> vec ){
+
+	vector<v2> normalizedVector = vec;
+
+	normalizeThis( normalizedVector );
+
+	return normalizedVector;
+
+}
+
+size_t closest( const vector<double>& vec, const double val ){
 
 	//std::sort( vec.begin(), vec.end() );
 
 	// Iterator to element which is greater or equal to value
-	vector<double>::const_iterator it_geq = std::lower_bound( vec.begin(), vec.end(), val );
+	vector<double>::const_iterator it_geq = std::lower_bound( vec.cbegin(), vec.cend(), val );
 
 	// First element in vec is greater or equal => return iterator to first element
-	if( it_geq == vec.begin() ) return 0;
+	if( it_geq == vec.cbegin() ) return 0;
+
+	if( it_geq == vec.cend() ) return vec.size() - 1;
 
 	// Compare differences to value for two consecutive elements
-	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.begin() ) - 1;
+	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.cbegin() ) - 1;
 
-	return it_geq - vec.begin();
+	return it_geq - vec.cbegin();
 }
 
 
@@ -79,27 +109,6 @@ void sortUnique( vector<double>& v ){
 	// Remove duplicates
 	vector<double>::const_iterator last = std::unique( v.begin(), v.end(), [] ( const double& d1, const double& d2 ){ return iseqErr( d1, d2 ); } );
 	v.erase( last, v.end() );
-}
-
-
-double sortUniqueMeanDiff( vector<double> v ){
-	sortUnique( v );
-
-	// Adjecent differences
-	vector<double> diff( v.size() );
-	std::adjacent_difference( v.begin(), v.end(), diff.begin() );
-	diff.erase( diff.begin() );
-
-	// Sort differences ascending
-	std::sort( diff.begin(), diff.end() );
-
-	size_t quantileStart = (size_t) ( 0.88 * (double) diff.size() );
-	size_t quantileEnd = (size_t) ( 0.98 * (double) diff.size() );
-
-	// Mean of differences
-	double meanDiff = std::accumulate( diff.begin() + quantileStart, diff.begin() + quantileEnd, 0. ) / (double) ( quantileEnd - quantileStart );
-
-	return meanDiff;
 }
 
 

@@ -15,7 +15,6 @@
  #include "line.h"
  #include "voxel.h"
  #include "spectrum.h"
- //#include "operations.h"
 
 
 
@@ -27,10 +26,19 @@
  * @brief Class for ray properties
 */
 class rayProperties{
+	
+	friend class ray;
+	friend class pixel;
+
 	public:
-	rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ) {};
-	rayProperties( void ) : powerSpectrum( spectrum{} ) {};
-	//double intensity = 0;		/*!< Intensity of ray */
+	rayProperties( const spectrum spectrum_ );
+
+	rayProperties( void );
+
+	spectrum PowerSpectrum( void ) const;
+
+
+	private:
 	spectrum powerSpectrum;
 };
 
@@ -83,13 +91,6 @@ class ray : public line{
 	double getPara( const pnt3 p, bool* const success ) const;
 
 	/*!
-	 * @brief Calculate intersection between this ray and surface
-	 * @param sur Surface to intersect with
-	 * @return Instersection result
-	*/
-	//linSurf_Intersection_Result isectSurf( const surfLim sur ) const;
-
-	/*!
 	 * @brief Update ray properties passing through voxel for specific distance
 	 * @param data Voxel properties
 	 * @param distance Distance the ray is inside voxel
@@ -115,6 +116,10 @@ class ray : public line{
 	 * @return Vector with possible face IDs
 	*/
 	vector<FACE_ID> getPossibleVoxelExits( void ) const;
+
+	void scaleSpectrum( const double factor );
+
+	double getMeanFrequency( void ) const;
 
 	private:
 	rayProperties properties;			/*!< Property of ray*/

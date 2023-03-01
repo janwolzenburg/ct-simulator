@@ -21,7 +21,7 @@
  *********************************************************************/
 
  // Maximum amount of Coordinate systems in tree
-constexpr size_t MAX_CSYS_IN_TREE = 32;
+constexpr size_t MAX_CSYS_IN_TREE = 64;
 
 /*!
  * @brief Get singleton instance of cartesian system tree

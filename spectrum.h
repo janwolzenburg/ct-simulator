@@ -65,9 +65,17 @@ class spectrum {
 	*/
 	double getSum( void ) const;
 
+	double getMean( void ) const;
 
-	public:
+	double getMinFrequency( void ) const;
+	double getMaxFrequency( void ) const;
+
+	private:
+
+	void updateMean( void );
+
+	private:
 	vector<v2> data;		/*!<2D point data*/
-
+	double mean;			/*!<Mean Frequency of spectrum*/
 
 };

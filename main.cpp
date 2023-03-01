@@ -40,7 +40,7 @@ int main( void ){
 
 	//save_testModel();
 
-	serialisedToImage();
+	//serialisedToImage();
 
 	//if( !test_serialisation() ) cerr << "Test for serialisation failed!";
 	
@@ -49,6 +49,11 @@ int main( void ){
 	//if( !test_filteredProjection() ) cerr << "Test for filtered projection failed!";
 	
 	//if( !test_reconstruction() ) cerr << "Test for filtered projection failed!";
+
+	//test_scattered_angle_propabilities();
+
+
+	 test_ray_scattering(  );
 
 	return 0;
 }

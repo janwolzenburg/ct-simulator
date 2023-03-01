@@ -175,6 +175,11 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="propability.fwd.h" />
+    <ClInclude Include="propability.h" />
+    <ClInclude Include="scattering.h" />
+    <ClInclude Include="simulation.h" />
+    <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
     <ClInclude Include="radonTransform.h" />
@@ -213,6 +218,8 @@
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
+    <ClCompile Include="propability.cpp" />
+    <ClCompile Include="scattering.cpp" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="radonTransform.cpp" />
     <ClCompile Include="rays.cpp" />
@@ -221,6 +228,7 @@
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />
     <ClCompile Include="test_model.cpp" />
+    <ClCompile Include="test_rays.cpp" />
     <ClCompile Include="tomography.cpp" />
     <ClCompile Include="tube.cpp" />
     <ClCompile Include="vec3D.cpp" />

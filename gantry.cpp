@@ -32,7 +32,8 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 					radonParameter, indipendentParameter },
 	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	raysPerPixel( Fpos( raysPerPixel_ )),
-	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 )
+	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
+	rayScatterAngles{ 127, raySource.getFrequencyRange(), 64, cSys->EzVec() }
 
 {
 	// Align detector - tube axis with x axis
@@ -68,7 +69,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
-void threadFunction(	const model& radModel, const bool enableScattering,
+void threadFunction(	const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
 						const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
 						vector<ray>& raysForNextIteration, std::mutex& iterationMutex,
 						detector& rayDetector, std::mutex& detectorMutex ){
@@ -88,28 +89,18 @@ void threadFunction(	const model& radModel, const bool enableScattering,
 		const ray currentRay = rays.at( currentRayIndex  );
 
 		// Transmit ray through model
-		const vector<ray> returnedRays = radModel.rayTransmission( currentRay, enableScattering );	
+		const ray returnedRay = radModel.rayTransmission( currentRay, enableScattering, rayScatterAngles );
 
-
-		// When current ray does not intersect model add it for detection
-		if( returnedRays.empty() ){
-			rayDetector.detectRay( currentRay, detectorMutex );
+		// Is the ray outside the model
+		if( !radModel.pntInside( returnedRay.O() ) ){
+			rayDetector.detectRay( returnedRay, detectorMutex );
+		}
+		else{
+			iterationMutex.lock();
+			raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
+			iterationMutex.unlock();
 		}
 
-		// Iterate all rays scattered or transmitted through model
-		for( const ray& returnedRay : returnedRays ){
-
-			// Is the ray outside the model
-			if( !radModel.pntInside( returnedRay.O() ) ){
-				rayDetector.detectRay( returnedRay, detectorMutex );
-			}
-			else{
-				iterationMutex.lock();
-				raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
-				iterationMutex.unlock();
-			}
-
-		}
 	}
 
 	return;
@@ -127,6 +118,9 @@ void gantry::radiate( const model& radModel ) {
 	
 	// Convert pixel
 	rayDetector.convertPixel( radModel.CSys() );
+
+	// Scattered rays should lie in the same plane as the detector 
+	const uvec3 scatteringRotationNormal = this->cSys->EzVec().convertTo( radModel.CSys() );
 
 	// Number of threads
 	constexpr size_t numThreads = 10;
@@ -152,7 +146,7 @@ void gantry::radiate( const model& radModel ) {
 		vector<std::thread> threads;
 
 		for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
-			threads.emplace_back( threadFunction,	cref( radModel ), enableScattering,
+			threads.emplace_back( threadFunction,	cref( radModel ), enableScattering, cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 													ref( rayDetector ), ref( detectorMutex ) );

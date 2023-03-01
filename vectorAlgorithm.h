@@ -16,6 +16,7 @@
 #include <vector>
 using std::vector;
 
+#include "generel.h"
 
 
  /*********************************************************************
@@ -27,10 +28,17 @@ vector<double> linearSpace(const double start, const double end, const size_t nu
 
 double sum( const vector<double> vec );
 
+double sum( const vector<v2> vec );
+
 void scale( vector<double>& vec, const double factor );
 
+void scale( vector<v2>& vec, const double factor );
 
+void normalizeThis( vector<v2>& vec );
 
+vector<v2> normalize( const vector<v2> vec );
+
+size_t closest( const vector<double>& vec, const double val );
 
 
 
@@ -46,7 +54,7 @@ void scale( vector<double>& vec, const double factor );
  * @param val Value to search for
  * @return Index of closest element in vector
 */
-size_t closest( const vector<double> vec, const double val );
+size_t closest( const vector<double>& vec, const double val );
 
 
 /*!
@@ -54,14 +62,6 @@ size_t closest( const vector<double> vec, const double val );
  * @param v Vector to process
 */
 void sortUnique( vector<double>& v );
-
-
-/*!
- * @brief Get average adjecent difference of vector when sorted ascending
- * @param v Vector to process
- * @return Average adjecent difference
-*/
-double sortUniqueMeanDiff( vector<double> v );
 
 
 /*!

@@ -19,16 +19,19 @@ using std::string;
 #include <iostream>
 
 
-
 /*********************************************************************
 	Definitions
  *********************************************************************/
 
-constexpr double EPSILON = 1E-9;								/*!< Error for equality determination of floating point numbers in mm */
 constexpr double PI = 3.1415926535897932384626433832795;		/*!< PI */
-constexpr double c_mPers = 299792456;					// Speed of light in m/s
-constexpr double e_As = 1.6021917E-19;					// Electron charge in As 
-constexpr double h_Js = 6.626196E-34;					// Planck's constant
+constexpr double c_mPers = 299792456;							// Speed of light in m/s
+constexpr double e_As = 1.6021917E-19;							// Electron charge in As 
+constexpr double h_Js = 6.626196E-34;							// Planck's constant
+
+constexpr double m_0c2_eV = 0.511E6;							// Compton Wavelength in eV
+
+constexpr double J_PER_eV = e_As;	
+constexpr double m_0c2_J = m_0c2_eV * J_PER_eV;
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& stdOut = std::cout;						/*!< Standard out stream*/
@@ -76,7 +79,7 @@ isEven( const T integer );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-´min( const T a, const T b );
+min( const T a, const T b );
 
 /*!
  * @brief Return the maximum of two values

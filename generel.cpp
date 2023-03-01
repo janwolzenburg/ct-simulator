@@ -92,6 +92,15 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
+double range::Diff( void ) const{
+	return end - start;
+}
+
+double range::Resolution( const size_t number ) const{
+	if( number < 2 ) return 1;
+	return Diff() / ( number - 1 );
+}
+
 Zrange::Zrange( const signed long long start_, const signed long long end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
 		cerr << "Start must be less than end!" << endl;
