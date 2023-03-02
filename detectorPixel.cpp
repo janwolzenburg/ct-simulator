@@ -41,7 +41,7 @@ double pixel::getRadonValue( void ) const{
 
 	// Iterate all detected ray properties
 	for( const rayProperties& currentRay : detectedRayProperties ){
-		intensitySum += currentRay.powerSpectrum.getSum();
+		intensitySum += currentRay.energySpectrum.getSum();
 	}
 	return intensitySum;
 }

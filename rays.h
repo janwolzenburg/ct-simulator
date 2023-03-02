@@ -12,6 +12,7 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
+
  #include "line.h"
  #include "voxel.h"
  #include "spectrum.h"
@@ -31,16 +32,33 @@ class rayProperties{
 	friend class pixel;
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param spectrum_ Ray spectrum
+	*/
 	rayProperties( const spectrum spectrum_ );
 
+	/*!
+	 * @brief Default constructor
+	*/
 	rayProperties( void );
-
-	spectrum PowerSpectrum( void ) const;
+	
+	/*!
+	 * @brief Get copy of power spectrum
+	 * @param  
+	 * @return 
+	*/
+	spectrum EnergySpectrum( void ) const;
 
 	void attenuateSpectrum( const voxData& voxelData, const double distance );
 
+
 	private:
-	spectrum powerSpectrum;
+
+	spectrum energySpectrum;
+	
+
 };
 
 

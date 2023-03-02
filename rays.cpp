@@ -101,23 +101,23 @@ void ray::scaleSpectrum( const double factor ){
 
 
 
-	properties.powerSpectrum.scale( factor );
+	properties.energySpectrum.scale( factor );
 }
 
 double ray::getMeanFrequency( void ) const{
-	return properties.powerSpectrum.getMean();
+	return properties.energySpectrum.getMean();
 }
 
-rayProperties::rayProperties( const spectrum spectrum_ ) : powerSpectrum( spectrum_ ){};
-rayProperties::rayProperties( void ) : powerSpectrum( spectrum{} ){};
+rayProperties::rayProperties( const spectrum spectrum_ ) : energySpectrum( spectrum_ ){};
+rayProperties::rayProperties( void ) : energySpectrum( spectrum{} ){};
 
-spectrum rayProperties::PowerSpectrum( void ) const{
-	return powerSpectrum;
+spectrum rayProperties::EnergySpectrum( void ) const{
+	return energySpectrum;
 }
 
 
 void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
 
-	powerSpectrum.attenuate( voxelData, distance);
+	energySpectrum.attenuate( voxelData, distance);
 
 }
