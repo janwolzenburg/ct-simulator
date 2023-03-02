@@ -19,6 +19,7 @@ using std::string;
 #include <iostream>
 
 
+
 /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -134,9 +135,16 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
 Fpos( T a );
 
+/*!
+ * @brief Force value to an odd value
+ * @tparam T Integral type
+ * @param a Value
+ * @return a when add. a + 1 when even
+*/
 template <typename T>
 typename std::enable_if_t<std::is_integral_v<T>, T>
 FOdd( T a );
+
 
 
 /*********************************************************************

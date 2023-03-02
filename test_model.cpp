@@ -32,15 +32,15 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	double kWater = 0.01611970000;
 
-	voxData bgData = { 0.001, fAtRefE };
+	voxData bgData = { 0.001 };
 
 	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
-	voxData sp1_data = { 0.02, fAtRefE };
+	voxData sp1_data = { 0.02 };
 
 	pnt3 sp2_center = { v3{ 280, 280, 200 }, mod.CSys() };
 	double sp2_radius = 70;
-	voxData sp2_data = { 0.06, fAtRefE };
+	voxData sp2_data = { 0.06 };
 
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
 		for( size_t y = 0; y < mod.NumVox().y; y++ ){
@@ -99,8 +99,8 @@ bool test_modelTransmission( void ){
 		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
 		rayVox_Intersection_Result exit = rayVoxIsect.Exit();
 
-		addSingleObject( ax1, "Entrance", entrance.isectPnt, string{ "g" } );
-		addSingleObject( ax1, "Exit", exit.isectPnt, string{ "r" } );
+		addSingleObject( ax1, "Entrance", entrance.intersectionPoint, string{ "g" } );
+		addSingleObject( ax1, "Exit", exit.intersectionPoint, string{ "r" } );
 	}
 
 

@@ -111,12 +111,6 @@
     <ClInclude Include="voxel.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
-    <ClInclude Include="intersections.h">
-      <Filter>Headerdateien\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="intersections.hpp">
-      <Filter>Quelldateien\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
@@ -210,6 +204,12 @@
     <ClInclude Include="simulation.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="intersections.h">
+      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="intersections.hpp">
+      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -238,9 +238,6 @@
     </ClCompile>
     <ClCompile Include="vectorAlgotrithm.cpp">
       <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="intersections.cpp">
-      <Filter>Quelldateien\Physics</Filter>
     </ClCompile>
     <ClCompile Include="voxel.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="test_rays.cpp">
       <Filter>Quelldateien\Physics\Rays</Filter>
+    </ClCompile>
+    <ClCompile Include="intersections.cpp">
+      <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

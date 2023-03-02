@@ -27,7 +27,8 @@
 template<class L, class S>
 linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 	l( l_ ),
-	s( s_ ){
+	s( s_ )
+{
 
 	primitiveVec3 surfaceO;
 	primitiveVec3 surfaceR1;
@@ -64,16 +65,16 @@ linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 
 	// Copy result
 	result.hasSolution = true;						// Solution found
-	result.linPara = sysSol.getVar( 2 );			// Line parameter
+	result.linePara = sysSol.getVar( 2 );			// Line parameter
 
 	result.surfParaA = sysSol.getVar( 0 );			// Surface parameter A
 	result.surfParaB = sysSol.getVar( 1 );			// Surface parameter B
 
-	result.isectPnt = l.getPnt( result.linPara );	// Point of intersection
+	result.intersectionPoint = l.getPnt( result.linePara );	// Point of intersection
 
 
 	// Surface parameters outside allowed bounds of surface
 	if( !s.parasInBounds( result.surfParaA, result.surfParaB ) ) result.hasSolution = false;
-	if( !l.paraInBounds( result.linPara ) ) result.hasSolution = false;
+	if( !l.paraInBounds( result.linePara ) ) result.hasSolution = false;
 
 };

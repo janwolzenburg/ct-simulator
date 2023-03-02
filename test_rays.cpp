@@ -123,7 +123,7 @@ bool test_ray_scattering(void){
 	for( ray r : rays ){
 		rayVox_Intersection_Result res = rayVoxelIntersection{ mod.Vox(), r }.Exit();
 
-		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.isectPnt ).Length() );
+		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.intersectionPoint ).Length() );
 	}
 
 	closeAxis( ax1 );

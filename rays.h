@@ -37,7 +37,7 @@ class rayProperties{
 
 	spectrum PowerSpectrum( void ) const;
 
-	void attenuateSpectrum( const double kAtRefE, const double distance );
+	void attenuateSpectrum( const voxData& voxelData, const double distance );
 
 	private:
 	spectrum powerSpectrum;
@@ -96,7 +96,7 @@ class ray : public line{
 	 * @param data Voxel properties
 	 * @param distance Distance the ray is inside voxel
 	*/
-	void updateProperties( const voxData data, const double distance );
+	void updateProperties( const voxData& data, const double distance );
 
 	/*!
 	 * @brief Project ray on XY plane of coordinate system

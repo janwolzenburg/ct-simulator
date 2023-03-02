@@ -70,13 +70,12 @@ class spectrum {
 	double getMinFrequency( void ) const;
 	double getMaxFrequency( void ) const;
 
-	void attenuate( const double kAtRefE, const double distance ){
+	void attenuate( const voxData& voxelData, const double distance ){
 
-		const double mu_f_3 = kAtRefE * fAtRefE_3;
 
 		for( v2& v : data ){
 
-			const double k = mu_f_3 / pow( v.x, 3 );
+			const double k = voxelData.attenuationAt( v.x );
 
 			v.y *= exp( -k * distance );
 

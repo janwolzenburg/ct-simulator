@@ -160,8 +160,8 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	double currentRayStep = rayEntrance.linPara;					// Ray parameter at model entrance
-	const double lengthInModel = modelIsect.Exit().linPara - modelIsect.Entrance().linPara;
+	double currentRayStep = rayEntrance.linePara;					// Ray parameter at model entrance
+	const double lengthInModel = modelIsect.Exit().linePara - modelIsect.Entrance().linePara;
 
 	// Get first point inside the model
 	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > rayStepSize ){

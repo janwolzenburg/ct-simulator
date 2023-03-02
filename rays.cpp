@@ -52,13 +52,13 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 	return ray{ this->line::projectOnXYPlane( cSys ), this->properties };
 }
 
-void ray::updateProperties( const voxData data, const double distance ){
+void ray::updateProperties( const voxData& data, const double distance ){
 
-	properties.attenuateSpectrum( data.kAtRefE(), distance );
+	properties.attenuateSpectrum( data, distance );
 
 
 	// Equally scale powerspectrum
-	//scaleSpectrum( exp( -data.k * distance ) );
+	//scaleSpectrum( exp( -data.attenuation * distance ) );
 
 }
 
@@ -116,8 +116,8 @@ spectrum rayProperties::PowerSpectrum( void ) const{
 }
 
 
-void rayProperties::attenuateSpectrum( const double kAtRefE, const double distance ){
+void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
 
-	powerSpectrum.attenuate( kAtRefE, distance);
+	powerSpectrum.attenuate( voxelData, distance);
 
 }

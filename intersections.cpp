@@ -86,8 +86,8 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 
 linSurf_Intersection_Result::linSurf_Intersection_Result( void )
 	: hasSolution( false ),
-	linPara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
-	isectPnt( pnt3{} ){}
+	linePara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
+	intersectionPoint( pnt3{} ){}
 
 string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
 	string str;
@@ -96,7 +96,7 @@ string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) cons
 	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
 
 	str += "solution=" + hasSolution;
-	str += newLine + isectPnt.toStr();
+	str += newLine + intersectionPoint.toStr();
 	return str;
 }
 
@@ -138,8 +138,8 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 	// Ray origin inside voxel
 	if(  v.contains( r.O() ) ){
 		entrance.hasSolution = true;
-		entrance.linPara = 0;
-		entrance.isectPnt = r.O();
+		entrance.linePara = 0;
+		entrance.intersectionPoint = r.O();
 		entrance.face = FACE_ID::INVALID;
 	}
 	else{
