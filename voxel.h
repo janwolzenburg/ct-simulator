@@ -35,6 +35,12 @@ class voxData{
 	k( kAtRefE( kAtFrequency, frequency ) )
 	{};
 
+	voxData( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+		deSerializeBuildIn( k, (double) -1, binData, it );
+
+	}
+
 	double k_At( const double f ) const{
 
 		const double constant =  k * fAtRefE_3 ;
@@ -43,6 +49,12 @@ class voxData{
 	};
 
 	double kAtRefE( void ) const{ return k; };
+
+
+	size_t serialize( vector<char>& binData ) const{
+		serializeBuildIn( k, binData );
+	};
+
 
 	private:
 	double k = -1;			/*!<Absorption coefficient at 120keV*/
@@ -55,6 +67,7 @@ class voxData{
 		return ( kAtF * pow( f, 3 ) )/ fAtRefE_3;
 
 	};
+
 
 
 };
