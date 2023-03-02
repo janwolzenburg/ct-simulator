@@ -29,10 +29,13 @@
 */
 
 radonCoords::radonCoords( const double theta_, const double distance_ ) : 
-	theta( theta_ ), distance( distance_ )
+	theta( theta_ ), 
+	distance( distance_ )
 {}
 
-radonCoords::radonCoords( const cartCSys* const cSys, const line l )
+radonCoords::radonCoords( const cartCSys* const cSys, const line l ) : 
+	theta( 0 ), 
+	distance( 0 )
 {
 	// Project ray on XY plane
 	const line projectedLine = l.projectOnXYPlane( cSys );

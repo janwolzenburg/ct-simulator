@@ -46,6 +46,11 @@ class grid{
 	*/
 	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0 );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	grid( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
@@ -115,7 +120,10 @@ class grid{
 	*/
 	double& operator()( const v2CR point );
 
-
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 

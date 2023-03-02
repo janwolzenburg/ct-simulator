@@ -22,6 +22,8 @@
   Implementations
 *********************************************************************/
 
+
+
 grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue ) :
 	size( size_ ),
 	resolution( resolution_ ),

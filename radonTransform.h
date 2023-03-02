@@ -18,6 +18,7 @@
 #include "grid.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -50,8 +51,8 @@ class radonCoords{
 
 
 	public:
-	double theta = 0;		/*!<Angle*/
-	double distance = 0;	/*!<Distance*/
+	double theta;		/*!<Angle*/
+	double distance;	/*!<Distance*/
 	
 };
 
@@ -90,6 +91,11 @@ class radonTransformed{
 	*/
 	radonTransformed( const detectorRadonParameter detectorParameter );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
@@ -98,6 +104,10 @@ class radonTransformed{
 	*/
 	grid Data( void ) const;
 	
+	/*!
+	 * @brief Assign data at index 
+	 * @param data Data to assign
+	*/
 	void assignData( const idx2CR index, const double value );
 
 	/*!
@@ -106,9 +116,14 @@ class radonTransformed{
 	*/
 	void assignData( const radonPoint data );
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
+
 	private:
-	grid dataGrid;				/*!<The data grid*/
-	vector<vector<v2CR>> gridErrors;
+	grid dataGrid;						/*!<The data grid*/
+	vector<vector<v2CR>> gridErrors;	/*!<Errors when interpolating*/
 };
