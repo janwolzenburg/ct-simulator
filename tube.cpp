@@ -77,18 +77,18 @@ range tube::getFrequencyRange( void ) const{
 
 }
 
-vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel ) const{
+vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
 	// Force minimum of one
 	raysPerPixel = Fmin1( raysPerPixel );
 
-	size_t numRays = raysPerPixel * detectorPixel.size();
+	const size_t numRays = raysPerPixel * detectorPixel.size();
 
-	// Split spectrum into the ray spectra
-	spectrum raySpectrum = xRay_spectrum.getScaled( 1. / (double) numRays );
+	// Split spectrum into the ray spectra. Multiply by exposure time in seconds to get energy spectra
+	const spectrum raySpectrum = xRay_spectrum.getScaled( exposureTime / (double) numRays );
 
 	// Properties of created rays
-	rayProperties beamProperties{ raySpectrum };
+	const rayProperties beamProperties{ raySpectrum };
 
 
 	// Vector with rays
@@ -131,8 +131,4 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 
 	return rays;
 
-}
-
-cartCSys* tube::CSys( void ) const{
-	return cSys;
 }

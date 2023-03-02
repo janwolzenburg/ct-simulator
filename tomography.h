@@ -22,6 +22,12 @@
    Definitions
 *********************************************************************/
 
+struct tomographyParameter{
+
+	double exposureTime;
+
+};
+
 /*!
  * @brief Class for computed tomography
  * 
@@ -34,7 +40,7 @@ class tomography{
 	 * @param gantry_ 
 	 * @param model_ 
 	*/
-	tomography( const gantry gantry_, model& model_ );
+	tomography( const gantry gantry_, model& model_, const tomographyParameter parameter_ );
 
 	/*!
 	 * @brief Record a slice
@@ -43,8 +49,10 @@ class tomography{
 	radonTransformed recordSlice( void );
 
 	private:
+
 	gantry Gantry;				/*!<Gantry*/
 	model& Model;				/*!<Model*/
+	tomographyParameter parameter;
 	cartCSys* radonCSys;		/*!<Coordinate system to use as reference for radon coordinates calculation*/
 };
 

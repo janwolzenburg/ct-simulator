@@ -21,9 +21,10 @@
 *********************************************************************/
 
 
-tomography::tomography( const gantry gantry_, model& model_ ) :
+tomography::tomography( const gantry gantry_, model& model_, const tomographyParameter parameter_ ) :
 	Gantry( gantry_ ),
 	Model( model_ ),
+	parameter( parameter_ ),
 	radonCSys( Gantry.CSys()->createCopy( "Radon System" ) )
 {}
 
@@ -52,7 +53,7 @@ radonTransformed tomography::recordSlice( void ){
 		//cout << endl << "Frame " << currentFrame + 1 << " of " << radonParameter.framesToFillSinogram << endl;
 
 		// Radiate
-		Gantry.radiate( Model );
+		Gantry.radiate( Model, parameter.exposureTime );
 		
 		// Get the detection result
 		vector<pixel> detectionPixel = Gantry.getPixel();

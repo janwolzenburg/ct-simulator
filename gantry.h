@@ -69,9 +69,10 @@ class gantry {
 
 	/*!
 	 * @brief Get all rays from tube
+	 * @param exposureTime Exposure time
 	 * @return Vector with all rays in beam
 	*/
-	vector<ray> getBeam( void ) const;
+	vector<ray> getBeam( const double exposureTime ) const;
 
 	/*!
 	 * @brief Get all pixel from detector 
@@ -101,7 +102,7 @@ class gantry {
 	 * @brief Radiate model with beam
 	 * @param radModel Model to radiate
 	*/
-	void radiate( const model& radModel ) ;
+	void radiate( const model& radModel, const double exposureTime ) ;
 	
 	/*!
 	 * @brief Reset ganrtry to its initial position

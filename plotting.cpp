@@ -232,7 +232,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 		addSingleObject( axis, name + "Center", gantry.Center(), parameter );
 
 	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
+		addObject( axis, name + "Beams", gantry.getBeam( 1. ), parameter, 2.*gantry.Radius() );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
 		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), parameter, .2 );

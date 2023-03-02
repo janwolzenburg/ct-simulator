@@ -93,7 +93,7 @@ bool test_modelTransmission( void ){
 
 
 
-	for( const ray r : testGantry.getBeam() ){
+	for( const ray r : testGantry.getBeam( 1. ) ){
 		
 		rayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
 		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
@@ -107,7 +107,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 
-	testGantry.radiate( mod );
+	testGantry.radiate( mod, 1. );
 	vector<pixel> detectorPixel = testGantry.getPixel();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });
