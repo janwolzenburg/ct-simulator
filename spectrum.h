@@ -15,6 +15,8 @@
 
 #include <vector>
 using std::vector;
+#include <functional>
+
 
 #include "generel.h"
 #include "voxel.h"
@@ -24,6 +26,9 @@ using std::vector;
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for storing a spectrum
+*/
 class spectrum {
 
 	public:
@@ -65,30 +70,42 @@ class spectrum {
 	*/
 	double getSum( void ) const;
 
+	/*!
+	 * @brief Get mean x value
+	 * @return Mean value of x by weightening by y value
+	*/
 	double getMean( void ) const;
 
-	double getMinFrequency( void ) const;
-	double getMaxFrequency( void ) const;
+	/*!
+	 * @brief Get minimum x value
+	 * @return Minimum x value
+	*/
+	double getMin( void ) const;
 
-	void attenuate( const voxData& voxelData, const double distance ){
+	/*!
+	 * @brief Get maximum x value
+	 * @return Maximum x value
+	*/
+	double getMax( void ) const;
 
+	/*!
+	 * @brief Modify spectrum
+	 * @param modFunction Function taking reference to spectrum point to modify
+	*/
+	void modify( std::function<void( v2& )> modFunction );
 
-		for( v2& v : data ){
-
-			const double k = voxelData.attenuationAt( v.x );
-
-			v.y *= exp( -k * distance );
-
-		}
-
-	}
 
 	private:
 
+	/*!
+	 * @brief Update mean value
+	*/
 	void updateMean( void );
 
+
 	private:
-	vector<v2> data;		/*!<2D point data*/
+
+	vector<v2> data;		/*!<2D point data sorted by x value*/
 	double mean;			/*!<Mean Frequency of spectrum*/
 
 };

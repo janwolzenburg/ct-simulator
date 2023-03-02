@@ -16,9 +16,41 @@ using std::string;
 #include "rays.h"
 #include "cSysTree.h"
 
+
+
 /*********************************************************************
    Implementations
 *********************************************************************/
+
+
+/*
+	rayProperties implementation
+*/
+
+rayProperties::rayProperties( const spectrum spectrum_ ) : 
+	energySpectrum( spectrum_ )
+{};
+
+rayProperties::rayProperties( void ) : 
+	energySpectrum( spectrum{} )
+{};
+
+spectrum rayProperties::EnergySpectrum( void ) const{
+	return energySpectrum;
+}
+
+void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
+
+	energySpectrum.modify(  [ & ] ( v2& spectrumPoint ) -> void {
+		
+		const double k = voxelData.attenuationAt( spectrumPoint.x );
+		spectrumPoint.y *= exp( -k * distance );
+
+	} );
+
+	//energySpectrum.attenuate( voxelData, distance );
+}
+
 
 /*
 	ray implementation
@@ -53,13 +85,7 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 }
 
 void ray::updateProperties( const voxData& data, const double distance ){
-
 	properties.attenuateSpectrum( data, distance );
-
-
-	// Equally scale powerspectrum
-	//scaleSpectrum( exp( -data.attenuation * distance ) );
-
 }
 
 bool ray::paraInBounds(const double para) const { return para >= 0; };
@@ -98,26 +124,9 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 }
 
 void ray::scaleSpectrum( const double factor ){
-
-
-
 	properties.energySpectrum.scale( factor );
 }
 
 double ray::getMeanFrequency( void ) const{
 	return properties.energySpectrum.getMean();
-}
-
-rayProperties::rayProperties( const spectrum spectrum_ ) : energySpectrum( spectrum_ ){};
-rayProperties::rayProperties( void ) : energySpectrum( spectrum{} ){};
-
-spectrum rayProperties::EnergySpectrum( void ) const{
-	return energySpectrum;
-}
-
-
-void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
-
-	energySpectrum.attenuate( voxelData, distance);
-
 }
