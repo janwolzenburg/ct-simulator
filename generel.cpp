@@ -35,14 +35,60 @@ using std::string;
 idx2::idx2( const size_t x_, const size_t y_ ) : x( x_ ), y( y_ ){};
 idx2::idx2( void ) : x( 0 ), y( 0 ){};
 
-idx3::idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ){};
-idx3::idx3( void ) : x( 0 ), y( 0 ), z( 0 ){};
-
 v2::v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
 v2::v2( void ) : v2( 0, 0 ){};
 
+
+/*!
+ * idx3 implementation
+*/
+
+idx3::idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ){};
+idx3::idx3( void ) : x( 0 ), y( 0 ), z( 0 ){};
+
+idx3::idx3( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	deSerializeBuildIn( this->x, (size_t) 0, binData, it );
+	deSerializeBuildIn( this->y, (size_t) 0, binData, it );
+	deSerializeBuildIn( this->z, (size_t) 0, binData, it );
+
+}
+
+size_t idx3::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( this->x, binData );
+	numBytes += serializeBuildIn( this->y, binData );
+	numBytes += serializeBuildIn( this->z, binData );
+
+	return numBytes;
+}
+
+
+/*!
+ * v3 implementation
+*/
+
 v3::v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 v3::v3( void ) : v3( 0, 0, 0 ){};
+
+v3::v3( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	deSerializeBuildIn( this->x, (double) 0, binData, it );
+	deSerializeBuildIn( this->y, (double) 0, binData, it );
+	deSerializeBuildIn( this->z, (double) 0, binData, it );
+
+}
+
+size_t v3::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( this->x, binData );
+	numBytes += serializeBuildIn( this->y, binData );
+	numBytes += serializeBuildIn( this->z, binData );
+
+	return numBytes;
+}
 
 
 /*!

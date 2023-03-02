@@ -53,6 +53,20 @@ class idx3{
 	idx3( const size_t x_, const size_t y_, const size_t z_ );
 	idx3( void );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
+
 	size_t x;
 	size_t y;
 	size_t z;
@@ -81,6 +95,20 @@ class v3{
 
 	v3( const double x_, const double y_, const double z_ );
 	v3( void );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	v3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
 
 	double x;
 	double y;
