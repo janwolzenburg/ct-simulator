@@ -73,7 +73,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 
 range tube::getFrequencyRange( void ) const{
 	
-	return range{ xRay_spectrum.getMinFrequency(), xRay_spectrum.getMaxFrequency()};
+	return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax()};
 
 }
 
