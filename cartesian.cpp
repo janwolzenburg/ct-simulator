@@ -48,13 +48,6 @@ string cartCSys::toStr( const unsigned int newLineTabulators ) const{
 	return str;
 }
 
-const cartCSys* cartCSys::Parent( void ) const{ 
-	return parent; 
-}
-
-bool cartCSys::isGlobal( void ) const{ 
-	return parent == nullptr; 
-}
 
 cartCSys* cartCSys::createCopy( const string newName ) const{
 	// Only one global coordinate system allowed! Parent of copy will be global system
@@ -67,23 +60,6 @@ cartCSys* cartCSys::createCopy( const string newName ) const{
 
 cartCSys* cartCSys::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ ) const{
 	return CSYS_TREE().addCSys( origin_, ex_, ey_, ez_, this, name_ );
-}
-
-primitiveVec3 cartCSys::O( void ) const{ 
-	return origin; 
-}
-//primitiveVec3 O( primitiveVec3 newOrigin ){ return primitiveCartCSys::O( newOrigin ); };
-
-primitiveVec3 cartCSys::Ex( void ) const{ 
-	return ex; 
-}
-
-primitiveVec3 cartCSys::Ey( void ) const{
-	return ey;
-}
-
-primitiveVec3 cartCSys::Ez( void ) const{
-	return ez; 
 }
 
 vector<const cartCSys*> cartCSys::getPathFromGlobal( void ) const{
@@ -204,11 +180,6 @@ mathObj::MATH_ERR cartCSys::rotateM( const line l, const double phi ){
 	translateM( l.O() );
 
 	return errCode;
-}
-
-
-primitiveCartCSys cartCSys::getPrimitive( void ) const{
-	return (primitiveCartCSys) *this;
 }
 
 void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){

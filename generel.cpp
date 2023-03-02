@@ -44,6 +44,11 @@ v2::v2( void ) : v2( 0, 0 ){};
 v3::v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 v3::v3( void ) : v3( 0, 0, 0 ){};
 
+
+/*!
+ * idx2CR implementation
+*/
+
 idx2CR::idx2CR( const size_t c_, const size_t r_ ) : col( c_ ), row( r_ ){};
 idx2CR::idx2CR( void ) : idx2CR( 0, 0 ){};
 
@@ -63,6 +68,10 @@ size_t idx2CR::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
+
+/*!
+ * v2CR implementation
+*/
 
 v2CR::v2CR( const double c_, const double r_ ) : col( c_ ), row( r_ ){};
 v2CR::v2CR( void ) : v2CR( 0, 0 ){};
@@ -84,6 +93,9 @@ size_t v2CR::serialize( vector<char>& binData ) const{
 }
 
 
+/*!
+ * range implementation
+*/
 
 range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
@@ -92,14 +104,16 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
-double range::Diff( void ) const{
-	return end - start;
-}
 
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;
 	return Diff() / ( number - 1 );
 }
+
+
+/*!
+ * Zrange implementation
+*/
 
 Zrange::Zrange( const signed long long start_, const signed long long end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
@@ -112,6 +126,7 @@ Zrange::Zrange( const signed long long start_, const signed long long end_ ) : s
 /*!
  * Serialization implementation
 */
+
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle
 	std::ofstream outFile;

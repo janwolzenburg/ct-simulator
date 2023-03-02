@@ -16,6 +16,7 @@
  #include "cartesian.h"
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -95,14 +96,14 @@ class coordinates : protected primitiveVec3{
 	 * @param cSys_ System to check
 	 * @return True when given system is this coordinate's system
 	*/
-	inline bool sameSystem( const cartCSys* const cSys_ ) const;
+	inline bool sameSystem( const cartCSys* const cSys_ ) const { return this->cSys == cSys_; };
 
 	/*!
 	 * @brief Check if two coordinates have the same coordiante system
 	 * @param c Second set of coordinates
 	 * @return True when both coordinates have the same coordiante system
 	*/
-	inline bool sameSystem( const coordinates c ) const;
+	bool sameSystem( const coordinates c ) const;
 
 	/*!
 	 * @brief Convert coordinates to a different coordinate system

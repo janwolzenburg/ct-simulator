@@ -54,10 +54,7 @@ class cSysTree : virtual public mathObj{
 	 * @brief Get single instance
 	 * @return Reference to instance
 	*/
-	static cSysTree& getInstance(){
-		static cSysTree instance;
-		return instance;
-	}
+	static cSysTree& getInstance();
 
 	/*!
 	 * @brief Convert coordinate tree's data
@@ -123,6 +120,7 @@ class cSysTree : virtual public mathObj{
 	 * @brief Deleted assignment operator
 	*/
 	cSysTree& operator=( const cSysTree& tree_ ) = delete;
+
 
 	private:
 	size_t numSystems;			/*!< Number of systems in tree*/

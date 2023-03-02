@@ -38,7 +38,6 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ )
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( (size_t) numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[ numVox ] ),
-	importSuccess( false ),
 	cSys( cSys_ ){
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 };
@@ -47,11 +46,8 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D 
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 };
 
-model::model( const path file ) : model(){
-	// File handle
-	std::ifstream inFile;
-	inFile.open( file, std::ios::binary );
-	if( inFile.fail() ) return;
+model::model( const vector<char>& binData, vector<char>::const_iterator& it ) : model(){
+	
 
 	inFile.read( (char*) &size3D.x, sizeof( double ) );
 	inFile.read( (char*) &size3D.y, sizeof( double ) );
@@ -204,7 +200,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 
 	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
-	const double meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
+	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
 	const double scatterConstant = completeModelScatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
 
@@ -383,4 +379,22 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	if( indices.z >= numVox3D.z ) indices.z = numVox3D.z - 1;
 
 	return indices;
+}
+
+
+
+size_t model::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += size.serialize( binData );
+	numBytes += start.serialize( binData );
+	numBytes += resolution.serialize( binData );
+
+	for( vector<double> column : data ){
+		for( double rowData : column ){
+			numBytes += serializeBuildIn( rowData, binData );
+		}
+	}
+
+
 }

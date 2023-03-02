@@ -23,7 +23,6 @@
  *********************************************************************/
 
 
-
 /*
 	coordinates implementation
 */
@@ -91,11 +90,7 @@ coordinates coordinates::operator/ ( const double divisor ) const{
 	return coordinates( this->primitiveVec3::operator/( divisor ), this->cSys );
 }
 
-inline bool coordinates::sameSystem( const cartCSys* const cSys_ ) const{ 
-	return this->cSys == cSys_; 
-}
-
-inline bool coordinates::sameSystem( const coordinates c ) const{ 
+bool coordinates::sameSystem( const coordinates c ) const{ 
 	return this->sameSystem( c.cSys );
 }
 

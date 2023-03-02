@@ -12,7 +12,7 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
- #include "generel.h"
+#include "generel.h"
 #include "generelMath.h"
 
 
@@ -139,8 +139,9 @@ class matx : virtual public mathObj{
 	MATH_ERR subRows( const size_t r1, const size_t r2 );
 
 
-	// Private properties
+	
 	private:
+
 	size_t n;				/*!<Rows*/
 	size_t m;				/*!<Columns*/
 	double* A;				/*!<Data-> Access with [m  * row + col] left to right - top to bottom*/
@@ -153,6 +154,7 @@ class matx : virtual public mathObj{
  * @details Only systems with one equation per variable solvable. Inherited matrix contains coefficients
 */
 class eqnSys : private matx{
+
 	friend class eqnSysSolution;
 
 	public:
@@ -181,6 +183,11 @@ class eqnSys : private matx{
 	*/
 	MATH_ERR populateColumn( const v3 v );
 
+	/*!
+	 * @brief Add column to system of equation with two variables
+	 * @param v Column to add
+	 * @return Error code
+	*/
 	MATH_ERR populateColumn( const v2 v );
 
 	/*!
@@ -196,8 +203,8 @@ class eqnSys : private matx{
 	class eqnSysSolution solve( void );
 
 
-	// Private properties
 	private:
+
 	const size_t varNum;			/*!<Number of variables*/
 	size_t numPopulatedColumns;		/*!<Number of populated columns*/
 };
@@ -280,8 +287,8 @@ class eqnSysSolution : virtual public mathObj{
 	double getVar( const size_t idx ) const;
 
 
-	// Private properties
 	private:
+
 	size_t varNum;				/*!<Amount of variables*/
 	double* vars;				/*!<Array of variables*/
 	bool success;				/*!<System has solution*/

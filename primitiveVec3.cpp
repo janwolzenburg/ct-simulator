@@ -52,12 +52,6 @@ bool primitiveVec3::operator== ( const primitiveVec3 v ) const{
 	primitiveVec3 diffVec = v - *this;
 
 	return iseqErr( diffVec.Length(), 0 );
-
-	// Check equality for each component
-	//if( !iseqErr( x, v.x ) ) return false;
-	//if( !iseqErr( y, v.y ) ) return false;
-	//if( !iseqErr( z, v.z ) ) return false;
-	//return true;
 }
 
 bool primitiveVec3::operator!= ( const primitiveVec3 v ) const{

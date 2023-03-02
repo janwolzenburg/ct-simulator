@@ -15,6 +15,7 @@
 #include "cartesian.h"
 
 
+
  /*********************************************************************
 	Implementations
  *********************************************************************/
@@ -37,6 +38,11 @@ cartCSys* DUMMY_CSYS( void ){
 /*
 	cSysTree implementation
 */
+
+cSysTree& cSysTree::getInstance(){
+	static cSysTree instance;
+	return instance;
+}
 
 string cSysTree::toStr( const unsigned int newLineTabulators ) const{
 	string str;

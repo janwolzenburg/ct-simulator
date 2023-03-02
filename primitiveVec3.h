@@ -30,6 +30,9 @@ class primitiveVec3 : public v3, virtual public mathObj{
 
 	public:
 
+	/*!
+	 * @brief Default constructor
+	*/
 	primitiveVec3( void );
 
 	/*!

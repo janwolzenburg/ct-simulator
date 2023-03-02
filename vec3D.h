@@ -449,6 +449,7 @@ class uvec3 : public vec3{
  * @brief Class for points in cartesian coordinate system
 */
 class pnt3 : public vec3{
+
 	using vec3::vec3;
 
 	public:

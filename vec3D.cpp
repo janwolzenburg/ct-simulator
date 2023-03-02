@@ -129,11 +129,17 @@ primitiveVec3 vec3::gXYZ( void ) const{
 	return this->XYZ( GLOBAL_CSYS() );
 };
 
-double  vec3::gX( void ) const{ return gXYZ().x; };
+double vec3::gX( void ) const{
+	return gXYZ().x;
+}
 
-double  vec3::gY( void ) const{ return gXYZ().y; };
+double vec3::gY( void ) const{
+	return gXYZ().y; 
+}
 
-double  vec3::gZ( void ) const{ return gXYZ().z; };
+double vec3::gZ( void ) const{
+	return gXYZ().z; 
+}
 
 mathObj::MATH_ERR vec3::updateLength( void ){
 	// Reset error flag

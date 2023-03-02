@@ -30,27 +30,8 @@
  * @brief Class for coordinate system with context in another system
 */
 class cartCSys : private primitiveCartCSys {
+	
 	friend class cSysTree;
-
-	private:
-
-	/*!
-	 * @brief Constructor
-	 * @param origin_ O of coordinate system
-	 * @param ex_ x-axis
-	 * @param ey_ y-axis
-	 * @param ez_ z-axis
-	 * @param parent_ Pointer to parent system
-	 * @param name_ Name of the system
-	*/
-	cartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_,
-			  const cartCSys* const parent_, const string name_ );
-
-	/*!
-	 * @brief Default constructor
-	*/
-	cartCSys( void );
-
 
 	public:
 
@@ -64,13 +45,13 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get pointer to this system's parent
 	 * @return Pointer to parent
 	*/
-	const cartCSys* Parent( void ) const;
+	inline const cartCSys* Parent( void ) const { return parent; };
 
 	/*!
 	 * @brief Checks if this system is a global system
 	 * @return True when this system is the global system in tree
 	*/
-	bool isGlobal( void ) const;
+	inline bool isGlobal( void ) const{ return parent == nullptr; };
 
 	/*!
 	 * @brief Create copy of this system
@@ -100,32 +81,25 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get origin of this coordinate system in context of parent
 	 * @return Origin componenets
 	*/
-	primitiveVec3 O( void ) const;
-
-	/*!
-	 * @brief Set origin
-	 * @param newOrigin New origin
-	 * @return New origin
-	*/
-	//inline primitiveVec3 O( primitiveVec3 newOrigin ){ return primitiveCartCSys::O( newOrigin ); };
+	inline primitiveVec3 O( void ) const { return origin; };
 
 	/*!
 	 * @brief Get x-axis of this coordinate system in context of parent
 	 * @return x-axis values
 	*/
-	primitiveVec3 Ex( void ) const;
+	inline primitiveVec3 Ex( void ) const{ return ex; };
 
 	/*!
 	 * @brief Get y-axis of this coordinate system in context of parent
 	 * @return y-axis values
 	*/
-	primitiveVec3 Ey( void ) const;
+	inline primitiveVec3 Ey( void ) const{ return ey; };
 
 	/*!
 	 * @brief Get z-axis of this coordinate system in context of parent
 	 * @return z-axis values
 	*/
-	primitiveVec3 Ez( void ) const;
+	inline primitiveVec3 Ez( void ) const{ return ez; };
 
 	/*!
 	 * @brief Get origin point in this system's context
@@ -215,11 +189,41 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	MATH_ERR rotateM( const line l, const double phi );
 
-	primitiveCartCSys getPrimitive( void ) const;
+	/*!
+	 * @brief Get the primitve coordinate system of this system
+	 * @return Coordinate system without parent context
+	*/
+	inline primitiveCartCSys getPrimitive( void ) const{ return (primitiveCartCSys) *this; };
 
+	/*!
+	 * @brief Set the primitve coordinate system of this system
+	 * @param primitiveCSys primitve system to set
+	*/
 	void setPrimitive( const primitiveCartCSys primitiveCSys );
 
+
 	private:
+
+	/*!
+		* @brief Constructor
+		* @param origin_ O of coordinate system
+		* @param ex_ x-axis
+		* @param ey_ y-axis
+		* @param ez_ z-axis
+		* @param parent_ Pointer to parent system
+		* @param name_ Name of the system
+	*/
+	cartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_,
+				const cartCSys* const parent_, const string name_ );
+
+	/*!
+		* @brief Default constructor
+	*/
+	cartCSys( void );
+
+
+	private:
+
 	const cartCSys* parent;		/*!<Pointer to parent system*/
 	string name;				/*!<Name of system*/
 };
