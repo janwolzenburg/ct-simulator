@@ -52,7 +52,9 @@ class voxData{
 
 
 	size_t serialize( vector<char>& binData ) const{
-		serializeBuildIn( k, binData );
+		size_t numBytes = 0;
+		numBytes += serializeBuildIn( k, binData );
+		return numBytes;
 	};
 
 
