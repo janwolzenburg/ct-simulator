@@ -30,15 +30,17 @@
 	model implementation
 */
 
-model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ )
-	: numVox3D( numVox3D_ ),
+model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) : 
+	
+	numVox3D( numVox3D_ ),
 	voxSize3D( voxSize3D_ ),
 	size3D( { (double) numVox3D.x * voxSize3D.x,
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z } ),
-	numVox( (size_t) numVox3D.x* numVox3D.y* numVox3D.z ),
+	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
 	parameter( new voxData[ numVox ] ),
-	cSys( cSys_ ){
+	cSys( cSys_ )
+{
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 };
 
@@ -46,40 +48,12 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D 
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 };
 
-model::model( const vector<char>& binData, vector<char>::const_iterator& it ) : model(){
-	
-
-	inFile.read( (char*) &size3D.x, sizeof( double ) );
-	inFile.read( (char*) &size3D.y, sizeof( double ) );
-	inFile.read( (char*) &size3D.z, sizeof( double ) );
-
-	inFile.read( (char*) &voxSize3D.x, sizeof( double ) );
-	inFile.read( (char*) &voxSize3D.y, sizeof( double ) );
-	inFile.read( (char*) &voxSize3D.z, sizeof( double ) );
-
-	inFile.read( (char*) &numVox3D.x, sizeof( size_t ) );
-	inFile.read( (char*) &numVox3D.y, sizeof( size_t ) );
-	inFile.read( (char*) &numVox3D.z, sizeof( size_t ) );
-
-	if( inFile.eof() ){
-		inFile.close();
-		return;
+model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	model{ DUMMY_CSYS()->createCopy( "Model system" ), idx3{ binData, it }, v3{ binData, it } }
+{
+	for( size_t i = 0; i < numVox; i++ ){
+		parameter[i] = voxData{ binData, it };
 	}
-	numVox = (size_t) numVox3D.x * numVox3D.y * numVox3D.z;
-
-	delete[] parameter;
-	parameter = new voxData[ numVox ];
-
-	// Read voxel data
-	inFile.read( (char*) parameter, (std::streamsize) numVox * sizeof( voxData ) );
-	if( inFile.eof() ){
-		inFile.close();
-		return;
-	}
-
-	inFile.close();
-
-	importSuccess = true;
 }
 
 model::model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
@@ -218,7 +192,6 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 		for( const FACE_ID& currentFace : possibleFaces ){
 
 			double currentRayParameter = INFINITY;			// Set to infinity 
-				
 			double planePosistion;							// Position of current face
 
 			
@@ -302,36 +275,6 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 	return modelRay;
 }
 
-bool model::exportToFile( const path file ) const{
-	// File handle
-	std::ofstream outFile;
-	outFile.open( file, std::ios::trunc | std::ios::binary );
-	if( outFile.fail() ) return false;
-
-	//cout << endl << "Writing model file..." << endl;
-
-	outFile.write( (char*) &size3D.x, sizeof( double ) );
-	outFile.write( (char*) &size3D.y, sizeof( double ) );
-	outFile.write( (char*) &size3D.z, sizeof( double ) );
-
-	outFile.write( (char*) &voxSize3D.x, sizeof( double ) );
-	outFile.write( (char*) &voxSize3D.y, sizeof( double ) );
-	outFile.write( (char*) &voxSize3D.z, sizeof( double ) );
-
-	outFile.write( (char*) &numVox3D.x, sizeof( size_t ) );
-	outFile.write( (char*) &numVox3D.y, sizeof( size_t ) );
-	outFile.write( (char*) &numVox3D.z, sizeof( size_t ) );
-
-
-	// Write parameter data
-	outFile.write( (char*) parameter, (std::streamsize) numVox * sizeof( voxData ) );
-	if( outFile.fail() ) return false;
-
-
-	outFile.close();
-
-	return true;
-}
 
 bool model::crop( const v3 minCoords, const v3 maxCoords ){
 	if( !validCoords( minCoords ) || !validCoords( maxCoords ) ) return false;
@@ -386,15 +329,16 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 size_t model::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
-	numBytes += size.serialize( binData );
-	numBytes += start.serialize( binData );
-	numBytes += resolution.serialize( binData );
+	numBytes += numVox3D.serialize( binData );
+	numBytes += voxSize3D.serialize( binData );
+	numBytes += size3D.serialize( binData );
 
-	for( vector<double> column : data ){
-		for( double rowData : column ){
-			numBytes += serializeBuildIn( rowData, binData );
-		}
+	for( size_t i = 0; i < numVox; i++ ){
+
+		numBytes += parameter[i].serialize( binData );
+
 	}
 
+	return numBytes;
 
 }

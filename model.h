@@ -190,13 +190,6 @@ class model : virtual public mathObj{
 	ray rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const;
 
 	/*!
-	 * @brief Export model to file
-	 * @param file Path to file to store model
-	 * @return True if succeeded
-	*/
-	bool exportToFile( const path file ) const;
-
-	/*!
 	 * @brief Crop model
 	 * @param minCoords Start coordinates of new model
 	 * @param maxCoords	End coordinate of new model
