@@ -24,18 +24,19 @@ using std::string;
 	Definitions
  *********************************************************************/
 
-constexpr double PI = 3.1415926535897932384626433832795;		/*!< PI */
-constexpr double c_mPers = 299792456;							// Speed of light in m/s
-constexpr double e_As = 1.6021917E-19;							// Electron charge in As 
-constexpr double h_Js = 6.626196E-34;							// Planck's constant
+constexpr double PI =   3.1415926535897932384626433832795;		/*!< PI */
+constexpr double PI_2 = 9.8696044010893586188344909998761;		/*!< PI ^ 2*/
+constexpr double c_mPers = 299792456;							/*!< Speed of light in m/s */
+constexpr double e_As = 1.6021917E-19;							/*!< Electron charge in As */
+constexpr double h_Js = 6.626196E-34;							/*!< Planck's constant */
 
-constexpr double m_0c2_eV = 0.511E6;							// Compton Wavelength in eV
+constexpr double m_0c2_eV = 0.511E6;							/*!< Compton Wavelength in eV */
 
-constexpr double J_PER_eV = e_As;	
-constexpr double m_0c2_J = m_0c2_eV * J_PER_eV;
+constexpr double J_PER_eV = e_As;								/*!<Joules in on eV */
+constexpr double m_0c2_J = m_0c2_eV * J_PER_eV;					/*!<Compton wavelenth in Joule */
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
-inline std::ostream& stdOut = std::cout;						/*!< Standard out stream*/
+inline std::ostream& stdOut = std::cout;						/*!< Standard out stream */
 
 
 
