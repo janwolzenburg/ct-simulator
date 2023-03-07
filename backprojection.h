@@ -18,11 +18,15 @@
 #include "grid.h"
 
 
+
 /*********************************************************************
   Definitions
 *********************************************************************/
 
-class filteredProjections : public grid {
+/*!
+ * @brief Class for storing the filtered projections
+*/
+class filteredProjections : private grid {
 
 	public:
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
@@ -32,7 +36,7 @@ class filteredProjections : public grid {
 };
 
 
-class reconstrucedImage : public grid{
+class reconstrucedImage : private grid {
 
 	public:
 	reconstrucedImage( const filteredProjections projections );
