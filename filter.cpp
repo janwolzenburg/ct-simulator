@@ -100,11 +100,3 @@ double discreteFilter::get( const size_t idx ) const{
 double discreteFilter::operator()( const signed long long Zidx ) const{
 	return this->get( getIndex( Zidx ) );
 }
-
-vector<double> discreteFilter::Values( void ) const{
-	return values;
-}
-
-Zrange discreteFilter::Range( void ) const{
-	return pointsRange;
-}

@@ -50,13 +50,13 @@ class discreteFilter{
 	 * @brief Get values of filter kernel
 	 * @return Vector with values
 	*/
-	vector<double> Values( void ) const;
+	inline vector<double> Values( void ) const{ return values; };
 
 	/*!
 	 * @brief Get range of kernel
 	 * @return Range
 	*/
-	Zrange Range( void ) const;
+	inline Zrange Range( void ) const{ return pointsRange; };
 
 	/*!
 	 * @brief Get value of filter at index
