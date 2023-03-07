@@ -51,6 +51,7 @@ class radonCoords{
 
 
 	public:
+
 	double theta;		/*!<Angle*/
 	double distance;	/*!<Distance*/
 	
@@ -72,6 +73,7 @@ class radonPoint{
 	
 
 	public:
+
 	radonCoords coordinates;	/*!<Coordiantes*/
 	double value;				/*!<Value*/
 
@@ -81,7 +83,7 @@ class radonPoint{
 /*!
  * @brief Class for a radon transformation
 */
-class radonTransformed{
+class radonTransformed : private grid {
 
 	public:
 
@@ -124,6 +126,6 @@ class radonTransformed{
 
 
 	private:
-	grid dataGrid;						/*!<The data grid*/
+
 	vector<vector<v2CR>> gridErrors;	/*!<Errors when interpolating*/
 };

@@ -93,30 +93,30 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 */
 
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
-	dataGrid{	idx2CR{ detectorParameter.numberPoints.col - 1,
+	grid{		idx2CR{ detectorParameter.numberPoints.col - 1,
 						detectorParameter.numberPoints.row }, 
 				v2CR{	0, 
 						-( (double) ( detectorParameter.numberPoints.row - 1 ) * detectorParameter.resolution.row ) / 2. },
 				detectorParameter.resolution,
 				0 }
 {
-	gridErrors = vector<vector<v2CR>>( dataGrid.Size().col, vector<v2CR>( dataGrid.Size().row, v2CR{ INFINITY, INFINITY }));
+	gridErrors = vector<vector<v2CR>>( Size().col, vector<v2CR>( Size().row, v2CR{ INFINITY, INFINITY }));
 }
 
 
 grid radonTransformed::Data( void ) const{
-	return dataGrid;
+	return (grid) *this;
 }
 
 void radonTransformed::assignData( const idx2CR index, const double value ){
-	dataGrid( index ) = value;
+	this->operator()( index ) = value;
 }
 
 void radonTransformed::assignData( const radonPoint data ){
 
 	v2CR point{ data.coordinates.theta, data.coordinates.distance };
-	idx2CR index = dataGrid.getIndex( point );
-	v2CR gridPoint{ dataGrid.getCoordinates( index )};
+	idx2CR index = getIndex( point );
+	v2CR gridPoint{ getCoordinates( index )};
 
 	v2CR error{
 		gridPoint.col - point.col,
@@ -124,19 +124,19 @@ void radonTransformed::assignData( const radonPoint data ){
 	};
 
 	gridErrors.at( index.col ).at( index.row ) = error;
-	dataGrid( index ) = data.value;
+	this->operator()( index ) = data.value;
 }
 
 
 size_t radonTransformed::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
-	numBytes += dataGrid.serialize( binData );
+	numBytes += grid::serialize( binData );
 	return numBytes;
 }
 
 
 radonTransformed::radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	dataGrid{ binData, it }
+	grid{ binData, it }
 {
 	
 }
