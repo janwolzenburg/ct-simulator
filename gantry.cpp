@@ -50,21 +50,6 @@ vector<ray> gantry::getBeam( const double exposureTime ) const{
 }
 
 
-vector<pixel> gantry::getPixel( void ) const{
-	return rayDetector.getPixel();
-}
-
-
-double gantry::Radius( void ) const{
-	return radius;
-}
-
-
-pnt3 gantry::Center( void ) const{
-	return cSys->OPnt();
-}
-
-
 void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
@@ -175,14 +160,4 @@ void gantry::reset( void ){
 
 	// Reset detector
 	rayDetector.reset();
-}
-
-
-detectorRadonParameter gantry::getDetectorParameter(void) const{
-	return rayDetector.getSignalParameter( );
-}
-
-
-const cartCSys* gantry::CSys( void ) const{
-	return cSys;
 }

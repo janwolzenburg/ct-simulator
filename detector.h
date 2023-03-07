@@ -47,7 +47,7 @@ class detector {
 	 * @brief Get all detector pixel
 	 * @return Vector of pixels in one row
 	*/
-	vector<pixel> getPixel( void ) const;
+	inline vector<pixel> getPixel( void ) const{ return allPixel; };
 
 	/*!
 	 * @brief Reset all pixel
@@ -64,19 +64,20 @@ class detector {
 	 * @brief Get the radon parameters of detector
 	 * @return Radon parameters of detector
 	*/
-	detectorRadonParameter getSignalParameter( void ) const;
+	inline detectorRadonParameter getSignalParameter( void ) const{ return radonParameters; };
 
 	/*!
 	 * @brief Get the physical parameters of detector
 	 * @return Physical parameters of detector
 	*/
-	detectorPhysicalParameter getPhysicalParameters( void ) const;
+	inline detectorPhysicalParameter getPhysicalParameters( void ) const{ return physicalParameters; };
 
 	/*!
 	 * @brief Get coordinate system of detector
 	 * @return Pointer to coordinate system
 	*/
-	cartCSys* CSys( void ) const;
+	inline cartCSys* CSys( void ) const{ return cSys; };
+	
 
 	/*!
 	 * @brief Convert all comnverted pixel to this system
