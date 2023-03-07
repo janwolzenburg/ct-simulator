@@ -113,7 +113,7 @@ bool test_Tomography( void ){
 	cout << "Time for test model construction: " << diff << endl;
 
 	start = std::chrono::system_clock::now();
-	tomography testTomography{ testGantry, mod };
+	tomography testTomography{ testGantry, mod, tomographyParameter{ 1. }};
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test tomography construction: " << diff << endl;
@@ -173,7 +173,7 @@ void serialisedToImage( void ){
 	closeAxis( ax1 );
 
 	ofstream ax2 = openAxis( path( "./test_Reconstruction_900_300_1_10xModelRes.txt" ), true );
-	addSingleObject( ax2, "ReconstrucedImage", (grid) image, "X;Y;Absorbtion;Dots", true );
+	addSingleObject( ax2, "ReconstrucedImage", image.getGrid(), "X;Y;Absorbtion;Dots", true );
 	closeAxis( ax2 );
 
 }
@@ -257,7 +257,7 @@ bool test_filteredProjection( void ){
 
 	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
 
-	addSingleObject( ax1, "filteredProjections", (grid) Q, "Angle;Distance;Energy;Dots", true );
+	addSingleObject( ax1, "filteredProjections", Q.getGrid(), "Angle;Distance;Energy;Dots", true);
 
 	closeAxis( ax1 );
 
@@ -277,7 +277,7 @@ bool test_reconstruction( void ){
 
 	ofstream ax1 = openAxis( path( "./test_reconstruction900_300_1_4xModelRes.txt" ), true );
 
-	addSingleObject( ax1, "filteredProjections", (grid) image, "X;Y;Absorbtion;Dots", true );
+	addSingleObject( ax1, "filteredProjections", image.getGrid(), "X;Y;Absorbtion;Dots", true );
 
 	closeAxis( ax1 );
 

@@ -103,10 +103,16 @@ void spectrum::updateMean( void ){
 }
 
 
-double spectrum::getMinFrequency( void ) const{
+double spectrum::getMin( void ) const{
 	return data.front().x;
 }
 
-double spectrum::getMaxFrequency( void ) const{
+double spectrum::getMax( void ) const{
 	return data.back().x;
+}
+
+void spectrum::modify( std::function<void( v2& )> modFunction ){
+	for( v2& v : data ){
+		modFunction( v );
+	}
 }

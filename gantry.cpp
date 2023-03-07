@@ -45,23 +45,8 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 }
 
 
-vector<ray> gantry::getBeam( void ) const{
-	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel);
-}
-
-
-vector<pixel> gantry::getPixel( void ) const{
-	return rayDetector.getPixel();
-}
-
-
-double gantry::Radius( void ) const{
-	return radius;
-}
-
-
-pnt3 gantry::Center( void ) const{
-	return cSys->OPnt();
+vector<ray> gantry::getBeam( const double exposureTime ) const{
+	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
 }
 
 
@@ -107,9 +92,9 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 }
 
 
-void gantry::radiate( const model& radModel ) {
+void gantry::radiate( const model& radModel, const double exposureTime ) {
 
-	vector<ray> rays = this->getBeam();		// Current rays. Start with rays from source
+	vector<ray> rays = this->getBeam( exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( ray& currentRay : rays ){
@@ -175,14 +160,4 @@ void gantry::reset( void ){
 
 	// Reset detector
 	rayDetector.reset();
-}
-
-
-detectorRadonParameter gantry::getDetectorParameter(void) const{
-	return rayDetector.getSignalParameter( );
-}
-
-
-const cartCSys* gantry::CSys( void ) const{
-	return cSys;
 }

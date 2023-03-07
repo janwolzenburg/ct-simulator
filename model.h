@@ -21,6 +21,7 @@ using std::filesystem::path;
  #include "simulation.h"
 
 
+
   /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -34,7 +35,7 @@ constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 1
  * @brief Class for 3D-Models
 */
 class model : virtual public mathObj{
-	// Public functions
+	
 	public:
 
 	/*!
@@ -46,10 +47,12 @@ class model : virtual public mathObj{
 	model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ );
 
 	/*!
-	 * @brief Constructor
-	 * @param file Path to file with 3D-model
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
 	*/
-	model( path file );
+	model( const vector<char>& binData, vector<char>::const_iterator& it );
+
 
 	/*!
 	 * @brief Copy constructor
@@ -187,13 +190,6 @@ class model : virtual public mathObj{
 	ray rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const;
 
 	/*!
-	 * @brief Export model to file
-	 * @param file Path to file to store model
-	 * @return True if succeeded
-	*/
-	bool exportToFile( const path file ) const;
-
-	/*!
 	 * @brief Crop model
 	 * @param minCoords Start coordinates of new model
 	 * @param maxCoords	End coordinate of new model
@@ -201,14 +197,20 @@ class model : virtual public mathObj{
 	*/
 	bool crop( const v3 minCoords, const v3 maxCoords );
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
 
 	private:
+
 	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
 	v3 voxSize3D;								/*!<Voxelsize in each dimension in mm*/
 	v3 size3D;									/*!<Size of complete model in mm*/
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
-	bool importSuccess;							/*!<Model construction from file succeeded*/
 	cartCSys* cSys;								/*!<Coordinate system*/
 
 

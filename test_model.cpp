@@ -30,6 +30,8 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res } };
 
+	double kWater = 0.01611970000;
+
 	voxData bgData = { 0.001 };
 
 	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
@@ -58,7 +60,9 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 void save_testModel( void ){
 
 	model mod = getTestModel( GLOBAL_CSYS(), 10 );
-	mod.exportToFile( path( "testModel_10xRes.mod" ));
+	
+	vector<char> binData;
+	mod.serialize( binData );
 
 }
 
@@ -89,21 +93,21 @@ bool test_modelTransmission( void ){
 
 
 
-	for( const ray r : testGantry.getBeam() ){
+	for( const ray r : testGantry.getBeam( 1. ) ){
 		
 		rayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
 		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
 		rayVox_Intersection_Result exit = rayVoxIsect.Exit();
 
-		addSingleObject( ax1, "Entrance", entrance.isectPnt, string{ "g" } );
-		addSingleObject( ax1, "Exit", exit.isectPnt, string{ "r" } );
+		addSingleObject( ax1, "Entrance", entrance.intersectionPoint, string{ "g" } );
+		addSingleObject( ax1, "Exit", exit.intersectionPoint, string{ "r" } );
 	}
 
 
 	closeAxis( ax1 );
 
 
-	testGantry.radiate( mod );
+	testGantry.radiate( mod, 1. );
 	vector<pixel> detectorPixel = testGantry.getPixel();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });
@@ -113,7 +117,7 @@ bool test_modelTransmission( void ){
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;
 		for( rayProperties currentProperties : detectorPixel.at( i ).detectedRayProperties ){
-			primitiveDetectionResult.at( i ).y += currentProperties.PowerSpectrum().getSum();
+			primitiveDetectionResult.at( i ).y += currentProperties.EnergySpectrum().getSum();
 		}
 	}	
 

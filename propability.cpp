@@ -19,9 +19,16 @@
 #include "vectorAlgorithm.h"
 
 
+
 /*********************************************************************
    Implementation
 *********************************************************************/
+
+
+
+/*
+	randomNumberGenerator implementation
+*/
 
 randomNumberGenerator integerRNG{ 0, UINT32_MAX };
 
@@ -58,6 +65,11 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 }
 
 
+
+/*
+	propabilityDistribution implementation
+*/
+
 propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins )
 {
 	// Normalize 
@@ -91,14 +103,12 @@ propabilityDistribution::propabilityDistribution( const vector<v2> distribution_
 	}
 }
 
-
 double propabilityDistribution::getRandom( void ) const{
 	
 	size_t randomIndex = integerRNG.getRandom() % uniformPropabilities.size();
 	if( randomIndex >= uniformPropabilities.size() ) randomIndex = uniformPropabilities.size() - 1;
 	return uniformPropabilities.at( randomIndex );
 }
-
 
 vector<v2> propabilityDistribution::getDistribution( void ) const{
 	return distribution;

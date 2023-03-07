@@ -12,6 +12,7 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
+
  #include "line.h"
  #include "voxel.h"
  #include "spectrum.h"
@@ -31,22 +32,46 @@ class rayProperties{
 	friend class pixel;
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param spectrum_ Ray spectrum
+	*/
 	rayProperties( const spectrum spectrum_ );
 
+	/*!
+	 * @brief Default constructor
+	*/
 	rayProperties( void );
+	
+	/*!
+	 * @brief Get copy of energy spectrum
+	 * @return Energy spectrum
+	*/
+	spectrum EnergySpectrum( void ) const;
 
-	spectrum PowerSpectrum( void ) const;
+	/*!
+	 * @brief Attenuate spectrum according to distance in given voxel
+	 * @param voxelData Data of voxel
+	 * @param distance Distance traversed in Voxel
+	*/
+	void attenuateSpectrum( const voxData& voxelData, const double distance );
 
 
 	private:
-	spectrum powerSpectrum;
+
+	spectrum energySpectrum;	/*!<Energy spectrum*/
+	
+
 };
+
 
 
 /*!
  * @brief Class for rays
 */
 class ray : public line{
+
 	public:
 
 	/*!
@@ -95,7 +120,7 @@ class ray : public line{
 	 * @param data Voxel properties
 	 * @param distance Distance the ray is inside voxel
 	*/
-	void updateProperties( const voxData data, const double distance );
+	void updateProperties( const voxData& data, const double distance );
 
 	/*!
 	 * @brief Project ray on XY plane of coordinate system
@@ -117,10 +142,20 @@ class ray : public line{
 	*/
 	vector<FACE_ID> getPossibleVoxelExits( void ) const;
 
+	/*!
+	 * @brief Scale specturm linearly
+	 * @param factor Factor
+	*/
 	void scaleSpectrum( const double factor );
 
+	/*!
+	 * @brief Get the mean frequency of spectrum
+	 * @return Mean frequency
+	*/
 	double getMeanFrequency( void ) const;
 
+
 	private:
-	rayProperties properties;			/*!< Property of ray*/
+
+	rayProperties properties;			/*!<Properties of ray*/
 };

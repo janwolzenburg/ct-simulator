@@ -21,6 +21,49 @@
 	Implementations
  *********************************************************************/
 
+
+ /*
+	voxData implementation
+ */
+
+
+const double voxData::referenceEnergy = 120000.;
+const double voxData::freqAtRefE = referenceEnergy / h_Js;
+const double voxData::freqAtRefE_3 = pow( freqAtRefE, 3 );
+
+voxData::voxData( const double attenuationAtFrequency, const double frequency ) :
+	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) )
+{}
+
+voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ){
+	deSerializeBuildIn( attenuation, (double) -1, binData, it );
+}
+
+voxData::voxData( void ) : 
+	attenuation( -1 )
+{}
+
+double voxData::attenuationAt( const double frequency ) const{
+
+	const double constant = attenuation * freqAtRefE_3;
+
+	return constant * pow( frequency, 3 );
+};
+
+size_t voxData::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( attenuation, binData );
+	return numBytes;
+};
+
+double voxData::attenuationAtRefE( const double attenuationAtFrequency, const double frequency ) const{
+
+	return ( attenuationAtFrequency * pow( frequency, 3 ) ) / freqAtRefE_3;
+
+};
+
+
+
 /*
 	vox implementation
 */
@@ -59,7 +102,7 @@ string vox::toStr( unsigned int newLineTabulators ) const{
 
 	str += "o=" + newLine + o.toStr( newLineTabulators + 1 );
 	str += "size=" + string( tempCharArr );
-	str += newLine + "data=" + std::to_string( data.k );
+	str += newLine + "data=" + std::to_string( data.attenuationAtRefE() );
 	str += newLine + "face[0]=" + newLine + faces[ 0 ].toStr( newLineTabulators + 1 );
 	str += newLine + "face[1]=" + newLine + faces[ 1 ].toStr( newLineTabulators + 1 );
 	str += newLine + "face[2]=" + newLine + faces[ 2 ].toStr( newLineTabulators + 1 );

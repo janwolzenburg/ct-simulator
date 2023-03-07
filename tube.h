@@ -57,15 +57,16 @@ class tube{
 	 * @param detectorPixel Vector with all pixel
 	 * @param detectorFocusDistance Distance from pixel to focus (this tube)
 	 * @param raysPerPixel Amount of rays per pixel
+	 * @param exposureTime Exposure time in seconds. For energy calculation
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel ) const;
+	vector<ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel, const double exposureTime ) const;
 
 	/*!
 	 * @brief Get coordinate system
 	 * @return Pointer to coordinate system
 	*/
-	cartCSys* CSys( void ) const;
+	inline cartCSys* CSys( void ) const { return cSys; };
 
 	/*!
 	 * @brief Get the range of frequencies the tube emits

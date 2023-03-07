@@ -21,7 +21,7 @@ constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );
 
 
 constexpr double rayStepSize = 5e-2;						/*!<Stepsize during ray iteration in ray direction vector's unit*/
-constexpr double completeModelScatterPropability = 0.25;	/*!<Propability that a ray is scattered when transmitting through complete model*/
+constexpr double completeModelScatterPropability = 0.05;	/*!<Propability that a ray is scattered when transmitting through complete model*/
 
 constexpr size_t maxRadiationLoops = 16;					/*!<How often can a ray be scattered*/
 

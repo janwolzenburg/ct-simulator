@@ -21,6 +21,7 @@ using std::vector;
 #include "generel.h"
 
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -52,30 +53,47 @@ class randomNumberGenerator{
 	*/
 	bool eventHappend( const double eventPropability );
 
+
 	private:
+
 	std::default_random_engine generator;						/*!<Generator*/
 	std::uniform_int_distribution<unsigned int> distribution;	/*!<Uniform distribution*/
 	std::mutex mu;												/*!<Mutex for thread safety*/
 
 };
 
+extern randomNumberGenerator integerRNG;						/*!<One instance of integer random number generator*/
 
-extern randomNumberGenerator integerRNG;
 
+/*!
+ * @brief Class to store a custom propability distribution
+*/
 class propabilityDistribution{
 
 
 	public:
 
+	/*!
+	 * @brief Constructor
+	 * @param distribution_ Pseudo distribution. Sum of y values can be not equal to one
+	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
+	*/
 	propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins );
 
+	/*!
+	 * @brief Get a random value according to distribution
+	*/
 	double getRandom( void ) const;
 
+	/*!
+	 * @brief Get the complete distribution
+	*/
 	vector<v2> getDistribution( void ) const;
+
 
 	private:
 
-	vector<v2> distribution;
-	vector<double> uniformPropabilities;
+	vector<v2> distribution;				/*!<Distribution*/
+	vector<double> uniformPropabilities;	/*!<Vector with values from distribution reated according to their propability*/
 
 };

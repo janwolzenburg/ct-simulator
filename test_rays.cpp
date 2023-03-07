@@ -73,7 +73,7 @@ bool test_ray_scattering(void){
 	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	//addObject( ax1, "TestModel", mod, "g", 0.015 );
 
-	vector<ray> rays = testGantry.getBeam();
+	vector<ray> rays = testGantry.getBeam( 1. );
 	for( ray &r : rays ) r = r.convertTo( mod.CSys()); 
 
 
@@ -123,7 +123,7 @@ bool test_ray_scattering(void){
 	for( ray r : rays ){
 		rayVox_Intersection_Result res = rayVoxelIntersection{ mod.Vox(), r }.Exit();
 
-		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.isectPnt ).Length() );
+		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.intersectionPoint ).Length() );
 	}
 
 	closeAxis( ax1 );

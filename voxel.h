@@ -7,6 +7,7 @@
  * @date   December 2022
  *********************************************************************/
 
+
   /*********************************************************************
 	Includes
  *********************************************************************/
@@ -16,23 +17,14 @@
 
 
 
-
  /*********************************************************************
 	Definitions
  *********************************************************************/
 
 
-/*!
- * @brief Physical voxel data
-*/
-struct voxData{
-	double k = -1;			/*!<Absorption coefficient at 120keV*/
-};
-
-
-/*!
- * @brief Face identifiers of voxel
-*/
+ /*!
+  * @brief Face identifiers of voxel
+ */
 enum class FACE_ID : size_t{
 	BEGIN,
 	YZ_Xp = BEGIN,		/*!<Y-Z plane at positive x*/
@@ -50,6 +42,76 @@ enum class FACE_ID : size_t{
 /*
 	Classes
 */
+
+
+/*!
+ * @brief Physical voxel data
+*/
+class voxData{
+	
+	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param attenuationAtFrequency Attenuation coefficient at given frequency
+	 * @param frequency Frequency
+	*/
+	voxData( const double attenuationAtFrequency, const double frequency = freqAtRefE );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Vector with serialized data
+	 * @param it Start of data for this object
+	*/
+	voxData( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Default constructor
+	*/
+	voxData( void );
+
+	/*!
+	 * @brief Get the attenuation at given frequency
+	 * @param frequency Frequency
+	 * @return Attenuation 
+	*/
+	double attenuationAt( const double frequency ) const;
+
+	/*!
+	 * @brief Get attenuation at reference energy
+	 * @return Attenuation at reference energy 
+	*/
+	inline double attenuationAtRefE( void ) const{ return attenuation; };
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
+
+	private:
+
+	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/
+	static const double freqAtRefE;						/*!<Frequency at reference Enery*/
+	static const double freqAtRefE_3;						/*!<Third power of reference frequency*/
+
+	double attenuation = -1;			/*!<Absorption coefficient at 120keV*/
+
+
+	private:
+
+	/*!
+	 * @brief Return the 
+	 * @param attenuationAtFrequency 
+	 * @param frequency 
+	 * @return 
+	*/
+	double attenuationAtRefE( const double attenuationAtFrequency, const double frequency ) const;
+
+};
+
+
 
 
 /*!
@@ -123,22 +185,15 @@ class vox : virtual public mathObj{
 	pnt3 getCenter( void ) const;
 
 	/*!
-	 * @brief Find entrance of ray into voxel
-	 * @param r Ray
-	 * @return Intersection of the entrance face with ray
+	 * @brief Check if voxel contains point
+	 * @param p Point to check
+	 * @return True when p is inside the voxel
 	*/
-	//rayVox_Intersection_Result findEntrance( const ray r ) const;
-
-	/*!
-	 * @brief Find exit of ray into voxel
-	 * @param r Ray
-	 * @return Intersection of the exit face with ray
-	*/
-	//rayVox_Intersection_Result findExit( const ray r ) const;
-
 	bool contains( const pnt3 p ) const;
 
+
 	private:
+
 	v3 size;										/*!<Size in local coordinate system*/
 	voxData data;									/*!<Physical voxel data*/
 	pnt3 o;											/*!<Point as origin of voxel in coordinate system*/

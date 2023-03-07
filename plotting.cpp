@@ -232,7 +232,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 		addSingleObject( axis, name + "Center", gantry.Center(), parameter );
 
 	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		addObject( axis, name + "Beams", gantry.getBeam(), parameter, 2.*gantry.Radius() );
+		addObject( axis, name + "Beams", gantry.getBeam( 1. ), parameter, 2.*gantry.Radius() );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
 		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), parameter, .2 );
@@ -261,7 +261,7 @@ void addObject<model, double>( std::ofstream& axis, std::string name, model mod,
 		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
 				vox voxel = mod.getVoxel( idx3{ iX, iY, iZ } );
-				if( voxel.Data().k >= (double) threshold ){
+				if( voxel.Data().attenuationAtRefE() >= (double) threshold ){
 					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.getCenter(), parameter );
 				}
 			}

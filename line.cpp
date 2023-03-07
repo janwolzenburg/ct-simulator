@@ -53,16 +53,8 @@ string line::toStr( unsigned int newLineTabulators ) const{
 	return str;
 }
 
-pnt3 line::O( void ) const { 
-	return o;
-};
-
 pnt3 line::O( const pnt3 newO ){ 
 	return o = newO.convertTo( r ); 
-};
-
-uvec3 line::R( void ) const { 
-	return r;
 };
 
 line line::convertTo( const cartCSys* const target ) const{

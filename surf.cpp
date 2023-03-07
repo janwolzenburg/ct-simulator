@@ -68,9 +68,6 @@ surf surf::convertTo( const cartCSys* const cSys_ ) const{
 	return surf( r1.convertTo( cSys_ ), r2.convertTo( cSys_ ), o.convertTo( cSys_ ) );
 }
 
-bool surf::parasInBounds( [[maybe_unused]] const double a, [[maybe_unused]] const double b ) const{
-	return true;
-}
 
 
 

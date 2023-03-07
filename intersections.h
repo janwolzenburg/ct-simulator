@@ -27,15 +27,11 @@ using std::string;
 	Definitions
  *********************************************************************/
 
+ /*!
+  * @brief Class for an intersection result of two lines
+ */
  class lineLine_Intersection_Result : virtual public mathObj{
  
-	public:
-	pnt3 intersectionPoint;
-	bool hasSolution;
-	double lineParameter1;
-	double lineParameter2;
-
-
 	 public:
 
 	 /*!
@@ -48,16 +44,27 @@ using std::string;
 	  * @return String with result's data
 	 */
 	 string toStr( const unsigned int newLineTabulators = 0 ) const override;
+
+
+	 public:
+
+	 pnt3 intersectionPoint;		/*!<Point of intersection*/
+	 bool hasSolution;			/*!Flag whether the lines intersect*/
+	 double lineParameter1;		/*!Parameter of first line at intersection*/
+	 double lineParameter2;		/*!Parameter of second line at intersection*/
+
+
  };
 
 
  class lineLine_Intersection{
 
 	 public:
+
 	 /*!
 	  * @brief Constructor
-	  * @param l_ Object derived from class line
-	  * @param s_ Object derived from class surf
+	  * @param l1_ Object derived from class line
+	  * @param l2_ Object derived from class surf
 	 */
 	 lineLine_Intersection( const line l1_, const line l2_ );
 
@@ -69,8 +76,9 @@ using std::string;
 
 
 	 public:
-	 line l1;									/*!<Line*/
-	 line l2;									
+
+	 line l1;									/*!<First Line*/
+	 line l2;									/*!<Second Line*/
 	 lineLine_Intersection_Result result;		/*!<Calculated result*/
 
  };
@@ -81,14 +89,6 @@ using std::string;
  * @brief Class describing the intersection result of a line and surface
 */
 class linSurf_Intersection_Result : virtual public mathObj{
-
-	public:
-	pnt3 isectPnt;							/*!< Point of intersection */
-	bool hasSolution;						/*!< Line intersects surface */
-	double linPara;							/*!< Line parameter where intersection occurs */
-	double surfParaA;						/*!< Surface parameter a where intersection occurs */
-	double surfParaB;						/*!< Surface parameter b where intersection occurs */
-
 
 	public:
 
@@ -103,6 +103,15 @@ class linSurf_Intersection_Result : virtual public mathObj{
 	*/
 	string toStr( const unsigned int newLineTabulators = 0 ) const override;
 
+
+	public:
+
+	pnt3 intersectionPoint;					/*!< Point of intersection */
+	bool hasSolution;						/*!< Line intersects surface */
+	double linePara;						/*!< Line parameter where intersection occurs */
+	double surfParaA;						/*!< Surface parameter a where intersection occurs */
+	double surfParaB;						/*!< Surface parameter b where intersection occurs */
+
 };
 
 
@@ -113,10 +122,13 @@ class linSurf_Intersection_Result : virtual public mathObj{
 template<class L, class S>
 class linSurfIntersection {
 
+	// Assert base classes
 	static_assert( std::is_base_of_v< surf, S > );
 	static_assert( std::is_base_of_v< line, L > );
 
+
 	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param l_ Object derived from class line
@@ -159,7 +171,9 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 	*/
 	rayVox_Intersection_Result( void );
 
+
 	public:
+
 	FACE_ID face;	/*!<ID of face for which the result is valid*/
 };
 
@@ -171,6 +185,7 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 class rayVoxelIntersection {
 
 	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param v_ Voxel
@@ -192,6 +207,7 @@ class rayVoxelIntersection {
 
 
 	public:
+
 	vox v;										/*!<Voxel*/
 	ray r;										/*!<Ray*/
 	rayVox_Intersection_Result entrance;		/*!<Entrance*/

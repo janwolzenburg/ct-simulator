@@ -94,10 +94,9 @@ class surf : virtual public mathObj{
 	 * @param b Surface parameter b
 	 * @return Always true for unconfined surfaces
 	*/
-	bool parasInBounds( const double a, const double b ) const;
+	inline bool parasInBounds( const double a, const double b ) const { return true; };
 
 
-	// Protected properties
 	protected:
 	uvec3  r1;					/*!<First direction vector*/
 	uvec3  r2;					/*!<Second direction vector*/
@@ -110,7 +109,7 @@ class surf : virtual public mathObj{
  * @brief Confined surface with limited parameters creating a rectangle
 */
 class surfLim : public surf{
-	// Public functions
+
 	public:
 
 	/*!
@@ -204,8 +203,8 @@ class surfLim : public surf{
 	line  NormalLine( void ) const;
 
 
-	// Private properties
 	private:
+
 	double pAMin;			/*!<Lower limit for parameter a*/
 	double pAMax;			/*!<Upper limit for parameter a*/
 	double pBMin;			/*!<Lower limit for parameter b*/

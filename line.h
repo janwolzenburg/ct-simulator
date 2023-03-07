@@ -36,6 +36,10 @@ class line : virtual public mathObj{
 	*/
 	explicit line( const vec3 v, const pnt3 p );
 
+	/*!
+	 * @brief Default constructor
+	 * @param  
+	*/
 	line( void );
 
 	/*!
@@ -48,7 +52,7 @@ class line : virtual public mathObj{
 	 * @brief Get origin of line
 	 * @return O
 	*/
-	pnt3 O( void ) const;
+	inline pnt3 O( void ) const { return o; };
 
 	/*!
 	 * @brief Set origin
@@ -61,7 +65,7 @@ class line : virtual public mathObj{
 	 * @brief Get line trajectory
 	 * @return Trajectory
 	*/
-	uvec3 R( void ) const;
+	inline uvec3 R( void ) const { return r; };
 
 	/*!
 	 * @brief Convert line components to different coordinate system
@@ -114,13 +118,6 @@ class line : virtual public mathObj{
 	double getDistance( const line l ) const;
 
 	/*!
-	 * @brief Calculate intersection between this line and surface
-	 * @param sur Surface to intersect with
-	 * @return Instersection result
-	*/
-	//linSurf_Intersection_Result isectSurf( const surfLim sur ) const;
-
-	/*!
 	 * @brief Project line on XY plane of coordinate system
 	 * @param cSys System to project on
 	 * @return Projected line
@@ -128,16 +125,15 @@ class line : virtual public mathObj{
 	line projectOnXYPlane( const cartCSys* const cSys ) const;
 
 	/*!
-	 * @brief Calculate radon coords of line in given coordinate system
-	 * @param cSys Coordinate system
-	 * @return Radon coordinates
-	 * @details Gives the angle and distance of this line's XY plane-projected lot to origin
+	 * @brief Check if parameters are in bound
+	 * @param para Parameter
+	 * @return Always true
 	*/
-	//radonPoint getRadonCoords( const cartCSys* const cSys ) const;
-
 	inline bool paraInBounds( const double para ) const { return true; };
 
+
 	protected:
+
 	uvec3 r;			/*!< Line trajectory */
 	pnt3 o;		 		/*!< Line origin */
 };

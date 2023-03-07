@@ -153,11 +153,6 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 }
 
 
-vector<pixel> detector::getPixel(void) const {
-	return allPixel;
-}
-
-
 void detector::reset( void ){
 	for( pixel& currentPixel : allPixel ) currentPixel.reset();
 }
@@ -189,19 +184,6 @@ void detector::detectRay( const ray r, std::mutex& allPixelLock ){
 
 }
 
-
-cartCSys* detector::CSys( void ) const{
-	return cSys;
-}
-
-detectorRadonParameter detector::getSignalParameter( void ) const{
-	return radonParameters;
-}
-
-
-detectorPhysicalParameter detector::getPhysicalParameters( void ) const{
-	return physicalParameters;
-}
 
 void detector::convertPixel( const cartCSys* const targetCSys ){
 

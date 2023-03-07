@@ -46,25 +46,30 @@ class grid{
 	*/
 	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0 );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	grid( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Get size of gird
+	 * @brief Get size of grid
 	 * @return Size of grid
 	*/
-	idx2CR Size( void ) const;
+	inline idx2CR Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	v2CR Start( void ) const;
+	inline v2CR Start( void ) const{ return start; };
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	v2CR Resolution( void ) const;
+	inline v2CR Resolution( void ) const{ return resolution; };
 
 	/*!
 	 * @brief Check indices for validity
@@ -115,7 +120,10 @@ class grid{
 	*/
 	double& operator()( const v2CR point );
 
-
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 

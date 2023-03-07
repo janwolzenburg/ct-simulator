@@ -33,7 +33,9 @@ using std::cerr; using std::endl; using std::cout;
  * @brief Class for 2D indices
 */
 class idx2{
+
 	public:
+
 	idx2( const size_t x_, const size_t y_ );
 	idx2( void );
 
@@ -45,9 +47,25 @@ class idx2{
  * @brief Class for 3D indices
 */
 class idx3{
+
 	public:
+
 	idx3( const size_t x_, const size_t y_, const size_t z_ );
 	idx3( void );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
 
 	size_t x;
 	size_t y;
@@ -58,7 +76,9 @@ class idx3{
  * @brief Class for 2D vector
 */
 class v2{
+
 	public:
+
 	v2( const double x_, const double y_ );
 	v2( void );
 
@@ -70,22 +90,52 @@ class v2{
 * @brief Class for 3D vector
 */
 class v3{
+
 	public:
+
 	v3( const double x_, const double y_, const double z_ );
 	v3( void );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	v3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
 
 	double x;
 	double y;
 	double z;
 };
 
-
+/*!
+ * @brief Class for indicies to data organized in row/column structure
+*/
 class idx2CR{
+
 	public:
-	idx2CR( const size_t c_, const size_t r_ );
-	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	idx2CR( const size_t col_, const size_t row_ );
 	idx2CR( void );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 	size_t col;
@@ -93,32 +143,65 @@ class idx2CR{
 };
 
 /*!
- * @brief Class for table
+ * @brief Class for  data organized in row/column structure
 */
 class v2CR {
-	public:
-	v2CR(const double c_, const double r_);
-	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
-	v2CR(void);
 
+	public:
+
+	v2CR( const double c_, const double r_ );
+	v2CR( void );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 	double col;
 	double row;
 };
 
+/*!
+ * @brief Class for a range of real numbers with start
+*/
 class range{
+
 	public:
+
 	range( const double start_, const double end_ );
 	range( void );
 
-	double Diff( void ) const;
+	/*!
+	 * @brief Get the size of the interval
+	 * @return Difference of end and start
+	 * @details Diff = end - start
+	*/
+	inline double Diff( void ) const { return end - start; };
+
+	/*!
+	 * @brief Get the resolution of the range was split in given amount of discrete values
+	 * @param number Amount of discrete values
+	 * @return Resolution of interval when slit in given amount
+	 * @detail Resolution = (end - start) / (number - 1)
+	*/
 	double Resolution( const size_t number ) const;
+
 
 	double start;
 	double end;
 };
 
+/*!
+ * @brief Class for a range of whole numbers
+*/
 class Zrange{
 	public:
 	Zrange( const signed long long start_, const signed long long end_ );
