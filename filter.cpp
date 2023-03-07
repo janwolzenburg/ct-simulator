@@ -38,11 +38,11 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				if( n == 0 ) this->set( getIndex( n ) ) = 1.;
 				else this->set( getIndex( n ) ) = 0.;
 
-			break;
+				break;
 
 
 			case discreteFilter::absolute:
-			
+			{
 				// Constant to be able to approximate inverse FT of abs( w )
 				constexpr double e = 0.1;									
 
@@ -55,8 +55,8 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 
 				this->set( getIndex( n ) ) = h;
 
-			break;
-
+				break;
+			}
 
 			case discreteFilter::ramLak:
 
@@ -65,14 +65,14 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				else if( isEven( n ) )		this->set( getIndex( n ) ) = 0.;
 				else						this->set( getIndex( n ) ) = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
 
-			break;
+				break;
 
 
 			case discreteFilter::sheppLogan:
 
 				this->set( getIndex( n ) ) = - 2. / ( PI_2 * pow( samplingInterval, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
 
-			break;
+				break;
 
 		}
 
