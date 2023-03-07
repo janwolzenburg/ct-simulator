@@ -54,22 +54,22 @@ class grid{
 	grid( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Get size of gird
+	 * @brief Get size of grid
 	 * @return Size of grid
 	*/
-	idx2CR Size( void ) const;
+	inline idx2CR Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	v2CR Start( void ) const;
+	inline v2CR Start( void ) const{ return start; };
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	v2CR Resolution( void ) const;
+	inline v2CR Resolution( void ) const{ return resolution; };
 
 	/*!
 	 * @brief Check indices for validity

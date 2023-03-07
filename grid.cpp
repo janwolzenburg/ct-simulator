@@ -61,18 +61,6 @@ void grid::fillVectors( const double defaultValue ){
 	data = vector<vector<double>>( size.col, vector<double>( size.row, defaultValue ) );
 }
 
-idx2CR grid::Size( void ) const{
-	return size;
-}
-
-v2CR grid::Start( void ) const{
-	return start;
-}
-
-v2CR grid::Resolution( void ) const{
-	return resolution;
-}
-
 bool grid::checkIndex( const idx2CR index ) const{
 
 	if( index.row >= size.row || index.col >= size.col ){
