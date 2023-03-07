@@ -90,7 +90,7 @@ class gantry {
 	 * @brief Get center of gantry
 	 * @return Center point
 	*/
-	inline pnt3 Center( void ) const{ cSys->OPnt(); };
+	inline pnt3 Center( void ) const{ return cSys->OPnt(); };
 
 	/*!
 	 * @brief Rotate gantry counter clockwise around zAxis
