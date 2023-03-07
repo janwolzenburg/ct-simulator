@@ -51,6 +51,24 @@ class filteredProjections : private grid {
 	*/
 	inline grid getGrid( void ) const { return (grid) *this; };
 
+	/*!
+	 * @brief Get size of projections
+	 * @return Size of projections
+	*/
+	inline idx2CR Size( void ) const{ return Size(); };
+
+	/*!
+	 * @brief Get starts of axis
+	 * @return Start of axis
+	*/
+	inline v2CR Start( void ) const{ return Start(); };
+
+	/*!
+	 * @brief Get resolution of axis
+	 * @return Resolution of axis
+	*/
+	inline v2CR Resolution( void ) const{ return Resolution(); };
+
 };
 
 
@@ -72,5 +90,7 @@ class reconstrucedImage : private grid {
 	 * @return Grid
 	*/
 	inline grid getGrid( void ) const{ return (grid) *this; };
+
+
 
 };
