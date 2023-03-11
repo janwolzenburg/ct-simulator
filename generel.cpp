@@ -194,14 +194,18 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 	size_t i = 0;
 
 	while( *it != '\0' && it < binData.end() ){
-		val.push_back( *(it++) );
+		val.push_back( *( it++ ) );
 		i++;
 	}
 
-	if( *it != '\0' )
+	if( *it != '\0' ){
+		val = defaultVal;
+		return val.size();
+	}
 
 	return i;
 }
+
 
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle

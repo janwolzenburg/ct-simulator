@@ -254,6 +254,9 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 template< typename T >
 size_t serializeBuildIn( const T val, vector<char>& binData );
 
+template<>
+size_t serializeBuildIn<string>( const string val, vector<char>& binData );
+
 /*!
  * @brief Deserialize build in data type
  * @tparam T Expected type
@@ -264,6 +267,12 @@ size_t serializeBuildIn( const T val, vector<char>& binData );
 */
 template< typename T >
 size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
+
+template<>
+size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
+
+
+
 
 /*!
  * @brief Export serial data to file

@@ -52,3 +52,5 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 
 	return i;
 }
+
+
