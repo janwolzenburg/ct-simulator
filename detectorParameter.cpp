@@ -60,10 +60,11 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
  * detectorIndipendentParameter implementation
 */
 
-detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ ) :
+detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
 	arcRadius( arcRadius_ ),
 	columnSize( Fpos( columnSize_ ) ),
-	structured( structured_ )
+	structured( structured_ ),
+	maxRayAngleDetectable( Fmax( Fmin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
 {}
 
 
@@ -76,7 +77,8 @@ detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParamet
 	number{ radonParameter.numberPoints.row, 1 },
 	angle( (double) ( radonParameter.numberPoints.row - 1 ) * radonParameter.resolution.col ),
 	detectorFocusDistance( indipendentParameter.arcRadius ),
-	structured( indipendentParameter.structured )
+	structured( indipendentParameter.structured ),
+	maxRayAngleDetectable( indipendentParameter.maxRayAngleDetectable )
 {
 	
 }

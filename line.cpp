@@ -76,7 +76,11 @@ double line::getPara( const pnt3 p, bool* const success ) const{
 }
 
 double line::getAngle( const surf s ) const{
-	return PI / 2 - r.angle( s.Normal() );
+
+	// Angle between direction vector and surface normal
+	double angle = r.angle( s.Normal() );
+
+	return abs( PI / 2 - angle );
 };
 
 vec3 line::getLot( const pnt3 p ) const{

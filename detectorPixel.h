@@ -59,8 +59,19 @@ class pixel : public surfLim{
 	*/
 	pixel convertTo( const cartCSys* const target_CSys ) const;
 
+	/*!
+	 * @brief Add ray properties
+	 * @param properties Properties to add
+	*/
+	void  addDetectedProperties( const rayProperties properties );
 
-	public:
+	/*!
+	 * @brief Get the detected ray properties
+	 * @return Vector with properties
+	*/
+	inline vector<rayProperties> getProperties( void ) const{ return detectedRayProperties; };
+
+	private:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
 
  };

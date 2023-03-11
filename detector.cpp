@@ -173,12 +173,19 @@ void detector::detectRay( const ray r, std::mutex& allPixelLock ){
 
 		// Do they intersect?
 		if( pixelHit.Result().hasSolution ){
-			allPixelLock.lock();
-			allPixel.at( pixelIdx ).detectedRayProperties.push_back( r.Properties() );		// Add detected ray properties to pixel
-			allPixelLock.unlock();
+			
+			// If structured and angle allowed by structure
+			if( !physicalParameters.structured || ( PI / 2. - r.getAngle( (surf) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
+				allPixelLock.lock();
+				allPixel.at( pixelIdx ).addDetectedProperties( r.Properties() );		// Add detected ray properties to pixel
+				allPixelLock.unlock();
+			}
+
+
+			// Only one pixel can intersect with ray
+			break;
 		}
 
-		//TODO: Check anti scattering structuring
 
 	}
 

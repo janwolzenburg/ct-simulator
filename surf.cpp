@@ -69,8 +69,6 @@ surf surf::convertTo( const cartCSys* const cSys_ ) const{
 }
 
 
-
-
 /*
 	surfLim implementation
 */

@@ -58,6 +58,12 @@ pixel pixel::convertTo( const cartCSys* const target_CSys ) const{
 
 }
 
+void  pixel::addDetectedProperties( const rayProperties properties ){
+	detectedRayProperties.push_back( properties );
+}
+
+
+
 /*
 	rayPix_Intersection_Result implementation
 */

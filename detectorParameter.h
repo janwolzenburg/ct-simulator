@@ -60,16 +60,17 @@ class detectorIndipendentParameter{
 	 * @param angle_ Detector angle
 	 * @param columnSize_ Size of pixel in column direction
 	 * @param structured_ Flag for anti scatter structure
+	 * @param maxRayAngleDetecable Maximum angle between pixel normal and ray
 	*/
-	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ );
+	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
 
 
 	public:
 
-	double arcRadius;		/*!<Radius of arc where the pixels lie on*/
-	double columnSize;		/*!<Size of one pixel in column direction*/
-	bool structured;		/*!<Flag for anti scatter structure*/
-
+	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
+	double columnSize;				/*!<Size of one pixel in column direction*/
+	bool structured;				/*!<Flag for anti scatter structure*/
+	double maxRayAngleDetectable;	/*!<Maximum angle between pixel normal and ray*/
 };
 
 
@@ -95,5 +96,5 @@ class detectorPhysicalParameter{
 	double angle;					/*!<Angle between outer normals*/
 	double detectorFocusDistance;	/*!Distance of focus and detector pixel*/
 	bool structured;				/*!<Flag for anti scatter structure*/
-
+	double maxRayAngleDetectable;	/*!<Maximum angle between pixel normal and ray*/
 };
