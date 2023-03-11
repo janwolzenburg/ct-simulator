@@ -203,6 +203,9 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 		return val.size();
 	}
 
+	// Skip '\0'
+	if( it < binData.end() ) it++;
+
 	return i;
 }
 
