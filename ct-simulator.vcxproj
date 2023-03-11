@@ -116,7 +116,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\opencv\build\include;..\..\ftlk_build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\opencv\build\include;..\..\ftlk_build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -159,6 +159,7 @@
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="equationSystem.h" />
+    <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="generel.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="programState.h" />
     <ClInclude Include="propability.fwd.h" />
     <ClInclude Include="propability.h" />
     <ClInclude Include="scattering.h" />
@@ -206,6 +208,7 @@
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
