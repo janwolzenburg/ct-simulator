@@ -173,6 +173,36 @@ Zrange::Zrange( const signed long long start_, const signed long long end_ ) : s
  * Serialization implementation
 */
 
+template<>
+size_t serializeBuildIn<string>( const string val, vector<char>& binData ){
+
+	size_t i = 0;
+
+	for( const char c : val ){
+		i++;
+		binData.push_back( c );
+	}
+
+	binData.push_back( '\0' );
+
+	return i;
+}
+
+template<>
+size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	size_t i = 0;
+
+	while( *it != '\0' && it < binData.end() ){
+		val.push_back( *(it++) );
+		i++;
+	}
+
+	if( *it != '\0' )
+
+	return i;
+}
+
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle
 	std::ofstream outFile;
