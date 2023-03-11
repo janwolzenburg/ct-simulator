@@ -213,7 +213,6 @@ class model : virtual public mathObj{
 
 	private:
 
-	bool validModel;
 	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
 	v3 voxSize3D;								/*!<Voxelsize in each dimension in mm*/
 	v3 size3D;									/*!<Size of complete model in mm*/

@@ -51,7 +51,14 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D 
 };
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	model{ DUMMY_CSYS()->createCopy( "Model system" ), idx3{ binData, it }, v3{ binData, it } }
+	numVox3D( idx3{ binData, it } ),
+	voxSize3D( v3{ binData, it } ),
+	size3D( { (double) numVox3D.x * voxSize3D.x,
+			 (double) numVox3D.y * voxSize3D.y,
+			 (double) numVox3D.z * voxSize3D.z } ),
+	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
+	parameter( new voxData[numVox] ),
+	cSys( DUMMY_CSYS()->createCopy( "Model system" ) )
 {
 
 	for( size_t i = 0; i < numVox; i++ ){
