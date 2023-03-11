@@ -6,12 +6,17 @@
  * @date   December 2022
  *********************************************************************/
 #include <iostream>
-using std::cerr;  using std::endl;
+using std::cerr;  using std::endl; using std::cout;
 
  //#include "test_all.h"
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Box.H>
+//#include <FL/Fl.H>
+//#include <FL/Fl_Window.H>
+//#include <FL/Fl_Box.H>
+
+#include "cSysTree.h"
+#include "test_model.h"
+#include "fileChooser.h"
+
 /*!
  * @brief Main function
  * @param  
@@ -19,17 +24,17 @@ using std::cerr;  using std::endl;
 */
 int main( int argc, char** argv ){
 
-	Fl_Window* window = new Fl_Window( 340, 180 );
-	Fl_Box* box = new Fl_Box( 20, 40, 300, 100, "Hello, World!" );
-	box->box( FL_UP_BOX );
-	box->labelfont( FL_BOLD + FL_ITALIC );
-	box->labelsize( 36 );
-	box->labeltype( FL_SHADOW_LABEL );
-	window->end();
-	window->show( argc, argv );
-	return Fl::run();
-	
+	model testModel = getTestModel( GLOBAL_CSYS(), 10 );
 
+	vector<char> modelBinaryData;
+	testModel.serialize( modelBinaryData );
+
+	exportSerialized( "./testModel_10x.model", modelBinaryData );
+
+	//fileChooser modelChooser{ "Choose model", "*.model" };
+	//cout << modelChooser.choose();
+	
+	return 1;
 	//if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
 
 	//if( !test_tube() ) cerr << "Test for xRay tube failed!";
