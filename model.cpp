@@ -30,8 +30,10 @@
 	model implementation
 */
 
-model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) : 
-	
+
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE"};
+
+model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) :
 	numVox3D( numVox3D_ ),
 	voxSize3D( voxSize3D_ ),
 	size3D( { (double) numVox3D.x * voxSize3D.x,
@@ -51,6 +53,7 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	model{ DUMMY_CSYS()->createCopy( "Model system" ), idx3{ binData, it }, v3{ binData, it } }
 {
+
 	for( size_t i = 0; i < numVox; i++ ){
 		parameter[i] = voxData{ binData, it };
 	}
@@ -61,6 +64,15 @@ model::model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
 model::~model(){
 	delete[] parameter;
 };
+
+bool model::validModelData( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	string readPreamble;
+	deSerializeBuildIn( readPreamble, string{}, binData, it);
+
+	return FILE_PREAMBLE == readPreamble;
+
+}
 
 std::string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return std::string( "" );
@@ -329,6 +341,7 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 size_t model::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
 	numBytes += size3D.serialize( binData );

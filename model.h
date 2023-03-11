@@ -26,7 +26,6 @@ using std::filesystem::path;
 	Definitions
  *********************************************************************/
 
-
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
@@ -48,11 +47,11 @@ class model : virtual public mathObj{
 
 	/*!
 	 * @brief Constructor from serialized data
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
 	 * @param binData Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
 	model( const vector<char>& binData, vector<char>::const_iterator& it );
-
 
 	/*!
 	 * @brief Copy constructor
@@ -69,6 +68,14 @@ class model : virtual public mathObj{
 	 * @brief Destructor
 	*/
 	~model();
+
+	/*!
+	 * @brief Check if data in vector is from a valid model file
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	 * @return True when preambles match
+	*/
+	static bool validModelData( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert model's data to string
@@ -206,6 +213,7 @@ class model : virtual public mathObj{
 
 	private:
 
+	bool validModel;
 	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
 	v3 voxSize3D;								/*!<Voxelsize in each dimension in mm*/
 	v3 size3D;									/*!<Size of complete model in mm*/
@@ -213,6 +221,7 @@ class model : virtual public mathObj{
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
 
+	static const string FILE_PREAMBLE;
 
 	private:
 
