@@ -67,6 +67,12 @@
     <Filter Include="Quelldateien\Physics\Rays">
       <UniqueIdentifier>{5b35f49f-e6fc-4f97-b916-56bb9c99829b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Program">
+      <UniqueIdentifier>{c765e23e-e59f-4de5-9781-951a1dc3e1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Program">
+      <UniqueIdentifier>{d3033035-8f42-44cc-aa9a-20823bfafa53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -210,6 +216,12 @@
     <ClInclude Include="intersections.hpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClInclude>
+    <ClInclude Include="programState.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="fileChooser.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -319,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="intersections.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
+    </ClCompile>
+    <ClCompile Include="fileChooser.cpp">
+      <Filter>Quelldateien\Program</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
