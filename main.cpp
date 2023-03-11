@@ -24,17 +24,19 @@ using std::cerr;  using std::endl; using std::cout;
 */
 int main( int argc, char** argv ){
 
-	model testModel = getTestModel( GLOBAL_CSYS(), 10 );
-
-	vector<char> modelBinaryData;
-	testModel.serialize( modelBinaryData );
-
-	exportSerialized( "./testModel_10x.model", modelBinaryData );
-
-	//fileChooser modelChooser{ "Choose model", "*.model" };
-	//cout << modelChooser.choose();
+	fileChooser modelChooser{ "Choose model", "*.model", path{ "./" } };
+	path chosenModel = modelChooser.choose();
 	
-	return 1;
+	if( chosenModel.empty() ) return -1;
+
+	vector<char> binaryModel = importSerialized( chosenModel.string().c_str() );
+	vector<char>::iterator binaryModelIt = binaryModel.begin();
+
+	if( !model::validModelData( binaryModel, binaryModelIt ) ) return -1;
+
+	model currentModel{ binaryModel, binaryModelIt };
+
+	
 	//if( !test_linear_algebra() ) cerr << "Test for linear algebra failed!";
 
 	//if( !test_tube() ) cerr << "Test for xRay tube failed!";
