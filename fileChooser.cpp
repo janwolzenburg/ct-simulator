@@ -35,13 +35,16 @@ fileChooser::fileChooser( const string windowTitle, const string fileFilter, con
 
 }
 
+void fileChooser::setStartDirectory( const path directory ){
+	this->directory( directory.string().c_str() );
+}
 
 path fileChooser::choose( void ){
 
 	if( this->show() != 0 ) return path{};
 
 	path filePath = path{ this->filename() };
-	this->directory( filePath.parent_path().string().c_str() );
+	setStartDirectory( filePath.parent_path() );
 	
 	return filePath;
 

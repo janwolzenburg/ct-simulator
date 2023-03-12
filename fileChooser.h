@@ -42,6 +42,12 @@ class fileChooser : private Fl_Native_File_Chooser{
 	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory = path{  } );
 
 	/*!
+	 * @brief Set the start directory
+	 * @param directory Directory to start
+	*/
+	void setStartDirectory( const path directory );
+
+	/*!
 	 * @brief Choose a file
 	 * @return Path to chosen file
 	*/
