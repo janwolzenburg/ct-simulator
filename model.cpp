@@ -334,7 +334,14 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 		(size_t) ( locCoords.z / voxSize3D.z )
 	};
 
-	if( !checkIndices( indices ) ) checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
+	// Supress checkErr when index is exactly on the edge
+	if( indices.x == numVox3D.x ) indices.x = numVox3D.x - 1;
+	if( indices.y == numVox3D.y ) indices.y = numVox3D.y - 1;
+	if( indices.z == numVox3D.z ) indices.z = numVox3D.z - 1;
+
+	if( !checkIndices( indices ) ){
+		checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
+	}
 
 	if( indices.x >= numVox3D.x ) indices.x = numVox3D.x - 1;
 	if( indices.y >= numVox3D.y ) indices.y = numVox3D.y - 1;
@@ -376,9 +383,9 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );
 
 	// Iterate all point in image
-	for( double currentX = slice.Start().col; currentX < slice.End().col; currentX += slice.Resolution().col ){
+	for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
 		
-		for( double currentY = slice.Start().row; currentY < slice.End().row; currentY += slice.Resolution().row ){
+		for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
 		
 			// Current point on plane
 			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
