@@ -17,14 +17,14 @@ isEven( const T integer ){
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
-min( const T a, const T b ){
+Min( const T a, const T b ){
 	if( a < b ) return a;
 	return b;
 }
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
-max( const T a, const T b ){
+Max( const T a, const T b ){
 	if( a >= b ) return a;
 	return b;
 }
@@ -33,19 +33,19 @@ max( const T a, const T b ){
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
 Fmax( const T value, const T maximum ){
-	return min( value, maximum );
+	return Min( value, maximum );
 }
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>  
 Fmin1( T a ){
-	return max( (T) 1, a );
+	return Max( (T) 1, a );
 }
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
 Fmin( T a, T minValue ){
-	return max( minValue, a );
+	return Max( minValue, a );
 }
 
 template <typename T>

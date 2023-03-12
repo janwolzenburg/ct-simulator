@@ -16,6 +16,7 @@
 
 #include <string>
 using std::string;
+
 #include <iostream>
 
 
@@ -81,7 +82,7 @@ isEven( const T integer );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-min( const T a, const T b );
+Min( const T a, const T b );
 
 /*!
  * @brief Return the maximum of two values
@@ -92,7 +93,7 @@ min( const T a, const T b );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
-max( const T a, const T b );
+Max( const T a, const T b );
 
 /*!
  * @brief Force a maximum value
