@@ -58,7 +58,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[numVox] ),
-	cSys( DUMMY_CSYS()->createCopy( "Model system" ) )
+	cSys( CSYS_TREE().addCSys( "Model system" ) )
 {
 
 	for( size_t i = 0; i < numVox; i++ ){
@@ -66,7 +66,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	}
 }
 
-model::model( void ) : model( DUMMY_CSYS()->createCopy( "Model system" ), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
+model::model( void ) : model( DUMMY_CSYS(), idx3{1, 1, 1}, v3{1, 1, 1}){}
 
 model::~model(){
 	delete[] parameter;
@@ -376,9 +376,9 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );
 
 	// Iterate all point in image
-	for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
+	for( double currentX = slice.Start().col; currentX < slice.End().col; currentX += slice.Resolution().col ){
 		
-		for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
+		for( double currentY = slice.Start().row; currentY < slice.End().row; currentY += slice.Resolution().row ){
 		
 			// Current point on plane
 			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
