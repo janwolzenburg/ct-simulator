@@ -344,6 +344,11 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 }
 
 
+vox model::getVoxel( const pnt3 point ) const{
+
+	return getVoxel( getVoxelIndices( point ) );
+
+}
 
 size_t model::serialize( vector<char>& binData ) const{
 
@@ -360,4 +365,35 @@ size_t model::serialize( vector<char>& binData ) const{
 
 	return numBytes;
 
+}
+
+grid model::getSlice( const surfLim sliceLocation, const double resolution, const range xRange, const range yRange ) const{
+	
+	// Image
+	grid slice{ xRange, yRange, v2CR{ resolution, resolution }, 0. };
+
+	// Surface in local coordinate system
+	const surfLim slicePlane = sliceLocation.convertTo( cSys );
+
+	// Iterate all point in image
+	for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
+		
+		for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
+		
+			// Current point on plane
+			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
+
+			// Current voxel
+			const vox currentVoxel = this->getVoxel( currentPoint );
+
+			// Current voxel value
+			const double currentValue = currentVoxel.Data().attenuationAtRefE();
+
+			// Set image value
+			slice.operator()( v2CR{ currentX, currentY } ) = currentValue;
+
+		}
+	}
+
+	return slice;
 }

@@ -19,7 +19,7 @@ using std::filesystem::path;
  #include "voxel.h"
  #include "scattering.h"
  #include "simulation.h"
-
+ #include "grid.h"
 
 
   /*********************************************************************
@@ -181,6 +181,8 @@ class model : virtual public mathObj{
 	*/
 	vox getVoxel( const idx3 indices ) const;
 
+	vox getVoxel( const pnt3 indices ) const;
+
 	/*!
 	 * @brief Checks if local point is inside model
 	 * @param localPnt Point to check
@@ -210,6 +212,7 @@ class model : virtual public mathObj{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	grid getSlice( const surfLim sliceLocation, const double resolution, const range xRange, const range yRange ) const; 
 
 	private:
 
