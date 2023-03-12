@@ -42,6 +42,20 @@ class fileChooser : private Fl_Native_File_Chooser{
 	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory = path{  } );
 
 	/*!
+	 * @brief Constructor from serialized data
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	fileChooser( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
+	/*!
 	 * @brief Set the start directory
 	 * @param directory Directory to start
 	*/

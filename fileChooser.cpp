@@ -12,6 +12,10 @@
    Includes
 *********************************************************************/
 
+#include <vector>
+using std::vector;
+
+#include "generel.h"
 #include "fileChooser.h"
 #include "FL/Fl_Native_File_Chooser.H"
 
@@ -32,6 +36,25 @@ fileChooser::fileChooser( const string windowTitle, const string fileFilter, con
 	this->filter( fileFilter.c_str() );
 
 	this->directory( defaultDirectory.string().c_str() );
+
+}
+
+fileChooser::fileChooser( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	fileChooser{	deSerializeBuildIn<string>( string{ "File chooser" }, binData, it),
+					deSerializeBuildIn<string>( string{ "" }, binData, it ), 
+					deSerializeBuildIn<string>( string{ "./" }, binData, it )}
+{
+
+}
+
+size_t fileChooser::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( string{ this->title() }, binData);
+	numBytes += serializeBuildIn( string{ this->filter() }, binData );
+	numBytes += serializeBuildIn( string{ this->directory() }, binData );
+
+	return numBytes;
 
 }
 
