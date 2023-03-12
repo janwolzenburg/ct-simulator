@@ -39,11 +39,15 @@ fileChooser::fileChooser( const string windowTitle, const string fileFilter, con
 
 }
 
-fileChooser::fileChooser( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	fileChooser{	deSerializeBuildIn<string>( string{ "File chooser" }, binData, it),
-					deSerializeBuildIn<string>( string{ "" }, binData, it ), 
-					deSerializeBuildIn<string>( string{ "./" }, binData, it )}
+fileChooser::fileChooser( const vector<char>& binData, vector<char>::const_iterator& it )
 {
+
+	this->type( Fl_Native_File_Chooser::BROWSE_FILE );
+
+	this->title( deSerializeBuildIn<string>( string{ "File chooser" }, binData, it ).c_str() );
+	this->filter( deSerializeBuildIn<string>( string{ "" }, binData, it ).c_str() );
+
+	this->directory( deSerializeBuildIn<string>( string{ "./" }, binData, it ).c_str() );
 
 }
 
