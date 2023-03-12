@@ -61,6 +61,7 @@ class programState{
 
 	void loadModel( const path modelFile );
 
+	void saveState( void ) const;
 
 	private:
 	 
@@ -75,6 +76,7 @@ class programState{
 
 	const path stateStorage;
 
+	const string modelChooserFilename = "storedModelChooser.chooser";
 	fileChooser modelFileChooser;
 
 	const string modelFilename = "storedModel.model";
