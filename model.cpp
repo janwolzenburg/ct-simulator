@@ -367,10 +367,10 @@ size_t model::serialize( vector<char>& binData ) const{
 
 }
 
-grid model::getSlice( const surfLim sliceLocation, const double resolution, const range xRange, const range yRange ) const{
+grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
 	
 	// Image
-	grid slice{ xRange, yRange, v2CR{ resolution, resolution }, 0. };
+	grid slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, 0.};
 
 	// Surface in local coordinate system
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );
