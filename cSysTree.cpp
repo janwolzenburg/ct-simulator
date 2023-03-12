@@ -86,6 +86,14 @@ cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex
 	return addCSys( origin_, ex_, ey_, ez_, GLOBAL_CSYS(), name_ );
 }
 
+cartCSys* cSysTree::addCSys( const cartCSys* parent_, const string name_ ){
+	return addCSys( primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, parent_, name_ );
+}
+
+cartCSys* cSysTree::addCSys( const string name_ ){
+	return addCSys( getGlobal(), name_ );
+}
+
 cartCSys* cSysTree::getDummy( void ){
 	return &systems[ 0 ];
 }
