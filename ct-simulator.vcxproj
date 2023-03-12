@@ -167,6 +167,7 @@
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
     <ClInclude Include="grid.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="intersections.h" />
     <ClInclude Include="line.fwd.h" />

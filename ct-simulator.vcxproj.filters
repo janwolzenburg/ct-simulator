@@ -225,6 +225,9 @@
     <ClInclude Include="programState.fwd.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
+    <ClInclude Include="image.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
