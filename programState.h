@@ -57,11 +57,18 @@ class programState{
 
 	static programState& getInstance();
 
+
+	inline bool ModelLoaded( void ) const{ return modelLoaded; };
+
 	void loadModel( void );
 
 	void loadModel( const path modelFile );
 
+	inline model& Model( void ) { return currentModel; };
+
 	void saveState( void ) const;
+
+
 
 	private:
 	 
