@@ -38,8 +38,8 @@ programState::programState( void ) :
 	modelLoaded( false )
 {
 
-	// Check if state storage directory erxists
-	if( !std::filesystem::is_directory( stateStorage ) ) std::filesystem::create_directory( stateStorage );
+	// Check if state storage directory exists
+	if( !std::filesystem::is_directory( stateStorage ) ) return;
 
 	// Where to find model file
 	const path modelFilePath = stateStorage / modelFilename;
