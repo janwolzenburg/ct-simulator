@@ -51,7 +51,8 @@ class image{
 
 	inline size_t Width( void ) const{ return width; };
 	inline size_t Heigth( void ) const{ return height; };
-	inline unsigned char* getImDataPtr( void ){ return imData.data(); };
+	vector<unsigned char> getImage( void ) const{ return imData; };
+	inline const unsigned char* getImDataPtr( void ){ return imData.data(); };
 
 
 	private:

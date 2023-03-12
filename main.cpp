@@ -9,11 +9,10 @@
 using std::cerr;  using std::endl; using std::cout;
 
  //#include "test_all.h"
-//#include <FL/Fl.H>
-//#include <FL/Fl_Window.H>
-//#include <FL/Fl_Image.H>
-
-//#include <FL/Fl_Box.H>
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Draw.H>
+#include <FL/Fl_Box.H>
 
 #include "programState.h"
 #include "cSysTree.h"
@@ -46,14 +45,21 @@ int main( int argc, char** argv ){
 
 	image sliceImage{ modelSlice };
 
-	//Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
+	Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
 
-	//Fl_Bitmap slice{ modelSlice.Size().col, modelSlice.Size().row };
+	vector<unsigned char> imageBufferMono = sliceImage.getImage();
 
-	//window->end();
-	//window->show( argc, argv );
+	Fl_Box* sliceImageBox = new Fl_Box( 0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row );
+	Fl_RGB_Image* slice = new Fl_RGB_Image( imageBufferMono.data(), (int) modelSlice.Size().col, (int) modelSlice.Size().row, 1 );
 
-	//while( Fl::wait() );
+	//fl_draw_image_mono( imageBuffer.data(), 0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row);
+	//slice->draw(0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row );
 
-	return 0;
+	sliceImageBox->image( slice );
+
+
+	window->end();
+	window->show( argc, argv );
+
+	return Fl::run();
 }
