@@ -66,7 +66,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	}
 }
 
-model::model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
+model::model( void ) : model( DUMMY_CSYS()->createCopy( "Model system" ), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
 
 model::~model(){
 	delete[] parameter;
