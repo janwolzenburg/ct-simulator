@@ -222,6 +222,9 @@
     <ClInclude Include="fileChooser.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
+    <ClInclude Include="programState.fwd.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -333,6 +336,9 @@
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="fileChooser.cpp">
+      <Filter>Quelldateien\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
   </ItemGroup>

@@ -176,6 +176,7 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="propability.fwd.h" />
     <ClInclude Include="propability.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
+    <ClCompile Include="programState.cpp" />
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="scattering.cpp" />
     <ClCompile Include="test_processing.cpp" />
