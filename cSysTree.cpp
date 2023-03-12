@@ -65,6 +65,9 @@ cSysTree::cSysTree( void ){
 
 	systems[ 0 ] = dummySys;
 	systems[ 1 ] = globalSys;
+
+	systems[0].parent = &systems[ 1 ];
+
 	numSystems = 2;
 }
 
