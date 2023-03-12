@@ -53,4 +53,13 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 	return i;
 }
 
+template< typename T >
+T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
 
+	T temp;
+	
+	deSerializeBuildIn( temp, defaultVal, binData, it );
+
+	return temp;
+
+}

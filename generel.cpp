@@ -193,6 +193,8 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 
 	size_t i = 0;
 
+	val.clear();
+
 	while( *it != '\0' && it < binData.end() ){
 		val.push_back( *( it++ ) );
 		i++;
