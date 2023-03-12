@@ -66,6 +66,12 @@ class grid{
 	inline v2CR Start( void ) const{ return start; };
 
 	/*!
+	 * @brief Get ends of axis
+	 * @return Ens of axis
+	*/
+	v2CR End( void ) const;
+
+	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
