@@ -212,7 +212,7 @@ class model : virtual public mathObj{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	grid getSlice( const surfLim sliceLocation, const double resolution, const range xRange, const range yRange ) const; 
+	grid getSlice( const surfLim sliceLocation, const double resolution ) const; 
 
 	private:
 
