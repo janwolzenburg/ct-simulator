@@ -31,7 +31,7 @@
 */
 
 
-const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE"};
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE         "};
 
 model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) :
 	numVox3D( numVox3D_ ),
@@ -351,7 +351,6 @@ size_t model::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
-	numBytes += size3D.serialize( binData );
 
 	for( size_t i = 0; i < numVox; i++ ){
 
