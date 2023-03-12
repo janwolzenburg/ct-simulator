@@ -50,10 +50,35 @@ class fileChooser : private Fl_Native_File_Chooser{
 	fileChooser( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
+	 * @brief Copy constructor
+	 * @param fC instance to copy from
+	*/
+	fileChooser( const fileChooser& fC );
+
+	/*!
+	 * @brief Assignment operator
+	 * @param fC 
+	 * @return 
+	*/
+	fileChooser& operator=( const fileChooser& fC );
+
+	/*!
 	 * @brief Serialize this object
 	 * @param binData Reference to vector where data will be appended
 	*/
 	size_t serialize( vector<char>& binData ) const;
+
+	/*!
+	 * @brief Set new window title
+	 * @param newTitle New title
+	*/
+	void setTitle( const string newTitle );
+
+	/*!
+	 * @brief Set new filter
+	 * @param newFilter New filter
+	*/
+	void setFilter( const string newFilter );
 
 	/*!
 	 * @brief Set the start directory
@@ -66,5 +91,12 @@ class fileChooser : private Fl_Native_File_Chooser{
 	 * @return Path to chosen file
 	*/
 	path choose( void );
-		 
+	
+
+	private:
+	
+	string titleString;		/*!<Title string*/
+	string filterString;	/*!<Filter string*/
+	path startDirectory;	/*!<Start directory*/
+
  };
