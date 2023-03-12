@@ -26,5 +26,7 @@ int main( int argc, char** argv ){
 
 	currentState.loadModel();
 
+	currentState.saveState();
+
 	return 0;
 }
