@@ -11,9 +11,9 @@
 *.sln.docstates
 *.model
 *.chooser
-/diagnoseSession
-/stateStorage
-/x64
+diagnoseSession/
+stateStorage/
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
