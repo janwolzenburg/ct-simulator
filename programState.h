@@ -39,11 +39,11 @@
 
 #ifdef WIN32
 
-	const string stateStorageString{ "%AppData%\\" };
+	const string stateStorageString{ ".\\stateStorage\\" };
 
 #else
 
-	const string stateStorageString{ "~/" };
+	const string stateStorageString{ "./stateStorage/" };
 
 #endif // WIN32
 
