@@ -18,7 +18,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "programState.h"
 #include "cSysTree.h"
 #include "surf.h"
-//#include "image.h"
+#include "image.h"
 
 /*!
  * @brief Main function
@@ -44,7 +44,7 @@ int main( int argc, char** argv ){
 
 	const grid modelSlice = currentModel.getSlice( viewPlane, 1. );
 
-	//image sliceImage{ modelSlice };
+	image sliceImage{ modelSlice };
 
 	//Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
 

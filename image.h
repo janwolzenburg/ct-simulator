@@ -13,7 +13,7 @@
  *********************************************************************/
 
 #include "grid.h"
-
+#include "vectorAlgorithm.h"
 
 /*********************************************************************
    Definitions
@@ -28,19 +28,30 @@ class image{
 		height( source.Size().row ),
 		numPixel( width * height ),
 		data( numPixel, 0. ),
-		imData( numPixel, 0. )
+		imData( numPixel, 0 )
 	{
 		
 		for( size_t c = 0; c < width; c++ ){
 			for( size_t r = 0; r < height; r++ ){
-
 				data.at( c + r * width ) = source.operator()(idx2CR{c, r});
 			}
 		}
 
+		const double maxVal = Max( data );
+		const double minVal = Min( data );
 		
+		for( size_t i = 0; i < numPixel; i++ ){
+			imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
+		}
 
 	}
+
+	image( const image& sImg) = delete;
+	image& operator=( const image& sImg ) = delete;
+
+	inline size_t Width( void ) const{ return width; };
+	inline size_t Heigth( void ) const{ return height; };
+	inline unsigned char* getImDataPtr( void ){ return imData.data(); };
 
 
 	private:
@@ -50,7 +61,7 @@ class image{
 
 
 	vector<double> data;
-	vector<char> imData;
+	vector<unsigned char> imData;
 
 
 };
