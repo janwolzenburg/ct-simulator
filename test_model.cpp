@@ -28,7 +28,7 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res } };
+	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
 
 	double kWater = 0.01611970000;
 
