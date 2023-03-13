@@ -55,3 +55,12 @@ void programState::saveState( void ) const{
 	storedModelChooser.saveObject();
 	storedModelSlice.saveObject();
 }
+
+
+void programState::loadModel( void ){
+
+	path modelToLoad = storedModelChooserInstance.choose();
+
+	storedModel.loadStored( modelToLoad );
+
+};

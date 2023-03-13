@@ -12,6 +12,9 @@ using std::cerr;  using std::endl; using std::cout;
 
 #include "programState.h"
 #include "gui.h"
+#include "image.h"
+#include "cartesian.h"
+#include "cSysTree.h"
 
 /*!
  * @brief Main function
@@ -22,9 +25,8 @@ int main( int argc, char** argv ){
 
 	programState& currentState = PROGRAM_STATE();
 
-	//if( !currentState.ModelLoaded() ) currentState.loadModel();
-
-
+	if( !currentState.ModelLoaded() ) currentState.loadModel();
+	currentState.loadModel();
 	//model& currentModel = currentState.Model();
 
 	//cartCSys* viewSystem = CSYS_TREE().addCSys("View system");
@@ -37,12 +39,12 @@ int main( int argc, char** argv ){
 
 	//const grid modelSlice = currentModel.getSlice( viewPlane, 1. );
 
-	//image sliceImage{ modelSlice };
+	//greyImage sliceImage{ modelSlice };
 
 	//vector<char> imageBinary;
 	//sliceImage.serialize( imageBinary );
 
-	//exportSerialized( "modelSliceImage.image", imageBinary ); 
+	//exportSerialized( currentState.stateStorage / "modelSliceImage.image" , imageBinary ); 
 
 	//Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
 
@@ -70,6 +72,7 @@ int main( int argc, char** argv ){
 	//window->show( argc, argv );
 
 
+	currentState.saveState();
 
 	while( Fl::wait() ){
 

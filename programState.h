@@ -42,8 +42,33 @@
 		loadStored();
 	};
 
+	void loadStored( const path filePath ){
+		file = filePath;
+		loadStored();
+	};
+
+	void saveObject( void ) const {
+
+		vector<char> binaryData;
+		object.serialize( binaryData );
+
+		exportSerialized( file, binaryData );
+
+	};
+
+	inline bool Loaded( void ) const { return loaded; };
+
+	inline bool setLoaded( void ){ loaded = true; };
+
+
+
+	private:
+	path file;
+	C& object;
+	bool loaded;
+
 	void loadStored( void ){
-		
+
 		// Does the file exist?
 		if( !std::filesystem::exists( file ) ) return;
 
@@ -56,20 +81,6 @@
 		object = C{ binaryData, binaryDataIt };
 		loaded = true;
 	};
-
-	void saveObject( void ) const {
-
-		vector<char> binaryData;
-		object.serialize( binaryData );
-
-		exportSerialized( file, binaryData );
-
-	};
-
-	public:
-	path file;
-	C& object;
-	bool loaded;
 
  };
 
@@ -99,10 +110,14 @@ class programState{
 
 	static programState& getInstance();
 
-
 	void saveState( void ) const;
 
 
+	inline bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+
+	void loadModel( void );
+
+	inline model& Model( void ){ return storedModelInstance; };
 
 	private:
 	 
