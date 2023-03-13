@@ -31,9 +31,13 @@ class Fl_Image_Widget : public Fl_Widget{
 
 	Fl_Image_Widget( int x, int y, int w, int h, const char* label = 0L );
 
+	virtual void draw( void );
+
+	virtual void resize( int x, int y, int w, int h );
+
 	void assignImage( const greyImage& img );
 
-	virtual void draw( void );
+	void calculateScaled( void );
 
 
 	private:
