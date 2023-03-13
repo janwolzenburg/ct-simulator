@@ -201,6 +201,7 @@
     <ClInclude Include="vec3D.h" />
     <ClInclude Include="vectorAlgorithm.h" />
     <ClInclude Include="voxel.h" />
+    <ClInclude Include="widgets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="backprojection.cpp" />
@@ -217,6 +218,7 @@
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="grid.cpp" />
+    <ClCompile Include="gui.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
@@ -242,6 +244,7 @@
     <ClCompile Include="vec3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />
+    <ClCompile Include="widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
