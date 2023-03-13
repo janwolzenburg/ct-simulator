@@ -67,6 +67,8 @@ class programState{
 
 	inline model& Model( void ) { return currentModel; };
 
+	inline image& ModelSlice( void )  { return modelSlice; };
+
 	void saveState( void ) const;
 
 
