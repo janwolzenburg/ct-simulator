@@ -76,7 +76,7 @@ class model : virtual public mathObj{
 	 * @param it Iterator to start of data in vector
 	 * @return True when preambles match
 	*/
-	static bool validModelData( const vector<char>& binData, vector<char>::const_iterator& it );
+	static bool validBinaryData( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert model's data to string

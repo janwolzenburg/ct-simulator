@@ -45,11 +45,11 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ )
 	cSys( cSys_ )
 {
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
-};
+}
 
 model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D ){
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
-};
+}
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	numVox3D( idx3{ binData, it } ),
@@ -73,7 +73,7 @@ model::~model(){
 	delete[] parameter;
 };
 
-bool model::validModelData( const vector<char>& binData, vector<char>::const_iterator& it ){
+bool model::validBinaryData( const vector<char>& binData, vector<char>::const_iterator& it ){
 
 	string readPreamble;
 	deSerializeBuildIn( readPreamble, string{}, binData, it);
