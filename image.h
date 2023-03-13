@@ -46,6 +46,27 @@ class image{
 
 	}
 
+	image( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+		width( deSerializeBuildIn( 1, binData, it ) ),
+		height( deSerializeBuildIn( 1, binData, it ) ),
+		numPixel( width* height ),
+		data( numPixel, 0. ),
+		imData( numPixel, 0 )
+	{
+		
+		for( size_t i = 0; i < numPixel; i++ ){
+			data.at( i ) = deSerializeBuildIn( 0., binData, it );
+		}
+
+		const double maxVal = Max( data );
+		const double minVal = Min( data );
+
+		for( size_t i = 0; i < numPixel; i++ ){
+			imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
+		}
+
+	}
+
 	image( const image& sImg) = delete;
 	image& operator=( const image& sImg ) = delete;
 
@@ -53,6 +74,23 @@ class image{
 	inline size_t Heigth( void ) const{ return height; };
 	vector<unsigned char> getImage( void ) const{ return imData; };
 	inline const unsigned char* getImDataPtr( void ){ return imData.data(); };
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const{
+		
+		size_t numBytes = 0;
+		numBytes += serializeBuildIn( width, binData );
+		numBytes += serializeBuildIn( height, binData );
+
+		for( size_t i = 0; i < numPixel; i++ ){
+			numBytes += serializeBuildIn( data.at( i ), binData );
+		}
+
+		return numBytes;
+	};
 
 
 	private:
