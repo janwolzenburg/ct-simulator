@@ -23,6 +23,16 @@ class image{
 
 	public:
 
+	image( void ) :
+		width( 0 ),
+		height( 0 ),
+		numPixel( width* height ),
+		data( numPixel, 0. ),
+		imData( numPixel, 0 )
+	{
+
+	}
+
 	image( const grid source ) : 
 		width( source.Size().col ),
 		height( source.Size().row ),
@@ -65,15 +75,11 @@ class image{
 			imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
 		}
 
-	}
-
-	image( const image& sImg) = delete;
-	image& operator=( const image& sImg ) = delete;
+	};
 
 	inline size_t Width( void ) const{ return width; };
 	inline size_t Heigth( void ) const{ return height; };
 	vector<unsigned char> getImage( void ) const{ return imData; };
-	inline const unsigned char* getImDataPtr( void ){ return imData.data(); };
 
 	/*!
 	 * @brief Serialize this object
