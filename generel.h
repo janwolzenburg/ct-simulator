@@ -296,4 +296,12 @@ vector<char> importSerialized( const path filePath );
 */
 vector<char> importSerialized( const string fileName );
 
+/*!
+	* @brief Check if data in vector is from a valid file
+	* @param binData Reference to vector with binary data
+	* @param it Iterator to start of data in vector
+	* @return True when preambles match
+*/
+bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
+
 #include "generel.hpp"

@@ -251,3 +251,13 @@ vector<char> importSerialized( const string fileName ){
 	return binData;
 
 }
+
+
+bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	string readPreamble;
+	deSerializeBuildIn( readPreamble, string{}, binData, it );
+
+	return preamble == readPreamble;
+
+}

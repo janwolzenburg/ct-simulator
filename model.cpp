@@ -73,15 +73,6 @@ model::~model(){
 	delete[] parameter;
 };
 
-bool model::validBinaryData( const vector<char>& binData, vector<char>::const_iterator& it ){
-
-	string readPreamble;
-	deSerializeBuildIn( readPreamble, string{}, binData, it);
-
-	return FILE_PREAMBLE == readPreamble;
-
-}
-
 std::string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return std::string( "" );
 };

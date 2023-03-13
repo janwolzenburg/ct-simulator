@@ -17,7 +17,7 @@ using std::filesystem::path;
  #include "generelMath.h"
  #include "cartesian.h"
  #include "voxel.h"
- //#include "scattering.h"
+ #include "scattering.h"
  //#include "simulation.h"
  #include "grid.h"
 
@@ -69,14 +69,6 @@ class model : virtual public mathObj{
 	 * @brief Destructor
 	*/
 	~model();
-
-	/*!
-	 * @brief Check if data in vector is from a valid model file
-	 * @param binData Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
-	 * @return True when preambles match
-	*/
-	static bool validBinaryData( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert model's data to string
