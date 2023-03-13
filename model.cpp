@@ -34,7 +34,7 @@
 
 const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE         "};
 
-model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) :
+model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
 	voxSize3D( voxSize3D_ ),
 	size3D( { (double) numVox3D.x * voxSize3D.x,
@@ -42,14 +42,17 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ )
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
 	parameter( new voxData[ numVox ] ),
-	cSys( cSys_ )
+	cSys( cSys_ ),
+	name( name_ )
 {
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 }
 
+
 model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D ){
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 }
+
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	numVox3D( idx3{ binData, it } ),
@@ -59,7 +62,8 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[numVox] ),
-	cSys( CSYS_TREE().addCSys( "Model system" ) )
+	cSys( CSYS_TREE().addCSys( "Model system" ) ),
+	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
 
 	for( size_t i = 0; i < numVox; i++ ){
@@ -69,13 +73,16 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 
 model::model( void ) : model( DUMMY_CSYS(), idx3{1, 1, 1}, v3{1, 1, 1}){}
 
+
 model::~model(){
 	delete[] parameter;
-};
+}
+
 
 std::string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return std::string( "" );
-};
+}
+
 
 model& model::operator=( const model& mod ){
 	cSys = mod.cSys;
@@ -90,7 +97,8 @@ model& model::operator=( const model& mod ){
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 
 	return *this;
-};
+}
+
 
 voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -98,7 +106,8 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-};
+}
+
 
 voxData model::operator() ( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -106,19 +115,23 @@ voxData model::operator() ( const size_t x, const size_t y, const size_t z ) con
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-};
+}
+
 
 voxData& model::operator() ( const idx3 indices ){
 	return ( *this )( indices.x, indices.y, indices.z );
 }
 
+
 voxData model::operator() ( const idx3 indices ) const{
 	return ( *this )( indices.x, indices.y, indices.z );
 }
 
+
 vox model::Vox( void ) const{
 	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
 }
+
 
 bool model::checkIndices( const idx3 indices ) const{
 	if( indices.x >= numVox3D.x ||
@@ -130,14 +143,17 @@ bool model::checkIndices( const idx3 indices ) const{
 	return true;
 }
 
+
 bool model::validCoords( const v3 voxCoords ) const{
 	return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
 		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
 }
 
+
 idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
 	return getVoxelIndices( voxpnt.XYZ( cSys ) );
 }
+
 
 vox model::getVoxel( const idx3 indices ) const{
 	if( indices.x >= numVox3D.x || indices.y >= numVox3D.y || indices.z >= numVox3D.z ){
@@ -153,9 +169,11 @@ vox model::getVoxel( const idx3 indices ) const{
 	return voxel;
 }
 
+
 bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
+
 
 ray model::rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const{
 
@@ -314,6 +332,7 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 	return true;
 }
 
+
 idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
 		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
@@ -349,12 +368,14 @@ vox model::getVoxel( const pnt3 point ) const{
 
 }
 
+
 size_t model::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
+	numBytes += serializeBuildIn( name, binData );
 
 	for( size_t i = 0; i < numVox; i++ ){
 
@@ -365,6 +386,7 @@ size_t model::serialize( vector<char>& binData ) const{
 	return numBytes;
 
 }
+
 
 grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
 	

@@ -48,8 +48,9 @@ class model : virtual public mathObj{
 	 * @param cSys_ Position and orientation of model in global system
 	 * @param numVox3D_	Amount of voxels in each spacial dimension
 	 * @param voxSize3D_ Spacial size of voxels
+	 * @param name_ Name of model
 	*/
-	model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ );
+	model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ = "Default model name" );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -232,7 +233,7 @@ class model : virtual public mathObj{
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
-
+	string name;								/*!<Model name*/
 
 	private:
 
