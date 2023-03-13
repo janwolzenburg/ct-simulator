@@ -159,7 +159,7 @@ bool test_Tomography( void ){
 void serialisedToImage( void ){
 
 	
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" );
+	vector<char> importedData = importSerialized( string{ "./test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 
@@ -198,7 +198,7 @@ bool test_serialisation( void ){
 
 	exportSerialized( "test_serialisation.txt", serializedData );
 
-	vector<char> importedData = importSerialized( "test_serialisation.txt" );
+	vector<char> importedData = importSerialized( string{ "test_serialisation.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
@@ -248,7 +248,7 @@ bool test_filter( void ){
 
 bool test_filteredProjection( void ){
 
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_300x100_1.txt" );
+	vector<char> importedData = importSerialized( string{ "test_Tomography_serialized_sinogram_300x100_1.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
@@ -266,7 +266,7 @@ bool test_filteredProjection( void ){
 
 bool test_reconstruction( void ){
 
-	vector<char> importedData = importSerialized( "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt" );
+	vector<char> importedData = importSerialized( string{ "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt"} );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
