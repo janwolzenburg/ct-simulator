@@ -122,6 +122,12 @@ class programState{
 
 	inline model& Model( void ){ return storedModelInstance; };
 
+
+	inline bool SliceLoaded( void ) const{ return storedModelSlice.Loaded(); };
+
+	inline greyImage& Slice( void ){ return modelSliceInstance; };
+
+
 	private:
 	 
 	path getPath( const string filename ) const{
