@@ -18,6 +18,7 @@
  #include "programState.fwd.h"
  #include "model.h"
  #include "fileChooser.h"
+ #include "image.h"
 
 
  /*********************************************************************
@@ -90,5 +91,8 @@ class programState{
 	model currentModel;
 	bool modelLoaded;
 
+	const string modelSliceImageFilename = "modelSliceImage.image";
+	image modelSlice;
+	bool modelSliceLoaded;
 
 };

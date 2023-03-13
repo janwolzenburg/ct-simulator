@@ -34,8 +34,12 @@ programState& programState::getInstance(){
 programState::programState( void ) :
 	stateStorage{ stateStorageString },
 	modelFileChooser{ "Choose CT model", "*.model", path{ "./" } },
+
 	currentModel{},
-	modelLoaded( false )
+	modelLoaded( false ),
+
+	modelSlice{},
+	modelSliceLoaded( false )
 {
 
 	// Check if state storage directory exists
@@ -52,15 +56,17 @@ programState::programState( void ) :
 
 
 	const path modelChooserPath = stateStorage / modelChooserFilename;
-
-	
 	if( std::filesystem::exists( modelChooserPath ) ){
-		
-
 		vector<char> binaryModelChooser = importSerialized( modelChooserPath.string().c_str() );
 		vector<char>::iterator binaryModelChooserIt = binaryModelChooser.begin();
-
 		modelFileChooser = fileChooser{ binaryModelChooser, binaryModelChooserIt };
+	}
+
+	const path modelSliceImagePath = stateStorage / modelSliceImageFilename;
+	if( std::filesystem::exists( modelSliceImagePath ) ){
+		vector<char> binaryModelSliceImage = importSerialized( modelSliceImagePath.string().c_str() );
+		vector<char>::iterator binaryModelSliceImageIt = binaryModelSliceImage.begin();
+		modelSlice = image{ binaryModelSliceImage, binaryModelSliceImageIt };
 	}
 
 }
