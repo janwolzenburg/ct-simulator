@@ -12,6 +12,9 @@
 	Includes
  *********************************************************************/
 
+ #include <FL/Fl_Box.H>
+ #include <FL/Fl_Output.H>
+ #include <FL/Fl_Button.H>
 #include "widgets.h"
 
 
