@@ -57,8 +57,8 @@ class image{
 	}
 
 	image( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-		width( deSerializeBuildIn( 1, binData, it ) ),
-		height( deSerializeBuildIn( 1, binData, it ) ),
+		width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
+		height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		numPixel( width* height ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
@@ -67,6 +67,8 @@ class image{
 		for( size_t i = 0; i < numPixel; i++ ){
 			data.at( i ) = deSerializeBuildIn( 0., binData, it );
 		}
+
+		if( data.size() == 0 ) return;
 
 		const double maxVal = Max( data );
 		const double minVal = Min( data );
