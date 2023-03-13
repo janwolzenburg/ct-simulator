@@ -286,6 +286,8 @@ T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::c
 */
 bool exportSerialized( const string fileName, const vector<char> binData );
 
+bool exportSerialized( const path filePath, const vector<char> binData );
+
 
 vector<char> importSerialized( const path filePath );
 

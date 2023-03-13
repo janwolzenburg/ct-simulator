@@ -212,6 +212,12 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 }
 
 
+bool exportSerialized( const path filePath, const vector<char> binData ){
+
+	exportSerialized( filePath.string(), binData );
+
+}
+
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle
 	std::ofstream outFile;
