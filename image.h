@@ -27,6 +27,7 @@ class greyImage{
 		width( 0 ),
 		height( 0 ),
 		numPixel( width* height ),
+		dataLocked( false ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
 	{
@@ -37,6 +38,7 @@ class greyImage{
 		width( source.Size().col ),
 		height( source.Size().row ),
 		numPixel( width * height ),
+		dataLocked( false ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
 	{
@@ -60,6 +62,7 @@ class greyImage{
 		width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		numPixel( width* height ),
+		dataLocked( false ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
 	{
@@ -79,9 +82,30 @@ class greyImage{
 
 	};
 
+	greyImage& operator=( const greyImage& srcImg ){
+
+		if( dataLocked ) return *this;
+
+		width = srcImg.width;
+		height = srcImg.height;
+		numPixel = srcImg.numPixel;
+
+		data = srcImg.data;
+		imData = srcImg.imData;
+
+	};
+
+
 	inline size_t Width( void ) const{ return width; };
+	
 	inline size_t Heigth( void ) const{ return height; };
+	
 	vector<unsigned char> getImage( void ) const{ return imData; };
+	
+	const unsigned char* getDataPtr( void ){ 
+		dataLocked = true;
+		return imData.data(); 
+	};
 
 	/*!
 	 * @brief Serialize this object
@@ -101,12 +125,12 @@ class greyImage{
 	};
 
 
-	private:
+	protected:
 	size_t width;
 	size_t height;
 	size_t numPixel;
 
-
+	bool dataLocked;
 	vector<double> data;
 	vector<unsigned char> imData;
 
