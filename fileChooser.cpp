@@ -26,6 +26,8 @@ using std::vector;
 *********************************************************************/
 
 
+const string fileChooser::FILE_PREAMBLE{ "FILE_CHOOSER_FILE_PREAMBLE     " };
+
 
 fileChooser::fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory ) : 
 	titleString( windowTitle ),

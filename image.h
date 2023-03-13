@@ -104,6 +104,8 @@ class greyImage{
 
 	private:
 
+	static const string FILE_PREAMBLE;
+
 	size_t width;					/*!<Image width*/
 	size_t height;					/*!<Image height*/
 	size_t numPixel;				/*!<Amount of pixel in image*/

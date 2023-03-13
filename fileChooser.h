@@ -95,6 +95,8 @@ class fileChooser : private Fl_Native_File_Chooser{
 
 	private:
 	
+	static const string FILE_PREAMBLE;
+
 	string titleString;		/*!<Title string*/
 	string filterString;	/*!<Filter string*/
 	path startDirectory;	/*!<Start directory*/

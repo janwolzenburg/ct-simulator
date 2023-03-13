@@ -21,6 +21,8 @@
 *********************************************************************/
 
 
+const string greyImage::FILE_PREAMBLE{ "GREY_IMAGE_FILE_PREAMBLE       " };
+
 
 greyImage::greyImage( const size_t width_, const size_t height_ ) :
 	width( width_ ),
