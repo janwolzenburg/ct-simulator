@@ -77,6 +77,7 @@ fileChooser& fileChooser::operator=( const fileChooser& fC ){
 size_t fileChooser::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += serializeBuildIn( string{ this->title() }, binData);
 	numBytes += serializeBuildIn( string{ this->filter() }, binData );
 	numBytes += serializeBuildIn( string{ this->directory() }, binData );

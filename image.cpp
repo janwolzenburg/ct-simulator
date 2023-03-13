@@ -126,6 +126,7 @@ double& greyImage::operator()( const size_t c, const size_t r ){
 size_t greyImage::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += serializeBuildIn( width, binData );
 	numBytes += serializeBuildIn( height, binData );
 
