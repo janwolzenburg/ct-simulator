@@ -5,16 +5,14 @@
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
+
 #include <iostream>
 using std::cerr;  using std::endl; using std::cout;
 
- //#include "test_all.h"
-
 #include "programState.h"
-#include "gui.h"
-#include "image.h"
-#include "cartesian.h"
-#include "cSysTree.h"
+//#include "gui.h"
+//#include "test_model.h"
+//#include "cSysTree.h"
 
 /*!
  * @brief Main function
@@ -23,10 +21,14 @@ using std::cerr;  using std::endl; using std::cout;
 */
 int main( int argc, char** argv ){
 
+	
+
 	programState& currentState = PROGRAM_STATE();
 
+	//Fl_Window* mainWindow = new Fl_Window{}
+
 	if( !currentState.ModelLoaded() ) currentState.loadModel();
-	currentState.loadModel();
+	//currentState.loadModel();
 	//model& currentModel = currentState.Model();
 
 	//cartCSys* viewSystem = CSYS_TREE().addCSys("View system");
@@ -74,10 +76,10 @@ int main( int argc, char** argv ){
 
 	currentState.saveState();
 
-	while( Fl::wait() ){
+	//while( Fl::wait() ){
 
 
-	}
+	//}
 
 	return 0;
 }

@@ -57,7 +57,9 @@
 		loaded = true;
 	};
 
-	void saveObject( void ) const {
+	void saveObject( const bool force = false ) const {
+
+		if( !loaded && !force ) return;
 
 		vector<char> binaryData;
 		object.serialize( binaryData );

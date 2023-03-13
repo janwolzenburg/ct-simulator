@@ -21,8 +21,9 @@
 *********************************************************************/
 
 
-Fl_Image_Widget::Fl_Image_Widget( int x, int y, int w, int h, const char* label = 0L ) :
-	Fl_Widget{ x, y, w, h, label }{
+Fl_Image_Widget::Fl_Image_Widget( int x, int y, int w, int h, const char* label ) :
+	Fl_Widget{ x, y, w, h, label }
+{
 
 };
 

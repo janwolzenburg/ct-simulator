@@ -52,7 +52,7 @@ void programState::saveState( void ) const{
 	if( !std::filesystem::is_directory( stateStorage ) ) std::filesystem::create_directory( stateStorage );
 
 	storedModel.saveObject();
-	storedModelChooser.saveObject();
+	storedModelChooser.saveObject( true );
 	storedModelSlice.saveObject();
 }
 
