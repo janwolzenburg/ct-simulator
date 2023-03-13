@@ -51,7 +51,7 @@
 		vector<char> binaryData = importSerialized( file );
 		vector<char>::iterator binaryDataIt = binaryData.begin();
 
-		if( !validBinaryData( C.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
+		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
 
 		object = C{ binaryData, binaryDataIt };
 		loaded = true;
