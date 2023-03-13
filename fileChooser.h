@@ -33,6 +33,11 @@ class fileChooser : private Fl_Native_File_Chooser{
 
 	public:
 
+	static const string FILE_PREAMBLE;
+
+
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param windowTitle Title of window 
@@ -95,8 +100,6 @@ class fileChooser : private Fl_Native_File_Chooser{
 
 	private:
 	
-	static const string FILE_PREAMBLE;
-
 	string titleString;		/*!<Title string*/
 	string filterString;	/*!<Filter string*/
 	path startDirectory;	/*!<Start directory*/

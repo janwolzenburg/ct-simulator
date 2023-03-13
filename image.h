@@ -27,6 +27,11 @@ class greyImage{
 
 	public:
 
+	static const string FILE_PREAMBLE;
+
+
+	public:
+
 	/*!
 	 * @brief Construct empty image with given size
 	 * @param width_ Width
@@ -103,8 +108,6 @@ class greyImage{
 
 
 	private:
-
-	static const string FILE_PREAMBLE;
 
 	size_t width;					/*!<Image width*/
 	size_t height;					/*!<Image height*/

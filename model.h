@@ -38,6 +38,11 @@ class model : virtual public mathObj{
 	
 	public:
 
+	static const string FILE_PREAMBLE;
+
+
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param cSys_ Position and orientation of model in global system
@@ -218,6 +223,7 @@ class model : virtual public mathObj{
 	*/
 	grid getSlice( const surfLim sliceLocation, const double resolution ) const; 
 
+
 	private:
 
 	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
@@ -227,7 +233,6 @@ class model : virtual public mathObj{
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
 
-	static const string FILE_PREAMBLE;
 
 	private:
 
