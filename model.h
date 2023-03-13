@@ -17,9 +17,10 @@ using std::filesystem::path;
  #include "generelMath.h"
  #include "cartesian.h"
  #include "voxel.h"
- #include "scattering.h"
- #include "simulation.h"
+ //#include "scattering.h"
+ //#include "simulation.h"
  #include "grid.h"
+
 
 
   /*********************************************************************
@@ -181,7 +182,12 @@ class model : virtual public mathObj{
 	*/
 	vox getVoxel( const idx3 indices ) const;
 
-	vox getVoxel( const pnt3 indices ) const;
+	/*!
+	 * @brief Get voxel in model
+	 * @param point Point in model
+	 * @return Voxel at point
+	*/
+	vox getVoxel( const pnt3 point ) const;
 
 	/*!
 	 * @brief Checks if local point is inside model
@@ -212,6 +218,12 @@ class model : virtual public mathObj{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	/*!
+	 * @brief Get slice through model
+	 * @param sliceLocation Where to slice
+	 * @param resolution Resolution of grid
+	 * @return Grid with slice
+	*/
 	grid getSlice( const surfLim sliceLocation, const double resolution ) const; 
 
 	private:
