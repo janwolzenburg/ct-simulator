@@ -67,7 +67,7 @@ class programState{
 
 	inline model& Model( void ) { return currentModel; };
 
-	inline image& ModelSlice( void )  { return modelSlice; };
+	inline greyImage& ModelSlice( void )  { return modelSlice; };
 
 	void saveState( void ) const;
 
@@ -94,7 +94,7 @@ class programState{
 	bool modelLoaded;
 
 	const string modelSliceImageFilename = "modelSliceImage.image";
-	image modelSlice;
+	greyImage modelSlice;
 	bool modelSliceLoaded;
 
 };

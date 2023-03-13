@@ -51,7 +51,7 @@ programState::programState( void ) :
 	// Check if model file exists
 	if( std::filesystem::exists( modelFilePath ) ){
 		// Load model file
-		loadModel( modelFilePath );
+		//loadModel( modelFilePath );
 	}
 
 
@@ -66,7 +66,7 @@ programState::programState( void ) :
 	if( std::filesystem::exists( modelSliceImagePath ) ){
 		vector<char> binaryModelSliceImage = importSerialized( modelSliceImagePath.string().c_str() );
 		vector<char>::iterator binaryModelSliceImageIt = binaryModelSliceImage.begin();
-		modelSlice = image{ binaryModelSliceImage, binaryModelSliceImageIt };
+		modelSlice = greyImage{ binaryModelSliceImage, binaryModelSliceImageIt };
 	}
 
 }

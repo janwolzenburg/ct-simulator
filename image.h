@@ -19,11 +19,11 @@
    Definitions
 *********************************************************************/
 
-class image{
+class greyImage{
 
 	public:
 
-	image( void ) :
+	greyImage( void ) :
 		width( 0 ),
 		height( 0 ),
 		numPixel( width* height ),
@@ -33,7 +33,7 @@ class image{
 
 	}
 
-	image( const grid source ) : 
+	greyImage( const grid source ) : 
 		width( source.Size().col ),
 		height( source.Size().row ),
 		numPixel( width * height ),
@@ -56,7 +56,7 @@ class image{
 
 	}
 
-	image( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	greyImage( const vector<char>& binData, vector<char>::const_iterator& it ) : 
 		width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		numPixel( width* height ),
