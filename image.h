@@ -27,7 +27,7 @@ class greyImage{
 		width( width_ ),
 		height( height_ ),
 		numPixel( width* height ),
-		dataLocked( false ),
+		//dataLocked( false ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
 	{
@@ -60,6 +60,7 @@ class greyImage{
 		greyImage{ newWidth, newHeight }
 	{
 
+
 		for( size_t c = 0; c < this->Width(); c++ ){
 
 			size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
@@ -81,7 +82,7 @@ class greyImage{
 		width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 		numPixel( width * height ),
-		dataLocked( false ),
+		//dataLocked( false ),
 		data( numPixel, 0. ),
 		imData( numPixel, 0 )
 	{
@@ -97,7 +98,7 @@ class greyImage{
 
 	greyImage& operator=( const greyImage& srcImg ){
 
-		if( dataLocked ) return *this;
+		//if( dataLocked ) return *this;
 
 		width = srcImg.width;
 		height = srcImg.height;
@@ -134,11 +135,11 @@ class greyImage{
 	vector<unsigned char> getImage( void ) const{ return imData; };
 	
 	const unsigned char* getDataPtr( void ){ 
-		dataLocked = true;
+		//dataLocked = true;
 		return imData.data(); 
 	};
 
-	inline void unlockData( void ) { dataLocked = false; };
+	//inline void unlockData( void ) { dataLocked = false; };
 
 	/*!
 	 * @brief Serialize this object
@@ -163,7 +164,7 @@ class greyImage{
 	size_t height;
 	size_t numPixel;
 
-	bool dataLocked;
+	//bool dataLocked;
 	vector<double> data;
 	vector<unsigned char> imData;
 
