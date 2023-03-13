@@ -123,11 +123,6 @@ double& greyImage::operator()( const size_t c, const size_t r ){
 }
 
 
-const unsigned char* greyImage::getDataPtr( void ){
-	return imData.data();
-}
-
-
 size_t greyImage::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
