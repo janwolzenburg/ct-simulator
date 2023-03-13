@@ -49,7 +49,7 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 }
 
 
-model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D ){
+model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name ){
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 }
 
@@ -91,6 +91,8 @@ model& model::operator=( const model& mod ){
 
 	size3D = mod.size3D;
 	numVox = mod.numVox;
+
+	name = mod.name;
 
 	delete parameter;
 	parameter = new voxData[ numVox ];
