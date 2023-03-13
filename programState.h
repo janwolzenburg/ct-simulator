@@ -42,9 +42,19 @@
 		loadStored();
 	};
 
-	void loadStored( const path filePath ){
-		file = filePath;
-		loadStored();
+	void load( const path filePath ){
+
+		// Does the file exist?
+		if( !std::filesystem::exists( filePath ) ) return;
+
+		// Load file
+		vector<char> binaryData = importSerialized( filePath );
+		vector<char>::iterator binaryDataIt = binaryData.begin();
+
+		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
+
+		object = C{ binaryData, binaryDataIt };
+		loaded = true;
 	};
 
 	void saveObject( void ) const {
@@ -69,17 +79,8 @@
 
 	void loadStored( void ){
 
-		// Does the file exist?
-		if( !std::filesystem::exists( file ) ) return;
-
-		// Load file
-		vector<char> binaryData = importSerialized( file );
-		vector<char>::iterator binaryDataIt = binaryData.begin();
-
-		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
-
-		object = C{ binaryData, binaryDataIt };
-		loaded = true;
+		load( file );
+		
 	};
 
  };

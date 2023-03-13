@@ -61,6 +61,6 @@ void programState::loadModel( void ){
 
 	path modelToLoad = storedModelChooserInstance.choose();
 
-	storedModel.loadStored( modelToLoad );
+	storedModel.load( modelToLoad );
 
 };
