@@ -57,6 +57,15 @@
 		loaded = true;
 	};
 
+	void saveObject( void ) const {
+
+		vector<char> binaryData;
+		object.serialize( binaryData );
+
+		exportSerialized( file, binaryData );
+
+	};
+
 	public:
 	path file;
 	C& object;
@@ -91,17 +100,7 @@ class programState{
 	static programState& getInstance();
 
 
-	//inline bool ModelLoaded( void ) const{ return modelLoaded; };
-
-	// void loadModel( void );
-
-	// void loadModel( const path modelFile );
-
-	//inline model& Model( void ) { return currentModel; };
-
-	//inline greyImage& ModelSlice( void )  { return modelSlice; };
-
-	//void saveState( void ) const;
+	void saveState( void ) const;
 
 
 
@@ -126,15 +125,11 @@ class programState{
 	model storedModelInstance;
 	storedObject<model> storedModel;
 
-	//const string modelChooserFilename = "storedModelChooser.chooser";
-	//fileChooser modelFileChooser;
+	fileChooser storedModelChooserInstance;
+	storedObject<fileChooser> storedModelChooser;
 
-	//const string modelFilename = "storedModel.model";
-	//model currentModel;
-	//bool modelLoaded;
+	greyImage modelSliceInstance;
+	storedObject<greyImage> storedModelSlice;
 
-	//const string modelSliceImageFilename = "modelSliceImage.image";
-	//greyImage modelSlice;
-	//bool modelSliceLoaded;
 
 };
