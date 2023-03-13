@@ -225,6 +225,12 @@ bool exportSerialized( const string fileName, const vector<char> binData ){
 	return true;
 };
 
+vector<char> importSerialized( const path filePath ){
+
+	return importSerialized( filePath.string() );
+
+}
+
 vector<char> importSerialized( const string fileName ){
 
 	std::ifstream inFile;

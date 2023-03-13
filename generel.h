@@ -23,6 +23,9 @@ using std::to_string;
 #include <iostream>
 using std::cerr; using std::endl; using std::cout;
 
+#include <filesystem>
+using std::filesystem::path;
+
 
 
  /*********************************************************************
@@ -282,6 +285,9 @@ T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::c
  * @return True at success
 */
 bool exportSerialized( const string fileName, const vector<char> binData );
+
+
+vector<char> importSerialized( const path filePath );
 
 /*!
  * @brief Import serial data from file
