@@ -126,10 +126,6 @@ const unsigned char* greyImage::getDataPtr( void ){
 }
 
 
-/*!
- * @brief Serialize this object
- * @param binData Reference to vector where data will be appended
-*/
 size_t greyImage::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
