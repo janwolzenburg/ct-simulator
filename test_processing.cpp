@@ -134,7 +134,7 @@ bool test_Tomography( void ){
 	start = std::chrono::system_clock::now();
 	vector<char> serializedData;
 	sinogram.serialize( serializedData );
-	exportSerialized( "test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt", serializedData );
+	exportSerialized( string{"test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt"}, serializedData );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test sinogram export: " << diff << endl;
@@ -196,7 +196,7 @@ bool test_serialisation( void ){
 	vector<char> serializedData;
 	testSinogram.serialize( serializedData );
 
-	exportSerialized( "test_serialisation.txt", serializedData );
+	exportSerialized( string{"test_serialisation.txt"}, serializedData );
 
 	vector<char> importedData = importSerialized( string{ "test_serialisation.txt" } );
 
