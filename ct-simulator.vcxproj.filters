@@ -76,6 +76,9 @@
     <Filter Include="Headerdateien\Program\GUI">
       <UniqueIdentifier>{3b7829ee-04f5-46ff-b127-fe2b3ffd934a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Program\GUI">
+      <UniqueIdentifier>{3bea51d8-f6bc-413d-9eb9-552fdaf53fda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -349,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

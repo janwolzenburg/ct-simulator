@@ -13,175 +13,119 @@
  *********************************************************************/
 
 #include "grid.h"
-#include "vectorAlgorithm.h"
+
+
 
 /*********************************************************************
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for a primitev image
+*/
 class greyImage{
 
 	public:
 
-	greyImage( const size_t width_, const size_t height_ ) :
-		width( width_ ),
-		height( height_ ),
-		numPixel( width* height ),
-		//dataLocked( false ),
-		data( numPixel, 0. ),
-		imData( numPixel, 0 )
-	{
+	/*!
+	 * @brief Construct empty image with given size
+	 * @param width_ Width
+	 * @param height_ Height
+	*/
+	greyImage( const size_t width_, const size_t height_ );
 
-	}
+	/*!
+	 * @brief Default constructor
+	*/
+	greyImage( void );
 
-	greyImage( void ) :
-		greyImage{ 0, 0 }
-	{
+	/*!
+	 * @brief Construct image from grif
+	 * @param source Source grid
+	*/
+	greyImage( const grid source );
 
-	}
+	/*!
+	 * @brief Construct image from other image but different size
+	 * @details Constructed image will be scaled in each direction individually
+	 * @param srcImg Source image
+	 * @param newWidth Width of constructed image
+	 * @param newHeight Height of constucted image
+	*/
+	greyImage( const greyImage& srcImg, const size_t newWidth, const size_t newHeight );
 
+	/*!
+	 * @brief Construct image from binary data
+	 * @param binData Binary data
+	 * @param it Iterator to start reading from
+	*/
+	greyImage( const vector<char>& binData, vector<char>::const_iterator& it );
 
+	/*!
+	 * @brief Assignment operator
+	 * @param srcImg Source image
+	 * @return Reference to this
+	*/
+	greyImage& operator=( const greyImage& srcImg );
 
-	greyImage( const grid source ) : 
-		greyImage{ source.Size().col, source.Size().row }
-	{
-		
-		for( size_t c = 0; c < width; c++ ){
-			for( size_t r = 0; r < height; r++ ){
-				data.at( c + r * width ) = source.operator()(idx2CR{c, r});
-			}
-		}
+	/*!
+	 * @brief Acces operator
+	 * @param c Column
+	 * @param r Row
+	 * @return Value at ( c, r )
+	*/
+	double operator()( const size_t c, const size_t r ) const;
 
-		normalize();
-
-	};
-
-	greyImage( const greyImage& srcImg, const size_t newWidth, const size_t newHeight ) :
-		greyImage{ newWidth, newHeight }
-	{
-
-
-		for( size_t c = 0; c < this->Width(); c++ ){
-
-			size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
-
-			for( size_t r = 0; r < this->Height(); r++ ){
-
-				size_t srcR = (size_t) ( (double) r * ( (double) srcImg.Height() - 1. ) / ( (double) this->Height() - 1. ) );
-
-				this->operator()( c, r ) = srcImg( srcC, srcR );
-
-			}
-		}
-
-		normalize();
-
-	};
-
-	greyImage( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-		width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
-		height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
-		numPixel( width * height ),
-		//dataLocked( false ),
-		data( numPixel, 0. ),
-		imData( numPixel, 0 )
-	{
-		
-		for( size_t i = 0; i < numPixel; i++ ){
-			data.at( i ) = deSerializeBuildIn( 0., binData, it );
-		}
-
-		
-		normalize();
-
-	};
-
-	greyImage& operator=( const greyImage& srcImg ){
-
-		//if( dataLocked ) return *this;
-
-		width = srcImg.width;
-		height = srcImg.height;
-		numPixel = srcImg.numPixel;
-
-		data = srcImg.data;
-		imData = srcImg.imData;
-
-		return *this;
-	};
-
-	double operator()( const size_t c, const size_t r ) const{
-	
-		size_t idx = c + r * width;
-		if( idx >=  numPixel ) idx = numPixel - 1;
-	
-		return data.at( idx );
-
-	}
-
-	double& operator()( const size_t c, const size_t r ){
-
-		size_t idx = c + r * width;
-		if( idx >= numPixel ) idx = numPixel - 1;
-
-		return data.at( idx );
-
-	}
-
+	/*!
+	 * @brief Get Width
+	 * @return Image width
+	*/
 	inline size_t Width( void ) const{ return width; };
 	
+	/*!
+	 * @brief Get height
+	 * @return Image height
+	*/
 	inline size_t Height( void ) const{ return height; };
 	
-	vector<unsigned char> getImage( void ) const{ return imData; };
-	
-	const unsigned char* getDataPtr( void ){ 
-		//dataLocked = true;
-		return imData.data(); 
-	};
-
-	//inline void unlockData( void ) { dataLocked = false; };
+	/*!
+	 * @brief Get pointer raw image data
+	 * @details Be careful when data vector changes! The returned pointer may then point to false address
+	 * @return Pointer to data start in
+	*/
+	inline const unsigned char* getDataPtr( void ){ return imData.data(); };
 
 	/*!
 	 * @brief Serialize this object
 	 * @param binData Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const{
-		
-		size_t numBytes = 0;
-		numBytes += serializeBuildIn( width, binData );
-		numBytes += serializeBuildIn( height, binData );
-
-		for( size_t i = 0; i < numPixel; i++ ){
-			numBytes += serializeBuildIn( data.at( i ), binData );
-		}
-
-		return numBytes;
-	};
-
-
-	private:
-	size_t width;
-	size_t height;
-	size_t numPixel;
-
-	//bool dataLocked;
-	vector<double> data;
-	vector<unsigned char> imData;
+	size_t serialize( vector<char>& binData ) const;
 
 
 	private:
 
-	void normalize( void ){
+	size_t width;					/*!<Image width*/
+	size_t height;					/*!<Image height*/
+	size_t numPixel;				/*!<Amount of pixel in image*/
 
-		if( data.size() == 0 ) return;
+	vector<double> data;			/*!<Double data*/
+	vector<unsigned char> imData;	/*!<Data as unsigned char values*/
 
-		const double maxVal = Max( data );
-		const double minVal = Min( data );
 
-		for( size_t i = 0; i < numPixel; i++ ){
-			imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
-		}
+	private:
 
-	};
+	/*!
+	 * @brief Acces operator
+	 * @param c Column
+	 * @param r Row
+	 * @return Reference to value at ( c, r )
+	*/
+	double& operator()( const size_t c, const size_t r );
+
+	/*!
+	 * @brief Normalize unsigned char data
+	 * @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data ) 
+	*/
+	void normalize( void );
 
 };
