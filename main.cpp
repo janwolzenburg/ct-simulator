@@ -44,30 +44,30 @@ int main( int argc, char** argv ){
 
 	//exportSerialized( "modelSliceImage.image", imageBinary ); 
 
-	Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
+	//Fl_Window* window = new Fl_Window( (int) ( 500. * 16. / 9. ), 500 );
 
-	greyImage& sliceImage = currentState.ModelSlice();
-	
-	Fl_Image_Widget* slice = new Fl_Image_Widget( 0, 0, (int) (2.3*sliceImage.Width()), (int) ( 0.5*sliceImage.Height() ) );
-	slice->assignImage( sliceImage );
-	window->add( slice );
-
-
-
-
-	//Fl_Box* sliceImageBox = new Fl_Box( 0, 0, (int) sliceImage.Width(), (int) sliceImage.Heigth() );
-	//window->add( sliceImageBox );
+	//greyImage& sliceImage = currentState.ModelSlice();
 	//
-	//Fl_RGB_Image* slice = new Fl_RGB_Image( imageBufferMono.data(), (int) sliceImage.Width(), (int) sliceImage.Heigth(), 1 );
+	//Fl_Image_Widget* slice = new Fl_Image_Widget( 0, 0, (int) (2.3*sliceImage.Width()), (int) ( 0.5*sliceImage.Height() ) );
+	//slice->assignImage( sliceImage );
+	//window->add( slice );
 
-	////fl_draw_image_mono( imageBufferMono.data(), 0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row,);
-	//slice->draw(0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row );
 
-	//sliceImageBox->image( slice );
 
-	window->redraw();
-	//window->end();
-	window->show( argc, argv );
+
+	////Fl_Box* sliceImageBox = new Fl_Box( 0, 0, (int) sliceImage.Width(), (int) sliceImage.Heigth() );
+	////window->add( sliceImageBox );
+	////
+	////Fl_RGB_Image* slice = new Fl_RGB_Image( imageBufferMono.data(), (int) sliceImage.Width(), (int) sliceImage.Heigth(), 1 );
+
+	//////fl_draw_image_mono( imageBufferMono.data(), 0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row,);
+	////slice->draw(0, 0, (int) modelSlice.Size().col, (int) modelSlice.Size().row );
+
+	////sliceImageBox->image( slice );
+
+	//window->redraw();
+	////window->end();
+	//window->show( argc, argv );
 
 
 

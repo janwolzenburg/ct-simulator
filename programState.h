@@ -21,32 +21,51 @@
  #include "image.h"
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
 
+ /*!
+  * @brief 
+  * @tparam C Class with ... 
+ */
  template< class C >
  class storedObject{
 
 	public:
+	storedObject( const path filePath_, C& objectRef ) :
+		file( filePath_ ),
+		object( objectRef ),
+		loaded( false )
+	{
+		loadStored();
+	};
 
+	void loadStored( void ){
+		
+		// Does the file exist?
+		if( !std::filesystem::exists( file ) ) return;
+
+		// Load file
+		vector<char> binaryData = importSerialized( file );
+		vector<char>::iterator binaryDataIt = binaryData.begin();
+
+		if( !validBinaryData( C.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
+
+		object = C{ binaryData, binaryDataIt };
+		loaded = true;
+	};
 
 	public:
-	string fileName;
-	C object;
+	path file;
+	C& object;
 	bool loaded;
 
  };
 
-#ifdef WIN32
 
-	const string stateStorageString{ ".\\stateStorage\\" };
 
-#else
-
-	const string stateStorageString{ "./stateStorage/" };
-
-#endif // WIN32
 
 
  programState& PROGRAM_STATE( void );
@@ -56,25 +75,44 @@ class programState{
 
 	public:
 
+	#ifdef WIN32
+
+		const path stateStorage{ ".\\stateStorage\\" };
+
+	#else
+
+		const path stateStorage{ "./stateStorage/" };
+
+	#endif // WIN32
+
+
+	public:
+
 	static programState& getInstance();
 
 
-	inline bool ModelLoaded( void ) const{ return modelLoaded; };
+	//inline bool ModelLoaded( void ) const{ return modelLoaded; };
 
-	void loadModel( void );
+	// void loadModel( void );
 
-	void loadModel( const path modelFile );
+	// void loadModel( const path modelFile );
 
-	inline model& Model( void ) { return currentModel; };
+	//inline model& Model( void ) { return currentModel; };
 
-	inline greyImage& ModelSlice( void )  { return modelSlice; };
+	//inline greyImage& ModelSlice( void )  { return modelSlice; };
 
-	void saveState( void ) const;
+	//void saveState( void ) const;
 
 
 
 	private:
 	 
+	path getPath( const string filename ) const{
+
+		return stateStorage / filename;
+
+	};
+
 	programState( void );
 
 	programState( const programState& tree_ ) = delete;
@@ -84,17 +122,19 @@ class programState{
 
 	private:
 
-	const path stateStorage;
 
-	const string modelChooserFilename = "storedModelChooser.chooser";
-	fileChooser modelFileChooser;
+	model storedModelInstance;
+	storedObject<model> storedModel;
 
-	const string modelFilename = "storedModel.model";
-	model currentModel;
-	bool modelLoaded;
+	//const string modelChooserFilename = "storedModelChooser.chooser";
+	//fileChooser modelFileChooser;
 
-	const string modelSliceImageFilename = "modelSliceImage.image";
-	greyImage modelSlice;
-	bool modelSliceLoaded;
+	//const string modelFilename = "storedModel.model";
+	//model currentModel;
+	//bool modelLoaded;
+
+	//const string modelSliceImageFilename = "modelSliceImage.image";
+	//greyImage modelSlice;
+	//bool modelSliceLoaded;
 
 };
