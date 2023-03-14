@@ -42,19 +42,20 @@
 		loadStored();
 	};
 
-	void load( const path filePath ){
+	bool load( const path filePath ){
 
 		// Does the file exist?
-		if( !std::filesystem::exists( filePath ) ) return;
+		if( !std::filesystem::exists( filePath ) ) return false;
 
 		// Load file
 		vector<char> binaryData = importSerialized( filePath );
 		vector<char>::iterator binaryDataIt = binaryData.begin();
 
-		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return;
+		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
 
 		object = C{ binaryData, binaryDataIt };
 		loaded = true;
+		return loaded;
 	};
 
 	void saveObject( const bool force = false ) const {
@@ -70,7 +71,7 @@
 
 	inline bool Loaded( void ) const { return loaded; };
 
-	inline bool setLoaded( void ){ loaded = true; };
+	inline void setLoaded( void ){ loaded = true; };
 
 
 
@@ -118,10 +119,12 @@ class programState{
 
 	inline bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
-	void loadModel( void );
+	bool loadModel( void );
 
 	inline model& Model( void ){ return storedModelInstance; };
 
+
+	bool sliceModel( void );
 
 	inline bool SliceLoaded( void ) const{ return storedModelSlice.Loaded(); };
 
@@ -152,6 +155,7 @@ class programState{
 	fileChooser storedModelChooserInstance;
 	storedObject<fileChooser> storedModelChooser;
 
+	static const surfLim viewPlane;
 	greyImage modelSliceInstance;
 	storedObject<greyImage> storedModelSlice;
 

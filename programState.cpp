@@ -12,6 +12,7 @@
  *********************************************************************/
 
 #include "programState.h"
+#include "cSysTree.h"
 
 
 
@@ -24,6 +25,12 @@ programState& PROGRAM_STATE( void ){
 	return programState::getInstance();
 }
 
+cartCSys* viewSystem = CSYS_TREE().addCSys( "View system" );
+const surfLim programState::viewPlane{	uvec3{ v3{ 1, 0, 0 }, viewSystem },
+										uvec3{ v3{ 0, 1, 0 }, viewSystem },
+										pnt3{  v3{0, 0, 0}, viewSystem },
+										-300, 300, -300, 300
+										};
 
 programState& programState::getInstance(){
 	static programState instance;
@@ -57,10 +64,22 @@ void programState::saveState( void ) const{
 }
 
 
-void programState::loadModel( void ){
+bool programState::loadModel( void ){
 
 	path modelToLoad = storedModelChooserInstance.choose();
 
-	storedModel.load( modelToLoad );
+	return storedModel.load( modelToLoad );
 
-};
+}
+
+
+bool programState::sliceModel( void ){
+
+	if( !ModelLoaded() ) return false;
+
+	grid modelSliceGrid = storedModelInstance.getSlice( viewPlane, 1. );
+	modelSliceInstance = greyImage{ modelSliceGrid };
+	storedModelSlice.setLoaded();
+
+	return true;
+}
