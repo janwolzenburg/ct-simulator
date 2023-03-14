@@ -167,6 +167,13 @@ class model : virtual public mathObj{
 	bool validCoords( const v3 voxCoords ) const;
 
 	/*!
+	 * @brief Checks if point is defined in model
+	 * @param point Point to check
+	 * @return True if coordinates are defined in model
+	*/
+	bool validCoords( const pnt3 point ) const;
+
+	/*!
 	 * @brief Get voxel indices for given coordinates in local coordinate system
 	 * @param voxpnt Point in coordinate system of model
 	 * @return Indices of voxels where coordinates are located

@@ -151,6 +151,12 @@ bool model::validCoords( const v3 voxCoords ) const{
 		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
 }
 
+bool model::validCoords( const pnt point ) const{
+
+	v3 voxCoords = point.XYZ( cSys );
+
+	return validCoords( voxCoords );
+}
 
 idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
 	return getVoxelIndices( voxpnt.XYZ( cSys ) );
@@ -406,6 +412,8 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 		
 			// Current point on plane
 			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
+
+			this->validCoords()
 
 			// Current voxel
 			const vox currentVoxel = this->getVoxel( currentPoint );
