@@ -50,6 +50,13 @@ class primitiveVec3 : public v3, virtual public mathObj{
 	primitiveVec3( const double x, const double y, const double z );
 
 	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	primitiveVec3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
 	 * @brief Convert data to string
 	 * @param newLineTabulators
 	 * @return String with data

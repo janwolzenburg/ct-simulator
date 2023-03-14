@@ -63,3 +63,10 @@ T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::c
 	return temp;
 
 }
+
+template< typename T >
+T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	return T{ binData, it };
+
+}

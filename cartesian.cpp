@@ -191,3 +191,19 @@ void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){
 
 
 }
+
+size_t cartCSys::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+
+	numBytes += OPnt().gXYZ().serialize( binData );
+
+	numBytes += ExVec().gXYZ().serialize( binData );
+	numBytes += EyVec().gXYZ().serialize( binData );
+	numBytes += EzVec().gXYZ().serialize( binData );
+	
+	numBytes += serializeBuildIn( name, binData );
+
+	return numBytes;
+
+}

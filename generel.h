@@ -277,6 +277,9 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 template< typename T>
 T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
+template< typename T>
+T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it );
+
 
 /*!
  * @brief Export serial data to file

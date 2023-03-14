@@ -201,6 +201,11 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	void setPrimitive( const primitiveCartCSys primitiveCSys );
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
 
 	private:
 

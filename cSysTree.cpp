@@ -97,6 +97,20 @@ cartCSys* cSysTree::addCSys( const string name_ ){
 	return addCSys( getGlobal(), name_ );
 }
 
+cartCSys* cSysTree::addCSys( const vector<char>& binData, vector<char>::const_iterator& it )
+{
+
+	primitiveVec3 origin{ binData, it };
+	primitiveVec3 ex{ binData, it };
+	primitiveVec3 ey{ binData, it };
+	primitiveVec3 ez{ binData, it };
+
+	string name = deSerializeBuildIn<string>( string{""}, binData, it);
+
+	return addCSys( origin, ex, ey, ez, GLOBAL_CSYS(), name );
+
+}
+
 cartCSys* cSysTree::getDummy( void ){
 	return &systems[ 0 ];
 }

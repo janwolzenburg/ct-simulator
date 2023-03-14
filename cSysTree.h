@@ -75,6 +75,14 @@ class cSysTree : virtual public mathObj{
 	cartCSys* addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const cartCSys* parent_, const string name_ );
 	
 	/*!
+	 * @brief Constructor from serialized data
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	cartCSys* addCSys( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
 	 * @brief Add system to tree with global system as parent
 	 * @param origin_ O of coordinate system
 	 * @param ex_ x-axis

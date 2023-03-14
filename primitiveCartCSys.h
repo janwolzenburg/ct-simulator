@@ -39,6 +39,13 @@ class primitiveCartCSys : virtual public mathObj{
 	primitiveCartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_ );
 
 	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	primitiveCartCSys( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	/*!
 	 * @brief Convert coordinate system's data to string
 	 * @return String with coordinate system's data
 	*/
@@ -67,6 +74,12 @@ class primitiveCartCSys : virtual public mathObj{
 	 * @return Primitive represantation of the z Axis
 	*/
 	primitiveVec3 Ez( void ) const;
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
 
 
 	protected:
