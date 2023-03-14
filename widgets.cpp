@@ -37,14 +37,21 @@ void Fl_Image_Widget::assignImage( const greyImage& img ){
 
 
 void Fl_Image_Widget::draw( void ){
-	fl_draw_image_mono( scaledImage.getDataPtr(), (int) x(), (int) y(), (int) scaledImage.Width(), (int) scaledImage.Height() );
+
+	int centerX = this->parent()->x() + ( this->parent()->w() - (int) scaledImage.Width() ) / 2;
+	//int centerY = this->parent()->y() + ( this->parent()->h() - scaledImage.Height() ) / 2;
+
+	fl_draw_image_mono( scaledImage.getDataPtr(), centerX, y(), (int) scaledImage.Width(), (int) scaledImage.Height());
 }
 
 
 void Fl_Image_Widget::resize( int x, int y, int w, int h ){
 
+	//x = this->parent()->x() + ( this->parent()->w() - w ) / 2;
+
 	// Set x, y, w and h
 	Fl_Widget::resize( x, y, w, h );
+
 
 	calculateScaled();
 
@@ -54,6 +61,8 @@ void Fl_Image_Widget::resize( int x, int y, int w, int h ){
 
 
 void Fl_Image_Widget::calculateScaled( void ){
+
+	if( originalImage.Width() == 0 || originalImage.Height() == 0 ) return;
 
 	double scaledWidth = (double) w(), scaledHeight = (double) h();
 

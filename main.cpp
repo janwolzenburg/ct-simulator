@@ -17,10 +17,7 @@ using std::cerr;  using std::endl; using std::cout;
 
 
 void modelLoad_cb( Fl_Widget*, void* loadModel ){
-	PROGRAM_STATE().loadModel();
-
-	if( PROGRAM_STATE().ModelLoaded() )
-		*((bool*) loadModel) = true;
+	*((bool*) loadModel) = true;
 
 }
 
@@ -37,35 +34,37 @@ int main( int argc, char** argv ){
 	// No automatic hierarchies
 	Fl_Group::current( NULL );
 
-	// Create resizeable main window
-	Fl_Window mainWindow{ 800, 600 };
-	mainWindow.resizable( mainWindow );
+	window mainWindow{ 800, 600 };
+
+	Fl_Group& modelGroup = mainWindow.add<Fl_Group>( relPosition{ 0., 0., .3, 1. } );
 
 
-	// Group for model handling
-	Fl_Group modelGroup{ 0, 0, 400, 600 };
-	mainWindow.add_resizable( modelGroup );
-	
-	Fl_Box modelGroupBox{ 0, 0, 400, 600 };
-	modelGroupBox.box( FL_BORDER_BOX );
-	modelGroup.add_resizable( modelGroupBox );
+	/* ------------------------- Model group ------------------------- */
+	Fl_Box& modelBox = mainWindow.add<Fl_Box>( relPosition{0., 0., 1., 1. }, modelGroup );
+	modelBox.box( FL_BORDER_BOX );
 
+	Fl_Button& loadButton = mainWindow.add<Fl_Button>( relPosition_Hor{ 0.05, 0.5, 0.05 }, modelGroup, "Load model");
+	loadButton.labelsize( 20 );
 	bool loadModel = PROGRAM_STATE().ModelLoaded();
-	Fl_Button modelLoadButton{ 60, 50, 280, 50, "Load model"};
-	modelLoadButton.callback( modelLoad_cb, &loadModel );
-	modelGroup.add_resizable( modelLoadButton );
+	loadButton.callback( modelLoad_cb, &loadModel );
 
-	Fl_Group modelViewGroup { 40, 150, 320, 320 };
-	modelGroup.add_resizable( modelViewGroup );
+	Fl_Box& modelImageBox = mainWindow.add<Fl_Box>( relPosition_Hor{ 0.15, 0.95, 0.5 }, modelGroup, "No model loaded" );
+	modelImageBox.labelsize( 20 ); modelImageBox.box( FL_BORDER_BOX );
 
-	Fl_Box modelViewBox{ 40, 150, 320, 320, "No model loaded!"};
-	modelViewBox.box( FL_BORDER_BOX );
-	modelViewBox.labelsize( 15 );
-	modelViewGroup.add_resizable( modelViewBox );
+	Fl_Image_Widget& modelImage = mainWindow.add<Fl_Image_Widget>( relPosition_Hor{ 0.15, 0.95, 0.5 }, modelGroup );
+	modelImage.hide();
 
-	Fl_Image_Widget slice{ 40, 150, (int) 320, (int) 320 };
-	modelViewGroup.add_resizable( slice );
-	slice.hide();
+	////Fl_Group modelViewGroup { 40, 150, 320, 320 };
+	////modelGroup.add( modelViewGroup );
+
+	//Fl_Box modelViewBox{ 40, 150, 320, 320, "No model loaded!"};
+	//modelViewBox.box( FL_BORDER_BOX );
+	//modelViewBox.labelsize( 15 );
+	//modelGroup.add( modelViewBox );
+
+	//Fl_Image_Widget slice{ 40, 150, (int) 320, (int) 320 };
+	//modelGroup.add_resizable( slice );
+	//slice.hide();
 
 	//if( !currentState.ModelLoaded() ) currentState.loadModel();
 	
@@ -74,13 +73,13 @@ int main( int argc, char** argv ){
 
 	cartCSys* viewSystem = CSYS_TREE().addCSys("View system");
 
-	const surfLim viewPlane{	uvec3{ v3{ 1, 0, 0 }, viewSystem },
-								uvec3{ v3{ 0, 1, 0 }, viewSystem },
-								pnt3{  currentModel.ModSize(), viewSystem } / 2.,
-								-currentModel.ModSize().x / 2., currentModel.ModSize().x / 2.,
-								-currentModel.ModSize().y / 2., currentModel.ModSize().y / 2. };
+	//const surfLim viewPlane{	uvec3{ v3{ 1, 0, 0 }, viewSystem },
+	//							uvec3{ v3{ 0, 1, 0 }, viewSystem },
+	//							pnt3{  currentModel.ModSize(), viewSystem } / 2.,
+	//							-currentModel.ModSize().x / 2., currentModel.ModSize().x / 2.,
+	//							-currentModel.ModSize().y / 2., currentModel.ModSize().y / 2. };
 
-	const grid modelSlice = currentModel.getSlice( viewPlane, 1. );
+	//const grid modelSlice = currentModel.getSlice( viewPlane, 1. );
 
 	greyImage sliceImage{ modelSlice };
 
@@ -97,7 +96,7 @@ int main( int argc, char** argv ){
 
 	//window->redraw();
 	////window->end();
-	mainWindow.show( argc, argv );
+	mainWindow.getFl().show(argc, argv);
 
 
 
@@ -106,9 +105,19 @@ int main( int argc, char** argv ){
 
 		if( loadModel ){
 			loadModel = false;
-			slice.assignImage( currentState.Slice() );
-			slice.show();
-			modelViewBox.hide();
+
+			modelImageBox.label( "Loading model..." );
+
+			PROGRAM_STATE().loadModel();
+
+			if( PROGRAM_STATE().ModelLoaded() ){
+				modelImage.assignImage( currentState.Slice() );
+				modelImage.show();
+				modelImageBox.hide();
+			}
+			else{
+				modelImageBox.label("No model loaded!");
+			}
 		}
 
 	}
