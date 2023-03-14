@@ -151,12 +151,14 @@ bool model::validCoords( const v3 voxCoords ) const{
 		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
 }
 
-bool model::validCoords( const pnt point ) const{
+
+bool model::validCoords( const pnt3 point ) const{
 
 	v3 voxCoords = point.XYZ( cSys );
 
 	return validCoords( voxCoords );
 }
+
 
 idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
 	return getVoxelIndices( voxpnt.XYZ( cSys ) );
@@ -344,7 +346,7 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
 		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
-		return idx3{0, 0, 0};
+		return idx3{ 0, 0, 0 };
 	}
 
 	idx3 indices{
@@ -398,28 +400,35 @@ size_t model::serialize( vector<char>& binData ) const{
 
 
 grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
-	
+
 	// Image
-	grid slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, 0.};
+	grid slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, 0. };
 
 	// Surface in local coordinate system
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );
 
 	// Iterate all point in image
 	for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
-		
+
 		for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
-		
+
 			// Current point on plane
 			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
 
-			this->validCoords()
+			if( !this->validCoords( currentPoint ) ){
+				slice.operator()( v2CR{ currentX, currentY } ) = 0.;
+				continue;
+			}
+
+			const idx3 currentVoxelIndices = getVoxelIndices( currentPoint );		// Indices of current voxel
+
+			voxData data = this->operator()( currentVoxelIndices );
 
 			// Current voxel
-			const vox currentVoxel = this->getVoxel( currentPoint );
+			//const vox currentVoxel = this->getVoxel( currentPoint );
 
 			// Current voxel value
-			const double currentValue = currentVoxel.Data().attenuationAtRefE();
+			const double currentValue = data.attenuationAtRefE();
 
 			// Set image value
 			slice.operator()( v2CR{ currentX, currentY } ) = currentValue;
