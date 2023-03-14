@@ -15,6 +15,7 @@
  #include <FL/Fl_Box.H>
  #include <FL/Fl_Output.H>
  #include <FL/Fl_Button.H>
+ #include <FL/Fl_Roller.H>
 #include "widgets.h"
 
 
