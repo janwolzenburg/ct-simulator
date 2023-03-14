@@ -62,7 +62,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[numVox] ),
-	cSys( CSYS_TREE().addCSys( "Model system" ) ),
+	cSys( CSYS_TREE().addCSys( binData, it ) ),
 	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
 
@@ -377,6 +377,7 @@ size_t model::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
+	numBytes += cSys->serialize( binData );
 	numBytes += serializeBuildIn( name, binData );
 
 	for( size_t i = 0; i < numVox; i++ ){
