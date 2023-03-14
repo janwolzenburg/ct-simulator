@@ -31,27 +31,37 @@ int main( int argc, char** argv ){
 
 	programState& currentState = PROGRAM_STATE();
 
+	bool loadModel = PROGRAM_STATE().ModelLoaded();
+
 	// No automatic hierarchies
 	Fl_Group::current( NULL );
 
-	window mainWindow{ 800, 600 };
-
-	Fl_Group& modelGroup = mainWindow.add<Fl_Group>( relPosition{ 0., 0., .3, 1. } );
+	window mainWindow{ 1280, 720 };
 
 
 	/* ------------------------- Model group ------------------------- */
+	
+	Fl_Group& modelGroup = mainWindow.add<Fl_Group>( relPosition{ 0.02, 0.02, .3, 0.96 } );
 	Fl_Box& modelBox = mainWindow.add<Fl_Box>( relPosition{0., 0., 1., 1. }, modelGroup );
 	modelBox.box( FL_BORDER_BOX );
 
-	Fl_Button& loadButton = mainWindow.add<Fl_Button>( relPosition_Hor{ 0.05, 0.5, 0.05 }, modelGroup, "Load model");
-	loadButton.labelsize( 20 );
-	bool loadModel = PROGRAM_STATE().ModelLoaded();
-	loadButton.callback( modelLoad_cb, &loadModel );
 
-	Fl_Box& modelImageBox = mainWindow.add<Fl_Box>( relPosition_Hor{ 0.15, 0.95, 0.5 }, modelGroup, "No model loaded" );
+	Fl_Group& loadButtonGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.05, 1., 0.05 }, modelGroup );
+
+	Fl_Button& loadButton = mainWindow.add<Fl_Button>( relPosition{ 0., 0., 0.5, 1. }, loadButtonGroup, "Load model" );
+	loadButton.labelsize( 20 ); loadButton.callback( modelLoad_cb, &loadModel );
+
+	Fl_Box& loadButtonBox = mainWindow.add<Fl_Box>( relPosition{ 0.5, 0., 0.5, 1. }, loadButtonGroup );
+	loadButtonGroup.resizable( loadButtonBox );
+
+
+	Fl_Group& modelImageGroup = mainWindow.add<Fl_Group>( relPosition{ 0., 0.15, 1., 0.5 }, modelGroup );
+	modelGroup.resizable( modelImageGroup );
+
+	Fl_Box& modelImageBox = mainWindow.add<Fl_Box>( relPosition{ 0., 0., 1., 1. }, modelImageGroup, "No model loaded");
 	modelImageBox.labelsize( 20 ); modelImageBox.box( FL_BORDER_BOX );
 
-	Fl_Image_Widget& modelImage = mainWindow.add<Fl_Image_Widget>( relPosition_Hor{ 0.15, 0.95, 0.5 }, modelGroup );
+	Fl_Image_Widget& modelImage = mainWindow.add<Fl_Image_Widget>( relPosition{ 0., 0., 1., 1. }, modelImageGroup );
 	modelImage.hide();
 
 	////Fl_Group modelViewGroup { 40, 150, 320, 320 };
