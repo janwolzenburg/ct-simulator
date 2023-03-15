@@ -39,7 +39,7 @@ int main( int argc, char** argv ){
 
 	programState& currentState = PROGRAM_STATE();
 
-	bool loadModel = !PROGRAM_STATE().ModelLoaded();
+	bool loadModel = false;//;!PROGRAM_STATE().ModelLoaded();
 
 	bool rotateModelX = false; double currentAngleX = 0;
 	bool rotateModelY = false; double currentAngleY = 0;

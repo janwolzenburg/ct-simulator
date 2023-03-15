@@ -26,7 +26,7 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-
+const size_t numThreads = 1;
 
 /*!
  * Indices and vector implementation

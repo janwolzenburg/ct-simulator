@@ -32,6 +32,8 @@ using std::filesystem::path;
 	Definitions
  *********************************************************************/
 
+ extern const size_t numThreads;
+
 /*!
  * @brief Class for 2D indices
 */

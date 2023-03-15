@@ -107,9 +107,6 @@ void gantry::radiate( const model& radModel, const double exposureTime ) {
 	// Scattered rays should lie in the same plane as the detector 
 	const uvec3 scatteringRotationNormal = this->cSys->EzVec().convertTo( radModel.CSys() );
 
-	// Number of threads
-	constexpr size_t numThreads = 10;
-
 	rayDetector.reset();								// Reset all pixel
 
 

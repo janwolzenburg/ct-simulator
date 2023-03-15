@@ -13,6 +13,11 @@
  *********************************************************************/
 
 #include <fstream>
+#include <thread>
+#include <mutex>
+using std::ref;
+using std::cref;
+
 #include "model.h"
 #include "cSysTree.h"
 #include "rays.h"
@@ -398,6 +403,62 @@ size_t model::serialize( vector<char>& binData ) const{
 
 }
 
+void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& currentY, std::mutex& currentYMutex, 
+							grid& slice, std::mutex& sliceMutex,
+							const surfLim& slicePlane,
+							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
+
+
+	while( currentX <= end.col ){
+
+		while( currentY <= end.row ){
+			
+			const double localX = currentX;
+			if( localX > end.col ) continue;
+
+			currentYMutex.lock();
+			const double localY = currentY;
+			currentY += resolution.row;
+			currentYMutex.unlock();
+
+			v2CR gridCoordinate{ localX, localY }; 
+
+			const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
+
+			if( !modelRef.validCoords( currentPoint ) ){
+				sliceMutex.lock();
+				slice.operator()( gridCoordinate ) = 0.;
+				sliceMutex.unlock();
+
+				continue;
+			}
+
+			const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
+
+			const voxData data = modelRef( currentVoxelIndices );
+
+			// Current voxel value
+			const double currentValue = data.attenuationAtRefE();
+
+			// Set image value
+			sliceMutex.lock();
+			slice.operator()( gridCoordinate ) = currentValue;
+			sliceMutex.unlock();
+
+		}
+
+
+		currentXMutex.lock();
+		currentX += resolution.col;
+		currentXMutex.unlock();
+
+		currentYMutex.lock();
+		currentY = start.row;
+		currentYMutex.unlock();
+
+	}
+
+};
 
 grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
 
@@ -407,34 +468,54 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 	// Surface in local coordinate system
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );
 
-	// Iterate all point in image
-	for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
 
-		for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
+	v2CR sliceStart = slice.Start();
+	v2CR sliceEnd = slice.End();
+	v2CR sliceResolution = slice.Resolution();
 
-			// Current point on plane
-			const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
+	double currentX = slice.Start().col;
+	double currentY = slice.Start().row;
 
-			if( !this->validCoords( currentPoint ) ){
-				slice.operator()( v2CR{ currentX, currentY } ) = 0.;
-				continue;
-			}
+	std::mutex currentXMutex;
+	std::mutex currentYMutex;
+	std::mutex sliceMutex;
 
-			const idx3 currentVoxelIndices = getVoxelIndices( currentPoint );		// Indices of current voxel
+	vector<std::thread> threads;
 
-			voxData data = this->operator()( currentVoxelIndices );
-
-			// Current voxel
-			//const vox currentVoxel = this->getVoxel( currentPoint );
-
-			// Current voxel value
-			const double currentValue = data.attenuationAtRefE();
-
-			// Set image value
-			slice.operator()( v2CR{ currentX, currentY } ) = currentValue;
-
-		}
+	for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
+		threads.emplace_back( sliceThreadFunction,	ref( currentX ), ref( currentXMutex ), ref( currentY ), ref( currentYMutex ),
+													ref( slice ), ref( sliceMutex ), 
+													cref( slicePlane ),
+													cref( *this ), cref( sliceStart ), cref( sliceEnd ), cref( sliceResolution ));
 	}
+
+	for( std::thread& currentThread : threads ) currentThread.join();
+
+	//// Iterate all point in image
+	//for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
+
+	//	for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
+
+	//		// Current point on plane
+	//		const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
+
+	//		if( !this->validCoords( currentPoint ) ){
+	//			slice.operator()( v2CR{ currentX, currentY } ) = 0.;
+	//			continue;
+	//		}
+
+	//		const idx3 currentVoxelIndices = getVoxelIndices( currentPoint );		// Indices of current voxel
+
+	//		const voxData data = this->operator()( currentVoxelIndices );
+
+	//		// Current voxel value
+	//		const double currentValue = data.attenuationAtRefE();
+
+	//		// Set image value
+	//		slice.operator()( v2CR{ currentX, currentY } ) = currentValue;
+
+	//	}
+	// }
 
 	return slice;
 }
