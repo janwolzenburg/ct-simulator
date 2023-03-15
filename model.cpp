@@ -403,6 +403,8 @@ size_t model::serialize( vector<char>& binData ) const{
 
 }
 
+std::mutex coutMutex;
+
 void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& currentY, std::mutex& currentYMutex, 
 							grid& slice, std::mutex& sliceMutex,
 							const surfLim& slicePlane,
@@ -411,50 +413,51 @@ void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& c
 
 	while( currentX <= end.col ){
 
-		while( currentY <= end.row ){
-			
-			const double localX = currentX;
-			if( localX > end.col ) continue;
-
-			currentYMutex.lock();
-			const double localY = currentY;
-			currentY += resolution.row;
-			currentYMutex.unlock();
-
-			v2CR gridCoordinate{ localX, localY }; 
-
-			const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
-
-			if( !modelRef.validCoords( currentPoint ) ){
-				sliceMutex.lock();
-				slice.operator()( gridCoordinate ) = 0.;
-				sliceMutex.unlock();
-
-				continue;
-			}
-
-			const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
-
-			const voxData data = modelRef( currentVoxelIndices );
-
-			// Current voxel value
-			const double currentValue = data.attenuationAtRefE();
-
-			// Set image value
-			sliceMutex.lock();
-			slice.operator()( gridCoordinate ) = currentValue;
-			sliceMutex.unlock();
-
-		}
-
+		double localX, localY;
 
 		currentXMutex.lock();
-		currentX += resolution.col;
-		currentXMutex.unlock();
-
 		currentYMutex.lock();
-		currentY = start.row;
+
+		if( currentY > end.row ){
+			currentX += resolution.col;
+			currentY = start.row;
+		}
+		else{
+			currentY += resolution.row;
+		}
+
+		localX = currentX;
+		localY = currentY;
+
+		currentXMutex.unlock();
 		currentYMutex.unlock();
+
+		
+
+		v2CR gridCoordinate{ localX, localY }; 
+
+		const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
+
+		if( !modelRef.validCoords( currentPoint ) ){
+			sliceMutex.lock();
+			slice.operator()( gridCoordinate ) = 0.1;
+			sliceMutex.unlock();
+
+			continue;
+		}
+
+		const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
+
+		const voxData data = modelRef( currentVoxelIndices );
+
+		// Current voxel value
+		const double currentValue = data.attenuationAtRefE();
+
+		// Set image value
+		sliceMutex.lock();
+		slice.operator()( gridCoordinate ) = currentValue;
+		sliceMutex.unlock();
+
 
 	}
 
