@@ -309,6 +309,12 @@ uvec3::uvec3( vec3 v ) : vec3( v ){
 uvec3::uvec3( const v3 xyz_, const cartCSys* const cSys_ ) :
 	uvec3( vec3{ xyz_, cSys_ } ){}
 
+uvec3::uvec3( void ) : 
+	uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() }
+{  
+
+}
+
 mathObj::MATH_ERR uvec3::scale( [[maybe_unused]] const double scalar ){
 	// Do nothing
 	return MATH_ERR::OK;
