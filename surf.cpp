@@ -33,13 +33,23 @@ surf::surf( const uvec3 v1, const uvec3 v2, const pnt3 p )
 	: r1( v1 ),
 	r2( v2 ),
 	o( p ){
-	if( iseqErr( r1.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector r1  must have length!" );
-	if( iseqErr( r2.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector r2 must have length!" );
+	
 	if( !r1.sameSystem( o ) || !r2.sameSystem( o ) ||
 		!r1.sameSystem( r2 ) ) checkErr( MATH_ERR::INPUT, "Surface origin and trajectories must be defined in the same coordinate system!" );
 
 	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
 };
+
+surf::surf( const vector<char>& binData, vector<char>::const_iterator& it )
+{
+	cartCSys* cSys = CSYS_TREE().addCSys( binData, it );
+	r1 = uvec3{ v3{ binData, it }, cSys };
+	r2 = uvec3{ v3{ binData, it }, cSys };
+	o = pnt3{ v3{ binData, it }, cSys };
+
+	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
+
+}
 
 surf::surf( void ) : 
 surf( uvec3{ v3{1,0,0}, GLOBAL_CSYS() }, uvec3{ v3{0,1,0}, GLOBAL_CSYS() }, pnt3{ v3{0,0,0}, GLOBAL_CSYS() })
@@ -68,6 +78,18 @@ surf surf::convertTo( const cartCSys* const cSys_ ) const{
 	return surf( r1.convertTo( cSys_ ), r2.convertTo( cSys_ ), o.convertTo( cSys_ ) );
 }
 
+size_t surf::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += r1.CSys()->serialize( binData );
+	numBytes += r1.XYZ().serialize( binData );
+	numBytes += r2.XYZ().serialize( binData );
+	numBytes += o.XYZ().serialize( binData );
+
+	return numBytes;
+
+}
+
 
 /*
 	surfLim implementation
@@ -93,6 +115,16 @@ surfLim::surfLim( const surf s,
 surfLim::surfLim( void ) : 
 	surfLim( surf{}, 0,1,0,1)
 {}
+
+surfLim::surfLim( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	surf{ binData, it },
+	pAMin( deSerializeBuildIn( (double) -1., binData, it ) ),
+	pAMax( deSerializeBuildIn( (double) -1., binData, it ) ),
+	pBMin( deSerializeBuildIn( (double) -1., binData, it ) ),
+	pBMax( deSerializeBuildIn( (double) -1., binData, it ) )
+{
+
+}
 
 string surfLim::toStr( const unsigned int newLineTabulators ) const{
 	char tempCharArray[ 256 ];
@@ -123,5 +155,18 @@ pnt3 surfLim::getCenter( void ) const{
 line  surfLim::NormalLine( void ) const{
 
 	return line{ this->Normal(), this->getCenter() };
+
+}
+
+size_t surfLim::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += surf::serialize( binData );
+	numBytes += serializeBuildIn( pAMin, binData );
+	numBytes += serializeBuildIn( pAMax, binData );
+	numBytes += serializeBuildIn( pBMin, binData );
+	numBytes += serializeBuildIn( pBMax, binData );
+
+	return numBytes;
 
 }

@@ -37,6 +37,8 @@ class surf : virtual public mathObj{
 	*/
 	explicit surf( const uvec3  v1, const uvec3  v2, const pnt3  p );
 
+	surf( const vector<char>& binData, vector<char>::const_iterator& it );
+
 	/*!
 	 * @brief Default constructor
 	*/
@@ -96,6 +98,7 @@ class surf : virtual public mathObj{
 	*/
 	inline bool parasInBounds( const double a, const double b ) const { return true; };
 
+	size_t serialize( vector<char>& binData ) const;
 
 	protected:
 	uvec3  r1;					/*!<First direction vector*/
@@ -143,6 +146,7 @@ class surfLim : public surf{
 	*/
 	surfLim( void );
 
+	surfLim( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert surface's data to string
@@ -202,6 +206,8 @@ class surfLim : public surf{
 	*/
 	line  NormalLine( void ) const;
 
+
+	size_t serialize( vector<char>& binData ) const;
 
 	private:
 
