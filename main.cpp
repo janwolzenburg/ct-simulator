@@ -29,11 +29,11 @@ void button_cb( Fl_Widget*, void* flag ){
 */
 int main( int argc, char** argv ){
 
-	//model testModel = getTestModel( GLOBAL_CSYS(), 6 );
+	//model testModel = getTestModel( GLOBAL_CSYS(), 20 );
 
 	//vector<char> modelBin;
 	//testModel.serialize( modelBin );
-	//exportSerialized(path{ "./testModel_6x.model" }, modelBin );
+	//exportSerialized(path{ "./testModel_20x.model" }, modelBin );
 
 	//return 0;
 

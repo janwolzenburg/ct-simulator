@@ -503,31 +503,6 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 
 	for( std::thread& currentThread : threads ) currentThread.join();
 
-	//// Iterate all point in image
-	//for( double currentX = slice.Start().col; currentX <= slice.End().col; currentX += slice.Resolution().col ){
-
-	//	for( double currentY = slice.Start().row; currentY <= slice.End().row; currentY += slice.Resolution().row ){
-
-	//		// Current point on plane
-	//		const pnt3 currentPoint = slicePlane.getPnt( currentX, currentY );
-
-	//		if( !this->validCoords( currentPoint ) ){
-	//			slice.operator()( v2CR{ currentX, currentY } ) = 0.;
-	//			continue;
-	//		}
-
-	//		const idx3 currentVoxelIndices = getVoxelIndices( currentPoint );		// Indices of current voxel
-
-	//		const voxData data = this->operator()( currentVoxelIndices );
-
-	//		// Current voxel value
-	//		const double currentValue = data.attenuationAtRefE();
-
-	//		// Set image value
-	//		slice.operator()( v2CR{ currentX, currentY } ) = currentValue;
-
-	//	}
-	// }
 
 	return slice;
 }
