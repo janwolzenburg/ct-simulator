@@ -37,7 +37,7 @@ class surf : virtual public mathObj{
 	*/
 	explicit surf( const uvec3  v1, const uvec3  v2, const pnt3  p );
 
-	surf( const vector<char>& binData, vector<char>::const_iterator& it );
+	surf( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
 	 * @brief Default constructor
@@ -146,7 +146,7 @@ class surfLim : public surf{
 	*/
 	surfLim( void );
 
-	surfLim( const vector<char>& binData, vector<char>::const_iterator& it );
+	surfLim( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
 	 * @brief Convert surface's data to string

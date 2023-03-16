@@ -40,9 +40,8 @@ surf::surf( const uvec3 v1, const uvec3 v2, const pnt3 p )
 	if( !r1.isOrtho( r2 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vectors must be orthogonal!" );
 };
 
-surf::surf( const vector<char>& binData, vector<char>::const_iterator& it )
+surf::surf( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys )
 {
-	cartCSys* cSys = CSYS_TREE().addCSys( binData, it );
 	r1 = uvec3{ v3{ binData, it }, cSys };
 	r2 = uvec3{ v3{ binData, it }, cSys };
 	o = pnt3{ v3{ binData, it }, cSys };
@@ -81,7 +80,6 @@ surf surf::convertTo( const cartCSys* const cSys_ ) const{
 size_t surf::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
-	numBytes += r1.CSys()->serialize( binData );
 	numBytes += r1.XYZ().serialize( binData );
 	numBytes += r2.XYZ().serialize( binData );
 	numBytes += o.XYZ().serialize( binData );
@@ -116,8 +114,8 @@ surfLim::surfLim( void ) :
 	surfLim( surf{}, 0,1,0,1)
 {}
 
-surfLim::surfLim( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	surf{ binData, it },
+surfLim::surfLim( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys ) :
+	surf{ binData, it, cSys },
 	pAMin( deSerializeBuildIn( (double) -1., binData, it ) ),
 	pAMax( deSerializeBuildIn( (double) -1., binData, it ) ),
 	pBMin( deSerializeBuildIn( (double) -1., binData, it ) ),
