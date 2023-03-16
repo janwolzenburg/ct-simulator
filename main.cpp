@@ -73,15 +73,23 @@ int main( int argc, char** argv ){
 	modelImage.hide();
 
 	// Model rotation
-	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.8, 0.2 }, modelGroup );
+	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.8, 0.25 }, modelGroup );
 	
-	Fl_Roller& xRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.1, 0., 0.1, 1. }, rotationGroup );
+	Fl_Roller& xRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.1, 0., 0.15, 1. }, rotationGroup );
 	xRotRoller.type( 0 ); xRotRoller.range( -180., 180. ); xRotRoller.step( 1. );
 	xRotRoller.callback( button_cb, &rotateModelX ); xRotRoller.hide();
+	xRotRoller.value( currentState.getValStatus().xRotRoller );
+	string xRotRollerLabel; xRotRollerLabel.reserve( 10 );
+	xRotRollerLabel = to_string( (int) xRotRoller.value() );
+	xRotRoller.label( xRotRollerLabel.c_str() );
 
 	Fl_Roller& yRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.3, (1.-0.3)/2, 0.66, 0.2}, rotationGroup);
 	yRotRoller.type( 1 ); yRotRoller.range( -180., 180. ); yRotRoller.step( 1. );
 	yRotRoller.callback( button_cb, &rotateModelY ); yRotRoller.hide();
+	yRotRoller.value( currentState.getValStatus().yRotRoller );
+	string yRotRollerLabel; yRotRollerLabel.reserve( 10 );
+	yRotRollerLabel = to_string( (int) yRotRoller.value() );
+	yRotRoller.label( yRotRollerLabel.c_str() );
 
 	// Bottom padding
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
@@ -123,11 +131,25 @@ int main( int argc, char** argv ){
 
 		if( rotateModelX && currentState.ModelLoaded() ){
 			rotateModelX = false;
-			
 
+			currentState.getValStatus().xRotRoller = xRotRoller.value();
+			xRotRollerLabel = to_string( (int) xRotRoller.value() );
+			xRotRoller.label( xRotRollerLabel.c_str() );
 			if( PROGRAM_STATE().rotateViewX( xRotRoller.value() ) ){
 				modelImage.assignImage( currentState.Slice() );
 				
+			}
+		}
+
+		if( rotateModelY && currentState.ModelLoaded() ){
+			rotateModelY = false;
+
+			currentState.getValStatus().yRotRoller = yRotRoller.value();
+			yRotRollerLabel = to_string( (int) yRotRoller.value() );
+			yRotRoller.label( yRotRollerLabel.c_str() );
+			if( PROGRAM_STATE().rotateViewY( yRotRoller.value() ) ){
+				modelImage.assignImage( currentState.Slice() );
+
 			}
 		}
 

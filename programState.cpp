@@ -23,6 +23,9 @@
 
 const string slicePlane::FILE_PREAMBLE{ "VIEWPLANE_FILE_PREAMBLE" };
 
+const string valuatorStatus::FILE_PREAMBLE{ "VALUATORSTATUS_FILE_PREAMBLE" };
+
+
 programState& PROGRAM_STATE( void ){
 	return programState::getInstance();
 }
@@ -43,7 +46,10 @@ programState::programState( void ) :
 	viewPlaneInstance{},
 	storedViewPlane{ getPath( "storedViewPlane.sliceplane" ), viewPlaneInstance },
 
-	modelSliceInstance{}
+	modelSliceInstance{},
+
+	valStatusInstance{},
+	storedValStatus{ getPath("storedValuatorStatus.valStatus"), valStatusInstance}
 
 {
 
@@ -58,6 +64,7 @@ void programState::saveState( void ) const{
 	storedModel.saveObject();
 	storedModelChooser.saveObject( true );
 	storedViewPlane.saveObject( true );
+	storedValStatus.saveObject( true );
 }
 
 
@@ -65,7 +72,11 @@ bool programState::loadModel( void ){
 
 	path modelToLoad = modelChooserInstance.choose();
 
-	return storedModel.load( modelToLoad );
+	if( !storedModel.load( modelToLoad ) ) return false;
+
+	centerModel();
+
+	return true;
 
 }
 

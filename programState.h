@@ -27,6 +27,38 @@
 	Definitions
  *********************************************************************/
 
+ class valuatorStatus{
+
+	public:
+
+	valuatorStatus( void ) : xRotRoller( 0. ), yRotRoller( 0. ) {};
+
+	valuatorStatus( const vector<char>& binData, vector<char>::const_iterator& it ) :
+		xRotRoller( deSerializeBuildIn( 0., binData, it ) ),
+		yRotRoller( deSerializeBuildIn( 0., binData, it ) )
+	{};
+
+	size_t serialize( vector<char>& binData ) const{
+
+		size_t numBytes = 0;
+
+		numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
+		numBytes += serializeBuildIn( xRotRoller, binData );
+		numBytes += serializeBuildIn( yRotRoller, binData );
+
+		return numBytes;
+
+	};
+
+	public:
+
+
+	static const string FILE_PREAMBLE;
+
+	double xRotRoller;
+	double yRotRoller;
+ };
+
  /*!
   * @brief 
   * @tparam C Class with ... 
@@ -118,15 +150,6 @@
 
 	}
 
-	void rotX( const double targetAngle ){
-
-		const double rotationAngle = targetAngle - rotationAngleX;
-
-		cSys->rotateM( cSys->Parent()->xAxis(), rotationAngle );
-		rotationAngleX = targetAngle;
-
-	}
-
 
 	size_t serialize( vector<char>& binData ) const{
 		
@@ -185,6 +208,14 @@ class programState{
 
 	inline model& Model( void ){ return modelInstance; };
 
+	void centerModel( void ){
+	
+		// Center model
+		v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
+
+		modelInstance.CSys()->setPrimitive(  primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } ) ;
+
+	};
 
 	bool sliceModel( void );
 
@@ -193,9 +224,30 @@ class programState{
 	inline greyImage& Slice( void ){ return modelSliceInstance; };
 
 	bool rotateViewX( const double angleDeg ) { 
-		viewPlaneInstance.rotX( angleDeg / 360. * 2. * PI );
+		
+		double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
+		viewPlaneInstance.rotationAngleX = angleDeg;
+
+		line axis =  line{ viewPlaneInstance.surface.R1(), viewPlaneInstance.surface.O() };
+		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+
 		return sliceModel();
 	};
+
+	bool rotateViewY( const double angleDeg ){
+
+		double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
+		viewPlaneInstance.rotationAngleX = angleDeg;
+
+		line axis = line{ viewPlaneInstance.surface.R2(), viewPlaneInstance.surface.O() };
+
+		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+		return sliceModel();
+	};
+
+	valuatorStatus& getValStatus( void ){
+		return valStatusInstance;
+	}
 
 
 	private:
@@ -227,6 +279,7 @@ class programState{
 
 	greyImage modelSliceInstance;
 	
-
+	valuatorStatus valStatusInstance;
+	storedObject<valuatorStatus> storedValStatus;
 
 };
