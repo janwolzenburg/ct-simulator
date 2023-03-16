@@ -87,6 +87,16 @@ int main( int argc, char** argv ){
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
 	//bottomPadding.hide(); rotationGroup.resizable( bottomPadding );
 
+	if( currentState.ModelLoaded() ){
+
+		if( PROGRAM_STATE().sliceModel() ){
+			modelImage.assignImage( currentState.Slice() );
+			modelImage.show(); modelImageBox.hide();
+			xRotRoller.show(); yRotRoller.show();
+		}
+
+	}
+
 	
 	mainWindow.getFl().show(argc, argv);
 

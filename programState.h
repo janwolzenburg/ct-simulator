@@ -131,6 +131,7 @@
 	size_t serialize( vector<char>& binData ) const{
 		
 		size_t numBytes = 0;
+		numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 		numBytes += cSys->serialize( binData );
 		numBytes += surface.serialize( binData );
 		numBytes += serializeBuildIn( rotationAngleX, binData );

@@ -57,7 +57,7 @@ void programState::saveState( void ) const{
 
 	storedModel.saveObject();
 	storedModelChooser.saveObject( true );
-	storedViewPlane.saveObject();
+	storedViewPlane.saveObject( true );
 }
 
 
