@@ -16,6 +16,7 @@
  using std::string;
 
  #include "programState.fwd.h"
+ #include "cSysTree.h"
  #include "model.h"
  #include "fileChooser.h"
  #include "image.h"
@@ -89,7 +90,67 @@
  };
 
 
+ class slicePlane {
 
+	public:
+	slicePlane( void ) :
+		cSys( CSYS_TREE().addCSys("Slice plane system") ),
+		surface{	uvec3{ v3{ 1, 0, 0 }, cSys },
+					uvec3{ v3{ 0, 1, 0 }, cSys },
+					pnt3{  v3{0, 0, 0}, cSys },
+					-300, 300, -300, 300 },
+		rotationAngleX( 0. ),
+		rotationAngleY( 0. ),
+		positionZ( 0. )
+	{
+	
+	};
+	
+	slicePlane( const vector<char>& binData, vector<char>::const_iterator& it ) :
+		cSys{  CSYS_TREE().addCSys( binData, it ) },
+		surface{ binData, it, cSys },
+		rotationAngleX( deSerializeBuildIn<double>( (double) 0., binData, it )  ),
+		rotationAngleY( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
+		positionZ( deSerializeBuildIn<double>( (double) 0., binData, it ) )
+	{
+
+		
+
+	}
+
+	void rotX( const double targetAngle ){
+
+		const double rotationAngle = targetAngle - rotationAngleX;
+
+		cSys->rotateM( cSys->Parent()->xAxis(), rotationAngle );
+		rotationAngleX = targetAngle;
+
+	}
+
+
+	size_t serialize( vector<char>& binData ) const{
+		
+		size_t numBytes = 0;
+		numBytes += cSys->serialize( binData );
+		numBytes += surface.serialize( binData );
+		numBytes += serializeBuildIn( rotationAngleX, binData );
+		numBytes += serializeBuildIn( rotationAngleY, binData );
+		numBytes += serializeBuildIn( positionZ, binData );
+
+		return numBytes;
+
+	};
+
+	public:
+	cartCSys* cSys;
+	surfLim surface;
+	double rotationAngleX;
+	double rotationAngleY;
+	double positionZ;
+
+	static const string FILE_PREAMBLE;
+
+ };
 
 
  programState& PROGRAM_STATE( void );
@@ -121,14 +182,19 @@ class programState{
 
 	bool loadModel( void );
 
-	inline model& Model( void ){ return storedModelInstance; };
+	inline model& Model( void ){ return modelInstance; };
 
 
 	bool sliceModel( void );
 
-	inline bool SliceLoaded( void ) const{ return storedModelSlice.Loaded(); };
+	//inline bool SliceLoaded( void ) const{ return storedModelSlice.Loaded(); };
 
 	inline greyImage& Slice( void ){ return modelSliceInstance; };
+
+	bool rotateViewX( const double angleDeg ) { 
+		viewPlaneInstance.rotX( angleDeg / 360. * 2. * PI );
+		return sliceModel();
+	};
 
 
 	private:
@@ -149,15 +215,17 @@ class programState{
 	private:
 
 
-	model storedModelInstance;
+	model modelInstance;
 	storedObject<model> storedModel;
 
-	fileChooser storedModelChooserInstance;
+	fileChooser modelChooserInstance;
 	storedObject<fileChooser> storedModelChooser;
 
-	static const surfLim viewPlane;
+	slicePlane viewPlaneInstance;
+	storedObject<slicePlane> storedViewPlane;
+
 	greyImage modelSliceInstance;
-	storedObject<greyImage> storedModelSlice;
+	
 
 
 };

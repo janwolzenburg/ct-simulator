@@ -26,7 +26,7 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-const size_t numThreads = 1;
+const size_t numThreads = 12;
 constexpr char stringPadding = 0x9D;
 
 /*!

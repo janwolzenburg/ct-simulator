@@ -21,32 +21,29 @@
  *********************************************************************/
 
 
+const string slicePlane::FILE_PREAMBLE{ "VIEWPLANE_FILE_PREAMBLE" };
+
 programState& PROGRAM_STATE( void ){
 	return programState::getInstance();
 }
 
-cartCSys* viewSystem = CSYS_TREE().addCSys( "View system" );
-const surfLim programState::viewPlane{	uvec3{ v3{ 1, 0, 0 }, viewSystem },
-										uvec3{ v3{ 0, 1, 0 }, viewSystem },
-										pnt3{  v3{0, 0, 0}, viewSystem },
-										-300, 300, -300, 300
-										};
-
 programState& programState::getInstance(){
 	static programState instance;
 	return instance;
-};
+}
 
 
 programState::programState( void ) :
-	storedModelInstance{},
-	storedModel{ getPath( "storedModel.model" ), storedModelInstance },
+	modelInstance{},
+	storedModel{ getPath( "storedModel.model" ), modelInstance },
 
-	storedModelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	storedModelChooser{ getPath( "storedModelChooser.chooser" ), storedModelChooserInstance },
+	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
+	storedModelChooser{ getPath( "storedModelChooser.chooser" ), modelChooserInstance },
 
-	modelSliceInstance{},
-	storedModelSlice{ getPath( "modelSliceImage.image" ), modelSliceInstance }
+	viewPlaneInstance{},
+	storedViewPlane{ getPath( "storedViewPlane.sliceplane" ), viewPlaneInstance },
+
+	modelSliceInstance{}
 
 {
 
@@ -60,13 +57,13 @@ void programState::saveState( void ) const{
 
 	storedModel.saveObject();
 	storedModelChooser.saveObject( true );
-	storedModelSlice.saveObject();
+	storedViewPlane.saveObject();
 }
 
 
 bool programState::loadModel( void ){
 
-	path modelToLoad = storedModelChooserInstance.choose();
+	path modelToLoad = modelChooserInstance.choose();
 
 	return storedModel.load( modelToLoad );
 
@@ -77,9 +74,8 @@ bool programState::sliceModel( void ){
 
 	if( !ModelLoaded() ) return false;
 
-	grid modelSliceGrid = storedModelInstance.getSlice( viewPlane, 1. );
+	grid modelSliceGrid = modelInstance.getSlice( viewPlaneInstance.surface, 1. );
 	modelSliceInstance = greyImage{ modelSliceGrid };
-	storedModelSlice.setLoaded();
 
 	return true;
 }

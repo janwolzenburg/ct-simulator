@@ -77,21 +77,15 @@ int main( int argc, char** argv ){
 	
 	Fl_Roller& xRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.1, 0., 0.1, 1. }, rotationGroup );
 	xRotRoller.type( 0 ); xRotRoller.range( -180., 180. ); xRotRoller.step( 1. );
-	xRotRoller.callback( button_cb, &rotateModelX );
+	xRotRoller.callback( button_cb, &rotateModelX ); xRotRoller.hide();
 
 	Fl_Roller& yRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.3, (1.-0.3)/2, 0.66, 0.2}, rotationGroup);
 	yRotRoller.type( 1 ); yRotRoller.range( -180., 180. ); yRotRoller.step( 1. );
-	yRotRoller.callback( button_cb, &rotateModelY );
+	yRotRoller.callback( button_cb, &rotateModelY ); yRotRoller.hide();
 
 	// Bottom padding
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
 	//bottomPadding.hide(); rotationGroup.resizable( bottomPadding );
-
-	if( PROGRAM_STATE().SliceLoaded() ){
-		modelImage.assignImage( currentState.Slice() );
-		modelImage.show();
-		modelImageBox.hide();
-	}
 
 	
 	mainWindow.getFl().show(argc, argv);
@@ -109,6 +103,7 @@ int main( int argc, char** argv ){
 				if( PROGRAM_STATE().sliceModel() ){
 					modelImage.assignImage( currentState.Slice() );
 					modelImage.show(); modelImageBox.hide();
+					xRotRoller.show(); yRotRoller.show();
 				}
 			}
 			else{
@@ -118,18 +113,11 @@ int main( int argc, char** argv ){
 
 		if( rotateModelX && currentState.ModelLoaded() ){
 			rotateModelX = false;
-			line rotationAxis = GLOBAL_CSYS()->xAxis();
-
-			double absoluteAngle = xRotRoller.value() / 360. * PI;
 			
-			double rotationAngle = absoluteAngle - currentAngleX; 
-			currentAngleX += rotationAngle;
 
-			currentState.Model().CSys()->rotateM( rotationAxis, rotationAngle );
-
-			if( PROGRAM_STATE().sliceModel() ){
+			if( PROGRAM_STATE().rotateViewX( xRotRoller.value() ) ){
 				modelImage.assignImage( currentState.Slice() );
-				modelImage.show(); modelImageBox.hide();
+				
 			}
 		}
 
