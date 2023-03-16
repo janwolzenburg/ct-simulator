@@ -27,6 +27,7 @@ using std::string;
  *********************************************************************/
 
 const size_t numThreads = 1;
+constexpr char stringPadding = 0x9D;
 
 /*!
  * Indices and vector implementation
@@ -177,13 +178,21 @@ template<>
 size_t serializeBuildIn<string>( const string val, vector<char>& binData ){
 
 	size_t i = 0;
+	size_t padding = 24;
+
+	binData.insert( binData.end(), ( padding - ( binData.size() ) % padding ) % padding, stringPadding );
 
 	for( const char c : val ){
 		i++;
 		binData.push_back( c );
 	}
 
+
+	// Add padding
+	binData.insert( binData.end(), ( padding - ( binData.size() + 1 ) % padding ) % padding, stringPadding );
+
 	binData.push_back( '\0' );
+
 
 	return i;
 }
@@ -196,7 +205,10 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 	val.clear();
 
 	while( *it != '\0' && it < binData.end() ){
-		val.push_back( *( it++ ) );
+		
+		char curChar = *( it++ );
+
+		if( curChar != stringPadding ) val.push_back( curChar );
 		i++;
 	}
 
@@ -244,6 +256,10 @@ vector<char> importSerialized( const string fileName ){
 	if( inFile.fail() ) return vector<char>();
 
 	size_t file_size = std::filesystem::file_size( fileName );
+	//vector<char> binData;
+	//binData.reserve( file_size );
+	
+	
 	char* dArray = new char[ file_size ];
 	inFile.read( dArray, file_size );
 

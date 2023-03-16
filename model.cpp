@@ -37,7 +37,7 @@ using std::cref;
 */
 
 
-const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE         "};
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE"};
 
 model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
@@ -386,6 +386,15 @@ vox model::getVoxel( const pnt3 point ) const{
 
 size_t model::serialize( vector<char>& binData ) const{
 
+	size_t expectedSize = FILE_PREAMBLE.size() + 1;
+	expectedSize += sizeof( numVox3D );
+	expectedSize += sizeof( voxSize3D );
+	expectedSize += sizeof( cartCSys );
+	expectedSize += name.size() + 1;
+	expectedSize += numVox * sizeof( *(parameter) );
+
+	binData.reserve( expectedSize );
+
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
@@ -440,7 +449,7 @@ void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& c
 
 		if( !modelRef.validCoords( currentPoint ) ){
 			sliceMutex.lock();
-			slice.operator()( gridCoordinate ) = 0.1;
+			slice.operator()( gridCoordinate ) = 1.;
 			sliceMutex.unlock();
 
 			continue;

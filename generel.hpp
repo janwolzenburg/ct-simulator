@@ -31,9 +31,13 @@ template< typename T >
 size_t serializeBuildIn( const T val, vector<char>& binData ){
 
 	size_t i = 0;
-	for( ; i < sizeof( T ); i++ ) binData.push_back( *( ( (char*) &val ) + ( sizeof( T ) - 1 - i ) ) );
 
-	return i;
+	char* valStartPtr = (char*) &val;
+
+	binData.insert( binData.end(), valStartPtr, valStartPtr + sizeof( T ) );
+
+	return sizeof(T);
+
 }
 
 template< typename T >
@@ -41,16 +45,14 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 
 	val = 0;
 
-	size_t i = 0;
-	for( ; i < sizeof( T ) && it != binData.cend(); i++ ){
-		char* byte = (char*) &val + ( sizeof( T ) - 1 - i );
-		*byte = *( it++ );
-	}
+	// Not enough data left in vector
+	if( binData.cend() - it < sizeof( T ) ) val = defaultVal;
 
-	// Set to default val
-	if( i != sizeof( T ) ) val = defaultVal;
+	val = *( (T*) &(*it) );
 
-	return i;
+	it += sizeof( T );
+
+	return sizeof(T);
 }
 
 template< typename T >
