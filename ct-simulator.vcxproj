@@ -188,6 +188,7 @@
     <ClInclude Include="propability.h" />
     <ClInclude Include="scattering.h" />
     <ClInclude Include="simulation.h" />
+    <ClInclude Include="slicePlane.h" />
     <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="scattering.cpp" />
+    <ClCompile Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="radonTransform.cpp" />
     <ClCompile Include="rays.cpp" />

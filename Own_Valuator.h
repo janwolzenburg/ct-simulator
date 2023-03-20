@@ -16,7 +16,7 @@
 using std::string;
 
 #include <FL/Fl_Valuator.H>
-
+#include <FL/Fl_Counter.H>
 
 
 /*********************************************************************
@@ -58,3 +58,5 @@ class Own_Valuator : public C{
 
 
 };
+
+#include "Own_Valuator.hpp"

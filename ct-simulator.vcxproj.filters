@@ -258,6 +258,9 @@
     <ClInclude Include="Own_Valuator.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="slicePlane.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -391,6 +394,9 @@
     </ClCompile>
     <ClCompile Include="Fl_GreyImage.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="storedObject.h">
+      <Filter>Headerdateien\Program</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

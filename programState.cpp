@@ -125,6 +125,15 @@ bool programState::rotateViewY( const double angleDeg ){
 }
 
 
+bool programState::translateViewZ( const double amount ){
+
+	double translation = amount - viewPlaneInstance.positionZ;
+	viewPlaneInstance.positionZ = amount;
+
+	modelInstance.CSys()->translateM( ((vec3) viewPlaneInstance.surface.Normal() ) * translation );
+	return sliceModel();
+}
+
 valuatorStatus& programState::getValStatus( void ){
 	return valStatusInstance;
 }

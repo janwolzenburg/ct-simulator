@@ -15,13 +15,16 @@
  #include <string>
  using std::string;
 
+ #include <vector>
+ using std::vector;
+
  #include "programState.fwd.h"
- #include "cSysTree.h"
+
  #include "model.h"
  #include "fileChooser.h"
+ #include "slicePlane.h"
+ #include "storedObject.h"
  #include "image.h"
-
-
 
  /*********************************************************************
 	Definitions
@@ -31,11 +34,12 @@
 
 	public:
 
-	valuatorStatus( void ) : xRotRoller( 0. ), yRotRoller( 0. ) {};
+	valuatorStatus( void ) : xRotValue( 0. ), yRotValue( 0. ), zTransValue( 0. ) {};
 
 	valuatorStatus( const vector<char>& binData, vector<char>::const_iterator& it ) :
-		xRotRoller( deSerializeBuildIn( 0., binData, it ) ),
-		yRotRoller( deSerializeBuildIn( 0., binData, it ) )
+		xRotValue( deSerializeBuildIn( 0., binData, it ) ),
+		yRotValue( deSerializeBuildIn( 0., binData, it ) ),
+		zTransValue( deSerializeBuildIn( 0., binData, it ) )
 	{};
 
 	size_t serialize( vector<char>& binData ) const{
@@ -43,8 +47,9 @@
 		size_t numBytes = 0;
 
 		numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-		numBytes += serializeBuildIn( xRotRoller, binData );
-		numBytes += serializeBuildIn( yRotRoller, binData );
+		numBytes += serializeBuildIn( xRotValue, binData );
+		numBytes += serializeBuildIn( yRotValue, binData );
+		numBytes += serializeBuildIn( zTransValue, binData );
 
 		return numBytes;
 
@@ -55,126 +60,11 @@
 
 	static const string FILE_PREAMBLE;
 
-	double xRotRoller;
-	double yRotRoller;
+	double xRotValue;
+	double yRotValue;
+	double zTransValue;
  };
 
- /*!
-  * @brief 
-  * @tparam C Class with ... 
- */
- template< class C >
- class storedObject{
-
-	public:
-	storedObject( const path filePath_, C& objectRef ) :
-		file( filePath_ ),
-		object( objectRef ),
-		loaded( false )
-	{
-		loadStored();
-	};
-
-	bool load( const path filePath ){
-
-		// Does the file exist?
-		if( !std::filesystem::exists( filePath ) ) return false;
-
-		// Load file
-		vector<char> binaryData = importSerialized( filePath );
-		vector<char>::iterator binaryDataIt = binaryData.begin();
-
-		if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
-
-		object = C{ binaryData, binaryDataIt };
-		loaded = true;
-		return loaded;
-	};
-
-	void saveObject( const bool force = false ) const {
-
-		if( !loaded && !force ) return;
-
-		vector<char> binaryData;
-		object.serialize( binaryData );
-
-		exportSerialized( file, binaryData );
-
-	};
-
-	inline bool Loaded( void ) const { return loaded; };
-
-	inline void setLoaded( void ){ loaded = true; };
-
-
-
-	private:
-	path file;
-	C& object;
-	bool loaded;
-
-	void loadStored( void ){
-
-		load( file );
-		
-	};
-
- };
-
-
- class slicePlane {
-
-	public:
-	slicePlane( void ) :
-		cSys( CSYS_TREE().addCSys("Slice plane system") ),
-		surface{	uvec3{ v3{ 1, 0, 0 }, cSys },
-					uvec3{ v3{ 0, 1, 0 }, cSys },
-					pnt3{  v3{0, 0, 0}, cSys },
-					-300, 300, -300, 300 },
-		rotationAngleX( 0. ),
-		rotationAngleY( 0. ),
-		positionZ( 0. )
-	{
-	
-	};
-	
-	slicePlane( const vector<char>& binData, vector<char>::const_iterator& it ) :
-		cSys{  CSYS_TREE().addCSys( binData, it ) },
-		surface{ binData, it, cSys },
-		rotationAngleX( deSerializeBuildIn<double>( (double) 0., binData, it )  ),
-		rotationAngleY( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
-		positionZ( deSerializeBuildIn<double>( (double) 0., binData, it ) )
-	{
-
-		
-
-	}
-
-
-	size_t serialize( vector<char>& binData ) const{
-		
-		size_t numBytes = 0;
-		numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-		numBytes += cSys->serialize( binData );
-		numBytes += surface.serialize( binData );
-		numBytes += serializeBuildIn( rotationAngleX, binData );
-		numBytes += serializeBuildIn( rotationAngleY, binData );
-		numBytes += serializeBuildIn( positionZ, binData );
-
-		return numBytes;
-
-	};
-
-	public:
-	cartCSys* cSys;
-	surfLim surface;
-	double rotationAngleX;
-	double rotationAngleY;
-	double positionZ;
-
-	static const string FILE_PREAMBLE;
-
- };
 
 
  programState& PROGRAM_STATE( void );
@@ -214,6 +104,8 @@ class programState{
 	bool rotateViewX( const double angleDeg );
 
 	bool rotateViewY( const double angleDeg );
+
+	bool translateViewZ( const double amount );
 
 	valuatorStatus& getValStatus( void );
 

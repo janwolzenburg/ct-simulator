@@ -75,13 +75,17 @@ int main( int argc, char** argv ){
 	// Model rotation
 	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.5, 0.25 }, modelGroup );
 	
-	Fl_Own_Valuator<Fl_Counter>& xRotRoller = mainWindow.add<Fl_Own_Valuator<Fl_Counter>>( relPosition_Hor{ .2, 1., .2 }, rotationGroup, "x-Rotation");
-	xRotRoller.range( -180., 180. ); xRotRoller.step( 1., 10. ); xRotRoller.hide();
-	xRotRoller.value( currentState.getValStatus().xRotRoller );
+	Own_Valuator<Fl_Counter>& xRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .15, 1., .15 }, rotationGroup, "x-Rotation");
+	xRot.range( -180., 180. ); xRot.step( 1., 10. ); xRot.hide();
+	xRot.value( currentState.getValStatus().xRotValue );
 
-	Fl_Own_Valuator<Fl_Counter>& yRotRoller = mainWindow.add<Fl_Own_Valuator<Fl_Counter>>( relPosition_Hor{ .6, 1., .2 }, rotationGroup, "y-Rotation");
-	yRotRoller.range( -180., 180. ); yRotRoller.step( 1., 10. ); yRotRoller.hide();
-	yRotRoller.value( currentState.getValStatus().yRotRoller );
+	Own_Valuator<Fl_Counter>& yRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .4, 1., .15 }, rotationGroup, "y-Rotation");
+	yRot.range( -180., 180. ); yRot.step( 1., 10. ); yRot.hide();
+	yRot.value( currentState.getValStatus().yRotValue );
+
+	Own_Valuator<Fl_Counter>& zTrans = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .75, 1., .15 }, rotationGroup, "z-Translation" );
+	zTrans.range( -400., 400 ); zTrans.step( 1., 10. ); zTrans.hide();
+	zTrans.value( currentState.getValStatus().zTransValue );
 
 	// Bottom padding
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
@@ -92,7 +96,7 @@ int main( int argc, char** argv ){
 		if( PROGRAM_STATE().sliceModel() ){
 			modelImage.assignImage( currentState.Slice() );
 			modelImage.show(); modelImageBox.hide();
-			xRotRoller.show(); yRotRoller.show();
+			xRot.show(); yRot.show(); zTrans.show();
 		}
 
 	}
@@ -113,7 +117,7 @@ int main( int argc, char** argv ){
 				if( PROGRAM_STATE().sliceModel() ){
 					modelImage.assignImage( currentState.Slice() );
 					modelImage.show(); modelImageBox.hide();
-					xRotRoller.show(); yRotRoller.show();
+					xRot.show(); yRot.show(); zTrans.show();
 				}
 			}
 			else{
@@ -121,26 +125,37 @@ int main( int argc, char** argv ){
 			}
 		}
 
-		if( xRotRoller.ChangeFlag() && currentState.ModelLoaded() ){
-			currentState.getValStatus().xRotRoller = xRotRoller.value();
-			xRotRoller.deactivate();
+		if( xRot.ChangeFlag() && currentState.ModelLoaded() ){
+			currentState.getValStatus().xRotValue = xRot.value();
+			xRot.deactivate();
 
-			if( PROGRAM_STATE().rotateViewX( xRotRoller.value() ) ){
+			if( PROGRAM_STATE().rotateViewX( xRot.value() ) ){
 				modelImage.assignImage( currentState.Slice() );	
 			}
 
-			xRotRoller.activate();
+			xRot.activate();
 		}
 
-		if( yRotRoller.ChangeFlag() && currentState.ModelLoaded() ){
-			currentState.getValStatus().yRotRoller = yRotRoller.value();
-			yRotRoller.deactivate();
+		if( yRot.ChangeFlag() && currentState.ModelLoaded() ){
+			currentState.getValStatus().yRotValue = yRot.value();
+			yRot.deactivate();
 
-			if( PROGRAM_STATE().rotateViewY( yRotRoller.value() ) ){
+			if( PROGRAM_STATE().rotateViewY( yRot.value() ) ){
 				modelImage.assignImage( currentState.Slice() );
 			}
 
-			yRotRoller.activate();
+			yRot.activate();
+		}
+
+		if( zTrans.ChangeFlag() && currentState.ModelLoaded() ){
+			currentState.getValStatus().zTransValue = zTrans.value();
+			zTrans.deactivate();
+
+			if( PROGRAM_STATE().translateViewZ( zTrans.value() ) ){
+				modelImage.assignImage( currentState.Slice() );
+			}
+
+			zTrans.activate();
 		}
 
 	}
