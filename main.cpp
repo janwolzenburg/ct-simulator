@@ -38,11 +38,8 @@ int main( int argc, char** argv ){
 	programState& currentState = PROGRAM_STATE();
 
 	bool loadModel = false;//;!PROGRAM_STATE().ModelLoaded();
+	bool resetView = false;
 
-	//bool rotateModelX = false; 
-	double currentAngleX = 0;
-	//bool rotateModelY = false; 
-	double currentAngleY = 0;
 
 	// No automatic hierarchies
 	Fl_Group::current( NULL );
@@ -73,19 +70,23 @@ int main( int argc, char** argv ){
 	modelImage.hide();
 
 	// Model rotation
-	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.5, 0.25 }, modelGroup );
+	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.9, 0.25 }, modelGroup );
 	
-	Own_Valuator<Fl_Counter>& xRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .15, 1., .15 }, rotationGroup, "x-Rotation");
+	Own_Valuator<Fl_Counter>& xRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition{ 0., .1, .5, .15 }, rotationGroup, "x-Rotation");
 	xRot.range( -180., 180. ); xRot.step( 1., 10. ); xRot.hide();
 	xRot.value( currentState.getValStatus().xRotValue );
 
-	Own_Valuator<Fl_Counter>& yRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .4, 1., .15 }, rotationGroup, "y-Rotation");
+	Own_Valuator<Fl_Counter>& yRot = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition{ 0., .4, .5, .15 }, rotationGroup, "y-Rotation");
 	yRot.range( -180., 180. ); yRot.step( 1., 10. ); yRot.hide();
 	yRot.value( currentState.getValStatus().yRotValue );
 
-	Own_Valuator<Fl_Counter>& zTrans = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition_Hor{ .75, 1., .15 }, rotationGroup, "z-Translation" );
+	Own_Valuator<Fl_Counter>& zTrans = mainWindow.add<Own_Valuator<Fl_Counter>>( relPosition{ 0., .7, .5, .15 }, rotationGroup, "z-Translation" );
 	zTrans.range( -400., 400 ); zTrans.step( 1., 10. ); zTrans.hide();
 	zTrans.value( currentState.getValStatus().zTransValue );
+
+	// Reset button
+	Fl_Button& resetViewBtn = mainWindow.add<Fl_Button>( relPosition_Ver{ .8, .4, .2 }, rotationGroup, "Reset view" );
+	resetViewBtn.labelsize( 20 ); resetViewBtn.callback( button_cb, &resetView ); resetViewBtn.hide();
 
 	// Bottom padding
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
@@ -97,6 +98,7 @@ int main( int argc, char** argv ){
 			modelImage.assignImage( currentState.Slice() );
 			modelImage.show(); modelImageBox.hide();
 			xRot.show(); yRot.show(); zTrans.show();
+			resetViewBtn.show();
 		}
 
 	}
@@ -118,6 +120,7 @@ int main( int argc, char** argv ){
 					modelImage.assignImage( currentState.Slice() );
 					modelImage.show(); modelImageBox.hide();
 					xRot.show(); yRot.show(); zTrans.show();
+					resetViewBtn.show();
 				}
 			}
 			else{
@@ -156,6 +159,27 @@ int main( int argc, char** argv ){
 			}
 
 			zTrans.activate();
+		}
+
+		if( resetView && currentState.ModelLoaded() ){
+			resetView = false;
+			xRot.deactivate(); yRot.deactivate(); zTrans.deactivate();
+			resetViewBtn.deactivate();
+
+			currentState.centerModel();
+
+			xRot.value( 0. );
+			yRot.value( 0. );
+			zTrans.value( 0. );
+
+			if( currentState.sliceModel() ){
+				modelImage.assignImage( currentState.Slice() );
+			}
+
+
+			xRot.activate(); yRot.activate(); zTrans.activate();
+			resetViewBtn.activate();
+
 		}
 
 	}
