@@ -161,6 +161,7 @@
     <ClInclude Include="equationSystem.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
+    <ClInclude Include="Fl_GreyImage.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
@@ -174,8 +175,11 @@
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
+    <ClInclude Include="Own_Valuator.h" />
+    <ClInclude Include="Own_Valuator.hpp" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
+    <ClInclude Include="positions.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="programState.fwd.h" />
@@ -202,6 +206,8 @@
     <ClInclude Include="vectorAlgorithm.h" />
     <ClInclude Include="voxel.h" />
     <ClInclude Include="widgets.h" />
+    <ClInclude Include="window.h" />
+    <ClInclude Include="window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="backprojection.cpp" />
@@ -214,6 +220,7 @@
     <ClCompile Include="equationSystem.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
+    <ClCompile Include="Fl_GreyImage.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
@@ -225,6 +232,7 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="intersections.cpp" />
     <ClCompile Include="plotting.cpp" />
+    <ClCompile Include="positions.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
     <ClCompile Include="programState.cpp" />
@@ -245,6 +253,7 @@
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />
     <ClCompile Include="widgets.cpp" />
+    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

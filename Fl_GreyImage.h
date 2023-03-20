@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   gui.h
+ * @file   widgets.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -12,10 +12,9 @@
 	Includes
  *********************************************************************/
 
- #include <FL/Fl.H>
+ #include <FL/Fl_Widget.H>
 
-#include "window.h"
-#include "widgets.h"
+#include "image.h"
 
 
 
@@ -23,6 +22,25 @@
 	Definitions
  *********************************************************************/
 
-void button_cb( Fl_Widget* widget, void* flag );
+
+class Fl_Image_Widget : public Fl_Widget{
 
 
+	public:
+
+	Fl_Image_Widget( int x, int y, int w, int h, const char* label = 0L );
+
+	virtual void draw( void );
+
+	virtual void resize( int x, int y, int w, int h );
+
+	void assignImage( const greyImage& img );
+
+	void calculateScaled( void );
+
+
+	private:
+
+	greyImage originalImage;
+	greyImage scaledImage;
+};

@@ -185,13 +185,9 @@ class programState{
 	public:
 
 	#ifdef WIN32
-
 		const path stateStorage{ ".\\stateStorage\\" };
-
 	#else
-
 		const path stateStorage{ "./stateStorage/" };
-
 	#endif // WIN32
 
 
@@ -208,55 +204,23 @@ class programState{
 
 	inline model& Model( void ){ return modelInstance; };
 
-	void centerModel( void ){
-	
-		// Center model
-		v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
-
-		modelInstance.CSys()->setPrimitive(  primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } ) ;
-
-	};
+	void centerModel( void );
 
 	bool sliceModel( void );
 
-	//inline bool SliceLoaded( void ) const{ return storedModelSlice.Loaded(); };
 
 	inline greyImage& Slice( void ){ return modelSliceInstance; };
 
-	bool rotateViewX( const double angleDeg ) { 
-		
-		double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
-		viewPlaneInstance.rotationAngleX = angleDeg;
+	bool rotateViewX( const double angleDeg );
 
-		line axis =  line{ viewPlaneInstance.surface.R1(), viewPlaneInstance.surface.O() };
-		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+	bool rotateViewY( const double angleDeg );
 
-		return sliceModel();
-	};
-
-	bool rotateViewY( const double angleDeg ){
-
-		double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
-		viewPlaneInstance.rotationAngleX = angleDeg;
-
-		line axis = line{ viewPlaneInstance.surface.R2(), viewPlaneInstance.surface.O() };
-
-		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
-		return sliceModel();
-	};
-
-	valuatorStatus& getValStatus( void ){
-		return valStatusInstance;
-	}
+	valuatorStatus& getValStatus( void );
 
 
 	private:
 	 
-	path getPath( const string filename ) const{
-
-		return stateStorage / filename;
-
-	};
+	path getPath( const string filename ) const;
 
 	programState( void );
 
@@ -266,7 +230,6 @@ class programState{
 
 
 	private:
-
 
 	model modelInstance;
 	storedObject<model> storedModel;

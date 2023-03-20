@@ -81,6 +81,16 @@ bool programState::loadModel( void ){
 }
 
 
+void programState::centerModel( void ){
+
+	// Center model
+	v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
+
+	modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } );
+
+}
+
+
 bool programState::sliceModel( void ){
 
 	if( !ModelLoaded() ) return false;
@@ -89,4 +99,39 @@ bool programState::sliceModel( void ){
 	modelSliceInstance = greyImage{ modelSliceGrid };
 
 	return true;
+}
+
+
+bool programState::rotateViewX( const double angleDeg ){
+
+	double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
+	viewPlaneInstance.rotationAngleX = angleDeg;
+
+	line axis = line{ viewPlaneInstance.surface.R1(), viewPlaneInstance.surface.O() };
+	modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+
+	return sliceModel();
+}
+
+bool programState::rotateViewY( const double angleDeg ){
+
+	double rotationAngle = angleDeg - viewPlaneInstance.rotationAngleX;
+	viewPlaneInstance.rotationAngleX = angleDeg;
+
+	line axis = line{ viewPlaneInstance.surface.R2(), viewPlaneInstance.surface.O() };
+
+	modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+	return sliceModel();
+}
+
+
+valuatorStatus& programState::getValStatus( void ){
+	return valStatusInstance;
+}
+
+
+path programState::getPath( const string filename ) const{
+
+	return stateStorage / filename;
+
 }

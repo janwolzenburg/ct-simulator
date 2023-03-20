@@ -9,16 +9,14 @@
 #include <iostream>
 using std::cerr;  using std::endl; using std::cout;
 
+#include <type_traits>
+
 #include "programState.h"
 #include "gui.h"
 #include "test_model.h"
 #include "cSysTree.h"
 
 
-
-void button_cb( Fl_Widget*, void* flag ){
-	*((bool*) flag ) = true;
-}
 
 
 
@@ -41,8 +39,10 @@ int main( int argc, char** argv ){
 
 	bool loadModel = false;//;!PROGRAM_STATE().ModelLoaded();
 
-	bool rotateModelX = false; double currentAngleX = 0;
-	bool rotateModelY = false; double currentAngleY = 0;
+	//bool rotateModelX = false; 
+	double currentAngleX = 0;
+	//bool rotateModelY = false; 
+	double currentAngleY = 0;
 
 	// No automatic hierarchies
 	Fl_Group::current( NULL );
@@ -73,23 +73,15 @@ int main( int argc, char** argv ){
 	modelImage.hide();
 
 	// Model rotation
-	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.8, 0.25 }, modelGroup );
+	Fl_Group& rotationGroup = mainWindow.add<Fl_Group>( relPosition_Hor{ 0.75, 0.5, 0.25 }, modelGroup );
 	
-	Fl_Roller& xRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.1, 0., 0.15, 1. }, rotationGroup );
-	xRotRoller.type( 0 ); xRotRoller.range( -180., 180. ); xRotRoller.step( 1. );
-	xRotRoller.callback( button_cb, &rotateModelX ); xRotRoller.hide();
+	Fl_Own_Valuator<Fl_Counter>& xRotRoller = mainWindow.add<Fl_Own_Valuator<Fl_Counter>>( relPosition_Hor{ .2, 1., .2 }, rotationGroup, "x-Rotation");
+	xRotRoller.range( -180., 180. ); xRotRoller.step( 1., 10. ); xRotRoller.hide();
 	xRotRoller.value( currentState.getValStatus().xRotRoller );
-	string xRotRollerLabel; xRotRollerLabel.reserve( 10 );
-	xRotRollerLabel = to_string( (int) xRotRoller.value() );
-	xRotRoller.label( xRotRollerLabel.c_str() );
 
-	Fl_Roller& yRotRoller = mainWindow.add<Fl_Roller>( relPosition{ 0.3, (1.-0.3)/2, 0.66, 0.2}, rotationGroup);
-	yRotRoller.type( 1 ); yRotRoller.range( -180., 180. ); yRotRoller.step( 1. );
-	yRotRoller.callback( button_cb, &rotateModelY ); yRotRoller.hide();
+	Fl_Own_Valuator<Fl_Counter>& yRotRoller = mainWindow.add<Fl_Own_Valuator<Fl_Counter>>( relPosition_Hor{ .6, 1., .2 }, rotationGroup, "y-Rotation");
+	yRotRoller.range( -180., 180. ); yRotRoller.step( 1., 10. ); yRotRoller.hide();
 	yRotRoller.value( currentState.getValStatus().yRotRoller );
-	string yRotRollerLabel; yRotRollerLabel.reserve( 10 );
-	yRotRollerLabel = to_string( (int) yRotRoller.value() );
-	yRotRoller.label( yRotRollerLabel.c_str() );
 
 	// Bottom padding
 	//Fl_Box& bottomPadding = mainWindow.add<Fl_Box>( relPosition{ 0., 0.8, 1., 0.2 }, rotationGroup );
@@ -129,28 +121,26 @@ int main( int argc, char** argv ){
 			}
 		}
 
-		if( rotateModelX && currentState.ModelLoaded() ){
-			rotateModelX = false;
-
+		if( xRotRoller.ChangeFlag() && currentState.ModelLoaded() ){
 			currentState.getValStatus().xRotRoller = xRotRoller.value();
-			xRotRollerLabel = to_string( (int) xRotRoller.value() );
-			xRotRoller.label( xRotRollerLabel.c_str() );
+			xRotRoller.deactivate();
+
 			if( PROGRAM_STATE().rotateViewX( xRotRoller.value() ) ){
-				modelImage.assignImage( currentState.Slice() );
-				
+				modelImage.assignImage( currentState.Slice() );	
 			}
+
+			xRotRoller.activate();
 		}
 
-		if( rotateModelY && currentState.ModelLoaded() ){
-			rotateModelY = false;
-
+		if( yRotRoller.ChangeFlag() && currentState.ModelLoaded() ){
 			currentState.getValStatus().yRotRoller = yRotRoller.value();
-			yRotRollerLabel = to_string( (int) yRotRoller.value() );
-			yRotRoller.label( yRotRollerLabel.c_str() );
+			yRotRoller.deactivate();
+
 			if( PROGRAM_STATE().rotateViewY( yRotRoller.value() ) ){
 				modelImage.assignImage( currentState.Slice() );
-
 			}
+
+			yRotRoller.activate();
 		}
 
 	}

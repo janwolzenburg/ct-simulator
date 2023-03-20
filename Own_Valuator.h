@@ -1,0 +1,60 @@
+#pragma once
+/*********************************************************************
+ * @file   OwnValuator.h
+ * @brief
+ *
+ * @author Jan Wolzenburg
+ * @date   March 2023
+ *********************************************************************/
+
+
+ /*********************************************************************
+	Includes
+ *********************************************************************/
+
+#include <string>
+using std::string;
+
+#include <FL/Fl_Valuator.H>
+
+
+
+/*********************************************************************
+   Definitions
+*********************************************************************/
+
+
+
+template< class C >
+class Own_Valuator : public C{
+
+	static_assert( std::is_base_of_v< Fl_Valuator, C > );
+
+
+	public:
+
+	Own_Valuator( int x, int y, int w, int h, const char* label );
+
+	static void cbFunction( Fl_Widget* widgetPtr, void* flag );
+
+	bool ChangeFlag( void );
+
+	double value( void );
+
+	int value( double newVal );
+
+	void ValueToLabel( const bool yesNo );
+
+
+	private:
+
+	void updateLabel( void );
+
+
+	private:
+	bool changeFlag;
+	bool valueToLabel;
+	string labelString;
+
+
+};
