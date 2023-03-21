@@ -12,7 +12,7 @@
   Includes
 *********************************************************************/
 
-//#include "widgets.h"
+#include "widgets.h"
 
 
 
@@ -20,3 +20,7 @@
   Implementations
 *********************************************************************/
 
+
+void button_cb( Fl_Widget* widget, void* flag ){
+	*( (bool*) flag ) = true;
+}

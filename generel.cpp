@@ -226,6 +226,9 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 
 bool exportSerialized( const path filePath, const vector<char> binData ){
 
+
+	if( !std::filesystem::exists( filePath.parent_path()  )) std::filesystem::create_directory( filePath.parent_path() );
+
 	return exportSerialized( filePath.string(), binData );
 
 }

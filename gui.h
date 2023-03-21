@@ -16,13 +16,12 @@
 
 #include "window.h"
 #include "widgets.h"
+#include "modelView.h"
 
 
 
  /*********************************************************************
 	Definitions
  *********************************************************************/
-
-void button_cb( Fl_Widget* widget, void* flag );
 
 

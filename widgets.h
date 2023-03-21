@@ -27,3 +27,4 @@
 	Definitions
  *********************************************************************/
 
+void button_cb( Fl_Widget* widget, void* flag );

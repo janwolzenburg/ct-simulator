@@ -30,42 +30,6 @@
 	Definitions
  *********************************************************************/
 
- class valuatorStatus{
-
-	public:
-
-	valuatorStatus( void ) : xRotValue( 0. ), yRotValue( 0. ), zTransValue( 0. ) {};
-
-	valuatorStatus( const vector<char>& binData, vector<char>::const_iterator& it ) :
-		xRotValue( deSerializeBuildIn( 0., binData, it ) ),
-		yRotValue( deSerializeBuildIn( 0., binData, it ) ),
-		zTransValue( deSerializeBuildIn( 0., binData, it ) )
-	{};
-
-	size_t serialize( vector<char>& binData ) const{
-
-		size_t numBytes = 0;
-
-		numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-		numBytes += serializeBuildIn( xRotValue, binData );
-		numBytes += serializeBuildIn( yRotValue, binData );
-		numBytes += serializeBuildIn( zTransValue, binData );
-
-		return numBytes;
-
-	};
-
-	public:
-
-
-	static const string FILE_PREAMBLE;
-
-	double xRotValue;
-	double yRotValue;
-	double zTransValue;
- };
-
-
 
  programState& PROGRAM_STATE( void );
 
@@ -74,18 +38,14 @@ class programState{
 
 	public:
 
-	#ifdef WIN32
-		const path stateStorage{ ".\\stateStorage\\" };
-	#else
-		const path stateStorage{ "./stateStorage/" };
-	#endif // WIN32
+	static const path stateStorage;
 
 
 	public:
 
 	static programState& getInstance();
 
-	void saveState( void ) const;
+	~programState( void );
 
 
 	inline bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
@@ -94,32 +54,30 @@ class programState{
 
 	inline model& Model( void ){ return modelInstance; };
 
-	void centerModel( void );
-
-	bool sliceModel( void );
+	//bool sliceModel( void );
 
 
-	inline greyImage& Slice( void ){ return modelSliceInstance; };
+	//inline greyImage& Slice( void ){ return modelSliceInstance; };
 
-	bool rotateViewX( const double angleDeg );
+	//bool rotateViewX( const double angleDeg );
 
-	bool rotateViewY( const double angleDeg );
+	//bool rotateViewY( const double angleDeg );
 
-	bool translateViewZ( const double amount );
+	//bool translateViewZ( const double amount );
 
-	valuatorStatus& getValStatus( void );
+	static void createStorageDir( void );
+
+	static path getPath( const string filename ){ return stateStorage / filename; };
 
 
 	private:
 	 
-	path getPath( const string filename ) const;
 
 	programState( void );
 
 	programState( const programState& tree_ ) = delete;
 
 	programState& operator=( const programState& tree_ ) = delete;
-
 
 	private:
 
@@ -129,12 +87,5 @@ class programState{
 	fileChooser modelChooserInstance;
 	storedObject<fileChooser> storedModelChooser;
 
-	slicePlane viewPlaneInstance;
-	storedObject<slicePlane> storedViewPlane;
-
-	greyImage modelSliceInstance;
-	
-	valuatorStatus valStatusInstance;
-	storedObject<valuatorStatus> storedValStatus;
-
 };
+

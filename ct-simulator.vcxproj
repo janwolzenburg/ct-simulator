@@ -175,6 +175,7 @@
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
+    <ClInclude Include="modelView.h" />
     <ClInclude Include="Own_Valuator.h" />
     <ClInclude Include="Own_Valuator.hpp" />
     <ClInclude Include="plotting.h" />

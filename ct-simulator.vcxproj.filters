@@ -255,11 +255,14 @@
     <ClInclude Include="Own_Valuator.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Own_Valuator.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="slicePlane.h">
       <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="modelView.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Own_Valuator.hpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
