@@ -54,13 +54,7 @@ int main( int argc, char** argv ){
 
 	while( Fl::wait() ){
 		
-		// Load model button pressed
-		if( modelView.LoadBtnPressed() ){
-			state.loadModel();
-			modelView.resetModel( state.Model() );
-			modelView.UpdateModel( state.Model() );
-		}
-
+		modelView.handleEvents();
 		
 
 	}

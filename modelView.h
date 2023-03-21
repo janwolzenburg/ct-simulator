@@ -155,6 +155,7 @@ class modelView : public Fl_Group{
 		// Hide initially
 		moveGrp.hide();
 
+
 	}
 
 	~modelView( void ){
@@ -163,11 +164,43 @@ class modelView : public Fl_Group{
 
 	}
 
+	void handleEvents( void ){
+
+		if( LoadBtnPressed() ){
+			
+			Fl_Group::deactivate();
+
+			viewImg.hide(); viewBox.show();
+			viewBox.label( "Loading model...");
+			
+			PROGRAM_STATE().loadModel();
+			resetModel( PROGRAM_STATE().Model() );
+			UpdateModel( PROGRAM_STATE().Model() );
+
+		}
+
+		if( ModelNeedsUpdate() ){
+			Fl_Group::deactivate();
+			UpdateModel( PROGRAM_STATE().Model() );
+		}
+
+		if( ResetBtnPressed() ){
+			Fl_Group::deactivate();
+			resetModel( PROGRAM_STATE().Model() );
+			UpdateModel( PROGRAM_STATE().Model() );
+		}
+
+	}
+
 	/*!
 	 * @brief Check load button press and reset when pressed
 	 * @return True when it was pressed
 	*/
 	inline bool LoadBtnPressed( void ){ return loadBtnPressed ? !( loadBtnPressed = false ) : false; };
+
+	inline bool ModelNeedsUpdate( void ){ return updateModel ? !( updateModel = false ) : false; };
+
+	inline bool ResetBtnPressed( void ){ return resetBtnPressed ? !( resetBtnPressed = false ) : false; };
 
 
 	void sliceModel( model& model ) {
@@ -206,7 +239,7 @@ class modelView : public Fl_Group{
 
 	void UpdateModel( model& model ){
 
-		//Fl_Group::deactivate();
+		Fl_Group::deactivate();
 
 		if( xRot.value() != planeInstance.rotationAngleX ){
 
@@ -243,7 +276,7 @@ class modelView : public Fl_Group{
 		viewGrp.resizable( viewImg );
 		viewImg.show();
 		viewBox.hide();
-		//Fl_Group::activate();
+		Fl_Group::activate();
 	}
 
 
