@@ -231,6 +231,7 @@ class model : virtual public mathObj{
 	*/
 	grid getSlice( const surfLim sliceLocation, const double resolution ) const; 
 
+	inline string Name( void ) const{ return name; };
 
 	private:
 

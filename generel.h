@@ -26,6 +26,8 @@ using std::cerr; using std::endl; using std::cout;
 #include <filesystem>
 using std::filesystem::path;
 
+#include <sstream>
+
 
 
  /*********************************************************************
@@ -310,5 +312,36 @@ vector<char> importSerialized( const string fileName );
 	* @return True when preambles match
 */
 bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
+
+
+
+template<typename T>
+string toString( T value, const int precision = 0){
+
+	std::ostringstream out;
+
+	if( precision < 0 ){
+
+		T factor = (T) pow( 10., (double) ( -precision - 1 ) );
+
+		value /= factor;
+
+		value = (T) round( value );
+		value *= factor;
+
+		out.precision( 0 );
+	} 
+	else{
+		out.precision( precision );
+		out << std::fixed;
+		out << value;
+	}
+
+	
+
+	return out.str();
+
+}
+
 
 #include "generel.hpp"

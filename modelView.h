@@ -22,6 +22,7 @@ using std::vector;
 #include "generel.h"
 
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Multiline_Output.H>
 #include "widgets.h"
 
 #include "programState.h"
@@ -71,12 +72,13 @@ class modelView : public Fl_Group{
 
 	modelView( int x, int y, int w, int h ) : 
 		Fl_Group{ x, y, w, h },
-		headGrp{		X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .2 ) },
-		loadBtn{		X( headGrp, .3 ),	Y( headGrp, .4 ),	W( headGrp, .4 ),	H( headGrp, .2 ),	"Load model" },
+		headGrp{		X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .1 ) },
+		loadBtn{		X( headGrp, .3 ),	Y( headGrp, .4 ),	W( headGrp, .4 ),	H( headGrp, .4 ),	"Load model" },
 
-		viewGrp{		X( *this, 0. ),		hOff( headGrp ) ,	W( *this , 1. ),	H( *this, .5 ) },
-		viewBox{		X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, 1. ),	"No model loaded" },
-		viewImg{		X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, 1. ) },
+		viewGrp{		X( *this, 0. ),		hOff( headGrp ) ,	W( *this , 1. ),	H( *this, .6 ) },
+		modelData{		X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .2 ) },
+		viewBox{		X( viewGrp, 0. ),	Y( viewGrp, .25 ),	W( viewGrp, 1.),	H( viewGrp, .75 ),	"No model loaded"},
+		viewImg{		X( viewGrp, 0. ),	Y( viewGrp, .25 ),	W( viewGrp, 1. ),	H( viewGrp, .75 ) },
 
 		moveGrp{		X( *this, 0. ),		hOff( viewGrp ),	W( *this, 1. ),		H( *this, .3 ) },
 		xRot{			X( moveGrp, .1 ),	Y( moveGrp, .15 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "x-Rotation" },
@@ -110,8 +112,12 @@ class modelView : public Fl_Group{
 
 		// View group dictates resizing
 		Fl_Group::add_resizable( viewGrp );
+		viewGrp.add( modelData );
 		viewGrp.add( viewBox );
 		viewGrp.add( viewImg );
+
+		// Model data
+		modelData.hide();
 
 		// Labelsize and box
 		viewBox.labelsize( (int) ( .05 * (double) viewBox.h() ) );
@@ -170,21 +176,23 @@ class modelView : public Fl_Group{
 			
 			Fl_Group::deactivate();
 
-			viewImg.hide(); viewBox.show();
+			viewImg.hide(); viewBox.show(); modelData.hide();
 			viewBox.label( "Loading model...");
 			
 			PROGRAM_STATE().loadModel();
-			resetModel( PROGRAM_STATE().Model() );
-			UpdateModel( PROGRAM_STATE().Model() );
+			model& modelRef = PROGRAM_STATE().Model();
+			resetModel( modelRef );
+			UpdateModel( modelRef );
 
 		}
 
-		if( ModelNeedsUpdate() ){
+
+		if( ModelNeedsUpdate() && PROGRAM_STATE().ModelLoaded() ){
 			Fl_Group::deactivate();
 			UpdateModel( PROGRAM_STATE().Model() );
 		}
 
-		if( ResetBtnPressed() ){
+		if( ResetBtnPressed() && PROGRAM_STATE().ModelLoaded() ){
 			Fl_Group::deactivate();
 			resetModel( PROGRAM_STATE().Model() );
 			UpdateModel( PROGRAM_STATE().Model() );
@@ -273,9 +281,20 @@ class modelView : public Fl_Group{
 		sliceModel( model );
 		viewImg.assignImage( modelSliceInstance );
 
+
+		modelDataString.clear();
+		modelDataString += "Name: \t" + model.Name() + '\n';
+		modelDataString += "Voxel: \t\t\t" + toString( model.NumVox().x ) + " x " + toString( model.NumVox().y ) + " x " + toString( model.NumVox().z ) + "\n";
+		modelDataString += "Voxel Größe: \t" + toString( model.VoxSize().x, 2 ) + " x " + toString( model.VoxSize().y, 2 ) + " x " + toString( model.VoxSize().z, 2 ) + "  mm^3\n";
+		modelDataString += "Model Größe: \t" + toString( model.ModSize().x ) + " x " + toString( model.ModSize().y ) + " x " + toString( model.ModSize().z ) + "  mm^3";
+
+		modelData.value( modelDataString.c_str() );
+
+
 		viewGrp.resizable( viewImg );
 		viewImg.show();
 		viewBox.hide();
+		modelData.show();
 		Fl_Group::activate();
 	}
 
@@ -287,6 +306,7 @@ class modelView : public Fl_Group{
 	Fl_Button loadBtn;
 
 	Fl_Group viewGrp;
+	Fl_Multiline_Output modelData;
 	Fl_Box viewBox;
 	Fl_Image_Widget viewImg;
 	
@@ -296,6 +316,7 @@ class modelView : public Fl_Group{
 	Fl_Counter zTrans;
 	Fl_Button resetBtn;
 
+	string modelDataString;
 
 	bool loadBtnPressed;
 

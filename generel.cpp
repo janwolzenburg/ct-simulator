@@ -27,7 +27,7 @@ using std::string;
  *********************************************************************/
 
 const size_t numThreads = 12;
-constexpr char stringPadding = 0x9D;
+const char stringPadding = (char) 0x9D;
 
 /*!
  * Indices and vector implementation
