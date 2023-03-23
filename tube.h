@@ -35,7 +35,46 @@ constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 /*!
  * @brief Parameter for x-ray tube
 */
-struct tubeParameter {
+class tubeParameter {
+	
+	public:
+
+	static const string FILE_PREAMBLE;
+
+	public:
+	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const size_t anodeAtomicNumber_ ) :
+		anodeVoltage_V( anodeVoltage_V_ ),
+		anodeCurrent_A( anodeCurrent_A_ ),
+		anodeAtomicNumber( anodeAtomicNumber_ )
+	{};
+
+	tubeParameter( void ) :
+		tubeParameter{ 53000., .2, 74 }
+	{};
+
+	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+		anodeVoltage_V( deSerializeBuildIn(53000., binData, it) ),
+		anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
+		anodeAtomicNumber( deSerializeBuildIn( 74, binData, it ) )
+	{
+
+	}
+
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const{
+		size_t numBytes = 0;
+
+		numBytes += serializeBuildIn( anodeVoltage_V, binData );
+		numBytes += serializeBuildIn( anodeCurrent_A, binData );
+		numBytes += serializeBuildIn( anodeAtomicNumber, binData );
+
+		return numBytes;
+	}
+
 	double anodeVoltage_V;		/*!<Anode Voltage in volts*/
 	double anodeCurrent_A;		/*!<Current in ampere*/
 	size_t anodeAtomicNumber;	/*!<Atomic Number of anode material*/

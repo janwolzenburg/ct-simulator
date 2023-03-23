@@ -24,6 +24,8 @@ using std::cref;
 *********************************************************************/
 
 
+const string gantry::FILE_PREAMBLE{ "GANTRY_FILE_PREAMBLE" };
+
 gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubeParameter tubeParameter_, 
 				const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
@@ -158,3 +160,4 @@ void gantry::reset( void ){
 	// Reset detector
 	rayDetector.reset();
 }
+

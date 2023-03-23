@@ -21,6 +21,11 @@
 
 
 
+const string detectorRadonParameter::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
+
+const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FILE_PREAMBLE" };
+
+
 /*!
  * detectorRadonParameter implementation
 */

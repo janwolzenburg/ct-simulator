@@ -21,6 +21,8 @@
  #include "programState.fwd.h"
 
  #include "model.h"
+ #include "gantry.h"
+
  #include "fileChooser.h"
  #include "slicePlane.h"
  #include "storedObject.h"
@@ -79,6 +81,7 @@ class programState{
 
 	programState& operator=( const programState& tree_ ) = delete;
 
+
 	private:
 
 	model modelInstance;
@@ -86,6 +89,9 @@ class programState{
 
 	fileChooser modelChooserInstance;
 	storedObject<fileChooser> storedModelChooser;
+
+
+	gantry gantryInstance;
 
 };
 

@@ -53,6 +53,7 @@ void threadFunction( const model& radModel, const bool enableScattering, const r
  * @brief Class for a gantry with xRay source and detector
 */
 class gantry {
+	
 
 	public:
 	
@@ -140,5 +141,5 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and ablge propabilities*/
+	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
 };

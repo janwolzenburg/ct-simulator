@@ -48,9 +48,9 @@ detector getTestDetector( void ){
 
 bool test_tube(void) {
 
-	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
+	tubeParameter tubeParas{	53000,
+								0.2,
+								74 };
 
 	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
 
@@ -407,9 +407,9 @@ bool test_detector(void) {
 
 gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
-	tubeParameter tubeParas{ .anodeVoltage_V = 100000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
+	tubeParameter tubeParas{ 100000,
+								0.2,
+								74 };
 
 
 	detectorRadonParameter radonParameter{

@@ -163,6 +163,7 @@
     <ClInclude Include="filter.h" />
     <ClInclude Include="Fl_GreyImage.h" />
     <ClInclude Include="gantry.h" />
+    <ClInclude Include="gantryCreation.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />

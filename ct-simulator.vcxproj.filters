@@ -264,6 +264,9 @@
     <ClInclude Include="Own_Valuator.hpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="gantryCreation.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

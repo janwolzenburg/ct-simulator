@@ -22,6 +22,9 @@
    Implementation
 *********************************************************************/
 
+
+const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
+
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),
 	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),

@@ -31,6 +31,10 @@
 class detectorRadonParameter{
 
 	public:
+
+	static const string FILE_PREAMBLE;
+
+	public:
 	/*!
 	 * @brief Constructor
 	 * @param numberPoints_ Amount of point in radon transformed
@@ -38,6 +42,31 @@ class detectorRadonParameter{
 	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
+	detectorRadonParameter( void ) :
+		detectorRadonParameter{ idx2CR{ 32, 16 }, 500. }
+	{};
+
+	detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+		numberPoints( deSerialize<idx2CR>( binData, it)),
+		resolution( deSerialize<v2CR>( binData, it ) ),
+		framesToFillSinogram( deSerializeBuildIn( 1, binData, it ) ){
+
+	}
+
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const{
+		size_t numBytes = 0;
+
+		numBytes += numberPoints.serialize( binData );
+		numBytes += resolution.serialize( binData );
+		numBytes += serializeBuildIn( framesToFillSinogram, binData );
+
+		return numBytes;
+	}
 
 	public:
 
@@ -55,6 +84,10 @@ class detectorIndipendentParameter{
 
 	public:
 
+	static const string FILE_PREAMBLE;
+
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param angle_ Detector angle
@@ -64,6 +97,33 @@ class detectorIndipendentParameter{
 	*/
 	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
 
+	detectorIndipendentParameter( void ) :
+		detectorIndipendentParameter{ 1000., 50., true, .15 }
+	{};
+
+	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+		arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
+		columnSize( deSerializeBuildIn( 50., binData, it ) ),
+		structured( deSerializeBuildIn( true, binData, it ) ),
+		maxRayAngleDetectable( deSerializeBuildIn( .15, binData, it ) ){
+
+	}
+
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const{
+		size_t numBytes = 0;
+
+		numBytes += serializeBuildIn( arcRadius, binData );
+		numBytes += serializeBuildIn( columnSize, binData );
+		numBytes += serializeBuildIn( structured, binData );
+		numBytes += serializeBuildIn( maxRayAngleDetectable, binData );
+
+		return numBytes;
+	}
 
 	public:
 
