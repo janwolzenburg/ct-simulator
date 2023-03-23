@@ -47,7 +47,21 @@ programState::programState( void ) :
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
 
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	storedModelChooser{ getPath( "storedModelChooser.chooser" ), modelChooserInstance }
+	storedModelChooser{ getPath( "storedModelChooser.chooser" ), modelChooserInstance },
+
+	planeInstance{},
+	storedPlane{ programState::getPath( "storedViewPlane.sliceplane" ), planeInstance },
+
+	xRayTubeParameter{},
+	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.tubeParameter" ), xRayTubeParameter },
+
+	radonParameter{},
+	storedRadonParameter{ programState::getPath( "storedRadonParameter.radonParameter" ), radonParameter },
+
+	detectorParameter{},
+	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.radonParameter" ), detectorParameter },
+
+	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter }
 
 {
 
@@ -60,7 +74,11 @@ programState::~programState( void ) {
 
 	storedModel.saveObject();
 	storedModelChooser.saveObject( true );
-	
+	storedPlane.saveObject( true );
+	storedXRayTubeParameter.saveObject( true );
+	storedRadonParameter.saveObject( true );
+	storedDetectorParameter.saveObject( true );
+
 }
 
 

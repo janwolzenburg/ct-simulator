@@ -88,11 +88,8 @@ class modelView : public Fl_Group{
 
 
 		loadBtnPressed( false ),
-		updateModel( false ),
-
-
-		planeInstance{},
-		storedPlane{ programState::getPath( "storedViewPlane.sliceplane" ), planeInstance }
+		updateModelFlag( false ),
+		resetBtnPressed( false )
 
 
 	{
@@ -148,15 +145,17 @@ class modelView : public Fl_Group{
 		resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );		
 
 		// Callbacks for Counters and reset button
-		xRot.callback(		button_cb, &updateModel );
-		yRot.callback(		button_cb, &updateModel );
-		zTrans.callback(	button_cb, &updateModel );
+		xRot.callback(		button_cb, &updateModelFlag );
+		yRot.callback(		button_cb, &updateModelFlag );
+		zTrans.callback(	button_cb, &updateModelFlag );
 		resetBtn.callback(	button_cb, &resetBtnPressed );
 
+
+
 		// Set values
-		xRot.value( planeInstance.rotationAngleX );
-		yRot.value( planeInstance.rotationAngleY );
-		zTrans.value( planeInstance.positionZ );
+		xRot.value( PROGRAM_STATE().Plane().rotationAngleX);
+		yRot.value( PROGRAM_STATE().Plane().rotationAngleY );
+		zTrans.value( PROGRAM_STATE().Plane().positionZ );
 
 		// Hide initially
 		moveGrp.hide();
@@ -164,38 +163,37 @@ class modelView : public Fl_Group{
 
 	}
 
-	~modelView( void ){
 
-		storedPlane.saveObject( true );
 
+	void loadModel( void ){
+
+		Fl_Group::window()->deactivate();
+		viewImg.hide(); viewBox.show(); modelData.hide();
+		viewBox.label( "Loading model..." );
+
+		PROGRAM_STATE().loadModel();
+		PROGRAM_STATE().resetModel();
+		UpdateModel();
+
+		viewImg.show(); viewBox.hide(); modelData.show();
+		moveGrp.show();
+		Fl_Group::window()->activate();
 	}
+
 
 	void handleEvents( void ){
 
 		if( LoadBtnPressed() ){
-			
-			Fl_Group::deactivate();
-
-			viewImg.hide(); viewBox.show(); modelData.hide();
-			viewBox.label( "Loading model...");
-			
-			PROGRAM_STATE().loadModel();
-			model& modelRef = PROGRAM_STATE().Model();
-			resetModel( modelRef );
-			UpdateModel( modelRef );
-
+			loadModel();
 		}
 
 
-		if( ModelNeedsUpdate() && PROGRAM_STATE().ModelLoaded() ){
-			Fl_Group::deactivate();
-			UpdateModel( PROGRAM_STATE().Model() );
+		if( ModelNeedsUpdate() ){
+			UpdateModel();
 		}
 
-		if( ResetBtnPressed() && PROGRAM_STATE().ModelLoaded() ){
-			Fl_Group::deactivate();
-			resetModel( PROGRAM_STATE().Model() );
-			UpdateModel( PROGRAM_STATE().Model() );
+		if( ResetBtnPressed() ){
+			resetModel();
 		}
 
 	}
@@ -206,99 +204,45 @@ class modelView : public Fl_Group{
 	*/
 	inline bool LoadBtnPressed( void ){ return loadBtnPressed ? !( loadBtnPressed = false ) : false; };
 
-	inline bool ModelNeedsUpdate( void ){ return updateModel ? !( updateModel = false ) : false; };
+	inline bool ModelNeedsUpdate( void ){ return updateModelFlag && PROGRAM_STATE().ModelLoaded() ? !( updateModelFlag = false ) : false; };
 
 	inline bool ResetBtnPressed( void ){ return resetBtnPressed ? !( resetBtnPressed = false ) : false; };
 
 
-	void sliceModel( model& model ) {
-
-		grid modelSliceGrid = model.getSlice( planeInstance.surface, 1. );
-		modelSliceInstance = greyImage{ modelSliceGrid };
-
-		moveGrp.show();
-		moveGrp.activate();
+	void sliceModel( void ) {
+		Fl_Group::window()->deactivate();
+		PROGRAM_STATE().sliceModel();
+		Fl_Group::window()->activate();
 	}
 
-	void resetModel( model& model ){
+	void resetModel( void ){
 
-		centerModel( model );
-
-		// Reset plane
-		planeInstance.rotationAngleX = 0.;
-		planeInstance.rotationAngleY = 0.;
-		planeInstance.positionZ = 0.;
+		Fl_Group::window()->deactivate();
+		PROGRAM_STATE().resetModel();
 
 		xRot.value( 0. );
 		yRot.value( 0. );
 		zTrans.value( 0. );
+		Fl_Group::window()->activate();
 
 	}
 
-	void centerModel( model& model ){
 
-		// Center model
-		v3 center = primitiveVec3{ model.ModSize() } / -2.;
 
-		model.CSys()->setPrimitive( primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } );
+	void UpdateModel( void ){
 
+		Fl_Group::window()->deactivate();
+		PROGRAM_STATE().moveModel( xRot.value(), yRot.value(), zTrans.value() );
+
+		viewImg.assignImage( PROGRAM_STATE().Slice() );
+
+		modelDataString = PROGRAM_STATE().modelDescription();
+		modelData.value( modelDataString.c_str());
+		Fl_Group::window()->activate();
 
 	}
 
-	void UpdateModel( model& model ){
-
-		Fl_Group::deactivate();
-
-		if( xRot.value() != planeInstance.rotationAngleX ){
-
-			const double rotationAngle = xRot.value() - planeInstance.rotationAngleX;
-			planeInstance.rotationAngleX = xRot.value();
-			
-			const line axis{ planeInstance.surface.R1(), planeInstance.surface.O() };
-
-			model.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
-		}
-
-		if( yRot.value() != planeInstance.rotationAngleY ){
-
-			const double rotationAngle = yRot.value() - planeInstance.rotationAngleY;
-			planeInstance.rotationAngleY = yRot.value();
-
-			const line axis{ planeInstance.surface.R2(), planeInstance.surface.O() };
-
-			model.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
-		}
-
-		if( zTrans.value() != planeInstance.rotationAngleY ){
-
-			const double translation = zTrans.value() - planeInstance.positionZ;
-			planeInstance.positionZ = zTrans.value();
-
-			model.CSys()->translateM( ( (vec3) planeInstance.surface.Normal() ) * translation );
-		}
-
-
-		sliceModel( model );
-		viewImg.assignImage( modelSliceInstance );
-
-
-		modelDataString.clear();
-		modelDataString += "Name: \t" + model.Name() + '\n';
-		modelDataString += "Voxel: \t\t\t" + toString( model.NumVox().x ) + " x " + toString( model.NumVox().y ) + " x " + toString( model.NumVox().z ) + "\n";
-		modelDataString += "Voxel Größe: \t" + toString( model.VoxSize().x, 2 ) + " x " + toString( model.VoxSize().y, 2 ) + " x " + toString( model.VoxSize().z, 2 ) + "  mm^3\n";
-		modelDataString += "Model Größe: \t" + toString( model.ModSize().x ) + " x " + toString( model.ModSize().y ) + " x " + toString( model.ModSize().z ) + "  mm^3";
-
-		modelData.value( modelDataString.c_str() );
-
-
-		viewGrp.resizable( viewImg );
-		viewImg.show();
-		viewBox.hide();
-		modelData.show();
-		Fl_Group::activate();
-	}
-
-
+	inline void setUpdateFlag( void ){ updateModelFlag = true; };
 
 	private:
 
@@ -320,13 +264,8 @@ class modelView : public Fl_Group{
 
 	bool loadBtnPressed;
 
-	bool updateModel;
+	bool updateModelFlag;
 	bool resetBtnPressed;
 
-
-	slicePlane planeInstance;
-	storedObject<slicePlane> storedPlane;
-
-	greyImage modelSliceInstance;
 
 };

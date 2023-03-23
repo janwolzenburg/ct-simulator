@@ -65,7 +65,8 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
  * detectorIndipendentParameter implementation
 */
 
-detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
+detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
+	raysPerPixel( raysPerPixel_ ),
 	arcRadius( arcRadius_ ),
 	columnSize( Fpos( columnSize_ ) ),
 	structured( structured_ ),

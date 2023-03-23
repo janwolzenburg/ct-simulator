@@ -117,7 +117,7 @@ class tube{
 
 	cartCSys* cSys;							/*!<Coordinate system of tube*/
 
-	const size_t numPointsInSpectrum = 20;	/*!<Amount of discrete datapoints in spectrum*/
+	size_t numPointsInSpectrum = 20;	/*!<Amount of discrete datapoints in spectrum*/
 
 	double anodeVoltage_V;					/*!<Anode voltage in volts*/
 	double anodeCurrent_A;					/*!<Anode current in volts*/

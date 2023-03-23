@@ -35,6 +35,7 @@ detector getTestDetector( void ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
+		1,
 		1000.,
 		10,
 		false
@@ -418,12 +419,13 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
+		1,
 		1000.,
 		50,
 		false
 	};
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), raysPerPixel, tubeParas, radonParameter, indipendentParameter };
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }

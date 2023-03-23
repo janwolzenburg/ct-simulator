@@ -17,7 +17,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "cSysTree.h"
 
 #include "modelView.h"
-
+#include "gantryCreation.h"
 
 
 /*!
@@ -37,19 +37,24 @@ int main( int argc, char** argv ){
 
 	programState& state = PROGRAM_STATE();
 
+
 	Fl_Group::current( NULL );
 
 	Fl_Window mainWindow{ 1280, 720, "CT-Simulator" };
 	mainWindow.resizable( mainWindow );
 
 
-	modelView modelView{	X( mainWindow, 0. ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
+	modelView modelView{		X( mainWindow, 0. ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
+	mainWindow.add( modelView );
+	
+	gantryEdition gantryBuild{ X( mainWindow, 0.35 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
+	mainWindow.add( gantryBuild );
+	
 
-	mainWindow.end();
 	mainWindow.show(argc, argv);
 
 	if( state.ModelLoaded() ){
-		modelView.UpdateModel( state.Model() );
+		modelView.setUpdateFlag();
 	}
 
 	while( Fl::wait() ){

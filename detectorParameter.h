@@ -95,13 +95,15 @@ class detectorIndipendentParameter{
 	 * @param structured_ Flag for anti scatter structure
 	 * @param maxRayAngleDetecable Maximum angle between pixel normal and ray
 	*/
-	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
+	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
 
 	detectorIndipendentParameter( void ) :
-		detectorIndipendentParameter{ 1000., 50., true, .15 }
+		detectorIndipendentParameter{ 1, 1000., 50., true, .15 }
 	{};
 
 	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+
+		raysPerPixel( deSerializeBuildIn( 1, binData, it ) ),
 		arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
 		columnSize( deSerializeBuildIn( 50., binData, it ) ),
 		structured( deSerializeBuildIn( true, binData, it ) ),
@@ -117,6 +119,7 @@ class detectorIndipendentParameter{
 	size_t serialize( vector<char>& binData ) const{
 		size_t numBytes = 0;
 
+		numBytes += serializeBuildIn( raysPerPixel, binData );
 		numBytes += serializeBuildIn( arcRadius, binData );
 		numBytes += serializeBuildIn( columnSize, binData );
 		numBytes += serializeBuildIn( structured, binData );
@@ -127,6 +130,7 @@ class detectorIndipendentParameter{
 
 	public:
 
+	size_t raysPerPixel;
 	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
 	double columnSize;				/*!<Size of one pixel in column direction*/
 	bool structured;				/*!<Flag for anti scatter structure*/
