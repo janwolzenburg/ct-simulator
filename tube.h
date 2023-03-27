@@ -14,6 +14,7 @@
 
 #include <vector>
 using std::vector;
+#include <map>
 
 #include "generelMath.h"
 #include "cartesian.h"
@@ -32,6 +33,13 @@ using std::vector;
 constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 
 
+enum MATERIAL{
+	COPPER,
+	MOLYBDENUM,
+	THUNGSTEN
+};
+
+
 /*!
  * @brief Parameter for x-ray tube
 */
@@ -40,22 +48,23 @@ class tubeParameter {
 	public:
 
 	static const string FILE_PREAMBLE;
+	static const std::map<MATERIAL, std::pair<string, size_t>> material;
 
 	public:
-	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const size_t anodeAtomicNumber_ ) :
+	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
 		anodeVoltage_V( anodeVoltage_V_ ),
 		anodeCurrent_A( anodeCurrent_A_ ),
-		anodeAtomicNumber( anodeAtomicNumber_ )
+		anodeMaterial( anodeMaterial_ )
 	{};
 
 	tubeParameter( void ) :
-		tubeParameter{ 53000., .2, 74 }
+		tubeParameter{ 53000., .2, THUNGSTEN }
 	{};
 
 	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-		anodeVoltage_V( deSerializeBuildIn(53000., binData, it) ),
+		anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
 		anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
-		anodeAtomicNumber( deSerializeBuildIn( 74, binData, it ) )
+		anodeMaterial( (MATERIAL) deSerializeBuildIn( toUnderlying( MATERIAL::THUNGSTEN ), binData, it ) )
 	{
 
 	}
@@ -70,20 +79,21 @@ class tubeParameter {
 
 		numBytes += serializeBuildIn( anodeVoltage_V, binData );
 		numBytes += serializeBuildIn( anodeCurrent_A, binData );
-		numBytes += serializeBuildIn( anodeAtomicNumber, binData );
+		numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );
 
 		return numBytes;
 	}
 
 	double anodeVoltage_V;		/*!<Anode Voltage in volts*/
 	double anodeCurrent_A;		/*!<Current in ampere*/
-	size_t anodeAtomicNumber;	/*!<Atomic Number of anode material*/
+	MATERIAL anodeMaterial;	/*!<Atomic Number of anode material*/
 };
 
 
 class tube{
 
 	public:
+
 
 	/*!
 	 * @brief Constructor
@@ -121,7 +131,7 @@ class tube{
 
 	double anodeVoltage_V;					/*!<Anode voltage in volts*/
 	double anodeCurrent_A;					/*!<Anode current in volts*/
-	size_t anodeAtomicNumber;				/*!<Atomic number of anode material*/
+	size_t anodeAtomicNumber;					/*!<Atomic number of anode material*/
 
 	double totalPower_W;					/*!<Total radiation power of tube in watts*/
 	double maxRadiationFrequency_Hz;		/*!<Maximum radiation frequency in Hz based on anode voltage*/ 

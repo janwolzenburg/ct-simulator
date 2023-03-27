@@ -51,7 +51,7 @@ bool test_tube(void) {
 
 	tubeParameter tubeParas{	53000,
 								0.2,
-								74 };
+								THUNGSTEN };
 
 	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
 
@@ -410,7 +410,7 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 	tubeParameter tubeParas{ 100000,
 								0.2,
-								74 };
+								THUNGSTEN };
 
 
 	detectorRadonParameter radonParameter{

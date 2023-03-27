@@ -25,11 +25,18 @@
 
 const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
 
+const std::map < MATERIAL, std::pair<string, size_t>> tubeParameter::material{
+		{ COPPER,		std::make_pair( "COPPER", 29 ) },
+		{ MOLYBDENUM,	std::make_pair( "MOLYBDENUM", 42 ) },
+		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
+};
+
+
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),
 	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),
 	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),
-	anodeAtomicNumber(Fpos( parameter_.anodeAtomicNumber )),
+	anodeAtomicNumber( Fpos( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
 	totalPower_W(k_1PerV* anodeAtomicNumber* anodeCurrent_A* pow(anodeVoltage_V, 2)),
 	maxRadiationFrequency_Hz(e_As * anodeVoltage_V / h_Js)
 {
