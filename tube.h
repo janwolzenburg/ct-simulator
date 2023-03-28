@@ -70,6 +70,20 @@ class tubeParameter {
 	}
 
 
+	static const MATERIAL getEnum( const string materialString ){
+		for( auto& [ matEnum, value ] : tubeParameter::material ){
+
+			if( materialString == value.first ){
+
+				return matEnum;
+				
+			}
+		}
+
+		return THUNGSTEN;
+
+	}
+
 	/*!
 		* @brief Serialize this object
 		* @param binData Reference to vector where data will be appended

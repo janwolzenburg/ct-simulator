@@ -30,11 +30,12 @@ const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FIL
  * detectorRadonParameter implementation
 */
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
+	distanceRange( Fpos( distanceRange_ ) ),
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
 					Fmin( FOdd ( numberPoints_.row ), (size_t) 3 ) },
 	//distanceRange( Fpos( distanceRange_ ) ),
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
-				Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 ) },
+				Fpos( distanceRange ) / (double) ( numberPoints.row - 1 ) },
 	framesToFillSinogram( numberPoints.col - 1 + numberPoints.row - 1)
 {
 
@@ -52,7 +53,7 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	// Recalculate if number of point changed
 	if( newNumberPointsRow != numberPoints.row ){
 		numberPoints.row = Fmin( FOdd( newNumberPointsRow ), (size_t) 3 );
-		resolution.row = Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 );
+		resolution.row = distanceRange / (double) ( numberPoints.row - 1 );
 		framesToFillSinogram = numberPoints.col - 1 + numberPoints.row - 1;
 	}
 

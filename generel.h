@@ -343,5 +343,10 @@ string toString( T value, const int precision = 0){
 
 }
 
+template<typename T>
+T toNum( const string str );
+
+
+
 
 #include "generel.hpp"

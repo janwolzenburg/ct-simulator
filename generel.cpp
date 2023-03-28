@@ -286,3 +286,32 @@ bool validBinaryData( const string preamble, const vector<char>& binData, vector
 	return preamble == readPreamble;
 
 }
+
+
+template<>
+double toNum<double>( const string str ){
+
+	return std::stod( str );
+
+}
+
+template<>
+int toNum<int>( const string str ){
+
+	return std::stoi( str );
+
+}
+
+template<>
+long long toNum<long long>( const string str ){
+
+	return std::stoll( str );
+
+}
+
+template<>
+size_t toNum<size_t>( const string str ){
+
+	return std::stoll( str );
+
+}
