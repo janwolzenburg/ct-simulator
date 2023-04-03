@@ -23,7 +23,13 @@
 *********************************************************************/
 
 
+
+/*
+	tubeParameter
+*/
+
 const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
+
 
 const std::map < MATERIAL, std::pair<string, size_t>> tubeParameter::material{
 		{ COPPER,		std::make_pair( "COPPER", 29 ) },
@@ -31,6 +37,56 @@ const std::map < MATERIAL, std::pair<string, size_t>> tubeParameter::material{
 		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
 };
 
+
+tubeParameter::tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
+	anodeVoltage_V( anodeVoltage_V_ ),
+	anodeCurrent_A( anodeCurrent_A_ ),
+	anodeMaterial( anodeMaterial_ )
+{}
+
+
+tubeParameter::tubeParameter( void ) :
+	tubeParameter{ 53000., .2, THUNGSTEN }
+{}
+
+
+tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
+	anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
+	anodeMaterial( (MATERIAL) deSerializeBuildIn( toUnderlying( MATERIAL::THUNGSTEN ), binData, it ) )
+{}
+
+
+const MATERIAL tubeParameter::getEnum( const string materialString ){
+	for( auto& [matEnum, value] : tubeParameter::material ){
+
+		if( materialString == value.first ){
+
+			return matEnum;
+
+		}
+	}
+
+	return THUNGSTEN;
+
+}
+
+
+size_t tubeParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( anodeVoltage_V, binData );
+	numBytes += serializeBuildIn( anodeCurrent_A, binData );
+	numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );
+
+	return numBytes;
+}
+
+
+
+/*
+	tube
+*/
 
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),

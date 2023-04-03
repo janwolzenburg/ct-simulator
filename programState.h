@@ -72,89 +72,17 @@ class programState{
 	static path getPath( const string filename ){ return stateStorage / filename; };
 
 	void buildGantry( const tubeParameter tubeParameter_,
-					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ){
+					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
-		gantryInstance.reset();
-		gantry newGantry{ gantryInstance.CSys(), tubeParameter_, radonParameter, indipendentParameter };
+	string modelDescription( void ) const;
 
-		gantryInstance = newGantry;
+	void moveModel( const double targetXRot, const double targetYRot, const double targetZTrans );
 
-	};
+	void sliceModel( void );
 
-	string modelDescription( void ) const{
+	void centerModel( void );
 
-		string modelDataString;
-
-		modelDataString.clear();
-		modelDataString += "Name: \t" + modelInstance.Name() + '\n';
-		modelDataString += "Voxel: \t\t\t" + toString( modelInstance.NumVox().x ) + " x " + toString( modelInstance.NumVox().y ) + " x " + toString( modelInstance.NumVox().z ) + "\n";
-		modelDataString += "Voxel Größe: \t" + toString( modelInstance.VoxSize().x, 2 ) + " x " + toString( modelInstance.VoxSize().y, 2 ) + " x " + toString( modelInstance.VoxSize().z, 2 ) + "  mm^3\n";
-		modelDataString += "Model Größe: \t" + toString( modelInstance.ModSize().x ) + " x " + toString( modelInstance.ModSize().y ) + " x " + toString( modelInstance.ModSize().z ) + "  mm^3";
-
-		return modelDataString;
-	}
-
-	void moveModel( const double targetXRot, const double targetYRot, const double targetZTrans ){
-
-
-		if( targetXRot != planeInstance.rotationAngleX ){
-
-			const double rotationAngle = targetXRot - planeInstance.rotationAngleX;
-			planeInstance.rotationAngleX = targetXRot;
-
-			const line axis{ planeInstance.surface.R1(), planeInstance.surface.O() };
-
-			modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
-		}
-
-		if( targetYRot != planeInstance.rotationAngleY ){
-
-			const double rotationAngle = targetYRot - planeInstance.rotationAngleY;
-			planeInstance.rotationAngleY = targetYRot;
-
-			const line axis{ planeInstance.surface.R2(), planeInstance.surface.O() };
-
-			modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
-		}
-
-		if( targetZTrans != planeInstance.rotationAngleY ){
-
-			const double translation = targetZTrans - planeInstance.positionZ;
-			planeInstance.positionZ = targetZTrans;
-
-			modelInstance.CSys()->translateM( ( (vec3) planeInstance.surface.Normal() ) * translation );
-		}
-
-
-		sliceModel();
-
-	}
-
-	void sliceModel( void ){
-
-		grid modelSliceGrid = modelInstance.getSlice( planeInstance.surface, 1. );
-		modelSliceInstance = greyImage{ modelSliceGrid };
-
-	}
-
-	void centerModel( void ){
-
-		// Center model
-		v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
-
-		modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } );
-
-
-	}
-
-	void resetModel( void ){
-
-		// Reset plane
-		planeInstance.rotationAngleX = 0.;
-		planeInstance.rotationAngleY = 0.;
-		planeInstance.positionZ = 0.;
-
-	}
+	void resetModel( void );
 
 	inline const slicePlane& Plane( void ) const{ return planeInstance; };
 

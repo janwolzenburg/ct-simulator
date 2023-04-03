@@ -50,57 +50,29 @@ class tubeParameter {
 	static const string FILE_PREAMBLE;
 	static const std::map<MATERIAL, std::pair<string, size_t>> material;
 
+
 	public:
-	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
-		anodeVoltage_V( anodeVoltage_V_ ),
-		anodeCurrent_A( anodeCurrent_A_ ),
-		anodeMaterial( anodeMaterial_ )
-	{};
 
-	tubeParameter( void ) :
-		tubeParameter{ 53000., .2, THUNGSTEN }
-	{};
+	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ );
 
-	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-		anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
-		anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
-		anodeMaterial( (MATERIAL) deSerializeBuildIn( toUnderlying( MATERIAL::THUNGSTEN ), binData, it ) )
-	{
+	tubeParameter( void );
 
-	}
+	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
-
-	static const MATERIAL getEnum( const string materialString ){
-		for( auto& [ matEnum, value ] : tubeParameter::material ){
-
-			if( materialString == value.first ){
-
-				return matEnum;
-				
-			}
-		}
-
-		return THUNGSTEN;
-
-	}
+	static const MATERIAL getEnum( const string materialString );
 
 	/*!
 		* @brief Serialize this object
 		* @param binData Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const{
-		size_t numBytes = 0;
+	size_t serialize( vector<char>& binData ) const;
 
-		numBytes += serializeBuildIn( anodeVoltage_V, binData );
-		numBytes += serializeBuildIn( anodeCurrent_A, binData );
-		numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );
 
-		return numBytes;
-	}
+	public:
 
 	double anodeVoltage_V;		/*!<Anode Voltage in volts*/
 	double anodeCurrent_A;		/*!<Current in ampere*/
-	MATERIAL anodeMaterial;	/*!<Atomic Number of anode material*/
+	MATERIAL anodeMaterial;		/*!<Atomic Number of anode material*/
 };
 
 
@@ -136,6 +108,7 @@ class tube{
 	 * @return Frequency Range
 	*/
 	range getFrequencyRange( void ) const;
+
 
 	private:
 

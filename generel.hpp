@@ -72,3 +72,29 @@ T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it ){
 	return T{ binData, it };
 
 }
+
+
+template<typename T>
+string toString<T>( T value, const int precision ){
+
+	std::ostringstream out;
+
+	if( precision < 0 ){
+
+		T factor = (T) pow( 10., (double) ( -precision - 1 ) );
+
+		value /= factor;
+
+		value = (T) round( value );
+		value *= factor;
+
+		out.precision( 0 );
+	}
+	else{
+		out.precision( precision );
+		out << std::fixed;
+		out << value;
+	}
+
+	return out.str();
+}

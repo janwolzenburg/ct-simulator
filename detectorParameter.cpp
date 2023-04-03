@@ -60,6 +60,25 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 
 }
 
+detectorRadonParameter::detectorRadonParameter( void ) :
+	detectorRadonParameter{ idx2CR{ 32, 16 }, 500. }
+{};
+
+
+detectorRadonParameter::detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	distanceRange( deSerializeBuildIn( 400., binData, it ) ),
+	numberPoints( deSerialize<idx2CR>( binData, it ) ),
+	framesToFillSinogram( deSerializeBuildIn( 1, binData, it ) ){
+}
+
+
+size_t detectorRadonParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+	numBytes += numberPoints.serialize( binData );
+	numBytes += serializeBuildIn( distanceRange, binData );
+	return numBytes;
+}
 
 
 /*!
@@ -73,6 +92,34 @@ detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPer
 	structured( structured_ ),
 	maxRayAngleDetectable( Fmax( Fmin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
 {}
+
+
+detectorIndipendentParameter::detectorIndipendentParameter( void ) :
+	detectorIndipendentParameter{ 1, 1000., 5., true, .15 }
+{}
+
+
+detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+
+	raysPerPixel( deSerializeBuildIn( 1, binData, it ) ),
+	arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
+	columnSize( deSerializeBuildIn( 50., binData, it ) ),
+	structured( deSerializeBuildIn( true, binData, it ) ),
+	maxRayAngleDetectable( deSerializeBuildIn( .15, binData, it ) ){
+
+}
+
+size_t detectorIndipendentParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( raysPerPixel, binData );
+	numBytes += serializeBuildIn( arcRadius, binData );
+	numBytes += serializeBuildIn( columnSize, binData );
+	numBytes += serializeBuildIn( structured, binData );
+	numBytes += serializeBuildIn( maxRayAngleDetectable, binData );
+
+	return numBytes;
+}
 
 
 

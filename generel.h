@@ -12,6 +12,7 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
+
 #include <type_traits>
 #include <vector>
 using std::vector;
@@ -36,6 +37,7 @@ using std::filesystem::path;
 
  extern const size_t numThreads;
 
+
 /*!
  * @brief Class for 2D indices
 */
@@ -49,6 +51,7 @@ class idx2{
 	size_t x;
 	size_t y;
  };
+
 
  /*!
  * @brief Class for 3D indices
@@ -79,6 +82,7 @@ class idx3{
 	size_t z;
 };
 
+
 /*!
  * @brief Class for 2D vector
 */
@@ -92,6 +96,7 @@ class v2{
 	double x;
 	double y;
 };
+
 
 /*!
 * @brief Class for 3D vector
@@ -122,6 +127,7 @@ class v3{
 	double z;
 };
 
+
 /*!
  * @brief Class for indicies to data organized in row/column structure
 */
@@ -149,6 +155,7 @@ class idx2CR{
 	size_t row;
 };
 
+
 /*!
  * @brief Class for  data organized in row/column structure
 */
@@ -175,6 +182,7 @@ class v2CR {
 	double col;
 	double row;
 };
+
 
 /*!
  * @brief Class for a range of real numbers with start
@@ -206,6 +214,7 @@ class range{
 	double end;
 };
 
+
 /*!
  * @brief Class for a range of whole numbers
 */
@@ -217,6 +226,7 @@ class Zrange{
 	signed long long start;
 	signed long long end;
 };
+
 
 
 /*********************************************************************
@@ -251,6 +261,7 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 );
 
+
 /*!
  * @brief Serialize build in datatype
  * @tparam T Type of variable
@@ -261,8 +272,15 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 template< typename T >
 size_t serializeBuildIn( const T val, vector<char>& binData );
 
+/*!
+ * @brief Serialize string
+ * @param val String to serialize
+ * @param binData Reference to vector to append to
+ * @return Amount of bytes appended
+*/
 template<>
 size_t serializeBuildIn<string>( const string val, vector<char>& binData );
+
 
 /*!
  * @brief Deserialize build in data type
@@ -314,34 +332,8 @@ vector<char> importSerialized( const string fileName );
 bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
 
 
-
 template<typename T>
-string toString( T value, const int precision = 0){
-
-	std::ostringstream out;
-
-	if( precision < 0 ){
-
-		T factor = (T) pow( 10., (double) ( -precision - 1 ) );
-
-		value /= factor;
-
-		value = (T) round( value );
-		value *= factor;
-
-		out.precision( 0 );
-	} 
-	else{
-		out.precision( precision );
-		out << std::fixed;
-		out << value;
-	}
-
-	
-
-	return out.str();
-
-}
+string toString( T value, const int precision = 0 );
 
 template<typename T>
 T toNum( const string str );

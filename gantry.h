@@ -68,20 +68,6 @@ class gantry {
 	gantry( cartCSys* const cSys_,  const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
 			const detectorIndipendentParameter indipendentParameter );
 
-	//gantry( void );
-
-	//void reNew( const size_t raysPerPixel_, const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
-	//	   const detectorIndipendentParameter indipendentParameter )
-	//{
-
-	//	cSys->setPrimitive( primitiveCartCSys{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 } } );
-	//	resetPostition = cSys->getPrimitive();
-
-	//	rayDetector = detector{ rayDetector.CSys(), radonParameter, indipendentParameter };
-	//	raySource = tube{  };
-
-	//}
-
 	/*!
 	 * @brief Get all rays from tube
 	 * @param exposureTime Exposure time

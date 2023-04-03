@@ -34,155 +34,60 @@
 void button_cb( Fl_Widget* widget, void* flag );
 
 template<class C>
-int X( const C& parent, const double start ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return parent.x() + (int) ( start * (double) parent.w() );
-}
+int X( const C& parent, const double start );
 
 template<class C>
-int Y( const C& parent, const double start ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return parent.y() + (int) ( start * (double) parent.h() );
-}
+int Y( const C& parent, const double start );
 
 template<class C>
-int W( const C& parent, const double portion ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return (int) ( portion * (double) parent.w() );
-}
+int W( const C& parent, const double portion );
 
 template<class C>
-int H( const C& parent, const double portion ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return (int) ( portion * (double) parent.h() );
-}
+int H( const C& parent, const double portion );
 
 template<class C>
-int vOff( const C& parent ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return parent.y() + parent.h();
-}
+int vOff( const C& parent );
 
 template<class C>
-int hOff( const C& parent ){
-	static_assert( std::is_base_of_v< Fl_Widget, C > );
-	return parent.x() + parent.w();
-}
+int hOff( const C& parent );
 
 
 class selector : public Fl_Group{
 
 	public:
-	selector( int x, int y, int w, int h, const char* label ) : 
-		Fl_Group{ x, y, w, h },
-		previous{	X( *this, 0.),		Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) },
-		current{	hOff( previous ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
-		next{		hOff( current ),	Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) }
 
-	{
-		Fl_Group::add( previous );
-		Fl_Group::add( current );
-		Fl_Group::add( next );
+	selector( int x, int y, int w, int h, const char* label );
 
-		current.label( label );
+	void align( Fl_Align alignment );
 
-		previous.label("@<-");
-		next.label( "@->" );
+	void setElements( const vector<string> newElements );
 
-		previous.callback( goPrev, (selector*) this );
-		next.callback( goNext, (selector*) this );
+	void value( const string newValue );
 
-		next.deactivate();
-		previous.deactivate();
-
-		currentElement = elements.cbegin();
-
-
-	};
-
-	void align( Fl_Align alignment ){
-		current.align( alignment );
-	}
-
-	void setElements( const vector<string> newElements ){
-		elements = newElements;
-		currentElement = elements.cbegin();
-	
-		checkActivation();
-	}
-
-
-	inline void value( const string newValue ){
-
-		for( vector<string>::const_iterator it = elements.cbegin(); it < elements.cend(); it++ ){
-
-			if( newValue == *it ){
-				currentElement = it;
-				current.value( currentElement->c_str() );
-
-				checkActivation();
-
-				break;
-			}
-		}
-	};
-
-	inline string value( void ) const{
-
-		return *currentElement;	
-
-	};
+	inline string value( void ) const{ return *currentElement;	};
 
 
 	private:
 
-	static void goPrev( Fl_Widget* widget, void* p ){
-		
-		selector* selectorGrp = static_cast<selector*>( p );
+	static void goPrev( Fl_Widget* widget, void* p );
 
-		if( selectorGrp->currentElement > selectorGrp->elements.cbegin() ) selectorGrp->currentElement--;
-		
+	static void goNext( Fl_Widget* widget,  void* p );
 
-		selectorGrp->checkActivation();
-		selectorGrp->current.value( selectorGrp->currentElement->c_str() );
-		selectorGrp->do_callback();
+	void checkActivation( void );
 
-	}
-
-
-	static void goNext( Fl_Widget* widget,  void* p ){
-
-		selector* selectorGrp = static_cast<selector*>( p );
-
-		if( selectorGrp->currentElement < selectorGrp->elements.cend() - 1 ) selectorGrp->currentElement++;
-
-		selectorGrp->checkActivation();
-		selectorGrp->current.value( selectorGrp->currentElement->c_str() );
-		selectorGrp->do_callback();
-
-	}
-
-	void checkActivation( void ){
-
-		if( currentElement > elements.cbegin() ) previous.activate();
-		else previous.deactivate();
-
-		if( currentElement < elements.cend() - 1 ) next.activate();
-		else next.deactivate();
-	}
 
 	private:
+
 	Fl_Button previous;
 	Fl_Output current;
 	Fl_Button next;
 
-	//Fl_Callback* callback_;
-	//void* user_data_;
 
 	vector<string> elements;
 	vector<string>::const_iterator currentElement;
 
 };
+
 
 enum INPUT_CONSTRAINTS{
 	NONE,
@@ -200,84 +105,19 @@ class Fl_Bound_Input : public Fl_Group{
 	public:
 
 
+	Fl_Bound_Input( int x, int y, int w, int h, const char* label );
 
-	Fl_Bound_Input( int x, int y, int w, int h, const char* label ) :
-		Fl_Group{ x, y, w, h },
-		input{ x, y, w, h, label },
-		precision( 0 ),
-		current( (T) 0 ),
-		valueString( toString( current, precision ) ),
-		maxVal( (T) 100 ),
-		minVal( (T) 0 )
-	{
-		Fl_Group::add( input ); 
-		
-		input.callback( cbFunction, ( Fl_Widget* ) this );
+	void align( Fl_Align alignment );
 
-	};
+	void value( const T newValue );
 
-	void align( Fl_Align alignment ){
-		input.align( alignment );
-	};
+	T value( void ) const;
 
-	void value( const T newValue ){
+	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  );
 
-		valueString = toString( newValue, precision );
-		input.value( valueString.c_str() );
-		checkBounds();
+	void checkBounds( void );
 
-	}
-
-	T value( void ) const{
-		return current;
-	}
-
-	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  ){
-		minVal = min_;
-		maxVal = max_;
-		precision = precision_;
-		constraint = constraint_;
-	}
-
-
-	void checkBounds( void ){
-
-		current = toNum<T>( input.value() );
-		if( current < minVal ) current = minVal;
-		if( current > maxVal ) current = maxVal;
-
-		switch( constraint ){
-
-			case ODD:
-				if( isEven( current ) ) current++;
-				break;
-
-			case EVEN:
-				if( !isEven( current ) ) current++;
-				break;
-
-			default:
-				break;
-		}
-
-
-		valueString = toString( current, precision );
-		input.value( valueString.c_str() );
-
-
-
-	};
-
-	static void cbFunction( Fl_Widget* widget, void* p ){
-		
-		C* inputPtr = static_cast<C*>( widget );
-		Fl_Bound_Input* parentPtr = static_cast<Fl_Bound_Input*>( p );
-
-		parentPtr->checkBounds();
-
-		parentPtr->Fl_Group::do_callback();
-
-	};
+	static void cbFunction( Fl_Widget* widget, void* p );
 	
 
 	public:
@@ -293,3 +133,6 @@ class Fl_Bound_Input : public Fl_Group{
 	INPUT_CONSTRAINTS constraint;
 
 };
+
+
+#include "widgets.hpp"

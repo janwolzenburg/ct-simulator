@@ -246,9 +246,6 @@
     <ClInclude Include="positions.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="window.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Fl_GreyImage.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
@@ -264,8 +261,17 @@
     <ClInclude Include="Own_Valuator.hpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="widgets.hpp">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="window.hpp">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
     <ClInclude Include="gantryCreation.h">
-      <Filter>Headerdateien\Program</Filter>
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="storedObject.hpp">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +409,15 @@
     </ClCompile>
     <ClCompile Include="storedObject.h">
       <Filter>Headerdateien\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="modelView.cpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gantryCreation.cpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="slicePlane.cpp">
+      <Filter>Quelldateien\Program</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

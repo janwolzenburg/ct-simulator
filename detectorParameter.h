@@ -42,32 +42,21 @@ class detectorRadonParameter{
 	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
-	detectorRadonParameter( void ) :
-		detectorRadonParameter{ idx2CR{ 32, 16 }, 500. }
-	{};
+	detectorRadonParameter( void );
 
-	detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-		distanceRange( deSerializeBuildIn( 400., binData, it ) ),
-		numberPoints( deSerialize<idx2CR>( binData, it)),
-		framesToFillSinogram( deSerializeBuildIn( 1, binData, it ) ){
-
-	}
+	detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
 
 	/*!
 		* @brief Serialize this object
 		* @param binData Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const{
-		size_t numBytes = 0;
+	size_t serialize( vector<char>& binData ) const;
 
-		numBytes += numberPoints.serialize( binData );
-		numBytes += serializeBuildIn( distanceRange, binData );
-		return numBytes;
-	}
 
 	public:
-	double distanceRange;
+
+	double distanceRange;			/*!<Measure field in mm*/
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
@@ -95,36 +84,17 @@ class detectorIndipendentParameter{
 	*/
 	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
 
-	detectorIndipendentParameter( void ) :
-		detectorIndipendentParameter{ 1, 1000., 5., true, .15 }
-	{};
+	detectorIndipendentParameter( void );
 
-	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-
-		raysPerPixel( deSerializeBuildIn( 1, binData, it ) ),
-		arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
-		columnSize( deSerializeBuildIn( 50., binData, it ) ),
-		structured( deSerializeBuildIn( true, binData, it ) ),
-		maxRayAngleDetectable( deSerializeBuildIn( .15, binData, it ) ){
-
-	}
+	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
 
 	/*!
 		* @brief Serialize this object
 		* @param binData Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const{
-		size_t numBytes = 0;
+	size_t serialize( vector<char>& binData ) const;
 
-		numBytes += serializeBuildIn( raysPerPixel, binData );
-		numBytes += serializeBuildIn( arcRadius, binData );
-		numBytes += serializeBuildIn( columnSize, binData );
-		numBytes += serializeBuildIn( structured, binData );
-		numBytes += serializeBuildIn( maxRayAngleDetectable, binData );
-
-		return numBytes;
-	}
 
 	public:
 

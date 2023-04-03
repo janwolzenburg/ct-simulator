@@ -53,7 +53,7 @@ int main( int argc, char** argv ){
 
 
 	Fl_Tooltip::enable();
-	Fl_Tooltip::hoverdelay( 0.05 );
+	Fl_Tooltip::hoverdelay( (float) 0.05 );
 	mainWindow.show(argc, argv);
 
 	if( state.ModelLoaded() ){

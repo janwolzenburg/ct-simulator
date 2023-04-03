@@ -191,6 +191,7 @@
     <ClInclude Include="scattering.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="slicePlane.h" />
+    <ClInclude Include="storedObject.hpp" />
     <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="vectorAlgorithm.h" />
     <ClInclude Include="voxel.h" />
     <ClInclude Include="widgets.h" />
+    <ClInclude Include="widgets.hpp" />
     <ClInclude Include="window.h" />
     <ClInclude Include="window.hpp" />
   </ItemGroup>
@@ -225,6 +227,7 @@
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="Fl_GreyImage.cpp" />
     <ClCompile Include="gantry.cpp" />
+    <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="grid.cpp" />
@@ -234,6 +237,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="intersections.cpp" />
+    <ClCompile Include="modelView.cpp" />
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="positions.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
@@ -241,6 +245,7 @@
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="scattering.cpp" />
+    <ClCompile Include="slicePlane.cpp" />
     <ClCompile Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="radonTransform.cpp" />

@@ -233,6 +233,7 @@ class model : virtual public mathObj{
 
 	inline string Name( void ) const{ return name; };
 
+
 	private:
 
 	idx3 numVox3D;								/*!<Amount of voxels in each dimension*/
