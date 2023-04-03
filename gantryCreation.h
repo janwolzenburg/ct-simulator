@@ -28,6 +28,7 @@ using std::vector;
 #include "programState.h"
 #include "storedObject.h"
 #include "gantry.h"
+#include "widgets.h"
 
 
 class gantryEdition : public Fl_Group{

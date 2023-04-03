@@ -55,7 +55,8 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 	current( (T) 0 ),
 	valueString( toString( current, precision ) ),
 	maxVal( (T) 100 ),
-	minVal( (T) 0 ){
+	minVal( (T) 0 )
+{
 	Fl_Group::add( input );
 
 	input.callback( cbFunction, (Fl_Widget*) this );
@@ -131,7 +132,6 @@ void Fl_Bound_Input<C, T>::checkBounds( void ){
 
 	valueString = toString( current, precision );
 	input.value( valueString.c_str() );
-
 
 
 };

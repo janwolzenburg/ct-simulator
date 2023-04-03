@@ -51,4 +51,48 @@ class storedObject{
 };
 
 
-#include "storedObject.hpp"
+template< class C >
+storedObject<C>::storedObject( const path filePath_, C& objectRef ) :
+	file( filePath_ ),
+	object( objectRef ),
+	loaded( false ){
+	loadStored();
+};
+
+
+template< class C >
+bool storedObject<C>::load( const path filePath ){
+
+	// Does the file exist?
+	if( !std::filesystem::exists( filePath ) ) return false;
+
+	// Load file
+	vector<char> binaryData = importSerialized( filePath );
+	vector<char>::iterator binaryDataIt = binaryData.begin();
+
+	if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
+
+	object = C{ binaryData, binaryDataIt };
+	loaded = true;
+	return loaded;
+};
+
+
+template< class C >
+void storedObject<C>::saveObject( const bool force ) const{
+
+	if( !loaded && !force ) return;
+
+	vector<char> binaryData;
+	object.serialize( binaryData );
+
+	exportSerialized( file, binaryData );
+
+};
+
+template< class C >
+void storedObject<C>::loadStored( void ){
+
+	load( file );
+
+};

@@ -8,14 +8,14 @@
 
 #include "storedObject.h"
 
-
+/*
 template< class C >
 storedObject<C>::storedObject( const path filePath_, C& objectRef ) :
 	file( filePath_ ),
 	object( objectRef ),
 	loaded( false ){
 	loadStored();
-}
+};
 
 
 template< class C >
@@ -33,7 +33,7 @@ bool storedObject<C>::load( const path filePath ){
 	object = C{ binaryData, binaryDataIt };
 	loaded = true;
 	return loaded;
-}
+};
 
 
 template< class C >
@@ -46,7 +46,7 @@ void storedObject<C>::saveObject( const bool force ) const{
 
 	exportSerialized( file, binaryData );
 
-}
+};
 
 
 template< class C >
@@ -54,4 +54,4 @@ void storedObject<C>::loadStored( void ){
 
 	load( file );
 
-}
+};*/

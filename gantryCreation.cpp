@@ -36,8 +36,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	distRange{ X( radonGrp, .0 ),	Y( radonGrp, .75 ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Range" },
 
 	detectorGrp{ X( *this, .6 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, .4 ),			H( *this, .15 ) },
-	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .25 ),	"Rays / Pix" },
-	arcRadiusIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, 1. ),	H( detectorGrp, .25 ),	"Arc Radius" },
+	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Rays / Pix" },
+	arcRadiusIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Arc Radius" },
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 

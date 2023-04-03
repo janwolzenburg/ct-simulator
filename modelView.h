@@ -22,6 +22,7 @@ using std::vector;
 
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Multiline_Output.H>
+#include <FL/Fl_Window.H>
 #include "widgets.h"
 
 #include "programState.h"
