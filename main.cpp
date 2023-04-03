@@ -51,6 +51,9 @@ int main( int argc, char** argv ){
 	mainWindow.add( gantryBuild );
 	
 
+
+	Fl_Tooltip::enable();
+	Fl_Tooltip::hoverdelay( 0.05 );
 	mainWindow.show(argc, argv);
 
 	if( state.ModelLoaded() ){

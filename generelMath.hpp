@@ -12,7 +12,7 @@
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, bool> 
 isEven( const T integer ){
-	return integer % 2 == 0;
+	return (long long) integer % 2 == 0;
 }
 
 template <typename T>

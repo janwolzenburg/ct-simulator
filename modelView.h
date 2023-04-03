@@ -45,12 +45,12 @@ class modelView : public Fl_Group{
 		headGrp{		X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .1 ) },
 		loadBtn{		X( headGrp, .3 ),	Y( headGrp, .4 ),	W( headGrp, .4 ),	H( headGrp, .4 ),	"Load model" },
 
-		viewGrp{		X( *this, 0. ),		hOff( headGrp ) ,	W( *this , 1. ),	H( *this, .6 ) },
+		viewGrp{		X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .6 ) },
 		modelData{		X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .2 ) },
 		viewBox{		X( viewGrp, 0. ),	Y( viewGrp, .25 ),	W( viewGrp, 1.),	H( viewGrp, .75 ),	"No model loaded"},
 		viewImg{		X( viewGrp, 0. ),	Y( viewGrp, .25 ),	W( viewGrp, 1. ),	H( viewGrp, .75 ) },
 
-		moveGrp{		X( *this, 0. ),		hOff( viewGrp ),	W( *this, 1. ),		H( *this, .3 ) },
+		moveGrp{		X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .3 ) },
 		xRot{			X( moveGrp, .1 ),	Y( moveGrp, .15 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "x-Rotation" },
 		yRot{			X( moveGrp, .1 ),	Y( moveGrp, .4 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "y-Rotation" },
 		zTrans{			X( moveGrp, .1 ),	Y( moveGrp, .65 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "z-Translation" },
@@ -67,9 +67,11 @@ class modelView : public Fl_Group{
 		//--------------------------- Head ---------------------------//
 
 		Fl_Group::add( headGrp );
+		Fl_Group::box( FL_BORDER_BOX );
 
 		// Labelsize and callback
 		headGrp.add( loadBtn );
+		headGrp.box( FL_BORDER_BOX );
 		loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );		
 		loadBtn.callback( button_cb, &loadBtnPressed );
 		
@@ -79,6 +81,7 @@ class modelView : public Fl_Group{
 
 		// View group dictates resizing
 		Fl_Group::add_resizable( viewGrp );
+		viewGrp.box( FL_BORDER_BOX );
 		viewGrp.add( modelData );
 		viewGrp.add( viewBox );
 		viewGrp.add( viewImg );
@@ -97,7 +100,8 @@ class modelView : public Fl_Group{
 
 		//--------------------------- Movement ---------------------------//
 
-		Fl_Group::add( moveGrp );
+		Fl_Group::add( moveGrp ); 
+		moveGrp.box( FL_BORDER_BOX );
 		moveGrp.add( xRot );
 		moveGrp.add( yRot );
 		moveGrp.add( zTrans );

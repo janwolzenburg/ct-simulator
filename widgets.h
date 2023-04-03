@@ -19,6 +19,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Float_Input.H>
+#include <FL/Fl_Tooltip.H>
 
 #include "Fl_GreyImage.h"
 #include "Own_Valuator.h"
@@ -31,7 +32,6 @@
  *********************************************************************/
 
 void button_cb( Fl_Widget* widget, void* flag );
-
 
 template<class C>
 int X( const C& parent, const double start ){
@@ -58,13 +58,13 @@ int H( const C& parent, const double portion ){
 }
 
 template<class C>
-int hOff( const C& parent ){
+int vOff( const C& parent ){
 	static_assert( std::is_base_of_v< Fl_Widget, C > );
 	return parent.y() + parent.h();
 }
 
 template<class C>
-int vOff( const C& parent ){
+int hOff( const C& parent ){
 	static_assert( std::is_base_of_v< Fl_Widget, C > );
 	return parent.x() + parent.w();
 }
@@ -76,8 +76,8 @@ class selector : public Fl_Group{
 	selector( int x, int y, int w, int h, const char* label ) : 
 		Fl_Group{ x, y, w, h },
 		previous{	X( *this, 0.),		Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) },
-		current{	vOff( previous ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
-		next{		vOff( current ),	Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) }
+		current{	hOff( previous ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
+		next{		hOff( current ),	Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) }
 
 	{
 		Fl_Group::add( previous );
@@ -184,14 +184,22 @@ class selector : public Fl_Group{
 
 };
 
+enum INPUT_CONSTRAINTS{
+	NONE,
+	EVEN,
+	ODD
+};
 
 template< class C, typename T>
 class Fl_Bound_Input : public Fl_Group{
+
 
 	static_assert( std::is_base_of_v< Fl_Input, C > );
 	static_assert( std::is_arithmetic_v< T >);
 
 	public:
+
+
 
 	Fl_Bound_Input( int x, int y, int w, int h, const char* label ) :
 		Fl_Group{ x, y, w, h },
@@ -205,7 +213,7 @@ class Fl_Bound_Input : public Fl_Group{
 		Fl_Group::add( input ); 
 		
 		input.callback( cbFunction, ( Fl_Widget* ) this );
-	
+
 	};
 
 	void align( Fl_Align alignment ){
@@ -224,11 +232,13 @@ class Fl_Bound_Input : public Fl_Group{
 		return current;
 	}
 
-	void setProperties( const T min_, const T max_, const int precision_ ){
+	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  ){
 		minVal = min_;
 		maxVal = max_;
 		precision = precision_;
+		constraint = constraint_;
 	}
+
 
 	void checkBounds( void ){
 
@@ -236,9 +246,25 @@ class Fl_Bound_Input : public Fl_Group{
 		if( current < minVal ) current = minVal;
 		if( current > maxVal ) current = maxVal;
 
+		switch( constraint ){
+
+			case ODD:
+				if( isEven( current ) ) current++;
+				break;
+
+			case EVEN:
+				if( !isEven( current ) ) current++;
+				break;
+
+			default:
+				break;
+		}
+
 
 		valueString = toString( current, precision );
 		input.value( valueString.c_str() );
+
+
 
 	};
 
@@ -264,5 +290,6 @@ class Fl_Bound_Input : public Fl_Group{
 
 	T maxVal;
 	T minVal;
+	INPUT_CONSTRAINTS constraint;
 
 };
