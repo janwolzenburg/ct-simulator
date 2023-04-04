@@ -29,6 +29,7 @@ using std::filesystem::path;
 
 #include <sstream>
 
+#include <tuple>
 
 
  /*********************************************************************
@@ -37,6 +38,7 @@ using std::filesystem::path;
 
  extern const size_t numThreads;
 
+typedef std::pair<vector<double>, vector<double>> vectorPair;
 
 /*!
  * @brief Class for 2D indices
@@ -260,7 +262,6 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
 */
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 );
-
 
 /*!
  * @brief Serialize build in datatype

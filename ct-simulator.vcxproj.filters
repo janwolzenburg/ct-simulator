@@ -273,6 +273,9 @@
     <ClInclude Include="widgets.hpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="guiPlots.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

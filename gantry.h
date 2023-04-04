@@ -129,6 +129,10 @@ class gantry {
 	*/
 	rayScattering& RayScattering( void ){ return rayScatterAngles; };
 
+	inline const detector& Detector( void ) const{ return rayDetector; };
+
+	inline const tube& Tube( void ) const{ return raySource; };
+
 
 	private:
 	

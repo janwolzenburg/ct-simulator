@@ -55,7 +55,8 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 	current( (T) 0 ),
 	valueString( toString( current, precision ) ),
 	maxVal( (T) 100 ),
-	minVal( (T) 0 )
+	minVal( (T) 0 ),
+	constraint( NONE )
 {
 	Fl_Group::add( input );
 

@@ -109,12 +109,26 @@ class tube{
 	*/
 	range getFrequencyRange( void ) const;
 
+	vectorPair spectrumPoints( void ) const{
+
+		vectorPair points;
+		const vector<v2> spectrumPoints = xRay_spectrum.rawData();
+
+
+		for( auto& point : spectrumPoints ){
+			points.first.push_back( point.x );
+			points.second.push_back( point.y );
+		}
+
+		return points;
+	}
+
 
 	private:
 
 	cartCSys* cSys;							/*!<Coordinate system of tube*/
 
-	size_t numPointsInSpectrum = 20;	/*!<Amount of discrete datapoints in spectrum*/
+	size_t numPointsInSpectrum = 30;		/*!<Amount of discrete datapoints in spectrum*/
 
 	double anodeVoltage_V;					/*!<Anode voltage in volts*/
 	double anodeCurrent_A;					/*!<Anode current in volts*/

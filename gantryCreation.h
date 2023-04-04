@@ -24,6 +24,7 @@ using std::vector;
 #include <FL/Fl_Toggle_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Tooltip.H>
+#include <FL/Fl_Window.H>
 
 #include "programState.h"
 #include "storedObject.h"
@@ -60,6 +61,8 @@ class gantryEdition : public Fl_Group{
 	Fl_Toggle_Button structureIn;
 	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;
 
+	Fl_Group specView;
+	Fl_Line_Plot spectrumPlot;
 
 	bool updateGantry;
 

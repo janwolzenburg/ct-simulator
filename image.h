@@ -45,7 +45,7 @@ class greyImage{
 	greyImage( void );
 
 	/*!
-	 * @brief Construct image from grif
+	 * @brief Construct image from grid
 	 * @param source Source grid
 	*/
 	greyImage( const grid source );

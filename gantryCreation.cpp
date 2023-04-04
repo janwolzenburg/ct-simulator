@@ -14,7 +14,7 @@
 
 #include "gantryCreation.h"
 #include "widgets.h"
-
+#include "guiPlots.h"
 
 /*********************************************************************
   Implementations
@@ -41,7 +41,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 
-
+	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .2 ) },
+	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
 
 	updateGantry( false ){
 	Fl_Group::box( FL_BORDER_BOX );
@@ -61,6 +62,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 	tubeVoltageIn.callback( button_cb, &updateGantry );
 	tubeCurrentIn.callback( button_cb, &updateGantry );
+	materialIn.callback( button_cb, &updateGantry );
 
 	vector<string> materialNames;
 	for( auto& el : tubeParameter::material ) materialNames.push_back( el.second.first );
@@ -123,6 +125,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	structureIn.tooltip( "Activate anti scattering structure." );
 
 
+	Fl_Group::add( specView ); specView.add( spectrumPlot );
 
 }
 
@@ -132,11 +135,24 @@ void gantryEdition::handleEvents( void ){
 
 	if( UpdateGantry() ){
 
+
+		Fl_Group::window()->deactivate();
+
 		tubeParameter newTubeParameter{ tubeVoltageIn.current, tubeCurrentIn.current, tubeParameter::getEnum( materialIn.value() ) };
 		detectorRadonParameter newRadonParameter{ idx2CR{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() };
 
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
+
+		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
+		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
+
+		plotInfo spectrumInfo{ "spectrumPlot", "f in Hz", "Intensity" };
+		//linePlot spectrumPlot{ tubeRef.spectrumPoints(), spectrumInfo };
+
+		spectrumPlot.assignData( tubeRef.spectrumPoints(), spectrumInfo );
+
+		Fl_Group::window()->activate();
 
 	}
 

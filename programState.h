@@ -54,7 +54,9 @@ class programState{
 
 	bool loadModel( void );
 
-	//inline model& Model( void ){ return modelInstance; };
+	inline const model& Model( void ){ return modelInstance; };
+
+	inline const gantry& Gantry( void ){ return gantryInstance; };
 
 	//bool sliceModel( void );
 
