@@ -127,6 +127,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 	Fl_Group::add( specView ); specView.add( spectrumPlot );
 
+
+
 }
 
 
@@ -147,7 +149,7 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		plotInfo spectrumInfo{ "spectrumPlot", "f in Hz", "Intensity" };
+		plotInfo spectrumInfo{ PROGRAM_STATE().getPath( "spectrumPlot" + string{".png"} ).string(), "f in Hz", "Intensity"};
 		//linePlot spectrumPlot{ tubeRef.spectrumPoints(), spectrumInfo };
 
 		spectrumPlot.assignData( tubeRef.spectrumPoints(), spectrumInfo );

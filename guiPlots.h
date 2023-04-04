@@ -118,7 +118,8 @@ class Fl_Line_Plot : public Fl_Widget{
 
 	virtual void draw( void ){
 		
-		image->draw( x(), y() );
+		if( image != nullptr )
+			image->draw( x(), y() );
 
 	}
 
