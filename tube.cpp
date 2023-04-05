@@ -103,6 +103,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	// Values
 	vector<double> spectralPower(frequencies.size(), 0.);
 
+	//TODO change einheiten
 
 	// Frequency to which the filter dominates spectral behavious
 	double changeFrequency = frequencies.front() + (frequencies.back() - frequencies.front()) / (1. - alFilterGradiantFactor);
