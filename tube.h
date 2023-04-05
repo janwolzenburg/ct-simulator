@@ -109,15 +109,37 @@ class tube{
 	*/
 	range getFrequencyRange( void ) const;
 
-	vectorPair spectrumPoints( void ) const{
+	vectorPair spectrumPoints( const bool continous = false, const bool xAxisEnergy = false ) const{
 
 		vectorPair points;
 		const vector<v2> spectrumPoints = xRay_spectrum.rawData();
 
+		double xCorrection = 1.;
+		double yCorrection = 1.;
+
+		if( continous ){
+			yCorrection *=  xRay_spectrum.getSum() / xRay_spectrum.getIntegral();
+		}
+
+		if( xAxisEnergy ){
+			xCorrection *= h_eVs;
+		}
 
 		for( auto& point : spectrumPoints ){
-			points.first.push_back( point.x );
-			points.second.push_back( point.y );
+			
+			if( xAxisEnergy ){
+				points.first.push_back( point.x * xCorrection );
+			}
+			else{
+				points.first.push_back( point.x );
+			}
+			
+			if( continous ){
+				points.second.push_back( point.y * yCorrection );
+			}
+			else{
+				points.second.push_back( point.y );
+			}
 		}
 
 		return points;

@@ -151,6 +151,11 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
+range::range( void ) : 
+	range{ 0., 1. }
+{
+
+}
 
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;

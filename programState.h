@@ -134,7 +134,6 @@ class programState{
 	storedObject<detectorIndipendentParameter> storedDetectorParameter;
 
 
-
 	gantry gantryInstance;
 
 };

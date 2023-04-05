@@ -65,6 +65,8 @@ programState::programState( void ) :
 
 {
 
+	createStorageDir();
+
 }
 
 

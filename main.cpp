@@ -60,6 +60,8 @@ int main( int argc, char** argv ){
 		modelView.setUpdateFlag();
 	}
 
+	gantryBuild.setUpdateFlag();
+
 	while( Fl::wait() ){
 		
 		modelView.handleEvents();

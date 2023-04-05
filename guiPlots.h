@@ -24,9 +24,32 @@
 class plotInfo{
 
 	public:
+
+	plotInfo( string name_, string xlabel_, string ylabel_ ) : 
+		name( name_ ), xlabel( xlabel_ ), ylabel( ylabel_ ),
+		autoXRange( true ),
+		autoYRange( true )
+	{};
+
+	void setXRange( const range newRange ){
+		xRange = newRange;
+		autoXRange = false;
+	}
+
+	void setYRange( const range newRange ){
+		yRange = newRange;
+		autoYRange = false;
+	}
+
 	string name;
 	string xlabel;
 	string ylabel;
+
+	range xRange;
+	range yRange;
+
+	bool autoXRange;
+	bool autoYRange;
 
  };
 
@@ -58,12 +81,15 @@ class linePlot{
 		//plot.xrange( sourceGrid.Start().col, sourceGrid.End().col );
 		//plot.yrange( sourceGrid.Start().row, sourceGrid.End().row );
 
-		plot.xrange( Min( X ), Max( X ) );
-		plot.yrange( Min( Y ), Max( Y ) );
+		if( !info.autoXRange )
+			plot.xrange( info.xRange.start, info.xRange.end );
+		
+		if( !info.autoYRange )
+			plot.yrange( info.yRange.start, info.yRange.end );
 
 		//plot.xtics().format("%.2e");
 		plot.gnuplot( "set format x '%.e'" );
-		plot.fontSize( 10 );
+		plot.fontSize( 12 );
 		plot.drawCurve( X, Y );
 
 
@@ -71,8 +97,8 @@ class linePlot{
 		sciplot::Figure  fig = { {plot} };
 		sciplot::Canvas canvas = { {fig} };
 
-		size_t width = 600;
-		canvas.size( width, width * 3 / 4 );
+		size_t width = 720;
+		canvas.size( width, width * 3 / 8 );
 
 		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
 
@@ -99,6 +125,7 @@ class Fl_Line_Plot : public Fl_Widget{
 	Fl_Line_Plot( int x, int y, int w, int h,  const char* label = 0L ) :
 		Fl_Widget{ x, y, w, h, label },
 		plot{},
+		sourceImage( nullptr ),
 		image( nullptr )
 	{
 
@@ -112,35 +139,70 @@ class Fl_Line_Plot : public Fl_Widget{
 
 		plot.create( data, info );
 
-		assignImage( info.name );
+		assignImage( PROGRAM_STATE().getPath( info.name + ".png" ) );
 
 	}
 
 	virtual void draw( void ){
 		
+		calculateScaled();
+
 		if( image != nullptr )
 			image->draw( x(), y() );
+	
+	}
+
+	virtual void resize( int x, int y, int w, int h ){
+
+		Fl_Widget::resize( x, y, w, h );
+
+		calculateScaled();
+
+		redraw();
 
 	}
 
-	//virtual void resize( int x, int y, int w, int h );
+	void calculateScaled( void ){
 
-	//void calculateScaled( void );
+		if( sourceImage == nullptr ) return;
+
+		int scaledWidth = w(), scaledHeight = h();
+
+		const double aspectRatioWidget = (double) w() / (double) h();
+		const double aspectRatioImage = (double) sourceImage->w() / (double) sourceImage->h();
+
+		// Fit image vertically
+		if( aspectRatioWidget > aspectRatioImage ){
+
+			scaledHeight = h();
+			scaledWidth = (int) ( (double) scaledHeight * aspectRatioImage );
+
+		}
+		// Fit image horizontally
+		else{
+
+			scaledWidth = w();
+			scaledHeight = (int) ( (double) scaledWidth / aspectRatioImage );
+
+		}
+		if( image == nullptr )
+			delete image;
+		
+		image = sourceImage->copy( scaledWidth, scaledHeight );
+	}
 
 
 	private:
 
-	void assignImage( const string filename ){
+	void assignImage( const path filename ){
 
-		Fl_PNG_Image tempImage{ filename.c_str() };
-
-		delete image;
-		image = tempImage.copy( Fl_Widget::w(), Fl_Widget::h() );
+		delete sourceImage;
+		sourceImage = new Fl_PNG_Image{ filename.string().c_str() };
 
 		draw();
 	}
 
 	linePlot plot;
+	Fl_PNG_Image* sourceImage;
 	Fl_Image* image;
-	//greyImage scaledImage;
 };

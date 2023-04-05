@@ -12,6 +12,7 @@
   Includes
 *********************************************************************/
 
+#include "generel.h"
 #include "gantryCreation.h"
 #include "widgets.h"
 #include "guiPlots.h"
@@ -41,91 +42,93 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 
-	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .2 ) },
+	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
 	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
 
-	updateGantry( false ){
-	Fl_Group::box( FL_BORDER_BOX );
+	updateGantry( false )
+	
+	{
+		Fl_Group::box( FL_BORDER_BOX );
 
-	Fl_Group::add( tubeGrp );
+		Fl_Group::add( tubeGrp );
 
-	tubeGrp.add( tubeVoltageIn ); tubeGrp.add( tubeCurrentIn ); tubeGrp.add( materialIn );
-	tubeGrp.box( FL_BORDER_BOX );
+		tubeGrp.add( tubeVoltageIn ); tubeGrp.add( tubeCurrentIn ); tubeGrp.add( materialIn );
+		tubeGrp.box( FL_BORDER_BOX );
 
-	tubeVoltageIn.align( FL_ALIGN_TOP ); tubeCurrentIn.align( FL_ALIGN_TOP ); materialIn.align( FL_ALIGN_TOP );
+		tubeVoltageIn.align( FL_ALIGN_TOP ); tubeCurrentIn.align( FL_ALIGN_TOP ); materialIn.align( FL_ALIGN_TOP );
 
-	tubeVoltageIn.setProperties( 1., 200000., 0 );
-	tubeCurrentIn.setProperties( .001, 10., 3 );
+		tubeVoltageIn.setProperties( 1., 200000., 0 );
+		tubeCurrentIn.setProperties( .001, 10., 3 );
 
-	tubeVoltageIn.value( PROGRAM_STATE().TubeParameter().anodeVoltage_V );
-	tubeCurrentIn.value( PROGRAM_STATE().TubeParameter().anodeCurrent_A );
+		tubeVoltageIn.value( PROGRAM_STATE().TubeParameter().anodeVoltage_V );
+		tubeCurrentIn.value( PROGRAM_STATE().TubeParameter().anodeCurrent_A );
 
-	tubeVoltageIn.callback( button_cb, &updateGantry );
-	tubeCurrentIn.callback( button_cb, &updateGantry );
-	materialIn.callback( button_cb, &updateGantry );
+		tubeVoltageIn.callback( button_cb, &updateGantry );
+		tubeCurrentIn.callback( button_cb, &updateGantry );
+		materialIn.callback( button_cb, &updateGantry );
 
-	vector<string> materialNames;
-	for( auto& el : tubeParameter::material ) materialNames.push_back( el.second.first );
+		vector<string> materialNames;
+		for( auto& el : tubeParameter::material ) materialNames.push_back( el.second.first );
 
-	materialIn.setElements( materialNames );
-	MATERIAL anodeMaterial = PROGRAM_STATE().TubeParameter().anodeMaterial;
-	string materialName = tubeParameter::material.at( anodeMaterial ).first;
-	materialIn.value( materialName );
+		materialIn.setElements( materialNames );
+		MATERIAL anodeMaterial = PROGRAM_STATE().TubeParameter().anodeMaterial;
+		string materialName = tubeParameter::material.at( anodeMaterial ).first;
+		materialIn.value( materialName );
 
-	tubeVoltageIn.tooltip( "Voltage in Volts." );
-	tubeCurrentIn.tooltip( "Current in Ampere." );
-	materialIn.tooltip( "Anode material." );
-
-
-	Fl_Group::add( radonGrp ); radonGrp.add( colPnts ); radonGrp.add( rowPnts ); radonGrp.add( distRange );
-	radonGrp.box( FL_BORDER_BOX );
-	colPnts.align( FL_ALIGN_LEFT ); rowPnts.align( FL_ALIGN_LEFT ); distRange.align( FL_ALIGN_LEFT );
-
-	colPnts.setProperties( 3, 10000, 0 );
-	colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.col );
-
-	rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
-	rowPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.row );
-
-	distRange.setProperties( 1., 10000., 0 );
-	distRange.value( PROGRAM_STATE().RadonParameter().distanceRange );
-
-	colPnts.callback( button_cb, &updateGantry );
-	rowPnts.callback( button_cb, &updateGantry );
-	distRange.callback( button_cb, &updateGantry );
-
-	colPnts.tooltip( "Amount of angles in Sinogram." );
-	rowPnts.tooltip( "Amount of distances in sinogram. Is the amount of detector pixel." );
-	distRange.tooltip( "Size of measure field in mm." );
+		tubeVoltageIn.tooltip( "Voltage in Volts." );
+		tubeCurrentIn.tooltip( "Current in Ampere." );
+		materialIn.tooltip( "Anode material." );
 
 
-	Fl_Group::add( detectorGrp ); detectorGrp.add( raysPerPixelIn ); detectorGrp.add( arcRadiusIn ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
-	detectorGrp.box( FL_BORDER_BOX );
-	raysPerPixelIn.align( FL_ALIGN_LEFT ); arcRadiusIn.align( FL_ALIGN_LEFT ); maxRayAngleIn.align( FL_ALIGN_LEFT );
+		Fl_Group::add( radonGrp ); radonGrp.add( colPnts ); radonGrp.add( rowPnts ); radonGrp.add( distRange );
+		radonGrp.box( FL_BORDER_BOX );
+		colPnts.align( FL_ALIGN_LEFT ); rowPnts.align( FL_ALIGN_LEFT ); distRange.align( FL_ALIGN_LEFT );
 
-	raysPerPixelIn.setProperties( 1, 1000, 0 );
-	raysPerPixelIn.value( (int) PROGRAM_STATE().DetectorParameter().raysPerPixel );
+		colPnts.setProperties( 3, 10000, 0 );
+		colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.col );
 
-	arcRadiusIn.setProperties( 100., 100000., 0 );
-	arcRadiusIn.value( PROGRAM_STATE().DetectorParameter().arcRadius );
+		rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
+		rowPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.row );
 
-	maxRayAngleIn.setProperties( .1, 60., 1 );
-	maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().maxRayAngleDetectable );
+		distRange.setProperties( 1., 10000., 0 );
+		distRange.value( PROGRAM_STATE().RadonParameter().distanceRange );
 
-	structureIn.value( (int) PROGRAM_STATE().DetectorParameter().structured );
+		colPnts.callback( button_cb, &updateGantry );
+		rowPnts.callback( button_cb, &updateGantry );
+		distRange.callback( button_cb, &updateGantry );
 
-	raysPerPixelIn.callback( button_cb, &updateGantry );
-	arcRadiusIn.callback( button_cb, &updateGantry );
-	maxRayAngleIn.callback( button_cb, &updateGantry );
-	structureIn.callback( button_cb, &updateGantry );
-
-	raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
-	arcRadiusIn.tooltip( "Radius of the arc where the pixel lie." );
-	maxRayAngleIn.tooltip( "Maximum detecable angle between pixel and ray. " );
-	structureIn.tooltip( "Activate anti scattering structure." );
+		colPnts.tooltip( "Amount of angles in Sinogram." );
+		rowPnts.tooltip( "Amount of distances in sinogram. Is the amount of detector pixel." );
+		distRange.tooltip( "Size of measure field in mm." );
 
 
-	Fl_Group::add( specView ); specView.add( spectrumPlot );
+		Fl_Group::add( detectorGrp ); detectorGrp.add( raysPerPixelIn ); detectorGrp.add( arcRadiusIn ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
+		detectorGrp.box( FL_BORDER_BOX );
+		raysPerPixelIn.align( FL_ALIGN_LEFT ); arcRadiusIn.align( FL_ALIGN_LEFT ); maxRayAngleIn.align( FL_ALIGN_LEFT );
+
+		raysPerPixelIn.setProperties( 1, 1000, 0 );
+		raysPerPixelIn.value( (int) PROGRAM_STATE().DetectorParameter().raysPerPixel );
+
+		arcRadiusIn.setProperties( 100., 100000., 0 );
+		arcRadiusIn.value( PROGRAM_STATE().DetectorParameter().arcRadius );
+
+		maxRayAngleIn.setProperties( .1, 60., 1 );
+		maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().maxRayAngleDetectable );
+
+		structureIn.value( (int) PROGRAM_STATE().DetectorParameter().structured );
+
+		raysPerPixelIn.callback( button_cb, &updateGantry );
+		arcRadiusIn.callback( button_cb, &updateGantry );
+		maxRayAngleIn.callback( button_cb, &updateGantry );
+		structureIn.callback( button_cb, &updateGantry );
+
+		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
+		arcRadiusIn.tooltip( "Radius of the arc where the pixel lie." );
+		maxRayAngleIn.tooltip( "Maximum detecable angle between pixel and ray. " );
+		structureIn.tooltip( "Activate anti scattering structure." );
+
+
+		Fl_Group::add( specView ); specView.add( spectrumPlot );
 
 
 
@@ -149,10 +152,12 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		plotInfo spectrumInfo{ PROGRAM_STATE().getPath( "spectrumPlot" + string{".png"} ).string(), "f in Hz", "Intensity"};
+		plotInfo spectrumInfo{ "spectrumPlot", "E in eV", "Power in W" };
+		spectrumInfo.setXRange( range{ 10e3, 200e3 } );
+		//spectrumInfo.setYRange( range{ 0., })
 		//linePlot spectrumPlot{ tubeRef.spectrumPoints(), spectrumInfo };
 
-		spectrumPlot.assignData( tubeRef.spectrumPoints(), spectrumInfo );
+		spectrumPlot.assignData( tubeRef.spectrumPoints( true, true ), spectrumInfo );
 
 		Fl_Group::window()->activate();
 
