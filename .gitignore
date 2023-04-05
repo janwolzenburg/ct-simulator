@@ -13,6 +13,8 @@
 *.chooser
 diagnoseSession/
 stateStorage/
+tests/
+models/
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
