@@ -118,11 +118,16 @@ class tube{
 		double yCorrection = 1.;
 
 		if( continous ){
-			yCorrection *=  xRay_spectrum.getSum() / xRay_spectrum.getIntegral();
+			//yCorrection *=  xRay_spectrum.getSum() / xRay_spectrum.getIntegral();
+			yCorrection *= 1 / xRay_spectrum.FrequencyResolution();
 		}
 
 		if( xAxisEnergy ){
 			xCorrection *= h_eVs;
+		}
+
+		if( xAxisEnergy && continous ){
+			yCorrection /= h_eVs; 
 		}
 
 		for( auto& point : spectrumPoints ){

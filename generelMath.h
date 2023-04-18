@@ -63,6 +63,7 @@ bool iseqErr( const double a, const double b, const double tolerance );
 */
 bool iseqErr( const double a, const double b );
 
+bool isEqErrPercent( const double a, const double b, const double fraction );
 
 /*!
  * @brief Checks if number is even

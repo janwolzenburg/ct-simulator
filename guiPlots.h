@@ -25,10 +25,12 @@ class plotInfo{
 
 	public:
 
-	plotInfo( string name_, string xlabel_, string ylabel_ ) : 
+	plotInfo( string name_, string xlabel_, string ylabel_, int x_, int y_ ) : 
 		name( name_ ), xlabel( xlabel_ ), ylabel( ylabel_ ),
 		autoXRange( true ),
-		autoYRange( true )
+		autoYRange( true ),
+		x( x_ ),
+		y( y_ )
 	{};
 
 	void setXRange( const range newRange ){
@@ -50,6 +52,9 @@ class plotInfo{
 
 	bool autoXRange;
 	bool autoYRange;
+
+	int x;
+	int y;
 
  };
 
@@ -89,7 +94,7 @@ class linePlot{
 
 		//plot.xtics().format("%.2e");
 		plot.gnuplot( "set format x '%.e'" );
-		plot.fontSize( 12 );
+		plot.fontSize( 8 );
 		plot.drawCurve( X, Y );
 
 
@@ -97,8 +102,7 @@ class linePlot{
 		sciplot::Figure  fig = { {plot} };
 		sciplot::Canvas canvas = { {fig} };
 
-		size_t width = 720;
-		canvas.size( width, width * 3 / 8 );
+		canvas.size( info.x, info.y );
 
 		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
 
@@ -205,4 +209,46 @@ class Fl_Line_Plot : public Fl_Widget{
 	linePlot plot;
 	Fl_PNG_Image* sourceImage;
 	Fl_Image* image;
+};
+
+
+class geoPlot{
+
+	public:
+
+	geoPlot( const plotInfo info_ ) :
+		info( info ){
+
+		plot.legend().hide();
+
+		plot.xrange( info.xRange.start, info.xRange.end );
+		plot.yrange( info.yRange.start, info.yRange.end );
+	
+
+		plot.fontSize( 8 );
+	};
+
+	void addLine( const v2 lineStart, const v2 lineEnd ){
+
+		plot.drawCurve( vector<double>{ lineStart.x, lineEnd.x }, vector<double>{ lineStart.y, lineEnd.y } );
+
+	}
+
+	
+	void create( void ){
+
+
+		sciplot::Figure  fig = { {plot} };
+		sciplot::Canvas canvas = { {fig} };
+
+		canvas.size( info.x, info.y );
+
+		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
+
+	}
+
+	private:
+	sciplot::Plot2D plot;
+	plotInfo info;
+
 };

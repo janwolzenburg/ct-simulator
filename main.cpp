@@ -40,7 +40,7 @@ int main( int argc, char** argv ){
 
 	Fl_Group::current( NULL );
 
-	Fl_Window mainWindow{ 1280, 720, "CT-Simulator" };
+	Fl_Window mainWindow{ (int) ( 1920.*0.9 ), (int) ( 1080.*0.9 ), "CT-Simulator" };
 	mainWindow.resizable( mainWindow );
 
 

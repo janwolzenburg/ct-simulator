@@ -42,7 +42,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 
-	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
+	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .25 ) },
 	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
 
 	updateGantry( false )
@@ -152,7 +152,7 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		plotInfo spectrumInfo{ "spectrumPlot", "E in eV", "Power in W" };
+		plotInfo spectrumInfo{ "spectrumPlot", "E in eV", "Spectral Power in W/eV", spectrumPlot.w(), spectrumPlot.h() };
 		spectrumInfo.setXRange( range{ 10e3, 200e3 } );
 		//spectrumInfo.setYRange( range{ 0., })
 		//linePlot spectrumPlot{ tubeRef.spectrumPoints(), spectrumInfo };
