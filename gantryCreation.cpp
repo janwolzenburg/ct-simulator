@@ -152,12 +152,10 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		plotInfo spectrumInfo{ "spectrumPlot", "E in eV", "Spectral Power in W/eV", spectrumPlot.w(), spectrumPlot.h() };
-		spectrumInfo.setXRange( range{ 10e3, 200e3 } );
-		//spectrumInfo.setYRange( range{ 0., })
-		//linePlot spectrumPlot{ tubeRef.spectrumPoints(), spectrumInfo };
+		spectrumPlot.initializePlot( "spectrumPlot", "E in eV", "Sepctral Power in W/eV", plotLimits{ range{ 10e3, 200e3 }, range{ 0, 1 }, false, true } );
 
-		spectrumPlot.assignData( tubeRef.spectrumPoints( true, true ), spectrumInfo );
+		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true, true ) );
+		spectrumPlot.assignData();
 
 		Fl_Group::window()->activate();
 

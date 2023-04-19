@@ -233,6 +233,7 @@
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="gui.cpp" />
+    <ClCompile Include="guiPlots.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />

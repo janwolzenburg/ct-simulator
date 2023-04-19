@@ -65,7 +65,7 @@ class gantryEdition : public Fl_Group{
 	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;
 
 	Fl_Group specView;
-	Fl_Line_Plot spectrumPlot;
+	Fl_Plot<linePlot> spectrumPlot;
 
 	bool updateGantry;
 

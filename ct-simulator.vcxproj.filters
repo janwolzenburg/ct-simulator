@@ -422,5 +422,8 @@
     <ClCompile Include="slicePlane.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
+    <ClCompile Include="guiPlots.cpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

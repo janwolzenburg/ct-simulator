@@ -21,31 +21,10 @@
  #include "programState.h"
  #include "vectorAlgorithm.h"
 
-class plotInfo{
+
+class plotLimits{
 
 	public:
-
-	plotInfo( string name_, string xlabel_, string ylabel_, int x_, int y_ ) : 
-		name( name_ ), xlabel( xlabel_ ), ylabel( ylabel_ ),
-		autoXRange( true ),
-		autoYRange( true ),
-		x( x_ ),
-		y( y_ )
-	{};
-
-	void setXRange( const range newRange ){
-		xRange = newRange;
-		autoXRange = false;
-	}
-
-	void setYRange( const range newRange ){
-		yRange = newRange;
-		autoYRange = false;
-	}
-
-	string name;
-	string xlabel;
-	string ylabel;
 
 	range xRange;
 	range yRange;
@@ -53,97 +32,170 @@ class plotInfo{
 	bool autoXRange;
 	bool autoYRange;
 
-	int x;
-	int y;
+ };
+
+
+class plot{
+
+	public:
+
+	inline string getImgPath( void ) const { return imgPath; };
+
+	void initialize( const string name_, const string xlabel_, const string ylabel_,
+					 const plotLimits limits_, const idx2CR imgSize_ ){
+
+		name = name_;
+		imgPath = PROGRAM_STATE().getPath( name + ".png" ).string();
+		xlabel = xlabel_;
+		ylabel = ylabel_;
+		limits = limits_;
+		imgSize = imgSize_;
+
+		reset();
+
+	}
+
+
+	protected:
+
+	plot( const string name_, const string xlabel_, const string ylabel_,
+		  const plotLimits limits_, const idx2CR imgSize_ ) :
+
+		name( name_ ), imgPath( PROGRAM_STATE().getPath( name + ".png" ).string() ),
+		xlabel( xlabel_ ), ylabel( ylabel_ ),
+		limits( limits_ ), imgSize( imgSize_ )
+	{
+		reset();
+	}
+
+	plot( void ) :
+		plot( "Dummy", "X", "Y", plotLimits{ { 0, 1 }, { 0, 1 }, true, true }, idx2CR{ 5, 5 } )
+	{
+	}
+
+	void reset( void ){
+		plot2D.cleanup();
+		plot2D.clear();
+	}
+
+	void drawPlot( void ){
+
+		plot2D.xlabel( xlabel ); plot2D.ylabel( ylabel );
+		plot2D.legend().hide();
+
+		if( !limits.autoXRange )
+			plot2D.xrange( limits.xRange.start, limits.xRange.end );
+
+		if( !limits.autoYRange )
+			plot2D.yrange( limits.yRange.start, limits.yRange.end );
+
+		plot2D.gnuplot( "set format x '%.e'" );
+		plot2D.fontSize( imgSize.row / 20 );
+
+		sciplot::Figure  fig = { {plot2D} };
+		sciplot::Canvas canvas = { {fig} };
+
+		canvas.size( (size_t) ( 1.5 * imgSize.col ), (size_t) ( 1.5 * imgSize.row ) );
+		canvas.save( imgPath );
+
+	}
+
+	
+	protected:
+	
+	string name;
+	string xlabel;
+	string ylabel;
+
+	plotLimits limits;
+
+	idx2CR imgSize;
+	string imgPath;
+	sciplot::Plot2D plot2D;
 
  };
 
-class linePlot{
+
+class linePlot : public plot{
 
 	public:
-	linePlot( const vector<double> X, const vector<double> Y, const plotInfo info ){
 
-		create( X, Y, info );
+	linePlot( const string name_, const string xlabel_, const string ylabel_,
+			  const plotLimits limits_, const idx2CR imgSize_ ) : 
+		plot( name_, xlabel_, ylabel_, limits_, imgSize_ ),
+		X(), Y()
+	{
+	
+	}
+	
+	linePlot( void ) : 
+		plot(),
+		X(), Y()
+	{
+	}
+
+	void assignData( const vector<double> X_, const vector<double> Y_ ){
+
+		X = X_;
+		Y = Y_;
+
+		create();
+	}
+
+
+	void assignData( const vectorPair XY){
+
+		assignData( XY.first, XY.second );
 
 	}
 
-	linePlot( const vectorPair pts, const plotInfo info ) :
-		linePlot{ pts.first, pts.second, info }
-	{}
+	void create( void ) {
 
-	linePlot( void ){
-		
-	}
+		plot::reset();
+		plot::plot2D.drawCurve( X, Y );
+		plot::drawPlot();
 
-	void create( const vector<double> X, const vector<double> Y, const plotInfo info ){
-		
-		sciplot::Plot2D plot;
-
-		plot.xlabel( info.xlabel );
-		plot.ylabel( info.ylabel );
-		plot.legend().hide();
-
-		//plot.xrange( sourceGrid.Start().col, sourceGrid.End().col );
-		//plot.yrange( sourceGrid.Start().row, sourceGrid.End().row );
-
-		if( !info.autoXRange )
-			plot.xrange( info.xRange.start, info.xRange.end );
-		
-		if( !info.autoYRange )
-			plot.yrange( info.yRange.start, info.yRange.end );
-
-		//plot.xtics().format("%.2e");
-		plot.gnuplot( "set format x '%.e'" );
-		plot.fontSize( 8 );
-		plot.drawCurve( X, Y );
-
-
-
-		sciplot::Figure  fig = { {plot} };
-		sciplot::Canvas canvas = { {fig} };
-
-		canvas.size( info.x, info.y );
-
-		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
-
-	}
-
-	void create( const vectorPair XY, const plotInfo info ){
-		create( XY.first, XY.second, info );
 	}
 
 
 	private:
-	//sciplot::Plot2D plot;
 
-};
+	vector<double> X, Y;
+
+ };
 
 
-
-
-class Fl_Line_Plot : public Fl_Widget{
+template< class plotType >
+class Fl_Plot : public Fl_Widget{
 
 
 	public:
 
-	Fl_Line_Plot( int x, int y, int w, int h,  const char* label = 0L ) :
-		Fl_Widget{ x, y, w, h, label },
-		plot{},
+	Fl_Plot( int x, int y, int w, int h,  const char* label = 0L ) :
+		Fl_Widget( x, y, w, h, label ),
+		plotInstance(),
 		sourceImage( nullptr ),
 		image( nullptr )
 	{
 
-	};
+	}
 
-	~Fl_Line_Plot(){
+	~Fl_Plot(){
 		delete image;
 	}
 
-	void assignData( const vectorPair data, const plotInfo info ){
+	void initializePlot( const string name_, const string xlabel_, const string ylabel_,
+						 const plotLimits limits_ ){
 
-		plot.create( data, info );
+		plotInstance.initialize( name_, xlabel_, ylabel_, limits_, idx2CR{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() } );
 
-		assignImage( PROGRAM_STATE().getPath( info.name + ".png" ) );
+	}
+
+	inline plotType& plotRef( void ){ return plotInstance; };
+
+	void assignData( void ){
+
+		assignImage( plotInstance.getImgPath() );
 
 	}
 
@@ -193,6 +245,7 @@ class Fl_Line_Plot : public Fl_Widget{
 			delete image;
 		
 		image = sourceImage->copy( scaledWidth, scaledHeight );
+
 	}
 
 
@@ -206,49 +259,145 @@ class Fl_Line_Plot : public Fl_Widget{
 		draw();
 	}
 
-	linePlot plot;
+	plotType plotInstance;
 	Fl_PNG_Image* sourceImage;
 	Fl_Image* image;
 };
 
-
-class geoPlot{
-
-	public:
-
-	geoPlot( const plotInfo info_ ) :
-		info( info ){
-
-		plot.legend().hide();
-
-		plot.xrange( info.xRange.start, info.xRange.end );
-		plot.yrange( info.yRange.start, info.yRange.end );
-	
-
-		plot.fontSize( 8 );
-	};
-
-	void addLine( const v2 lineStart, const v2 lineEnd ){
-
-		plot.drawCurve( vector<double>{ lineStart.x, lineEnd.x }, vector<double>{ lineStart.y, lineEnd.y } );
-
-	}
-
-	
-	void create( void ){
-
-
-		sciplot::Figure  fig = { {plot} };
-		sciplot::Canvas canvas = { {fig} };
-
-		canvas.size( info.x, info.y );
-
-		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
-
-	}
-
-	private:
-	sciplot::Plot2D plot;
-	plotInfo info;
-
-};
+//
+//class geoPlot{
+//
+//	public:
+//
+//	geoPlot( const plotInfo info_ ) :
+//		info( info ){
+//
+//		plot.legend().hide();
+//
+//		plot.xrange( info.xRange.start, info.xRange.end );
+//		plot.yrange( info.yRange.start, info.yRange.end );
+//	
+//
+//		plot.fontSize( 8 );
+//	};
+//
+//	void addLine( const v2 lineStart, const v2 lineEnd ){
+//
+//		plot.drawCurve( vector<double>{ lineStart.x, lineEnd.x }, vector<double>{ lineStart.y, lineEnd.y } );
+//
+//	}
+//
+//	void addPoint( const v2 coordinates ){
+//
+//		plot.drawCurveWithPoints( vector<double>{ coordinates.x }, vector<double>{ coordinates.y } );
+//
+//	}
+//	
+//	void create( void ){
+//
+//
+//		sciplot::Figure  fig = { {plot} };
+//		sciplot::Canvas canvas = { {fig} };
+//
+//		canvas.size( info.x, info.y );
+//
+//		canvas.save( PROGRAM_STATE().getPath( info.name + ".png" ).string() );
+//
+//	}
+//
+//	private:
+//	sciplot::Plot2D plot;
+//	plotInfo info;
+//
+//};
+//
+//
+//
+//class Fl_Geo_Plot : public Fl_Widget{
+//
+//
+//	public:
+//
+//	Fl_Geo_Plot( int x, int y, int w, int h, const char* label = 0L ) :
+//		Fl_Widget{ x, y, w, h, label },
+//		plot{},
+//		sourceImage( nullptr ),
+//		image( nullptr ){
+//
+//	};
+//
+//	~Fl_Geo_Plot(){
+//		delete image;
+//	}
+//
+//	void assignData( const vectorPair data, const plotInfo info ){
+//
+//		plot.create( data, info );
+//
+//		assignImage( PROGRAM_STATE().getPath( info.name + ".png" ) );
+//
+//	}
+//
+//	virtual void draw( void ){
+//
+//		calculateScaled();
+//
+//		if( image != nullptr )
+//			image->draw( x(), y() );
+//
+//	}
+//
+//	virtual void resize( int x, int y, int w, int h ){
+//
+//		Fl_Widget::resize( x, y, w, h );
+//
+//		calculateScaled();
+//
+//		redraw();
+//
+//	}
+//
+//	void calculateScaled( void ){
+//
+//		if( sourceImage == nullptr ) return;
+//
+//		int scaledWidth = w(), scaledHeight = h();
+//
+//		const double aspectRatioWidget = (double) w() / (double) h();
+//		const double aspectRatioImage = (double) sourceImage->w() / (double) sourceImage->h();
+//
+//		// Fit image vertically
+//		if( aspectRatioWidget > aspectRatioImage ){
+//
+//			scaledHeight = h();
+//			scaledWidth = (int) ( (double) scaledHeight * aspectRatioImage );
+//
+//		}
+//		// Fit image horizontally
+//		else{
+//
+//			scaledWidth = w();
+//			scaledHeight = (int) ( (double) scaledWidth / aspectRatioImage );
+//
+//		}
+//		if( image == nullptr )
+//			delete image;
+//
+//		image = sourceImage->copy( scaledWidth, scaledHeight );
+//	}
+//
+//
+//	private:
+//
+//	void assignImage( const path filename ){
+//
+//		delete sourceImage;
+//		sourceImage = new Fl_PNG_Image{ filename.string().c_str() };
+//
+//		draw();
+//	}
+//
+//	linePlot plot;
+//	Fl_PNG_Image* sourceImage;
+//	Fl_Image* image;
+//};
