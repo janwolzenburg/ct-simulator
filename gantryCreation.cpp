@@ -25,25 +25,28 @@
 
 gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
-	tubeGrp{ X( *this, .05 ),	Y( *this, .05 ),	W( *this, .5 ),		H( *this, .15 ) },
+	tubeGrp{ X( *this, .05 ),	Y( *this, .05 ),	W( *this, .5 ),		H( *this, .1 ) },
 	tubeVoltageIn{ X( tubeGrp, .0 ),	Y( tubeGrp, .2 ),	W( tubeGrp, .4 ),	H( tubeGrp, .35 ),	"Voltage" },
 	tubeCurrentIn{ X( tubeGrp, .6 ),	Y( tubeGrp, .2 ),	W( tubeGrp, .4 ),	H( tubeGrp, .35 ),	"Current" },
 	materialIn{ X( tubeGrp, .0 ),	Y( tubeGrp, .75 ),	W( tubeGrp, 1. ),	H( tubeGrp, .25 ),	"Material" },
 
 
-	radonGrp{ X( *this, .2 ),		vOff( tubeGrp ) + Y( *this, .05 ),		W( *this, .12 ),	H( *this, .15 ) },
+	radonGrp{ X( *this, .2 ),		vOff( tubeGrp ) + Y( *this, .05 ),		W( *this, .12 ),	H( *this, .1 ) },
 	colPnts{ X( radonGrp, .0 ),	Y( radonGrp, 0. ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Angles" },
 	rowPnts{ X( radonGrp, .0 ),	Y( radonGrp, .375 ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Pixel" },
 	distRange{ X( radonGrp, .0 ),	Y( radonGrp, .75 ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Range" },
 
-	detectorGrp{ X( *this, .6 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, .4 ),			H( *this, .15 ) },
+	detectorGrp{ X( *this, .6 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, .4 ),			H( *this, .1 ) },
 	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Rays / Pix" },
 	arcRadiusIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Arc Radius" },
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 
-	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .25 ) },
+	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
 	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
+
+	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
+	detectorPlot{ X( detectorView, .0 ),	Y( detectorView, 0. ),	W( detectorView, 1. ),	H( detectorView, 1. ),	"Detector Plot" },
 
 	updateGantry( false )
 	
@@ -129,7 +132,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		Fl_Group::add( specView ); specView.add( spectrumPlot );
+		spectrumPlot.initializePlot( "spectrumPlot", "E in eV", "Sepctral Power in W/eV", plotLimits{ range{ 10e3, 200e3 }, range{ 0, 1 }, false, true }, "%.e", "", false );
 
+		Fl_Group::add( detectorView ); detectorView.add( detectorPlot );
+		detectorPlot.initializePlot( "detectorPlot", "", "", plotLimits{ range{ 0, 1 }, range{ 0, 1 }, true, true }, "", "", true );
 
 
 }
@@ -152,10 +158,27 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		spectrumPlot.initializePlot( "spectrumPlot", "E in eV", "Sepctral Power in W/eV", plotLimits{ range{ 10e3, 200e3 }, range{ 0, 1 }, false, true } );
-
 		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true, true ) );
 		spectrumPlot.assignData();
+
+		const auto allPixel = detectorRef.getPixel();
+
+		for( const auto& pixel : allPixel ){
+
+			const pnt3 startP = pixel.getPnt( pixel.AMin(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
+			const pnt3 endP = pixel.getPnt( pixel.AMax(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
+
+			const v2 start = v2( startP.X(), startP.Y() );
+			const v2 end = v2( endP.X(), endP.Y() );
+
+			detectorPlot.plotRef().addLine( start, end );
+
+		}
+
+		const pnt3 gantryCenter = PROGRAM_STATE().Gantry().Center();
+		detectorPlot.plotRef().addPoint( v2( gantryCenter.X(), gantryCenter.Y() ) );
+		detectorPlot.plotRef().create();
+		detectorPlot.assignData();
 
 		Fl_Group::window()->activate();
 

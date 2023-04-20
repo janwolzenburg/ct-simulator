@@ -67,6 +67,9 @@ class gantryEdition : public Fl_Group{
 	Fl_Group specView;
 	Fl_Plot<linePlot> spectrumPlot;
 
+	Fl_Group detectorView;
+	Fl_Plot<geoPlot> detectorPlot;
+
 	bool updateGantry;
 
 };
