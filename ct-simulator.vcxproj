@@ -168,10 +168,12 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
+    <ClInclude Include="geoplot.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="guiPlots.h" />
     <ClInclude Include="image.h" />
+    <ClInclude Include="lineplot.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="intersections.h" />
     <ClInclude Include="line.fwd.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="modelView.h" />
     <ClInclude Include="Own_Valuator.h" />
     <ClInclude Include="Own_Valuator.hpp" />
+    <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="positions.h" />
@@ -233,7 +236,7 @@
     <ClCompile Include="generelMath.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="gui.cpp" />
-    <ClCompile Include="guiPlots.cpp" />
+    <ClCompile Include="plots.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />

@@ -276,6 +276,15 @@
     <ClInclude Include="guiPlots.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="plots.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="lineplot.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="geoplot.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -422,7 +431,7 @@
     <ClCompile Include="slicePlane.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
-    <ClCompile Include="guiPlots.cpp">
+    <ClCompile Include="plots.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
   </ItemGroup>

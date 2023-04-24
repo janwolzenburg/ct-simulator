@@ -15,6 +15,7 @@
 #include "generel.h"
 #include "gantryCreation.h"
 #include "widgets.h"
+#include "plots.h"
 #include "guiPlots.h"
 
 /*********************************************************************
@@ -42,10 +43,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
 	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
 
-	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
+	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .2 ) },
 	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
 
-	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .05 ),			W( *this, 1. ),			H( *this, .3 ) },
+	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .3 ) },
 	detectorPlot{ X( detectorView, .0 ),	Y( detectorView, 0. ),	W( detectorView, 1. ),	H( detectorView, 1. ),	"Detector Plot" },
 
 	updateGantry( false )
@@ -132,10 +133,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		Fl_Group::add( specView ); specView.add( spectrumPlot );
-		spectrumPlot.initializePlot( "spectrumPlot", "E in eV", "Sepctral Power in W/eV", plotLimits{ range{ 10e3, 200e3 }, range{ 0, 1 }, false, true }, "%.e", "", false );
+		spectrumPlot.initializePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 		Fl_Group::add( detectorView ); detectorView.add( detectorPlot );
-		detectorPlot.initializePlot( "detectorPlot", "", "", plotLimits{ range{ 0, 1 }, range{ 0, 1 }, true, true }, "", "", true );
+		detectorPlot.initializePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, range{ 0, 1 }, range{ 0, 1 } }, "", "", true, true );
 
 
 }
@@ -153,6 +154,10 @@ void gantryEdition::handleEvents( void ){
 		detectorRadonParameter newRadonParameter{ idx2CR{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() };
 
+		rowPnts.value( newRadonParameter.numberPoints.row );
+		colPnts.value( newRadonParameter.numberPoints.col );
+
+
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
 
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
@@ -160,6 +165,10 @@ void gantryEdition::handleEvents( void ){
 
 		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true, true ) );
 		spectrumPlot.assignData();
+
+
+
+		detectorPlot.plotRef().resetObjects();
 
 		const auto allPixel = detectorRef.getPixel();
 

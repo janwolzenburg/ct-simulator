@@ -59,3 +59,12 @@ typename std::enable_if_t<std::is_integral_v<T>, T>  FOdd( T a ){
 	if( a % 2 == 0 ) return a + 1;
 	return a;
 }
+
+
+
+template <typename T>
+double relDeviation( const T a, const T b ){
+
+	return (double) std::abs( a - b ) / (double) std::abs( b );
+
+}

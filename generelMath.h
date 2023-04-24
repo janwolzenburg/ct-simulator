@@ -65,6 +65,9 @@ bool iseqErr( const double a, const double b );
 
 bool isEqErrPercent( const double a, const double b, const double fraction );
 
+template <typename T>
+double relDeviation( const T a, const T b );
+
 /*!
  * @brief Checks if number is even
  * @tparam T Integer type

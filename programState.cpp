@@ -92,7 +92,11 @@ void programState::createStorageDir( void ){
 }
 
 void programState::buildGantry( const tubeParameter tubeParameter_,
-				  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ){
+				  const detectorRadonParameter radonParameter_, const detectorIndipendentParameter indipendentParameter ){
+
+	xRayTubeParameter = tubeParameter_;
+	radonParameter = radonParameter_;
+	detectorParameter = indipendentParameter;
 
 	gantryInstance.reset();
 	gantry newGantry{ gantryInstance.CSys(), tubeParameter_, radonParameter, indipendentParameter };

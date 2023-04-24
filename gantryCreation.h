@@ -30,7 +30,9 @@ using std::vector;
 #include "storedObject.h"
 #include "gantry.h"
 #include "widgets.h"
-
+#include "guiPlots.h"
+#include "lineplot.h"
+#include "geoplot.h"
 
 class gantryEdition : public Fl_Group{
 

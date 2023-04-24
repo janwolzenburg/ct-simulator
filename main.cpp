@@ -47,7 +47,7 @@ int main( int argc, char** argv ){
 	modelView modelView{		X( mainWindow, 0. ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
 	mainWindow.add( modelView );
 	
-	gantryEdition gantryBuild{ X( mainWindow, 0.35 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
+	gantryEdition gantryBuild{ X( mainWindow, 0.35 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.25 ),	H( mainWindow, 1. ) };
 	mainWindow.add( gantryBuild );
 	
 
