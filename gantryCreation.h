@@ -30,7 +30,7 @@ using std::vector;
 #include "storedObject.h"
 #include "gantry.h"
 #include "widgets.h"
-#include "guiPlots.h"
+#include "Fl_plots.h"
 #include "lineplot.h"
 #include "geoplot.h"
 
@@ -67,6 +67,7 @@ class gantryEdition : public Fl_Group{
 	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;
 
 	Fl_Group specView;
+
 	Fl_Plot<linePlot> spectrumPlot;
 
 	Fl_Group detectorView;

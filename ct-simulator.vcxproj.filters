@@ -273,7 +273,7 @@
     <ClInclude Include="widgets.hpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="guiPlots.h">
+    <ClInclude Include="Fl_plots.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
     <ClInclude Include="plots.h">
@@ -284,6 +284,12 @@
     </ClInclude>
     <ClInclude Include="geoplot.h">
       <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Fl_plots.hpp">
+      <Filter>Quelldateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="storedObject.h">
+      <Filter>Headerdateien\Program</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -418,9 +424,6 @@
     </ClCompile>
     <ClCompile Include="Fl_GreyImage.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="storedObject.h">
-      <Filter>Headerdateien\Program</Filter>
     </ClCompile>
     <ClCompile Include="modelView.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>

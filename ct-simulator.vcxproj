@@ -171,7 +171,7 @@
     <ClInclude Include="geoplot.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="guiPlots.h" />
+    <ClInclude Include="Fl_plots.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="lineplot.h" />
     <ClInclude Include="model.h" />
@@ -230,6 +230,9 @@
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="Fl_GreyImage.cpp" />
+    <ClInclude Include="Fl_plots.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
@@ -251,7 +254,7 @@
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="scattering.cpp" />
     <ClCompile Include="slicePlane.cpp" />
-    <ClCompile Include="storedObject.h" />
+    <ClInclude Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="radonTransform.cpp" />
     <ClCompile Include="rays.cpp" />

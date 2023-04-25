@@ -38,7 +38,7 @@ class plot{
 
 	inline string getImgPath( void ) const { return imagePath.string(); };
 
-	void initialize( const path path_, const string xlabel_, const string ylabel_,
+	void initialize( const path path_, const string label_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
 	void setSize( const idx2CR size );
@@ -62,6 +62,7 @@ class plot{
 
 	protected:
 	
+	string label;
 	path imagePath;
 	string xlabel;
 	string ylabel;

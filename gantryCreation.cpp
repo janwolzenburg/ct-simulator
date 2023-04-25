@@ -16,7 +16,9 @@
 #include "gantryCreation.h"
 #include "widgets.h"
 #include "plots.h"
-#include "guiPlots.h"
+#include "Fl_plots.h"
+
+
 
 /*********************************************************************
   Implementations

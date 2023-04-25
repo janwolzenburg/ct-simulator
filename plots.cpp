@@ -13,6 +13,8 @@
 *********************************************************************/
 
 #include "plots.h"
+#include "lineplot.h"
+#include "geoplot.h"
 
 
 
@@ -25,9 +27,10 @@
 	plot implementation
 */
 
-void plot::initialize( const path path_, const string xlabel_, const string ylabel_,
+void plot::initialize( const path path_, const string label_, const string xlabel_, const string ylabel_,
 				 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
 
+	label = label_;
 	imagePath = path_;
 	xlabel = xlabel_;
 	ylabel = ylabel_;
@@ -96,15 +99,132 @@ void plot::drawPlot( void ){
 	if( grid )
 		plot2D.grid().show();
 
-
 	plot2D.palette( "set1" );
-
 	plot2D.fontSize( imgSize.row / 20 );
 
+	if( !label.empty() ){
+		plot2D.gnuplot( "set title \"" + label + "\"" );
+		plot2D.gnuplot( "show title" );
+	}
+
 	sciplot::Figure  fig = { {plot2D} };
+
+	
+
 	sciplot::Canvas canvas = { {fig} };
 
 	canvas.size( (size_t) ( imgSize.col ), (size_t) ( imgSize.row ) );
 	canvas.save( imagePath.string() );
+
+}
+
+
+
+/*
+	lineplot implementation
+*/
+
+linePlot::linePlot( const string name_, const string xlabel_, const string ylabel_,
+			const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
+	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ),
+	X(), Y(){
+
+}
+
+linePlot::linePlot( void ) :
+	plot(),
+	X(), Y(){}
+
+void linePlot::assignData( const vector<double> X_, const vector<double> Y_ ){
+
+	X = X_;
+	Y = Y_;
+
+	if( limits.xFactor != 1. ){
+		for( auto& x : X ){
+			x *= limits.xFactor;
+		}
+	}
+
+	if( limits.yFactor != 1. ){
+		for( auto& y : Y ){
+			y *= limits.yFactor;
+		}
+	}
+
+	create();
+}
+
+
+void linePlot::assignData( const vectorPair XY ){
+
+	assignData( XY.first, XY.second );
+
+}
+
+void linePlot::create( void ){
+
+	plot::reset();
+	plot::plot2D.drawCurve( X, Y );
+	plot::drawPlot();
+
+}
+
+
+
+/*
+	geoplot implementation
+*/
+
+geoPlot::geoPlot( const string name_, const string xlabel_, const string ylabel_,
+		 const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
+	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ){
+
+}
+
+geoPlot::geoPlot( void ) :
+	plot(){}
+
+
+void geoPlot::addLine( const v2 start, const v2 end ){
+
+	lines.emplace_back( v2( limits.xFactor * start.x, limits.yFactor * start.y ), v2( limits.xFactor * end.x, limits.yFactor * end.y ) );
+
+}
+
+void geoPlot::addPoint( const v2 point ){
+
+	points.emplace_back( v2( limits.xFactor * point.x, limits.yFactor * point.y ) );
+
+}
+
+void geoPlot::resetObjects( void ){
+
+	lines.clear();
+	points.clear();
+
+}
+
+void geoPlot::create( void ){
+
+	plot::reset();
+
+	for( const auto& line : lines ){
+
+		vector<double> X{ line.first.x, line.second.x };
+		vector<double> Y{ line.first.y, line.second.y };
+
+		plot::plot2D.drawCurve( X, Y );
+	}
+
+	for( const auto& point : points ){
+
+		vector<double> X{ point.x };
+		vector<double> Y{ point.y };
+
+		plot::plot2D.drawPoints( X, Y );
+	}
+
+	plot::drawPlot();
 
 }
