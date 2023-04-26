@@ -69,7 +69,7 @@ void sortUnique( vector<double>& v );
  * @param v Vector to search
  * @return Maximum value
 */
-double max( const vector<double> v );
+double Max( const vector<double> v );
 
 
 /*!
@@ -77,4 +77,4 @@ double max( const vector<double> v );
  * @param v Vector to search
  * @return Minimum value
 */
-double min( const vector<double> v );
+double Min( const vector<double> v );

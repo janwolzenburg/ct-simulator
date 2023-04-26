@@ -70,8 +70,17 @@ class cSysTree : virtual public mathObj{
 	 * @param ez_ z-axis
 	 * @param parent_ Pointer to parent system
 	 * @param name_ Name of the system
+	 * @return Pointer to new system
 	*/
 	cartCSys* addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const cartCSys* parent_, const string name_ );
+	
+	/*!
+	 * @brief Constructor from serialized data
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
+	cartCSys* addCSys( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Add system to tree with global system as parent
@@ -80,8 +89,24 @@ class cSysTree : virtual public mathObj{
 	 * @param ey_ y-axis
 	 * @param ez_ z-axis
 	 * @param name_ Name of the system
+	 * @return Pointer to new system
 	*/
 	cartCSys* addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ );
+
+	/*!
+	 * @brief Add system to tree at origin of parent
+	 * @param parent_ Parent system
+	 * @param name_ Name
+	 * @return Pointer to new system
+	*/
+	cartCSys* addCSys( const cartCSys* parent_, const string name_ );
+
+	/*!
+	 * @brief Ass system to tree at origin of global system
+	 * @param name_ Name
+	 * @return Pointer to new system
+	*/
+	cartCSys* addCSys( const string name_ );
 
 	/*!
 	 * @brief Get dummy system

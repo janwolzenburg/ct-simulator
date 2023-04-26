@@ -35,6 +35,7 @@ detector getTestDetector( void ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
+		1,
 		1000.,
 		10,
 		false
@@ -48,9 +49,9 @@ detector getTestDetector( void ){
 
 bool test_tube(void) {
 
-	tubeParameter tubeParas{	.anodeVoltage_V = 53000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
+	tubeParameter tubeParas{	53000,
+								0.2,
+								THUNGSTEN };
 
 	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
 
@@ -407,9 +408,9 @@ bool test_detector(void) {
 
 gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
-	tubeParameter tubeParas{ .anodeVoltage_V = 100000,
-								.anodeCurrent_A = 0.2,
-								.anodeAtomicNumber = 74 };
+	tubeParameter tubeParas{ 100000,
+								0.2,
+								THUNGSTEN };
 
 
 	detectorRadonParameter radonParameter{
@@ -418,12 +419,13 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
+		1,
 		1000.,
 		50,
 		false
 	};
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), raysPerPixel, tubeParas, radonParameter, indipendentParameter };
+	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }

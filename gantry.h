@@ -53,6 +53,7 @@ void threadFunction( const model& radModel, const bool enableScattering, const r
  * @brief Class for a gantry with xRay source and detector
 */
 class gantry {
+	
 
 	public:
 	
@@ -64,7 +65,7 @@ class gantry {
 	 * @param radonParameters Radon parameter of xRay detector
 	 * @param indipendentParameter Other parameter
 	*/
-	gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
+	gantry( cartCSys* const cSys_,  const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
 			const detectorIndipendentParameter indipendentParameter );
 
 	/*!
@@ -113,7 +114,7 @@ class gantry {
 	 * @brief Get the coordinate system of gantry
 	 * @return Coordinate system of this gantry
 	*/
-	inline const cartCSys* CSys( void ) const{ return cSys; };
+	inline cartCSys* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Get the detector radon parameters
@@ -128,6 +129,10 @@ class gantry {
 	*/
 	rayScattering& RayScattering( void ){ return rayScatterAngles; };
 
+	inline const detector& Detector( void ) const{ return rayDetector; };
+
+	inline const tube& Tube( void ) const{ return raySource; };
+
 
 	private:
 	
@@ -140,5 +145,5 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and ablge propabilities*/
+	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
 };

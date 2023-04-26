@@ -11,7 +11,13 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
+
 #include <fstream>
+#include <thread>
+#include <mutex>
+using std::ref;
+using std::cref;
+
 #include "model.h"
 #include "cSysTree.h"
 #include "rays.h"
@@ -30,8 +36,10 @@
 	model implementation
 */
 
-model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ ) : 
-	
+
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE"};
+
+model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
 	voxSize3D( voxSize3D_ ),
 	size3D( { (double) numVox3D.x * voxSize3D.x,
@@ -39,32 +47,47 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ )
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
 	parameter( new voxData[ numVox ] ),
-	cSys( cSys_ )
+	cSys( cSys_ ),
+	name( name_ )
 {
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
-};
+}
 
-model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D ){
+
+model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name ){
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
-};
+}
+
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	model{ DUMMY_CSYS()->createCopy( "Model system" ), idx3{ binData, it }, v3{ binData, it } }
+	numVox3D( idx3{ binData, it } ),
+	voxSize3D( v3{ binData, it } ),
+	size3D( { (double) numVox3D.x * voxSize3D.x,
+			 (double) numVox3D.y * voxSize3D.y,
+			 (double) numVox3D.z * voxSize3D.z } ),
+	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
+	parameter( new voxData[numVox] ),
+	cSys( CSYS_TREE().addCSys( binData, it ) ),
+	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
+
 	for( size_t i = 0; i < numVox; i++ ){
 		parameter[i] = voxData{ binData, it };
 	}
 }
 
-model::model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){}
+model::model( void ) : model( DUMMY_CSYS(), idx3{1, 1, 1}, v3{1, 1, 1}){}
+
 
 model::~model(){
 	delete[] parameter;
-};
+}
+
 
 std::string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return std::string( "" );
-};
+}
+
 
 model& model::operator=( const model& mod ){
 	cSys = mod.cSys;
@@ -74,12 +97,15 @@ model& model::operator=( const model& mod ){
 	size3D = mod.size3D;
 	numVox = mod.numVox;
 
+	name = mod.name;
+
 	delete parameter;
 	parameter = new voxData[ numVox ];
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 
 	return *this;
-};
+}
+
 
 voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -87,7 +113,8 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-};
+}
+
 
 voxData model::operator() ( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -95,19 +122,23 @@ voxData model::operator() ( const size_t x, const size_t y, const size_t z ) con
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-};
+}
+
 
 voxData& model::operator() ( const idx3 indices ){
 	return ( *this )( indices.x, indices.y, indices.z );
 }
 
+
 voxData model::operator() ( const idx3 indices ) const{
 	return ( *this )( indices.x, indices.y, indices.z );
 }
 
+
 vox model::Vox( void ) const{
 	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
 }
+
 
 bool model::checkIndices( const idx3 indices ) const{
 	if( indices.x >= numVox3D.x ||
@@ -119,14 +150,25 @@ bool model::checkIndices( const idx3 indices ) const{
 	return true;
 }
 
+
 bool model::validCoords( const v3 voxCoords ) const{
 	return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
 		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
 }
 
+
+bool model::validCoords( const pnt3 point ) const{
+
+	v3 voxCoords = point.XYZ( cSys );
+
+	return validCoords( voxCoords );
+}
+
+
 idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
 	return getVoxelIndices( voxpnt.XYZ( cSys ) );
 }
+
 
 vox model::getVoxel( const idx3 indices ) const{
 	if( indices.x >= numVox3D.x || indices.y >= numVox3D.y || indices.z >= numVox3D.z ){
@@ -142,9 +184,11 @@ vox model::getVoxel( const idx3 indices ) const{
 	return voxel;
 }
 
+
 bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
+
 
 ray model::rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const{
 
@@ -303,10 +347,11 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 	return true;
 }
 
+
 idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
 		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
-		return idx3{0, 0, 0};
+		return idx3{ 0, 0, 0 };
 	}
 
 	idx3 indices{
@@ -315,7 +360,14 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 		(size_t) ( locCoords.z / voxSize3D.z )
 	};
 
-	if( !checkIndices( indices ) ) checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
+	// Supress checkErr when index is exactly on the edge
+	if( indices.x == numVox3D.x ) indices.x = numVox3D.x - 1;
+	if( indices.y == numVox3D.y ) indices.y = numVox3D.y - 1;
+	if( indices.z == numVox3D.z ) indices.z = numVox3D.z - 1;
+
+	if( !checkIndices( indices ) ){
+		checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
+	}
 
 	if( indices.x >= numVox3D.x ) indices.x = numVox3D.x - 1;
 	if( indices.y >= numVox3D.y ) indices.y = numVox3D.y - 1;
@@ -325,13 +377,30 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 }
 
 
+vox model::getVoxel( const pnt3 point ) const{
+
+	return getVoxel( getVoxelIndices( point ) );
+
+}
+
 
 size_t model::serialize( vector<char>& binData ) const{
 
+	size_t expectedSize = FILE_PREAMBLE.size() + 1;
+	expectedSize += sizeof( numVox3D );
+	expectedSize += sizeof( voxSize3D );
+	expectedSize += sizeof( cartCSys );
+	expectedSize += name.size() + 1;
+	expectedSize += numVox * sizeof( *(parameter) );
+
+	binData.reserve( expectedSize );
+
 	size_t numBytes = 0;
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
-	numBytes += size3D.serialize( binData );
+	numBytes += cSys->serialize( binData );
+	numBytes += serializeBuildIn( name, binData );
 
 	for( size_t i = 0; i < numVox; i++ ){
 
@@ -341,4 +410,99 @@ size_t model::serialize( vector<char>& binData ) const{
 
 	return numBytes;
 
+}
+
+std::mutex coutMutex;
+
+void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& currentY, std::mutex& currentYMutex, 
+							grid& slice, std::mutex& sliceMutex,
+							const surfLim& slicePlane,
+							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
+
+
+	while( currentX <= end.col ){
+
+		double localX, localY;
+
+		currentXMutex.lock();
+		currentYMutex.lock();
+
+		if( currentY > end.row ){
+			currentX += resolution.col;
+			currentY = start.row;
+		}
+		else{
+			currentY += resolution.row;
+		}
+
+		localX = currentX;
+		localY = currentY;
+
+		currentXMutex.unlock();
+		currentYMutex.unlock();
+
+		
+
+		v2CR gridCoordinate{ localX, localY }; 
+
+		const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
+
+		if( !modelRef.validCoords( currentPoint ) ){
+			sliceMutex.lock();
+			slice.operator()( gridCoordinate ) = 1.;
+			sliceMutex.unlock();
+
+			continue;
+		}
+
+		const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
+
+		const voxData data = modelRef( currentVoxelIndices );
+
+		// Current voxel value
+		const double currentValue = data.attenuationAtRefE();
+
+		// Set image value
+		sliceMutex.lock();
+		slice.operator()( gridCoordinate ) = currentValue;
+		sliceMutex.unlock();
+
+
+	}
+
+};
+
+grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
+
+	// Image
+	grid slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, 0. };
+
+	// Surface in local coordinate system
+	const surfLim slicePlane = sliceLocation.convertTo( cSys );
+
+
+	v2CR sliceStart = slice.Start();
+	v2CR sliceEnd = slice.End();
+	v2CR sliceResolution = slice.Resolution();
+
+	double currentX = slice.Start().col;
+	double currentY = slice.Start().row;
+
+	std::mutex currentXMutex;
+	std::mutex currentYMutex;
+	std::mutex sliceMutex;
+
+	vector<std::thread> threads;
+
+	for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
+		threads.emplace_back( sliceThreadFunction,	ref( currentX ), ref( currentXMutex ), ref( currentY ), ref( currentYMutex ),
+													ref( slice ), ref( sliceMutex ), 
+													cref( slicePlane ),
+													cref( *this ), cref( sliceStart ), cref( sliceEnd ), cref( sliceResolution ));
+	}
+
+	for( std::thread& currentThread : threads ) currentThread.join();
+
+
+	return slice;
 }

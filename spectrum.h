@@ -94,6 +94,9 @@ class spectrum {
 	*/
 	void modify( std::function<void( v2& )> modFunction );
 
+	inline vector<v2> rawData( void ) const { return data; };
+
+	inline double FrequencyResolution( void ) const { return frequencyResolution; };
 
 	private:
 
@@ -106,6 +109,7 @@ class spectrum {
 	private:
 
 	vector<v2> data;		/*!<2D point data sorted by x value*/
+	double frequencyResolution;
 	double mean;			/*!<Mean Frequency of spectrum*/
 
 };

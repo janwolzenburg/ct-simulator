@@ -12,6 +12,7 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
+
 #include <type_traits>
 #include <vector>
 using std::vector;
@@ -23,11 +24,21 @@ using std::to_string;
 #include <iostream>
 using std::cerr; using std::endl; using std::cout;
 
+#include <filesystem>
+using std::filesystem::path;
+
+#include <sstream>
+
+#include <tuple>
 
 
  /*********************************************************************
 	Definitions
  *********************************************************************/
+
+ extern const size_t numThreads;
+
+typedef std::pair<vector<double>, vector<double>> vectorPair;
 
 /*!
  * @brief Class for 2D indices
@@ -42,6 +53,7 @@ class idx2{
 	size_t x;
 	size_t y;
  };
+
 
  /*!
  * @brief Class for 3D indices
@@ -72,6 +84,7 @@ class idx3{
 	size_t z;
 };
 
+
 /*!
  * @brief Class for 2D vector
 */
@@ -85,6 +98,7 @@ class v2{
 	double x;
 	double y;
 };
+
 
 /*!
 * @brief Class for 3D vector
@@ -115,6 +129,7 @@ class v3{
 	double z;
 };
 
+
 /*!
  * @brief Class for indicies to data organized in row/column structure
 */
@@ -142,6 +157,7 @@ class idx2CR{
 	size_t row;
 };
 
+
 /*!
  * @brief Class for  data organized in row/column structure
 */
@@ -168,6 +184,7 @@ class v2CR {
 	double col;
 	double row;
 };
+
 
 /*!
  * @brief Class for a range of real numbers with start
@@ -199,6 +216,7 @@ class range{
 	double end;
 };
 
+
 /*!
  * @brief Class for a range of whole numbers
 */
@@ -210,6 +228,7 @@ class Zrange{
 	signed long long start;
 	signed long long end;
 };
+
 
 
 /*********************************************************************
@@ -255,6 +274,16 @@ template< typename T >
 size_t serializeBuildIn( const T val, vector<char>& binData );
 
 /*!
+ * @brief Serialize string
+ * @param val String to serialize
+ * @param binData Reference to vector to append to
+ * @return Amount of bytes appended
+*/
+template<>
+size_t serializeBuildIn<string>( const string val, vector<char>& binData );
+
+
+/*!
  * @brief Deserialize build in data type
  * @tparam T Expected type
  * @param val Reference to write value to
@@ -265,6 +294,16 @@ size_t serializeBuildIn( const T val, vector<char>& binData );
 template< typename T >
 size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
+template<>
+size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
+
+template< typename T>
+T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
+
+template< typename T>
+T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it );
+
+
 /*!
  * @brief Export serial data to file
  * @param fileName Filename
@@ -273,11 +312,34 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 */
 bool exportSerialized( const string fileName, const vector<char> binData );
 
+bool exportSerialized( const path filePath, const vector<char> binData );
+
+
+vector<char> importSerialized( const path filePath );
+
 /*!
  * @brief Import serial data from file
  * @param fileName Filename
  * @return Vector with data
 */
 vector<char> importSerialized( const string fileName );
+
+/*!
+	* @brief Check if data in vector is from a valid file
+	* @param binData Reference to vector with binary data
+	* @param it Iterator to start of data in vector
+	* @return True when preambles match
+*/
+bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
+
+
+template<typename T>
+string toString( T value, const int precision = 0 );
+
+template<typename T>
+T toNum( const string str );
+
+
+
 
 #include "generel.hpp"

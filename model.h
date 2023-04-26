@@ -18,14 +18,14 @@ using std::filesystem::path;
  #include "cartesian.h"
  #include "voxel.h"
  #include "scattering.h"
- #include "simulation.h"
+ //#include "simulation.h"
+ #include "grid.h"
 
 
 
   /*********************************************************************
 	Definitions
  *********************************************************************/
-
 
 constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
@@ -38,21 +38,27 @@ class model : virtual public mathObj{
 	
 	public:
 
+	static const string FILE_PREAMBLE;
+
+
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param cSys_ Position and orientation of model in global system
 	 * @param numVox3D_	Amount of voxels in each spacial dimension
 	 * @param voxSize3D_ Spacial size of voxels
+	 * @param name_ Name of model
 	*/
-	model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_ );
+	model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ = "Default model name" );
 
 	/*!
 	 * @brief Constructor from serialized data
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
 	 * @param binData Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
 	model( const vector<char>& binData, vector<char>::const_iterator& it );
-
 
 	/*!
 	 * @brief Copy constructor
@@ -161,6 +167,13 @@ class model : virtual public mathObj{
 	bool validCoords( const v3 voxCoords ) const;
 
 	/*!
+	 * @brief Checks if point is defined in model
+	 * @param point Point to check
+	 * @return True if coordinates are defined in model
+	*/
+	bool validCoords( const pnt3 point ) const;
+
+	/*!
 	 * @brief Get voxel indices for given coordinates in local coordinate system
 	 * @param voxpnt Point in coordinate system of model
 	 * @return Indices of voxels where coordinates are located
@@ -173,6 +186,13 @@ class model : virtual public mathObj{
 	 * @return Instance of voxel
 	*/
 	vox getVoxel( const idx3 indices ) const;
+
+	/*!
+	 * @brief Get voxel in model
+	 * @param point Point in model
+	 * @return Voxel at point
+	*/
+	vox getVoxel( const pnt3 point ) const;
 
 	/*!
 	 * @brief Checks if local point is inside model
@@ -203,6 +223,16 @@ class model : virtual public mathObj{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	/*!
+	 * @brief Get slice through model
+	 * @param sliceLocation Where to slice
+	 * @param resolution Resolution of grid
+	 * @return Grid with slice
+	*/
+	grid getSlice( const surfLim sliceLocation, const double resolution ) const; 
+
+	inline string Name( void ) const{ return name; };
+
 
 	private:
 
@@ -212,7 +242,7 @@ class model : virtual public mathObj{
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
-
+	string name;								/*!<Model name*/
 
 	private:
 

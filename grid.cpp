@@ -43,6 +43,17 @@ grid::grid( const range columnRange, const range rowRange, const v2CR resolution
 	fillVectors( defaultValue );
 }
 
+grid::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	grid{ idx2CR{ binData, it }, v2CR{ binData, it }, v2CR{ binData, it }, 0 }{
+
+	for( vector<double>& column : data ){
+		for( double& rowData : column ){
+			deSerializeBuildIn( rowData, 0., binData, it );
+		}
+	}
+
+}
+
 void grid::fillVectors( const double defaultValue ){
 
 	// Force size and resolution to positive value 
@@ -70,6 +81,12 @@ bool grid::checkIndex( const idx2CR index ) const{
 	return true;
 }
 
+
+v2CR grid::End( void ) const{
+
+	return getCoordinates( idx2CR{ size.col - 1, size.row - 1 } );
+
+}
 
 double& grid::operator()( const idx2CR index ){
 	// Check the index for validity
@@ -129,16 +146,4 @@ size_t grid::serialize( vector<char>& binData ) const{
 	}
 
 	return numBytes;
-}
-
-grid::grid( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	grid{ idx2CR{ binData, it }, v2CR{ binData, it }, v2CR{ binData, it }, 0 }
-{
-
-	for( vector<double>& column : data ){
-		for( double& rowData : column ){
-			deSerializeBuildIn( rowData, 0., binData, it );
-		}
-	}
-
 }

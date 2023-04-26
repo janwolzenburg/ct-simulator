@@ -26,7 +26,8 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-
+const size_t numThreads = 12;
+const char stringPadding = (char) 0x9D;
 
 /*!
  * Indices and vector implementation
@@ -150,6 +151,11 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
+range::range( void ) : 
+	range{ 0., 1. }
+{
+
+}
 
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;
@@ -173,6 +179,65 @@ Zrange::Zrange( const signed long long start_, const signed long long end_ ) : s
  * Serialization implementation
 */
 
+template<>
+size_t serializeBuildIn<string>( const string val, vector<char>& binData ){
+
+	size_t i = 0;
+	size_t padding = 24;
+
+	binData.insert( binData.end(), ( padding - ( binData.size() ) % padding ) % padding, stringPadding );
+
+	for( const char c : val ){
+		i++;
+		binData.push_back( c );
+	}
+
+
+	// Add padding
+	binData.insert( binData.end(), ( padding - ( binData.size() + 1 ) % padding ) % padding, stringPadding );
+
+	binData.push_back( '\0' );
+
+
+	return i;
+}
+
+template<>
+size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	size_t i = 0;
+
+	val.clear();
+
+	while( *it != '\0' && it < binData.end() ){
+		
+		char curChar = *( it++ );
+
+		if( curChar != stringPadding ) val.push_back( curChar );
+		i++;
+	}
+
+	if( *it != '\0' ){
+		val = defaultVal;
+		return val.size();
+	}
+
+	// Skip '\0'
+	if( it < binData.end() ) it++;
+
+	return i;
+}
+
+
+bool exportSerialized( const path filePath, const vector<char> binData ){
+
+
+	if( !std::filesystem::exists( filePath.parent_path()  )) std::filesystem::create_directory( filePath.parent_path() );
+
+	return exportSerialized( filePath.string(), binData );
+
+}
+
 bool exportSerialized( const string fileName, const vector<char> binData ){
 	// File handle
 	std::ofstream outFile;
@@ -186,6 +251,12 @@ bool exportSerialized( const string fileName, const vector<char> binData ){
 	return true;
 };
 
+vector<char> importSerialized( const path filePath ){
+
+	return importSerialized( filePath.string() );
+
+}
+
 vector<char> importSerialized( const string fileName ){
 
 	std::ifstream inFile;
@@ -193,6 +264,10 @@ vector<char> importSerialized( const string fileName ){
 	if( inFile.fail() ) return vector<char>();
 
 	size_t file_size = std::filesystem::file_size( fileName );
+	//vector<char> binData;
+	//binData.reserve( file_size );
+	
+	
 	char* dArray = new char[ file_size ];
 	inFile.read( dArray, file_size );
 
@@ -204,5 +279,44 @@ vector<char> importSerialized( const string fileName ){
 	vector<char> binData{ dArray, dArray + file_size };
 
 	return binData;
+
+}
+
+
+bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	string readPreamble;
+	deSerializeBuildIn( readPreamble, string{}, binData, it );
+
+	return preamble == readPreamble;
+
+}
+
+
+template<>
+double toNum<double>( const string str ){
+
+	return std::stod( str );
+
+}
+
+template<>
+int toNum<int>( const string str ){
+
+	return std::stoi( str );
+
+}
+
+template<>
+long long toNum<long long>( const string str ){
+
+	return std::stoll( str );
+
+}
+
+template<>
+size_t toNum<size_t>( const string str ){
+
+	return std::stoll( str );
 
 }

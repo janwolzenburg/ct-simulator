@@ -22,11 +22,77 @@
    Implementation
 *********************************************************************/
 
+
+
+/*
+	tubeParameter
+*/
+
+const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
+
+
+const std::map < MATERIAL, std::pair<string, size_t>> tubeParameter::material{
+		{ COPPER,		std::make_pair( "COPPER", 29 ) },
+		{ MOLYBDENUM,	std::make_pair( "MOLYBDENUM", 42 ) },
+		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
+};
+
+
+tubeParameter::tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
+	anodeVoltage_V( anodeVoltage_V_ ),
+	anodeCurrent_A( anodeCurrent_A_ ),
+	anodeMaterial( anodeMaterial_ )
+{}
+
+
+tubeParameter::tubeParameter( void ) :
+	tubeParameter{ 53000., .2, THUNGSTEN }
+{}
+
+
+tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
+	anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
+	anodeMaterial( (MATERIAL) deSerializeBuildIn( toUnderlying( MATERIAL::THUNGSTEN ), binData, it ) )
+{}
+
+
+const MATERIAL tubeParameter::getEnum( const string materialString ){
+	for( auto& [matEnum, value] : tubeParameter::material ){
+
+		if( materialString == value.first ){
+
+			return matEnum;
+
+		}
+	}
+
+	return THUNGSTEN;
+
+}
+
+
+size_t tubeParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( anodeVoltage_V, binData );
+	numBytes += serializeBuildIn( anodeCurrent_A, binData );
+	numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );
+
+	return numBytes;
+}
+
+
+
+/*
+	tube
+*/
+
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),
 	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),
 	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),
-	anodeAtomicNumber(Fpos( parameter_.anodeAtomicNumber )),
+	anodeAtomicNumber( Fpos( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
 	totalPower_W(k_1PerV* anodeAtomicNumber* anodeCurrent_A* pow(anodeVoltage_V, 2)),
 	maxRadiationFrequency_Hz(e_As * anodeVoltage_V / h_Js)
 {
@@ -37,6 +103,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	// Values
 	vector<double> spectralPower(frequencies.size(), 0.);
 
+	//TODO change einheiten
 
 	// Frequency to which the filter dominates spectral behavious
 	double changeFrequency = frequencies.front() + (frequencies.back() - frequencies.front()) / (1. - alFilterGradiantFactor);

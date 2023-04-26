@@ -21,15 +21,21 @@
 
 
 
+const string detectorRadonParameter::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
+
+const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FILE_PREAMBLE" };
+
+
 /*!
  * detectorRadonParameter implementation
 */
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
+	distanceRange( Fpos( distanceRange_ ) ),
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
 					Fmin( FOdd ( numberPoints_.row ), (size_t) 3 ) },
 	//distanceRange( Fpos( distanceRange_ ) ),
 	resolution{ PI / (double) ( numberPoints.col - 1 ),
-				Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 ) },
+				Fpos( distanceRange ) / (double) ( numberPoints.row - 1 ) },
 	framesToFillSinogram( numberPoints.col - 1 + numberPoints.row - 1)
 {
 
@@ -47,25 +53,80 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 	// Recalculate if number of point changed
 	if( newNumberPointsRow != numberPoints.row ){
 		numberPoints.row = Fmin( FOdd( newNumberPointsRow ), (size_t) 3 );
-		resolution.row = Fpos( distanceRange_ ) / (double) ( numberPoints.row - 1 );
+		resolution.row = distanceRange / (double) ( numberPoints.row - 1 );
 		framesToFillSinogram = numberPoints.col - 1 + numberPoints.row - 1;
 	}
 
 
 }
 
+detectorRadonParameter::detectorRadonParameter( void ) :
+	detectorRadonParameter{ idx2CR{ 32, 16 }, 500. }
+{};
+
+
+detectorRadonParameter::detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	distanceRange( deSerializeBuildIn( 400., binData, it ) ),
+	numberPoints( deSerialize<idx2CR>( binData, it ) ),
+	resolution( deSerialize<v2CR>( binData, it ) ),
+	framesToFillSinogram( numberPoints.col - 1 + numberPoints.row - 1 ){
+}
+
+
+size_t detectorRadonParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
+	numBytes += serializeBuildIn( distanceRange, binData );
+	numBytes += numberPoints.serialize( binData );
+	numBytes += resolution.serialize( binData );
+
+	return numBytes;
+}
 
 
 /*!
  * detectorIndipendentParameter implementation
 */
 
-detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
+detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
+	raysPerPixel( raysPerPixel_ ),
 	arcRadius( arcRadius_ ),
 	columnSize( Fpos( columnSize_ ) ),
 	structured( structured_ ),
 	maxRayAngleDetectable( Fmax( Fmin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
 {}
+
+
+detectorIndipendentParameter::detectorIndipendentParameter( void ) :
+	detectorIndipendentParameter{ 1, 1000., 5., true, .15 }
+{}
+
+
+detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+
+	raysPerPixel( deSerializeBuildIn( (size_t) 1, binData, it ) ),
+	arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
+	columnSize( deSerializeBuildIn( 50., binData, it ) ),
+	structured( deSerializeBuildIn( true, binData, it ) ),
+	maxRayAngleDetectable( deSerializeBuildIn( .15, binData, it ) ){
+
+}
+
+size_t detectorIndipendentParameter::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
+	numBytes += serializeBuildIn( raysPerPixel, binData );
+	numBytes += serializeBuildIn( arcRadius, binData );
+	numBytes += serializeBuildIn( columnSize, binData );
+	numBytes += serializeBuildIn( structured, binData );
+	numBytes += serializeBuildIn( maxRayAngleDetectable, binData );
+
+	return numBytes;
+}
 
 
 
