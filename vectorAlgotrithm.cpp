@@ -112,10 +112,10 @@ void sortUnique( vector<double>& v ){
 }
 
 
-double max( const vector<double> v ){
+double Max( const vector<double> v ){
 	return *std::max_element( v.begin(), v.end() );
 }
 
-double min( const vector<double> v ){
+double Min( const vector<double> v ){
 	return *std::min_element( v.begin(), v.end() );
 }

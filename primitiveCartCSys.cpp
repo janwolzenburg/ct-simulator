@@ -57,6 +57,23 @@ primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primiti
 		!iseqErr( ex * ez, 0 ) ) checkErr( MATH_ERR::INPUT, "Unit axis must be orthogonal to each other!" );
 };
 
+primitiveCartCSys::primitiveCartCSys( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	origin( deSerialize<primitiveVec3>( binData, it ) ),
+	ex( deSerialize<primitiveVec3>( binData, it ) ),
+	ey( deSerialize<primitiveVec3>( binData, it ) ),
+	ez( deSerialize<primitiveVec3>( binData, it ) )
+{
+	// Normalize vectors
+	ex.normalize();
+	ey.normalize();
+	ez.normalize();
+
+	// Vector have to be orthogonal to each other
+	if( !iseqErr( ex * ey, 0 ) ||
+		!iseqErr( ey * ez, 0 ) ||
+		!iseqErr( ex * ez, 0 ) ) checkErr( MATH_ERR::INPUT, "Unit axis must be orthogonal to each other!" );
+};
+
 string primitiveCartCSys::toStr( const unsigned int newLineTabulators ) const{
 	string str;
 	string newLine = { '\n' };
@@ -77,4 +94,16 @@ mathObj::MATH_ERR primitiveCartCSys::rotateM( const primitiveVec3 n, const doubl
 	if( ( tErr = ez.rotNM( n, phi ) ) != MATH_ERR::OK ) errCode = tErr;
 
 	return errCode;
+}
+
+
+size_t primitiveCartCSys::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += origin.serialize( binData );
+	numBytes += ex.serialize( binData );
+	numBytes += ey.serialize( binData );
+	numBytes += ez.serialize( binData );
+
+	return numBytes;
 }

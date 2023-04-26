@@ -14,6 +14,7 @@
 *********************************************************************/
 #include "tomography.h"
 #include "generel.h"
+#include "cSysTree.h"
 
 
 /*********************************************************************
@@ -21,22 +22,52 @@
 *********************************************************************/
 
 
-tomography::tomography( const gantry gantry_, model& model_, const tomographyParameter parameter_ ) :
-	Gantry( gantry_ ),
-	Model( model_ ),
+const string tomographyParameter::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE" };
+
+tomographyParameter::tomographyParameter( void ) :
+	exposureTime( 1. )
+{}
+
+tomographyParameter::tomographyParameter( const double exposureTime_ ) :
+	exposureTime( exposureTime_ ){
+
+}
+
+tomographyParameter::tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) )
+{
+}
+
+size_t tomographyParameter::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
+	numBytes += serializeBuildIn( exposureTime, binData );
+
+	return numBytes;
+
+}
+
+
+tomography::tomography( const tomographyParameter parameter_ ) :
 	parameter( parameter_ ),
-	radonCSys( Gantry.CSys()->createCopy( "Radon System" ) )
+	radonCSys( DUMMY_CSYS() )
 {}
 
 
-radonTransformed tomography::recordSlice( void ){
+
+radonTransformed tomography::recordSlice( gantry& Gantry, const model& Model, const double zPosition ){
 
 	// Reset gantry to its initial position
 	Gantry.reset();
-	// TODO: Translate in z direction
 
-	// Set the radon coordinate system to current gantry postion
-	this->radonCSys->setPrimitive( Gantry.CSys()->getPrimitive() );
+	// Translate Gantry
+	if( zPosition != 0. )
+		Gantry.CSys()->translateM( Gantry.CSys()->EzVec() * zPosition );
+
+	// Assign gantry csys-data to radon coordinate system
+	this->radonCSys->copyFrom( Gantry.CSys() );
+
 
 	// Get the radon paramters for the detector
 	detectorRadonParameter radonParameter = Gantry.getDetectorParameter( );
@@ -45,15 +76,11 @@ radonTransformed tomography::recordSlice( void ){
 	radonTransformed sinogram{ radonParameter };
 
 
-	//cout << endl;
-
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 		
-		//cout << endl << "Frame " << currentFrame + 1 << " of " << radonParameter.framesToFillSinogram << endl;
-
 		// Radiate
-		Gantry.radiate( Model, parameter.exposureTime );
+		Gantry.radiate( Model, parameter.ExposureTime() );
 		
 		// Get the detection result
 		vector<pixel> detectionPixel = Gantry.getPixel();

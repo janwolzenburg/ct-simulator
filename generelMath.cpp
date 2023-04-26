@@ -23,16 +23,29 @@
  *********************************************************************/
 
 
-bool iseqErr( const double a, const double b, const double tolerance ){
+bool iseqErr( const double a, const double b, const double absoluteTolerance ){
 	// Fast comparison
 	if( a == b ) return true;
 
 	// Inprecise comparison
-	if( std::abs( a - b ) < tolerance ) return true;
+	if( std::abs( a - b ) < absoluteTolerance ) return true;
 	return false;
 }
 
+bool isEqErrPercent( const double a, const double b, const double fraction ){
+
+	// Fast comparison
+	if( a == b ) return true;
+
+	// Inprecise comparison
+	if( std::abs( a - b ) / std::abs( a ) < fraction ) return true;
+	return false;
+
+}
+
 bool iseqErr( const double a, const double b ){
+	
+
 	return iseqErr( a, b, EPSILON );
 }
 

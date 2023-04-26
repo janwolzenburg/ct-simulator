@@ -60,6 +60,8 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	cartCSys* createCopy( const string newName ) const;
 	
+	void copyFrom( const cartCSys* const sourceCSys );
+
 	/*!
 	 * @brief Add coordinate system to this system's tree
 	 * @param origin_ O of coordinate system
@@ -201,6 +203,11 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	void setPrimitive( const primitiveCartCSys primitiveCSys );
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
 
 	private:
 

@@ -414,6 +414,8 @@ class uvec3 : public vec3{
 	*/
 	uvec3( const v3 xyz_, const cartCSys* const cSys_ );
 
+	uvec3( void );
+
 	/*!
 	 * @brief Scaling unit vector does not have an effect
 	 * @param scalar

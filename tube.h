@@ -14,6 +14,7 @@
 
 #include <vector>
 using std::vector;
+#include <map>
 
 #include "generelMath.h"
 #include "cartesian.h"
@@ -32,19 +33,53 @@ using std::vector;
 constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 
 
+enum MATERIAL{
+	COPPER,
+	MOLYBDENUM,
+	THUNGSTEN
+};
+
+
 /*!
  * @brief Parameter for x-ray tube
 */
-struct tubeParameter {
+class tubeParameter {
+	
+	public:
+
+	static const string FILE_PREAMBLE;
+	static const std::map<MATERIAL, std::pair<string, size_t>> material;
+
+
+	public:
+
+	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ );
+
+	tubeParameter( void );
+
+	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	static const MATERIAL getEnum( const string materialString );
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
+
+	public:
+
 	double anodeVoltage_V;		/*!<Anode Voltage in volts*/
 	double anodeCurrent_A;		/*!<Current in ampere*/
-	size_t anodeAtomicNumber;	/*!<Atomic Number of anode material*/
+	MATERIAL anodeMaterial;		/*!<Atomic Number of anode material*/
 };
 
 
 class tube{
 
 	public:
+
 
 	/*!
 	 * @brief Constructor
@@ -74,15 +109,57 @@ class tube{
 	*/
 	range getFrequencyRange( void ) const;
 
+	vectorPair spectrumPoints( const bool continous = false, const bool xAxisEnergy = false ) const{
+
+		vectorPair points;
+		const vector<v2> spectrumPoints = xRay_spectrum.rawData();
+
+		double xCorrection = 1.;
+		double yCorrection = 1.;
+
+		if( continous ){
+			//yCorrection *=  xRay_spectrum.getSum() / xRay_spectrum.getIntegral();
+			yCorrection *= 1 / xRay_spectrum.FrequencyResolution();
+		}
+
+		if( xAxisEnergy ){
+			xCorrection *= h_eVs;
+		}
+
+		if( xAxisEnergy && continous ){
+			yCorrection /= h_eVs; 
+		}
+
+		for( auto& point : spectrumPoints ){
+			
+			if( xAxisEnergy ){
+				points.first.push_back( point.x * xCorrection );
+			}
+			else{
+				points.first.push_back( point.x );
+			}
+			
+			if( continous ){
+				points.second.push_back( point.y * yCorrection );
+			}
+			else{
+				points.second.push_back( point.y );
+			}
+		}
+
+		return points;
+	}
+
+
 	private:
 
 	cartCSys* cSys;							/*!<Coordinate system of tube*/
 
-	const size_t numPointsInSpectrum = 20;	/*!<Amount of discrete datapoints in spectrum*/
+	size_t numPointsInSpectrum = 30;		/*!<Amount of discrete datapoints in spectrum*/
 
 	double anodeVoltage_V;					/*!<Anode voltage in volts*/
 	double anodeCurrent_A;					/*!<Anode current in volts*/
-	size_t anodeAtomicNumber;				/*!<Atomic number of anode material*/
+	size_t anodeAtomicNumber;					/*!<Atomic number of anode material*/
 
 	double totalPower_W;					/*!<Total radiation power of tube in watts*/
 	double maxRadiationFrequency_Hz;		/*!<Maximum radiation frequency in Hz based on anode voltage*/ 

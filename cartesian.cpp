@@ -58,6 +58,17 @@ cartCSys* cartCSys::createCopy( const string newName ) const{
 	return CSYS_TREE().addCSys( origin, ex, ey, ez, parent, newName );
 }
 
+void cartCSys::copyFrom( const cartCSys* const sourceCSys ){
+
+	origin = sourceCSys->origin;
+	ex = sourceCSys->ex;
+	ey = sourceCSys->ey;
+	ez = sourceCSys->ez;
+
+	parent = sourceCSys->parent;
+
+}
+
 cartCSys* cartCSys::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ ) const{
 	return CSYS_TREE().addCSys( origin_, ex_, ey_, ez_, this, name_ );
 }
@@ -189,5 +200,21 @@ void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){
 	this->ey = primitiveCSys.Ey();
 	this->ez = primitiveCSys.Ez();
 
+
+}
+
+size_t cartCSys::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+
+	numBytes += OPnt().gXYZ().serialize( binData );
+
+	numBytes += ExVec().gXYZ().serialize( binData );
+	numBytes += EyVec().gXYZ().serialize( binData );
+	numBytes += EzVec().gXYZ().serialize( binData );
+	
+	numBytes += serializeBuildIn( name, binData );
+
+	return numBytes;
 
 }

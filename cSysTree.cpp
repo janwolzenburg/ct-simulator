@@ -65,6 +65,9 @@ cSysTree::cSysTree( void ){
 
 	systems[ 0 ] = dummySys;
 	systems[ 1 ] = globalSys;
+
+	systems[0].parent = &systems[ 1 ];
+
 	numSystems = 2;
 }
 
@@ -84,6 +87,28 @@ cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex
 
 cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ ){
 	return addCSys( origin_, ex_, ey_, ez_, GLOBAL_CSYS(), name_ );
+}
+
+cartCSys* cSysTree::addCSys( const cartCSys* parent_, const string name_ ){
+	return addCSys( primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, parent_, name_ );
+}
+
+cartCSys* cSysTree::addCSys( const string name_ ){
+	return addCSys( getGlobal(), name_ );
+}
+
+cartCSys* cSysTree::addCSys( const vector<char>& binData, vector<char>::const_iterator& it )
+{
+
+	primitiveVec3 origin{ binData, it };
+	primitiveVec3 ex{ binData, it };
+	primitiveVec3 ey{ binData, it };
+	primitiveVec3 ez{ binData, it };
+
+	string name = deSerializeBuildIn<string>( string{""}, binData, it);
+
+	return addCSys( origin, ex, ey, ez, GLOBAL_CSYS(), name );
+
 }
 
 cartCSys* cSysTree::getDummy( void ){

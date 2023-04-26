@@ -31,9 +31,13 @@ template< typename T >
 size_t serializeBuildIn( const T val, vector<char>& binData ){
 
 	size_t i = 0;
-	for( ; i < sizeof( T ); i++ ) binData.push_back( *( ( (char*) &val ) + ( sizeof( T ) - 1 - i ) ) );
 
-	return i;
+	char* valStartPtr = (char*) &val;
+
+	binData.insert( binData.end(), valStartPtr, valStartPtr + sizeof( T ) );
+
+	return sizeof(T);
+
 }
 
 template< typename T >
@@ -41,14 +45,56 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 
 	val = 0;
 
-	size_t i = 0;
-	for( ; i < sizeof( T ) && it != binData.cend(); i++ ){
-		char* byte = (char*) &val + ( sizeof( T ) - 1 - i );
-		*byte = *( it++ );
+	// Not enough data left in vector
+	if( binData.cend() - it < sizeof( T ) ) val = defaultVal;
+
+	val = *( (T*) &(*it) );
+
+	it += sizeof( T );
+
+	return sizeof(T);
+}
+
+template< typename T >
+T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	T temp{};
+	
+	deSerializeBuildIn( temp, defaultVal, binData, it );
+
+	return temp;
+
+}
+
+template< typename T >
+T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	return T{ binData, it };
+
+}
+
+
+template<typename T>
+string toString<T>( T value, const int precision ){
+
+	std::ostringstream out;
+
+	if( precision < 0 ){
+
+		T factor = (T) pow( 10., (double) ( -precision - 1 ) );
+
+		value /= factor;
+
+		value = (T) round( value );
+		value *= factor;
+
+		out.precision( 0 );
+	}
+	else{
+		out.precision( precision );
+		out << std::fixed;
+		out << value;
 	}
 
-	// Set to default val
-	if( i != sizeof( T ) ) val = defaultVal;
-
-	return i;
+	return out.str();
 }

@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include "gantry.h"
+#include "cSysTree.h"
 #include <thread>
 #include <mutex>
 using std::ref;
@@ -24,14 +25,14 @@ using std::cref;
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubeParameter tubeParameter_, 
+gantry::gantry( cartCSys* const cSys_, const tubeParameter tubeParameter_, 
 				const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( cSys_ ),
 	resetPostition( cSys->getPrimitive() ),
 	rayDetector{ cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	raysPerPixel( Fpos( raysPerPixel_ )),
+	raysPerPixel( Fpos( indipendentParameter.raysPerPixel )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
 	rayScatterAngles{ 127, raySource.getFrequencyRange(), 64, cSys->EzVec() }
 
@@ -44,6 +45,9 @@ gantry::gantry( cartCSys* const cSys_, const size_t raysPerPixel_, const tubePar
 	
 }
 
+//gantry::gantry( void ) : 
+//	gantry{ CSYS_TREE().addCSys( "Model system" ), tubeParameter{}, detectorRadonParameter{}, detectorIndipendentParameter{} }
+//{}
 
 vector<ray> gantry::getBeam( const double exposureTime ) const{
 	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
@@ -107,9 +111,6 @@ void gantry::radiate( const model& radModel, const double exposureTime ) {
 	// Scattered rays should lie in the same plane as the detector 
 	const uvec3 scatteringRotationNormal = this->cSys->EzVec().convertTo( radModel.CSys() );
 
-	// Number of threads
-	constexpr size_t numThreads = 10;
-
 	rayDetector.reset();								// Reset all pixel
 
 
@@ -161,3 +162,4 @@ void gantry::reset( void ){
 	// Reset detector
 	rayDetector.reset();
 }
+

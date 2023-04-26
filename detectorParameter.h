@@ -31,6 +31,10 @@
 class detectorRadonParameter{
 
 	public:
+
+	static const string FILE_PREAMBLE;
+
+	public:
 	/*!
 	 * @brief Constructor
 	 * @param numberPoints_ Amount of point in radon transformed
@@ -38,9 +42,21 @@ class detectorRadonParameter{
 	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
+	detectorRadonParameter( void );
+
+	detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
+
 
 	public:
 
+	double distanceRange;			/*!<Measure field in mm*/
 	idx2CR numberPoints;			/*!<Number of points on the axis*/
 	v2CR resolution;				/*!Resolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
@@ -55,6 +71,10 @@ class detectorIndipendentParameter{
 
 	public:
 
+	static const string FILE_PREAMBLE;
+
+	public:
+
 	/*!
 	 * @brief Constructor
 	 * @param angle_ Detector angle
@@ -62,11 +82,23 @@ class detectorIndipendentParameter{
 	 * @param structured_ Flag for anti scatter structure
 	 * @param maxRayAngleDetecable Maximum angle between pixel normal and ray
 	*/
-	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
+	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
+
+	detectorIndipendentParameter( void );
+
+	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+
+
+	/*!
+		* @brief Serialize this object
+		* @param binData Reference to vector where data will be appended
+	*/
+	size_t serialize( vector<char>& binData ) const;
 
 
 	public:
 
+	size_t raysPerPixel;
 	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
 	double columnSize;				/*!<Size of one pixel in column direction*/
 	bool structured;				/*!<Flag for anti scatter structure*/
