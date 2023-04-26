@@ -60,6 +60,8 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	cartCSys* createCopy( const string newName ) const;
 	
+	void copyFrom( const cartCSys* const sourceCSys );
+
 	/*!
 	 * @brief Add coordinate system to this system's tree
 	 * @param origin_ O of coordinate system
