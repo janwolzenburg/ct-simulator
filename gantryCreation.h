@@ -53,7 +53,7 @@ class gantryEdition : public Fl_Group{
 	Fl_Group tubeGrp;
 	Fl_Bound_Input<Fl_Float_Input, double> tubeVoltageIn;
 	Fl_Bound_Input<Fl_Float_Input, double> tubeCurrentIn;
-	selector materialIn;
+	Fl_Selector materialIn;
 
 	Fl_Group radonGrp;
 	Fl_Bound_Input<Fl_Int_Input, size_t> colPnts;

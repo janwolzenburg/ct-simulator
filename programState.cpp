@@ -47,21 +47,24 @@ programState::programState( void ) :
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
 
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	storedModelChooser{ getPath( "storedModelChooser.chooser" ), modelChooserInstance },
+	storedModelChooser{ getPath( "storedModelChooser.txt" ), modelChooserInstance },
 
 	planeInstance{},
-	storedPlane{ programState::getPath( "storedViewPlane.sliceplane" ), planeInstance },
+	storedPlane{ programState::getPath( "storedViewPlane.txt" ), planeInstance },
 
 	xRayTubeParameter{},
-	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.tubeParameter" ), xRayTubeParameter },
+	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
 
 	radonParameter{},
-	storedRadonParameter{ programState::getPath( "storedRadonParameter.radonParameter" ), radonParameter },
+	storedRadonParameter{ programState::getPath( "storedRadonParameter.txt" ), radonParameter },
 
 	detectorParameter{},
-	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.radonParameter" ), detectorParameter },
+	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), detectorParameter },
 
-	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter }
+	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
+
+	tomographyParamerter(),
+	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter )
 
 {
 
@@ -80,6 +83,7 @@ programState::~programState( void ) {
 	storedXRayTubeParameter.saveObject( true );
 	storedRadonParameter.saveObject( true );
 	storedDetectorParameter.saveObject( true );
+	storedTomographyParamerter.saveObject( true );
 
 }
 

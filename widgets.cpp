@@ -26,7 +26,7 @@ void button_cb( Fl_Widget* widget, void* flag ){
 }
 
 
-selector::selector( int x, int y, int w, int h, const char* label ) :
+Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h },
 	previous{ X( *this, 0. ),		Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) },
 	current{ hOff( previous ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
@@ -42,8 +42,8 @@ selector::selector( int x, int y, int w, int h, const char* label ) :
 	previous.label( "@<-" );
 	next.label( "@->" );
 
-	previous.callback( goPrev, (selector*) this );
-	next.callback( goNext, (selector*) this );
+	previous.callback( goPrev, (Fl_Selector*) this );
+	next.callback( goNext, (Fl_Selector*) this );
 
 	next.deactivate();
 	previous.deactivate();
@@ -53,9 +53,9 @@ selector::selector( int x, int y, int w, int h, const char* label ) :
 
 };
 
-void selector::goPrev( Fl_Widget* widget, void* p ){
+void Fl_Selector::goPrev( Fl_Widget* widget, void* p ){
 
-	selector* selectorGrp = static_cast<selector*>( p );
+	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 
 	if( selectorGrp->currentElement > selectorGrp->elements.cbegin() ) selectorGrp->currentElement--;
 
@@ -67,9 +67,9 @@ void selector::goPrev( Fl_Widget* widget, void* p ){
 }
 
 
-void selector::goNext( Fl_Widget* widget, void* p ){
+void Fl_Selector::goNext( Fl_Widget* widget, void* p ){
 
-	selector* selectorGrp = static_cast<selector*>( p );
+	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 
 	if( selectorGrp->currentElement < selectorGrp->elements.cend() - 1 ) selectorGrp->currentElement++;
 
@@ -80,11 +80,11 @@ void selector::goNext( Fl_Widget* widget, void* p ){
 }
 
 
-void selector::align( Fl_Align alignment ){
+void Fl_Selector::align( Fl_Align alignment ){
 	current.align( alignment );
 }
 
-void selector::setElements( const vector<string> newElements ){
+void Fl_Selector::setElements( const vector<string> newElements ){
 	elements = newElements;
 	currentElement = elements.cbegin();
 
@@ -92,7 +92,7 @@ void selector::setElements( const vector<string> newElements ){
 }
 
 
-void selector::value( const string newValue ){
+void Fl_Selector::value( const string newValue ){
 
 	for( vector<string>::const_iterator it = elements.cbegin(); it < elements.cend(); it++ ){
 
@@ -107,7 +107,7 @@ void selector::value( const string newValue ){
 	}
 };
 
-void selector::checkActivation( void ){
+void Fl_Selector::checkActivation( void ){
 
 	if( currentElement > elements.cbegin() ) previous.activate();
 	else previous.deactivate();

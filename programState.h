@@ -27,6 +27,7 @@
  #include "slicePlane.h"
  #include "storedObject.h"
  #include "image.h"
+ #include "tomography.h"
 
  /*********************************************************************
 	Definitions
@@ -133,8 +134,12 @@ class programState{
 	detectorIndipendentParameter detectorParameter;
 	storedObject<detectorIndipendentParameter> storedDetectorParameter;
 
-
 	gantry gantryInstance;
+
+	tomographyParameter tomographyParamerter;
+	storedObject<tomographyParameter> storedTomographyParamerter;
+
+	tomography tomographyInstance;
 
 };
 

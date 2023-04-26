@@ -53,11 +53,11 @@ template<class C>
 int hOff( const C& parent );
 
 
-class selector : public Fl_Group{
+class Fl_Selector : public Fl_Group{
 
 	public:
 
-	selector( int x, int y, int w, int h, const char* label );
+	Fl_Selector( int x, int y, int w, int h, const char* label );
 
 	void align( Fl_Align alignment );
 

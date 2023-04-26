@@ -12,6 +12,9 @@
  /*********************************************************************
   Includes
 *********************************************************************/
+
+
+#include "generel.h"
 #include "gantry.h"
 #include "model.h"
 #include "radonTransform.h"
@@ -22,7 +25,25 @@
    Definitions
 *********************************************************************/
 
-struct tomographyParameter{
+class tomographyParameter{
+
+	public:
+
+	static const string FILE_PREAMBLE;
+
+	tomographyParameter( void );
+
+	tomographyParameter( const double exposureTime_ );
+
+	tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	inline double ExposureTime( void ) const { return exposureTime; };
+
+
+	size_t serialize( vector<char>& binData ) const;
+
+
+	private:
 
 	double exposureTime;
 
@@ -40,18 +61,21 @@ class tomography{
 	 * @param gantry_ 
 	 * @param model_ 
 	*/
-	tomography( const gantry gantry_, model& model_, const tomographyParameter parameter_ );
+	tomography( const tomographyParameter parameter_ );
+
+	tomography( void );
 
 	/*!
 	 * @brief Record a slice
 	 * @return Radon transformed of model slice
 	*/
-	radonTransformed recordSlice( void );
+	radonTransformed recordSlice( gantry& gantry_, const model& model_, const double zPosition = 0. );
+
 
 	private:
 
-	gantry Gantry;				/*!<Gantry*/
-	model& Model;				/*!<Model*/
+	//gantry& Gantry;				/*!<Gantry*/
+	//model& Model;				/*!<Model*/
 	tomographyParameter parameter;
 	cartCSys* radonCSys;		/*!<Coordinate system to use as reference for radon coordinates calculation*/
 };
