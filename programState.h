@@ -28,6 +28,9 @@
  #include "storedObject.h"
  #include "image.h"
  #include "tomography.h"
+ #include "backprojection.h"
+
+
 
  /*********************************************************************
 	Definitions
@@ -59,16 +62,7 @@ class programState{
 
 	inline const gantry& Gantry( void ){ return gantryInstance; };
 
-	//bool sliceModel( void );
-
-
 	inline greyImage& Slice( void ){ return modelSliceInstance; };
-
-	//bool rotateViewX( const double angleDeg );
-
-	//bool rotateViewY( const double angleDeg );
-
-	//bool translateViewZ( const double amount );
 
 	static void createStorageDir( void );
 
@@ -95,15 +89,22 @@ class programState{
 
 	inline const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
 
+	inline tomography& Tomography( void ) { return tomographyInstance; };
+
+	inline radonTransformed& Projections( void ){ return currentProjections; };
+
+	inline filteredProjections& FilteredProjections( void ){ return currentFilteredProjections; };
+
+	inline reconstrucedImage& ReconstrucedImage( void ){ return currentReconstrucedImage; };
+
 
 	private:
-	 
 
 	programState( void );
 
-	programState( const programState& tree_ ) = delete;
+	programState( const programState& ) = delete;
 
-	programState& operator=( const programState& tree_ ) = delete;
+	programState& operator=( const programState& ) = delete;
 
 
 	private:
@@ -140,6 +141,11 @@ class programState{
 	storedObject<tomographyParameter> storedTomographyParamerter;
 
 	tomography tomographyInstance;
+
+	radonTransformed currentProjections;
+	filteredProjections currentFilteredProjections;
+	reconstrucedImage currentReconstrucedImage;
+
 
 };
 

@@ -50,13 +50,13 @@ size_t tomographyParameter::serialize( vector<char>& binData ) const{
 
 
 tomography::tomography( const tomographyParameter parameter_ ) :
-	parameter( parameter_ ),
+	parameter( parameter_ )
 	radonCSys( DUMMY_CSYS() )
 {}
 
 
 
-radonTransformed tomography::recordSlice( gantry& Gantry, const model& Model, const double zPosition ){
+radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition ){
 
 	// Reset gantry to its initial position
 	Gantry.reset();
