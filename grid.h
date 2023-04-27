@@ -28,6 +28,9 @@
 class grid{
 
 	public:
+
+	grid( void );
+
 	/*!
 	 * @brief Constructor
 	 * @param size_ Size of grid

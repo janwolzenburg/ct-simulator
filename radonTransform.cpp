@@ -92,6 +92,12 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
  * radonTransformed implementation
 */
 
+radonTransformed::radonTransformed( void ) :
+	grid()
+{
+	gridErrors = vector<vector<v2CR>>( Size().col, vector<v2CR>( Size().row, v2CR{ INFINITY, INFINITY } ) );
+}
+
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
 	grid{		idx2CR{ detectorParameter.numberPoints.col - 1,
 						detectorParameter.numberPoints.row }, 

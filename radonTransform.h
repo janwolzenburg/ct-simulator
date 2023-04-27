@@ -64,6 +64,7 @@ class radonCoords{
 class radonPoint{
 
 	public:
+
 	/*!
 	 * @brief Cosntructor
 	 * @param coordinates_ Coordinates 
@@ -86,6 +87,8 @@ class radonPoint{
 class radonTransformed : private grid {
 
 	public:
+
+	radonTransformed( void );
 
 	/*!
 	 * @brief Constructor

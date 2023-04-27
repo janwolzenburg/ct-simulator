@@ -30,6 +30,8 @@ class filteredProjections : private grid {
 
 	public:
 
+	filteredProjections( void );
+
 	/*!
 	 * @brief Constructor
 	 * @param projections UNfiltered projections 
@@ -78,6 +80,8 @@ class filteredProjections : private grid {
 class reconstrucedImage : private grid {
 
 	public:
+
+	reconstrucedImage( void );
 
 	/*!
 	 * @brief Constructor

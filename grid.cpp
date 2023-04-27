@@ -22,7 +22,13 @@
   Implementations
 *********************************************************************/
 
-
+grid::grid( void ) : 
+	size( 3, 3 ),
+	resolution( 1., 1. ),
+	start( 0. ,0. )
+{
+	fillVectors( 0. );
+}
 
 grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue ) :
 	size( size_ ),

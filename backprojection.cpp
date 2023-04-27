@@ -20,6 +20,11 @@
    Implementations
 *********************************************************************/
 
+filteredProjections::filteredProjections( void ) :
+	grid()
+{
+
+}
 
 filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType ) :
 	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. }		// Data grids have equal size
@@ -95,6 +100,12 @@ double filteredProjections::getValue( const size_t angleIdx, const double distan
 
 	// Return the interpolated value
 	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( (double) distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - (double) distanceIdxFloor );
+
+}
+
+reconstrucedImage::reconstrucedImage( void ) :
+	grid()
+{
 
 }
 
