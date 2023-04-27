@@ -18,7 +18,7 @@ using std::cerr;  using std::endl; using std::cout;
 
 #include "modelView.h"
 #include "gantryCreation.h"
-
+#include "tomographyExecution.h"
 
 /*!
  * @brief Main function
@@ -44,12 +44,14 @@ int main( int argc, char** argv ){
 	mainWindow.resizable( mainWindow );
 
 
-	modelView modelView{		X( mainWindow, 0. ),	Y( mainWindow, 0. ),	W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
+	modelView modelView{				X( mainWindow, 0. ),	Y( mainWindow, 0. ),						W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
 	mainWindow.add( modelView );
 	
-	gantryEdition gantryBuild{ X( mainWindow, 0.35 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.25 ),	H( mainWindow, 1. ) };
+	gantryEdition gantryBuild{			hOff( modelView ) + X( mainWindow, .025 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.25 ),	H( mainWindow, 1. ) };
 	mainWindow.add( gantryBuild );
 	
+	tomographyExec tomographyExecution( hOff( gantryBuild ) + X( mainWindow, .025 ), Y( mainWindow, 0. ),	W( mainWindow, 0.4 ), H( mainWindow, 1. ) );
+	mainWindow.add( tomographyExecution );
 
 
 	Fl_Tooltip::enable();
@@ -66,6 +68,7 @@ int main( int argc, char** argv ){
 		
 		modelView.handleEvents();
 		gantryBuild.handleEvents();
+		tomographyExecution.handleEvents();
 
 	}
 

@@ -21,17 +21,17 @@
 #include "widgets.h"
 #include "backprojection.h"
 
-class tomographyExec : Fl_Group{
+class tomographyExec : public Fl_Group{
 
 	public:
 
 	tomographyExec( int x, int y, int w, int h ) : 
 		Fl_Group( x, y, w, h ),
 
-		tomoParameterGrp(	X( *this, .05 ), Y( *this, .05 ),								W( *this, 1. ),			H( *this, .1 ) ),
+		tomoParameterGrp(	X( *this, .05 ), Y( *this, .05 ),								W( *this, .9 ),			H( *this, .1 ) ),
 
-		controlGrp(			X( *this, .05 ), vOff( tomoParameterGrp ) + Y( *this, .05 ),	W( *this, 1. ),			H( *this, .1 ) ),
-		radiationButton(	X( controlGrp, 0. ), Y( controlGrp, 0. ),						W( controlGrp, .2 ),	H( controlGrp, .2 ), "Record Slice"),
+		controlGrp(			X( *this, .05 ), vOff( tomoParameterGrp ) + Y( *this, .05 ),	W( *this, .9 ),			H( *this, .1 ) ),
+		radiationButton(	X( controlGrp, 0. ), Y( controlGrp, 0. ),						W( controlGrp, .3 ),	H( controlGrp, .3 ), "Record Slice"),
 
 		radiateFlag( false )
 	{
@@ -52,9 +52,11 @@ class tomographyExec : Fl_Group{
 
 		programState& state = PROGRAM_STATE();
 
-		Fl_Group::window()->deactivate();
 
 		if( radiateFlag ){
+
+
+			Fl_Group::window()->deactivate();
 
 			radiateFlag = false;
 
@@ -64,9 +66,11 @@ class tomographyExec : Fl_Group{
 
 			//reconstrucedImage reconstruction( filteredProjections );
 
+
+
+			Fl_Group::window()->activate();
 		}
 
-		Fl_Group::window()->activate();
 
 	}
 

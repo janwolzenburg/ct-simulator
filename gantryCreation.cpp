@@ -48,7 +48,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .2 ) },
 	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
 
-	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .3 ) },
+	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .4 ) },
 	detectorPlot{ X( detectorView, .0 ),	Y( detectorView, 0. ),	W( detectorView, 1. ),	H( detectorView, 1. ),	"Detector Plot" },
 
 	updateGantry( false )
