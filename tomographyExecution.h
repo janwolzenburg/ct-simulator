@@ -16,6 +16,8 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Float_Input.H>
+#include "processingWindow.h"
+
 
 #include "programState.h"
 #include "widgets.h"
@@ -45,6 +47,16 @@ class tomographyExec : public Fl_Group{
 
 		controlGrp.add( radiationButton );
 		radiationButton.callback( button_cb, &radiateFlag );
+	
+		this->deactivate();
+	}
+
+	~tomographyExec( void ){
+
+		for( auto view : procViews ){
+			delete view;
+		}
+		
 	}
 
 
@@ -52,6 +64,8 @@ class tomographyExec : public Fl_Group{
 
 		programState& state = PROGRAM_STATE();
 
+		if( state.ModelLoaded() && !this->active() ) this->activate();
+		else if( !state.ModelLoaded() ) this->deactivate();
 
 		if( radiateFlag ){
 
@@ -61,6 +75,14 @@ class tomographyExec : public Fl_Group{
 			radiateFlag = false;
 
 			state.Projections() = state.Tomography().recordSlice(state.Gantry(), state.Model(), 0.);
+
+			state.Projections().
+
+			processingView* newView = new processingView( 1280, 720, "View" );
+			procViews.push_back( newView );
+
+			newView->show();
+			newView->assignSinogram( state.Projections() );
 
 			//filteredProjections filteredProjections( projections, discreteFilter::ramLak );
 
@@ -86,6 +108,9 @@ class tomographyExec : public Fl_Group{
 	Fl_Group controlGrp;
 	Fl_Button radiationButton;
 	// Button Go
+
+
+	vector<processingView*> procViews;
 
 
 	// 

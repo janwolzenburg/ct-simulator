@@ -52,7 +52,6 @@ int vOff( const C& parent );
 template<class C>
 int hOff( const C& parent );
 
-
 class Fl_Selector : public Fl_Group{
 
 	public:

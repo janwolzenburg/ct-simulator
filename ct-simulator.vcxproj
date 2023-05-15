@@ -188,6 +188,7 @@
     <ClInclude Include="positions.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="processingWindow.h" />
     <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="propability.fwd.h" />

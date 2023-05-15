@@ -180,6 +180,9 @@ void modelView::UpdateModel( void ){
 
 	viewImg.assignImage( PROGRAM_STATE().Slice() );
 
+	viewImg.show(); viewBox.hide(); modelData.show();
+	moveGrp.show();
+
 	modelDataString = PROGRAM_STATE().modelDescription();
 	modelData.value( modelDataString.c_str() );
 	Fl_Group::window()->activate();

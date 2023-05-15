@@ -40,33 +40,32 @@ int main( int argc, char** argv ){
 
 	Fl_Group::current( NULL );
 
-	Fl_Window mainWindow{ (int) ( 1920.*0.9 ), (int) ( 1080.*0.9 ), "CT-Simulator" };
-	mainWindow.resizable( mainWindow );
+	Fl_Window* mainWindow = new Fl_Window( (int) ( 1920.*0.9 ), (int) ( 1080.*0.9 ), "CT-Simulator" );
+	mainWindow->resizable( mainWindow );
 
-
-	modelView modelView{				X( mainWindow, 0. ),	Y( mainWindow, 0. ),						W( mainWindow, 0.3 ),	H( mainWindow, 1. ) };
-	mainWindow.add( modelView );
+	modelView* modView = new modelView(				X( *mainWindow, 0. ),	Y( *mainWindow, 0. ),			W( *mainWindow, 0.3 ),	H( *mainWindow, 1 ) );
+	mainWindow->add( modView );
 	
-	gantryEdition gantryBuild{			hOff( modelView ) + X( mainWindow, .025 ),	Y( mainWindow, 0. ),	W( mainWindow, 0.25 ),	H( mainWindow, 1. ) };
-	mainWindow.add( gantryBuild );
+	gantryEdition gantryBuild{			hOff( *modView ) + X( *mainWindow, .025 ),	Y( *mainWindow, 0. ),	W( *mainWindow, 0.25 ),	H( *mainWindow, 1. ) };
+	mainWindow->add( gantryBuild );
 	
-	tomographyExec tomographyExecution( hOff( gantryBuild ) + X( mainWindow, .025 ), Y( mainWindow, 0. ),	W( mainWindow, 0.4 ), H( mainWindow, 1. ) );
-	mainWindow.add( tomographyExecution );
+	tomographyExec tomographyExecution( hOff( gantryBuild ) + X( *mainWindow, .025 ), Y( *mainWindow, 0. ),	W( *mainWindow, 0.4 ), H( *mainWindow, 1. ) );
+	mainWindow->add( tomographyExecution );
 
 
 	Fl_Tooltip::enable();
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
-	mainWindow.show(argc, argv);
+	mainWindow->show(argc, argv);
 
 	if( state.ModelLoaded() ){
-		modelView.setUpdateFlag();
+		modView->setUpdateFlag();
 	}
 
 	gantryBuild.setUpdateFlag();
 
 	while( Fl::wait() ){
 		
-		modelView.handleEvents();
+		modView->handleEvents();
 		gantryBuild.handleEvents();
 		tomographyExecution.handleEvents();
 
