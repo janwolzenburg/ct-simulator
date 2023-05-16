@@ -52,10 +52,6 @@ class tomographyExec : public Fl_Group{
 	}
 
 	~tomographyExec( void ){
-
-		for( auto view : procViews ){
-			delete view;
-		}
 		
 	}
 
@@ -76,13 +72,11 @@ class tomographyExec : public Fl_Group{
 
 			state.Projections() = state.Tomography().recordSlice(state.Gantry(), state.Model(), 0.);
 
-			state.Projections().
+			//state.Projections().
 
-			processingView* newView = new processingView( 1280, 720, "View" );
-			procViews.push_back( newView );
 
-			newView->show();
-			newView->assignSinogram( state.Projections() );
+			//newView->show();
+			//newView->assignSinogram( state.Projections() );
 
 			//filteredProjections filteredProjections( projections, discreteFilter::ramLak );
 
@@ -109,8 +103,6 @@ class tomographyExec : public Fl_Group{
 	Fl_Button radiationButton;
 	// Button Go
 
-
-	vector<processingView*> procViews;
 
 
 	// 

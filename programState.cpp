@@ -64,7 +64,11 @@ programState::programState( void ) :
 	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
 
 	tomographyParamerter(),
-	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter )
+	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter ),
+
+	currentProjections(),
+	storedProjections( programState::getPath( "storedProjections.txt" ), currentProjections )
+
 
 {
 
@@ -84,7 +88,7 @@ programState::~programState( void ) {
 	storedRadonParameter.saveObject( true );
 	storedDetectorParameter.saveObject( true );
 	storedTomographyParamerter.saveObject( true );
-
+	storedProjections.saveObject();
 }
 
 

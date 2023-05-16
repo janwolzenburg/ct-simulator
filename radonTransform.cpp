@@ -92,6 +92,9 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
  * radonTransformed implementation
 */
 
+
+const string radonTransformed::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
+
 radonTransformed::radonTransformed( void ) :
 	grid()
 {

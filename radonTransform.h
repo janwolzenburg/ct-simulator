@@ -88,6 +88,9 @@ class radonTransformed : private grid {
 
 	public:
 
+
+	static const string FILE_PREAMBLE;
+
 	radonTransformed( void );
 
 	/*!

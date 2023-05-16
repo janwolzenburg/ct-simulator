@@ -143,6 +143,8 @@ class programState{
 	tomography tomographyInstance;
 
 	radonTransformed currentProjections;
+	storedObject<radonTransformed> storedProjections;
+
 	filteredProjections currentFilteredProjections;
 	reconstrucedImage currentReconstrucedImage;
 

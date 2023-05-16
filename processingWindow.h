@@ -41,9 +41,10 @@ class processingView : public Fl_Window{
 
 	void assignSinogram( const radonTransformed newSinogram ){
 
-		sinogram = greyImage( newSinogram.Data() );
+		sinogram = newSinogram;
+		sinogramImg = greyImage( sinogram.Data() );
 
-		sinogramWidget.assignImage( sinogram );
+		sinogramWidget.assignImage( sinogramImg );
 
 	}
 
@@ -51,8 +52,10 @@ class processingView : public Fl_Window{
 
 	public:
 
+	radonTransformed sinogram;
+
 	Fl_Group sinogramGrp;
-	greyImage sinogram;
+	greyImage sinogramImg;
 	Fl_Image_Widget sinogramWidget;
 
 
