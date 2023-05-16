@@ -97,6 +97,8 @@ class programState{
 
 	inline reconstrucedImage& ReconstrucedImage( void ){ return currentReconstrucedImage; };
 
+	inline bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
+
 
 	private:
 
