@@ -12,8 +12,8 @@
    Includes
 *********************************************************************/
 
+#include <numeric>
 #include "generel.h"
-
 
 
 /*********************************************************************
@@ -46,11 +46,24 @@ class discreteFilter{
 	*/
 	discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const TYPE type );
 
+	discreteFilter( void ) : 
+		discreteFilter( Zrange( -5, 5 ), 1., constant )
+	{}
+
 	/*!
 	 * @brief Get values of filter kernel
 	 * @return Vector with values
 	*/
 	inline vector<double> Values( void ) const{ return values; };
+
+	vectorPair PlotValues( void ) const{
+		
+		vectorPair XY( vector<double>( numberPoints ), values );
+		
+		std::iota( XY.first.begin(), XY.second.end(), 0. );
+		
+		return XY;
+	}
 
 	/*!
 	 * @brief Get range of kernel

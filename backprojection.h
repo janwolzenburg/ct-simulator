@@ -71,6 +71,12 @@ class filteredProjections : private grid {
 	*/
 	inline v2CR Resolution( void ) const{ return grid::Resolution(); };
 
+	inline discreteFilter Filter( void ) const { return filter; };
+
+	private:
+
+	discreteFilter filter;
+
 };
 
 
