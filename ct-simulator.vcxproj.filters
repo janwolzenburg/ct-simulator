@@ -306,6 +306,12 @@
     <ClInclude Include="mainWindow.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="mainWindow.fwd.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="processingWindow.fwd.h">
+      <Filter>Headerdateien\Program\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

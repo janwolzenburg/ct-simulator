@@ -60,7 +60,7 @@ class discreteFilter{
 		
 		vectorPair XY( vector<double>( numberPoints ), values );
 		
-		std::iota( XY.first.begin(), XY.second.end(), 0. );
+		std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start ) );
 		
 		return XY;
 	}

@@ -29,7 +29,8 @@
  #include "image.h"
  #include "tomography.h"
  #include "backprojection.h"
-
+ #include "mainWindow.fwd.h"
+ #include "processingWindow.fwd.h"
 
 
  /*********************************************************************
@@ -99,6 +100,18 @@ class programState{
 
 	inline bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
+	inline void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); };
+
+	//inline void setNewRadonTransformedFlag( void ){  }
+
+	inline void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
+
+	inline void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
+
+	inline mainView* MainWindow( void ) const{ return mainWindow; };
+
+	inline processingView* ProcessingWindow( void ) const{ return processingWindow; };
+
 
 	private:
 
@@ -110,6 +123,9 @@ class programState{
 
 
 	private:
+
+	mainView* mainWindow = nullptr;
+	processingView* processingWindow = nullptr;
 
 	model modelInstance;
 	storedObject<model> storedModel;
@@ -149,6 +165,7 @@ class programState{
 
 	filteredProjections currentFilteredProjections;
 	reconstrucedImage currentReconstrucedImage;
+
 
 
 };

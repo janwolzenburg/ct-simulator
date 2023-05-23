@@ -40,31 +40,24 @@ int main( int argc, char** argv ){
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
 	mainView* mainWindow = new mainView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" );
-
-	//Fl_Window* mainWindow = new Fl_Window( (int) ( 1920.*0.9 ), (int) ( 1080.*0.9 ), "CT-Simulator" );
-	//mainWindow->resizable( mainWindow );
-
-	//modelView* modView = new modelView(				X( *mainWindow, 0. ),	Y( *mainWindow, 0. ),			W( *mainWindow, 0.3 ),	H( *mainWindow, 1 ) );
-	//mainWindow->add( modView );
-	//
-	//gantryEdition gantryBuild{			hOff( *modView ) + X( *mainWindow, .025 ),	Y( *mainWindow, 0. ),	W( *mainWindow, 0.25 ),	H( *mainWindow, 1. ) };
-	//mainWindow->add( gantryBuild );
-	//
-	//tomographyExec tomographyExecution( hOff( gantryBuild ) + X( *mainWindow, .025 ), Y( *mainWindow, 0. ),	W( *mainWindow, 0.4 ), H( *mainWindow, 1. ) );
-	//mainWindow->add( tomographyExecution );
-
-
 	processingView* procView = new processingView( 1280, 720, "Processing" );
+
+	state.registerMainWindow( mainWindow );
+	state.registerProcessingWindow( procView );
+
+
 	procView->hide();
 
 
 	while( Fl::wait() ){
 		
 		mainWindow->handleEvents();
+		procView->handleEvents();
+
 	}
 
 	delete mainWindow;
-
+	delete procView;
 
 	return 0;
 }

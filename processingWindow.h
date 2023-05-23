@@ -37,7 +37,7 @@ class processingView : public Fl_Window{
 
 		filterGrp(			X( *this, .05 ),		vOff( sinogramGrp ),	W( *this, .4 ),			H( *this, .4 ) ),
 		filterType( discreteFilter::TYPE::constant ),
-		filterPlot(			X( filterGrp, 0. ),		Y( filterGrp, 0. ),		W( filterGrp, 1. ), H	( filterGrp, 1. ) ),
+		filterPlot(			X( filterGrp, 0. ),		Y( filterGrp, 0. ),		W( filterGrp, 1. ), H	( filterGrp, 1. ), "Filter" ),
 		//filterPlot(			"Filter", "n", "", plotLimits(), idx2CR( 720, 480 ), true ),
 		
 
@@ -61,10 +61,13 @@ class processingView : public Fl_Window{
 	void handleEvents( void ){
 
 		if( PROGRAM_STATE().RadonTransformedLoaded() && newRTFlag ){
+
+			newRTFlag = false;
+
 			assignSinogram( PROGRAM_STATE().Projections() );
 
-			projectionsFilt = filteredProjections( PROGRAM_STATE().Projections(), filterType );
-			filterPlot.plotRef().assignData( projectionsFilt.Filter().PlotValues() );
+			PROGRAM_STATE().FilteredProjections() = filteredProjections( PROGRAM_STATE().Projections(), filterType );
+			filterPlot.plotRef().assignData( PROGRAM_STATE().FilteredProjections().Filter().PlotValues() );
 			filterPlot.assignData();
 
 			Fl_Window::show();
@@ -78,8 +81,8 @@ class processingView : public Fl_Window{
 
 	void assignSinogram( const radonTransformed newSinogram ){
 
-		sinogram = newSinogram;
-		sinogramImg = greyImage( sinogram.Data() );
+		//sinogram = newSinogram;
+		sinogramImg = greyImage( newSinogram.Data() );
 
 		sinogramWidget.assignImage( sinogramImg );
 
@@ -88,7 +91,7 @@ class processingView : public Fl_Window{
 
 	public:
 
-	radonTransformed sinogram;
+	//radonTransformed sinogram;
 	bool newRTFlag;
 
 	Fl_Group sinogramGrp;
@@ -100,6 +103,6 @@ class processingView : public Fl_Window{
 	discreteFilter::TYPE filterType;
 	Fl_Plot<linePlot> filterPlot;
 
-	filteredProjections projectionsFilt;
+	//filteredProjections projectionsFilt;
 
  };

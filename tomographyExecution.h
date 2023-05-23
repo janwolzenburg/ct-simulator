@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+
 /*********************************************************************
  * @file   tomographyExecution.h
  * @brief
@@ -70,18 +70,12 @@ class tomographyExec : public Fl_Group{
 
 			radiateFlag = false;
 
-			state.Projections() = state.Tomography().recordSlice(state.Gantry(), state.Model(), 0.);
+			state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0 ) );
 
-			//state.Projections().
-
-
-			//newView->show();
-			//newView->assignSinogram( state.Projections() );
-
-			//filteredProjections filteredProjections( projections, discreteFilter::ramLak );
-
-			//reconstrucedImage reconstruction( filteredProjections );
-
+			if( state.ProcessingWindow() != nullptr ){
+				state.ProcessingWindow()->setNewRTFlag();
+			}
+			
 
 
 			Fl_Group::window()->activate();
