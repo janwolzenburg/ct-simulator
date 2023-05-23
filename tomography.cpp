@@ -25,16 +25,20 @@
 const string tomographyParameter::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE" };
 
 tomographyParameter::tomographyParameter( void ) :
-	exposureTime( 1. )
+	exposureTime( 1. ),
+	scattering( true )
 {}
 
-tomographyParameter::tomographyParameter( const double exposureTime_ ) :
-	exposureTime( exposureTime_ ){
+tomographyParameter::tomographyParameter( const double exposureTime_, const bool scattering_ ) :
+	exposureTime( exposureTime_ ),
+	scattering( scattering_ )
+{
 
 }
 
 tomographyParameter::tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) )
+	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) ),
+	scattering( deSerializeBuildIn<bool>(true, binData, it) )
 {
 }
 
@@ -43,6 +47,7 @@ size_t tomographyParameter::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += serializeBuildIn( exposureTime, binData );
+	numBytes += serializeBuildIn( scattering, binData );
 
 	return numBytes;
 
@@ -86,7 +91,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 		
 		// Radiate
-		Gantry.radiate( Model, parameter.ExposureTime() );
+		Gantry.radiate( Model, parameter.ExposureTime(), parameter.Scattering() );
 		
 		// Get the detection result
 		vector<pixel> detectionPixel = Gantry.getPixel();

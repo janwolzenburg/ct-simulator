@@ -33,12 +33,13 @@ class tomographyParameter{
 
 	tomographyParameter( void );
 
-	tomographyParameter( const double exposureTime_ );
+	tomographyParameter( const double exposureTime_, const bool scattering_ );
 
 	tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	inline double ExposureTime( void ) const { return exposureTime; };
 
+	inline bool Scattering( void ) const{ return scattering; };
 
 	size_t serialize( vector<char>& binData ) const;
 
@@ -46,6 +47,7 @@ class tomographyParameter{
 	private:
 
 	double exposureTime;
+	bool scattering;
 
 };
 
@@ -69,7 +71,7 @@ class tomography{
 	 * @brief Record a slice
 	 * @return Radon transformed of model slice
 	*/
-	radonTransformed recordSlice( gantry gantry_, const model& model_, const double zPosition = 0. );
+	radonTransformed recordSlice( gantry gantry_, const model& model_, const double zPosition );
 
 
 	private:

@@ -103,7 +103,7 @@ class gantry {
 	 * @brief Radiate model with beam
 	 * @param radModel Model to radiate
 	*/
-	void radiate( const model& radModel, const double exposureTime ) ;
+	void radiate( const model& radModel, const double exposureTime, const bool scattering = true ) ;
 	
 	/*!
 	 * @brief Reset ganrtry to its initial position

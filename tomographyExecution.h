@@ -116,9 +116,3 @@ class tomographyExec : public Fl_Group{
  };
 
 
-
-class tomographyView : public Fl_Window{
-
-	
-
- };

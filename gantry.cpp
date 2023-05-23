@@ -96,7 +96,7 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 }
 
 
-void gantry::radiate( const model& radModel, const double exposureTime ) {
+void gantry::radiate( const model& radModel, const double exposureTime, const bool scattering ) {
 
 	vector<ray> rays = this->getBeam( exposureTime );		// Current rays. Start with rays from source
 	
@@ -124,7 +124,7 @@ void gantry::radiate( const model& radModel, const double exposureTime ) {
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		const bool enableScattering = currentLoop < maxRadiationLoops;	// No scattering in last iteration
+		const bool enableScattering = currentLoop < maxRadiationLoops && scattering;	// No scattering in last iteration
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
 
 

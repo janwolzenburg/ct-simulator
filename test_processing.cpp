@@ -113,7 +113,7 @@ bool test_Tomography( void ){
 	cout << "Time for test model construction: " << diff << endl;
 
 	start = std::chrono::system_clock::now();
-	tomography testTomography( tomographyParameter{ 1. } );
+	tomography testTomography( tomographyParameter{ 1., true } );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test tomography construction: " << diff << endl;
