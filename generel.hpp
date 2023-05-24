@@ -47,10 +47,10 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 
 	// Not enough data left in vector
 	if( binData.cend() - it < sizeof( T ) ) val = defaultVal;
-
-	val = *( (T*) &(*it) );
-
-	it += sizeof( T );
+	else{
+		val = *( (T*) &(*it) );
+		it += sizeof( T );
+	}
 
 	return sizeof(T);
 }

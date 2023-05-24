@@ -45,9 +45,9 @@ voxData::voxData( void ) :
 
 double voxData::attenuationAt( const double frequency ) const{
 
-	const double constant = attenuation * freqAtRefE_3;
+	//const double constant = attenuation * freqAtRefE_3;
 
-	return constant * pow( frequency, 3 );
+	return attenuation * pow( freqAtRefE / frequency, 3. );
 };
 
 size_t voxData::serialize( vector<char>& binData ) const{
@@ -58,8 +58,7 @@ size_t voxData::serialize( vector<char>& binData ) const{
 
 double voxData::attenuationAtRefE( const double attenuationAtFrequency, const double frequency ) const{
 
-	return ( attenuationAtFrequency * pow( frequency, 3 ) ) / freqAtRefE_3;
-
+	return attenuationAtFrequency * pow( frequency / freqAtRefE, 3. );
 };
 
 
