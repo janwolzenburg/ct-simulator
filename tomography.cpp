@@ -15,7 +15,7 @@
 #include "tomography.h"
 #include "generel.h"
 #include "cSysTree.h"
-
+#include "plotting.h"
 
 /*********************************************************************
    Implemnetations
@@ -69,8 +69,17 @@ tomography::tomography( const tomographyParameter parameter_ ) :
 
 radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition ){
 
+
+
 	// Reset gantry to its initial position
 	Gantry.reset();
+
+	//int curRot = 0;
+	//const int numRot = 3;
+	//ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
+	
+
+	
 
 	// Translate Gantry
 	if( zPosition != 0. )
@@ -110,10 +119,29 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 			sinogram.assignData( newRadonPoint );
 		}
 
+		//if( curRot++ < numRot ){
+		//	
+		//	string col = "r";
+
+		//	switch( curRot ){
+		//		case 1:
+		//			col = "r"; break;
+		//		case 2:
+		//			col = "g"; break;
+		//		case 3:
+		//			col = "b"; break;
+		//		default:
+		//			col = "y"; break;
+		//	}
+
+		//	addObject( ax1, "Gantry", Gantry, col, GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+		//}
+		
 		// Rotate gantry
 		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
 	}
 
+	//closeAxis( ax1 );
 
 	return sinogram;
 }

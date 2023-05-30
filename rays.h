@@ -61,7 +61,7 @@ class rayProperties{
 	private:
 
 	spectrum energySpectrum;	/*!<Energy spectrum*/
-	
+	size_t voxHits;
 
 };
 
@@ -154,6 +154,11 @@ class ray : public line{
 	*/
 	double getMeanFrequency( void ) const;
 
+	inline void incrementHitCounter( void ){ properties.voxHits++; };
+
+	inline void resetHitCounter( void ){ properties.voxHits = 0; };
+
+	inline size_t VoxelHits( void ) const { return properties.voxHits; };
 
 	private:
 

@@ -112,10 +112,42 @@ void sortUnique( vector<double>& v ){
 }
 
 
-double Max( const vector<double> v ){
+double Max( const vector<double>& v ){
 	return *std::max_element( v.begin(), v.end() );
 }
 
-double Min( const vector<double> v ){
+double Min( const vector<double>& v ){
 	return *std::min_element( v.begin(), v.end() );
+}
+
+
+double Min( const vector<vector<double>>& v ){
+
+	vector<double> minima( v.size(), INFINITY );
+
+	for( vector<vector<double>>::const_iterator sV = v.cbegin(); sV < v.cend(); sV++ ){
+		
+		size_t index = sV - v.cbegin();
+
+		minima.at( index ) = Min( *sV );
+
+	}
+
+	return Min( minima );
+}
+
+double Max( const vector<vector<double>>& v ){
+
+	vector<double> maxima( v.size(), INFINITY );
+
+	for( vector<vector<double>>::const_iterator sV = v.cbegin(); sV < v.cend(); sV++ ){
+
+		size_t index = sV - v.cbegin();
+
+		maxima.at( index ) = Max( *sV );
+
+	}
+
+	return Max( maxima );
+
 }

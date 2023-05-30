@@ -287,6 +287,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 
 			// Update ray properties whith distance travelled in current voxel
 			modelRay.updateProperties( this->operator()( currentVoxelIndices ), distance );
+			modelRay.incrementHitCounter();
 
 			currentRayStep += distance + rayStepSize;				// New Step on ray
 			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray

@@ -13,7 +13,7 @@
  *********************************************************************/
 
 #include "grid.h"
-
+#include "vectorAlgorithm.h"
 
 
 /*********************************************************************
@@ -106,6 +106,34 @@ class greyImage{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	double minimum( void ) const{
+
+		return Min( data );
+
+	}
+
+	double maximum( void ) const{
+
+		return Max( data );
+
+	}
+
+	void adjustContrast( const range dataRange ){
+
+		if( data.size() == 0 ) return;
+
+		for( size_t i = 0; i < numPixel; i++ ){
+
+			double diffToStart = data.at( i ) - dataRange.start;
+			if( diffToStart < 0 ) diffToStart = 0.;
+			if( diffToStart > dataRange.Diff() ) diffToStart = dataRange.Diff();
+
+
+			imData.at( i ) = (unsigned char) ( ( diffToStart / ( dataRange.Diff() ) ) * 255. );
+		}
+	}
+
+
 
 	private:
 
@@ -134,3 +162,5 @@ class greyImage{
 	void normalize( void );
 
 };
+
+

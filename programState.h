@@ -92,6 +92,8 @@ class programState{
 
 	inline tomography& Tomography( void ) { return tomographyInstance; };
 
+	inline tomographyParameter& TomographyParameter( void ){ return tomographyParamerter; };
+
 	inline radonTransformed& Projections( void ){ return currentProjections; };
 
 	inline filteredProjections& FilteredProjections( void ){ return currentFilteredProjections; };

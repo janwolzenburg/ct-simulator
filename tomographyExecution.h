@@ -31,16 +31,31 @@ class tomographyExec : public Fl_Group{
 		Fl_Group( x, y, w, h ),
 
 		tomoParameterGrp(	X( *this, .05 ), Y( *this, .05 ),								W( *this, .9 ),			H( *this, .1 ) ),
+		exposureTimeIn(		X( tomoParameterGrp, 0. ), Y( tomoParameterGrp, .2 ), W( tomoParameterGrp, .2 ), H( tomoParameterGrp, .25 ), "Exposure time"),
+		scatteringOnOff(	X( tomoParameterGrp, .5), Y( tomoParameterGrp, .2 ), W( tomoParameterGrp, .2 ), H( tomoParameterGrp, .25 ), "Scattering"),
 
 		controlGrp(			X( *this, .05 ), vOff( tomoParameterGrp ) + Y( *this, .05 ),	W( *this, .9 ),			H( *this, .1 ) ),
 		radiationButton(	X( controlGrp, 0. ), Y( controlGrp, 0. ),						W( controlGrp, .3 ),	H( controlGrp, .3 ), "Record Slice"),
 
-		radiateFlag( false )
+		radiateFlag( false ),
+		updateFlag( false )
 	{
 		Fl_Group::box( FL_BORDER_BOX );
 
 		Fl_Group::add( tomoParameterGrp );
 		tomoParameterGrp.box( FL_BORDER_BOX );
+
+		tomoParameterGrp.add( exposureTimeIn );
+		tomoParameterGrp.add( scatteringOnOff );
+
+		exposureTimeIn.align( FL_ALIGN_TOP );
+
+		exposureTimeIn.setProperties( 0.001, 10., 3 );
+		exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().ExposureTime() );
+		scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().Scattering() );
+
+		exposureTimeIn.callback( button_cb, &updateFlag );
+		scatteringOnOff.callback( button_cb, &updateFlag );
 
 		Fl_Group::add( controlGrp );
 		controlGrp.box( FL_BORDER_BOX );
@@ -70,17 +85,22 @@ class tomographyExec : public Fl_Group{
 
 			radiateFlag = false;
 
+			state.Tomography() = tomography( state.TomographyParameter() );
 			state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0 ) );
 
 			if( state.ProcessingWindow() != nullptr ){
 				state.ProcessingWindow()->setNewRTFlag();
 			}
-			
-
 
 			Fl_Group::window()->activate();
 		}
 
+		if( updateFlag ){
+			updateFlag = false;
+
+			state.TomographyParameter() = tomographyParameter( exposureTimeIn.value(), (bool) scatteringOnOff.value() );
+
+		}
 
 	}
 
@@ -89,12 +109,14 @@ class tomographyExec : public Fl_Group{
 	// Information
 
 	Fl_Group tomoParameterGrp;
-	//Fl_Bound_Input<Fl_Float_Input, double> exposureTimeIn;
+	Fl_Bound_Input<Fl_Float_Input, double> exposureTimeIn;
+	Fl_Toggle_Button scatteringOnOff;
 
 	// Control
 	
 	Fl_Group controlGrp;
 	Fl_Button radiationButton;
+
 	// Button Go
 
 
@@ -111,7 +133,7 @@ class tomographyExec : public Fl_Group{
 
 
 	bool radiateFlag;
-
+	bool updateFlag;
 
  };
 

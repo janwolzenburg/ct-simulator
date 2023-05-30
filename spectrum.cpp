@@ -130,4 +130,6 @@ void spectrum::modify( std::function<void( v2& )> modFunction ){
 	for( v2& v : data ){
 		modFunction( v );
 	}
+
+	this->updateMean();
 }

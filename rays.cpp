@@ -28,7 +28,8 @@ using std::string;
 */
 
 rayProperties::rayProperties( const spectrum spectrum_ ) : 
-	energySpectrum( spectrum_ )
+	energySpectrum( spectrum_ ),
+	voxHits( 0 )
 {};
 
 rayProperties::rayProperties( void ) : 
@@ -48,7 +49,8 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 
 	} );
 
-	//energySpectrum.attenuate( voxelData, distance );
+
+
 }
 
 

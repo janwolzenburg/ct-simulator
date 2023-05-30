@@ -75,6 +75,8 @@ const MATERIAL tubeParameter::getEnum( const string materialString ){
 size_t tubeParameter::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
 
+
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += serializeBuildIn( anodeVoltage_V, binData );
 	numBytes += serializeBuildIn( anodeCurrent_A, binData );
 	numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );

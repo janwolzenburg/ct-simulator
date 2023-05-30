@@ -79,6 +79,7 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 
 		// Transmit ray through model
 		const ray returnedRay = radModel.rayTransmission( currentRay, enableScattering, rayScatterAngles );
+		returnedRay.Properties().EnergySpectrum().scale( 1. / (double) returnedRay.VoxelHits() );
 
 		// Is the ray outside the model
 		if( !radModel.pntInside( returnedRay.O() ) ){
