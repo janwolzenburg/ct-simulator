@@ -21,10 +21,10 @@
 *********************************************************************/
 
 
-const string greyImage::FILE_PREAMBLE{ "GREY_IMAGE_FILE_PREAMBLE       " };
+const string monoImage::FILE_PREAMBLE{ "GREY_IMAGE_FILE_PREAMBLE       " };
 
 
-greyImage::greyImage( const size_t width_, const size_t height_ ) :
+monoImage::monoImage( const size_t width_, const size_t height_ ) :
 	width( width_ ),
 	height( height_ ),
 	numPixel( width* height ),
@@ -35,15 +35,15 @@ greyImage::greyImage( const size_t width_, const size_t height_ ) :
 }
 
 
-greyImage::greyImage( void ) :
-	greyImage{ 0, 0 }
+monoImage::monoImage( void ) :
+	monoImage{ 0, 0 }
 {
 
 }
 
 
-greyImage::greyImage( const grid source, const bool normalizeImg ) :
-	greyImage{ source.Size().col, source.Size().row }{
+monoImage::monoImage( const grid source, const bool normalizeImg ) :
+	monoImage{ source.Size().col, source.Size().row }{
 
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
@@ -56,8 +56,8 @@ greyImage::greyImage( const grid source, const bool normalizeImg ) :
 }
 
 
-greyImage::greyImage( const greyImage& srcImg, const size_t newWidth, const size_t newHeight ) :
-	greyImage{ newWidth, newHeight }{
+monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
+	monoImage{ newWidth, newHeight }{
 
 
 	for( size_t c = 0; c < this->Width(); c++ ){
@@ -77,7 +77,7 @@ greyImage::greyImage( const greyImage& srcImg, const size_t newWidth, const size
 }
 
 
-greyImage::greyImage( const vector<char>& binData, vector<char>::const_iterator& it ) :
+monoImage::monoImage( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 	height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
 	numPixel( width* height ),
@@ -92,7 +92,7 @@ greyImage::greyImage( const vector<char>& binData, vector<char>::const_iterator&
 }
 
 
-greyImage& greyImage::operator=( const greyImage& srcImg ){
+monoImage& monoImage::operator=( const monoImage& srcImg ){
 
 	width = srcImg.width;
 	height = srcImg.height;
@@ -104,37 +104,37 @@ greyImage& greyImage::operator=( const greyImage& srcImg ){
 	return *this;
 }
 
-size_t greyImage::index( const size_t c, const size_t r ) const{
+size_t monoImage::index( const size_t c, const size_t r ) const{
 	size_t idx = c + r * width;
 	if( idx >= numPixel ) idx = numPixel - 1;
 
 	return idx;
 }
 
-double greyImage::operator()( const size_t c, const size_t r ) const{
+double monoImage::operator()( const size_t c, const size_t r ) const{
 
 	return data.at( index( c, r ) );
 
 }
 
-unsigned char greyImage::charData( const size_t c, const size_t r ) const{
+unsigned char monoImage::charData( const size_t c, const size_t r ) const{
 
 	return imData.at( index( c, r ) );
 
 }
 
-double& greyImage::operator()( const size_t c, const size_t r ){
+double& monoImage::operator()( const size_t c, const size_t r ){
 
 	return data.at( index( c, r ) );
 }
 
-unsigned char& greyImage::charData( const size_t c, const size_t r ){
+unsigned char& monoImage::charData( const size_t c, const size_t r ){
 
 	return imData.at( index( c, r ) );
 
 }
 
-size_t greyImage::serialize( vector<char>& binData ) const{
+size_t monoImage::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
@@ -149,7 +149,7 @@ size_t greyImage::serialize( vector<char>& binData ) const{
 }
 
 
-void greyImage::normalize( void ){
+void monoImage::normalize( void ){
 
 	if( data.size() == 0 ) return;
 

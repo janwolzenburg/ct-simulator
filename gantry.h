@@ -15,13 +15,16 @@
 #include <vector>
 using std::vector;
 
+#include <mutex>
+using std::mutex;
+
 #include "generelMath.h"
 #include "tube.h"
 #include "detector.h"
 #include "model.h"
-#include <mutex>
 #include "scattering.h"
 #include "simulation.h"
+
 
 
 /*********************************************************************
@@ -44,9 +47,9 @@ using std::vector;
  * @param iterationMutex Mutex for vector with rays for next iteration
 */
 void threadFunction( const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
-					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
-					 vector<ray>& raysForNextIteration, std::mutex& detectorMutex,
-					 detector& rayDetector, std::mutex& iterationMutex );
+					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+					 vector<ray>& raysForNextIteration, mutex& detectorMutex,
+					 detector& rayDetector, mutex& iterationMutex );
 
 
 /*!

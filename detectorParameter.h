@@ -8,7 +8,6 @@
  *********************************************************************/
 
 
-
  /*********************************************************************
 	Includes
  *********************************************************************/
@@ -33,6 +32,7 @@ class detectorRadonParameter{
 	public:
 
 	static const string FILE_PREAMBLE;
+
 
 	public:
 	/*!
@@ -65,7 +65,7 @@ class detectorRadonParameter{
 
 
 /*!
- * @brief Class for physical detector parameters which are not dependent on the radon parameters
+ * @brief Class for physical detector or simulation parameters which are not dependent on the radon parameters
 */
 class detectorIndipendentParameter{
 
@@ -73,14 +73,16 @@ class detectorIndipendentParameter{
 
 	static const string FILE_PREAMBLE;
 
+
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param angle_ Detector angle
-	 * @param columnSize_ Size of pixel in column direction
-	 * @param structured_ Flag for anti scatter structure
-	 * @param maxRayAngleDetecable Maximum angle between pixel normal and ray
+	 * @param raysPerPixel_ Amount of rays per pixel to simulate
+	 * @param arcRadius_ Radius of the detector arc
+	 * @param columnSize_ Pixel size in z-Direction
+	 * @param structured_ Flag for anti scattering structure
+	 * @param maxRayAngleDetectable_ maximum angle between pixel normal and incident ray allowed by anti-scattering structure
 	*/
 	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
 
@@ -98,7 +100,7 @@ class detectorIndipendentParameter{
 
 	public:
 
-	size_t raysPerPixel;
+	size_t raysPerPixel;			/*!<Amount of rays per pixel*/
 	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
 	double columnSize;				/*!<Size of one pixel in column direction*/
 	bool structured;				/*!<Flag for anti scatter structure*/

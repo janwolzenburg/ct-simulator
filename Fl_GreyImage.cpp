@@ -15,7 +15,7 @@
 #include <FL/fl_draw.H>
 
 #include "widgets.h"
-#include "Fl_GreyImage.h"
+#include "Fl_GridImage.h"
 
 
 
@@ -26,22 +26,22 @@
 
 
 /*
-	Fl_Image_Widget implementation
+	Fl_GridImage implementation
 */
 
-Fl_Image_Widget::Fl_Image_Widget( int x, int y, int w, int h, const char* label ) :
+Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Widget{ x, y, w, h, label }{
 
 };
 
-void Fl_Image_Widget::assignImage( const greyImage& img ){
+void Fl_GridImage::assignImage( const monoImage& img ){
 	originalImage = img;
 
 	updateScaled();
 }
 
 
-void Fl_Image_Widget::draw( void ){
+void Fl_GridImage::draw( void ){
 
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) scaledImage.Width() ) / 2;
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
@@ -50,7 +50,7 @@ void Fl_Image_Widget::draw( void ){
 }
 
 
-void Fl_Image_Widget::resize( int x, int y, int w, int h ){
+void Fl_GridImage::resize( int x, int y, int w, int h ){
 
 	Fl_Widget::resize( x, y, w, h );
 
@@ -59,7 +59,7 @@ void Fl_Image_Widget::resize( int x, int y, int w, int h ){
 }
 
 
-void Fl_Image_Widget::calculateScaled( void ){
+void Fl_GridImage::calculateScaled( void ){
 
 	if( originalImage.Width() == 0 || originalImage.Height() == 0 ) return;
 
@@ -83,11 +83,11 @@ void Fl_Image_Widget::calculateScaled( void ){
 
 	}
 
-	scaledImage = greyImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight };
+	scaledImage = monoImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight };
 
 }
 
-void Fl_Image_Widget::updateScaled( void ){
+void Fl_GridImage::updateScaled( void ){
 
 	calculateScaled();
 
@@ -97,7 +97,7 @@ void Fl_Image_Widget::updateScaled( void ){
 
 
 
-Fl_EditImage_Widget::Fl_EditImage_Widget( int x, int y, int w, int h, const char* label ) :
+Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label ) :
 	Fl_Group( x, y, w, h, label ),
 	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .75 ), "Image" ),
 	lowerBound( X( *this, 0.1 ), Y( *this, 0.775 ), W( *this, .8 ), H( *this, .1 ), "Low" ),
@@ -117,7 +117,7 @@ Fl_EditImage_Widget::Fl_EditImage_Widget( int x, int y, int w, int h, const char
 
 }
 
-void Fl_EditImage_Widget::assignImage( const greyImage& img ){
+void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	imgWidget.assignImage( img );
 
@@ -136,7 +136,7 @@ void Fl_EditImage_Widget::assignImage( const greyImage& img ){
 
 }
 
-void Fl_EditImage_Widget::handleEvents( void ){
+void Fl_GridImage_Adjust::handleEvents( void ){
 
 	bool updateImage = false;
 

@@ -12,6 +12,7 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
+
  #include <vector>
  using std::vector;
  #include <mutex>
@@ -58,7 +59,7 @@ class detector {
 	 * @brief Detect ray
 	 * @param r Ray to detect
 	*/
-	void detectRay( const ray r, std::mutex& allPixelLock );
+	void detectRay( const ray r, mutex& allPixelLock );
 
 	/*!
 	 * @brief Get the radon parameters of detector

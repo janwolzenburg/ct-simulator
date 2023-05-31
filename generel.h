@@ -32,13 +32,22 @@ using std::filesystem::path;
 #include <tuple>
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
 
- extern const size_t numThreads;
+/*!
+ * @brief Amount of Threads used during radiation
+*/
+extern const size_t numThreads;	
 
+
+/*!
+ * @brief Pair of vectors
+*/
 typedef std::pair<vector<double>, vector<double>> vectorPair;
+
 
 /*!
  * @brief Class for 2D indices
@@ -221,8 +230,11 @@ class range{
  * @brief Class for a range of whole numbers
 */
 class Zrange{
+
 	public:
+	
 	Zrange( const signed long long start_, const signed long long end_ );
+	
 	Zrange( void );
 
 	signed long long start;
@@ -273,7 +285,6 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 template< typename T >
 size_t serializeBuildIn( const T& val, vector<char>& binData );
 
-
 /*!
  * @brief Serialize string
  * @param val String to serialize
@@ -283,9 +294,14 @@ size_t serializeBuildIn( const T& val, vector<char>& binData );
 template<>
 size_t serializeBuildIn<string>( const string& val, vector<char>& binData );
 
+/*!
+ * @brief Serialize 2D-vector of grid points
+ * @param val Object to serialize
+ * @param binData Reference to vector to append to
+ * @return Amount of bytes appended
+*/
 template<>
 size_t serializeBuildIn<vector<vector<v2CR>>>( const vector<vector<v2CR>>& val, vector<char>& binData );
-
 
 /*!
  * @brief Deserialize build in data type
@@ -304,8 +320,13 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 template< typename T>
 T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
-
-
+/*!
+ * @brief Deserialize and return object
+ * @tparam T Type
+ * @param binData Binary data 
+ * @param it Iterator
+ * @return Deserialized object
+*/
 template< typename T>
 T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -324,14 +345,14 @@ bool exportSerialized( const string fileName, const vector<char> binData );
 bool exportSerialized( const path filePath, const vector<char> binData );
 
 
-vector<char> importSerialized( const path filePath );
-
 /*!
  * @brief Import serial data from file
  * @param fileName Filename
  * @return Vector with data
 */
 vector<char> importSerialized( const string fileName );
+
+vector<char> importSerialized( const path filePath );
 
 /*!
 	* @brief Check if data in vector is from a valid file
@@ -341,14 +362,24 @@ vector<char> importSerialized( const string fileName );
 */
 bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
 
-
+/*!
+ * @brief Convert number to string with given precision
+ * @tparam T Type of number
+ * @param value Value
+ * @param precision Precision of converted number. Negative rounds number to significant digits
+ * @return Number as string
+*/
 template<typename T>
 string toString( T value, const int precision = 0 );
 
+/*!
+ * @brief Convert string to number
+ * @tparam T Type of number
+ * @param str String
+ * @return Number corresponding to string
+*/
 template<typename T>
 T toNum( const string str );
-
-
 
 
 #include "generel.hpp"

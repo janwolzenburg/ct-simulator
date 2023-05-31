@@ -14,7 +14,7 @@
 *********************************************************************/
 
 #include "generelMath.h"
-#include "Fl_plots.h"
+#include "Fl_Plot.h"
 
 
 

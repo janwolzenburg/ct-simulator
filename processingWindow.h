@@ -16,9 +16,9 @@
 
  #include "FL/Fl_Window.H"
 
- #include "Fl_GreyImage.h"
- #include "image.h"
- #include "lineplot.h"
+ #include "Fl_GridImage.h"
+ #include "monoImage.h"
+ #include "Fl_Lineplot.h"
 
  #include "programState.h"
  #include "radonTransform.h"
@@ -84,7 +84,7 @@ class processingView : public Fl_Window{
 	void assignSinogram( const radonTransformed newSinogram ){
 
 		//sinogram = newSinogram;
-		sinogramImg = greyImage( newSinogram.Data(), true );
+		sinogramImg = monoImage( newSinogram.Data(), true );
 
 		sinogramWidget.assignImage( sinogramImg );
 
@@ -97,9 +97,9 @@ class processingView : public Fl_Window{
 	bool newRTFlag;
 
 	Fl_Group sinogramGrp;
-	greyImage sinogramImg;
-	//Fl_Image_Widget sinogramWidget;
-	Fl_EditImage_Widget sinogramWidget;
+	monoImage sinogramImg;
+	//Fl_GridImage sinogramWidget;
+	Fl_GridImage_Adjust sinogramWidget;
 
 	Fl_Group filterGrp;
 	

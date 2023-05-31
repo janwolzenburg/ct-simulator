@@ -30,9 +30,9 @@ using std::vector;
 #include "storedObject.h"
 #include "gantry.h"
 #include "widgets.h"
-#include "Fl_plots.h"
-#include "lineplot.h"
-#include "geoplot.h"
+#include "Fl_Plot.h"
+#include "Fl_Lineplot.h"
+#include "Fl_Geoplot.h"
 
 class gantryEdition : public Fl_Group{
 
@@ -68,10 +68,10 @@ class gantryEdition : public Fl_Group{
 
 	Fl_Group specView;
 
-	Fl_Plot<linePlot> spectrumPlot;
+	Fl_Plot<Fl_LinePlot> spectrumPlot;
 
 	Fl_Group detectorView;
-	Fl_Plot<geoPlot> detectorPlot;
+	Fl_Plot<Fl_Geoplot> detectorPlot;
 
 	bool updateGantry;
 

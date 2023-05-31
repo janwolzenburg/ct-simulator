@@ -15,7 +15,7 @@
  #include "plots.h"
 
 
-class linePlot : public plot{
+class Fl_Lineplot : public plot{
 
 	public:
 

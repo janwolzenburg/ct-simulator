@@ -73,7 +73,7 @@ class modelView : public Fl_Group{
 	Fl_Group viewGrp;
 	Fl_Multiline_Output modelData;
 	Fl_Box viewBox;
-	Fl_Image_Widget viewImg;
+	Fl_GridImage viewImg;
 	
 	Fl_Group moveGrp;
 	Fl_Counter xRot;

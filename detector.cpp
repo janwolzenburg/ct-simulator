@@ -158,7 +158,7 @@ void detector::reset( void ){
 }
 
 
-void detector::detectRay( const ray r, std::mutex& allPixelLock ){
+void detector::detectRay( const ray r, mutex& allPixelLock ){
 
 
 	// Iterate all pixel indices

@@ -6,9 +6,19 @@
  * @date   December 2022
  *********************************************************************/
 
+
+ /*********************************************************************
+  Includes
+*********************************************************************/
+
 #include <type_traits>
 #include "generel.h"
 
+
+
+/*********************************************************************
+  Declerations
+*********************************************************************/
 
 template <typename T>
 constexpr typename std::underlying_type_t<T> toUnderlying( T var ){
@@ -39,7 +49,6 @@ size_t serializeBuildIn( const T& val, vector<char>& binData ){
 	return sizeof(T);
 
 }
-
 
 template< typename T >
 size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){

@@ -15,8 +15,8 @@
  #include <FL/Fl_Widget.H>
  #include <FL/Fl_Hor_Value_Slider.H>
 
-#include "image.h"
-#include "Own_Valuator.h"
+#include "monoImage.h"
+#include "Fl_OwnValuator.h"
 
 
 
@@ -25,19 +25,19 @@
  *********************************************************************/
 
 
-class Fl_Image_Widget : public Fl_Widget{
+class Fl_GridImage : public Fl_Widget{
 
-	friend class Fl_EditImage_Widget;
+	friend class Fl_GridImage_Adjust;
 
 	public:
 
-	Fl_Image_Widget( int x, int y, int w, int h, const char* label = 0L );
+	Fl_GridImage( int x, int y, int w, int h, const char* label = 0L );
 
 	virtual void draw( void );
 
 	virtual void resize( int x, int y, int w, int h );
 
-	void assignImage( const greyImage& img );
+	void assignImage( const monoImage& img );
 
 	void calculateScaled( void );
 
@@ -46,28 +46,28 @@ class Fl_Image_Widget : public Fl_Widget{
 
 	private:
 
-	greyImage originalImage;
-	greyImage scaledImage;
+	monoImage originalImage;
+	monoImage scaledImage;
 };
 
 
 
 
-class Fl_EditImage_Widget : public Fl_Group{
+class Fl_GridImage_Adjust : public Fl_Group{
 
 	public:
 
-	Fl_EditImage_Widget( int x, int y, int w, int h, const char* label = 0L );
+	Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label = 0L );
 
-	void assignImage( const greyImage& img );
+	void assignImage( const monoImage& img );
 
 	void handleEvents( void );
 
 
 	private:
 	
-	Fl_Image_Widget imgWidget;
-	Own_Valuator<Fl_Hor_Value_Slider> lowerBound;
-	Own_Valuator<Fl_Hor_Value_Slider> upperBound;
+	Fl_GridImage imgWidget;
+	Fl_OwnValuator<Fl_Hor_Value_Slider> lowerBound;
+	Fl_OwnValuator<Fl_Hor_Value_Slider> upperBound;
 
 };

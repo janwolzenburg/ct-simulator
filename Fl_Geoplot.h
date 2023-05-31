@@ -15,14 +15,14 @@
 #include "plots.h"
 
 
-class geoPlot : public plot{
+class Fl_Geoplot : public plot{
 
 	public:
 
-	geoPlot( const string name_, const string xlabel_, const string ylabel_,
+	Fl_Geoplot( const string name_, const string xlabel_, const string ylabel_,
 			 const plotLimits limits_, const idx2CR imgSize_, const bool grid_ );
 
-	geoPlot( void );
+	Fl_Geoplot( void );
 
 	void addLine( const v2 start, const v2 end );
 

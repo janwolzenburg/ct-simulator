@@ -26,7 +26,7 @@
  #include "fileChooser.h"
  #include "slicePlane.h"
  #include "storedObject.h"
- #include "image.h"
+ #include "monoImage.h"
  #include "tomography.h"
  #include "backprojection.h"
  #include "mainWindow.fwd.h"
@@ -63,7 +63,7 @@ class programState{
 
 	inline const gantry& Gantry( void ){ return gantryInstance; };
 
-	inline greyImage& Slice( void ){ return modelSliceInstance; };
+	inline monoImage& Slice( void ){ return modelSliceInstance; };
 
 	static void createStorageDir( void );
 
@@ -139,7 +139,7 @@ class programState{
 	storedObject<slicePlane> storedPlane;
 
 
-	greyImage modelSliceInstance;
+	monoImage modelSliceInstance;
 
 
 

@@ -85,6 +85,18 @@
     <Filter Include="Quelldateien\Program\GUI\Widgets">
       <UniqueIdentifier>{ad4dce5c-f60a-456f-86b8-d5c922caf031}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Program\GUI\Elements">
+      <UniqueIdentifier>{4494f7c9-b674-455a-b3e9-5f7eb7a516c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Program\GUI\Windows">
+      <UniqueIdentifier>{d28de2e5-78c0-42ae-92f0-fae8fe5cb3ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Program\GUI\Elements">
+      <UniqueIdentifier>{cc49d4f4-8f2b-4edf-ba2d-a77ee16627d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Program\GUI\Windows">
+      <UniqueIdentifier>{ad30713f-cee7-4a15-be81-7fed7719950e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -231,9 +243,6 @@
     <ClInclude Include="programState.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="fileChooser.h">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
     <ClInclude Include="programState.fwd.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
@@ -243,74 +252,74 @@
     <ClInclude Include="window.h">
       <Filter>Headerdateien\Program\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="positions.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="slicePlane.h">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="modelView.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="gantryCreation.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="storedObject.hpp">
       <Filter>Quelldateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="window.hpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
     </ClInclude>
     <ClInclude Include="storedObject.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_GreyImage.h">
+    <ClInclude Include="Fl_GridImage.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_plots.h">
+    <ClInclude Include="Fl_Plot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="lineplot.h">
+    <ClInclude Include="Fl_Lineplot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="image.h">
+    <ClInclude Include="Fl_Geoplot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="geoplot.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="plots.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Own_Valuator.h">
+    <ClInclude Include="Fl_OwnValuator.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_plots.hpp">
+    <ClInclude Include="Fl_Plots.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Own_Valuator.hpp">
+    <ClInclude Include="Fl_OwnValuator.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="tomographyExecution.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
+    <ClInclude Include="monoImage.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="processingWindow.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="mainWindow.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
+    <ClInclude Include="plots.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="mainWindow.fwd.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="mainWindow.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="processingWindow.fwd.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="processingWindow.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="modelView.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="gantryCreation.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="tomographyExecution.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="slicePlane.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="fileChooser.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="window.hpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -422,9 +431,6 @@
     <ClCompile Include="intersections.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
-    <ClCompile Include="fileChooser.cpp">
-      <Filter>Quelldateien\Program</Filter>
-    </ClCompile>
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
@@ -434,29 +440,32 @@
     <ClCompile Include="positions.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="modelView.cpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gantryCreation.cpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="slicePlane.cpp">
-      <Filter>Quelldateien\Program</Filter>
-    </ClCompile>
     <ClCompile Include="Fl_GreyImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="image.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="plots.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="widgets.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="modelView.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="gantryCreation.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="window.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="image.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="slicePlane.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="fileChooser.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="plots.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

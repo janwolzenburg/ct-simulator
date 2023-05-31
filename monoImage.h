@@ -23,7 +23,7 @@
 /*!
  * @brief Class for a primitev image
 */
-class greyImage{
+class monoImage{
 
 	public:
 
@@ -37,18 +37,18 @@ class greyImage{
 	 * @param width_ Width
 	 * @param height_ Height
 	*/
-	greyImage( const size_t width_, const size_t height_ );
+	monoImage( const size_t width_, const size_t height_ );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	greyImage( void );
+	monoImage( void );
 
 	/*!
 	 * @brief Construct image from grid
 	 * @param source Source grid
 	*/
-	greyImage( const grid source, const bool normalize = false );
+	monoImage( const grid source, const bool normalize = false );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -57,14 +57,14 @@ class greyImage{
 	 * @param newWidth Width of constructed image
 	 * @param newHeight Height of constucted image
 	*/
-	greyImage( const greyImage& srcImg, const size_t newWidth, const size_t newHeight );
+	monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight );
 
 	/*!
 	 * @brief Construct image from binary data
 	 * @param binData Binary data
 	 * @param it Iterator to start reading from
 	*/
-	greyImage( const vector<char>& binData, vector<char>::const_iterator& it );
+	monoImage( const vector<char>& binData, vector<char>::const_iterator& it );
 
 
 	size_t index( const size_t c, const size_t r ) const;
@@ -74,7 +74,7 @@ class greyImage{
 	 * @param srcImg Source image
 	 * @return Reference to this
 	*/
-	greyImage& operator=( const greyImage& srcImg );
+	monoImage& operator=( const monoImage& srcImg );
 
 	/*!
 	 * @brief Acces operator

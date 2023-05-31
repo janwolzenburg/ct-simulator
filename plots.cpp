@@ -176,36 +176,36 @@ void linePlot::create( void ){
 	geoplot implementation
 */
 
-geoPlot::geoPlot( const string name_, const string xlabel_, const string ylabel_,
+Fl_Geoplot::Fl_Geoplot( const string name_, const string xlabel_, const string ylabel_,
 		 const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
 	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ){
 
 }
 
-geoPlot::geoPlot( void ) :
+Fl_Geoplot::Fl_Geoplot( void ) :
 	plot(){}
 
 
-void geoPlot::addLine( const v2 start, const v2 end ){
+void Fl_Geoplot::addLine( const v2 start, const v2 end ){
 
 	lines.emplace_back( v2( limits.xFactor * start.x, limits.yFactor * start.y ), v2( limits.xFactor * end.x, limits.yFactor * end.y ) );
 
 }
 
-void geoPlot::addPoint( const v2 point ){
+void Fl_Geoplot::addPoint( const v2 point ){
 
 	points.emplace_back( v2( limits.xFactor * point.x, limits.yFactor * point.y ) );
 
 }
 
-void geoPlot::resetObjects( void ){
+void Fl_Geoplot::resetObjects( void ){
 
 	lines.clear();
 	points.clear();
 
 }
 
-void geoPlot::create( void ){
+void Fl_Geoplot::create( void ){
 
 	plot::reset();
 

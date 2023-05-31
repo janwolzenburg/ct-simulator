@@ -15,7 +15,7 @@
  #include <iomanip>
  #include <sstream>
 
- #include "Own_Valuator.h"
+ #include "Fl_OwnValuator.h"
 
 
 /*********************************************************************
@@ -25,10 +25,10 @@
 
 
 template< class C >
-void Own_Valuator<C>::cbFunction( Fl_Widget* widgetPtr, void* flag ){
+void Fl_OwnValuator<C>::cbFunction( Fl_Widget* widgetPtr, void* flag ){
 	*( (bool*) flag ) = true;
 
-	Own_Valuator* valuatorPtr = static_cast<Own_Valuator*>( widgetPtr );
+	Fl_OwnValuator* valuatorPtr = static_cast<Fl_OwnValuator*>( widgetPtr );
 
 	if( valuatorPtr->valueToLabel ){
 		valuatorPtr->updateLabel();
@@ -38,7 +38,7 @@ void Own_Valuator<C>::cbFunction( Fl_Widget* widgetPtr, void* flag ){
 
 
 template< class C >
-Own_Valuator<C>::Own_Valuator( int x, int y, int w, int h, const char* label ) :
+Fl_OwnValuator<C>::Fl_OwnValuator( int x, int y, int w, int h, const char* label ) :
 	C{ x, y, w, h, label },
 	changeFlag( false ),
 	valueToLabel( false ){
@@ -47,7 +47,7 @@ Own_Valuator<C>::Own_Valuator( int x, int y, int w, int h, const char* label ) :
 
 
 template< class C >
-bool Own_Valuator<C>::ChangeFlag( void ){
+bool Fl_OwnValuator<C>::ChangeFlag( void ){
 
 	if( changeFlag ){
 		changeFlag = false;
@@ -59,13 +59,13 @@ bool Own_Valuator<C>::ChangeFlag( void ){
 
 
 template< class C >
-double Own_Valuator<C>::value( void ){
+double Fl_OwnValuator<C>::value( void ){
 	return Fl_Valuator::value();
 }
 
 
 template< class C >
-int Own_Valuator<C>::value( double newVal ){
+int Fl_OwnValuator<C>::value( double newVal ){
 
 	bool valueReturn = Fl_Valuator::value( newVal );
 
@@ -77,14 +77,14 @@ int Own_Valuator<C>::value( double newVal ){
 
 
 template< class C >
-void Own_Valuator<C>::ValueToLabel( const bool yesNo ){
+void Fl_OwnValuator<C>::ValueToLabel( const bool yesNo ){
 	valueToLabel = yesNo;
 	if( yesNo ) updateLabel();
 }
 
 
 template< class C >
-void Own_Valuator<C>::updateLabel( void ){
+void Fl_OwnValuator<C>::updateLabel( void ){
 
 	int significantDigits = (int) ( ceil( 1. / Fl_Valuator::step() ) - 1. );
 

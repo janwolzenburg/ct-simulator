@@ -21,9 +21,9 @@
 #include <FL/Fl_Float_Input.H>
 #include <FL/Fl_Tooltip.H>
 
-#include "Fl_GreyImage.h"
-#include "Own_Valuator.h"
-#include "Fl_plots.h"
+#include "Fl_GridImage.h"
+#include "Fl_OwnValuator.h"
+#include "Fl_Plot.h"
 
 
 

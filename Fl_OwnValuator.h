@@ -26,14 +26,14 @@ using std::string;
 
 
 template< class C >
-class Own_Valuator : public C{
+class Fl_OwnValuator : public C{
 
 	static_assert( std::is_base_of_v< Fl_Valuator, C > );
 
 
 	public:
 
-	Own_Valuator( int x, int y, int w, int h, const char* label );
+	Fl_OwnValuator( int x, int y, int w, int h, const char* label );
 
 	static void cbFunction( Fl_Widget* widgetPtr, void* flag );
 
@@ -59,4 +59,4 @@ class Own_Valuator : public C{
 
 };
 
-#include "Own_Valuator.hpp"
+#include "Fl_OwnValuator.hpp"

@@ -413,10 +413,10 @@ size_t model::serialize( vector<char>& binData ) const{
 
 }
 
-std::mutex coutMutex;
+mutex coutMutex;
 
-void sliceThreadFunction(	double& currentX, std::mutex& currentXMutex, double& currentY, std::mutex& currentYMutex, 
-							grid& slice, std::mutex& sliceMutex,
+void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& currentY, mutex& currentYMutex, 
+							grid& slice, mutex& sliceMutex,
 							const surfLim& slicePlane,
 							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
 
@@ -489,9 +489,9 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 	double currentX = slice.Start().col;
 	double currentY = slice.Start().row;
 
-	std::mutex currentXMutex;
-	std::mutex currentYMutex;
-	std::mutex sliceMutex;
+	mutex currentXMutex;
+	mutex currentYMutex;
+	mutex sliceMutex;
 
 	vector<std::thread> threads;
 

@@ -59,9 +59,9 @@ void gantry::rotateCounterClockwise( const double angle ){
 }
 
 void threadFunction(	const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
-						const vector<ray>& rays, size_t& sharedCurrentRayIndex, std::mutex& currentRayIndexMutex,
-						vector<ray>& raysForNextIteration, std::mutex& iterationMutex,
-						detector& rayDetector, std::mutex& detectorMutex ){
+						const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+						vector<ray>& raysForNextIteration, mutex& iterationMutex,
+						detector& rayDetector, mutex& detectorMutex ){
 
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
@@ -116,9 +116,9 @@ void gantry::radiate( const model& radModel, const double exposureTime, const bo
 
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next ray to iterate
-	std::mutex rayIndexMutex;				// Mutex for ray index
-	std::mutex raysForNextIterationMutex;	// Mutex for vector of rays for next iteration
-	std::mutex detectorMutex;				// Mutex for detector
+	mutex rayIndexMutex;				// Mutex for ray index
+	mutex raysForNextIterationMutex;	// Mutex for vector of rays for next iteration
+	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){

@@ -27,6 +27,10 @@ using std::string;
  *********************************************************************/
 
 const size_t numThreads = 8;
+
+/*!
+ * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor
+*/
 const char stringPadding = (char) 0x9D;
 
 /*!
@@ -183,21 +187,23 @@ template<>
 size_t serializeBuildIn<string>( const string& val, vector<char>& binData ){
 
 	size_t i = 0;
-	size_t padding = 24;
+	const size_t padding = 24;	// Amount of character in each "line" of hex-editor
 
+	// Insert padding so string start at "new line" when each line has 24 Bytes
 	binData.insert( binData.end(), ( padding - ( binData.size() ) % padding ) % padding, stringPadding );
 
+	// Iterate all characters in string
 	for( const char c : val ){
 		i++;
 		binData.push_back( c );
 	}
 
 
-	// Add padding
+	// Add padding at the end so data start at a new line
 	binData.insert( binData.end(), ( padding - ( binData.size() + 1 ) % padding ) % padding, stringPadding );
 
+	// Termination
 	binData.push_back( '\0' );
-
 
 	return i;
 }
@@ -207,12 +213,16 @@ size_t serializeBuildIn<vector<vector<v2CR>>>( const vector<vector<v2CR>>& vec, 
 
 	size_t i = 0;
 
+	// Amount of sub vectors
 	i += serializeBuildIn<size_t>( vec.size(), binData );
 
+	// Iterate all sub vectors
 	for( const vector<v2CR>& subVec : vec ){
 
+		// Amount of elements in current sub vector
 		i += serializeBuildIn<size_t>( subVec.size(), binData );
 		
+		// Serialize each element
 		for( const v2CR& value : subVec ){
 			i +=value.serialize( binData );
 		}
@@ -229,22 +239,28 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 
 	size_t i = 0;
 
+	// Make sure string is empty
 	val.clear();
 
+	// Loop while temrination character not read and the end has not been reached
 	while( *it != '\0' && it < binData.end() ){
 		
+		// The current char
 		char curChar = *( it++ );
 
+		// If character is not string padding add to string
 		if( curChar != stringPadding ) val.push_back( curChar );
 		i++;
 	}
 
+	// End reached before termination
 	if( *it != '\0' ){
+		// Set to default value
 		val = defaultVal;
 		return val.size();
 	}
 
-	// Skip '\0'
+	// Skip '\0' so the iterator is pointing to next data
 	if( it < binData.end() ) it++;
 
 	return i;
@@ -253,18 +269,27 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 template<>
 vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binData, vector<char>::const_iterator& it ){
 
+	// Amount sub vectors
 	size_t numSubVecs = deSerializeBuildIn<size_t>( (size_t) 0, binData, it );
+	
+	// Instance to return
 	vector<vector<v2CR>> vec;
 
+	// Loop fo amount of sub vectors
 	for( size_t i = 0; i < numSubVecs; i++ ){
 
+		// Amount of elements in sub vector
 		size_t numElements = deSerializeBuildIn<size_t>( (size_t) 0, binData, it );
+		
+		// Initialize sub vector
 		vector<v2CR> subVec( numElements, v2CR( 0., 0. ) );
 
+		// Assign deserialsized data to sub vector elements 
 		for( size_t j = 0; j < numElements; j++ ){
 			subVec.at( j ) =  v2CR( binData, it );
 		}
 
+		// Add sub vector
 		vec.push_back( subVec );
 	}
 
@@ -273,7 +298,7 @@ vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binD
 
 bool exportSerialized( const path filePath, const vector<char> binData ){
 
-
+	// Storage directory when it does not exist
 	if( !std::filesystem::exists( filePath.parent_path()  )) std::filesystem::create_directory( filePath.parent_path() );
 
 	return exportSerialized( filePath.string(), binData );
@@ -281,12 +306,17 @@ bool exportSerialized( const path filePath, const vector<char> binData ){
 }
 
 bool exportSerialized( const string fileName, const vector<char> binData ){
+	
 	// File handle
 	std::ofstream outFile;
+	
+	// Overwrite existing and open as binary
 	outFile.open( fileName, std::ios::trunc | std::ios::binary );
 	if( outFile.fail() ) return false;
 
+	// Write data
 	outFile.write( (char*) binData.data(), binData.size() );
+	
 	if( outFile.fail() ) return false;
 	outFile.close();
 
@@ -305,11 +335,10 @@ vector<char> importSerialized( const string fileName ){
 	inFile.open( fileName, std::ios::binary );
 	if( inFile.fail() ) return vector<char>();
 
+	// Get file size
 	size_t file_size = std::filesystem::file_size( fileName );
-	//vector<char> binData;
-	//binData.reserve( file_size );
 	
-	
+	// Allocate memory and read
 	char* dArray = new char[ file_size ];
 	inFile.read( dArray, file_size );
 
@@ -318,7 +347,10 @@ vector<char> importSerialized( const string fileName ){
 		return vector<char>();
 	}
 
+	// Write to binary data
 	vector<char> binData{ dArray, dArray + file_size };
+
+	delete[] dArray;
 
 	return binData;
 
@@ -327,9 +359,13 @@ vector<char> importSerialized( const string fileName ){
 
 bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it ){
 
+	
 	string readPreamble;
+	
+	// Read file preamble
 	deSerializeBuildIn( readPreamble, string{}, binData, it );
 
+	// Compare
 	return preamble == readPreamble;
 
 }

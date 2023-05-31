@@ -161,19 +161,19 @@
     <ClInclude Include="equationSystem.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
-    <ClInclude Include="Fl_GreyImage.h" />
+    <ClInclude Include="Fl_GridImage.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="gantryCreation.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
-    <ClInclude Include="geoplot.h" />
+    <ClInclude Include="Fl_Geoplot.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="Fl_plots.h" />
-    <ClInclude Include="image.h" />
-    <ClInclude Include="lineplot.h" />
+    <ClInclude Include="Fl_Plot.h" />
+    <ClInclude Include="monoImage.h" />
+    <ClInclude Include="Fl_Lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />
     <ClInclude Include="mainWindow.h" />
     <ClInclude Include="model.h" />
@@ -182,12 +182,11 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
     <ClInclude Include="modelView.h" />
-    <ClInclude Include="Own_Valuator.h" />
-    <ClInclude Include="Own_Valuator.hpp" />
+    <ClInclude Include="Fl_OwnValuator.h" />
+    <ClInclude Include="Fl_OwnValuator.hpp" />
     <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
-    <ClInclude Include="positions.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="processingWindow.fwd.h" />
@@ -235,7 +234,7 @@
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="Fl_GreyImage.cpp" />
-    <ClInclude Include="Fl_plots.hpp">
+    <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="gantry.cpp" />
