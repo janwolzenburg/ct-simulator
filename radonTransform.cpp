@@ -139,13 +139,17 @@ void radonTransformed::assignData( const radonPoint data ){
 
 size_t radonTransformed::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += grid::serialize( binData );
+	numBytes += serializeBuildIn( gridErrors, binData );
 	return numBytes;
 }
 
 
 radonTransformed::radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	grid{ binData, it }
+	grid{ binData, it },
+	gridErrors( deSerialize< vector<vector<v2CR>> >( binData, it ) )
 {
 	
 }

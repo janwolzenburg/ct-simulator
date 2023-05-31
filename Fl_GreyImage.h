@@ -13,9 +13,10 @@
  *********************************************************************/
 
  #include <FL/Fl_Widget.H>
+ #include <FL/Fl_Hor_Value_Slider.H>
 
 #include "image.h"
-#include <FL/Fl_Value_Slider.H>
+#include "Own_Valuator.h"
 
 
 
@@ -26,6 +27,7 @@
 
 class Fl_Image_Widget : public Fl_Widget{
 
+	friend class Fl_EditImage_Widget;
 
 	public:
 
@@ -39,7 +41,7 @@ class Fl_Image_Widget : public Fl_Widget{
 
 	void calculateScaled( void );
 
-
+	void updateScaled( void );
 
 
 	private:
@@ -55,35 +57,17 @@ class Fl_EditImage_Widget : public Fl_Group{
 
 	public:
 
-	Fl_EditImage_Widget( int x, int y, int w, int h, const char* label = 0L ) : 
-		Fl_Group( x, y, w, h, label ),
-		imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .5), "Image" ),
-		lowerBound( X( *this, 0. ), Y( *this, 0.6 ), W( *this, 1. ), H( *this, .15 ), "Low" ),
-		upperBound( X( *this, 0. ), Y( *this, 0.85 ), W( *this, 1. ), H( *this, .15 ), "High" )
-	{
-		Fl_Group::add( imgWidget );
-		Fl_Group::add( lowerBound );
-		Fl_Group::add( upperBound );
-		
-		this->hide();
-	
-	}
+	Fl_EditImage_Widget( int x, int y, int w, int h, const char* label = 0L );
 
-	void assignImage( const greyImage& img ){
-		imgWidget.assignImage( img );
-	
-		
+	void assignImage( const greyImage& img );
 
-		lowerBound.bounds(0.,1.);
-	
-	
-	}
+	void handleEvents( void );
 
 
 	private:
 	
 	Fl_Image_Widget imgWidget;
-	Own_Valuator<Fl_Value_Slider> lowerBound;
-	Own_Valuator<Fl_Value_Slider> upperBound;
+	Own_Valuator<Fl_Hor_Value_Slider> lowerBound;
+	Own_Valuator<Fl_Hor_Value_Slider> upperBound;
 
 };

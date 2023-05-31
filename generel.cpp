@@ -180,7 +180,7 @@ Zrange::Zrange( const signed long long start_, const signed long long end_ ) : s
 */
 
 template<>
-size_t serializeBuildIn<string>( const string val, vector<char>& binData ){
+size_t serializeBuildIn<string>( const string& val, vector<char>& binData ){
 
 	size_t i = 0;
 	size_t padding = 24;
@@ -201,6 +201,28 @@ size_t serializeBuildIn<string>( const string val, vector<char>& binData ){
 
 	return i;
 }
+
+template<>
+size_t serializeBuildIn<vector<vector<v2CR>>>( const vector<vector<v2CR>>& vec, vector<char>& binData ){
+
+	size_t i = 0;
+
+	i += serializeBuildIn<size_t>( vec.size(), binData );
+
+	for( const vector<v2CR>& subVec : vec ){
+
+		i += serializeBuildIn<size_t>( subVec.size(), binData );
+		
+		for( const v2CR& value : subVec ){
+			i +=value.serialize( binData );
+		}
+
+	}
+
+	return i;
+
+}
+
 
 template<>
 size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
@@ -228,6 +250,26 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 	return i;
 }
 
+template<>
+vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binData, vector<char>::const_iterator& it ){
+
+	size_t numSubVecs = deSerializeBuildIn<size_t>( (size_t) 0, binData, it );
+	vector<vector<v2CR>> vec;
+
+	for( size_t i = 0; i < numSubVecs; i++ ){
+
+		size_t numElements = deSerializeBuildIn<size_t>( (size_t) 0, binData, it );
+		vector<v2CR> subVec( numElements, v2CR( 0., 0. ) );
+
+		for( size_t j = 0; j < numElements; j++ ){
+			subVec.at( j ) =  v2CR( binData, it );
+		}
+
+		vec.push_back( subVec );
+	}
+
+	return vec;
+}
 
 bool exportSerialized( const path filePath, const vector<char> binData ){
 

@@ -73,6 +73,8 @@ class processingView : public Fl_Window{
 			Fl_Window::show();
 		}
 
+		sinogramWidget.handleEvents();
+
 	}
 	
 	
@@ -82,7 +84,7 @@ class processingView : public Fl_Window{
 	void assignSinogram( const radonTransformed newSinogram ){
 
 		//sinogram = newSinogram;
-		sinogramImg = greyImage( newSinogram.Data() );
+		sinogramImg = greyImage( newSinogram.Data(), true );
 
 		sinogramWidget.assignImage( sinogramImg );
 
@@ -96,7 +98,8 @@ class processingView : public Fl_Window{
 
 	Fl_Group sinogramGrp;
 	greyImage sinogramImg;
-	Fl_Image_Widget sinogramWidget;
+	//Fl_Image_Widget sinogramWidget;
+	Fl_EditImage_Widget sinogramWidget;
 
 	Fl_Group filterGrp;
 	

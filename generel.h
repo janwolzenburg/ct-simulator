@@ -271,7 +271,8 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
  * @return Amount of bytes appended
 */
 template< typename T >
-size_t serializeBuildIn( const T val, vector<char>& binData );
+size_t serializeBuildIn( const T& val, vector<char>& binData );
+
 
 /*!
  * @brief Serialize string
@@ -280,7 +281,10 @@ size_t serializeBuildIn( const T val, vector<char>& binData );
  * @return Amount of bytes appended
 */
 template<>
-size_t serializeBuildIn<string>( const string val, vector<char>& binData );
+size_t serializeBuildIn<string>( const string& val, vector<char>& binData );
+
+template<>
+size_t serializeBuildIn<vector<vector<v2CR>>>( const vector<vector<v2CR>>& val, vector<char>& binData );
 
 
 /*!
@@ -300,8 +304,13 @@ size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<
 template< typename T>
 T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
+
+
 template< typename T>
 T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it );
+
+template<>
+vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binData, vector<char>::const_iterator& it );
 
 
 /*!

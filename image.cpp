@@ -42,7 +42,7 @@ greyImage::greyImage( void ) :
 }
 
 
-greyImage::greyImage( const grid source ) :
+greyImage::greyImage( const grid source, const bool normalizeImg ) :
 	greyImage{ source.Size().col, source.Size().row }{
 
 	for( size_t c = 0; c < width; c++ ){
@@ -51,7 +51,8 @@ greyImage::greyImage( const grid source ) :
 		}
 	}
 
-	normalize();
+	if( normalizeImg )
+		normalize();
 }
 
 
@@ -68,11 +69,11 @@ greyImage::greyImage( const greyImage& srcImg, const size_t newWidth, const size
 			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.Height() - 1. ) / ( (double) this->Height() - 1. ) );
 
 			this->operator()( c, r ) = srcImg( srcC, srcR );
+			this->charData( c, r ) = srcImg.charData( srcC, srcR );
 
 		}
 	}
 
-	normalize();
 }
 
 
@@ -87,7 +88,7 @@ greyImage::greyImage( const vector<char>& binData, vector<char>::const_iterator&
 		data.at( i ) = deSerializeBuildIn( 0., binData, it );
 	}
 
-	normalize();
+	//normalize();
 }
 
 
@@ -103,25 +104,35 @@ greyImage& greyImage::operator=( const greyImage& srcImg ){
 	return *this;
 }
 
+size_t greyImage::index( const size_t c, const size_t r ) const{
+	size_t idx = c + r * width;
+	if( idx >= numPixel ) idx = numPixel - 1;
+
+	return idx;
+}
 
 double greyImage::operator()( const size_t c, const size_t r ) const{
 
-	size_t idx = c + r * width;
-	if( idx >= numPixel ) idx = numPixel - 1;
-
-	return data.at( idx );
+	return data.at( index( c, r ) );
 
 }
 
+unsigned char greyImage::charData( const size_t c, const size_t r ) const{
+
+	return imData.at( index( c, r ) );
+
+}
 
 double& greyImage::operator()( const size_t c, const size_t r ){
 
-	size_t idx = c + r * width;
-	if( idx >= numPixel ) idx = numPixel - 1;
-
-	return data.at( idx );
+	return data.at( index( c, r ) );
 }
 
+unsigned char& greyImage::charData( const size_t c, const size_t r ){
+
+	return imData.at( index( c, r ) );
+
+}
 
 size_t greyImage::serialize( vector<char>& binData ) const{
 

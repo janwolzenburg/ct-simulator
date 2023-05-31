@@ -48,7 +48,7 @@ class greyImage{
 	 * @brief Construct image from grid
 	 * @param source Source grid
 	*/
-	greyImage( const grid source );
+	greyImage( const grid source, const bool normalize = false );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -66,6 +66,9 @@ class greyImage{
 	*/
 	greyImage( const vector<char>& binData, vector<char>::const_iterator& it );
 
+
+	size_t index( const size_t c, const size_t r ) const;
+
 	/*!
 	 * @brief Assignment operator
 	 * @param srcImg Source image
@@ -80,6 +83,8 @@ class greyImage{
 	 * @return Value at ( c, r )
 	*/
 	double operator()( const size_t c, const size_t r ) const;
+
+	unsigned char charData( const size_t c, const size_t r ) const;
 
 	/*!
 	 * @brief Get Width
@@ -154,6 +159,8 @@ class greyImage{
 	 * @return Reference to value at ( c, r )
 	*/
 	double& operator()( const size_t c, const size_t r );
+
+	unsigned char& charData( const size_t c, const size_t r );
 
 	/*!
 	 * @brief Normalize unsigned char data

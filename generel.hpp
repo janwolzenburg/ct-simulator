@@ -28,7 +28,7 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 }
 
 template< typename T >
-size_t serializeBuildIn( const T val, vector<char>& binData ){
+size_t serializeBuildIn( const T& val, vector<char>& binData ){
 
 	size_t i = 0;
 
@@ -39,6 +39,7 @@ size_t serializeBuildIn( const T val, vector<char>& binData ){
 	return sizeof(T);
 
 }
+
 
 template< typename T >
 size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it ){
@@ -65,6 +66,7 @@ T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::c
 	return temp;
 
 }
+
 
 template< typename T >
 T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it ){

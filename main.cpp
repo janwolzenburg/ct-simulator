@@ -49,6 +49,10 @@ int main( int argc, char** argv ){
 	procView->hide();
 
 
+	if( state.RadonTransformedLoaded() ){
+		procView->setNewRTFlag();
+	}
+
 	while( Fl::wait() ){
 		
 		mainWindow->handleEvents();
