@@ -124,18 +124,18 @@ void plot::drawPlot( void ){
 	lineplot implementation
 */
 
-linePlot::linePlot( const string name_, const string xlabel_, const string ylabel_,
+lineplot::lineplot( const string name_, const string xlabel_, const string ylabel_,
 			const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
 	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ),
 	X(), Y(){
 
 }
 
-linePlot::linePlot( void ) :
+lineplot::lineplot( void ) :
 	plot(),
 	X(), Y(){}
 
-void linePlot::assignData( const vector<double> X_, const vector<double> Y_ ){
+void lineplot::assignData( const vector<double> X_, const vector<double> Y_ ){
 
 	X = X_;
 	Y = Y_;
@@ -156,13 +156,13 @@ void linePlot::assignData( const vector<double> X_, const vector<double> Y_ ){
 }
 
 
-void linePlot::assignData( const vectorPair XY ){
+void lineplot::assignData( const vectorPair XY ){
 
 	assignData( XY.first, XY.second );
 
 }
 
-void linePlot::create( void ){
+void lineplot::create( void ){
 
 	plot::reset();
 	plot::plot2D.drawCurve( X, Y );
@@ -176,36 +176,36 @@ void linePlot::create( void ){
 	geoplot implementation
 */
 
-Fl_Geoplot::Fl_Geoplot( const string name_, const string xlabel_, const string ylabel_,
+geoplot::geoplot( const string name_, const string xlabel_, const string ylabel_,
 		 const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
 	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ){
 
 }
 
-Fl_Geoplot::Fl_Geoplot( void ) :
+geoplot::geoplot( void ) :
 	plot(){}
 
 
-void Fl_Geoplot::addLine( const v2 start, const v2 end ){
+void geoplot::addLine( const v2 start, const v2 end ){
 
 	lines.emplace_back( v2( limits.xFactor * start.x, limits.yFactor * start.y ), v2( limits.xFactor * end.x, limits.yFactor * end.y ) );
 
 }
 
-void Fl_Geoplot::addPoint( const v2 point ){
+void geoplot::addPoint( const v2 point ){
 
 	points.emplace_back( v2( limits.xFactor * point.x, limits.yFactor * point.y ) );
 
 }
 
-void Fl_Geoplot::resetObjects( void ){
+void geoplot::resetObjects( void ){
 
 	lines.clear();
 	points.clear();
 
 }
 
-void Fl_Geoplot::create( void ){
+void geoplot::create( void ){
 
 	plot::reset();
 

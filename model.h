@@ -244,6 +244,7 @@ class model : virtual public mathObj{
 	cartCSys* cSys;								/*!<Coordinate system*/
 	string name;								/*!<Model name*/
 
+
 	private:
 
 	/*!

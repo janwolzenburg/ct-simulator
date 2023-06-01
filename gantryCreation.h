@@ -31,8 +31,8 @@ using std::vector;
 #include "gantry.h"
 #include "widgets.h"
 #include "Fl_Plot.h"
-#include "Fl_Lineplot.h"
-#include "Fl_Geoplot.h"
+#include "lineplot.h"
+#include "geoplot.h"
 
 class gantryEdition : public Fl_Group{
 
@@ -43,7 +43,7 @@ class gantryEdition : public Fl_Group{
 
 	inline void setUpdateFlag( void ){ updateGantry = true; };
 
-	inline bool UpdateGantry( void ){ return updateGantry ? !( updateGantry = false ) : false; };
+	inline bool UpdateGantry( void ){ return updateGantry ? ( !( updateGantry = false ) ) : false; };
 
 	void handleEvents( void );
 
@@ -68,10 +68,10 @@ class gantryEdition : public Fl_Group{
 
 	Fl_Group specView;
 
-	Fl_Plot<Fl_LinePlot> spectrumPlot;
+	Fl_Plot<lineplot> spectrumPlot;
 
 	Fl_Group detectorView;
-	Fl_Plot<Fl_Geoplot> detectorPlot;
+	Fl_Plot<geoplot> detectorPlot;
 
 	bool updateGantry;
 

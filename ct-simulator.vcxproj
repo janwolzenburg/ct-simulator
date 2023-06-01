@@ -168,12 +168,12 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
-    <ClInclude Include="Fl_Geoplot.h" />
+    <ClInclude Include="geoplot.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="monoImage.h" />
-    <ClInclude Include="Fl_Lineplot.h" />
+    <ClInclude Include="lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />
     <ClInclude Include="mainWindow.h" />
     <ClInclude Include="model.h" />

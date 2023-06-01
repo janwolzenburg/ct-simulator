@@ -92,39 +92,37 @@ size_t tubeParameter::serialize( vector<char>& binData ) const{
 
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	cSys( cSys_ ),
-	anodeVoltage_V(Fpos( parameter_.anodeVoltage_V )),
-	anodeCurrent_A(Fpos( parameter_.anodeCurrent_A )),
+	anodeVoltage_V( Fpos( parameter_.anodeVoltage_V )),
+	anodeCurrent_A( Fpos( parameter_.anodeCurrent_A )),
 	anodeAtomicNumber( Fpos( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
-	totalPower_W(k_1PerV* anodeAtomicNumber* anodeCurrent_A* pow(anodeVoltage_V, 2)),
-	maxRadiationFrequency_Hz(e_As * anodeVoltage_V / h_Js)
+	totalPower_W( k_1PerV * anodeAtomicNumber * anodeCurrent_A * pow( anodeVoltage_V, 2 ) ),
+	maxRadiationEnergy_eV( anodeVoltage_V )
 {
 
 	// Frequencies
-	vector<double> frequencies = linearSpace(alFilterCutOffFrequency, maxRadiationFrequency_Hz, numPointsInSpectrum);
+	vector<double> energies = linearSpace( alFilterCutOffEnergy_eV, maxRadiationEnergy_eV, numPointsInSpectrum);
 
 	// Values
-	vector<double> spectralPower(frequencies.size(), 0.);
-
-	//TODO change einheiten
+	vector<double> spectralPower( energies.size(), 0.);
 
 	// Frequency to which the filter dominates spectral behavious
-	double changeFrequency = frequencies.front() + (frequencies.back() - frequencies.front()) / (1. - alFilterGradiantFactor);
+	double changeEnergy = energies.front() + ( energies.back() - energies.front()) / (1. - alFilterGradiantFactor);
 
 	// Fill value vector
-	for (auto freqIt = frequencies.begin(); freqIt < frequencies.end(); freqIt++) {
-		size_t curIdx = freqIt - frequencies.begin();	// Current index
+	for (auto energyIt = energies.begin(); energyIt < energies.end(); energyIt++) {
+		size_t curIdx = energyIt - energies.begin();	// Current index
 
 		double bremsGradient = -1;											// Gradient of brems spectrum
 		double filterGradient = alFilterGradiantFactor * bremsGradient;		// Gradient of filter spectrum
 
 		// Filter dominates
-		if (*freqIt < changeFrequency) {
-			spectralPower.at(curIdx) = (*freqIt - frequencies.front()) * filterGradient;
+		if ( *energyIt < changeEnergy ) {
+			spectralPower.at(curIdx) = ( *energyIt - energies.front() ) * filterGradient;
 			continue;
 		}
 
 		// Bremsspectrum dominates
-		spectralPower.at(curIdx) = (frequencies.back() - *freqIt) * (-bremsGradient);
+		spectralPower.at(curIdx) = ( energies.back() - *energyIt ) * ( -bremsGradient );
 	}
 
 
@@ -136,11 +134,11 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	scale(spectralPower, correctionFactor);
 
 	// Write frequency and power values to spectrum
-	xRay_spectrum = spectrum{ frequencies, spectralPower };
+	xRay_spectrum = spectrum( energies, spectralPower );
 
 };
 
-range tube::getFrequencyRange( void ) const{
+range tube::getEnergyRange( void ) const{
 	
 	return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax()};
 
@@ -200,4 +198,34 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 
 	return rays;
 
+}
+
+
+vectorPair tube::spectrumPoints( const bool integral ) const{
+
+	vectorPair points;
+	const vector<v2> spectrumPoints = xRay_spectrum.rawData();
+
+	double xCorrection = 1.;
+	double yCorrection = 1.;
+
+	if( integral ){
+		yCorrection *= 1 / xRay_spectrum.EnergyResolution();
+	}
+
+
+	for( auto& point : spectrumPoints ){
+
+		points.first.push_back( point.x );
+
+
+		if( integral ){
+			points.second.push_back( point.y * yCorrection );
+		}
+		else{
+			points.second.push_back( point.y );
+		}
+	}
+
+	return points;
 }

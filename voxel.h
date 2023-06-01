@@ -56,7 +56,7 @@ class voxData{
 	 * @param attenuationAtFrequency Attenuation coefficient at given frequency
 	 * @param frequency Frequency
 	*/
-	voxData( const double attenuationAtFrequency, const double frequency = freqAtRefE );
+	voxData( const double attenuationAtEnergy, const double energy );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -71,11 +71,11 @@ class voxData{
 	voxData( void );
 
 	/*!
-	 * @brief Get the attenuation at given frequency
+	 * @brief Get the attenuation at given energy
 	 * @param frequency Frequency
 	 * @return Attenuation 
 	*/
-	double attenuationAt( const double frequency ) const;
+	double attenuationAt( const double energy ) const;
 
 	/*!
 	 * @brief Get attenuation at reference energy
@@ -93,8 +93,9 @@ class voxData{
 	private:
 
 	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/
-	static const double freqAtRefE;				/*!<Frequency at reference Enery*/
-	static const double freqAtRefE_3;			/*!<Third power of reference frequency*/
+	static const double referenceEnergy_3;		/*!<Cube of reference energy*/
+	//static const double freqAtRefE;				/*!<Frequency at reference Enery*/
+	//static const double freqAtRefE_3;			/*!<Third power of reference frequency*/
 
 	double attenuation = -1;					/*!<Absorption coefficient at reference Energy*/
 
@@ -103,11 +104,11 @@ class voxData{
 
 	/*!
 	 * @brief Return the 
-	 * @param attenuationAtFrequency 
+	 * @param attenuationAtEnergy
 	 * @param frequency 
 	 * @return 
 	*/
-	double attenuationAtRefE( const double attenuationAtFrequency, const double frequency ) const;
+	double attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const;
 
 };
 

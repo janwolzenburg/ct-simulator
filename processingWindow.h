@@ -18,7 +18,7 @@
 
  #include "Fl_GridImage.h"
  #include "monoImage.h"
- #include "Fl_Lineplot.h"
+ #include "lineplot.h"
 
  #include "programState.h"
  #include "radonTransform.h"
@@ -104,7 +104,7 @@ class processingView : public Fl_Window{
 	Fl_Group filterGrp;
 	
 	discreteFilter::TYPE filterType;
-	Fl_Plot<linePlot> filterPlot;
+	Fl_Plot<lineplot> filterPlot;
 
 	//filteredProjections projectionsFilt;
 

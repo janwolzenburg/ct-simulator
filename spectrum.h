@@ -17,9 +17,9 @@
 using std::vector;
 #include <functional>
 
-
 #include "generel.h"
 #include "voxel.h"
+
 
 
 /*********************************************************************
@@ -96,7 +96,7 @@ class spectrum {
 
 	inline vector<v2> rawData( void ) const { return data; };
 
-	inline double FrequencyResolution( void ) const { return frequencyResolution; };
+	inline double EnergyResolution( void ) const { return energyResolution; };
 
 	private:
 
@@ -109,7 +109,7 @@ class spectrum {
 	private:
 
 	vector<v2> data;		/*!<2D point data sorted by x value*/
-	double frequencyResolution;
+	double energyResolution;
 	double mean;			/*!<Mean Frequency of spectrum*/
 
 };

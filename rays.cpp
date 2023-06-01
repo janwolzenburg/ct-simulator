@@ -33,7 +33,8 @@ rayProperties::rayProperties( const spectrum spectrum_ ) :
 {};
 
 rayProperties::rayProperties( void ) : 
-	energySpectrum( spectrum{} )
+	energySpectrum( spectrum{} ),
+	voxHits( 0 )
 {};
 
 spectrum rayProperties::EnergySpectrum( void ) const{

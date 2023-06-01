@@ -28,7 +28,7 @@ using std::for_each;
 
 spectrum::spectrum(void) : 
 	mean( 0. ),
-	frequencyResolution( 1. )
+	energyResolution( 1. )
 {
 
 }
@@ -47,15 +47,15 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 	// Sort data by x value
 	sort( data.begin(), data.end(), []( const v2& d1, const v2& d2) { return d1.x < d2.x; } );
 
-	frequencyResolution = data.at( 1 ).x - data.at( 0 ).x;
+	energyResolution = data.at( 1 ).x - data.at( 0 ).x;
 
 	// Check consistency
 	for( auto dataIt = data.cbegin() + 1; dataIt < data.cend(); dataIt++ ){
 
 		double diff = ( dataIt )->x - ( dataIt - 1 )->x;
 
-		if( !isEqErrPercent( frequencyResolution, diff, .005 ) ){
-			cerr << "Spectrum must have frequency equally spaced!" << endl;
+		if( !isEqErrPercent( energyResolution, diff, .005 ) ){
+			cerr << "Spectrum must have energies equally spaced!" << endl;
 		}
 
 
