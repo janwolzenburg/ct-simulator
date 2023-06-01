@@ -10,13 +10,13 @@
 
  #include "generelMath.h"
 
-constexpr double EPSILON = 1E-9;								/*!< Error for equality determination of floating point numbers in mm */
+constexpr double EPSILON = 1E-9;									/*!< Error for equality determination of floating point numbers in mm */
 
-constexpr double alFilterCutOffFrequency = 16000. * e_As / h_Js;	// Cut of energy/frequency in roentgen spectrum by 2mm aluminium filter
-constexpr double alFilterGradiantFactor = -3.5;						// Quotient of filter gradient to bremsstrahlung gradient
+constexpr double alFilterCutOffFrequency = 16000. * e_As / h_Js;	/*!< Cut of energy / frequency in roentgen spectrum by 2mm aluminium filter */
+constexpr double alFilterGradiantFactor = -3.5;						/*!< Quotient of filter gradient to bremsstrahlung gradient */
 
-constexpr double MAX_DETECTOR_ANGLE = 2. * PI * ( 60. / 360. );
-constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );
+constexpr double MAX_DETECTOR_ANGLE = 2. * PI * ( 60. / 360. );		/*!<Maximum angle of detector arc*/
+constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );		/*!<Minimum angle opf detector arc*/
 
 
 

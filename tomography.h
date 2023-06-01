@@ -25,6 +25,9 @@
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for tomography parameter
+*/
 class tomographyParameter{
 
 	public:
@@ -76,9 +79,7 @@ class tomography{
 
 	private:
 
-	//gantry& Gantry;				/*!<Gantry*/
-	//model& Model;				/*!<Model*/
-	tomographyParameter parameter;
-	cartCSys* radonCSys;		/*!<Coordinate system to use as reference for radon coordinates calculation*/
+	tomographyParameter parameter;	/*!<Parameter used for tomography*/
+	cartCSys* radonCSys;			/*!<Coordinate system to use as reference for radon coordinates calculation*/
 };
 

@@ -58,7 +58,7 @@ class randomNumberGenerator{
 
 	std::default_random_engine generator;						/*!<Generator*/
 	std::uniform_int_distribution<unsigned int> distribution;	/*!<Uniform distribution*/
-	mutex mu;												/*!<Mutex for thread safety*/
+	mutex mu;													/*!<Mutex for thread safety*/
 
 };
 

@@ -71,6 +71,12 @@ cSysTree::cSysTree( void ){
 	numSystems = 2;
 }
 
+cSysTree::~cSysTree( void ){
+
+	delete[] systems;
+
+}
+
 cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const cartCSys* parent_, const string name_ ){
 	// Is the given parent valid in this tree
 	if( !validTreeElement( parent_ ) ){

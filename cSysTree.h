@@ -56,6 +56,8 @@ class cSysTree : virtual public mathObj{
 	*/
 	static cSysTree& getInstance();
 
+	~cSysTree( void );
+
 	/*!
 	 * @brief Convert coordinate tree's data
 	 * @return String with tree's data

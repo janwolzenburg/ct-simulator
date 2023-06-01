@@ -96,7 +96,7 @@ class voxData{
 	static const double freqAtRefE;				/*!<Frequency at reference Enery*/
 	static const double freqAtRefE_3;			/*!<Third power of reference frequency*/
 
-	double attenuation = -1;			/*!<Absorption coefficient at 120keV*/
+	double attenuation = -1;					/*!<Absorption coefficient at reference Energy*/
 
 
 	private:

@@ -61,7 +61,7 @@ class rayProperties{
 	private:
 
 	spectrum energySpectrum;	/*!<Energy spectrum*/
-	size_t voxHits;
+	size_t voxHits;				/*!<Counter for voxels hit during transmission*/
 
 };
 
@@ -159,6 +159,7 @@ class ray : public line{
 	inline void resetHitCounter( void ){ properties.voxHits = 0; };
 
 	inline size_t VoxelHits( void ) const { return properties.voxHits; };
+
 
 	private:
 

@@ -60,6 +60,10 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	cartCSys* createCopy( const string newName ) const;
 	
+	/*!
+	 * @brief Copy data from source to this
+	 * @param sourceCSys Source system
+	*/
 	void copyFrom( const cartCSys* const sourceCSys );
 
 	/*!

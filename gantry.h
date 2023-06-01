@@ -132,8 +132,16 @@ class gantry {
 	*/
 	rayScattering& RayScattering( void ){ return rayScatterAngles; };
 
+	/*!
+	 * @brief Get reference to detector instance
+	 * @return Reference to detector instance
+	*/
 	inline const detector& Detector( void ) const{ return rayDetector; };
 
+	/*!
+	 * @brief Get reference to tube instance
+	 * @return Reference to tube instance
+	*/
 	inline const tube& Tube( void ) const{ return raySource; };
 
 

@@ -37,6 +37,12 @@ class surf : virtual public mathObj{
 	*/
 	explicit surf( const uvec3  v1, const uvec3  v2, const pnt3  p );
 
+	/*!
+	 * @brief Construct from binary data
+	 * @param binData Data vector
+	 * @param it Iterator
+	 * @param cSys_ System to assign surface to
+	*/
 	surf( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
@@ -146,6 +152,12 @@ class surfLim : public surf{
 	*/
 	surfLim( void );
 
+	/*!
+	 * @brief Construct from binary data
+	 * @param binData Data vector
+	 * @param it Iterator
+	 * @param cSys_ System to assign surface to
+	*/
 	surfLim( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
