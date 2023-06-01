@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include <numeric>
+#include <map>
 #include "generel.h"
 
 
@@ -37,6 +38,7 @@ class discreteFilter{
 		sheppLogan		/*!<Shepp and Logan*/
 	};
 
+	static const std::map<TYPE, string> filterTypes;
 
 	/*!
 	 * @brief Constructor
@@ -49,6 +51,20 @@ class discreteFilter{
 	discreteFilter( void ) : 
 		discreteFilter( Zrange( -5, 5 ), 1., constant )
 	{}
+
+	const static discreteFilter::TYPE getEnum( const string searchString ){
+		for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
+
+			if( typeString == searchString ){
+
+				return typeEnum;
+
+			}
+		}
+
+		return constant;
+
+	}
 
 	/*!
 	 * @brief Get values of filter kernel

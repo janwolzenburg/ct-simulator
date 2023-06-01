@@ -31,7 +31,7 @@
 const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
 
 
-const std::map < MATERIAL, std::pair<string, size_t>> tubeParameter::material{
+const std::map < tubeParameter::MATERIAL, std::pair<string, size_t>> tubeParameter::material{
 		{ COPPER,		std::make_pair( "COPPER", 29 ) },
 		{ MOLYBDENUM,	std::make_pair( "MOLYBDENUM", 42 ) },
 		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
@@ -57,7 +57,7 @@ tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_i
 {}
 
 
-const MATERIAL tubeParameter::getEnum( const string materialString ){
+const tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
 	for( auto& [matEnum, value] : tubeParameter::material ){
 
 		if( materialString == value.first ){

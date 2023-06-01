@@ -161,11 +161,25 @@ range::range( void ) :
 
 }
 
+range::range( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	start( deSerializeBuildIn( 0., binData, it ) ),
+	end( deSerializeBuildIn( 0., binData, it ) ){
+
+}
+
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;
 	return Diff() / ( number - 1 );
 }
 
+size_t range::serialize( vector<char>& binData ) const{
+	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( start, binData );
+	numBytes += serializeBuildIn( end, binData );
+
+	return numBytes;
+}
 
 /*!
  * Zrange implementation

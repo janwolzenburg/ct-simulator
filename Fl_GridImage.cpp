@@ -117,6 +117,13 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 
 }
 
+void Fl_GridImage_Adjust::changeContrast( const range bounds ){
+
+	lowerBound.value( bounds.start < imgWidget.originalImage.minimum() ? imgWidget.originalImage.minimum() : bounds.start );
+	upperBound.value( bounds.end > imgWidget.originalImage.maximum() ? imgWidget.originalImage.maximum() : bounds.end );
+
+}
+
 void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	imgWidget.assignImage( img );
@@ -136,12 +143,12 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 }
 
-void Fl_GridImage_Adjust::handleEvents( void ){
+bool Fl_GridImage_Adjust::handleEvents( void ){
 
 	bool updateImage = false;
 
 	if( lowerBound.ChangeFlag() ){
-		if( lowerBound.value() > upperBound.value() ){
+		if( lowerBound.value() >= upperBound.value() ){
 			lowerBound.value( upperBound.value() - ( lowerBound.maximum() - lowerBound.minimum() ) / 200. );
 		}
 
@@ -149,7 +156,7 @@ void Fl_GridImage_Adjust::handleEvents( void ){
 	}
 
 	if( upperBound.ChangeFlag() ){
-		if( upperBound.value() < lowerBound.value() ){
+		if( upperBound.value() <= lowerBound.value() ){
 			upperBound.value( lowerBound.value() + ( upperBound.maximum() - upperBound.minimum() ) / 200. );
 		}
 
@@ -162,5 +169,7 @@ void Fl_GridImage_Adjust::handleEvents( void ){
 		imgWidget.updateScaled();
 
 	}
+
+	return updateImage;
 
 }

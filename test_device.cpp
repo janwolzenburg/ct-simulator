@@ -25,6 +25,7 @@ using std::vector;
 #include "plotting.h"
 #include "gantry.h"
 #include "radonTransform.h"
+#include "filter.h"
 
 detector getTestDetector( void ){
 	// 64 x 32 points in radon space
@@ -51,7 +52,7 @@ bool test_tube(void) {
 
 	tubeParameter tubeParas{	53000,
 								0.2,
-								THUNGSTEN };
+								tubeParameter::THUNGSTEN };
 
 	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
 
@@ -410,7 +411,7 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 	tubeParameter tubeParas{ 100000,
 								0.2,
-								THUNGSTEN };
+								tubeParameter::THUNGSTEN };
 
 
 	detectorRadonParameter radonParameter{

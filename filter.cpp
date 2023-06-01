@@ -20,6 +20,14 @@
    Implementations
 *********************************************************************/
 
+const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
+		{ constant,	"Constant" },
+		{ absolute,	"Absolute" },
+		{ ramLak,	"RamLak" },
+		{ sheppLogan,"SheppLogan" },
+};
+
+
 discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
 	type( type_ ),
 	pointsRange( pointsRange_ ),

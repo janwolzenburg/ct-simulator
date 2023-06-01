@@ -321,6 +321,9 @@
     <ClInclude Include="geoplot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
+    <ClInclude Include="processingParameters.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -440,7 +443,7 @@
     <ClCompile Include="positions.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Fl_GreyImage.cpp">
+    <ClCompile Include="Fl_GridImage.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="widgets.cpp">
@@ -465,6 +468,9 @@
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="plots.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="processingParameters.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
   </ItemGroup>

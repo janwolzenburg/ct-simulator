@@ -30,6 +30,7 @@ class filteredProjections : private grid {
 
 	public:
 
+
 	filteredProjections( void );
 
 	/*!
@@ -38,7 +39,7 @@ class filteredProjections : private grid {
 	 * @param filterType Type of filter to apply
 	*/
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
-	
+
 	/*!
 	 * @brief Get value at angle index at given distance
 	 * @param angleIdx Angle index

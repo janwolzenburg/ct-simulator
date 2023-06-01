@@ -31,7 +31,7 @@
  #include "backprojection.h"
  #include "mainWindow.fwd.h"
  #include "processingWindow.fwd.h"
-
+ #include "processingParameters.h"
 
  /*********************************************************************
 	Definitions
@@ -114,6 +114,8 @@ class programState{
 
 	inline processingView* ProcessingWindow( void ) const{ return processingWindow; };
 
+	inline processingParameter& ProcessingParameters( void ){ return currentProcessingParameters; };
+
 
 	private:
 
@@ -165,7 +167,11 @@ class programState{
 	radonTransformed currentProjections;
 	storedObject<radonTransformed> storedProjections;
 
+	processingParameter currentProcessingParameters;
+	storedObject<processingParameter> storedProcessingParameters;
+
 	filteredProjections currentFilteredProjections;
+
 	reconstrucedImage currentReconstrucedImage;
 
 

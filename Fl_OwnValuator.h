@@ -39,7 +39,7 @@ class Fl_OwnValuator : public C{
 
 	bool ChangeFlag( void );
 
-	double value( void );
+	double value( void ) const;
 
 	int value( double newVal );
 

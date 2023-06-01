@@ -33,13 +33,6 @@ using std::vector;
 constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 
 
-enum MATERIAL{
-	COPPER,
-	MOLYBDENUM,
-	THUNGSTEN
-};
-
-
 /*!
  * @brief Parameter for x-ray tube
 */
@@ -49,6 +42,13 @@ class tubeParameter {
 
 	static const string FILE_PREAMBLE;
 	
+
+	enum MATERIAL{
+		COPPER,
+		MOLYBDENUM,
+		THUNGSTEN
+	};
+
 	/*!
 	 * @brief Material map. Combines enumeration with name and atomic number
 	*/

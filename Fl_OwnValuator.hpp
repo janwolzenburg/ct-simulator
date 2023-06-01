@@ -59,7 +59,7 @@ bool Fl_OwnValuator<C>::ChangeFlag( void ){
 
 
 template< class C >
-double Fl_OwnValuator<C>::value( void ){
+double Fl_OwnValuator<C>::value( void ) const{
 	return Fl_Valuator::value();
 }
 
@@ -68,6 +68,8 @@ template< class C >
 int Fl_OwnValuator<C>::value( double newVal ){
 
 	bool valueReturn = Fl_Valuator::value( newVal );
+
+	changeFlag = true;
 
 	if( valueToLabel )
 		updateLabel();

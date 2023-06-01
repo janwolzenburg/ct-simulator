@@ -67,8 +67,12 @@ programState::programState( void ) :
 	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter ),
 
 	currentProjections(),
-	storedProjections( programState::getPath( "storedProjections.txt" ), currentProjections )
+	storedProjections( programState::getPath( "storedProjections.txt" ), currentProjections ),
 
+	currentProcessingParameters(),
+	storedProcessingParameters( programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters ),
+
+	currentFilteredProjections()
 
 {
 
@@ -89,6 +93,7 @@ programState::~programState( void ) {
 	storedDetectorParameter.saveObject( true );
 	storedTomographyParamerter.saveObject( true );
 	storedProjections.saveObject();
+	storedProcessingParameters.saveObject( true );
 }
 
 

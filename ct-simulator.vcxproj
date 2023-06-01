@@ -189,6 +189,7 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="processingParameters.h" />
     <ClInclude Include="processingWindow.fwd.h" />
     <ClInclude Include="processingWindow.h" />
     <ClInclude Include="programState.fwd.h" />
@@ -233,7 +234,7 @@
     <ClCompile Include="equationSystem.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
-    <ClCompile Include="Fl_GreyImage.cpp" />
+    <ClCompile Include="Fl_GridImage.cpp" />
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -254,6 +255,7 @@
     <ClCompile Include="positions.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
+    <ClCompile Include="processingParameters.cpp" />
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="scattering.cpp" />

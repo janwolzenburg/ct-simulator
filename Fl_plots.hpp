@@ -123,5 +123,5 @@ void Fl_Plot<plotType>::assignImage( const path filename ){
 	delete sourceImage;
 	sourceImage = new Fl_PNG_Image{ filename.string().c_str() };
 
-	draw();
+	redraw();
 }

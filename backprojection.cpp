@@ -20,6 +20,7 @@
    Implementations
 *********************************************************************/
 
+
 filteredProjections::filteredProjections( void ) :
 	grid()
 {
@@ -73,6 +74,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	}
 
 }
+
 
 double filteredProjections::getValue( const size_t angleIdx, const double distance ) const{
 

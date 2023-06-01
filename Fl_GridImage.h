@@ -59,10 +59,13 @@ class Fl_GridImage_Adjust : public Fl_Group{
 
 	Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label = 0L );
 
+	void changeContrast( const range bounds );
+
 	void assignImage( const monoImage& img );
 
-	void handleEvents( void );
+	bool handleEvents( void );
 
+	inline range getContrast( void ) const{ return range( lowerBound.value(), upperBound.value() ); };
 
 	private:
 	

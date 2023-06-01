@@ -77,7 +77,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		for( auto& el : tubeParameter::material ) materialNames.push_back( el.second.first );
 
 		materialIn.setElements( materialNames );
-		MATERIAL anodeMaterial = PROGRAM_STATE().TubeParameter().anodeMaterial;
+		tubeParameter::MATERIAL anodeMaterial = PROGRAM_STATE().TubeParameter().anodeMaterial;
 		string materialName = tubeParameter::material.at( anodeMaterial ).first;
 		materialIn.value( materialName );
 

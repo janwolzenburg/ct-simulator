@@ -203,7 +203,10 @@ class range{
 	public:
 
 	range( const double start_, const double end_ );
+	
 	range( void );
+
+	range( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Get the size of the interval
@@ -219,6 +222,9 @@ class range{
 	 * @detail Resolution = (end - start) / (number - 1)
 	*/
 	double Resolution( const size_t number ) const;
+
+
+	size_t serialize( vector<char>& binData ) const;
 
 
 	double start;
