@@ -28,8 +28,9 @@
 
 
 const double voxData::referenceEnergy = 120000.;				/*!< Energy at which the attenuation coefficient is valid */
-const double voxData::freqAtRefE = referenceEnergy / h_eVs;
-const double voxData::freqAtRefE_3 = pow( freqAtRefE, 3 );
+const double voxData::referenceEnergy_3 = pow( voxData::referenceEnergy, 3. );
+//const double voxData::freqAtRefE = referenceEnergy / h_eVs;
+//const double voxData::freqAtRefE_3 = pow( freqAtRefE, 3 );
 
 voxData::voxData( const double attenuationAtFrequency, const double frequency ) :
 	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) )
@@ -43,9 +44,7 @@ voxData::voxData( void ) :
 	attenuation( -1 )
 {}
 
-double voxData::attenuationAt( const double frequency ) const{
-
-	const double energy = frequency * h_eVs;
+double voxData::attenuationAt( const double energy ) const{
 
 	// Attenuation coefficient in voxel is at energy smaller than cut energy
 	if( referenceEnergy < energyPhotoFXChange_eV ){
@@ -63,15 +62,14 @@ size_t voxData::serialize( vector<char>& binData ) const{
 	return numBytes;
 };
 
-double voxData::attenuationAtRefE( const double attenuationAtFrequency, const double frequency ) const{
+double voxData::attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const{
 
-	const double energy = frequency * h_eVs;
 
 	if( referenceEnergy < energyPhotoFXChange_eV ){
-		return attenuationAtFrequency * pow( energy / referenceEnergy, 3. );
+		return attenuationAtEnergy * pow( energy / referenceEnergy, 3. );
 	}
 	else{
-		return attenuationAtFrequency * pow( energyPhotoFXChange_eV / referenceEnergy, 3. );
+		return attenuationAtEnergy * pow( energyPhotoFXChange_eV / referenceEnergy, 3. );
 	}
 
 };

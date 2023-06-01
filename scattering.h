@@ -32,11 +32,11 @@ class rayScattering{
 	/*!
 	 * @brief Constructor
 	 * @param anglesAmount How many angles in the interval from -pi to pi should be calculated
-	 * @param frequencyRange_ How large is the frequency range to calculate propabilities for
-	 * @param frequencyAmount_ For how many frequencies shoul  the probabilities be calculated
+	 * @param energyRange_ How large is the energy range to calculate propabilities for
+	 * @param energiesAmount_ For how many energies should  the probabilities be calculated
 	 * @param scatteredNormal_ Normal around which rays shoul´d be rpteated wehen scattered
 	*/
-	rayScattering( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ );
+	rayScattering( const size_t anglesAmount, const range energyRange_, const size_t energiesAmount_, const uvec3 scatteredNormal_ );
 
 	/*!
 	 * @brief Scatter given ray
@@ -63,12 +63,12 @@ class rayScattering{
 
 	private:
 
-	size_t frequencyAmount;			/*!<Amount of frequencies*/
-	range frequencyRange;			/*!<Range of frequencies*/
-	double frequencyResolution;		/*!<Frequency Resolution*/
+	size_t energiesAmount;			/*!<Amount of frequencies*/
+	range energyRange;				/*!<Range of frequencies*/
+	double energyResolution;		/*!<Frequency Resolution*/
 
 	vector<propabilityDistribution> distributions;	/*!<Vector with propability distributions*/
-	vector<double> frequencies;						/*!<Vector with frequencies the vector with distribution describes*/
+	vector<double> energies;						/*!<Vector with frequencies the vector with distribution describes*/
 
 	uvec3 scatteringNormal;							/*!<Rotation normal for scattered rays*/
  };

@@ -16,7 +16,7 @@
 #include "gantryCreation.h"
 #include "widgets.h"
 #include "plots.h"
-#include "Fl_plots.h"
+#include "Fl_Plot.h"
 
 
 
@@ -165,7 +165,7 @@ void gantryEdition::handleEvents( void ){
 		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true, true ) );
+		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true ) );
 		spectrumPlot.assignData();
 
 

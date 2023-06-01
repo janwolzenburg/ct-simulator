@@ -29,6 +29,7 @@ constexpr double PI =   3.1415926535897932384626433832795;		/*!< PI */
 constexpr double PI_2 = 9.8696044010893586188344909998761;		/*!< PI ^ 2*/
 constexpr double c_mPers = 299792456;							/*!< Speed of light in m/s */
 constexpr double e_As = 1.6021917E-19;							/*!< Electron charge in As */
+//constexpr double e_eV_Per_V = 1.6021917;						/*!<Electron charge in Electronvolt per Volt*/
 constexpr double h_Js = 6.626196E-34;							/*!< Planck's constant */
 constexpr double h_eVs = 4.1357E-15;							
 
@@ -38,7 +39,7 @@ constexpr double J_Per_eV = e_As;								/*!<Joules in on eV */
 constexpr double m_0c2_J = m_0c2_eV * J_Per_eV;					/*!<Compton wavelenth in Joule */
 
 constexpr double energyPhotoFXChange_eV = 60000.;				/*!<Photonenergy un der which photo effect dominates absorption*/
-constexpr double frequencyPhotoFXChange_Hz = energyPhotoFXChange_eV / h_eVs;
+//constexpr double frequencyPhotoFXChange_Hz = energyPhotoFXChange_eV / h_eVs;
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& stdOut = std::cout;						/*!< Standard out stream */

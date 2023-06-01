@@ -25,14 +25,14 @@
 bool test_scattered_angle_propabilities( void ){
 
 	double angleResolution = 2. / 360 * 2 * PI;
-	range frequencyRange = range{ alFilterCutOffFrequency, e_As * 150000. / h_Js };
-	size_t numFrequencies = 20;
-	double frequencyResolution = frequencyRange.Resolution( numFrequencies );
+	range energyRange = range{ alFilterCutOffEnergy_eV, 150000. };
+	size_t numEnergies = 20;
+	//double energyResolution = energyRange.Resolution( numEnergies );
 
-	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), frequencyRange, numFrequencies, uvec3{v3{1., 0., 0.}, GLOBAL_CSYS()}};
+	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, uvec3{v3{1., 0., 0.}, GLOBAL_CSYS()}};
 
-	const double testFrequency = e_As * 100000. / h_Js;
-	vector<v2> distribution = anglePropabilites.getDistribution( testFrequency );
+	const double testEnergy = 100000.;
+	vector<v2> distribution = anglePropabilites.getDistribution( testEnergy );
 
 	vector<v2> experimentalDistribution = distribution;
 	for( v2& currentValue : experimentalDistribution ) currentValue.y = 0;
@@ -41,7 +41,7 @@ bool test_scattered_angle_propabilities( void ){
 
 	for( int i = 0; i < 100000; i++ ){
 		
-		double angle = anglePropabilites.getRandomAngle( testFrequency );
+		double angle = anglePropabilites.getRandomAngle( testEnergy );
 		
 		size_t angleIndex = Fmax( (size_t) floor( ( angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
 

@@ -12,7 +12,7 @@
   Includes
 *********************************************************************/
 
-#include "image.h"
+#include "monoImage.h"
 #include "vectorAlgorithm.h"
 
 

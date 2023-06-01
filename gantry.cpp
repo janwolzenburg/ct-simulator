@@ -34,7 +34,7 @@ gantry::gantry( cartCSys* const cSys_, const tubeParameter tubeParameter_,
 	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	raysPerPixel( Fpos( indipendentParameter.raysPerPixel )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
-	rayScatterAngles{ 127, raySource.getFrequencyRange(), 64, cSys->EzVec() }
+	rayScatterAngles{ 127, raySource.getEnergyRange(), 64, cSys->EzVec() }
 
 {
 	// Align detector - tube axis with x axis
@@ -45,9 +45,6 @@ gantry::gantry( cartCSys* const cSys_, const tubeParameter tubeParameter_,
 	
 }
 
-//gantry::gantry( void ) : 
-//	gantry{ CSYS_TREE().addCSys( "Model system" ), tubeParameter{}, detectorRadonParameter{}, detectorIndipendentParameter{} }
-//{}
 
 vector<ray> gantry::getBeam( const double exposureTime ) const{
 	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );

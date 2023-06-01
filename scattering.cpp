@@ -20,23 +20,23 @@
 *********************************************************************/
 
 
-rayScattering::rayScattering( const size_t anglesAmount, const range frequencyRange_, const size_t frequencyAmount_, const uvec3 scatteredNormal_ ) :
+rayScattering::rayScattering( const size_t anglesAmount, const range energyRange_, const size_t energyAmount_, const uvec3 scatteredNormal_ ) :
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
-	frequencyAmount( Fpos( frequencyAmount_ ) ),
-	frequencyRange( frequencyRange_ ),
-	frequencyResolution( ( frequencyRange_.end - frequencyRange_.start ) / (double) ( frequencyAmount - 1 ) ),
+	energiesAmount( Fpos( energyAmount_ ) ),
+	energyRange( energyRange_ ),
+	energyResolution( ( energyRange.end - energyRange.start ) / (double) ( energiesAmount - 1 ) ),
 	scatteringNormal( scatteredNormal_ )
 {
 	// Iterate all frequencies
-	for( size_t currentFrequencyIndex = 0; currentFrequencyIndex < frequencyAmount; currentFrequencyIndex++ ){
+	for( size_t currentEnergyIndex = 0; currentEnergyIndex < energiesAmount; currentEnergyIndex++ ){
 
-		const double currentFrequency = frequencyRange_.start + (double) currentFrequencyIndex * frequencyResolution;
+		const double currentEnergy = energyRange.start + (double) currentEnergyIndex * energyResolution;
 
 		// Calculate pseudo propability distribution
 		vector<v2> pseudoDistribution;
 
 		// Initial photon energy
-		const double a = h_Js * currentFrequency / ( m_0c2_J );
+		const double a = currentEnergy / m_0c2_eV;
 
 
 		const double angleResolution = ( PI + PI ) / (double) ( anglesAmount - 1 );
@@ -54,7 +54,7 @@ rayScattering::rayScattering( const size_t anglesAmount, const range frequencyRa
 		}
 
 		distributions.emplace_back( pseudoDistribution, 256 );
-		frequencies.emplace_back( currentFrequency );
+		energies.emplace_back( currentEnergy );
 	}
 
 
@@ -68,17 +68,17 @@ ray rayScattering::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
 }
 
-double rayScattering::getRandomAngle( const double frequency ) const{
+double rayScattering::getRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( frequency - frequencyRange.start ) / frequencyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start ) / energyResolution + 0.5 ), distributions.size() );
 	
 	return distributions.at( distributionIndex ).getRandom();
 
 }
 
-vector<v2> rayScattering::getDistribution( const double frequency ) const{
+vector<v2> rayScattering::getDistribution( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( frequency - frequencyRange.start ) / frequencyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start ) / energyResolution + 0.5 ), distributions.size() );
 
 	return distributions.at( distributionIndex ).getDistribution();
 

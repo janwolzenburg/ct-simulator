@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   linePlot.h
+ * @file   lineplot.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -15,14 +15,14 @@
  #include "plots.h"
 
 
-class Fl_Lineplot : public plot{
+class lineplot : public plot{
 
 	public:
 
-	linePlot( const string name_, const string xlabel_, const string ylabel_,
+	lineplot( const string name_, const string xlabel_, const string ylabel_,
 			  const plotLimits limits_, const idx2CR imgSize_, const bool grid_ );
 
-	linePlot( void );
+	lineplot( void );
 
 	void assignData( const vector<double> X_, const vector<double> Y_ );
 
