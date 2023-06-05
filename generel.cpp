@@ -155,6 +155,14 @@ range::range( const double start_, const double end_ ) : start( start_ ), end( e
 	}
 };
 
+
+range::range( const Zrange naturalRange ) :
+	range( (double) naturalRange.start, (double) naturalRange.end )
+{
+
+}
+
+
 range::range( void ) : 
 	range{ 0., 1. }
 {

@@ -30,6 +30,8 @@ class Fl_Plot : public Fl_Widget{
 	void initializePlot( const path path_, const string xlabel_, const string ylabel_,
 						 const plotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
+	void setLimits( const plotLimits newLimits );
+
 	inline plotType& plotRef( void ){ return plotInstance; };
 
 	void assignData( void );

@@ -49,6 +49,12 @@ void Fl_Plot<plotType>::initializePlot( const path path_, const string xlabel_, 
 	plotInstance.initialize( path_, label, xlabel_, ylabel_, limits_, idx2CR{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
 
 }
+template<class plotType>
+void Fl_Plot<plotType>::setLimits( const plotLimits newLimits ){
+
+	plotInstance.setLimits( newLimits );
+
+}
 
 template<class plotType>
 void Fl_Plot<plotType>::assignData( void ){

@@ -30,12 +30,15 @@
 */
 
 Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
-	Fl_Widget{ x, y, w, h, label }{
+	Fl_Widget{ x, y, w, h, label },
+	imgAssigned( false )
+{
 
 };
 
 void Fl_GridImage::assignImage( const monoImage& img ){
 	originalImage = img;
+	imgAssigned = true;
 
 	updateScaled();
 }
@@ -99,9 +102,9 @@ void Fl_GridImage::updateScaled( void ){
 
 Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label ) :
 	Fl_Group( x, y, w, h, label ),
-	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .75 ), "Image" ),
-	lowerBound( X( *this, 0.1 ), Y( *this, 0.775 ), W( *this, .8 ), H( *this, .1 ), "Low" ),
-	upperBound( X( *this, 0.1 ), Y( *this, 0.9 ), W( *this, .8 ), H( *this, .1 ), "High" ){
+	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .85 ), "Image" ),
+	lowerBound( X( *this, 0.1 ), Y( *this, 0.85 ), W( *this, .8 ), H( *this, .075 ), "Low" ),
+	upperBound( X( *this, 0.1 ), Y( *this, 0.925 ), W( *this, .8 ), H( *this, .075 ), "High" ){
 	
 	
 	Fl_Group::add( imgWidget );

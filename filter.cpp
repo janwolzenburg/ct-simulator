@@ -27,6 +27,7 @@ const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
 		{ sheppLogan,"SheppLogan" },
 };
 
+const double discreteFilter::threshold = 1e-4;
 
 discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
 	type( type_ ),
@@ -39,20 +40,22 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 	// Iterate over all whole numbers in range
 	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
 
+		double kernelValue = 0.;
+
 		switch( type ){
 			
 			case discreteFilter::constant:
-			
-				if( n == 0 ) this->set( getIndex( n ) ) = 1.;
-				else this->set( getIndex( n ) ) = 0.;
+			{
+				if( n == 0 ) kernelValue = 1.;
+				else kernelValue = 0.;
 
 				break;
-
+			}
 
 			case discreteFilter::absolute:
 			{
 				// Constant to be able to approximate inverse FT of abs( w )
-				constexpr double e = 0.1;									
+				constexpr double e = 1;									
 
 				const double e2 = pow( e, 2. );								// Epsilon squared
 				const double c2 = pow( 2. * PI * samplingInterval, 2. );	// Constant for calculation
@@ -61,32 +64,56 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				// Kernel value
 				const double h = ( e2 -  c2 * k2 ) / pow( e2 + c2 * k2, 2. );
 
-				this->set( getIndex( n ) ) = h;
+				kernelValue = h;
 
 				break;
 			}
 
 			case discreteFilter::ramLak:
-
+			{
 				// Conditions for filter calculation
-				if( n == 0 )				this->set( getIndex( n ) ) = 1. / ( 4. * pow( samplingInterval, 2. ) );
-				else if( isEven( n ) )		this->set( getIndex( n ) ) = 0.;
-				else						this->set( getIndex( n ) ) = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+				if( n == 0 )				kernelValue = 1. / ( 4. * pow( samplingInterval, 2. ) );
+				else if( isEven( n ) )		kernelValue = 0.;
+				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
 
 				break;
-
+			}
 
 			case discreteFilter::sheppLogan:
-
-				this->set( getIndex( n ) ) = - 2. / ( PI_2 * pow( samplingInterval, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
+			{
+				kernelValue = - 2. / ( PI_2 * pow( samplingInterval, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
 
 				break;
-
+			}
 		}
 
+		this->set( getIndex( n ) ) = kernelValue;
 	}
 
 }
+
+Zrange discreteFilter::getRelevantRange( void ) const{
+
+	Zrange relevant( -1, 1 );
+
+	for( signed long long int i = pointsRange.start; i < 0; i++ ){
+		if( abs( this->operator()( i ) ) > threshold ){
+			relevant.start = i;
+			break;
+		}
+	}
+
+	for( signed long long int i = pointsRange.end; i > 0; i-- ){
+		if( abs( this->operator()( i ) ) > threshold ){
+			relevant.end = i;
+			break;
+		}
+	}
+
+	return relevant;
+
+}
+
 
 size_t discreteFilter::getIndex( const signed long long Zidx ) const{
 	if( Zidx < pointsRange.start ) return 0;

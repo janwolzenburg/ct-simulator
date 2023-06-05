@@ -196,6 +196,21 @@ class v2CR {
 
 
 /*!
+ * @brief Class for a range of whole numbers
+*/
+class Zrange{
+
+	public:
+
+	Zrange( const signed long long start_, const signed long long end_ );
+
+	Zrange( void );
+
+	signed long long start;
+	signed long long end;
+};
+
+/*!
  * @brief Class for a range of real numbers with start
 */
 class range{
@@ -205,6 +220,8 @@ class range{
 	range( const double start_, const double end_ );
 	
 	range( void );
+
+	range( const Zrange naturalRange );
 
 	range( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -232,20 +249,6 @@ class range{
 };
 
 
-/*!
- * @brief Class for a range of whole numbers
-*/
-class Zrange{
-
-	public:
-	
-	Zrange( const signed long long start_, const signed long long end_ );
-	
-	Zrange( void );
-
-	signed long long start;
-	signed long long end;
-};
 
 
 

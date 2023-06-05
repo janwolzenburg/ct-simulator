@@ -33,15 +33,17 @@ class processingView : public Fl_Window{
 	processingView( int w, int h, const char* label ) :
 		Fl_Window( w, h, label ),
 		
-		sinogramGrp(		X( *this, .05 ),		Y( *this, .05 ),		W( *this, .4 ),			H( *this, .4 ) ),
+		sinogramGrp(		X( *this, .01 ),		Y( *this, .01 ),		W( *this, .49 ),			H( *this, .325 ) ),
  		sinogramWidget(		X( sinogramGrp, .0 ),	Y( sinogramGrp, .0 ),	W( sinogramGrp, 1. ),	H( sinogramGrp, 1. ) ),
 		
 
-		filterGrp(			X( *this, .05 ),		vOff( sinogramGrp ) + Y( *this, 0.05 ), W( *this, .4 ), H( *this, .4  ) ),
-		filterTypeSelector( X( filterGrp, 0. ), Y( filterGrp, 0.1 ), W( filterGrp, .3 ), H( filterGrp, .1 ), "Filter type" ),
-		filterPlot(			X( filterGrp, 0. ), Y( filterGrp, 0.25 ),		W( filterGrp, 1. ), H( filterGrp, .85 ), "Filter" ),
+		filterGrp(			X( *this, .01 ),		vOff( sinogramGrp ) + Y( *this, 0.025 ), W( *this, .49 ), H( *this, .29  ) ),
+		filterTypeSelector( X( filterGrp, 0. ), Y( filterGrp, 0. ), W( filterGrp, .3 ), H( filterGrp, .1 ), "Filter type" ),
+		filterPlot(			X( filterGrp, 0. ), Y( filterGrp, 0.15 ),		W( filterGrp, 1. ), H( filterGrp, .85 ), "Filter" ),
 		//filterPlot(			"Filter", "n", "", plotLimits(), idx2CR( 720, 480 ), true ),
 		
+		filteredProjGrp( X( *this, .01 ), vOff( filterGrp ) + Y( *this, 0.025 ), W( *this, .49 ), H( *this, .325 ) ),
+		filteredProjWidget( X( filteredProjGrp, .0 ), Y( filteredProjGrp, .0 ), W( filteredProjGrp, 1. ), H( filteredProjGrp, 1. ) ),
 
 		newRTFlag( false ),
 		filterChanged( false )
@@ -70,6 +72,12 @@ class processingView : public Fl_Window{
 
 		filterPlot.initializePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "", plotLimits{ true, true }, "", "", false, true );
 
+
+
+		Fl_Window::add( filteredProjGrp );
+
+		filteredProjGrp.add( filteredProjWidget );
+		filteredProjWidget.box( FL_BORDER_BOX );
 	}
 
 	inline void setNewRTFlag( void ){ newRTFlag = true; };
@@ -88,10 +96,8 @@ class processingView : public Fl_Window{
 		}
 
 		if( sinogramWidget.handleEvents() ){
-
 			// Store contrast
 			 PROGRAM_STATE().ProcessingParameters().projectionsContrast = sinogramWidget.getContrast();
-
 		}
 
 
@@ -104,13 +110,26 @@ class processingView : public Fl_Window{
 
 		}
 
+		if( filteredProjWidget.handleEvents() ){
+
+			if( filteredProjWidget.imageAssigned() )
+				PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast = filteredProjWidget.getContrast();
+		}
+
 	}
 	
 	void recalcFilteredProjections( void ){
 
 		PROGRAM_STATE().FilteredProjections() = filteredProjections( PROGRAM_STATE().Projections(), PROGRAM_STATE().ProcessingParameters().filterType );
+		
+		filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().FilteredProjections().Filter().getRelevantRange(), range(), 1., pow( PROGRAM_STATE().FilteredProjections().Resolution().row, 2. )});
 		filterPlot.plotRef().assignData( PROGRAM_STATE().FilteredProjections().Filter().PlotValues() );
 		filterPlot.assignData();
+
+		filteredProjImage = monoImage( PROGRAM_STATE().FilteredProjections().getGrid(), true );
+
+		filteredProjWidget.assignImage( filteredProjImage );
+		filteredProjWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast );
 
 	}
 
@@ -126,12 +145,13 @@ class processingView : public Fl_Window{
 
 		sinogramWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().projectionsContrast );
 
+		//filteredProjImage = monoImage(  )
+
 	}
 
 
 	public:
 
-	//radonTransformed sinogram;
 	bool newRTFlag;
 	bool filterChanged;
 
@@ -142,8 +162,11 @@ class processingView : public Fl_Window{
 	Fl_Group filterGrp;
 	
 	Fl_Selector filterTypeSelector;
-	Fl_Plot<lineplot> filterPlot;
+	Fl_Plot<dotplot> filterPlot;
 
-	//filteredProjections projectionsFilt;
+	Fl_Group filteredProjGrp;
+	monoImage filteredProjImage;
+	Fl_GridImage_Adjust filteredProjWidget;
+
 
  };

@@ -43,8 +43,11 @@ class Fl_GridImage : public Fl_Widget{
 
 	void updateScaled( void );
 
+	inline bool imageAssigned( void ) const{ return imgAssigned; };
 
 	private:
+
+	bool imgAssigned;
 
 	monoImage originalImage;
 	monoImage scaledImage;
@@ -67,10 +70,14 @@ class Fl_GridImage_Adjust : public Fl_Group{
 
 	inline range getContrast( void ) const{ return range( lowerBound.value(), upperBound.value() ); };
 
+	inline bool imageAssigned( void ) const{ return imgWidget.imageAssigned(); };
+
 	private:
 	
 	Fl_GridImage imgWidget;
 	Fl_OwnValuator<Fl_Hor_Value_Slider> lowerBound;
 	Fl_OwnValuator<Fl_Hor_Value_Slider> upperBound;
+
+
 
 };

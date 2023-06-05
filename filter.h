@@ -40,6 +40,8 @@ class discreteFilter{
 
 	static const std::map<TYPE, string> filterTypes;
 
+	static const double threshold;
+
 	/*!
 	 * @brief Constructor
 	 * @param pointsRange_ Range of whole numbers to calculate the filter values for
@@ -86,6 +88,8 @@ class discreteFilter{
 	 * @return Range
 	*/
 	inline Zrange Range( void ) const{ return pointsRange; };
+
+	Zrange getRelevantRange( void ) const;
 
 	/*!
 	 * @brief Get value of filter at index

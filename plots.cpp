@@ -45,6 +45,10 @@ void plot::initialize( const path path_, const string label_, const string xlabe
 
 }
 
+void plot::setLimits( const plotLimits newLimits ){
+	limits = newLimits;
+}
+
 void plot::setSize( const idx2CR size ){
 	imgSize = size;
 }
@@ -166,6 +170,14 @@ void lineplot::create( void ){
 
 	plot::reset();
 	plot::plot2D.drawCurve( X, Y );
+	plot::drawPlot();
+
+}
+
+void dotplot::create( void ){
+	
+	plot::reset();
+	plot::plot2D.drawPoints( X, Y );
 	plot::drawPlot();
 
 }

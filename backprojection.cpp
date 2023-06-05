@@ -43,10 +43,12 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 //	discreteFilter filter{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
 	// Local copy of projection data
-	grid projectionsData = projections.Data();
+	const grid projectionsData = projections.Data();
 
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
+
+
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
@@ -56,13 +58,14 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 			for( size_t l = 0; l < nD; l++ ){
 
 				// projection value
-				double P_T = projectionsData( idx2CR{ t, l } );
+				const double P_T = projectionsData( idx2CR{ t, l } );
 
 				// filter value
-				double h_n = filter( ( signed long long ) n - ( signed long long ) l );
+				const double h_n = filter( ( signed long long ) n - ( signed long long ) l );
 
 				// Multiply
-				convolutionResult += h_n * P_T;
+				if( h_n != 0.)
+					convolutionResult += h_n * P_T;
 			}
 
 			convolutionResult *= dD;

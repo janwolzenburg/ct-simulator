@@ -40,7 +40,7 @@ int main( int argc, char** argv ){
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
 	mainView* mainWindow = new mainView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" );
-	processingView* procView = new processingView( 1280, 720, "Processing" );
+	processingView* procView = new processingView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" );
 
 	state.registerMainWindow( mainWindow );
 	state.registerProcessingWindow( procView );

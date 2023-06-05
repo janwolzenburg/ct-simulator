@@ -41,6 +41,8 @@ class plot{
 	void initialize( const path path_, const string label_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
+	void setLimits( const plotLimits newLimits );
+
 	void setSize( const idx2CR size );
 
 	idx2CR getSize( void ) const;

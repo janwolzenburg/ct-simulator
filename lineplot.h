@@ -28,11 +28,21 @@ class lineplot : public plot{
 
 	void assignData( const vectorPair XY );
 
-	void create( void );
+	virtual void create( void );
 
 
-	private:
+	protected:
 
 	vector<double> X, Y;
+
+};
+
+
+class dotplot : public lineplot{
+
+	using lineplot::lineplot;
+
+	public:
+	void create( void ) override;
 
 };

@@ -24,5 +24,6 @@ class processingParameter{
 
 	discreteFilter::TYPE filterType;
 
+	range filteredProjectionsContrast;
 
 };
