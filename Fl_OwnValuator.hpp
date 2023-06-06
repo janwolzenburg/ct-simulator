@@ -88,7 +88,7 @@ void Fl_OwnValuator<C>::ValueToLabel( const bool yesNo ){
 template< class C >
 void Fl_OwnValuator<C>::updateLabel( void ){
 
-	int significantDigits = (int) ( ceil( 1. / Fl_Valuator::step() ) - 1. );
+	int significantDigits = (int) ceil(  - log10( Fl_Valuator::step() ) );
 
 	if( significantDigits < 0 ) significantDigits = 0;
 

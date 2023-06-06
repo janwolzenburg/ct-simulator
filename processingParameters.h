@@ -26,4 +26,6 @@ class processingParameter{
 
 	range filteredProjectionsContrast;
 
+	range reconstrucedImageContrast;
+
 };

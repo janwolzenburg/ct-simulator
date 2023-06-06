@@ -45,6 +45,9 @@ class processingView : public Fl_Window{
 		filteredProjGrp( X( *this, .01 ), vOff( filterGrp ) + Y( *this, 0.025 ), W( *this, .49 ), H( *this, .325 ) ),
 		filteredProjWidget( X( filteredProjGrp, .0 ), Y( filteredProjGrp, .0 ), W( filteredProjGrp, 1. ), H( filteredProjGrp, 1. ) ),
 
+		reconstructionGrp( X( *this, .51 ), Y( *this, 0.01 ), W( *this, .48 ), H( *this, .8 ) ),
+		reconstructionImageWidget( X( reconstructionGrp, .0 ), Y( reconstructionGrp, .0 ), W( reconstructionGrp, 1. ), H( reconstructionGrp, 1. ) ),
+
 		newRTFlag( false ),
 		filterChanged( false )
 	{
@@ -78,6 +81,11 @@ class processingView : public Fl_Window{
 
 		filteredProjGrp.add( filteredProjWidget );
 		filteredProjWidget.box( FL_BORDER_BOX );
+
+		Fl_Window::add( reconstructionGrp );
+
+		reconstructionGrp.add( reconstructionImageWidget );
+		reconstructionImageWidget.box( FL_BORDER_BOX );
 	}
 
 	inline void setNewRTFlag( void ){ newRTFlag = true; };
@@ -116,6 +124,12 @@ class processingView : public Fl_Window{
 				PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast = filteredProjWidget.getContrast();
 		}
 
+		if( reconstructionImageWidget.handleEvents() ){
+
+			if( reconstructionImageWidget.imageAssigned() )
+				PROGRAM_STATE().ProcessingParameters().reconstrucedImageContrast = reconstructionImageWidget.getContrast();
+		}
+
 	}
 	
 	void recalcFilteredProjections( void ){
@@ -130,6 +144,14 @@ class processingView : public Fl_Window{
 
 		filteredProjWidget.assignImage( filteredProjImage );
 		filteredProjWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast );
+
+
+		PROGRAM_STATE().ReconstrucedImage() = reconstrucedImage( PROGRAM_STATE().FilteredProjections() );
+
+		reconstructionImage = monoImage( PROGRAM_STATE().ReconstrucedImage().getGrid(), true );
+
+		reconstructionImageWidget.assignImage( reconstructionImage );
+		reconstructionImageWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().reconstrucedImageContrast );
 
 	}
 
@@ -167,6 +189,10 @@ class processingView : public Fl_Window{
 	Fl_Group filteredProjGrp;
 	monoImage filteredProjImage;
 	Fl_GridImage_Adjust filteredProjWidget;
+
+	Fl_Group reconstructionGrp;
+	monoImage reconstructionImage;
+	Fl_GridImage_Adjust reconstructionImageWidget;
 
 
  };

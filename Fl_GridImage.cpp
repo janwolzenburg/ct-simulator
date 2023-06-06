@@ -114,6 +114,9 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 	lowerBound.align( FL_ALIGN_LEFT );
 	upperBound.align( FL_ALIGN_LEFT );
 
+	lowerBound.ValueToLabel( true );
+	upperBound.ValueToLabel( true );
+
 	this->hide();
 
 
@@ -137,6 +140,8 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 	lowerBound.value( lowerBound.minimum() );
 	upperBound.value( upperBound.maximum() );
 
+	lowerBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
+	upperBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
 
 	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();

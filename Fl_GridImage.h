@@ -13,7 +13,7 @@
  *********************************************************************/
 
  #include <FL/Fl_Widget.H>
- #include <FL/Fl_Hor_Value_Slider.H>
+ #include <FL/Fl_Hor_Slider.H>
 
 #include "monoImage.h"
 #include "Fl_OwnValuator.h"
@@ -75,8 +75,8 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	private:
 	
 	Fl_GridImage imgWidget;
-	Fl_OwnValuator<Fl_Hor_Value_Slider> lowerBound;
-	Fl_OwnValuator<Fl_Hor_Value_Slider> upperBound;
+	Fl_OwnValuator<Fl_Hor_Slider> lowerBound;
+	Fl_OwnValuator<Fl_Hor_Slider> upperBound;
 
 
 
