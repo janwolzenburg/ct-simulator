@@ -324,6 +324,9 @@
     <ClInclude Include="processingParameters.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
+    <ClInclude Include="progress.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

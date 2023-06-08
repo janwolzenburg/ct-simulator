@@ -19,6 +19,7 @@
 #include "model.h"
 #include "radonTransform.h"
 
+#include "progress.h"
 
 
 /*********************************************************************
@@ -74,7 +75,7 @@ class tomography{
 	 * @brief Record a slice
 	 * @return Radon transformed of model slice
 	*/
-	radonTransformed recordSlice( gantry gantry_, const model& model_, const double zPosition );
+	radonTransformed recordSlice( gantry gantry_, const model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
 
 
 	private:

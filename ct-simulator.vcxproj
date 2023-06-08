@@ -194,6 +194,7 @@
     <ClInclude Include="processingWindow.h" />
     <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
+    <ClInclude Include="progress.h" />
     <ClInclude Include="propability.fwd.h" />
     <ClInclude Include="propability.h" />
     <ClInclude Include="scattering.h" />

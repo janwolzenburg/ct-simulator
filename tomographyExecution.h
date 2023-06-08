@@ -22,6 +22,7 @@
 #include "programState.h"
 #include "widgets.h"
 #include "backprojection.h"
+#include "progress.h"
 
 class tomographyExec : public Fl_Group{
 
@@ -85,14 +86,21 @@ class tomographyExec : public Fl_Group{
 
 			radiateFlag = false;
 
+			Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(),  20, 5, "Radiation progress" );
+
 			state.Tomography() = tomography( state.TomographyParameter() );
-			state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0 ) );
+			state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
 
 			if( state.ProcessingWindow() != nullptr ){
 				state.ProcessingWindow()->setNewRTFlag();
 			}
 
+
+			delete radiationProgressWindow;
+
 			Fl_Group::window()->activate();
+		
+
 		}
 
 		if( updateFlag ){

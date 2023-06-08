@@ -12,10 +12,15 @@
  /*********************************************************************
   Includes
 *********************************************************************/
+
+#include <FL/Fl.H>
+
 #include "tomography.h"
 #include "generel.h"
 #include "cSysTree.h"
 #include "plotting.h"
+
+
 
 /*********************************************************************
    Implemnetations
@@ -67,7 +72,7 @@ tomography::tomography( const tomographyParameter parameter_ ) :
 
 
 
-radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition ){
+radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 
 
@@ -95,10 +100,14 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
 
+	
 
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 		
+		if( progressWindow != nullptr ) 
+			progressWindow->changeLineText( 0, "Radiating frame " + toString( currentFrame ) + " of " + toString( radonParameter.framesToFillSinogram ) );
+
 		// Radiate
 		Gantry.radiate( Model, parameter.ExposureTime(), parameter.Scattering() );
 		
@@ -139,6 +148,9 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 		
 		// Rotate gantry
 		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
+
+		Fl::check();
+
 	}
 
 	//closeAxis( ax1 );
