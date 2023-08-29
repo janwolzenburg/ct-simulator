@@ -507,3 +507,58 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 
 	return slice;
 }
+
+
+void model::addSpecialVoxel( const idx3 indices, voxData::specialProperty property ){
+
+	// Check indices
+	if( !checkIndices( indices ) ) return;
+
+	// iterate all special voxel
+	for( auto& currentVoxel : specialVoxel ){
+		
+		// Voxel already "special"
+		if( currentVoxel.first == indices ){
+
+			// Add flag
+			currentVoxel.second |= toUnderlying( property );
+	
+			return;
+		}
+	}
+
+	specialVoxel.emplace_back( indices, property );
+
+}
+
+void model::addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius ){
+	
+	// Exit when coords invalid
+	if ( !validCoords( center ) ) return;
+	
+	// Center indices
+	const idx3 centerIdx = getVoxelIndices( center );
+
+
+	// Index distance from center in each dimension
+	idx3 indexDelta{
+		Fmax( (size_t) ceil( radius / voxSize3D.x ), Min( centerIdx.x, numVox3D.x - centerIdx.x ) ),
+		Fmax( (size_t) ceil( radius / voxSize3D.y ), Min( centerIdx.y, numVox3D.y - centerIdx.y ) ),
+		Fmax( (size_t) ceil( radius / voxSize3D.z ), Min( centerIdx.z, numVox3D.z - centerIdx.z ) )
+	};
+
+
+	for( size_t x = centerIdx.x - indexDelta.x; x < centerIdx.x + indexDelta.x; x++ ){
+		for( size_t y = centerIdx.y - indexDelta.y; x < centerIdx.y + indexDelta.y; y++ ){
+			for( size_t z = centerIdx.z - indexDelta.z; x < centerIdx.z + indexDelta.z; z++ ){
+
+				pnt3 p( v3( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
+
+				if( ( center - p ).Length() <= radius )  addSpecialVoxel( idx3( x, y, z ), property ) ;
+				
+			}
+		}
+	}
+
+
+}

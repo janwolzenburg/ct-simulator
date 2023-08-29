@@ -13,7 +13,9 @@
  *********************************************************************/
 #include <filesystem>
 using std::filesystem::path;
- 
+ #include <utility>
+ using std::pair;
+
  #include "generelMath.h"
  #include "cartesian.h"
  #include "voxel.h"
@@ -233,6 +235,7 @@ class model : virtual public mathObj{
 
 	inline string Name( void ) const{ return name; };
 
+	void addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius );
 
 	private:
 
@@ -244,6 +247,7 @@ class model : virtual public mathObj{
 	cartCSys* cSys;								/*!<Coordinate system*/
 	string name;								/*!<Model name*/
 
+	vector<pair<idx3, voxData::specielEnumType>> specialVoxel;
 
 	private:
 
@@ -255,4 +259,6 @@ class model : virtual public mathObj{
 	* @return Indices of voxels where coordinates are located
 	*/
 	idx3 getVoxelIndices( const v3 locCoords ) const;
+
+	void addSpecialVoxel( const idx3 indices, voxData::specialProperty );
 };
