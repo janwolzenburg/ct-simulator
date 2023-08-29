@@ -115,6 +115,11 @@ template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
 Fmax( const T value, const T maximum );
 
+
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+Frange( const T value, const T minimum, const T maximum );
+
 /*!
  * @brief Force a minimum value of one
  * @tparam T Arithmetic type

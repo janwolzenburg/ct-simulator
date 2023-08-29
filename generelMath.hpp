@@ -48,6 +48,15 @@ Fmin( T a, T minValue ){
 	return Max( minValue, a );
 }
 
+
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+Frange( const T value, const T minimum, const T maximum ){
+
+	return Fmin<T>( Fmax<T>( value, maximum ), minimum );
+
+}
+
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>  Fpos( T a ){
 	if( a <= (T) 0 ) return (T) 1;
