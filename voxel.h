@@ -44,12 +44,21 @@ enum class FACE_ID : size_t{
 */
 
 
+
+
 /*!
  * @brief Physical voxel data
 */
 class voxData{
 	
 	public:
+
+	typedef unsigned char specielEnumType;
+
+	enum specialProperty : specielEnumType{
+		NONE = 0x00,
+		METAL = 0x01
+	};
 
 	/*!
 	 * @brief Constructor
@@ -89,16 +98,18 @@ class voxData{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	void addSpecialProperty( const specialProperty property );
+
+	void removeSpecialProperty( const specialProperty property );
+
+	bool hasSpecialProperty( const specialProperty property ) const;
 
 	private:
 
 	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/
 	static const double referenceEnergy_3;		/*!<Cube of reference energy*/
-	//static const double freqAtRefE;				/*!<Frequency at reference Enery*/
-	//static const double freqAtRefE_3;			/*!<Third power of reference frequency*/
-
-	double attenuation = -1;					/*!<Absorption coefficient at reference Energy*/
-
+	double attenuation	= -1;					/*!<Absorption coefficient at reference Energy*/
+	specielEnumType specialProperties;
 
 	private:
 

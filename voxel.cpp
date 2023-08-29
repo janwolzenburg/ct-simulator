@@ -27,32 +27,40 @@
  */
 
 
-const double voxData::referenceEnergy = 120000.;				/*!< Energy at which the attenuation coefficient is valid */
+const double voxData::referenceEnergy = 120000.;									/*!< Energy at which the attenuation coefficient is valid */
 const double voxData::referenceEnergy_3 = pow( voxData::referenceEnergy, 3. );
-//const double voxData::freqAtRefE = referenceEnergy / h_eVs;
-//const double voxData::freqAtRefE_3 = pow( freqAtRefE, 3 );
 
 voxData::voxData( const double attenuationAtFrequency, const double frequency ) :
-	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) )
+	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) ),
+	specialProperties( NONE )
 {}
 
-voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ){
-	deSerializeBuildIn( attenuation, (double) -1, binData, it );
+voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	specialProperties( NONE ),
+	attenuation( deSerializeBuildIn<double>( 0., binData, it ) )
+{
+
 }
 
 voxData::voxData( void ) : 
-	attenuation( -1 )
+	attenuation( -1 ),
+	specialProperties( NONE )
 {}
 
 double voxData::attenuationAt( const double energy ) const{
+
+	// If Metal attenuation is approx. 10 1/mm at 100 keV
+	if( hasSpecialProperty( METAL ) ){
+		return 10 * pow( 100000. / energy, 3. );
+	}
 
 	// Attenuation coefficient in voxel is at energy smaller than cut energy
 	if( referenceEnergy < energyPhotoFXChange_eV ){
 		return attenuation * pow( referenceEnergy / energy, 3. );
 	}
-	else{
-		return attenuation * pow( energyPhotoFXChange_eV / energy, 3. );
-	}
+	
+	return attenuation * pow( energyPhotoFXChange_eV / energy, 3. );
+
 
 };
 
@@ -74,6 +82,26 @@ double voxData::attenuationAtRefE( const double attenuationAtEnergy, const doubl
 
 };
 
+void voxData::addSpecialProperty( const specialProperty property ){
+
+	specialProperties |= toUnderlying( property );
+
+};
+
+void voxData::removeSpecialProperty( const specialProperty property ){
+
+	specialProperties &= ~toUnderlying( property );
+
+};
+
+bool voxData::hasSpecialProperty( const specialProperty property ) const{
+
+	specielEnumType propertyToCheck = toUnderlying( property );
+
+	if( specialProperties & propertyToCheck ) return true;
+	return false;
+
+};
 
 
 /*
