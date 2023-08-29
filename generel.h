@@ -81,6 +81,8 @@ class idx3{
 	*/
 	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
 
+	bool operator==( const idx3& second ) const;
+
 	/*!
 	 * @brief Serialize this object
 	 * @param binData Reference to vector where data will be appended

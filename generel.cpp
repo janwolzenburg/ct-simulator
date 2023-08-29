@@ -59,6 +59,16 @@ idx3::idx3( const vector<char>& binData, vector<char>::const_iterator& it ){
 
 }
 
+bool idx3::operator==( const idx3& second ) const{
+
+	if( x != second.x ) return false;
+	if( y != second.y ) return false;
+	if( z != second.z ) return false;
+
+	return true;
+
+}
+
 size_t idx3::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
