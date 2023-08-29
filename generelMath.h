@@ -38,7 +38,7 @@ constexpr double m_0c2_eV = 0.511E6;							/*!< Compton Wavelength in eV */
 constexpr double J_Per_eV = e_As;								/*!<Joules in on eV */
 constexpr double m_0c2_J = m_0c2_eV * J_Per_eV;					/*!<Compton wavelenth in Joule */
 
-constexpr double energyPhotoFXChange_eV = 60000.;				/*!<Photonenergy un der which photo effect dominates absorption*/
+constexpr double energyPhotoFXChange_eV = 40000.;				/*!<Photonenergy under which photo effect dominates absorption*/
 //constexpr double frequencyPhotoFXChange_Hz = energyPhotoFXChange_eV / h_eVs;
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
