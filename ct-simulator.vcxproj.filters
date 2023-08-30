@@ -479,5 +479,8 @@
     <ClCompile Include="processingParameters.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
+    <ClCompile Include="rgbImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

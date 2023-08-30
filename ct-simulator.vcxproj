@@ -260,6 +260,7 @@
     <ClCompile Include="processingParameters.cpp" />
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="propability.cpp" />
+    <ClCompile Include="rgbImage.cpp" />
     <ClCompile Include="scattering.cpp" />
     <ClCompile Include="slicePlane.cpp" />
     <ClInclude Include="storedObject.h" />

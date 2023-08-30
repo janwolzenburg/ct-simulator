@@ -17,7 +17,7 @@
 using std::vector;
 
 #include "generel.h"
-
+#include "rgbImage.h"
 
  /*********************************************************************
 	Functions
@@ -71,14 +71,11 @@ void sortUnique( vector<double>& v );
 */
 double Max( const vector<double>& v );
 
-
 /*!
  * @brief Get minimum element of vector
  * @param v Vector to search
  * @return Minimum value
 */
 double Min( const vector<double>& v );
-
-double Min( const vector<rgb_Double>& v );
 
 double Min( const vector<vector<double>> v );

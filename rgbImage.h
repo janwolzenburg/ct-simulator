@@ -23,12 +23,6 @@
 
 
 
-struct rgb_Double{
-	double red;
-	double green;
-	double blue;
- };
-
 struct rgb_Int{
 	unsigned char red;
 	unsigned char green;
@@ -69,7 +63,7 @@ class rgbImage{
 	 * @brief Construct image from grid
 	 * @param source Source grid
 	*/
-	rgbImage( const grid source, const bool normalize = false );
+	rgbImage( const monoImage& source );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -88,7 +82,7 @@ class rgbImage{
 	rgbImage( const vector<char>& binData, vector<char>::const_iterator& it );
 
 
-	size_t index( const size_t c, const size_t r, const color col ) const;
+	size_t pixelIndex( const size_t c, const size_t r ) const;
 
 	/*!
 	 * @brief Assignment operator
@@ -96,14 +90,6 @@ class rgbImage{
 	 * @return Reference to this
 	*/
 	rgbImage& operator=( const rgbImage& srcImg );
-
-	/*!
-	 * @brief Access operator
-	 * @param c Column
-	 * @param r Row
-	 * @return Value at ( c, r )
-	*/
-	rgb_Double operator()( const size_t c, const size_t r ) const;
 
 	rgb_Int charData( const size_t c, const size_t r ) const;
 
@@ -132,13 +118,6 @@ class rgbImage{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	double minimum( void ) const;
-
-	double maximum( void ) const;
-
-	void adjustContrast( const range dataRange );
-
-
 
 	private:
 
@@ -146,26 +125,11 @@ class rgbImage{
 	size_t height;					/*!<Image height*/
 	size_t numPixel;				/*!<Amount of pixel in image*/
 
-	vector<rgb_Double> sourceData;		/*!<Source data*/
 	vector<rgb_Int> imageData;			/*!<Data as unsigned char values*/
 
 
 	private:
 
-	/*!
-	 * @brief Acces operator
-	 * @param c Column
-	 * @param r Row
-	 * @return Reference to value at ( c, r )
-	*/
-	rgb_Double& operator()( const size_t c, const size_t r );
-
 	rgb_Int& charData( const size_t c, const size_t r );
-
-	/*!
-	 * @brief Normalize unsigned char data
-	 * @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
-	*/
-	void normalize( void );
 
 };
