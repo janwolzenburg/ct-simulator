@@ -50,8 +50,8 @@ void Fl_GridImage::draw( void ){
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
 
 
-
-	fl_draw_image_mono( scaledImage.getDataPtr(), centerX, y(), (int) scaledImage.Width(), (int) scaledImage.Height() );
+	// Check rgb_Int memory layout
+	fl_draw_image( (unsigned char*) colorImage.getDataPtr(), centerX, y(), (int) colorImage.Width(), (int) colorImage.Height() );
 }
 
 
@@ -89,6 +89,8 @@ void Fl_GridImage::calculateScaled( void ){
 	}
 
 	scaledImage = monoImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight };
+
+	colorImage = rgbImage( scaledImage );
 
 }
 

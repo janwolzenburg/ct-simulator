@@ -16,6 +16,7 @@
  #include <FL/Fl_Hor_Slider.H>
 
 #include "monoImage.h"
+#include "rgbImage.h"
 #include "Fl_OwnValuator.h"
 
 
@@ -51,8 +52,7 @@ class Fl_GridImage : public Fl_Widget{
 
 	monoImage originalImage;
 	monoImage scaledImage;
-
-	vector<unsigned char> rgbData;
+	rgbImage colorImage;
 
 };
 
