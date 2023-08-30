@@ -20,7 +20,6 @@ using std::filesystem::path;
  #include "cartesian.h"
  #include "voxel.h"
  #include "scattering.h"
- //#include "simulation.h"
  #include "grid.h"
 
 
@@ -28,9 +27,6 @@ using std::filesystem::path;
   /*********************************************************************
 	Definitions
  *********************************************************************/
-
-constexpr double muAir = 0.00001883552;				/*!<Absorption air in 1 / mm	for 120keV*/
-constexpr double muWater = 0.01611970000;			/*!<Absorption Water in 1 / mm for 120keV*/
 
 
 /*!
@@ -108,6 +104,10 @@ class model : virtual public mathObj{
 	*/
 	voxData& operator() ( const idx3 indices );
 
+	const voxData& getVoxelDataC( const size_t x, const size_t y, const size_t z ) const;
+
+	const voxData& getVoxelDataC( const idx3 indices ) const;
+
 	/*!
 	 * @brief Element read
 	 * @param x x-index of voxel
@@ -115,14 +115,14 @@ class model : virtual public mathObj{
 	 * @param z z-index of voxel
 	 * @return Voxel data
 	*/
-	voxData operator() ( const size_t x, const size_t y, const size_t z ) const;
+	voxData getVoxelData( const size_t x, const size_t y, const size_t z ) const;
 
 	/*!
 	 * @brief Element read
 	 * @param indices Indices of voxel
 	 * @return Voxel data
 	*/
-	voxData operator() ( const idx3 indices ) const;
+	voxData getVoxelData( const idx3 indices ) const;
 
 	/*!
 	 * @brief Get number of voxels
@@ -247,8 +247,6 @@ class model : virtual public mathObj{
 	cartCSys* cSys;								/*!<Coordinate system*/
 	string name;								/*!<Model name*/
 
-	vector<pair<idx3, voxData::specielEnumType>> specialVoxel;
-
 	private:
 
 	/*!
@@ -260,5 +258,4 @@ class model : virtual public mathObj{
 	*/
 	idx3 getVoxelIndices( const v3 locCoords ) const;
 
-	void addSpecialVoxel( const idx3 indices, voxData::specialProperty );
 };

@@ -53,9 +53,9 @@ class voxData{
 	
 	public:
 
-	typedef unsigned char specielEnumType;
+	typedef unsigned char specialEnumType;
 
-	enum specialProperty : specielEnumType{
+	enum specialProperty : specialEnumType{
 		NONE = 0x00,
 		METAL = 0x01
 	};
@@ -108,8 +108,9 @@ class voxData{
 
 	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/
 	static const double referenceEnergy_3;		/*!<Cube of reference energy*/
+
 	double attenuation	= -1;					/*!<Absorption coefficient at reference Energy*/
-	specielEnumType specialProperties;
+	specialEnumType specialProperties;
 
 	private:
 

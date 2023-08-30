@@ -36,8 +36,8 @@ voxData::voxData( const double attenuationAtFrequency, const double frequency ) 
 {}
 
 voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	specialProperties( NONE ),
-	attenuation( deSerializeBuildIn<double>( 0., binData, it ) )
+	attenuation( deSerializeBuildIn<double>( 0., binData, it ) ),
+	specialProperties( deSerializeBuildIn<specialEnumType>( 0., binData, it ) )
 {
 
 }
@@ -67,6 +67,7 @@ double voxData::attenuationAt( const double energy ) const{
 size_t voxData::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( attenuation, binData );
+	numBytes += serializeBuildIn( specialProperties, binData );
 	return numBytes;
 };
 
@@ -96,7 +97,7 @@ void voxData::removeSpecialProperty( const specialProperty property ){
 
 bool voxData::hasSpecialProperty( const specialProperty property ) const{
 
-	specielEnumType propertyToCheck = toUnderlying( property );
+	specialEnumType propertyToCheck = toUnderlying( property );
 
 	if( specialProperties & propertyToCheck ) return true;
 	return false;

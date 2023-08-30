@@ -25,14 +25,17 @@ using std::cerr;  using std::endl; using std::cout;
 */
 int main( int argc, char** argv ){
 
-	//model testModel = getTestModel( GLOBAL_CSYS(), 20 );
+	/*
+	model testModel = getTestModel( GLOBAL_CSYS(), 20 );
 
-	//vector<char> modelBin;
-	//testModel.serialize( modelBin );
-	//exportSerialized(path{ "./testModel_20x.model" }, modelBin );
+	vector<char> modelBin;
+	testModel.serialize( modelBin );
+	exportSerialized(path{ "./testModel_20x.model" }, modelBin );
 
-	//return 0;
+	return 0;
+	*/
 
+	
 	programState& state = PROGRAM_STATE();
 
 	Fl_Group::current( NULL );
@@ -64,4 +67,5 @@ int main( int argc, char** argv ){
 	delete procView;
 
 	return 0;
+	
 }

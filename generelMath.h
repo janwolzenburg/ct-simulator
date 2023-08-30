@@ -39,7 +39,10 @@ constexpr double J_Per_eV = e_As;								/*!<Joules in on eV */
 constexpr double m_0c2_J = m_0c2_eV * J_Per_eV;					/*!<Compton wavelenth in Joule */
 
 constexpr double energyPhotoFXChange_eV = 40000.;				/*!<Photonenergy under which photo effect dominates absorption*/
-//constexpr double frequencyPhotoFXChange_Hz = energyPhotoFXChange_eV / h_eVs;
+
+constexpr double muAir = 0.00001883552;							/*!<Absorption air in 1 / mm	for 120keV*/
+constexpr double muWater = 0.01611970000;						/*!<Absorption Water in 1 / mm for 120keV*/
+
 
 inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& stdOut = std::cout;						/*!< Standard out stream */

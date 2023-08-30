@@ -37,7 +37,7 @@ using std::cref;
 */
 
 
-const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE"};
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver1"};
 
 model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
@@ -60,11 +60,11 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D,
 
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	numVox3D( idx3{ binData, it } ),
-	voxSize3D( v3{ binData, it } ),
-	size3D( { (double) numVox3D.x * voxSize3D.x,
+	numVox3D( idx3( binData, it ) ),
+	voxSize3D( v3( binData, it ) ),
+	size3D( v3( (double) numVox3D.x * voxSize3D.x,
 			 (double) numVox3D.y * voxSize3D.y,
-			 (double) numVox3D.z * voxSize3D.z } ),
+			 (double) numVox3D.z * voxSize3D.z ) ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[numVox] ),
 	cSys( CSYS_TREE().addCSys( binData, it ) ),
@@ -72,7 +72,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 {
 
 	for( size_t i = 0; i < numVox; i++ ){
-		parameter[i] = voxData{ binData, it };
+		parameter[i] = voxData( binData, it );
 	}
 }
 
@@ -116,7 +116,7 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 }
 
 
-voxData model::operator() ( const size_t x, const size_t y, const size_t z ) const{
+voxData model::getVoxelData( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -124,15 +124,32 @@ voxData model::operator() ( const size_t x, const size_t y, const size_t z ) con
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
 }
 
+const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_t z ) const{
+
+	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+
+	return parameter[( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x];
+
+}
+
+
 
 voxData& model::operator() ( const idx3 indices ){
 	return ( *this )( indices.x, indices.y, indices.z );
 }
 
 
-voxData model::operator() ( const idx3 indices ) const{
-	return ( *this )( indices.x, indices.y, indices.z );
+voxData model::getVoxelData( const idx3 indices ) const{
+	return getVoxelData( indices.x, indices.y, indices.z );
 }
+
+
+const voxData& model::getVoxelDataC( const idx3 indices ) const{
+	return getVoxelDataC( indices.x, indices.y, indices.z );
+	
+};
 
 
 vox model::Vox( void ) const{
@@ -179,7 +196,7 @@ vox model::getVoxel( const idx3 indices ) const{
 	pnt3 voxOrigin{ v3{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
 
 	// Get voxel data and create voxel instance
-	vox voxel( voxOrigin, voxSize3D, ( *this )( indices ) );
+	vox voxel( voxOrigin, voxSize3D, getVoxelData( indices ) );
 
 	return voxel;
 }
@@ -286,7 +303,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 			const double distance = rayParameter;		// The distance is the rayParameter
 
 			// Update ray properties whith distance travelled in current voxel
-			modelRay.updateProperties( this->operator()( currentVoxelIndices ), distance );
+			modelRay.updateProperties( this->getVoxelDataC( currentVoxelIndices ), distance );
 			modelRay.incrementHitCounter();
 
 			currentRayStep += distance + rayStepSize;				// New Step on ray
@@ -458,10 +475,8 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 		const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
 
-		const voxData data = modelRef( currentVoxelIndices );
-
 		// Current voxel value
-		const double currentValue = data.attenuationAtRefE();
+		const double currentValue = modelRef.getVoxelDataC( currentVoxelIndices ).attenuationAtRefE();
 
 		// Set image value
 		sliceMutex.lock();
@@ -509,27 +524,6 @@ grid model::getSlice( const surfLim sliceLocation, const double resolution ) con
 }
 
 
-void model::addSpecialVoxel( const idx3 indices, voxData::specialProperty property ){
-
-	// Check indices
-	if( !checkIndices( indices ) ) return;
-
-	// iterate all special voxel
-	for( auto& currentVoxel : specialVoxel ){
-		
-		// Voxel already "special"
-		if( currentVoxel.first == indices ){
-
-			// Add flag
-			currentVoxel.second |= toUnderlying( property );
-	
-			return;
-		}
-	}
-
-	specialVoxel.emplace_back( indices, property );
-
-}
 
 void model::addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius ){
 	
@@ -554,7 +548,7 @@ void model::addSpecialSphere( const voxData::specialProperty property, const pnt
 
 				pnt3 p( v3( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
 
-				if( ( center - p ).Length() <= radius )  addSpecialVoxel( idx3( x, y, z ), property ) ;
+				if( ( center - p ).Length() <= radius )  (*this).operator()( x, y, z ).addSpecialProperty( property );
 				
 			}
 		}
