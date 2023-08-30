@@ -81,6 +81,7 @@ class modelView : public Fl_Group{
 	Fl_Counter zTrans;
 	Fl_Button resetBtn;
 
+
 	string modelDataString;
 
 	bool loadBtnPressed;

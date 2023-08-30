@@ -327,6 +327,9 @@
     <ClInclude Include="progress.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="rgbImage.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -461,7 +464,7 @@
     <ClCompile Include="window.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="image.cpp">
+    <ClCompile Include="monoImage.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="slicePlane.cpp">

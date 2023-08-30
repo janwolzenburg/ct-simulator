@@ -160,3 +160,30 @@ void monoImage::normalize( void ){
 		imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
 	}
 }
+
+double monoImage::minimum( void ) const{
+
+	return Min( data );
+
+}
+
+double monoImage::maximum( void ) const{
+
+	return Max( data );
+
+}
+
+void monoImage::adjustContrast( const range dataRange ){
+
+	if( data.size() == 0 ) return;
+
+	for( size_t i = 0; i < numPixel; i++ ){
+
+		double diffToStart = data.at( i ) - dataRange.start;
+		if( diffToStart < 0 ) diffToStart = 0.;
+		if( diffToStart > dataRange.Diff() ) diffToStart = dataRange.Diff();
+
+
+		imData.at( i ) = (unsigned char) ( ( diffToStart / ( dataRange.Diff() ) ) * 255. );
+	}
+}

@@ -197,6 +197,7 @@
     <ClInclude Include="progress.h" />
     <ClInclude Include="propability.fwd.h" />
     <ClInclude Include="propability.h" />
+    <ClInclude Include="rgbImage.h" />
     <ClInclude Include="scattering.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="slicePlane.h" />
@@ -246,7 +247,7 @@
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="plots.cpp" />
-    <ClCompile Include="image.cpp" />
+    <ClCompile Include="monoImage.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />

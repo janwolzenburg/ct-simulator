@@ -79,5 +79,6 @@ double Max( const vector<double>& v );
 */
 double Min( const vector<double>& v );
 
+double Min( const vector<rgb_Double>& v );
 
 double Min( const vector<vector<double>> v );

@@ -49,6 +49,8 @@ void Fl_GridImage::draw( void ){
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) scaledImage.Width() ) / 2;
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
 
+
+
 	fl_draw_image_mono( scaledImage.getDataPtr(), centerX, y(), (int) scaledImage.Width(), (int) scaledImage.Height() );
 }
 
