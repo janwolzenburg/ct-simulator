@@ -61,13 +61,7 @@ class rgbImage{
 	*/
 	rgbImage( void );
 
-	//rgbImage( const monoImage& greyImage );
 
-	/*!
-	 * @brief Construct image from grid
-	 * @param source Source grid
-	*/
-	rgbImage( const monoImage& source );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -135,5 +129,20 @@ class rgbImage{
 	private:
 
 	rgb_Int& charData( const size_t c, const size_t r );
+
+};
+
+
+class overlayImage : private monoImage{
+
+	public:
+	overlayImage( const grid<voxData>& dataGrid ){
+
+	};
+	
+	private:
+
+	vector<pair<idx2CR, rgb_Int>> overlay;
+	rgbImage overlayedImage;
 
 };

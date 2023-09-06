@@ -25,6 +25,7 @@
 /*!
  * @brief Class for a 2D grid
 */
+template<class D = double>
 class grid{
 
 	public:
@@ -38,7 +39,7 @@ class grid{
 	 * @param resolution_ Axis resolution
 	 * @param defaultValue Default value
 	*/
-	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue = 0 );
+	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue = 0 );
 
 	/*!
 	 * @brief Constructor
@@ -47,7 +48,7 @@ class grid{
 	 * @param resolution_ Resolutions
 	 * @param defaultValue Default value
 	*/
-	grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue = 0 );
+	grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue = 0 );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -92,14 +93,14 @@ class grid{
 	 * @param index Index of element
 	 * @return Element value
 	*/
-	double operator()( const idx2CR index ) const;
+	D operator()( const idx2CR index ) const;
 
 	/*!
 	 * @brief Access operator for grid elemenrt
 	 * @param index Index of element
 	 * @return Reference to element value
 	*/
-	double& operator()( const idx2CR index );
+	D& operator()( const idx2CR index );
 
 	/*!
 	 * @brief Get indices corresponding to coordinates
@@ -120,14 +121,14 @@ class grid{
 	 * @param point Point in grid
 	 * @return Element value
 	*/
-	double operator()( const v2CR point ) const;
+	D operator()( const v2CR point ) const;
 
 	/*!
 	 * @brief Access operator for grid elemenrt
 	 * @param point Point in grid
 	 * @return Reference to element value
 	*/
-	double& operator()( const v2CR point );
+	D& operator()( const v2CR point );
 
 	/*!
 	 * @brief Serialize this object
@@ -142,7 +143,7 @@ class grid{
 	 * @brief Fill the points and data vectors with value
 	 * @param defaultValue Value to fill
 	*/
-	void fillVectors( const double defaultValue );
+	void fillVectors( const D defaultValue );
 
 
 	private:
@@ -153,7 +154,8 @@ class grid{
 
 	vector<double> columnPoints;	/*!<Vector with values on column axis*/
 	vector<double> rowPoints;		/*!<Vector with values on row axis*/
-	vector<vector<double>> data;	/*!<2D Vector with data points*/
+	vector<vector<D>> data;	/*!<2D Vector with data points*/
 
 };
 
+#include "grid.hpp"

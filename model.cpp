@@ -433,7 +433,7 @@ size_t model::serialize( vector<char>& binData ) const{
 mutex coutMutex;
 
 void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& currentY, mutex& currentYMutex, 
-							grid& slice, mutex& sliceMutex,
+							grid<voxData>& slice, mutex& sliceMutex,
 							const surfLim& slicePlane,
 							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
 
@@ -467,7 +467,7 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 		if( !modelRef.validCoords( currentPoint ) ){
 			sliceMutex.lock();
-			slice.operator()( gridCoordinate ) = 1.;
+			slice.operator()( gridCoordinate ) = voxData(1., 120000. );
 			sliceMutex.unlock();
 
 			continue;
@@ -476,7 +476,7 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 		const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
 
 		// Current voxel value
-		const double currentValue = modelRef.getVoxelDataC( currentVoxelIndices ).attenuationAtRefE();
+		const voxData currentValue = modelRef.getVoxelDataC( currentVoxelIndices );
 
 		// Set image value
 		sliceMutex.lock();
@@ -488,10 +488,10 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 };
 
-grid model::getSlice( const surfLim sliceLocation, const double resolution ) const{
+grid<voxData> model::getSlice( const surfLim sliceLocation, const double resolution ) const{
 
 	// Image
-	grid slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, 0. };
+	grid<voxData> slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, voxData() };
 
 	// Surface in local coordinate system
 	const surfLim slicePlane = sliceLocation.convertTo( cSys );

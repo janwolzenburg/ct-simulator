@@ -42,7 +42,7 @@ monoImage::monoImage( void ) :
 }
 
 
-monoImage::monoImage( const grid source, const bool normalizeImg ) :
+monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
 	monoImage{ source.Size().col, source.Size().row }{
 
 	for( size_t c = 0; c < width; c++ ){
@@ -55,6 +55,19 @@ monoImage::monoImage( const grid source, const bool normalizeImg ) :
 		normalize();
 }
 
+monoImage::monoImage( const grid<voxData>& source, const bool normalizeImg ) :
+	monoImage{ source.Size().col, source.Size().row }{
+
+	for( size_t c = 0; c < width; c++ ){
+		for( size_t r = 0; r < height; r++ ){
+			data.at( c + r * width ) = source.operator()( idx2CR{ c, r } ).attenuationAtRefE();
+		}
+	}
+
+	if( normalizeImg )
+		normalize();
+
+}
 
 monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
 	monoImage{ newWidth, newHeight }{
@@ -90,6 +103,9 @@ monoImage::monoImage( const vector<char>& binData, vector<char>::const_iterator&
 
 	//normalize();
 }
+
+
+
 
 
 monoImage& monoImage::operator=( const monoImage& srcImg ){

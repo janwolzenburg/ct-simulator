@@ -26,7 +26,7 @@
 /*!
  * @brief Class for storing the filtered projections
 */
-class filteredProjections : private grid {
+class filteredProjections : private grid<> {
 
 	public:
 
@@ -84,7 +84,7 @@ class filteredProjections : private grid {
 /*!
  * @brief Class to store reconstructed image
 */
-class reconstrucedImage : private grid {
+class reconstrucedImage : private grid<> {
 
 	public:
 
@@ -100,7 +100,7 @@ class reconstrucedImage : private grid {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	inline grid getGrid( void ) const{ return (grid) *this; };
+	inline grid<> getGrid( void ) const{ return (grid<>) *this; };
 
 
 

@@ -147,7 +147,7 @@ string getObjectString<vector<radonPoint>>( const vector<radonPoint> data ){
 }
 
 template<>
-string getObjectString<grid>( const grid data, const bool image ){
+string getObjectString<grid<>>( const grid<> data, const bool image ){
 
 	if( image ){
 

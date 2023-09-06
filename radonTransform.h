@@ -84,7 +84,7 @@ class radonPoint{
 /*!
  * @brief Class for a radon transformation
 */
-class radonTransformed : private grid {
+class radonTransformed : private grid<> {
 
 	public:
 
@@ -110,7 +110,7 @@ class radonTransformed : private grid {
 	 * @brief Get grid data
 	 * @return Grid data
 	*/
-	grid Data( void ) const;
+	grid<> Data( void ) const;
 	
 	/*!
 	 * @brief Assign data at index 

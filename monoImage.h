@@ -48,7 +48,11 @@ class monoImage{
 	 * @brief Construct image from grid
 	 * @param source Source grid
 	*/
-	monoImage( const grid source, const bool normalize = false );
+	monoImage( const grid<>& source, const bool normalize = false );
+
+	monoImage( const grid<voxData>& source, const bool normalize = false );
+
+
 
 	/*!
 	 * @brief Construct image from other image but different size

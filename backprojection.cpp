@@ -43,7 +43,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 //	discreteFilter filter{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
 	// Local copy of projection data
-	const grid projectionsData = projections.Data();
+	const grid<> projectionsData = projections.Data();
 
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){

@@ -40,19 +40,6 @@ rgbImage::rgbImage( void ) :
 }
 
 
-rgbImage::rgbImage( const monoImage& source ) :
-	rgbImage( source.Width(), source.Height() ){
-
-	for( size_t c = 0; c < width; c++ ){
-		for( size_t r = 0; r < height; r++ ){
-
-			unsigned char value = source.charData( c, r );
-
-			imageData.at( c + r * width ) = rgb_Int{ value, value, value };
-		}
-	}
-
-}
 
 
 rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t newHeight ) :

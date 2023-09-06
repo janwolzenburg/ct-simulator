@@ -169,8 +169,8 @@ void programState::moveModel( const double targetXRot, const double targetYRot, 
 
 void programState::sliceModel( void ){
 
-	grid modelSliceGrid = modelInstance.getSlice( planeInstance.surface, 1. );
-	modelSliceInstance = monoImage{ modelSliceGrid, true };
+	grid<voxData> modelSliceGrid = modelInstance.getSlice( planeInstance.surface, 1. );
+	modelSliceInstance = rgbImage{ modelSliceGrid, true };
 
 }
 

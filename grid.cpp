@@ -22,22 +22,25 @@
   Implementations
 *********************************************************************/
 
-grid::grid( void ) : 
+template<class D>
+grid<D>::grid( void ) : 
 	size( 3, 3 ),
 	resolution( 1., 1. ),
 	start( 0. ,0. )
 {
-	fillVectors( 0. );
+	fillVectors( D{} );
 }
 
-grid::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, double defaultValue ) :
+template<class D>
+grid<D>::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue ) :
 	size( size_ ),
 	resolution( resolution_ ),
 	start( start_ ){
 	fillVectors( defaultValue );
 }
 
-grid::grid( const range columnRange, const range rowRange, const v2CR resolution_, double defaultValue ) :
+template<class D>
+grid<D>::grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue ) :
 	size( idx2CR{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
 					(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } ),
 	start( v2CR{	columnRange.start,
@@ -49,7 +52,8 @@ grid::grid( const range columnRange, const range rowRange, const v2CR resolution
 	fillVectors( defaultValue );
 }
 
-grid::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
+template<class D>
+grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	grid{ idx2CR{ binData, it }, v2CR{ binData, it }, v2CR{ binData, it }, 0 }{
 
 	for( vector<double>& column : data ){
@@ -60,7 +64,8 @@ grid::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 
 }
 
-void grid::fillVectors( const double defaultValue ){
+template<class D>
+void grid<D>::fillVectors( const D defaultValue ){
 
 	// Force size and resolution to positive value 
 	size.col = Fpos( size.col );
@@ -75,10 +80,11 @@ void grid::fillVectors( const double defaultValue ){
 	rowPoints = linearSpace( start.row, start.row + (double) ( size.row - 1 ) * resolution.row, size.row );
 
 	// Create data structure
-	data = vector<vector<double>>( size.col, vector<double>( size.row, defaultValue ) );
+	data = vector<vector<D>>( size.col, vector<D>( size.row, defaultValue ) );
 }
 
-bool grid::checkIndex( const idx2CR index ) const{
+template<class D>
+ bool grid<D>::checkIndex( const idx2CR index ) const{
 
 	if( index.row >= size.row || index.col >= size.col ){
 		std::cerr << "Invalid grid index!";
@@ -88,25 +94,29 @@ bool grid::checkIndex( const idx2CR index ) const{
 }
 
 
-v2CR grid::End( void ) const{
+template<class D>
+v2CR grid<D>::End( void ) const{
 
 	return getCoordinates( idx2CR{ size.col - 1, size.row - 1 } );
 
 }
 
-double& grid::operator()( const idx2CR index ){
+template<class D>
+D&  grid<D>::operator()( const idx2CR index ){
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
 	return data.at( index.col ).at( index.row );
 }
 
-double grid::operator()( const idx2CR index ) const{
+template<class D>
+D grid<D>::operator()( const idx2CR index ) const{
 	// Check the index for validity
 	if( !checkIndex( index ) ) return data.at( 0 ).at( 0 );
 	return data.at( index.col ).at( index.row );
 }
 
-idx2CR grid::getIndex( const v2CR coordinates ) const{
+template<class D>
+idx2CR grid<D>::getIndex( const v2CR coordinates ) const{
 
 	idx2CR index{
 		(size_t) floor( ( coordinates.col - start.col ) / resolution.col + 0.5 ),
@@ -119,15 +129,18 @@ idx2CR grid::getIndex( const v2CR coordinates ) const{
 	return index;
 }
 
-double grid::operator()( const v2CR coordinates ) const{
+template<class D>
+D grid<D>::operator()( const v2CR coordinates ) const{
 	return this->operator()( getIndex( coordinates ) );
 }
 
-double& grid::operator()( const v2CR coordinates ){
+template<class D>
+D& grid<D>::operator()( const v2CR coordinates ){
 	return this->operator()( getIndex( coordinates ) );
 }
 
-v2CR grid::getCoordinates( const idx2CR index ) const{
+template<class D>
+v2CR grid<D>::getCoordinates( const idx2CR index ) const{
 
 	if( !checkIndex( index ) ) return v2CR{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
 
@@ -138,16 +151,21 @@ v2CR grid::getCoordinates( const idx2CR index ) const{
 }
 
 
-size_t grid::serialize( vector<char>& binData ) const{
+template<class D>
+size_t grid<D>::serialize( vector<char>& binData ) const{
 
 	size_t numBytes = 0;
 	numBytes += size.serialize( binData );
 	numBytes += start.serialize( binData );
 	numBytes += resolution.serialize( binData );
 
-	for( vector<double> column : data ){
-		for( double rowData : column ){
-			numBytes += serializeBuildIn( rowData, binData );
+	for( vector<D> column : data ){
+		for( D rowData : column ){
+
+			if( std::is_fundamental_v<D> )
+				numBytes += serializeBuildIn( rowData, binData );
+			else
+				numBytes += rowData.serialize( binData );
 		}
 	}
 
