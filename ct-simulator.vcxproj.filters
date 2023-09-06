@@ -330,6 +330,9 @@
     <ClInclude Include="rgbImage.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
+    <ClInclude Include="monoImage.fwd.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

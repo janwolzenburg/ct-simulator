@@ -52,6 +52,7 @@ class Fl_GridImage : public Fl_Widget{
 
 	monoImage originalImage;
 	monoImage scaledImage;
+
 	rgbImage colorImage;
 
 };

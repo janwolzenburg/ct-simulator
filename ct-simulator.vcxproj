@@ -172,6 +172,7 @@
     <ClInclude Include="grid.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="Fl_Plot.h" />
+    <ClInclude Include="monoImage.fwd.h" />
     <ClInclude Include="monoImage.h" />
     <ClInclude Include="lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />

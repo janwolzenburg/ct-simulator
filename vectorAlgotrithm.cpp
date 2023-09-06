@@ -138,9 +138,6 @@ double Min( const vector<vector<double>>& v ){
 }
 
 
-rgb_Double Min( const vector<rgb_Double>& v ){
-	return *std::min_element( v.begin(), v.end(), []( const rgb_Double& v1, const rgb_Double& v2 ) { return v1.getMeanBrightness() < v2.getMeanBrightness(); } );
-}
 
 double Max( const vector<vector<double>>& v ){
 
@@ -156,8 +153,4 @@ double Max( const vector<vector<double>>& v ){
 
 	return Max( maxima );
 
-}
-
-rgb_Double Max( const vector<rgb_Double>& v ){
-	return *std::max_element( v.begin(), v.end(), [] ( const rgb_Double& v1, const rgb_Double& v2 ){ return v1.getMeanBrightness() < v2.getMeanBrightness(); } );
 }

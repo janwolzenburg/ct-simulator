@@ -13,7 +13,8 @@
 *********************************************************************/
 
 #include "rgbImage.h"
-#include "vectorAlgorithm.h"
+#include "monoImage.h"
+//#include "vectorAlgorithm.h"
 
 
 /*********************************************************************

@@ -12,9 +12,13 @@
 	Includes
  *********************************************************************/
 
-#include "grid.h"
-#include "vectorAlgorithm.h"
-#include "monoImage.h"
+ #include <string>
+ using std::string;
+
+ #include <vector>
+ using std::vector;
+
+#include "monoImage.fwd.h"
 
 
  /*********************************************************************
