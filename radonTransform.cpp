@@ -96,13 +96,13 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 const string radonTransformed::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
 
 radonTransformed::radonTransformed( void ) :
-	grid()
+	grid<>()
 {
 	gridErrors = vector<vector<v2CR>>( Size().col, vector<v2CR>( Size().row, v2CR{ INFINITY, INFINITY } ) );
 }
 
 radonTransformed::radonTransformed( const detectorRadonParameter detectorParameter ) :
-	grid{		idx2CR{ detectorParameter.numberPoints.col - 1,
+	grid<>{		idx2CR{ detectorParameter.numberPoints.col - 1,
 						detectorParameter.numberPoints.row }, 
 				v2CR{	0, 
 						-( (double) ( detectorParameter.numberPoints.row - 1 ) * detectorParameter.resolution.row ) / 2. },
@@ -113,8 +113,8 @@ radonTransformed::radonTransformed( const detectorRadonParameter detectorParamet
 }
 
 
-grid radonTransformed::Data( void ) const{
-	return (grid) *this;
+grid<> radonTransformed::Data( void ) const{
+	return (grid<>) *this;
 }
 
 void radonTransformed::assignData( const idx2CR index, const double value ){
@@ -141,14 +141,14 @@ size_t radonTransformed::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
 
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += grid::serialize( binData );
+	numBytes += grid<>::serialize( binData );
 	numBytes += serializeBuildIn( gridErrors, binData );
 	return numBytes;
 }
 
 
 radonTransformed::radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	grid{ binData, it },
+	grid<>( binData, it ),
 	gridErrors( deSerialize< vector<vector<v2CR>> >( binData, it ) )
 {
 	

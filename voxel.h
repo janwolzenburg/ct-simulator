@@ -104,6 +104,8 @@ class voxData{
 
 	bool hasSpecialProperty( const specialProperty property ) const;
 
+
+
 	private:
 
 	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/

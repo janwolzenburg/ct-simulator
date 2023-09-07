@@ -333,6 +333,9 @@
     <ClInclude Include="monoImage.fwd.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
+    <ClInclude Include="grid.hpp">
+      <Filter>Quelldateien\Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -412,9 +415,6 @@
     </ClCompile>
     <ClCompile Include="tomography.cpp">
       <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="grid.cpp">
-      <Filter>Quelldateien\Processing</Filter>
     </ClCompile>
     <ClCompile Include="detectorParameter.cpp">
       <Filter>Quelldateien\Device</Filter>

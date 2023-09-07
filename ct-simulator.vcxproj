@@ -245,7 +245,9 @@
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
-    <ClCompile Include="grid.cpp" />
+    <ClInclude Include="grid.hpp">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="plots.cpp" />
     <ClCompile Include="monoImage.cpp" />
