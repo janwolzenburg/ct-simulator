@@ -40,6 +40,8 @@ class Fl_GridImage : public Fl_Widget{
 
 	void assignImage( const monoImage& img );
 
+	void assignImage( const grid<voxData>& modGrid );
+
 	void calculateScaled( void );
 
 	void updateScaled( void );
@@ -51,9 +53,13 @@ class Fl_GridImage : public Fl_Widget{
 	bool imgAssigned;
 
 	monoImage originalImage;
-	monoImage scaledImage;
+
+
+	bool hasOverlay;
+	vector<pair<idx2CR, rgb_Int>> overlay;
 
 	rgbImage colorImage;
+
 
 };
 

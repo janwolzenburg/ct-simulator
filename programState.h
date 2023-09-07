@@ -63,7 +63,7 @@ class programState{
 
 	inline const gantry& Gantry( void ){ return gantryInstance; };
 
-	inline rgbImage& Slice( void ){ return modelSliceInstance; };
+	inline grid<voxData>& Slice( void ){ return modelSliceInstance; };
 
 	static void createStorageDir( void );
 
@@ -140,8 +140,7 @@ class programState{
 	slicePlane planeInstance;
 	storedObject<slicePlane> storedPlane;
 
-
-	rgbImage modelSliceInstance;
+	grid<voxData> modelSliceInstance;
 
 
 

@@ -19,7 +19,8 @@
  using std::vector;
 
 #include "monoImage.fwd.h"
-
+#include <utility>
+using std::pair;
 
  /*********************************************************************
 	Definitions
@@ -71,6 +72,10 @@ class rgbImage{
 	 * @param newHeight Height of constucted image
 	*/
 	rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t newHeight );
+
+
+
+	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight );
 
 	/*!
 	 * @brief Construct image from binary data
@@ -129,20 +134,5 @@ class rgbImage{
 	private:
 
 	rgb_Int& charData( const size_t c, const size_t r );
-
-};
-
-
-class overlayImage : private monoImage{
-
-	public:
-	overlayImage( const grid<voxData>& dataGrid ){
-
-	};
-	
-	private:
-
-	vector<pair<idx2CR, rgb_Int>> overlay;
-	rgbImage overlayedImage;
 
 };

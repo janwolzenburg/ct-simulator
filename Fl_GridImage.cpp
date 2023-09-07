@@ -31,7 +31,8 @@
 
 Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Widget{ x, y, w, h, label },
-	imgAssigned( false )
+	imgAssigned( false ),
+	hasOverlay( false )
 {
 
 };
@@ -39,14 +40,25 @@ Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 void Fl_GridImage::assignImage( const monoImage& img ){
 	originalImage = img;
 	imgAssigned = true;
+	hasOverlay = false;
 
 	updateScaled();
 }
 
 
+
+void Fl_GridImage::assignImage( const grid<voxData>& modGrid ){
+	originalImage = monoImage( modGrid, false );
+	imgAssigned = true;
+	hasOverlay = true;
+
+	updateScaled();
+
+}
+
 void Fl_GridImage::draw( void ){
 
-	int centerX = this->parent()->x() + ( this->parent()->w() - (int) scaledImage.Width() ) / 2;
+	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.Width() ) / 2;
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
 
 
@@ -88,9 +100,16 @@ void Fl_GridImage::calculateScaled( void ){
 
 	}
 
-	scaledImage = monoImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight };
+	colorImage = rgbImage( originalImage, (size_t) scaledWidth, (size_t) scaledHeight );
 
-	colorImage = rgbImage( scaledImage );
+	if( hasOverlay ){
+		//TODO: Calculate overlayed pixel
+
+
+
+	}
+
+	
 
 }
 

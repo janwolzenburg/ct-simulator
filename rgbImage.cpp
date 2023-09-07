@@ -61,6 +61,26 @@ rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t 
 
 }
 
+rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
+	rgbImage{ newWidth, newHeight }
+{
+
+
+	for( size_t c = 0; c < this->Width(); c++ ){
+
+		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
+
+		for( size_t r = 0; r < this->Height(); r++ ){
+
+			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.Height() - 1. ) / ( (double) this->Height() - 1. ) );
+
+			this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
+
+		}
+	}
+
+}
+
 
 rgbImage::rgbImage( const vector<char>& binsourceData, vector<char>::const_iterator& it ) :
 	width( deSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
