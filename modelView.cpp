@@ -178,7 +178,7 @@ void modelView::UpdateModel( void ){
 	Fl_Group::window()->deactivate();
 	PROGRAM_STATE().moveModel( xRot.value(), yRot.value(), zTrans.value() );
 
-	viewImg.assignImage( PROGRAM_STATE().Slice() );
+	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
