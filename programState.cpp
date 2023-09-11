@@ -197,6 +197,8 @@ bool programState::loadModel( void ){
 	path modelToLoad = modelChooserInstance.choose();
 
 	if( !storedModel.load( modelToLoad ) ) return false;
+	planeInstance.changeLimits( range( modelInstance.CSys()->O().x + modelInstance.VoxSize().x / 2, modelInstance.CSys()->O().x + modelInstance.ModSize().x - modelInstance.VoxSize().x / 2 ),
+								range( modelInstance.CSys()->O().y + modelInstance.VoxSize().y / 2, modelInstance.CSys()->O().y + modelInstance.ModSize().y - modelInstance.VoxSize().y / 2 ) );
 
 	return true;
 
