@@ -15,6 +15,9 @@ class slicePlane{
 
 	size_t serialize( vector<char>& binData ) const;
 
+	void changeLimits( const range a, const range b ){
+		surface = surfLim( surface, a.start, a.end, b.start, b.end );
+	}
 
 	public:
 
