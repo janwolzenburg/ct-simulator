@@ -70,10 +70,20 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	cSys( CSYS_TREE().addCSys( binData, it ) ),
 	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
-
-	for( size_t i = 0; i < numVox; i++ ){
-		parameter[i] = voxData( binData, it );
+	
+	if( numVox * sizeof( voxData ) == binData.end() - it ){
+		memcpy( parameter, &(*it) , numVox * sizeof(voxData));
+		it += numVox * sizeof( voxData );
 	}
+	else{
+
+		for( size_t i = 0; i < numVox; i++ ){
+			parameter[i] = voxData( binData, it );
+		}
+	}
+
+
+
 }
 
 model::model( void ) : model( DUMMY_CSYS(), idx3{1, 1, 1}, v3{1, 1, 1}){}
@@ -445,6 +455,9 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 		currentXMutex.lock();
 		currentYMutex.lock();
 
+		localX = currentX;
+		localY = currentY;
+
 		if( currentY > end.row ){
 			currentX += resolution.col;
 			currentY = start.row;
@@ -453,12 +466,12 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 			currentY += resolution.row;
 		}
 
-		localX = currentX;
-		localY = currentY;
 
 		currentXMutex.unlock();
 		currentYMutex.unlock();
 
+		// Check
+		if( localX > end.col || localY > end.row ) continue;
 		
 
 		v2CR gridCoordinate{ localX, localY }; 
