@@ -49,6 +49,7 @@ enum class FACE_ID : size_t{
 /*!
  * @brief Physical voxel data
 */
+#pragma pack(push, 1)
 class voxData{
 	
 	public:
@@ -125,7 +126,7 @@ class voxData{
 	double attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const;
 
 };
-
+#pragma pack(pop)
 
 
 
