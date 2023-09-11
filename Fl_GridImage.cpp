@@ -47,8 +47,8 @@ void Fl_GridImage::assignImage( const monoImage& img ){
 
 
 
-void Fl_GridImage::assignImage( const grid<voxData>& modGrid ){
-	originalImage = monoImage( modGrid, false );
+void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalize ){
+	originalImage = monoImage( modGrid, normalize );
 	imgAssigned = true;
 	hasOverlay = true;
 

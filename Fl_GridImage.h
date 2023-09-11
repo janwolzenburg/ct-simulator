@@ -40,7 +40,7 @@ class Fl_GridImage : public Fl_Widget{
 
 	void assignImage( const monoImage& img );
 
-	void assignImage( const grid<voxData>& modGrid );
+	void assignImage( const grid<voxData>& modGrid, const bool normalize = false );
 
 	void calculateScaled( void );
 
