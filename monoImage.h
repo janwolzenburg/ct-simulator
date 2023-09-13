@@ -120,8 +120,19 @@ class monoImage{
 	double maximum( void ) const;
 
 	void adjustContrast( const range dataRange );
+	/*!
+ * @brief Acces operator
+ * @param c Column
+ * @param r Row
+ * @return Reference to value at ( c, r )
+*/
+	double& operator()( const size_t c, const size_t r );
 
-
+	/*!
+ * @brief Normalize unsigned char data
+ * @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
+*/
+	void normalize( void );
 
 	private:
 
@@ -135,21 +146,11 @@ class monoImage{
 
 	private:
 
-	/*!
-	 * @brief Acces operator
-	 * @param c Column
-	 * @param r Row
-	 * @return Reference to value at ( c, r )
-	*/
-	double& operator()( const size_t c, const size_t r );
+
 
 	unsigned char& charData( const size_t c, const size_t r );
 
-	/*!
-	 * @brief Normalize unsigned char data
-	 * @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data ) 
-	*/
-	void normalize( void );
+
 
 };
 

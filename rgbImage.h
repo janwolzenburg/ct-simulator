@@ -22,6 +22,8 @@
 #include <utility>
 using std::pair;
 
+#include "generel.h"
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -114,6 +116,8 @@ class rgbImage{
 	 * @return Pointer to data start in
 	*/
 	inline const rgb_Int* getDataPtr( void ){ return imageData.data(); };
+
+	void setPixel( const idx2CR& pixel, const rgb_Int& value );
 
 	/*!
 	 * @brief Serialize this object

@@ -50,7 +50,7 @@ voxData::voxData( void ) :
 double voxData::attenuationAt( const double energy ) const{
 
 	// If Metal attenuation is approx. 10 1/mm at 100 keV
-	if( hasSpecialProperty( METAL ) ){
+	if( hasSpecificProperty( METAL ) ){
 		return 10 * pow( 100000. / energy, 3. );
 	}
 
@@ -95,7 +95,7 @@ void voxData::removeSpecialProperty( const specialProperty property ){
 
 };
 
-bool voxData::hasSpecialProperty( const specialProperty property ) const{
+bool voxData::hasSpecificProperty( const specialProperty property ) const{
 
 	specialEnumType propertyToCheck = toUnderlying( property );
 
@@ -104,6 +104,11 @@ bool voxData::hasSpecialProperty( const specialProperty property ) const{
 
 };
 
+bool voxData::hasSpecialProperty( void ) const{
+
+	return specialProperties != NONE;
+
+};
 
 /*
 	vox implementation

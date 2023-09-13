@@ -32,6 +32,7 @@
  #include "mainWindow.fwd.h"
  #include "processingWindow.fwd.h"
  #include "processingParameters.h"
+ #include "modelViewParameter.h"
 
  /*********************************************************************
 	Definitions
@@ -84,11 +85,14 @@ class programState{
 
 	inline const slicePlane& Plane( void ) const{ return planeInstance; };
 
+
 	inline const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
 
 	inline const detectorRadonParameter& RadonParameter( void ) const{ return radonParameter; };
 
 	inline const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
+
+	inline modelViewParameter& ModelViewParameter( void ){ return modelViewPara; };
 
 	inline tomography& Tomography( void ) { return tomographyInstance; };
 
@@ -141,7 +145,9 @@ class programState{
 	storedObject<slicePlane> storedPlane;
 
 	grid<voxData> modelSliceInstance;
-
+	
+	modelViewParameter modelViewPara;
+	storedObject<modelViewParameter> storedModelParameter;
 
 
 	// Voltage, Current, material

@@ -48,9 +48,34 @@ void Fl_GridImage::assignImage( const monoImage& img ){
 
 
 void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalize ){
-	originalImage = monoImage( modGrid, normalize );
+	
+	originalImage = monoImage( modGrid.Size().col, modGrid.Size().row );
+	const size_t width = originalImage.Width();
+	const size_t height = originalImage.Height();
+	
+	for( size_t c = 0; c < width; c++ ){
+		for( size_t r = 0; r < height; r++ ){
+			
+			const idx2CR pixel( c, r );
+			const voxData& data = modGrid.operator()( pixel );
+
+			originalImage.operator()( c, r ) = data.attenuationAtRefE();
+			
+			if( data.hasSpecialProperty() ){
+				if( data.hasSpecificProperty( voxData::METAL ) )
+					overlay.push_back( { pixel, rgb_Int{ 255, 0, 0 } } );
+			}
+
+		}
+	}
+
+	if( normalize )
+		originalImage.normalize();
+
+
 	imgAssigned = true;
 	hasOverlay = true;
+
 
 	updateScaled();
 
@@ -105,8 +130,9 @@ void Fl_GridImage::calculateScaled( void ){
 	if( hasOverlay ){
 		//TODO: Calculate overlayed pixel
 
-
-
+		for( auto& curPx : overlay ){
+			colorImage.setPixel( curPx.first, curPx.second );
+		}
 	}
 
 	
@@ -126,8 +152,8 @@ void Fl_GridImage::updateScaled( void ){
 Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label ) :
 	Fl_Group( x, y, w, h, label ),
 	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .85 ), "Image" ),
-	lowerBound( X( *this, 0.1 ), Y( *this, 0.85 ), W( *this, .8 ), H( *this, .075 ), "Low" ),
-	upperBound( X( *this, 0.1 ), Y( *this, 0.925 ), W( *this, .8 ), H( *this, .075 ), "High" ){
+	lowerBound( X( *this, 0.2 ), Y( *this, 0.85 ), W( *this, .6 ), H( *this, .075 ), "Low" ),
+	upperBound( X( *this, 0.2 ), Y( *this, 0.925 ), W( *this, .6 ), H( *this, .075 ), "High" ){
 	
 	
 	Fl_Group::add( imgWidget );
@@ -157,6 +183,31 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	imgWidget.assignImage( img );
 
+	setSliderBoundsFromImage();
+
+	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
+	imgWidget.updateScaled();
+
+	this->show();
+
+
+}
+
+void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool normalize ){
+
+	imgWidget.assignImage( modGrid, normalize );
+
+	setSliderBoundsFromImage();
+
+	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
+	imgWidget.updateScaled();
+
+	this->show();
+
+}
+
+void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
+
 	lowerBound.bounds( imgWidget.originalImage.minimum(), imgWidget.originalImage.maximum() );
 	upperBound.bounds( imgWidget.originalImage.minimum(), imgWidget.originalImage.maximum() );
 
@@ -165,12 +216,6 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	lowerBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
 	upperBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
-
-	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
-	imgWidget.updateScaled();
-
-	this->show();
-
 
 }
 

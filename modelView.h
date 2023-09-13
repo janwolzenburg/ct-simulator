@@ -28,12 +28,13 @@ using std::vector;
 #include "programState.h"
 #include "storedObject.h"
 #include "slicePlane.h"
-
+#include "modelViewParameter.h"
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
+
 
 
 class modelView : public Fl_Group{
@@ -73,7 +74,7 @@ class modelView : public Fl_Group{
 	Fl_Group viewGrp;
 	Fl_Multiline_Output modelData;
 	Fl_Box viewBox;
-	Fl_GridImage viewImg;
+	Fl_GridImage_Adjust viewImg;
 	
 	Fl_Group moveGrp;
 	Fl_Counter xRot;

@@ -52,6 +52,9 @@ programState::programState( void ) :
 	planeInstance{},
 	storedPlane{ programState::getPath( "storedViewPlane.txt" ), planeInstance },
 
+	modelViewPara(),
+	storedModelParameter( programState::getPath( "storedModelContrast.txt" ), modelViewPara ),
+
 	xRayTubeParameter{},
 	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
 
@@ -88,6 +91,7 @@ programState::~programState( void ) {
 	storedModel.saveObject();
 	storedModelChooser.saveObject( true );
 	storedPlane.saveObject( true );
+	storedModelParameter.saveObject( true );
 	storedXRayTubeParameter.saveObject( true );
 	storedRadonParameter.saveObject( true );
 	storedDetectorParameter.saveObject( true );

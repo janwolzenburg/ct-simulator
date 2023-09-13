@@ -117,6 +117,9 @@ size_t rgbImage::pixelIndex( const size_t c, const size_t r ) const{
 	return idx;
 }
 
+void rgbImage::setPixel( const idx2CR& pixel, const rgb_Int& value ){
+	charData( pixel.col, pixel.row ) = value;
+} 
 
 rgb_Int rgbImage::charData( const size_t c, const size_t r ) const{
 

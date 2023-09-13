@@ -76,7 +76,11 @@ class Fl_GridImage_Adjust : public Fl_Group{
 
 	void assignImage( const monoImage& img );
 
+	void assignImage( const grid<voxData>& modGrid, const bool normalize = false );
+
 	bool handleEvents( void );
+
+	void setSliderBoundsFromImage( void );
 
 	inline range getContrast( void ) const{ return range( lowerBound.value(), upperBound.value() ); };
 

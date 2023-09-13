@@ -150,6 +150,11 @@ void modelView::handleEvents( void ){
 		resetModel();
 	}
 
+	if( viewImg.handleEvents() ){
+		// Store contrast
+		PROGRAM_STATE().ModelViewParameter().viewContrast = viewImg.getContrast();
+	}
+
 }
 
 
@@ -180,11 +185,38 @@ void modelView::UpdateModel( void ){
 
 	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
 
+	viewImg.changeContrast( PROGRAM_STATE().ModelViewParameter().viewContrast );
+
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
 
 	modelDataString = PROGRAM_STATE().modelDescription();
 	modelData.value( modelDataString.c_str() );
 	Fl_Group::window()->activate();
+
+}
+
+const string modelViewParameter::FILE_PREAMBLE{ "MODELVIEWPARAMETER_FILE_PREAMBLE" };
+
+
+
+modelViewParameter::modelViewParameter( void ) :
+	viewContrast(){
+
+}
+
+modelViewParameter::modelViewParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	viewContrast( binData, it ){
+
+}
+
+size_t modelViewParameter::serialize( vector<char>& binData ) const{
+
+	size_t numBytes = 0;
+
+	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
+	numBytes += viewContrast.serialize( binData );
+
+	return numBytes;
 
 }

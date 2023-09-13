@@ -336,6 +336,9 @@
     <ClInclude Include="grid.hpp">
       <Filter>Quelldateien\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="modelViewParameter.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

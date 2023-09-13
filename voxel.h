@@ -103,7 +103,9 @@ class voxData{
 
 	void removeSpecialProperty( const specialProperty property );
 
-	bool hasSpecialProperty( const specialProperty property ) const;
+	bool hasSpecialProperty( void ) const;
+	
+	bool hasSpecificProperty( const specialProperty property ) const;
 
 
 
