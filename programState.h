@@ -83,7 +83,7 @@ class programState{
 
 	void resetModel( void );
 
-	inline const slicePlane& Plane( void ) const{ return planeInstance; };
+	inline slicePlane& Plane( void ) { return planeInstance; };
 
 
 	inline const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };

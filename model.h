@@ -15,6 +15,8 @@
 using std::filesystem::path;
  #include <utility>
  using std::pair;
+#include <algorithm>
+
 
  #include "generelMath.h"
  #include "cartesian.h"
@@ -135,6 +137,8 @@ class model : virtual public mathObj{
 	 * @return Model size
 	*/
 	inline v3 ModSize( void ) const{ return size3D; };
+
+	double LongestSide( void ) const{ return Max( Max(size3D.x, size3D.y), size3D.z ); };
 
 	/*!
 	 * @brief Get size of voxel

@@ -29,7 +29,8 @@ slicePlane::slicePlane( void ) :
 				-300, 300, -300, 300 },
 	rotationAngleX( 0. ),
 	rotationAngleY( 0. ),
-	positionZ( 0. ){
+	positionZ( 0. ),
+	size( 600. ) {
 
 };
 
@@ -38,7 +39,8 @@ slicePlane::slicePlane( const vector<char>& binData, vector<char>::const_iterato
 	surface{ binData, it, cSys },
 	rotationAngleX( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
 	rotationAngleY( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
-	positionZ( deSerializeBuildIn<double>( (double) 0., binData, it ) ){
+	positionZ( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
+	size( deSerializeBuildIn<double>( (double) 0., binData, it ) ){
 
 
 
@@ -54,6 +56,7 @@ size_t slicePlane::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( rotationAngleX, binData );
 	numBytes += serializeBuildIn( rotationAngleY, binData );
 	numBytes += serializeBuildIn( positionZ, binData );
+	numBytes += serializeBuildIn( size, binData );
 
 	return numBytes;
 

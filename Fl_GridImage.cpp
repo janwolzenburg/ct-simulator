@@ -151,9 +151,9 @@ void Fl_GridImage::updateScaled( void ){
 
 Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label ) :
 	Fl_Group( x, y, w, h, label ),
-	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .85 ), "Image" ),
-	lowerBound( X( *this, 0.2 ), Y( *this, 0.85 ), W( *this, .6 ), H( *this, .075 ), "Low" ),
-	upperBound( X( *this, 0.2 ), Y( *this, 0.925 ), W( *this, .6 ), H( *this, .075 ), "High" ){
+	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .9 ), "Image" ),
+	lowerBound( X( *this, 0.2 ), Y( *this, 0.91 ), W( *this, .6 ), H( *this, .04 ), "Low" ),
+	upperBound( X( *this, 0.2 ), Y( *this, 0.96 ), W( *this, .6 ), H( *this, .04 ), "High" ){
 	
 	
 	Fl_Group::add( imgWidget );

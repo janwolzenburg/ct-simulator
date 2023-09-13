@@ -55,6 +55,8 @@ class modelView : public Fl_Group{
 
 	inline bool ModelNeedsUpdate( void ){ return updateModelFlag && PROGRAM_STATE().ModelLoaded() ? !( updateModelFlag = false ) : false; };
 
+	inline bool UpdateSlice( void ){ return updateSliceFlag ? !( updateSliceFlag = false ) : false; };
+
 	inline bool ResetBtnPressed( void ){ return resetBtnPressed ? !( resetBtnPressed = false ) : false; };
 
 	void sliceModel( void );
@@ -80,7 +82,11 @@ class modelView : public Fl_Group{
 	Fl_Counter xRot;
 	Fl_Counter yRot;
 	Fl_Counter zTrans;
+	Fl_Counter planeSize;
 	Fl_Button resetBtn;
+
+	Fl_Group special;
+
 
 
 	string modelDataString;
@@ -88,7 +94,8 @@ class modelView : public Fl_Group{
 	bool loadBtnPressed;
 
 	bool updateModelFlag;
+	bool updateSliceFlag;
 	bool resetBtnPressed;
-
+	
 
 };

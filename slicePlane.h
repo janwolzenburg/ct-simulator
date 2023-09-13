@@ -15,8 +15,9 @@ class slicePlane{
 
 	size_t serialize( vector<char>& binData ) const;
 
-	void changeLimits( const range a, const range b ){
-		surface = surfLim( surface, a.start, a.end, b.start, b.end );
+	void setSize( const double newSize ){
+		size = newSize;
+		updateSurface();
 	}
 
 	public:
@@ -26,7 +27,14 @@ class slicePlane{
 	double rotationAngleX;
 	double rotationAngleY;
 	double positionZ;
+	double size;
 
 	static const string FILE_PREAMBLE;
+
+	private:
+
+	void updateSurface( void ){
+		surface = surfLim( surface, -size / 2, size / 2, -size / 2, size / 2 );
+	}
 
 };
