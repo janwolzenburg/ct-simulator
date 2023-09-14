@@ -341,7 +341,11 @@ inline auto multiplotcmd(std::ostream& out, std::size_t rows, std::size_t column
 inline auto runscript(std::string scriptfilename, bool persistent) -> bool
 {
     std::string command = persistent ? "gnuplot -persistent " : "gnuplot ";
-    command += "\"" + scriptfilename + "\"";
+	#ifdef WIN32
+		command += "\"" + scriptfilename + "\" > NUL";
+	#else
+		command += "\"" + scriptfilename + "\" >/dev/null";
+	#endif
     return std::system(command.c_str()) == 0;
 }
 
