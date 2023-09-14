@@ -189,7 +189,10 @@ void modelView::resetModel( void ){
 	xRot.value( 0. );
 	yRot.value( 0. );
 	zTrans.value( 0. );
+
 	planeSize.value( PROGRAM_STATE().Model().LongestSide() );
+
+	UpdateModel();
 
 	Fl_Group::window()->activate();
 
