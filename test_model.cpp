@@ -42,16 +42,28 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 	double sp2_radius = 70;
 	voxData sp2_data = { 0.5, 120000. };
 
+
+	pnt3 artifact{ v3{ 250, 200, 200}, mod.CSys() };
+	double artRadius = 15;
+
+
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
 		for( size_t y = 0; y < mod.NumVox().y; y++ ){
 			for( size_t z = 0; z < mod.NumVox().z; z++ ){
 				pnt3 p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
-				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) ) mod( x, y, z ) = sp1_data;
-				else if( ( sp2_center - p ).Length() <= sp2_radius && ( true || ( sp2_center - p ).Length() >= sp2_radius - 1.1 ) ) mod( x, y, z ) = sp2_data;
-				else mod( x, y, z ) = bgData;
+
+				voxData& currentVox = mod( x, y, z );
+
+				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) ) currentVox = sp1_data;
+				else if( ( sp2_center - p ).Length() <= sp2_radius && ( true || ( sp2_center - p ).Length() >= sp2_radius - 1.1 ) ) currentVox = sp2_data;
+				else currentVox = bgData;
+			
+				if( ( artifact - p ).Length() <= artRadius && ( true || ( artifact - p ).Length() >= artRadius - 1.1 ) ) currentVox.addSpecialProperty( voxData::METAL );
+			
 			}
 		}
 	}
+
 
 	return mod;
 }
