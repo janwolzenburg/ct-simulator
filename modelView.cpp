@@ -26,23 +26,20 @@ modelView::modelView( int x, int y, int w, int h ) :
 	headGrp{ X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .05 ) },
 	loadBtn{ X( headGrp, .3 ),	Y( headGrp, .05 ),	W( headGrp, .4 ),	H( headGrp, .9 ),	"Load model" },
 
-	viewGrp{ X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .5 ) },
+	viewGrp{ X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .75 ) },
 	modelData{ X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .15 ) },
 	viewBox{ X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
 	viewImg{ X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
 
-	moveGrp{ X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .225 ) },
-	xRot{ X( moveGrp, .1 ),	Y( moveGrp, .05 ),	W( moveGrp, .5 ),	H( moveGrp, .14 ), "x-Rotation" },
-	yRot{ X( moveGrp, .1 ),	Y( moveGrp, .275 ),	W( moveGrp, .5 ),	H( moveGrp, .14 ), "y-Rotation" },
-	zTrans{ X( moveGrp, .1 ),	Y( moveGrp, .5 ),	W( moveGrp, .5 ),	H( moveGrp, .14 ), "z-Translation" },
-	planeSize( X( moveGrp, .1 ), Y( moveGrp, .725 ), W( moveGrp, .5 ), H( moveGrp, .14 ), "Zoom" ),
-
+	moveGrp{ X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .2 ) },
+	xRot{ X( moveGrp, .1 ),	Y( moveGrp, .05 ),	W( moveGrp, .5 ),	H( moveGrp, .25 ), "x-Rotation" },
+	yRot{ X( moveGrp, .1 ),	Y( moveGrp, .325 ),	W( moveGrp, .5 ),	H( moveGrp, .25 ), "y-Rotation" },
+	zTrans{ X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .25 ), "z-Translation" },
 	resetBtn{ X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
 
 
 	loadBtnPressed( false ),
 	updateModelFlag( false ),
-	updateSliceFlag( false ),
 	resetBtnPressed( false )
 
 
@@ -90,27 +87,23 @@ modelView::modelView( int x, int y, int w, int h ) :
 	moveGrp.add( xRot );
 	moveGrp.add( yRot );
 	moveGrp.add( zTrans );
-	moveGrp.add( planeSize );
 	moveGrp.add( resetBtn );
 
 	// Counter ranges
 	xRot.range( -180., 180. );		xRot.step( 1., 10. );
 	yRot.range( -180., 180. );		yRot.step( 1., 10. );
 	zTrans.range( -500., 500. );	zTrans.step( 1., 10. );
-	planeSize.range( 1., 1000. );	planeSize.step( 5., 20. );
 
 	// Labelsizes
 	xRot.labelsize( (int) ( .40 * (double) xRot.h() ) );
 	yRot.labelsize( (int) ( .40 * (double) yRot.h() ) );
 	zTrans.labelsize( (int) ( .40 * (double) zTrans.h() ) );
-	planeSize.labelsize( (int) ( .40 * (double) planeSize.h() ) );
 	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
 
 	// Callbacks for Counters and reset button
 	xRot.callback( button_cb, &updateModelFlag );
 	yRot.callback( button_cb, &updateModelFlag );
 	zTrans.callback( button_cb, &updateModelFlag );
-	planeSize.callback( button_cb, &updateSliceFlag );
 	resetBtn.callback( button_cb, &resetBtnPressed );
 
 
@@ -119,7 +112,6 @@ modelView::modelView( int x, int y, int w, int h ) :
 	xRot.value( PROGRAM_STATE().Plane().rotationAngleX );
 	yRot.value( PROGRAM_STATE().Plane().rotationAngleY );
 	zTrans.value( PROGRAM_STATE().Plane().positionZ );
-	planeSize.value( PROGRAM_STATE().Plane().size );
 
 	// Hide initially
 	moveGrp.hide();
@@ -136,7 +128,6 @@ void modelView::loadModel( void ){
 
 	PROGRAM_STATE().loadModel();
 	PROGRAM_STATE().resetModel();
-	planeSize.value( PROGRAM_STATE().Model().LongestSide() );
 	UpdateModel();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
@@ -162,7 +153,6 @@ void modelView::handleEvents( void ){
 
 	if( UpdateSlice() ){
 	
-		PROGRAM_STATE().Plane().setSize( planeSize.value() );
 		UpdateModel();
 
 	}
@@ -189,8 +179,6 @@ void modelView::resetModel( void ){
 	xRot.value( 0. );
 	yRot.value( 0. );
 	zTrans.value( 0. );
-
-	planeSize.value( PROGRAM_STATE().Model().LongestSide() );
 
 	UpdateModel();
 
