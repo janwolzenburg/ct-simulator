@@ -194,6 +194,12 @@ void programState::resetModel( void ){
 	planeInstance.rotationAngleY = 0.;
 	planeInstance.positionZ = 0.;
 
+
+	planeInstance.setSize( modelInstance.LongestSide() );
+
+	centerModel();
+
+
 }
 
 bool programState::loadModel( void ){
@@ -202,7 +208,7 @@ bool programState::loadModel( void ){
 
 	if( !storedModel.load( modelToLoad ) ) return false;
 
-	planeInstance.setSize( max( modelInstance.ModSize().x, max( modelInstance.ModSize().y, modelInstance.ModSize().z ) ) );
+	planeInstance.setSize( modelInstance.LongestSide() );
 
 	return true;
 

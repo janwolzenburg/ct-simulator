@@ -30,7 +30,7 @@ int main( int argc, char** argv ){
 
 	vector<char> modelBin;
 	testModel.serialize( modelBin );
-	exportSerialized(path{ "./testModel_20x.model" }, modelBin );
+	exportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
 
 	return 0;
 	*/
