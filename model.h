@@ -237,6 +237,8 @@ class model : virtual public mathObj{
 	*/
 	grid<voxData> getSlice( const surfLim sliceLocation, const double resolution ) const; 
 
+	bool isSliced( const surfLim slice ) const;
+
 	inline string Name( void ) const{ return name; };
 
 	void addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius );

@@ -536,6 +536,11 @@ grid<voxData> model::getSlice( const surfLim sliceLocation, const double resolut
 	return slice;
 }
 
+bool model::isSliced( const surfLim slice ) const{
+
+		return true;
+
+}
 
 
 void model::addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius ){
