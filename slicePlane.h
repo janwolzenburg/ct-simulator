@@ -15,26 +15,15 @@ class slicePlane{
 
 	size_t serialize( vector<char>& binData ) const;
 
-	void setSize( const double newSize ){
-		size = newSize;
-		updateSurface();
-	}
-
 	public:
 
 	cartCSys* cSys;
-	surfLim surface;
+	surf surface;
 	double rotationAngleX;
 	double rotationAngleY;
 	double positionZ;
-	double size;
 
 	static const string FILE_PREAMBLE;
 
-	private:
-
-	void updateSurface( void ){
-		surface = surfLim( surface, -size / 2, size / 2, -size / 2, size / 2 );
-	}
 
 };

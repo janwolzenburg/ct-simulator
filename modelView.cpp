@@ -151,11 +151,6 @@ void modelView::handleEvents( void ){
 		resetModel();
 	}
 
-	if( UpdateSlice() ){
-	
-		UpdateModel();
-
-	}
 
 	if( viewImg.handleEvents() ){
 		// Store contrast

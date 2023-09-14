@@ -235,9 +235,8 @@ class model : virtual public mathObj{
 	 * @param resolution Resolution of grid
 	 * @return Grid with slice
 	*/
-	grid<voxData> getSlice( const surfLim sliceLocation, const double resolution ) const; 
+	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
 
-	bool isSliced( const surfLim slice ) const;
 
 	inline string Name( void ) const{ return name; };
 

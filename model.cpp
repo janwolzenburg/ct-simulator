@@ -443,8 +443,8 @@ size_t model::serialize( vector<char>& binData ) const{
 mutex coutMutex;
 
 void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& currentY, mutex& currentYMutex, 
-							grid<voxData>& slice, mutex& sliceMutex,
-							const surfLim& slicePlane,
+							vector<pair<v2CR, voxData >>& slice, mutex& sliceMutex,
+							const surf& slicePlane,
 							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
 
 
@@ -478,10 +478,12 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 		const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
 
+
 		if( !modelRef.validCoords( currentPoint ) ){
-			sliceMutex.lock();
+			/*sliceMutex.lock();
 			slice.operator()( gridCoordinate ) = voxData(1., 120000. );
 			sliceMutex.unlock();
+			*/
 
 			continue;
 		}
@@ -493,7 +495,8 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 		// Set image value
 		sliceMutex.lock();
-		slice.operator()( gridCoordinate ) = currentValue;
+		slice.emplace_back( gridCoordinate, currentValue );
+		//slice.operator()( gridCoordinate ) = currentValue;
 		sliceMutex.unlock();
 
 
@@ -501,21 +504,34 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 };
 
-grid<voxData> model::getSlice( const surfLim sliceLocation, const double resolution ) const{
+grid<voxData> model::getSlice( const surf sliceLocation, const double resolution ) const{
+
+	// Distance between corners furthest away from each other
+	const double cornerDistance = sqrt( pow( size3D.x, 2. ) + pow( size3D.y, 2. ) + pow( size3D.z, 2. ) );
+	
+	// Worst case: origin of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
+
+	vector<pair<v2CR, voxData >> sliceData;				// Slice
+
+	//const surfLim slicePlane( sliceLocation.convertTo( cSys), -cornerDistance, cornerDistance, -cornerDistance, cornerDistance );
+
+	const surf localSurface = sliceLocation.convertTo( cSys );
+
+
 
 	// Image
-	grid<voxData> slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, voxData() };
+	//grid<voxData> slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, voxData() };
 
 	// Surface in local coordinate system
-	const surfLim slicePlane = sliceLocation.convertTo( cSys );
+	//const surf slicePlane = sliceLocation.convertTo( cSys );
 
 
-	v2CR sliceStart = slice.Start();
-	v2CR sliceEnd = slice.End();
-	v2CR sliceResolution = slice.Resolution();
+	v2CR sliceStart( -cornerDistance, -cornerDistance );
+	v2CR sliceEnd( cornerDistance, cornerDistance );
+	v2CR sliceResolution( resolution, resolution );
 
-	double currentX = slice.Start().col;
-	double currentY = slice.Start().row;
+	double currentX = localSurface.getPnt( sliceStart.col, sliceStart.row ).XYZ().x;
+	double currentY = localSurface.getPnt( sliceStart.col, sliceStart.row ).XYZ().y;
 
 	mutex currentXMutex;
 	mutex currentYMutex;
@@ -525,21 +541,15 @@ grid<voxData> model::getSlice( const surfLim sliceLocation, const double resolut
 
 	for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
 		threads.emplace_back( sliceThreadFunction,	ref( currentX ), ref( currentXMutex ), ref( currentY ), ref( currentYMutex ),
-													ref( slice ), ref( sliceMutex ), 
-													cref( slicePlane ),
+													ref( sliceData ), ref( sliceMutex ),
+													cref( localSurface ),
 													cref( *this ), cref( sliceStart ), cref( sliceEnd ), cref( sliceResolution ));
 	}
 
 	for( std::thread& currentThread : threads ) currentThread.join();
 
 
-	return slice;
-}
-
-bool model::isSliced( const surfLim slice ) const{
-
-		return true;
-
+	//return slice;
 }
 
 
