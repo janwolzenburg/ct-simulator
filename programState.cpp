@@ -158,7 +158,7 @@ void programState::moveModel( const double targetXRot, const double targetYRot, 
 		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
 	}
 
-	if( targetZTrans != planeInstance.rotationAngleY ){
+	if( targetZTrans != planeInstance.positionZ ){
 
 		const double translation = targetZTrans - planeInstance.positionZ;
 		planeInstance.positionZ = targetZTrans;
