@@ -85,7 +85,6 @@ class modelView : public Fl_Group{
 	Fl_Counter planeSize;
 	Fl_Button resetBtn;
 
-	Fl_Group special;
 
 
 
