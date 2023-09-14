@@ -53,6 +53,9 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 	const size_t width = originalImage.Width();
 	const size_t height = originalImage.Height();
 	
+	hasOverlay = false;
+	overlay.clear();
+
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
 			
@@ -62,6 +65,9 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 			originalImage.operator()( c, r ) = data.attenuationAtRefE();
 			
 			if( data.hasSpecialProperty() ){
+				
+				hasOverlay = true;
+
 				if( data.hasSpecificProperty( voxData::METAL ) )
 					overlay.push_back( { pixel, rgb_Int{ 255, 0, 0 } } );
 			}
@@ -74,7 +80,6 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 
 
 	imgAssigned = true;
-	hasOverlay = true;
 
 
 	updateScaled();
@@ -128,7 +133,6 @@ void Fl_GridImage::calculateScaled( void ){
 	colorImage = rgbImage( originalImage, (size_t) scaledWidth, (size_t) scaledHeight );
 
 	if( hasOverlay ){
-		//TODO: Calculate overlayed pixel
 
 		for( auto& curPx : overlay ){
 			colorImage.setPixel( curPx.first, curPx.second );
