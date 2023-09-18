@@ -522,6 +522,7 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 		// Are cooradinates defined in model?
 		if( !modelRef.validCoords( currentPoint ) ){
 
+			// TODO: Maybe add property "NOT_DEFINED"?
 			slice.operator()( v2CR( localX, localY ) ) = voxData( 1., 120000. );
 
 			continue;	// Goto next iteration
