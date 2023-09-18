@@ -28,8 +28,7 @@ slicePlane::slicePlane( void ) :
 				pnt3{  v3{0, 0, 0}, cSys } },
 	rotationAngleX( 0. ),
 	rotationAngleY( 0. ),
-	positionZ( 0. )
-
+	positionZ( 0. ){
 };
 
 slicePlane::slicePlane( const vector<char>& binData, vector<char>::const_iterator& it ) :
