@@ -52,13 +52,12 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 			for( size_t z = 0; z < mod.NumVox().z; z++ ){
 				pnt3 p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
 
-				voxData& currentVox = mod( x, y, z );
 
-				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) ) currentVox = sp1_data;
-				else if( ( sp2_center - p ).Length() <= sp2_radius && ( true || ( sp2_center - p ).Length() >= sp2_radius - 1.1 ) ) currentVox = sp2_data;
-				else currentVox = bgData;
+				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) )  mod.setVoxelData( sp1_data, { x, y, z } );
+				else if( ( sp2_center - p ).Length() <= sp2_radius && ( true || ( sp2_center - p ).Length() >= sp2_radius - 1.1 ) ) mod.setVoxelData( sp2_data, { x, y, z } );
+				else mod.setVoxelData( bgData, { x, y, z } );
 			
-				if( ( artifact - p ).Length() <= artRadius && ( true || ( artifact - p ).Length() >= artRadius - 1.1 ) ) currentVox.addSpecialProperty( voxData::METAL );
+				if( ( artifact - p ).Length() <= artRadius && ( true || ( artifact - p ).Length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( voxData::METAL, { x, y, z } );
 			
 			}
 		}
