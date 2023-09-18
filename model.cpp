@@ -568,7 +568,13 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 
 	for( std::thread& currentThread : threads ) currentThread.join();
 
-	// TODO: Check if reastart and end have infinity in them
+	// Check if restart and end have infinity in them
+	if( realStart.col == INFINITY || realStart.row == INFINITY || realEnd.col == -INFINITY || realEnd.row == -INFINITY ){
+		// This means that no model voxel is in slice
+
+		return grid<voxData>( idx2CR( 0, 0 ), v2CR( 0., 0. ), v2CR( 1., 1. ) );
+
+	}
 
 	// Write data to smaller grid
 

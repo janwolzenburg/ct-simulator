@@ -173,8 +173,15 @@ void programState::moveModel( const double targetXRot, const double targetYRot, 
 
 void programState::sliceModel( void ){
 
-	modelSliceInstance = modelInstance.getSlice( planeInstance.surface, 1. );
+	grid<voxData> tempSlice = modelInstance.getSlice( planeInstance.surface, 1. );
+	
+	if( tempSlice.Size().col == 0 || tempSlice.Size().row == 0 )
+		return;
 
+	// TODO: revert change of slice plane if grid is empty
+
+	
+	modelSliceInstance = tempSlice;
 }
 
 void programState::centerModel( void ){
