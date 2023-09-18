@@ -39,7 +39,7 @@ class grid{
 	 * @param resolution_ Axis resolution
 	 * @param defaultValue Default value
 	*/
-	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue = 0 );
+	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue = D() );
 
 	/*!
 	 * @brief Constructor
@@ -48,7 +48,7 @@ class grid{
 	 * @param resolution_ Resolutions
 	 * @param defaultValue Default value
 	*/
-	grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue = 0 );
+	grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue = D() );
 
 	/*!
 	 * @brief Constructor from serialized data
