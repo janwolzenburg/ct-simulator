@@ -37,7 +37,7 @@ voxData::voxData( const double attenuationAtFrequency, const double frequency ) 
 
 voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
 	attenuation( deSerializeBuildIn<double>( 0., binData, it ) ),
-	specialProperties( deSerializeBuildIn<specialEnumType>( 0., binData, it ) )
+	specialProperties( deSerializeBuildIn<specialEnumType>( specialProperty::NONE, binData, it ) )
 {
 
 }
