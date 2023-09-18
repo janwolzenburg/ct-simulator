@@ -161,6 +161,10 @@ const voxData& model::getVoxelDataC( const idx3 indices ) const{
 	
 };
 
+const voxData& model::getVoxelDataC( const pnt3 p ) const{
+	return getVoxelDataC( getVoxelIndices( p ));
+}
+
 
 vox model::Vox( void ) const{
 	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
@@ -440,10 +444,10 @@ size_t model::serialize( vector<char>& binData ) const{
 
 }
 
-mutex coutMutex;
 
 void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& currentY, mutex& currentYMutex, 
-							vector<pair<v2CR, voxData >>& slice, mutex& sliceMutex,
+							v2CR& realStart, mutex& realStartMutex, v2CR& realEnd, mutex& realEndMutex,
+							grid<voxData>& slice, mutex& sliceMutex,
 							const surf& slicePlane,
 							const model& modelRef, const v2CR& start, const v2CR& end, const v2CR& resolution ){
 
@@ -474,29 +478,43 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 		if( localX > end.col || localY > end.row ) continue;
 		
 
-		v2CR gridCoordinate{ localX, localY }; 
-
 		const pnt3 currentPoint = slicePlane.getPnt( localX, localY );
 
 
+		// Are cooradinates defined in model?
 		if( !modelRef.validCoords( currentPoint ) ){
-			/*sliceMutex.lock();
-			slice.operator()( gridCoordinate ) = voxData(1., 120000. );
-			sliceMutex.unlock();
-			*/
 
-			continue;
+			slice.operator()( v2CR( localX, localY ) ) = voxData( 1., 120000. );
+
+			continue;	// Goto next iteration
 		}
 
-		const idx3 currentVoxelIndices = modelRef.getVoxelIndices( currentPoint );
+		// Check if current x and y values in plane are new real start/end
+
+
+		if( localX < realStart.col ){
+			writeThreadVar( realStart.col, localX, realStartMutex );
+		}
+		
+		if( localX > realEnd.col ){
+			writeThreadVar( realEnd.col, localX, realEndMutex );
+		}
+
+		if( localY < realStart.row ){
+			writeThreadVar( realStart.row, localY, realStartMutex );
+		}
+
+		if( localY > realEnd.row ){
+			writeThreadVar( realEnd.row, localY, realEndMutex );
+		}
 
 		// Current voxel value
-		const voxData currentValue = modelRef.getVoxelDataC( currentVoxelIndices );
+		const voxData currentValue = modelRef.getVoxelDataC( currentPoint );
 
-		// Set image value
+		// Add pixel coordinates and pixel value to slice
 		sliceMutex.lock();
-		slice.emplace_back( gridCoordinate, currentValue );
-		//slice.operator()( gridCoordinate ) = currentValue;
+		slice.operator()( v2CR( localX, localY ) ) = modelRef.getVoxelDataC( currentPoint );
+		//slice.emplace_back( v2CR( localX, localY ), modelRef.getVoxelDataC( currentPoint ) );
 		sliceMutex.unlock();
 
 
@@ -508,27 +526,23 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 
 	// Distance between corners furthest away from each other
 	const double cornerDistance = sqrt( pow( size3D.x, 2. ) + pow( size3D.y, 2. ) + pow( size3D.z, 2. ) );
-	
 	// Worst case: origin of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
 
-	vector<pair<v2CR, voxData >> sliceData;				// Slice
 
-	//const surfLim slicePlane( sliceLocation.convertTo( cSys), -cornerDistance, cornerDistance, -cornerDistance, cornerDistance );
-
+	// Surface in model's system
 	const surf localSurface = sliceLocation.convertTo( cSys );
 
 
+	const v2CR sliceStart( -cornerDistance, -cornerDistance );
+	const v2CR sliceEnd( cornerDistance, cornerDistance );
+	const v2CR sliceResolution( resolution, resolution );
 
-	// Image
-	//grid<voxData> slice{ range{ sliceLocation.AMin(), sliceLocation.AMax() }, range{ sliceLocation.BMin(), sliceLocation.BMax() }, v2CR{resolution, resolution}, voxData() };
-
-	// Surface in local coordinate system
-	//const surf slicePlane = sliceLocation.convertTo( cSys );
+	grid<voxData> largeSlice( range( sliceStart.col, sliceEnd.col ), range( sliceStart.row, sliceEnd.row ), sliceResolution, voxData() );
 
 
-	v2CR sliceStart( -cornerDistance, -cornerDistance );
-	v2CR sliceEnd( cornerDistance, cornerDistance );
-	v2CR sliceResolution( resolution, resolution );
+
+	v2CR realStart( INFINITY, INFINITY );
+	v2CR realEnd( -INFINITY, -INFINITY );
 
 	double currentX = localSurface.getPnt( sliceStart.col, sliceStart.row ).XYZ().x;
 	double currentY = localSurface.getPnt( sliceStart.col, sliceStart.row ).XYZ().y;
@@ -537,19 +551,48 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	mutex currentYMutex;
 	mutex sliceMutex;
 
+	mutex realStartMutex;
+	mutex realEndMutex;
+
+
+	// Computation in threads
 	vector<std::thread> threads;
 
 	for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
 		threads.emplace_back( sliceThreadFunction,	ref( currentX ), ref( currentXMutex ), ref( currentY ), ref( currentYMutex ),
-													ref( sliceData ), ref( sliceMutex ),
+													ref( realStart ), ref( realStartMutex), ref( realEnd ), ref( realEndMutex ),
+													ref( largeSlice ), ref( sliceMutex ),
 													cref( localSurface ),
 													cref( *this ), cref( sliceStart ), cref( sliceEnd ), cref( sliceResolution ));
 	}
 
 	for( std::thread& currentThread : threads ) currentThread.join();
 
+	// TODO: Check if reastart and end have infinity in them
 
-	//return slice;
+	// Write data to smaller grid
+
+	grid<voxData> slice( range( realStart.col, realEnd.col ), range( realStart.row, realEnd.row ), v2CR( resolution, resolution ), voxData() );
+
+
+	// Iterate grid
+
+	v2CR coords;
+
+	for( size_t colIdx = 0; colIdx < slice.Size().col; colIdx++ ){
+
+		for( size_t rowIdx = 0; rowIdx < slice.Size().row; rowIdx++ ){
+
+			coords = slice.getCoordinates( idx2CR( colIdx, rowIdx ) );
+
+			slice( coords ) = largeSlice( coords ); 
+
+		}
+
+	}
+
+
+	return slice;
 }
 
 

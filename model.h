@@ -110,6 +110,8 @@ class model : virtual public mathObj{
 
 	const voxData& getVoxelDataC( const idx3 indices ) const;
 
+	const voxData& getVoxelDataC( const pnt3 p ) const;
+
 	/*!
 	 * @brief Element read
 	 * @param x x-index of voxel
