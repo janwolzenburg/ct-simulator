@@ -25,7 +25,7 @@ using std::cerr;  using std::endl; using std::cout;
 */
 int main( int argc, char** argv ){
 
-	
+	/*
 	model testModel = getTestModel( GLOBAL_CSYS(), 20 );
 
 	vector<char> modelBin;
@@ -33,7 +33,7 @@ int main( int argc, char** argv ){
 	exportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
 
 	return 0;
-	
+	*/
 
 	
 	programState& state = PROGRAM_STATE();
