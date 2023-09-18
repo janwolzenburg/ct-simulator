@@ -223,6 +223,18 @@ void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
 
 }
 
+void Fl_GridImage_Adjust::setSliderBounds( const range newBound ){
+
+	lowerBound.value( newBound.start );
+	upperBound.value( newBound.end );
+
+	lowerBound.step( newBound.Diff() / 100. );
+	upperBound.step( newBound.Diff() / 100. );
+
+	changeContrast( newBound ); 
+
+}
+
 bool Fl_GridImage_Adjust::handleEvents( void ){
 
 	bool updateImage = false;
