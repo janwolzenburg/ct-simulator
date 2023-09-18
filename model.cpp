@@ -37,7 +37,7 @@ using std::cref;
 */
 
 
-const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver1"};
+const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver2"};
 
 model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
@@ -48,13 +48,20 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
 	parameter( new voxData[ numVox ] ),
 	cSys( cSys_ ),
+	attenuationMin( -1. ),
+	attenuationMax( -1. ),
 	name( name_ )
 {
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 }
 
 
-model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name ){
+model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name )
+	
+{
+	attenuationMin = mod.attenuationMin;
+	attenuationMax = mod.attenuationMax;
+	
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 }
 
@@ -68,6 +75,8 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( new voxData[numVox] ),
 	cSys( CSYS_TREE().addCSys( binData, it ) ),
+	attenuationMin( deSerializeBuildIn<double>( -1., binData, it ) ),
+	attenuationMax( deSerializeBuildIn<double>( -1., binData, it ) ),
 	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
 	
@@ -107,6 +116,8 @@ model& model::operator=( const model& mod ){
 	size3D = mod.size3D;
 	numVox = mod.numVox;
 
+	attenuationMin = mod.attenuationMin;
+	attenuationMax = mod.attenuationMax;
 	name = mod.name;
 
 	delete parameter;
@@ -132,6 +143,18 @@ voxData model::getVoxelData( const size_t x, const size_t y, const size_t z ) co
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
+}
+
+bool model::setData( const voxData newData, const idx3 indices ){
+
+	if( !checkIndices( indices ) ) return false;
+
+	this->operator()( indices ) = newData;
+
+	if( newData.attenuationAtRefE() < attenuationMin ) attenuationMin = newData.attenuationAtRefE();
+	if( newData.attenuationAtRefE() > attenuationMax ) attenuationMax = newData.attenuationAtRefE();
+
+	return true;
 }
 
 const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_t z ) const{
@@ -422,6 +445,8 @@ size_t model::serialize( vector<char>& binData ) const{
 	expectedSize += sizeof( numVox3D );
 	expectedSize += sizeof( voxSize3D );
 	expectedSize += sizeof( cartCSys );
+	expectedSize += sizeof( attenuationMin );
+	expectedSize += sizeof( attenuationMax );
 	expectedSize += name.size() + 1;
 	expectedSize += numVox * sizeof( *(parameter) );
 
@@ -432,6 +457,8 @@ size_t model::serialize( vector<char>& binData ) const{
 	numBytes += numVox3D.serialize( binData );
 	numBytes += voxSize3D.serialize( binData );
 	numBytes += cSys->serialize( binData );
+	numBytes += serializeBuildIn( attenuationMin, binData );
+	numBytes += serializeBuildIn( attenuationMax, binData );
 	numBytes += serializeBuildIn( name, binData );
 
 	for( size_t i = 0; i < numVox; i++ ){

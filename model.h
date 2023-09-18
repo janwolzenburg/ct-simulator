@@ -90,21 +90,7 @@ class model : virtual public mathObj{
 	*/
 	model& operator=( const model& mod );
 
-	/*!
-	 * @brief Element assignment
-	 * @param x x-index of voxel
-	 * @param y y-index of voxel
-	 * @param z z-index of voxel
-	 * @return Reference to voxel data
-	*/
-	voxData& operator() ( const size_t x, const size_t y, const size_t z );
-
-	/*!
-	 * @brief Element assignment
-	 * @param indices Indices of voxel
-	 * @return Reference to voxel data
-	*/
-	voxData& operator() ( const idx3 indices );
+	bool setData( const voxData newData, const idx3 indices );
 
 	const voxData& getVoxelDataC( const size_t x, const size_t y, const size_t z ) const;
 
@@ -239,6 +225,7 @@ class model : virtual public mathObj{
 	*/
 	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
 
+	inline range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
 
 	inline string Name( void ) const{ return name; };
 
@@ -252,6 +239,8 @@ class model : virtual public mathObj{
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
+	double attenuationMin;
+	double attenuationMax;
 	string name;								/*!<Model name*/
 
 	private:
@@ -264,5 +253,21 @@ class model : virtual public mathObj{
 	* @return Indices of voxels where coordinates are located
 	*/
 	idx3 getVoxelIndices( const v3 locCoords ) const;
+
+	/*!
+	 * @brief Element assignment
+	 * @param x x-index of voxel
+	 * @param y y-index of voxel
+	 * @param z z-index of voxel
+	 * @return Reference to voxel data
+	*/
+	voxData& operator() ( const size_t x, const size_t y, const size_t z );
+
+	/*!
+	 * @brief Element assignment
+	 * @param indices Indices of voxel
+	 * @return Reference to voxel data
+	*/
+	voxData& operator() ( const idx3 indices );
 
 };
