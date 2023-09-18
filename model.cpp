@@ -145,7 +145,7 @@ voxData model::getVoxelData( const size_t x, const size_t y, const size_t z ) co
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
 }
 
-bool model::setData( const voxData newData, const idx3 indices ){
+bool model::setVoxelData( const voxData newData, const idx3 indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
@@ -155,6 +155,17 @@ bool model::setData( const voxData newData, const idx3 indices ){
 	if( newData.attenuationAtRefE() > attenuationMax ) attenuationMax = newData.attenuationAtRefE();
 
 	return true;
+}
+
+
+bool model::setVoxelProperty( const voxData::specialProperty property, const idx3 indices ){
+
+	if( !checkIndices( indices ) ) return false;
+
+	this->operator()( indices ).addSpecialProperty( property );
+
+	return true;
+
 }
 
 const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_t z ) const{

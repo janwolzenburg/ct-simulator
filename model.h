@@ -90,7 +90,9 @@ class model : virtual public mathObj{
 	*/
 	model& operator=( const model& mod );
 
-	bool setData( const voxData newData, const idx3 indices );
+	bool setVoxelData( const voxData newData, const idx3 indices );
+
+	bool setVoxelProperty( const voxData::specialProperty property, const idx3 indices );
 
 	const voxData& getVoxelDataC( const size_t x, const size_t y, const size_t z ) const;
 
