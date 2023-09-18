@@ -109,3 +109,13 @@ string toString<T>( T value, const int precision ){
 
 	return out.str();
 }
+
+template<typename T>
+void writeThreadVar( T& var, const T& value, mutex& m ){
+
+	m.lock();
+
+	var = value;
+
+	m.unlock();
+}

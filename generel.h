@@ -28,9 +28,9 @@ using std::cerr; using std::endl; using std::cout;
 using std::filesystem::path;
 
 #include <sstream>
-
 #include <tuple>
-
+#include <mutex>
+using std::mutex;
 
 
  /*********************************************************************
@@ -392,5 +392,7 @@ string toString( T value, const int precision = 0 );
 template<typename T>
 T toNum( const string str );
 
+template<typename T>
+void writeThreadVar( T& var, const T& value, mutex& m );
 
 #include "generel.hpp"
