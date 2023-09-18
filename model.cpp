@@ -151,8 +151,8 @@ bool model::setVoxelData( const voxData newData, const idx3 indices ){
 
 	this->operator()( indices ) = newData;
 
-	if( newData.attenuationAtRefE() < attenuationMin ) attenuationMin = newData.attenuationAtRefE();
-	if( newData.attenuationAtRefE() > attenuationMax ) attenuationMax = newData.attenuationAtRefE();
+	if( newData.attenuationAtRefE() < attenuationMin || attenuationMax < 0 ) attenuationMin = newData.attenuationAtRefE();
+	if( newData.attenuationAtRefE() > attenuationMax || attenuationMax < 0 ) attenuationMax = newData.attenuationAtRefE();
 
 	return true;
 }
