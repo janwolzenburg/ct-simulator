@@ -128,7 +128,11 @@ void modelView::loadModel( void ){
 
 	PROGRAM_STATE().loadModel();
 	PROGRAM_STATE().resetModel();
+
 	UpdateModel();
+
+	viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
+	PROGRAM_STATE().ModelViewParameter().viewContrast = viewImg.getContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
@@ -189,8 +193,6 @@ void modelView::UpdateModel( void ){
 	PROGRAM_STATE().moveModel( xRot.value(), yRot.value(), zTrans.value() );
 
 	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
-
-	viewImg.changeContrast( PROGRAM_STATE().ModelViewParameter().viewContrast );
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
