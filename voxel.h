@@ -57,9 +57,9 @@ class voxData{
 	typedef unsigned char specialEnumType;
 
 	enum specialProperty : specialEnumType{
-		NONE = 0x00,
-		METAL = 0x01,
-		UNDEFINED_VOXEL
+		NONE =			0b00000000,
+		METAL =			0b00000001,
+		UNDEFINED =		0b00000010
 	};
 
 	/*!
@@ -67,7 +67,7 @@ class voxData{
 	 * @param attenuationAtFrequency Attenuation coefficient at given frequency
 	 * @param frequency Frequency
 	*/
-	voxData( const double attenuationAtEnergy, const double energy, const specialProperty = NONE );
+	voxData( const double attenuationAtEnergy, const double energy, const specialProperty = UNDEFINED );
 
 	/*!
 	 * @brief Constructor from serialized data
