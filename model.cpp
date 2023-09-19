@@ -553,7 +553,7 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 
 		// Add pixel coordinates and pixel value to slice
 		sliceMutex.lock();
-		slice.setData( v2CR( localX, localY ), modelRef.getVoxelDataC( currentPoint ) );
+		slice.setData( v2CR( localX, localY ), currentValue );
 		//slice.operator()( v2CR( localX, localY ) ) = modelRef.getVoxelDataC( currentPoint );
 		sliceMutex.unlock();
 
@@ -631,7 +631,8 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 
 			coords = slice.getCoordinates( idx2CR( colIdx, rowIdx ) );
 
-			
+			//TODO: Check strange behavious when slicing
+
 			if( largeSlice.getData( coords).hasSpecificProperty( voxData::UNDEFINED ) )
 				slice.setData( coords, voxData( largeSlice.MaxValue().attenuationAtRefE(), voxData::ReferencyEnergy()));
 			else
