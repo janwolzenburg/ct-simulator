@@ -118,7 +118,7 @@ grid<> radonTransformed::Data( void ) const{
 }
 
 void radonTransformed::assignData( const idx2CR index, const double value ){
-	this->operator()( index ) = value;
+	this->setData( index, value );
 }
 
 void radonTransformed::assignData( const radonPoint data ){
@@ -133,7 +133,7 @@ void radonTransformed::assignData( const radonPoint data ){
 	};
 
 	gridErrors.at( index.col ).at( index.row ) = error;
-	this->operator()( index ) = data.value;
+	this->setData( index, data.value );
 }
 
 

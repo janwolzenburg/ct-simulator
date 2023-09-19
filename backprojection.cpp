@@ -70,7 +70,8 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 			convolutionResult *= dD;
 
-			this->operator()( idx2CR{ t, n } )  = convolutionResult;
+
+			this->setData( idx2CR{ t, n }, convolutionResult );
 
 		}
 
@@ -117,9 +118,9 @@ reconstrucedImage::reconstrucedImage( void ) :
 
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
-	grid{ idx2CR{ projections.Size().row, projections.Size().row },
+	grid( idx2CR{ projections.Size().row, projections.Size().row },
 		  v2CR{ projections.Start().row, projections.Start().row }, 
-		  v2CR{ projections.Resolution().row, projections.Resolution().row }, 0. }
+		  v2CR{ projections.Resolution().row, projections.Resolution().row }, 0. )
 {
 
 	size_t nD = Size().row;			// Number of distances
@@ -144,10 +145,11 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 				// Get the projection value
 				double projectionValue = projections.getValue( angleIdx, t );
 
-				this->operator()( idx2CR{ xIdx, yIdx } ) += projectionValue;
+				this->setData( idx2CR{ xIdx, yIdx }, getData( idx2CR{ xIdx, yIdx } ) + projectionValue);
 			}
-
-			this->operator()( idx2CR{ xIdx, yIdx } ) *= PI / (double) nT;
+			
+			this->setData( idx2CR{ xIdx, yIdx }, getData( idx2CR{ xIdx, yIdx } ) * PI / (double) nT );
+			//this->operator()( idx2CR{ xIdx, yIdx } ) *= PI / (double) nT;
 		}
 	}
 

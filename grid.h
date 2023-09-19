@@ -95,12 +95,14 @@ class grid{
 	*/
 	D operator()( const idx2CR index ) const;
 
-	/*!
-	 * @brief Access operator for grid elemenrt
-	 * @param index Index of element
-	 * @return Reference to element value
-	*/
-	D& operator()( const idx2CR index );
+	inline D getData( const idx2CR index ) const{ return this->operator()( index ); };
+
+	inline D getData( const v2CR coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
+
+	bool setData( const idx2CR index, const D newValue );
+
+	bool setData( const v2CR coordinates, const D newValue );
+
 
 	/*!
 	 * @brief Get indices corresponding to coordinates
@@ -123,12 +125,7 @@ class grid{
 	*/
 	D operator()( const v2CR point ) const;
 
-	/*!
-	 * @brief Access operator for grid elemenrt
-	 * @param point Point in grid
-	 * @return Reference to element value
-	*/
-	D& operator()( const v2CR point );
+
 
 	/*!
 	 * @brief Serialize this object
@@ -136,6 +133,9 @@ class grid{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
+	inline double MaxValue( void ) const{ return maxValue; };
+
+	inline double MinValue( void ) const{ return minValue; };
 
 	private:
 	
@@ -155,6 +155,25 @@ class grid{
 	vector<double> columnPoints;	/*!<Vector with values on column axis*/
 	vector<double> rowPoints;		/*!<Vector with values on row axis*/
 	vector<vector<D>> data;	/*!<2D Vector with data points*/
+
+	D maxValue;
+	D minValue;
+
+	/*!
+	 * @brief Access operator for grid elemenrt
+	 * @param index Index of element
+	 * @return Reference to element value
+	*/
+	D& operator()( const idx2CR index );
+
+	/*!
+	* @brief Access operator for grid elemenrt
+	* @param point Point in grid
+	* @return Reference to element value
+	*/
+	D& operator()( const v2CR point );
+
+	void initializeMinMaxValue( void );
 
 };
 

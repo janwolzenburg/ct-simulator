@@ -216,7 +216,10 @@ bool test_serialisation( void ){
 
 	for( size_t col = 0; col < testSinogram.Data().Size().col; col++ ){
 		for( size_t row = 0; row < testSinogram.Data().Size().row; row++ ){
-			if( testSinogram.Data().operator()( idx2CR{ col, row }) != importedSinogram.Data().operator()( idx2CR{ col, row } ) ) return false;
+
+			
+
+			if( testSinogram.Data().getData( idx2CR{ col, row }) != importedSinogram.Data().getData( idx2CR{ col, row } ) ) return false;
 		}
 	}
 

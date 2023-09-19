@@ -187,7 +187,7 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	imgWidget.assignImage( img );
 
-	setSliderBoundsFromImage();
+	//setSliderBoundsFromImage();
 
 	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
@@ -201,7 +201,7 @@ void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool 
 
 	imgWidget.assignImage( modGrid, normalize );
 
-	setSliderBoundsFromImage();
+	//setSliderBoundsFromImage();
 
 	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();

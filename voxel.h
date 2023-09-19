@@ -81,6 +81,10 @@ class voxData{
 	*/
 	voxData( void );
 
+	inline bool operator<( const voxData& d2 ) const{ return this->attenuation < d2.attenuation; };
+
+	inline bool operator>( const voxData& d2 ) const{ return !operator<( d2 ); };
+
 	/*!
 	 * @brief Get the attenuation at given energy
 	 * @param frequency Frequency

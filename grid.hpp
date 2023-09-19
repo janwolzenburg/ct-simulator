@@ -30,14 +30,17 @@ grid<D>::grid( void ) :
 	resolution( 1., 1. ),
 	start( 0. ,0. )
 {
-	fillVectors( D{} );
+	initializeMinMaxValue();
+	fillVectors( D() );
 }
 
 template<class D>
 grid<D>::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue ) :
 	size( size_ ),
 	resolution( resolution_ ),
-	start( start_ ){
+	start( start_ )
+{
+	initializeMinMaxValue();
 	fillVectors( defaultValue );
 }
 
@@ -50,7 +53,9 @@ grid<D>::grid( const range columnRange, const range rowRange, const v2CR resolut
 	resolution( v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
 						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } )
 
+
 {
+	initializeMinMaxValue();
 	fillVectors( defaultValue );
 }
 
@@ -59,10 +64,20 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	size( idx2CR( binData, it ) ),
 	start( v2CR( binData, it ) ),
 	resolution( v2CR( binData, it ) )
-	
+
 	{
 
 		fillVectors( D() );
+
+		if constexpr( std::is_fundamental_v<D> ){
+			minValue = deSerializeBuildIn( D(), binData, it );
+			maxValue = deSerializeBuildIn( D(), binData, it );
+		}
+		else{
+
+			minValue = D( binData, it );
+			maxValue = D( binData, it );
+		}
 
 		for( vector<D>& column : data ){
 			for( D& rowData : column ){
@@ -77,12 +92,11 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 
 }
 
+
 template<class D>
 void grid<D>::fillVectors( const D defaultValue ){
 
-	// Force size and resolution to positive value 
-	size.col = Fpos( size.col );
-	size.row = Fpos( size.row );
+	if( size.col == 0 || size.row == 0 ) return;
 
 	resolution.col = Fpos( resolution.col );
 	resolution.row = Fpos( resolution.row );
@@ -153,6 +167,29 @@ D& grid<D>::operator()( const v2CR coordinates ){
 }
 
 template<class D>
+bool grid<D>::setData( const idx2CR index, const D newValue ){
+
+	if( !checkIndex( index ) ) return false;
+
+	if( newValue < minValue ) minValue = newValue;
+	if( newValue > maxValue ) maxValue = newValue;
+
+	this->operator()( index ) = newValue;
+	
+	return true;
+
+}
+
+template<class D>
+bool grid<D>::setData( const v2CR coordinates, const D newValue ){
+
+	return this->setData( getIndex( coordinates ), newValue );
+
+}
+
+
+
+template<class D>
 v2CR grid<D>::getCoordinates( const idx2CR index ) const{
 
 	if( !checkIndex( index ) ) return v2CR{ columnPoints.at( 0 ), rowPoints.at( 0 ) };
@@ -171,6 +208,15 @@ size_t grid<D>::serialize( vector<char>& binData ) const{
 	numBytes += size.serialize( binData );
 	numBytes += start.serialize( binData );
 	numBytes += resolution.serialize( binData );
+
+	if constexpr( std::is_fundamental_v<D> ){
+		numBytes += serializeBuildIn( minValue, binData );
+		numBytes += serializeBuildIn( maxValue, binData );
+	}
+	else{
+		numBytes += minValue.serialize( binData );
+		numBytes += maxValue.serialize( binData );
+	}
 
 	for( const vector<D>& column : data ){
 		for( const D& rowData : column ){
