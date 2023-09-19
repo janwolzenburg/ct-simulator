@@ -190,9 +190,23 @@ void modelView::resetModel( void ){
 void modelView::UpdateModel( void ){
 
 	Fl_Group::window()->deactivate();
-	PROGRAM_STATE().moveModel( xRot.value(), yRot.value(), zTrans.value() );
+	
+	// Store in variable for moveModel function call
+	double oldXRot = xRot.value();
+	double oldYRot = yRot.value();
+	double oldZTrans = zTrans.value();
 
-	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
+	// Movement did not succeed?
+	if( !PROGRAM_STATE().moveModel( oldXRot, oldYRot, oldZTrans ) ){
+		// moveModel changes arguments to previous value
+		xRot.value( oldXRot );
+		yRot.value( oldYRot );
+		zTrans.value( oldZTrans );
+	}
+	else{
+		// New assignment only necessary, when movement succeeded
+		viewImg.assignImage( PROGRAM_STATE().Slice(), true );
+	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();

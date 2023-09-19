@@ -527,8 +527,9 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 			continue;	// Goto next iteration
 		}
 
-		// Check if current x and y values in plane are new real start/end
 
+
+		// Check if current x and y values in plane are new real start/end
 
 		if( localX < realStart.col ){
 			writeThreadVar( realStart.col, localX, realStartMutex );
@@ -552,7 +553,6 @@ void sliceThreadFunction(	double& currentX, mutex& currentXMutex, double& curren
 		// Add pixel coordinates and pixel value to slice
 		sliceMutex.lock();
 		slice.operator()( v2CR( localX, localY ) ) = modelRef.getVoxelDataC( currentPoint );
-		//slice.emplace_back( v2CR( localX, localY ), modelRef.getVoxelDataC( currentPoint ) );
 		sliceMutex.unlock();
 
 

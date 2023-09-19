@@ -135,8 +135,10 @@ string programState::modelDescription( void ) const{
 	return modelDataString;
 }
 
-void programState::moveModel( const double targetXRot, const double targetYRot, const double targetZTrans ){
+bool programState::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
+	const slicePlane backupPlane = planeInstance; 
+	const primitiveCartCSys backupCSys = modelInstance.CSys()->getPrimitive();
 
 	if( targetXRot != planeInstance.rotationAngleX ){
 
@@ -167,21 +169,33 @@ void programState::moveModel( const double targetXRot, const double targetYRot, 
 	}
 
 
-	sliceModel();
+	// Return if succeeded
+	if( sliceModel() ) return true;
+	
+
+	// Revert changes
+	planeInstance = backupPlane;
+	modelInstance.CSys()->setPrimitive( backupCSys );
+
+	targetXRot = planeInstance.rotationAngleX;
+	targetYRot = planeInstance.rotationAngleY;
+	targetZTrans = planeInstance.positionZ;
+
+
+	return false;
 
 }
 
-void programState::sliceModel( void ){
+bool programState::sliceModel( void ){
 
 	grid<voxData> tempSlice = modelInstance.getSlice( planeInstance.surface, 1. );
 	
 	if( tempSlice.Size().col == 0 || tempSlice.Size().row == 0 )
-		return;
+		return false;
 
-	// TODO: revert change of slice plane if grid is empty
-
-	
 	modelSliceInstance = tempSlice;
+	return true;
+
 }
 
 void programState::centerModel( void ){

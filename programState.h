@@ -75,9 +75,9 @@ class programState{
 
 	string modelDescription( void ) const;
 
-	void moveModel( const double targetXRot, const double targetYRot, const double targetZTrans );
+	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
 
-	void sliceModel( void );
+	bool sliceModel( void );
 
 	void centerModel( void );
 
