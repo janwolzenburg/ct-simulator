@@ -45,6 +45,8 @@ monoImage::monoImage( void ) :
 monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
 	monoImage{ source.Size().col, source.Size().row }{
 
+
+
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
 			data.at( c + r * width ) = source.operator()( idx2CR{ c, r } );

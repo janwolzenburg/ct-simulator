@@ -70,6 +70,9 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 
 				if( data.hasSpecificProperty( voxData::METAL ) )
 					overlay.push_back( { pixel, rgb_Int{ 255, 0, 0 } } );
+
+				if( data.hasSpecificProperty( voxData::UNDEFINED ) )
+					overlay.push_back( { pixel, rgb_Int{ 0, 255, 0 } } );
 			}
 
 		}

@@ -631,7 +631,13 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 
 			coords = slice.getCoordinates( idx2CR( colIdx, rowIdx ) );
 
-			slice.setData( coords, largeSlice.getData( coords ) );
+			
+			if( largeSlice.getData( coords).hasSpecificProperty( voxData::UNDEFINED ) )
+				slice.setData( coords, voxData( largeSlice.MaxValue().attenuationAtRefE(), voxData::ReferencyEnergy()));
+			else
+				slice.setData( coords, largeSlice.getData( coords ) );
+
+
 			//slice( coords ) = largeSlice( coords ); 
 
 		}

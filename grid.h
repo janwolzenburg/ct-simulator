@@ -133,9 +133,9 @@ class grid{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	inline double MaxValue( void ) const{ return maxValue; };
+	inline D MaxValue( void ) const{ return maxValue; };
 
-	inline double MinValue( void ) const{ return minValue; };
+	inline D MinValue( void ) const{ return minValue; };
 
 	private:
 	

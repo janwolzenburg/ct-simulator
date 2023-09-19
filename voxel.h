@@ -112,7 +112,7 @@ class voxData{
 	
 	bool hasSpecificProperty( const specialProperty property ) const;
 
-
+	inline static double ReferencyEnergy( void ) { return referenceEnergy; };
 
 	private:
 

@@ -166,19 +166,7 @@ D& grid<D>::operator()( const v2CR coordinates ){
 	return this->operator()( getIndex( coordinates ) );
 }
 
-template<class D>
-bool grid<D>::setData( const idx2CR index, const D newValue ){
 
-	if( !checkIndex( index ) ) return false;
-
-	if( newValue < minValue ) minValue = newValue;
-	if( newValue > maxValue ) maxValue = newValue;
-
-	this->operator()( index ) = newValue;
-	
-	return true;
-
-}
 
 template<class D>
 bool grid<D>::setData( const v2CR coordinates, const D newValue ){
