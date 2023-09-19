@@ -179,7 +179,8 @@ void modelView::resetModel( void ){
 	yRot.value( 0. );
 	zTrans.value( 0. );
 
-	UpdateModel();
+	PROGRAM_STATE().sliceModel();
+	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
 
 	Fl_Group::window()->activate();
 
