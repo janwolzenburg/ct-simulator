@@ -30,9 +30,9 @@
 const double voxData::referenceEnergy = 120000.;									/*!< Energy at which the attenuation coefficient is valid */
 const double voxData::referenceEnergy_3 = pow( voxData::referenceEnergy, 3. );
 
-voxData::voxData( const double attenuationAtFrequency, const double frequency ) :
+voxData::voxData( const double attenuationAtFrequency, const double frequency, const specialProperty specProperty ) :
 	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) ),
-	specialProperties( NONE )
+	specialProperties( specProperty )
 {}
 
 voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
