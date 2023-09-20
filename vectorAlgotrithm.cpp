@@ -114,10 +114,16 @@ void sortUnique( vector<double>& v ){
 
 
 double Max( const vector<double>& v ){
+
+	if( v.size() == 0 ) return 0;
+
 	return *std::max_element( v.begin(), v.end() );
 }
 
 double Min( const vector<double>& v ){
+	
+	if( v.size() == 0 ) return 0;
+
 	return *std::min_element( v.begin(), v.end() );
 }
 
