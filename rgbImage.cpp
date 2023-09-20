@@ -29,7 +29,7 @@ rgbImage::rgbImage( const size_t width_, const size_t height_ ) :
 	width( width_ ),
 	height( height_ ),
 	numPixel( width* height ),
-	imageData( numPixel, rgb_Int{ 0, 0, 0 } ){
+	imageData( numPixel, rgb_Int{ 255, 255, 0 } ){
 
 }
 
