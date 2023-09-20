@@ -49,6 +49,8 @@ void Fl_GridImage::assignImage( const monoImage& img ){
 
 void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalize ){
 	
+
+
 	originalImage = monoImage( modGrid.Size().col, modGrid.Size().row );
 	const size_t width = originalImage.Width();
 	const size_t height = originalImage.Height();
@@ -91,8 +93,11 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 
 void Fl_GridImage::draw( void ){
 
+
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.Width() ) / 2;
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
+
+	fl_rectf( this->parent()->x(), this->parent()->y(), this->parent()->w(), this->parent()->h(), 216 );
 
 
 	// Check rgb_Int memory layout
@@ -160,7 +165,8 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 	Fl_Group( x, y, w, h, label ),
 	imgWidget( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .9 ), "Image" ),
 	lowerBound( X( *this, 0.2 ), Y( *this, 0.91 ), W( *this, .6 ), H( *this, .04 ), "Low" ),
-	upperBound( X( *this, 0.2 ), Y( *this, 0.96 ), W( *this, .6 ), H( *this, .04 ), "High" ){
+	upperBound( X( *this, 0.2 ), Y( *this, 0.96 ), W( *this, .6 ), H( *this, .04 ), "High" ),
+	boundsSet( false ){
 	
 	
 	Fl_Group::add( imgWidget );
@@ -190,7 +196,8 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 	imgWidget.assignImage( img );
 
-	//setSliderBoundsFromImage();
+	if( !boundsSet )
+		setSliderBoundsFromImage();
 
 	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
@@ -204,7 +211,8 @@ void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool 
 
 	imgWidget.assignImage( modGrid, normalize );
 
-	//setSliderBoundsFromImage();
+	if( !boundsSet )
+		setSliderBoundsFromImage();
 
 	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
@@ -224,6 +232,7 @@ void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
 	lowerBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
 	upperBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
 
+	boundsSet = true;
 }
 
 void Fl_GridImage_Adjust::setSliderBounds( const range newBound ){
@@ -236,6 +245,7 @@ void Fl_GridImage_Adjust::setSliderBounds( const range newBound ){
 
 	changeContrast( newBound ); 
 
+	boundsSet = true;
 }
 
 bool Fl_GridImage_Adjust::handleEvents( void ){

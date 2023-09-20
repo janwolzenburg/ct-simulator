@@ -93,7 +93,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	Fl_GridImage imgWidget;
 	Fl_OwnValuator<Fl_Hor_Slider> lowerBound;
 	Fl_OwnValuator<Fl_Hor_Slider> upperBound;
-
+	bool boundsSet;
 
 
 };
