@@ -77,7 +77,7 @@ class rgbImage{
 
 
 
-	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight );
+	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay = vector<pair<bool, rgb_Int>>( 0 ) );
 
 	/*!
 	 * @brief Construct image from binary data

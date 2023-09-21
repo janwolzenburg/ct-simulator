@@ -48,9 +48,11 @@ Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 
 };
 
-void Fl_GridImage::assignImage( const monoImage& img ){
+void Fl_GridImage::assignImage( const monoImage& img ) 
+{
 	originalImage = img;
 	imgAssigned = true;
+	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 	hasOverlay = false;
 
 	updateScaled();
@@ -63,11 +65,12 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 
 
 	originalImage = monoImage( modGrid.Size().col, modGrid.Size().row );
+	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
+
 	const size_t width = originalImage.Width();
 	const size_t height = originalImage.Height();
 	
 	hasOverlay = false;
-	overlay.clear();
 
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
@@ -83,11 +86,10 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 				hasOverlay = true;
 
 				if( data.hasSpecificProperty( voxData::METAL ) )
-					overlay.push_back( { pixel, rgb_Int{ 128, 0, 0 } } );
+					overlay.at( originalImage.index( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
 
 				if( data.hasSpecificProperty( voxData::UNDEFINED ) )
-				
-					overlay.push_back( { pixel, bgColor } );
+					overlay.at( originalImage.index( c, r ) ) = { true, bgColor };
 			}
 
 		}
@@ -150,20 +152,7 @@ void Fl_GridImage::calculateScaled( void ){
 	}
 
 
-	colorImage = rgbImage( originalImage, (size_t) scaledWidth, (size_t) scaledHeight );
-
-	if( hasOverlay ){
-
-		for( const auto& curPx : overlay ){
-
-			const size_t scaledCol = (size_t) ( (double) curPx.first.col * ( (double) colorImage.Width() - 1. ) / ( (double) originalImage.Width() - 1. ) );
-			const size_t scaledRow = (size_t) ( (double) curPx.first.row * ( (double) colorImage.Height() - 1. ) / ( (double) originalImage.Height() - 1. ) );
-
-			colorImage.setPixel( { scaledCol, scaledRow }, curPx.second );
-		}
-	}
-
-	
+	colorImage = rgbImage( originalImage, (size_t) scaledWidth, (size_t) scaledHeight, overlay );
 
 }
 

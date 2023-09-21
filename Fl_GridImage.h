@@ -56,8 +56,8 @@ class Fl_GridImage : public Fl_Widget{
 
 
 	bool hasOverlay;
-	//vector<vector<pair<bool, rgb_Int>>> overlay;
-	vector<pair<idx2CR, rgb_Int>> overlay;
+	vector<pair<bool, rgb_Int>> overlay;
+	//vector<pair<idx2CR, rgb_Int>> overlay;
 
 	rgbImage colorImage;
 

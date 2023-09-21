@@ -61,7 +61,7 @@ rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t 
 
 }
 
-rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
+rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay ) :
 	rgbImage{ newWidth, newHeight }
 {
 
@@ -74,8 +74,15 @@ rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t
 
 			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.Height() - 1. ) / ( (double) this->Height() - 1. ) );
 
-			this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
-
+			if( overlay.size() != srcImg.NumPixel() ){
+				this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
+			}
+			else if( overlay.at( srcImg.index( srcC, srcR ) ).first ){
+				this->charData( c, r ) = overlay.at( srcImg.index( srcC, srcR ) ).second;
+			}
+			else{
+				this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
+			}
 		}
 	}
 

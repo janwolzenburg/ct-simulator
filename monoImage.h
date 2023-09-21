@@ -102,6 +102,8 @@ class monoImage{
 	*/
 	inline size_t Height( void ) const{ return height; };
 	
+	inline size_t NumPixel( void ) const{ return numPixel; };
+	
 	/*!
 	 * @brief Get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
