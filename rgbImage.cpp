@@ -112,7 +112,9 @@ rgbImage& rgbImage::operator=( const rgbImage& srcImg ){
 size_t rgbImage::pixelIndex( const size_t c, const size_t r ) const{
 	
 	size_t idx = c + r * width;
-	if( idx >= numPixel ) idx = numPixel - 1;
+	if( idx >= numPixel ){
+		idx = numPixel - 1;
+	}
 
 	return idx;
 }

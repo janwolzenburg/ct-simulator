@@ -142,8 +142,14 @@ void Fl_GridImage::calculateScaled( void ){
 
 	if( hasOverlay ){
 
-		for( auto& curPx : overlay ){
-			colorImage.setPixel( curPx.first, curPx.second );
+		
+
+		for( const auto& curPx : overlay ){
+
+			const size_t scaledCol = (size_t) ( (double) curPx.first.col * ( (double) colorImage.Width() - 1. ) / ( (double) originalImage.Width() - 1. ) );
+			const size_t scaledRow = (size_t) ( (double) curPx.first.row * ( (double) colorImage.Height() - 1. ) / ( (double) originalImage.Height() - 1. ) );
+
+			colorImage.setPixel( { scaledCol, scaledRow }, curPx.second );
 		}
 	}
 
