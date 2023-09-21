@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include <FL/fl_draw.H>
+#include <FL/Fl.H>
 
 #include "widgets.h"
 #include "Fl_GridImage.h"
@@ -28,6 +29,16 @@
 /*
 	Fl_GridImage implementation
 */
+
+rgb_Int getBgColor( void ){
+
+	rgb_Int backgroundRGB{ 0, 0, 0 };
+	Fl::get_color( FL_BACKGROUND_COLOR, backgroundRGB.red, backgroundRGB.green, backgroundRGB.blue );
+
+	return backgroundRGB;
+}
+
+rgb_Int Fl_GridImage::bgColor = getBgColor();
 
 Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Widget{ x, y, w, h, label },
@@ -66,15 +77,17 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 
 			originalImage.operator()( c, r ) = data.attenuationAtRefE();
 			
+
 			if( data.hasSpecialProperty() ){
 				
 				hasOverlay = true;
 
 				if( data.hasSpecificProperty( voxData::METAL ) )
-					overlay.push_back( { pixel, rgb_Int{ 255, 0, 0 } } );
+					overlay.push_back( { pixel, rgb_Int{ 128, 0, 0 } } );
 
 				if( data.hasSpecificProperty( voxData::UNDEFINED ) )
-					overlay.push_back( { pixel, rgb_Int{ 0, 255, 0 } } );
+				
+					overlay.push_back( { pixel, bgColor } );
 			}
 
 		}
@@ -97,10 +110,8 @@ void Fl_GridImage::draw( void ){
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.Width() ) / 2;
 	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
 
-	fl_rectf( this->parent()->x(), this->parent()->y(), this->parent()->w(), this->parent()->h(), 216 );
+	//fl_rectf( this->parent()->x(), this->parent()->y(), this->parent()->w(), this->parent()->h(), 216 );
 
-
-	// Check rgb_Int memory layout
 	fl_draw_image( (unsigned char*) colorImage.getDataPtr(), centerX, y(), (int) colorImage.Width(), (int) colorImage.Height() );
 }
 
@@ -138,11 +149,10 @@ void Fl_GridImage::calculateScaled( void ){
 
 	}
 
+
 	colorImage = rgbImage( originalImage, (size_t) scaledWidth, (size_t) scaledHeight );
 
 	if( hasOverlay ){
-
-		
 
 		for( const auto& curPx : overlay ){
 
