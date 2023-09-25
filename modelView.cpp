@@ -116,6 +116,10 @@ modelView::modelView( int x, int y, int w, int h ) :
 	// Hide initially
 	moveGrp.hide();
 
+	if( PROGRAM_STATE().ModelLoaded() ){
+		viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
+		viewImg.changeContrast( PROGRAM_STATE().ModelViewParameter().viewContrast );
+	}
 
 }
 
