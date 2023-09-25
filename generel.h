@@ -393,6 +393,6 @@ template<typename T>
 T toNum( const string str );
 
 template<typename T>
-void writeThreadVar( T& var, const T& value, mutex& m );
+T writeThreadVar( T& var, const T& value, mutex& m );
 
 #include "generel.hpp"

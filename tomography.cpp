@@ -74,16 +74,8 @@ tomography::tomography( const tomographyParameter parameter_ ) :
 
 radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
-
-
 	// Reset gantry to its initial position
 	Gantry.reset();
-
-	//int curRot = 0;
-	//const int numRot = 3;
-	//ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
-	
-
 	
 
 	// Translate Gantry
@@ -95,7 +87,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 
 
 	// Get the radon paramters for the detector
-	detectorRadonParameter radonParameter = Gantry.getDetectorParameter( );
+	const detectorRadonParameter radonParameter = Gantry.getDetectorParameter( );
 
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
@@ -112,39 +104,21 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 		Gantry.radiate( Model, parameter.ExposureTime(), parameter.Scattering() );
 		
 		// Get the detection result
-		vector<pixel> detectionPixel = Gantry.getPixel();
+		const vector<pixel> detectionPixel = Gantry.getPixel();
 
 
 		// Iterate all pixel
-		for( pixel currentPixel : detectionPixel ){
+		for( const pixel& currentPixel : detectionPixel ){
 
 			// Get coordinates for pixel
-			radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
+			const radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
 
 			// Get the radon point
-			radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
+			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
 			
 			// Assign the data to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
-
-		//if( curRot++ < numRot ){
-		//	
-		//	string col = "r";
-
-		//	switch( curRot ){
-		//		case 1:
-		//			col = "r"; break;
-		//		case 2:
-		//			col = "g"; break;
-		//		case 3:
-		//			col = "b"; break;
-		//		default:
-		//			col = "y"; break;
-		//	}
-
-		//	addObject( ax1, "Gantry", Gantry, col, GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
-		//}
 		
 		// Rotate gantry
 		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
@@ -152,8 +126,6 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 		Fl::check();
 
 	}
-
-	//closeAxis( ax1 );
 
 	return sinogram;
 }

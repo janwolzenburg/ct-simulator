@@ -472,11 +472,13 @@ size_t model::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( attenuationMax, binData );
 	numBytes += serializeBuildIn( name, binData );
 
-	for( size_t i = 0; i < numVox; i++ ){
+	binData.insert( binData.end(), (char*) parameter, (char*) parameter + sizeof( voxData ) * numVox );
+
+	/*for( size_t i = 0; i < numVox; i++ ){
 
 		numBytes += parameter[i].serialize( binData );
 
-	}
+	}*/
 
 	return numBytes;
 
@@ -590,15 +592,12 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	v2CR realStart( INFINITY, INFINITY );
 	v2CR realEnd( -INFINITY, -INFINITY );
 
-	size_t xIdx = 0;
-	size_t yIdx = 0;
+	size_t xIdx = 0, yIdx = 0;
 
-	mutex currentXMutex;
-	mutex currentYMutex;
+	mutex currentXMutex, currentYMutex;
 	mutex sliceMutex;
 
-	mutex realStartMutex;
-	mutex realEndMutex;
+	mutex realStartMutex, realEndMutex;
 
 
 	// Computation in threads
@@ -616,14 +615,12 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	// Check if restart and end have infinity in them
 	if( realStart.col == INFINITY || realStart.row == INFINITY || realEnd.col == -INFINITY || realEnd.row == -INFINITY ){
 		// This means that no model voxel is in slice
-
 		return grid<voxData>( idx2CR( 0, 0 ), v2CR( 0., 0. ), v2CR( 1., 1. ) );
 
 	}
 
 	// Write data to smaller grid
 
-	//return largeSlice;
 
 	grid<voxData> slice( range( realStart.col, realEnd.col ), range( realStart.row, realEnd.row ), sliceResolution, voxData() );
 
@@ -640,15 +637,11 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 			coords = slice.getCoordinates( idx2CR( colIdx, rowIdx ) );
 			currentData = largeSlice.getData( coords );
 
-			//TODO: Check strange behavious when slicing
-
 			if( currentData.hasSpecificProperty( voxData::UNDEFINED ) )
 				slice.setData( coords, voxData( largeSlice.MaxValue().attenuationAtRefE(), voxData::ReferencyEnergy()));
 			else
 				slice.setData( coords, currentData );
 
-
-			//slice( coords ) = largeSlice( coords ); 
 
 		}
 

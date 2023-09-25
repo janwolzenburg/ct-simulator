@@ -60,22 +60,28 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 						vector<ray>& raysForNextIteration, mutex& iterationMutex,
 						detector& rayDetector, mutex& detectorMutex ){
 
+	size_t currentRayIndex;
+	ray currentRay;
+	ray returnedRay;
+
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
 
 		// Get the ray which should be transmitted next and increment index
 		currentRayIndexMutex.lock();
-		size_t currentRayIndex = sharedCurrentRayIndex++;
+		currentRayIndex = sharedCurrentRayIndex++;
 		currentRayIndexMutex.unlock();
+
+
 
 		// No more rays left
 		if( currentRayIndex >= rays.size() ) break;
 
 		// Write current ray to local variable
-		const ray currentRay = rays.at( currentRayIndex  );
+		currentRay = rays.at( currentRayIndex  );
 
 		// Transmit ray through model
-		const ray returnedRay = radModel.rayTransmission( currentRay, enableScattering, rayScatterAngles );
+		returnedRay = radModel.rayTransmission( currentRay, enableScattering, rayScatterAngles );
 		returnedRay.Properties().EnergySpectrum().scale( 1. / (double) returnedRay.VoxelHits() );
 
 		// Is the ray outside the model

@@ -111,11 +111,13 @@ string toString<T>( T value, const int precision ){
 }
 
 template<typename T>
-void writeThreadVar( T& var, const T& value, mutex& m ){
+T writeThreadVar( T& var, const T& value, mutex& m ){
 
 	m.lock();
 
 	var = value;
 
 	m.unlock();
+
+	return value;
 }
