@@ -28,38 +28,45 @@
 
 gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
-	tubeGrp{ X( *this, .05 ),	Y( *this, .05 ),	W( *this, .5 ),		H( *this, .1 ) },
-	tubeVoltageIn{ X( tubeGrp, .0 ),	Y( tubeGrp, .2 ),	W( tubeGrp, .4 ),	H( tubeGrp, .35 ),	"Voltage" },
-	tubeCurrentIn{ X( tubeGrp, .6 ),	Y( tubeGrp, .2 ),	W( tubeGrp, .4 ),	H( tubeGrp, .35 ),	"Current" },
-	materialIn{ X( tubeGrp, .0 ),	Y( tubeGrp, .75 ),	W( tubeGrp, 1. ),	H( tubeGrp, .25 ),	"Material" },
+	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.05 ),	"Gantry" },
 
+	tubeGrp{		X( *this, .05 ),	vOff( title ) + Y( *this, .05 ),	W( *this, 1. ),		H( *this, .3 ) },
+	tubeTitle{		X( tubeGrp, 0. ),	Y( tubeGrp, 0. ),	W( tubeGrp, 1. ),	H( tubeGrp, .075 ),	"xRay Tube" },
+	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .25 ),	H( tubeGrp, .15 ),	"Voltage" },
+	tubeCurrentIn{	X( tubeGrp, .3 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .25 ),	H( tubeGrp, .15 ),	"Current" },
+	materialIn{		X( tubeGrp, .6 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .4 ),	H( tubeGrp, .15 ),	"Material" },
+	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .275 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
 
-	radonGrp{ X( *this, .2 ),		vOff( tubeGrp ) + Y( *this, .05 ),		W( *this, .12 ),	H( *this, .1 ) },
-	colPnts{ X( radonGrp, .0 ),	Y( radonGrp, 0. ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Angles" },
-	rowPnts{ X( radonGrp, .0 ),	Y( radonGrp, .375 ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Pixel" },
-	distRange{ X( radonGrp, .0 ),	Y( radonGrp, .75 ),	W( radonGrp, 1. ),	H( radonGrp, .25 ),	"Range" },
+	detectorGrp{	X( *this, .0 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, 1. ),		H( *this, .45 ) },
+	detectorTitle{	X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .1 ),	"Detector" },
+	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Angles" },
+	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Pixel" },
+	distRange{		X( detectorGrp, .6 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Range" },
 
-	detectorGrp{ X( *this, .6 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, .4 ),			H( *this, .1 ) },
-	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Rays / Pix" },
-	arcRadiusIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Arc Radius" },
-	maxRayAngleIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .3 ),	H( detectorGrp, .25 ),	"Max. angle" },
-	structureIn{ X( detectorGrp, .5 ),	Y( detectorGrp, .75 ),	W( detectorGrp, .5 ),	H( detectorGrp, .25 ),	"Anti scat." },
+	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Rays / Pix" },
+	arcRadiusIn{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Arc Radius" },
+	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Max. angle" },
+	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Anti scat." },
 
-	specView{ X( *this, 0. ),			vOff( detectorGrp ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .2 ) },
-	spectrumPlot{ X( specView, .0 ),	Y( specView, 0. ),	W( specView, 1. ),	H( specView, 1. ),	"Spectrum Plot" },
-
-	detectorView{ X( *this, 0. ),			vOff( specView ) + Y( *this, .025 ),			W( *this, 1. ),			H( *this, .4 ) },
-	detectorPlot{ X( detectorView, .0 ),	Y( detectorView, 0. ),	W( detectorView, 1. ),	H( detectorView, 1. ),	"Detector Plot" },
+	detectorPlot{	X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, 1. ),	H( detectorGrp, .625 ),	"Detector Plot" },
 
 	updateGantry( false )
 	
 	{
 		Fl_Group::box( FL_BORDER_BOX );
 
+		Fl_Group::add( title );
+		title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
+
+
+
 		Fl_Group::add( tubeGrp );
 
+		tubeGrp.add( tubeTitle );
 		tubeGrp.add( tubeVoltageIn ); tubeGrp.add( tubeCurrentIn ); tubeGrp.add( materialIn );
 		tubeGrp.box( FL_BORDER_BOX );
+
+		tubeTitle.box( FL_NO_BOX ); tubeTitle.align( FL_ALIGN_CENTER ); tubeTitle.labelsize( 20 );
 
 		tubeVoltageIn.align( FL_ALIGN_TOP ); tubeCurrentIn.align( FL_ALIGN_TOP ); materialIn.align( FL_ALIGN_TOP );
 
@@ -86,9 +93,21 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		materialIn.tooltip( "Anode material." );
 
 
-		Fl_Group::add( radonGrp ); radonGrp.add( colPnts ); radonGrp.add( rowPnts ); radonGrp.add( distRange );
-		radonGrp.box( FL_BORDER_BOX );
-		colPnts.align( FL_ALIGN_LEFT ); rowPnts.align( FL_ALIGN_LEFT ); distRange.align( FL_ALIGN_LEFT );
+		tubeGrp.add( spectrumPlot );
+		spectrumPlot.initializePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+
+
+		//-----------------------------
+
+		Fl_Group::add( detectorGrp );
+
+		detectorGrp.add( detectorTitle );
+		detectorTitle.box( FL_NO_BOX ); detectorTitle.align( FL_ALIGN_CENTER ); detectorTitle.labelsize( 20 );
+
+
+		detectorGrp.add( colPnts ); detectorGrp.add( rowPnts ); detectorGrp.add( distRange );
+		detectorGrp.box( FL_BORDER_BOX );
+		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
 		colPnts.setProperties( 3, 10000, 0 );
 		colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.col );
@@ -108,9 +127,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		distRange.tooltip( "Size of measure field in mm." );
 
 
-		Fl_Group::add( detectorGrp ); detectorGrp.add( raysPerPixelIn ); detectorGrp.add( arcRadiusIn ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
+		detectorGrp.add( raysPerPixelIn ); detectorGrp.add( arcRadiusIn ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
+		
 		detectorGrp.box( FL_BORDER_BOX );
-		raysPerPixelIn.align( FL_ALIGN_LEFT ); arcRadiusIn.align( FL_ALIGN_LEFT ); maxRayAngleIn.align( FL_ALIGN_LEFT );
+		raysPerPixelIn.align( FL_ALIGN_TOP ); arcRadiusIn.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
 		raysPerPixelIn.setProperties( 1, 1000, 0 );
 		raysPerPixelIn.value( (int) PROGRAM_STATE().DetectorParameter().raysPerPixel );
@@ -134,10 +154,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		structureIn.tooltip( "Activate anti scattering structure." );
 
 
-		Fl_Group::add( specView ); specView.add( spectrumPlot );
-		spectrumPlot.initializePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
-
-		Fl_Group::add( detectorView ); detectorView.add( detectorPlot );
+		detectorGrp.add( detectorPlot );
 		detectorPlot.initializePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, range{ 0, 1 }, range{ 0, 1 } }, "", "", true, true );
 
 

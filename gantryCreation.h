@@ -50,27 +50,24 @@ class gantryEdition : public Fl_Group{
 
 	private:
 
+	Fl_Box title;
+
 	Fl_Group tubeGrp;
+	Fl_Box tubeTitle;
 	Fl_Bound_Input<Fl_Float_Input, double> tubeVoltageIn;
 	Fl_Bound_Input<Fl_Float_Input, double> tubeCurrentIn;
 	Fl_Selector materialIn;
+	Fl_Plot<lineplot> spectrumPlot;
 
-	Fl_Group radonGrp;
+	Fl_Group detectorGrp;
+	Fl_Box detectorTitle;
 	Fl_Bound_Input<Fl_Int_Input, size_t> colPnts;
 	Fl_Bound_Input<Fl_Int_Input, size_t> rowPnts;
 	Fl_Bound_Input<Fl_Float_Input, double> distRange;
-
-	Fl_Group detectorGrp;
 	Fl_Bound_Input<Fl_Int_Input, int> raysPerPixelIn;
 	Fl_Bound_Input<Fl_Float_Input, double> arcRadiusIn;
 	Fl_Toggle_Button structureIn;
 	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;
-
-	Fl_Group specView;
-
-	Fl_Plot<lineplot> spectrumPlot;
-
-	Fl_Group detectorView;
 	Fl_Plot<geoplot> detectorPlot;
 
 	bool updateGantry;
