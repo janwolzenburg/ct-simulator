@@ -30,25 +30,25 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.05 ),	"Gantry" },
 
-	tubeGrp{		X( *this, .05 ),	vOff( title ) + Y( *this, .05 ),	W( *this, 1. ),		H( *this, .3 ) },
+	tubeGrp{		X( *this, .0 ),	vOff( title ) + Y( *this, .02 ),	W( *this, 1. ),		H( *this, .3 ) },
 	tubeTitle{		X( tubeGrp, 0. ),	Y( tubeGrp, 0. ),	W( tubeGrp, 1. ),	H( tubeGrp, .075 ),	"xRay Tube" },
-	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .25 ),	H( tubeGrp, .15 ),	"Voltage" },
-	tubeCurrentIn{	X( tubeGrp, .3 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .25 ),	H( tubeGrp, .15 ),	"Current" },
-	materialIn{		X( tubeGrp, .6 ),	Y( tubeGrp, .1 ),	W( tubeGrp, .4 ),	H( tubeGrp, .15 ),	"Material" },
-	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .275 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
+	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Voltage" },
+	tubeCurrentIn{	X( tubeGrp, .25 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Current" },
+	materialIn{		X( tubeGrp, .5 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .5 ),	H( tubeGrp, .1 ),	"Material" },
+	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .325 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
 
-	detectorGrp{	X( *this, .0 ),			vOff( tubeGrp ) + Y( *this, .05 ),			W( *this, 1. ),		H( *this, .45 ) },
+	detectorGrp{	X( *this, .0 ),			vOff( tubeGrp ) + Y( *this, .03 ),			W( *this, 1. ),		H( *this, .6 ) },
 	detectorTitle{	X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .1 ),	"Detector" },
-	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Angles" },
-	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Pixel" },
-	distRange{		X( detectorGrp, .6 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Range" },
+	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Angles" },
+	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Pixel" },
+	distRange{		X( detectorGrp, .6 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Range" },
 
-	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Rays / Pix" },
-	arcRadiusIn{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Arc Radius" },
-	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Max. angle" },
-	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .1 ),	"Anti scat." },
+	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Rays / Pix" },
+	arcRadiusIn{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Arc Radius" },
+	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Max. angle" },
+	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Anti scat." },
 
-	detectorPlot{	X( detectorGrp, .0 ),	Y( detectorGrp, .375 ),	W( detectorGrp, 1. ),	H( detectorGrp, .625 ),	"Detector Plot" },
+	detectorPlot{	X( detectorGrp, .0 ),	Y( detectorGrp, .35 ),	W( detectorGrp, 1. ),	H( detectorGrp, .65 ),	"Detector Plot" },
 
 	updateGantry( false )
 	

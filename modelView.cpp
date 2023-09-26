@@ -32,9 +32,9 @@ modelView::modelView( int x, int y, int w, int h ) :
 	viewImg{ X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
 
 	moveGrp{ X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .25 ) },
-	xRot{ X( moveGrp, .1 ),	Y( moveGrp, .1 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "x-Rotation" },
-	yRot{ X( moveGrp, .1 ),	Y( moveGrp, .325 ),	W( moveGrp, .5 ),	H( moveGrp, .15), "y-Rotation" },
-	zTrans{ X( moveGrp, .1 ),	Y( moveGrp, .65 ),	W( moveGrp, .5 ),	H( moveGrp, .15 ), "z-Translation" },
+	xRot{ X( moveGrp, .1 ),	Y( moveGrp, .1 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "x-Rotation" },
+	yRot{ X( moveGrp, .1 ),	Y( moveGrp, .35 ),	W( moveGrp, .5 ),	H( moveGrp, .1), "y-Rotation" },
+	zTrans{ X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "z-Translation" },
 	resetBtn{ X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
 
 
@@ -95,9 +95,9 @@ modelView::modelView( int x, int y, int w, int h ) :
 	zTrans.range( -500., 500. );	zTrans.step( 1., 10. );
 
 	// Labelsizes
-	xRot.labelsize( (int) ( .40 * (double) xRot.h() ) );
-	yRot.labelsize( (int) ( .40 * (double) yRot.h() ) );
-	zTrans.labelsize( (int) ( .40 * (double) zTrans.h() ) );
+	xRot.labelsize( (int) ( .80 * (double) xRot.h() ) );
+	yRot.labelsize( (int) ( .80 * (double) yRot.h() ) );
+	zTrans.labelsize( (int) ( .80 * (double) zTrans.h() ) );
 	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
 
 	// Callbacks for Counters and reset button
