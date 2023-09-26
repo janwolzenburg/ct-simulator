@@ -15,6 +15,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "gui.h"
 #include "test_model.h"
 #include "cSysTree.h"
+#include "progress.h"
 
 #include "mainWindow.h"
 
@@ -36,7 +37,6 @@ int main( int argc, char** argv ){
 	*/
 
 	
-	programState& state = PROGRAM_STATE();
 
 	Fl_Group::current( NULL );
 	Fl_Tooltip::enable();
@@ -45,22 +45,35 @@ int main( int argc, char** argv ){
 	mainView* mainWindow = new mainView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" );
 	processingView* procView = new processingView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" );
 
-	state.registerMainWindow( mainWindow );
-	state.registerProcessingWindow( procView );
-
-
+	mainWindow->hide();
 	procView->hide();
 
+	Fl_Progress_Window* initialWindow = new Fl_Progress_Window( mainWindow, 20, 3, "Initialisation" );
+	initialWindow->changeLineText( 1, "Loading program state..." );
+	initialWindow->show();
+
+
+	programState& state = PROGRAM_STATE();
+	state.registerMainWindow( mainWindow );
+	state.registerProcessingWindow( procView );
 
 	if( state.RadonTransformedLoaded() ){
 		procView->setNewRTFlag();
 	}
+
+	bool firstLoop = true;
+
 
 	while( Fl::wait() ){
 		
 		mainWindow->handleEvents();
 		procView->handleEvents();
 
+		if( firstLoop ){
+			mainWindow->show();
+			initialWindow->hide();
+			firstLoop = false;
+		}
 	}
 
 	delete mainWindow;
