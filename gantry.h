@@ -24,7 +24,7 @@ using std::mutex;
 #include "model.h"
 #include "scattering.h"
 #include "simulation.h"
-
+#include "tomography.h"
 
 
 /*********************************************************************
@@ -46,7 +46,7 @@ using std::mutex;
  * @param rayDetector Reference to ray detector
  * @param iterationMutex Mutex for vector with rays for next iteration
 */
-void threadFunction( const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
+void threadFunction( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
 					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 					 vector<ray>& raysForNextIteration, mutex& detectorMutex,
 					 detector& rayDetector, mutex& iterationMutex );
@@ -106,7 +106,7 @@ class gantry {
 	 * @brief Radiate model with beam
 	 * @param radModel Model to radiate
 	*/
-	void radiate( const model& radModel, const double exposureTime, const bool scattering = true ) ;
+	void radiate( const model& radModel, const tomographyParameter parameter ) ;
 	
 	/*!
 	 * @brief Reset ganrtry to its initial position

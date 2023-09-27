@@ -23,7 +23,7 @@ using std::filesystem::path;
  #include "voxel.h"
  #include "scattering.h"
  #include "grid.h"
-
+ #include "tomography.h"
 
 
   /*********************************************************************
@@ -203,7 +203,7 @@ class model : virtual public mathObj{
 	 * @param enableScattering Flag indicating if ray can be scattered
 	 * @return Vector of ray exiting model or created in model
 	*/
-	ray rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const;
+	ray rayTransmission( const ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const;
 
 	/*!
 	 * @brief Crop model

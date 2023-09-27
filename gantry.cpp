@@ -55,7 +55,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
-void threadFunction(	const model& radModel, const bool enableScattering, const rayScattering& rayScatterAngles,
+void threadFunction(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
 						const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 						vector<ray>& raysForNextIteration, mutex& iterationMutex,
 						detector& rayDetector, mutex& detectorMutex ){
@@ -81,7 +81,7 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 		currentRay = rays.at( currentRayIndex  );
 
 		// Transmit ray through model
-		returnedRay = radModel.rayTransmission( currentRay, enableScattering, rayScatterAngles );
+		returnedRay = radModel.rayTransmission( currentRay, tomoParameter, rayScatterAngles );
 		returnedRay.Properties().EnergySpectrum().scale( 1. / (double) returnedRay.VoxelHits() );
 
 		// Is the ray outside the model
@@ -100,9 +100,9 @@ void threadFunction(	const model& radModel, const bool enableScattering, const r
 }
 
 
-void gantry::radiate( const model& radModel, const double exposureTime, const bool scattering ) {
+void gantry::radiate( const model& radModel, const tomographyParameter parameter ) {
 
-	vector<ray> rays = this->getBeam( exposureTime );		// Current rays. Start with rays from source
+	vector<ray> rays = this->getBeam( parameter.ExposureTime() );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( ray& currentRay : rays ){
@@ -124,11 +124,11 @@ void gantry::radiate( const model& radModel, const double exposureTime, const bo
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < maxRadiationLoops && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop < parameter.MaxLoops() && rays.size() > 0; currentLoop++ ){
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		const bool enableScattering = currentLoop < maxRadiationLoops && scattering;	// No scattering in last iteration
+		const bool enableScattering = currentLoop < parameter.MaxLoops() && parameter.Scattering();	// No scattering in last iteration
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
 
 
@@ -136,7 +136,7 @@ void gantry::radiate( const model& radModel, const double exposureTime, const bo
 		vector<std::thread> threads;
 
 		for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
-			threads.emplace_back( threadFunction,	cref( radModel ), enableScattering, cref( rayScatterAngles ),
+			threads.emplace_back( threadFunction,	cref( radModel ), cref( parameter ), cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 													ref( rayDetector ), ref( detectorMutex ) );

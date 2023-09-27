@@ -255,7 +255,7 @@ bool model::pntInside( const pnt3 p ) const{
 }
 
 
-ray model::rayTransmission( const ray tRay, const bool enableScattering, const rayScattering& scatteringProperties ) const{
+ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
@@ -273,8 +273,8 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 	const double lengthInModel = modelIsect.Exit().linePara - modelIsect.Entrance().linePara;
 
 	// Get first point inside the model
-	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > rayStepSize ){
-		currentRayStep += rayStepSize;
+	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > tomoParameter.RayStepSize() ){
+		currentRayStep += tomoParameter.RayStepSize();
 	}
 
 	// Current point on the ray
@@ -285,7 +285,7 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
 	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
-	const double scatterConstant = completeModelScatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
+	const double scatterConstant = tomoParameter.ScatterPropability() * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
 
 
 	// Iterate through model while current point is inside model
@@ -354,11 +354,11 @@ ray model::rayTransmission( const ray tRay, const bool enableScattering, const r
 			modelRay.updateProperties( this->getVoxelDataC( currentVoxelIndices ), distance );
 			modelRay.incrementHitCounter();
 
-			currentRayStep += distance + rayStepSize;				// New Step on ray
+			currentRayStep += distance + tomoParameter.RayStepSize();				// New Step on ray
 			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray
 		
 			// Scattering
-			if( enableScattering ){
+			if( tomoParameter.Scattering() ){
 			
 				// Mean frequency of ray
 				const double meanFrequency = modelRay.getMeanFrequency();
