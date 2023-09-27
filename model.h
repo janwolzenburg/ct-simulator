@@ -23,7 +23,7 @@ using std::filesystem::path;
  #include "voxel.h"
  #include "scattering.h"
  #include "grid.h"
- #include "tomography.h"
+ #include "tomography.fwd.h"
 
 
   /*********************************************************************

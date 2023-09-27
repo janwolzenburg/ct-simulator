@@ -16,7 +16,7 @@
 #include "cSysTree.h"
 #include "gantry.h"
 #include "test_device.h"
-
+#include "tomography.h"
 
 
   /*********************************************************************
@@ -118,7 +118,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 
-	testGantry.radiate( mod, 1. );
+	testGantry.radiate( mod, tomographyParameter{ 1., false, 16, .05, 5e-2 } );
 	vector<pixel> detectorPixel = testGantry.getPixel();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });

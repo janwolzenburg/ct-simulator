@@ -19,7 +19,7 @@
   #include "cSysTree.h"
   #include "test_device.h"
   #include "test_model.h"
-
+  #include "tomography.h"
   #include "tube.h"
 
 bool test_scattered_angle_propabilities( void ){
@@ -88,15 +88,17 @@ bool test_ray_scattering(void){
 		anglesHistogram.emplace_back( a, 0.);
 	}
 
+	tomographyParameter tomoParameter{1., true, 16, .05, 5e-2};
+
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoopsTest && rays.size() > 0; currentLoop++ ){
 
 
-		const bool enableScattering = currentLoop < maxRadiationLoopsTest - 1;	// No scattering in last iteration
+		//const bool enableScattering = currentLoop < maxRadiationLoopsTest - 1;	// No scattering in last iteration
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
 
 		for( const ray r : rays ){
 
-			const ray retRay = mod.rayTransmission( r, enableScattering, testGantry.RayScattering() );
+			const ray retRay = mod.rayTransmission( r, tomoParameter, testGantry.RayScattering() );
 
 			double plotLength = ( retRay.O() - r.O() ).Length();
 

@@ -205,6 +205,7 @@
     <ClInclude Include="slicePlane.h" />
     <ClInclude Include="storedObject.hpp" />
     <ClInclude Include="test_rays.h" />
+    <ClInclude Include="tomography.fwd.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
     <ClInclude Include="radonTransform.h" />

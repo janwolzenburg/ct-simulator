@@ -16,6 +16,8 @@
 #include "cSysTree.h"
 #include <thread>
 #include <mutex>
+#include "tomography.h"
+
 using std::ref;
 using std::cref;
 

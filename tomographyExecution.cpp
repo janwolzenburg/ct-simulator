@@ -57,7 +57,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 
 	exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().ExposureTime() );
 	rayStepSizeIn.value( PROGRAM_STATE().TomographyParameter().RayStepSize() );
-	radiationLoopsIn.value( PROGRAM_STATE().TomographyParameter().MaxLoops() );
+	radiationLoopsIn.value( (double) PROGRAM_STATE().TomographyParameter().MaxLoops() );
 	scatterPropabilityIn.value( PROGRAM_STATE().TomographyParameter().ScatterPropability() );
 	scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().Scattering() );
 

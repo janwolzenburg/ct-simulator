@@ -24,6 +24,7 @@ using std::cref;
 #include "intersections.h"
 #include "propability.h"
 #include "scattering.h"
+#include "tomography.h"
 
 
 

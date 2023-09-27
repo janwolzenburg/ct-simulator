@@ -339,6 +339,9 @@
     <ClInclude Include="modelViewParameter.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="tomography.fwd.h">
+      <Filter>Headerdateien\Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

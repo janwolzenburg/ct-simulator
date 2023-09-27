@@ -24,7 +24,7 @@ using std::mutex;
 #include "model.h"
 #include "scattering.h"
 #include "simulation.h"
-#include "tomography.h"
+#include "tomography.fwd.h"
 
 
 /*********************************************************************
