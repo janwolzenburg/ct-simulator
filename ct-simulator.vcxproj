@@ -279,6 +279,7 @@
     <ClCompile Include="test_model.cpp" />
     <ClCompile Include="test_rays.cpp" />
     <ClCompile Include="tomography.cpp" />
+    <ClCompile Include="tomographyExecution.cpp" />
     <ClCompile Include="tube.cpp" />
     <ClCompile Include="vec3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />

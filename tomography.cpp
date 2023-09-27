@@ -27,23 +27,33 @@
 *********************************************************************/
 
 
-const string tomographyParameter::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE" };
+const string tomographyParameter::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver01" };
 
 tomographyParameter::tomographyParameter( void ) :
 	exposureTime( 1. ),
-	scattering( true )
+	scattering( true ),
+	maxRadiationLoops( maxRadiationLoops_Def ),
+	scatterPropability( completeModelScatterPropability_Def ),
+	rayStepSize( rayStepSize_Def )
+
 {}
 
-tomographyParameter::tomographyParameter( const double exposureTime_, const bool scattering_ ) :
+tomographyParameter::tomographyParameter( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ ) :
 	exposureTime( exposureTime_ ),
-	scattering( scattering_ )
+	scattering( scattering_ ),
+	maxRadiationLoops( maxRadiationLoops_ ),
+	scatterPropability( scatterPropability_ ),
+	rayStepSize( rayStepSize_ )
 {
 
 }
 
 tomographyParameter::tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) ),
-	scattering( deSerializeBuildIn<bool>(true, binData, it) )
+	scattering( deSerializeBuildIn<bool>(true, binData, it) ),
+	maxRadiationLoops( deSerializeBuildIn<size_t>( maxRadiationLoops_Def, binData, it ) ),
+	scatterPropability( deSerializeBuildIn<double>( completeModelScatterPropability_Def, binData, it ) ),
+	rayStepSize( deSerializeBuildIn<double>( rayStepSize_Def, binData, it ) )
 {
 }
 
@@ -53,6 +63,9 @@ size_t tomographyParameter::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += serializeBuildIn( exposureTime, binData );
 	numBytes += serializeBuildIn( scattering, binData );
+	numBytes += serializeBuildIn( maxRadiationLoops, binData );
+	numBytes += serializeBuildIn( scatterPropability, binData );
+	numBytes += serializeBuildIn( rayStepSize, binData );
 
 	return numBytes;
 
@@ -101,7 +114,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 			progressWindow->changeLineText( 0, "Radiating frame " + toString( currentFrame ) + " of " + toString( radonParameter.framesToFillSinogram ) );
 
 		// Radiate
-		Gantry.radiate( Model, parameter.ExposureTime(), parameter.Scattering() );
+		Gantry.radiate( Model, parameter );
 		
 		// Get the detection result
 		const vector<pixel> detectionPixel = Gantry.getPixel();
