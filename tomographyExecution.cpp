@@ -9,21 +9,21 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	Fl_Group( x, y, w, h ),
 	title( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"),
 
-	tomoParameterGrp(		X( *this, .0 ),				Y( *this, .0 ),				W( *this, 1. ),				H( *this, .3 ) ),
+	tomoParameterGrp(		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .3 ) ),
 	parameterTitle(			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .1 ), "Parameter" ),
 	
-	exposureTimeIn(			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .15 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .15 ), "Exposure time" ),
-	rayStepSizeIn(			X( tomoParameterGrp, .5 ),	Y( tomoParameterGrp, .15 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .15 ), "Ray step size" ),
+	exposureTimeIn(			X( tomoParameterGrp, .1 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .1 ),	H( tomoParameterGrp, .1 ), "Exposure time" ),
+	rayStepSizeIn(			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Ray step size" ),
 	
-	radiationLoopsIn(		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .25 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .15 ), "Maximum loops" ),
-	scatterPropabilityIn(	X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .25 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .15 ), "Scattering prob." ),
-	scatteringOnOff(		X( tomoParameterGrp, .66 ),	Y( tomoParameterGrp, .25 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .15 ), "Scattering" ),
+	radiationLoopsIn(		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .1 ), "Maximum loops" ),
+	scatterPropabilityIn(	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Scattering prob." ),
+	scatteringOnOff(		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Scattering" ),
 	
-	information(			X( tomoParameterGrp, .5 ),	Y( tomoParameterGrp, .6 ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .4 ), "Information" ),
+	information(			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .6 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .4 ), "Information" ),
 
 
-	controlGrp( X( *this, .05 ), vOff( tomoParameterGrp ) + Y( *this, .05 ), W( *this, .9 ), H( *this, .1 ) ),
-	radiationButton( X( controlGrp, .25 ), Y( controlGrp, 0. ), W( controlGrp, .5 ), H( controlGrp, .5 ), "Record Slice" ),
+	controlGrp( X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) ),
+	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .5 ), "Record Slice" ),
 
 	radiateFlag( false ),
 	updateFlag( false )
@@ -36,6 +36,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	Fl_Group::add( tomoParameterGrp );
 	tomoParameterGrp.box( FL_BORDER_BOX );
 
+	tomoParameterGrp.add( parameterTitle );
 	tomoParameterGrp.add( exposureTimeIn );
 	tomoParameterGrp.add( rayStepSizeIn );
 
@@ -43,6 +44,9 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	tomoParameterGrp.add( scatterPropabilityIn );
 	tomoParameterGrp.add( scatteringOnOff );
 	tomoParameterGrp.add( information );
+
+
+	parameterTitle.box( FL_NO_BOX ); parameterTitle.align( FL_ALIGN_CENTER ); parameterTitle.labelsize( 20 );
 
 	exposureTimeIn.align( FL_ALIGN_TOP );
 	rayStepSizeIn.align( FL_ALIGN_TOP );
@@ -55,11 +59,19 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	scatterPropabilityIn.setProperties( 0., 1., 3 );
 
 
+	exposureTimeIn.tooltip( "Exposure time in seconds." );
+	rayStepSizeIn.tooltip( "Step size of ray tracing in mm." );
+	radiationLoopsIn.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
+	scatterPropabilityIn.tooltip( "Probability that a ray will be scattered once when going through complete model." );
+	scatteringOnOff.tooltip( "Enable or disable scattering." );
+
+
 	exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().ExposureTime() );
 	rayStepSizeIn.value( PROGRAM_STATE().TomographyParameter().RayStepSize() );
 	radiationLoopsIn.value( (double) PROGRAM_STATE().TomographyParameter().MaxLoops() );
 	scatterPropabilityIn.value( PROGRAM_STATE().TomographyParameter().ScatterPropability() );
 	scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().Scattering() );
+	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	exposureTimeIn.callback( button_cb, &updateFlag );
 	rayStepSizeIn.callback( button_cb, &updateFlag );

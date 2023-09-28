@@ -142,6 +142,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().maxRayAngleDetectable );
 
 		structureIn.value( (int) PROGRAM_STATE().DetectorParameter().structured );
+		structureIn.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		raysPerPixelIn.callback( button_cb, &updateGantry );
 		arcRadiusIn.callback( button_cb, &updateGantry );
@@ -150,7 +151,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
 		arcRadiusIn.tooltip( "Radius of the arc where the pixel lie." );
-		maxRayAngleIn.tooltip( "Maximum detecable angle between pixel and ray. " );
+		maxRayAngleIn.tooltip( "Maximum detecable angle between pixel and ray. Only valid when anti scattering is activated." );
 		structureIn.tooltip( "Activate anti scattering structure." );
 
 
@@ -172,6 +173,7 @@ void gantryEdition::handleEvents( void ){
 		tubeParameter newTubeParameter{ tubeVoltageIn.current, tubeCurrentIn.current, tubeParameter::getEnum( materialIn.value() ) };
 		detectorRadonParameter newRadonParameter{ idx2CR{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() };
+
 
 		rowPnts.value( newRadonParameter.numberPoints.row );
 		colPnts.value( newRadonParameter.numberPoints.col );
