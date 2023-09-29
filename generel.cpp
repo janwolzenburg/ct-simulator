@@ -28,10 +28,12 @@ using std::string;
 
 const size_t numThreads = 1;
 
+
 /*!
  * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor
 */
 const char stringPadding = (char) 0x9D;
+
 
 /*!
  * Indices and vector implementation
@@ -42,11 +44,6 @@ idx2::idx2( void ) : x( 0 ), y( 0 ){};
 
 v2::v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
 v2::v2( void ) : v2( 0, 0 ){};
-
-
-/*!
- * idx3 implementation
-*/
 
 idx3::idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 idx3::idx3( void ) : x( 0 ), y( 0 ), z( 0 ){};
@@ -80,10 +77,6 @@ size_t idx3::serialize( vector<char>& binData ) const{
 }
 
 
-/*!
- * v3 implementation
-*/
-
 v3::v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 v3::v3( void ) : v3( 0, 0, 0 ){};
 
@@ -105,11 +98,6 @@ size_t v3::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-
-/*!
- * idx2CR implementation
-*/
-
 idx2CR::idx2CR( const size_t c_, const size_t r_ ) : col( c_ ), row( r_ ){};
 idx2CR::idx2CR( void ) : idx2CR( 0, 0 ){};
 
@@ -129,10 +117,6 @@ size_t idx2CR::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-
-/*!
- * v2CR implementation
-*/
 
 v2CR::v2CR( const double c_, const double r_ ) : col( c_ ), row( r_ ){};
 v2CR::v2CR( void ) : v2CR( 0, 0 ){};
@@ -155,7 +139,7 @@ size_t v2CR::serialize( vector<char>& binData ) const{
 
 
 /*!
- * range implementation
+ * Ranges implementation
 */
 
 range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
@@ -199,9 +183,6 @@ size_t range::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-/*!
- * Zrange implementation
-*/
 
 Zrange::Zrange( const signed long long start_, const signed long long end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
@@ -328,7 +309,7 @@ vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binD
 	return vec;
 }
 
-bool exportSerialized( const path filePath, const vector<char> binData ){
+bool exportSerialized( const path filePath, const vector<char>& binData ){
 
 	// Storage directory when it does not exist
 	if( !std::filesystem::exists( filePath.parent_path()  )) std::filesystem::create_directory( filePath.parent_path() );
@@ -337,7 +318,7 @@ bool exportSerialized( const path filePath, const vector<char> binData ){
 
 }
 
-bool exportSerialized( const string fileName, const vector<char> binData ){
+bool exportSerialized( const string fileName, const vector<char>& binData ){
 	
 	// File handle
 	std::ofstream outFile;

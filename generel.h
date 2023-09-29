@@ -33,6 +33,7 @@ using std::filesystem::path;
 using std::mutex;
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -57,7 +58,11 @@ class idx2{
 	public:
 
 	idx2( const size_t x_, const size_t y_ );
+
 	idx2( void );
+
+
+	public:
 
 	size_t x;
 	size_t y;
@@ -72,23 +77,17 @@ class idx3{
 	public:
 
 	idx3( const size_t x_, const size_t y_, const size_t z_ );
+
 	idx3( void );
 
-	/*!
-	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
-	*/
 	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
+
+	size_t serialize( vector<char>& binData ) const;
 
 	bool operator==( const idx3& second ) const;
 
-	/*!
-	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
-	*/
-	size_t serialize( vector<char>& binData ) const;
 
+	public:
 
 	size_t x;
 	size_t y;
@@ -104,7 +103,10 @@ class v2{
 	public:
 
 	v2( const double x_, const double y_ );
+
 	v2( void );
+
+	public:
 
 	double x;
 	double y;
@@ -119,21 +121,15 @@ class v3{
 	public:
 
 	v3( const double x_, const double y_, const double z_ );
+
 	v3( void );
 
-	/*!
-	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
-	*/
 	v3( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	/*!
-	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
-	*/
 	size_t serialize( vector<char>& binData ) const;
 
+
+	public:
 
 	double x;
 	double y;
@@ -149,20 +145,15 @@ class idx2CR{
 	public:
 
 	idx2CR( const size_t col_, const size_t row_ );
+
 	idx2CR( void );
 
-	/*!
-	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
-	*/
 	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	/*!
-	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
-	*/
 	size_t serialize( vector<char>& binData ) const;
+
+
+	public:
 
 	size_t col;
 	size_t row;
@@ -177,19 +168,11 @@ class v2CR {
 	public:
 
 	v2CR( const double c_, const double r_ );
+
 	v2CR( void );
 
-	/*!
-	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
-	*/
 	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	/*!
-	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
-	*/
 	size_t serialize( vector<char>& binData ) const;
 
 	double col;
@@ -206,7 +189,8 @@ class Zrange{
 
 	Zrange( const signed long long start_, const signed long long end_ );
 
-	Zrange( void );
+
+	public:
 
 	signed long long start;
 	signed long long end;
@@ -227,24 +211,14 @@ class range{
 
 	range( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	/*!
-	 * @brief Get the size of the interval
-	 * @return Difference of end and start
-	 * @details Diff = end - start
-	*/
+	size_t serialize( vector<char>& binData ) const;
+
 	inline double Diff( void ) const { return end - start; };
 
-	/*!
-	 * @brief Get the resolution of the range was split in given amount of discrete values
-	 * @param number Amount of discrete values
-	 * @return Resolution of interval when slit in given amount
-	 * @detail Resolution = (end - start) / (number - 1)
-	*/
 	double Resolution( const size_t number ) const;
 
 
-	size_t serialize( vector<char>& binData ) const;
-
+	public:
 
 	double start;
 	double end;
@@ -328,6 +302,14 @@ size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, ve
 template<>
 size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
+/*!
+ * @brief Deserialize build in data type
+ * @tparam T Type
+ * @param defaultVal Default value 
+ * @param binData Vector with binary data
+ * @param it Iterator to start reading from. Will be advanced
+ * @return Deserialized object
+*/
 template< typename T>
 T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -351,9 +333,9 @@ vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binD
  * @param binData Vector with binary data
  * @return True at success
 */
-bool exportSerialized( const string fileName, const vector<char> binData );
+bool exportSerialized( const string fileName, const vector<char>& binData );
 
-bool exportSerialized( const path filePath, const vector<char> binData );
+bool exportSerialized( const path filePath, const vector<char>& binData );
 
 
 /*!
@@ -392,6 +374,14 @@ string toString( T value, const int precision = 0 );
 template<typename T>
 T toNum( const string str );
 
+/*!
+ * @brief Write to a variable used in multiple threads
+ * @tparam T Type of variable
+ * @param var Reference to variable
+ * @param value Value to write
+ * @param m Reference to mutex
+ * @return Written value
+*/
 template<typename T>
 T writeThreadVar( T& var, const T& value, mutex& m );
 
