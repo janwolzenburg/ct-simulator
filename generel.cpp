@@ -144,14 +144,14 @@ size_t v2CR::serialize( vector<char>& binData ) const{
 
 range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
-		cerr << "Start must be less than end!" << endl;
+		cerr << "class range: Start must be less than end!" << endl;
 		start = end - 1.;
 	}
 };
 
 
 range::range( const Zrange naturalRange ) :
-	range( (double) naturalRange.start, (double) naturalRange.end )
+	range{ (double) naturalRange.start, (double) naturalRange.end }
 {
 
 }
@@ -186,7 +186,7 @@ size_t range::serialize( vector<char>& binData ) const{
 
 Zrange::Zrange( const signed long long start_, const signed long long end_ ) : start( start_ ), end( end_ ){
 	if( start >= end ){
-		cerr << "Start must be less than end!" << endl;
+		cerr << "class Zrange: Start must be less than end!" << endl;
 		start = end - 1;
 	}
 };
