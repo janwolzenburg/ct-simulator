@@ -67,12 +67,16 @@ bool storedObject<C>::load( const path filePath ){
 	if( !std::filesystem::exists( filePath ) ) return false;
 
 	// Load file
-	vector<char> binaryData = importSerialized( filePath );
+	vector<char> binaryData = std::move( importSerialized( filePath ) );
 	vector<char>::iterator binaryDataIt = binaryData.begin();
 
 	if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
 
-	object = C{ binaryData, binaryDataIt };
+	if constexpr( std::is_same<C, model>::value )
+		object = std::move( C{ binaryData, binaryDataIt } );
+	else
+		object = C{ binaryData, binaryDataIt };
+	
 	loaded = true;
 	return loaded;
 };

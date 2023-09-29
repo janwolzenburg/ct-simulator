@@ -121,13 +121,36 @@ model& model::operator=( const model& mod ){
 	attenuationMax = mod.attenuationMax;
 	name = mod.name;
 
-	delete parameter;
+	delete[] parameter;
 	parameter = new voxData[ numVox ];
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 
 	return *this;
 }
 
+model& model::operator=( model&& mod ) noexcept{
+	
+	if( this == &mod ) return *this;
+
+	cSys = mod.cSys;
+	numVox3D = mod.numVox3D;
+	voxSize3D = mod.voxSize3D;
+
+	size3D = mod.size3D;
+	numVox = mod.numVox;
+
+	attenuationMin = mod.attenuationMin;
+	attenuationMax = mod.attenuationMax;
+	name = mod.name;
+
+	delete[] parameter;
+	parameter = mod.parameter;
+	
+	mod.parameter = nullptr;
+	mod.numVox = 0;
+
+	return *this;
+}
 
 voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };

@@ -76,6 +76,8 @@ class model : virtual public mathObj{
 	*/
 	~model();
 
+	model& operator=( model&& source ) noexcept;
+
 	/*!
 	 * @brief Convert model's data to string
 	 * @param newLineTabulators Amount of tabulators to insert after each line break
