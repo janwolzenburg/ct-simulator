@@ -27,15 +27,6 @@
 	coordinates implementation
 */
 
-coordinates::coordinates( const v3 vec3_, const cartCSys* const cSys_ )
-	: primitiveVec3( vec3_ ),
-	cSys( cSys_ )
-{}
-
-coordinates::coordinates( void )
-	: coordinates( v3{ 0, 0, 0 }, DUMMY_CSYS() )
-{}
-
 string coordinates::toStr( const unsigned int newLineTabulators ) const{
 	string str;
 	string newLine = { '\n' };
@@ -83,15 +74,11 @@ coordinates coordinates::operator- ( void ) const{
 coordinates coordinates::operator* ( const double scalar ) const{
 	primitiveVec3 scaledCoords = this->primitiveVec3::operator*( scalar );
 
-	return coordinates( scaledCoords, this->cSys );
+	return coordinates{ scaledCoords, this->cSys };
 }
 
 coordinates coordinates::operator/ ( const double divisor ) const{
-	return coordinates( this->primitiveVec3::operator/( divisor ), this->cSys );
-}
-
-bool coordinates::sameSystem( const coordinates c ) const{ 
-	return this->sameSystem( c.cSys );
+	return coordinates{ this->primitiveVec3::operator/( divisor ), this->cSys };
 }
 
 coordinates coordinates::convertTo( const cartCSys* const target_cSys ) const{

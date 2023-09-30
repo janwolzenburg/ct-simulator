@@ -29,7 +29,7 @@
 
 cartCSys::cartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_,
 					const cartCSys* const parent_, const string name_ )
-	: primitiveCartCSys( origin_, ex_, ey_, ez_ ),
+	: primitiveCartCSys{ origin_, ex_, ey_, ez_ },
 	parent( parent_ ),
 	name( name_ ){};
 
@@ -90,50 +90,50 @@ vector<const cartCSys*> cartCSys::getPathFromGlobal( void ) const{
 	std::reverse( path.begin(), path.end() );
 
 	return path;
-};
+}
 
 
 pnt3 cartCSys::OPnt( void ) const{
 	return pnt3{ v3{0, 0, 0}, this };
-};
+}
 
 pnt3 cartCSys::OPntPrnt( void ) const{
 	if( this->isGlobal() ) return pnt3{ origin, this };
 	return pnt3{ origin, parent };
-};
+}
 
 uvec3 cartCSys::ExVec( void ) const{
 	return uvec3{ v3{1, 0, 0},  this };
-};
+}
 
 uvec3 cartCSys::EyVec( void ) const{
 	return uvec3{ v3{0, 1, 0},   this };
-};
+}
 
 uvec3 cartCSys::EzVec( void ) const{
 	return uvec3{ v3{0, 0, 1},  this };
-};
+}
 
 line cartCSys::xAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
 	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
 	return line{ vec3{ex, parent_ptr},  pnt3{origin, parent_ptr} };
-};
+}
 
 line cartCSys::yAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
 	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
 	return line{ vec3{ey, parent_ptr},  pnt3{origin, parent_ptr} };
-};
+}
 
 line cartCSys::zAxis( void ) const{
 	const cartCSys* parent_ptr = parent;
 	if( this->isGlobal() ) parent_ptr = GLOBAL_CSYS();
 
 	return line{ vec3{ez, parent_ptr},  pnt3{origin, parent_ptr} };
-};
+}
 
 surf cartCSys::xyPlane( void ) const{
 	const cartCSys* parent_ptr = parent;
@@ -199,7 +199,6 @@ void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){
 	this->ex = primitiveCSys.Ex();
 	this->ey = primitiveCSys.Ey();
 	this->ez = primitiveCSys.Ez();
-
 
 }
 

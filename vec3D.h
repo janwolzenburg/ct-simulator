@@ -25,7 +25,7 @@
 */
 class vec3 : protected coordinates{
 
-	protected:
+	private:
 	double len;				/*!< Length */
 
 
@@ -114,31 +114,31 @@ class vec3 : protected coordinates{
 	 * @brief Get x component
 	 * @return x component in local coordinate system
 	*/
-	inline double X( void ) const{ return x; };
+	double X( void ) const{ return x; };
 
 	/*!
 	 * @brief Get y component
 	 * @return y component in local coordinate system
 	*/
-	inline double Y( void ) const{ return y; };
+	double Y( void ) const{ return y; };
 
 	/*!
 	 * @brief Get z component
 	 * @return z component in local coordinate system
 	*/
-	inline double Z( void ) const{ return z; };
+	double Z( void ) const{ return z; };
 
 	/*!
 	 * @brief Get length of vector
 	 * @return Length of vector in local coordinate system
 	*/
-	inline double Length( void ) const{ return len; };
+	double Length( void ) const{ return len; };
 
 	/*!
 	 * @brief Get Pointer to coordinate system
 	 * @return Pointer to this vector's coordinate system
 	*/
-	inline const cartCSys* CSys( void ) const{ return cSys; };
+	const cartCSys* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Check if vector's are defined in same system
@@ -179,7 +179,7 @@ class vec3 : protected coordinates{
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( void ) const;
+	primitiveVec3 XYZ( void ) const{ return (primitiveVec3) *this; };
 
 	/*!
 	 * @brief Get x,y and z component
@@ -421,28 +421,28 @@ class uvec3 : public vec3{
 	 * @param scalar
 	 * @return
 	*/
-	MATH_ERR scale( const double scalar );
+	MATH_ERR scale( const double scalar ) = delete;
 
 	/*!
 	 * @brief Add value to x component of this vector and normalize again
 	 * @param x_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addXM( const double x_ );
+	MATH_ERR addXM( const double x_ ) = delete;
 
 	/*!
 	 * @brief Add value to y component of this vector and normalize again
 	 * @param y_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addYM( const double y_ );
+	MATH_ERR addYM( const double y_ ) = delete;
 
 	/*!
 	 * @brief Add value to z component of this vector and normalize again
 	 * @param z_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addZM( const double z_ );
+	MATH_ERR addZM( const double z_ ) = delete;
 };
 
 

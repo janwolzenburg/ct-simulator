@@ -39,32 +39,12 @@ const char stringPadding = (char) 0x9D;
  * Indices and vector implementation
 */
 
-idx2::idx2( const size_t x_, const size_t y_ ) : x( x_ ), y( y_ ){};
-idx2::idx2( void ) : x( 0 ), y( 0 ){};
 
-v2::v2( const double x_, const double y_ ) : x( x_ ), y( y_ ){};
-v2::v2( void ) : v2( 0, 0 ){};
-
-idx3::idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ){};
-idx3::idx3( void ) : x( 0 ), y( 0 ), z( 0 ){};
-
-idx3::idx3( const vector<char>& binData, vector<char>::const_iterator& it ){
-
-	deSerializeBuildIn( this->x, (size_t) 0, binData, it );
-	deSerializeBuildIn( this->y, (size_t) 0, binData, it );
-	deSerializeBuildIn( this->z, (size_t) 0, binData, it );
-
-}
-
-bool idx3::operator==( const idx3& second ) const{
-
-	if( x != second.x ) return false;
-	if( y != second.y ) return false;
-	if( z != second.z ) return false;
-
-	return true;
-
-}
+idx3::idx3( const vector<char>& binData, vector<char>::const_iterator& it ) : 
+	x( deSerializeBuildIn<size_t>( 0, binData, it ) ),
+	y( deSerializeBuildIn<size_t>( 0, binData, it ) ),
+	z( deSerializeBuildIn<size_t>( 0, binData, it ) )
+{}
 
 size_t idx3::serialize( vector<char>& binData ) const{
 
@@ -77,16 +57,11 @@ size_t idx3::serialize( vector<char>& binData ) const{
 }
 
 
-v3::v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
-v3::v3( void ) : v3( 0, 0, 0 ){};
-
-v3::v3( const vector<char>& binData, vector<char>::const_iterator& it ){
-
-	deSerializeBuildIn( this->x, (double) 0, binData, it );
-	deSerializeBuildIn( this->y, (double) 0, binData, it );
-	deSerializeBuildIn( this->z, (double) 0, binData, it );
-
-}
+v3::v3( const vector<char>& binData, vector<char>::const_iterator& it ):
+	x( deSerializeBuildIn<double>( 0., binData, it ) ),
+	y( deSerializeBuildIn<double>( 0., binData, it ) ),
+	z( deSerializeBuildIn<double>( 0., binData, it ) )
+{}
 
 size_t v3::serialize( vector<char>& binData ) const{
 
@@ -98,15 +73,11 @@ size_t v3::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-idx2CR::idx2CR( const size_t c_, const size_t r_ ) : col( c_ ), row( r_ ){};
-idx2CR::idx2CR( void ) : idx2CR( 0, 0 ){};
 
-idx2CR::idx2CR( const vector<char>& binData, vector<char>::const_iterator& it ){
-
-	deSerializeBuildIn( this->col, (size_t) 0, binData, it );
-	deSerializeBuildIn( this->row, (size_t) 0, binData, it );
-
-}
+idx2CR::idx2CR( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	col( deSerializeBuildIn<size_t>( 0, binData, it ) ),
+	row( deSerializeBuildIn<size_t>( 0, binData, it ) )
+{}
 
 size_t idx2CR::serialize( vector<char>& binData ) const{
 
@@ -118,15 +89,10 @@ size_t idx2CR::serialize( vector<char>& binData ) const{
 }
 
 
-v2CR::v2CR( const double c_, const double r_ ) : col( c_ ), row( r_ ){};
-v2CR::v2CR( void ) : v2CR( 0, 0 ){};
-
-v2CR::v2CR( const vector<char>& binData, vector<char>::const_iterator& it ){
-
-	deSerializeBuildIn( this->col, (double) 0, binData, it );
-	deSerializeBuildIn( this->row, (double) 0, binData, it );
-
-}
+v2CR::v2CR( const vector<char>& binData, vector<char>::const_iterator& it ) :
+	col( deSerializeBuildIn<double>( 0., binData, it ) ),
+	row( deSerializeBuildIn<double>( 0., binData, it ) )
+{}
 
 size_t v2CR::serialize( vector<char>& binData ) const{
 
@@ -142,32 +108,28 @@ size_t v2CR::serialize( vector<char>& binData ) const{
  * Ranges implementation
 */
 
-range::range( const double start_, const double end_ ) : start( start_ ), end( end_ ){
+range::range( const double start_, const double end_ ) : start( start_ ), end( end_ )
+{
 	if( start >= end ){
 		cerr << "class range: Start must be less than end!" << endl;
 		start = end - 1.;
 	}
-};
+}
 
 
 range::range( const Zrange naturalRange ) :
 	range{ (double) naturalRange.start, (double) naturalRange.end }
-{
-
-}
+{}
 
 
 range::range( void ) : 
 	range{ 0., 1. }
-{
-
-}
+{}
 
 range::range( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	start( deSerializeBuildIn( 0., binData, it ) ),
-	end( deSerializeBuildIn( 0., binData, it ) ){
-
-}
+	start(	deSerializeBuildIn<double>( 0., binData, it ) ),
+	end(	deSerializeBuildIn<double>( 0., binData, it ) )
+{}
 
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;
@@ -299,7 +261,7 @@ vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binD
 
 		// Assign deserialsized data to sub vector elements 
 		for( size_t j = 0; j < numElements; j++ ){
-			subVec.at( j ) =  v2CR( binData, it );
+			subVec.at( j ) =  v2CR{ binData, it };
 		}
 
 		// Add sub vector
@@ -334,7 +296,7 @@ bool exportSerialized( const string fileName, const vector<char>& binData ){
 	outFile.close();
 
 	return true;
-};
+}
 
 vector<char> importSerialized( const path filePath ){
 

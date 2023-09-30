@@ -10,7 +10,6 @@
 /*********************************************************************
 	Includes
  *********************************************************************/
-#include "cSysTree.h"
 #include "coordinates.h"
 #include "vec3D.h"
 #include "line.h"
@@ -28,15 +27,16 @@
 */
 
 vec3::vec3( const coordinates coords ) :
-	coordinates( coords ){
+	coordinates{ coords }
+{
 	updateLength();
 }
 
 vec3::vec3( const v3 xyz_, const cartCSys* const cSys_ ) :
-	vec3( coordinates{ xyz_, cSys_ } )
+	vec3{ coordinates{ xyz_, cSys_ } }
 {}
 
-vec3::vec3( void ) : vec3( coordinates{} ) 
+vec3::vec3( void ) : vec3{ coordinates{} }
 {}
 
 string vec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
@@ -112,10 +112,6 @@ vec3 vec3::convertTo( const line l ) const{
 vec3 vec3::convertTo( const surf s ) const{
 	return this->convertTo( s.R1() );
 };
-
-primitiveVec3 vec3::XYZ( void ) const{
-	return v3{ x, y, z};
-} 
 
 primitiveVec3 vec3::XYZ( const cartCSys* const target ) const{
 	return vec3::convertTo( target ).XYZ();
@@ -307,7 +303,8 @@ uvec3::uvec3( vec3 v ) : vec3( v ){
 }
 
 uvec3::uvec3( const v3 xyz_, const cartCSys* const cSys_ ) :
-	uvec3( vec3{ xyz_, cSys_ } ){}
+	uvec3{ vec3{ xyz_, cSys_ } }
+{}
 
 uvec3::uvec3( void ) : 
 	uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() }
@@ -315,11 +312,7 @@ uvec3::uvec3( void ) :
 
 }
 
-mathObj::MATH_ERR uvec3::scale( [[maybe_unused]] const double scalar ){
-	// Do nothing
-	return MATH_ERR::OK;
-};
-
+/*
 mathObj::MATH_ERR uvec3::addXM( const double x_ ){
 	mathObj::MATH_ERR tErr = MATH_ERR::OK;
 	if( ( tErr = vec3::addXM( x_ ) ) != MATH_ERR::OK )		return tErr;
@@ -340,7 +333,7 @@ mathObj::MATH_ERR uvec3::addZM( const double z_ ){
 	if( ( tErr = normalize() ) != MATH_ERR::OK )			return tErr;
 	return MATH_ERR::OK;
 };
-
+*(
 
 
 /*
@@ -367,6 +360,8 @@ pnt3 pnt3::convertTo( const cartCSys* const target_cSys ) const{
 	coordinates convCoords = this->coordinates::convertTo( target_cSys );
 
 	return pnt3( convCoords, target_cSys );
+
+
 };
 
 pnt3 pnt3::convertTo( const pnt3 targetP ) const{

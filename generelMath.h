@@ -189,11 +189,6 @@ class mathObj{
 	};
 
 	/*!
-	 * @brief Destructor is virtual
-	*/
-	virtual ~mathObj(){};
-
-	/*!
 	 * @brief Convert object's data to string
 	 * @param newLineTabulators Amount of tabulators to insert after each line break
 	 * @return String with object's data

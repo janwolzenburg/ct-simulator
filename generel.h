@@ -57,9 +57,9 @@ class idx2{
 
 	public:
 
-	idx2( const size_t x_, const size_t y_ );
+	idx2( const size_t x_, const size_t y_ ) : x( x_ ), y( y_ ) {};
 
-	idx2( void );
+	idx2( void ) : idx2{ 0, 0 }{};
 
 
 	public:
@@ -76,15 +76,15 @@ class idx3{
 
 	public:
 
-	idx3( const size_t x_, const size_t y_, const size_t z_ );
+	idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ) {};
 
-	idx3( void );
+	idx3( void ) : idx3{ 0, 0, 0 }{};
 
 	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	size_t serialize( vector<char>& binData ) const;
 
-	bool operator==( const idx3& second ) const;
+	bool operator==( const idx3& second ) const{ return x == second.x && y == second.y && z == second.y; };
 
 
 	public:
@@ -102,9 +102,10 @@ class v2{
 
 	public:
 
-	v2( const double x_, const double y_ );
+	v2( const double x_, const double y_ ) : x( x_ ), y( y_ ) {};
 
-	v2( void );
+	v2( void ) : v2{ 0., 0. } {};
+
 
 	public:
 
@@ -120,9 +121,9 @@ class v3{
 
 	public:
 
-	v3( const double x_, const double y_, const double z_ );
+	v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 
-	v3( void );
+	v3( void ) : v3{ 0., 0., 0. } {};
 
 	v3( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -144,9 +145,9 @@ class idx2CR{
 
 	public:
 
-	idx2CR( const size_t col_, const size_t row_ );
+	idx2CR( const size_t col_, const size_t row_ ) : col( col_ ), row( row_ ) {};
 
-	idx2CR( void );
+	idx2CR( void ) : idx2CR{ 0, 0 } {};
 
 	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -167,9 +168,9 @@ class v2CR {
 
 	public:
 
-	v2CR( const double c_, const double r_ );
+	v2CR( const double col_, const double row_ ) : col( col_ ), row( row_ ) {};
 
-	v2CR( void );
+	v2CR( void ) : v2CR{ 0., 0. } {};
 
 	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -196,6 +197,7 @@ class Zrange{
 	signed long long end;
 };
 
+
 /*!
  * @brief Class for a range of real numbers with start
 */
@@ -204,7 +206,7 @@ class range{
 	public:
 
 	range( const double start_, const double end_ );
-	
+
 	range( void );
 
 	range( const Zrange naturalRange );
@@ -213,7 +215,7 @@ class range{
 
 	size_t serialize( vector<char>& binData ) const;
 
-	inline double Diff( void ) const { return end - start; };
+	inline double Diff( void ) const{ return end - start; };
 
 	double Resolution( const size_t number ) const;
 
@@ -223,6 +225,7 @@ class range{
 	double start;
 	double end;
 };
+
 
 
 

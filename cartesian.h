@@ -45,13 +45,13 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get pointer to this system's parent
 	 * @return Pointer to parent
 	*/
-	inline const cartCSys* Parent( void ) const { return parent; };
+	const cartCSys* Parent( void ) const{ return parent; };
 
 	/*!
 	 * @brief Checks if this system is a global system
 	 * @return True when this system is the global system in tree
 	*/
-	inline bool isGlobal( void ) const{ return parent == nullptr; };
+	bool isGlobal( void ) const{ return parent == nullptr; };
 
 	/*!
 	 * @brief Create copy of this system
@@ -87,25 +87,25 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get origin of this coordinate system in context of parent
 	 * @return Origin componenets
 	*/
-	inline primitiveVec3 O( void ) const { return origin; };
+	primitiveVec3 O( void ) const { return origin; };
 
 	/*!
 	 * @brief Get x-axis of this coordinate system in context of parent
 	 * @return x-axis values
 	*/
-	inline primitiveVec3 Ex( void ) const{ return ex; };
+	primitiveVec3 Ex( void ) const{ return ex; };
 
 	/*!
 	 * @brief Get y-axis of this coordinate system in context of parent
 	 * @return y-axis values
 	*/
-	inline primitiveVec3 Ey( void ) const{ return ey; };
+	primitiveVec3 Ey( void ) const{ return ey; };
 
 	/*!
 	 * @brief Get z-axis of this coordinate system in context of parent
 	 * @return z-axis values
 	*/
-	inline primitiveVec3 Ez( void ) const{ return ez; };
+	primitiveVec3 Ez( void ) const{ return ez; };
 
 	/*!
 	 * @brief Get origin point in this system's context
@@ -199,7 +199,7 @@ class cartCSys : private primitiveCartCSys {
 	 * @brief Get the primitve coordinate system of this system
 	 * @return Coordinate system without parent context
 	*/
-	inline primitiveCartCSys getPrimitive( void ) const{ return (primitiveCartCSys) *this; };
+	primitiveCartCSys getPrimitive( void ) const{ return (primitiveCartCSys) *this; };
 
 	/*!
 	 * @brief Set the primitve coordinate system of this system
@@ -212,6 +212,7 @@ class cartCSys : private primitiveCartCSys {
 	 * @param binData Reference to vector where data will be appended
 	*/
 	size_t serialize( vector<char>& binData ) const;
+
 
 	private:
 

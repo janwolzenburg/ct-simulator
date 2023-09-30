@@ -117,14 +117,6 @@ cartCSys* cSysTree::addCSys( const vector<char>& binData, vector<char>::const_it
 
 }
 
-cartCSys* cSysTree::getDummy( void ){
-	return &systems[ 0 ];
-}
-
-const cartCSys* cSysTree::getGlobal( void ){
-	return &systems[ 1 ];
-}
-
 bool cSysTree::validTreeElement( const cartCSys* const element ) const{
 	for( size_t idx = 0; idx < numSystems; idx++ ){
 		if( &( systems[ idx ] ) == element ) return true;

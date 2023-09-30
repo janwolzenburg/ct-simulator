@@ -114,13 +114,13 @@ class cSysTree : virtual public mathObj{
 	 * @brief Get dummy system
 	 * @return Pointer to dummy
 	*/
-	cartCSys* getDummy( void );
+	cartCSys* getDummy( void ){ return &systems[0]; };
 
 	/*!
 	 * @brief Get global system
 	 * @return Pointer to global system
 	*/
-	const cartCSys* getGlobal( void );
+	const cartCSys* getGlobal( void ){ return &systems[1]; };
 
 	/*!
 	 * @brief Check if pointed to system is valid

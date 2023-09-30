@@ -30,14 +30,6 @@ using std::string;
 	primitiveVec3 implementation
 */
 
-primitiveVec3::primitiveVec3( const v3 xyz ) : v3( xyz )
-{}
-
-primitiveVec3::primitiveVec3( const double x_, const double y_, const double z_ ) : v3( x_, y_, z_ )
-{}
-
-primitiveVec3::primitiveVec3( void ) : primitiveVec3( 0,0,0 ){}
-
 string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	string str;
 	char tempCharArr[ 64 ] = { 0 };
@@ -53,33 +45,13 @@ primitiveVec3::primitiveVec3( const vector<char>& binData, vector<char>::const_i
 
 bool primitiveVec3::operator== ( const primitiveVec3 v ) const{
 
-	primitiveVec3 diffVec = v - *this;
+	const primitiveVec3 diffVec = v - *this;
 
 	return iseqErr( diffVec.Length(), 0 );
 }
 
 bool primitiveVec3::operator!= ( const primitiveVec3 v ) const{
 	return !( this->operator==( v ) );
-}
-
-primitiveVec3 primitiveVec3::operator+ ( const primitiveVec3 v ) const{
-	return primitiveVec3{ x + v.x, y + v.y, z + v.z };
-}
-
-primitiveVec3 primitiveVec3::operator- ( const primitiveVec3 v ) const{
-	return primitiveVec3{ x - v.x, y - v.y, z - v.z };
-}
-
-primitiveVec3 primitiveVec3::operator- ( void ) const{
-	return primitiveVec3{ -x, -y, -z };
-}
-
-primitiveVec3 primitiveVec3::operator* ( const double scalar ) const{
-	return primitiveVec3{ scalar * x, scalar * y, scalar * z  };
-}
-
-double primitiveVec3::operator* ( const primitiveVec3 v ) const{
-	return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
 primitiveVec3 primitiveVec3::operator/ ( const double divisor ) const{
@@ -124,7 +96,7 @@ void primitiveVec3::rotXM( const double sinPhi, const double cosPhi ){
 	double z_ = y * sinPhi + z * cosPhi;
 
 	x = x_; y = y_; z = z_;
-};
+}
 
 void primitiveVec3::rotYM( const double sinPhi, const double cosPhi ){
 	// Apply rotation matrix
@@ -133,7 +105,7 @@ void primitiveVec3::rotYM( const double sinPhi, const double cosPhi ){
 	double z_ = z * cosPhi - x * sinPhi;
 
 	x = x_; y = y_; z = z_;
-};
+}
 
 void primitiveVec3::rotZM( const double sinPhi, const double cosPhi ){
 	// Apply rotation matrix
@@ -142,7 +114,7 @@ void primitiveVec3::rotZM( const double sinPhi, const double cosPhi ){
 	double z_ = z;
 
 	x = x_; y = y_; z = z_;
-};
+}
 
 mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi ){
 	// Steps for rotation:
@@ -198,5 +170,5 @@ mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi 
 		this->rotZM( sinThe, cosThe );
 	}
 	return MATH_ERR::OK;
-};
+}
 

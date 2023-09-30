@@ -14,7 +14,7 @@
  *********************************************************************/
  #include "primitiveVec3.h"
  #include "cartesian.h"
-
+#include "cSysTree.h"
 
 
  /*********************************************************************
@@ -37,12 +37,12 @@ class coordinates : protected primitiveVec3{
 	 * @brief Constructor
 	 * @param vec3_ Values
 	*/
-	coordinates( const v3 vec3_, const cartCSys* const cSys_ );
+	coordinates( const v3 vec3_, const cartCSys* const cSys_ ) : primitiveVec3{ vec3_ }, cSys( cSys ) {};
 
 	/*!
 	 * @brief Defaulkt constructor
 	*/
-	coordinates( void );
+	coordinates( void ) : coordinates{ v3{}, DUMMY_CSYS() } {};
 
 	/*!
 	 * @brief Convert coordinate's data to string
@@ -96,14 +96,14 @@ class coordinates : protected primitiveVec3{
 	 * @param cSys_ System to check
 	 * @return True when given system is this coordinate's system
 	*/
-	inline bool sameSystem( const cartCSys* const cSys_ ) const { return this->cSys == cSys_; };
+	bool sameSystem( const cartCSys* const cSys_ ) const { return this->cSys == cSys_; };
 
 	/*!
 	 * @brief Check if two coordinates have the same coordiante system
 	 * @param c Second set of coordinates
 	 * @return True when both coordinates have the same coordiante system
 	*/
-	bool sameSystem( const coordinates c ) const;
+	bool sameSystem( const coordinates c ) const { return sameSystem( c.cSys ); };
 
 	/*!
 	 * @brief Convert coordinates to a different coordinate system

@@ -24,7 +24,7 @@
 /*!
  * @brief Class describing a right-handed cartesian coordinate system
 */
-class primitiveCartCSys : virtual public mathObj{
+class primitiveCartCSys : public mathObj{
 	
 	public:
 	
@@ -55,25 +55,25 @@ class primitiveCartCSys : virtual public mathObj{
 	 * @brief Get primitive origin
 	 * @return Primitive represantation of the origin
 	*/
-	primitiveVec3 O( void ) const;
+	primitiveVec3 O( void ) const{ return origin; };
 
 	/*!
 	 * @brief Get primitive x Axis
 	 * @return Primitive represantation of the x Axis
 	*/
-	primitiveVec3 Ex( void ) const;
+	primitiveVec3 Ex( void ) const{ return ex; };
 
 	/*!
 	 * @brief Get primitive y Axis
 	 * @return Primitive represantation of the y Axis
 	*/
-	primitiveVec3 Ey( void ) const;
+	primitiveVec3 Ey( void ) const{ return ey; };
 
 	/*!
 	 * @brief Get primitive z Axis
 	 * @return Primitive represantation of the z Axis
 	*/
-	primitiveVec3 Ez( void ) const;
+	primitiveVec3 Ez( void ) const{ return ez; };
 
 	/*!
 	 * @brief Serialize this object

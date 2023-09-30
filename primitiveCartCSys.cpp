@@ -24,22 +24,6 @@
 	primitiveCartCSys implementation
 */
 
-primitiveVec3 primitiveCartCSys::O( void ) const{
-	return origin;
-}
-
-primitiveVec3 primitiveCartCSys::Ex( void ) const{
-	return ex;
-}
-
-primitiveVec3 primitiveCartCSys::Ey( void ) const{
-	return ey;
-}
-
-primitiveVec3 primitiveCartCSys::Ez( void ) const{
-	return ez;
-}
-
 primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_ )
 	: origin( origin_ ),
 	ex( ex_ ),
@@ -55,7 +39,7 @@ primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primiti
 	if( !iseqErr( ex * ey, 0 ) ||
 		!iseqErr( ey * ez, 0 ) ||
 		!iseqErr( ex * ez, 0 ) ) checkErr( MATH_ERR::INPUT, "Unit axis must be orthogonal to each other!" );
-};
+}
 
 primitiveCartCSys::primitiveCartCSys( const vector<char>& binData, vector<char>::const_iterator& it ) : 
 	origin( deSerialize<primitiveVec3>( binData, it ) ),
@@ -72,7 +56,7 @@ primitiveCartCSys::primitiveCartCSys( const vector<char>& binData, vector<char>:
 	if( !iseqErr( ex * ey, 0 ) ||
 		!iseqErr( ey * ez, 0 ) ||
 		!iseqErr( ex * ez, 0 ) ) checkErr( MATH_ERR::INPUT, "Unit axis must be orthogonal to each other!" );
-};
+}
 
 string primitiveCartCSys::toStr( const unsigned int newLineTabulators ) const{
 	string str;

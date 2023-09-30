@@ -26,20 +26,9 @@
 /*!
  * @brief Class for a primitve 3D Vector with some operations
 */
-class primitiveVec3 : public v3, virtual public mathObj{
+class primitiveVec3 : public v3, public mathObj{
 
 	public:
-
-	/*!
-	 * @brief Default constructor
-	*/
-	primitiveVec3( void );
-
-	/*!
-	 * @brief Constructor
-	 * @param xyz_ x, y and z values 
-	*/
-	primitiveVec3( const v3 xyz );
 
 	/*!
 	 * @brief Constructor
@@ -47,7 +36,18 @@ class primitiveVec3 : public v3, virtual public mathObj{
 	 * @param y_ y value
 	 * @param z_ z value
 	*/
-	primitiveVec3( const double x, const double y, const double z );
+	primitiveVec3( const double x, const double y, const double z ) : v3( x, y, z ) {};
+
+	/*!
+	* @brief Constructor
+	* @param xyz_ x, y and z values
+	*/
+	primitiveVec3( const v3 xyz ) : v3( xyz ) {};
+
+	/*!
+	 * @brief Default constructor
+	*/
+	primitiveVec3( void ) : primitiveVec3{ 0., 0., 0. } {};
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -82,34 +82,34 @@ class primitiveVec3 : public v3, virtual public mathObj{
 	 * @param v Vector to add
 	 * @return Sum of this and v
 	*/
-	primitiveVec3 operator+ ( const primitiveVec3 v ) const;
+	primitiveVec3 operator+ ( const primitiveVec3 v ) const{ return primitiveVec3{ x + v.x, y + v.y, z + v.z }; };
 
 	/*!
 	 * @brief Substract second vector to this
 	 * @param v Vector to substract
 	 * @return Difference of this and v
 	*/
-	primitiveVec3 operator- ( const primitiveVec3 v ) const;
+	primitiveVec3 operator- ( const primitiveVec3 v ) const{ return primitiveVec3{ x - v.x, y - v.y, z - v.z }; };
 
 	/*!
 	 * @brief Negation operator
 	 * @return Negated vector
 	*/
-	primitiveVec3 operator- ( void ) const;
+	primitiveVec3 operator- ( void ) const{ return primitiveVec3{ -x, -y, -z }; };
 
 	/*!
 	 * @brief Scale this vector
 	 * @param scalar Factor to scale with
 	 * @return Scaled vector
 	*/
-	primitiveVec3 operator* ( const double scalar ) const;
+	primitiveVec3 operator* ( const double scalar ) const{ return primitiveVec3{ scalar * x, scalar * y, scalar * z }; };
 
 	/*!
 	 * @brief Scalar product
 	 * @param v Second vector
 	 * @return Scalar product of vectors
 	*/
-	double operator* ( const primitiveVec3 v ) const;
+	double operator* ( const primitiveVec3 v ) const{ return this->x * v.x + this->y * v.y + this->z * v.z; };
 
 	/*!
 	 * @brief Divide this vector
@@ -140,19 +140,19 @@ class primitiveVec3 : public v3, virtual public mathObj{
 	 * @brief Add value to x component
 	 * @param x_ Value to add
 	*/
-	inline void addXM( const double x_ ){ x += x_; };
+	void addXM( const double x_ ){ x += x_; };
 
 	/*!
 	 * @brief Add value to y component
 	 * @param y_ Value to add
 	*/
-	inline void addYM( const double y_ ){ y += y_; };
+	void addYM( const double y_ ){ y += y_; };
 
 	/*!
 	 * @brief Add value to z component
 	 * @param z_ Value to add
 	*/
-	inline void addZM( const double z_ ){ z += z_; };
+	void addZM( const double z_ ){ z += z_; };
 
 	/*!
 	 * @brief Rotate the point of all three components around x-axis of coordinate system
