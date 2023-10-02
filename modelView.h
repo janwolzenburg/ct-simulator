@@ -51,11 +51,11 @@ class modelView : public Fl_Group{
 	 * @brief Check load button press and reset when pressed
 	 * @return True when it was pressed
 	*/
-	inline bool LoadBtnPressed( void ){ return loadBtnPressed ? !( loadBtnPressed = false ) : false; };
+	bool LoadBtnPressed( void ){ return loadBtnPressed ? !( loadBtnPressed = false ) : false; };
 
-	inline bool ModelNeedsUpdate( void ){ return updateModelFlag && PROGRAM_STATE().ModelLoaded() ? !( updateModelFlag = false ) : false; };
+	bool ModelNeedsUpdate( void ){ return updateModelFlag && PROGRAM_STATE().ModelLoaded() ? !( updateModelFlag = false ) : false; };
 
-	inline bool ResetBtnPressed( void ){ return resetBtnPressed ? !( resetBtnPressed = false ) : false; };
+	bool ResetBtnPressed( void ){ return resetBtnPressed ? !( resetBtnPressed = false ) : false; };
 
 	void sliceModel( void );
 
@@ -63,7 +63,7 @@ class modelView : public Fl_Group{
 
 	void UpdateModel( void );
 
-	inline void setUpdateFlag( void ){ updateModelFlag = true; };
+	void setUpdateFlag( void ){ updateModelFlag = true; };
 
 
 	private:

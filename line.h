@@ -25,7 +25,7 @@
 /*!
  * @brief Class for a line
 */
-class line : virtual public mathObj{
+class line : public mathObj{
 
 	public:
 
@@ -52,20 +52,20 @@ class line : virtual public mathObj{
 	 * @brief Get origin of line
 	 * @return O
 	*/
-	inline pnt3 O( void ) const { return o; };
+	pnt3 O( void ) const { return o; };
 
 	/*!
 	 * @brief Set origin
 	 * @param newO New origin
 	 * @return Set origin
 	*/
-	pnt3 O( const pnt3 newO );
+	pnt3 setOrigin( const pnt3 newO );
 
 	/*!
 	 * @brief Get line trajectory
 	 * @return Trajectory
 	*/
-	inline uvec3 R( void ) const { return r; };
+	uvec3 R( void ) const { return r; };
 
 	/*!
 	 * @brief Convert line components to different coordinate system
@@ -129,7 +129,7 @@ class line : virtual public mathObj{
 	 * @param para Parameter
 	 * @return Always true
 	*/
-	inline bool paraInBounds( const double para ) const { return true; };
+	virtual bool paraInBounds( const double para ) const { return true; };
 
 
 	protected:

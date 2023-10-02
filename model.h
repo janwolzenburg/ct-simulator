@@ -122,13 +122,13 @@ class model : virtual public mathObj{
 	 * @brief Get number of voxels
 	 * @return Voxel amount
 	*/
-	inline idx3 NumVox( void ) const{ return numVox3D; };
+	idx3 NumVox( void ) const{ return numVox3D; };
 
 	/*!
 	 * @brief Get size of model
 	 * @return Model size
 	*/
-	inline v3 ModSize( void ) const{ return size3D; };
+	v3 ModSize( void ) const{ return size3D; };
 
 	double LongestSide( void ) const{ return Max( Max(size3D.x, size3D.y), size3D.z ); };
 
@@ -136,13 +136,13 @@ class model : virtual public mathObj{
 	 * @brief Get size of voxel
 	 * @return Voxel size
 	*/
-	inline v3 VoxSize( void ) const{ return voxSize3D; };
+	v3 VoxSize( void ) const{ return voxSize3D; };
 
 	/*!
 	 * @brief Get coordinate system of model
 	 * @return coordinate system of base voxel
 	*/
-	inline cartCSys* CSys( void ) const{ return cSys; };
+	cartCSys* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Get voxel describing model boundaries
@@ -229,9 +229,9 @@ class model : virtual public mathObj{
 	*/
 	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
 
-	inline range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
+	range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
 
-	inline string Name( void ) const{ return name; };
+	string Name( void ) const{ return name; };
 
 	void addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius );
 

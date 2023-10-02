@@ -35,9 +35,9 @@ class storedObject{
 
 	void saveObject( const bool force = false ) const;
 
-	inline bool Loaded( void ) const{ return loaded; };
+	bool Loaded( void ) const{ return loaded; };
 
-	inline void setLoaded( void ){ loaded = true; };
+	void setLoaded( void ){ loaded = true; };
 
 
 	private:

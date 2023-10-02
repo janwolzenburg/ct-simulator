@@ -81,9 +81,9 @@ class voxData{
 	*/
 	voxData( void );
 
-	inline bool operator<( const voxData& d2 ) const{ return this->attenuation < d2.attenuation; };
+	bool operator<( const voxData& d2 ) const{ return this->attenuation < d2.attenuation; };
 
-	inline bool operator>( const voxData& d2 ) const{ return !operator<( d2 ); };
+	bool operator>( const voxData& d2 ) const{ return !operator<( d2 ); };
 
 	/*!
 	 * @brief Get the attenuation at given energy
@@ -96,7 +96,7 @@ class voxData{
 	 * @brief Get attenuation at reference energy
 	 * @return Attenuation at reference energy 
 	*/
-	inline double attenuationAtRefE( void ) const{ return attenuation; };
+	double attenuationAtRefE( void ) const{ return attenuation; };
 
 	/*!
 	 * @brief Serialize this object
@@ -112,7 +112,7 @@ class voxData{
 	
 	bool hasSpecificProperty( const specialProperty property ) const;
 
-	inline static double ReferencyEnergy( void ) { return referenceEnergy; };
+	static double ReferencyEnergy( void ) { return referenceEnergy; };
 
 	private:
 
@@ -180,19 +180,19 @@ class vox : virtual public mathObj{
 	 * @brief Get origin point of voxel
 	 * @return Origin point
 	*/
-	inline pnt3 O( void ) const{ return o; };
+	pnt3 O( void ) const{ return o; };
 
 	/*!
 	 * @brief Get size of voxel
 	 * @return Size of voxel
 	*/
-	inline v3 Size( void ) const{ return size; };
+	v3 Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get data of voxel
 	 * @return Voxel data
 	*/
-	inline voxData Data( void ) const{ return data; };
+	voxData Data( void ) const{ return data; };
 
 	/*!
 	 * @brief Get face of voxel

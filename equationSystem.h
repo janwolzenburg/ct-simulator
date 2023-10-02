@@ -21,7 +21,7 @@
    Definitions
 *********************************************************************/
 
-class matx : virtual public mathObj{
+class matx : public mathObj{
 
 	public:
 
@@ -90,13 +90,13 @@ class matx : virtual public mathObj{
 	 * @brief Get amount of rows
 	 * @return Amount of rows in matrix
 	*/
-	inline size_t getRows( void ) const{ return n; };
+	size_t getRows( void ) const{ return n; };
 
 	/*!
 	 * @brief Get amount of columns
 	 * @return Amount of columns in matrix
 	*/
-	inline size_t getCols( void ) const{ return m; };
+	size_t getCols( void ) const{ return m; };
 
 	/*!
 	 * @brief Swap two columns
@@ -194,7 +194,7 @@ class eqnSys : private matx{
 	 * @brief Check population status
 	 * @return True when all columns are populated and system is ready to be solved
 	*/
-	inline bool isPopulated( void ) const{ return numPopulatedColumns == varNum + 1; };
+	bool isPopulated( void ) const{ return numPopulatedColumns == varNum + 1; };
 
 	/*!
 	 * @brief Solve the system
@@ -257,20 +257,20 @@ class eqnSysSolution : virtual public mathObj{
 	 * @brief Get amount of variables
 	 * @return Amount of variables
 	*/
-	inline size_t getVarNum( void ){ return varNum; };
+	size_t getVarNum( void ){ return varNum; };
 
 	/*!
 	 * @brief Get value of success variable
 	 * @return Solution success
 	*/
-	inline bool Success( void ){ return success; };
+	bool Success( void ){ return success; };
 
 	/*!
 	 * @brief Set success value
 	 * @param val Value to set to
 	 * @return Set value
 	*/
-	inline bool Success( const bool val ){ return success = val; };
+	bool Success( const bool val ){ return success = val; };
 
 	/*!
 	 * @brief Set variable's value

@@ -404,7 +404,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	}
 
 	// New origin "outside" the model to return
-	modelRay.O( currentPntOnRay );
+	modelRay.setOrigin( currentPntOnRay );
 
 	return modelRay;
 }

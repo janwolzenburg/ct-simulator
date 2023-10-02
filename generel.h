@@ -215,7 +215,7 @@ class range{
 
 	size_t serialize( vector<char>& binData ) const;
 
-	inline double Diff( void ) const{ return end - start; };
+	double Diff( void ) const{ return end - start; };
 
 	double Resolution( const size_t number ) const;
 

@@ -102,20 +102,20 @@ class rgbImage{
 	 * @brief Get Width
 	 * @return Image width
 	*/
-	inline size_t Width( void ) const{ return width; };
+	size_t Width( void ) const{ return width; };
 
 	/*!
 	 * @brief Get height
 	 * @return Image height
 	*/
-	inline size_t Height( void ) const{ return height; };
+	size_t Height( void ) const{ return height; };
 
 	/*!
 	 * @brief Get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
 	 * @return Pointer to data start in
 	*/
-	inline const rgb_Int* getDataPtr( void ){ return imageData.data(); };
+	const rgb_Int* getDataPtr( void ){ return imageData.data(); };
 
 	void setPixel( const idx2CR& pixel, const rgb_Int& value );
 

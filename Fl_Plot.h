@@ -32,7 +32,7 @@ class Fl_Plot : public Fl_Widget{
 
 	void setLimits( const plotLimits newLimits );
 
-	inline plotType& plotRef( void ){ return plotInstance; };
+	plotType& plotRef( void ){ return plotInstance; };
 
 	void assignData( void );
 

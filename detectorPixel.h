@@ -69,7 +69,7 @@ class pixel : public surfLim{
 	 * @brief Get the detected ray properties
 	 * @return Vector with properties
 	*/
-	inline vector<rayProperties> getProperties( void ) const{ return detectedRayProperties; };
+	vector<rayProperties> getProperties( void ) const{ return detectedRayProperties; };
 
 	private:
 	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
@@ -115,7 +115,7 @@ class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
 	 * @brief Get the result
 	 * @return Result
 	*/
-	inline rayPix_Intersection_Result Result( void ) const{ return result; };
+	rayPix_Intersection_Result Result( void ) const{ return result; };
 
 
 	public:

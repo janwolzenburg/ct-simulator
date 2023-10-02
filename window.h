@@ -49,7 +49,7 @@ class window : private Fl_Window{
 	 * @param  
 	 * @return 
 	*/
-	inline Fl_Window& getFl( void ){ return (Fl_Window&) *this; };
+	Fl_Window& getFl( void ){ return (Fl_Window&) *this; };
 
 	/*!
 	 * @brief Add widget

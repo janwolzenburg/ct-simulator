@@ -53,7 +53,7 @@ string line::toStr( unsigned int newLineTabulators ) const{
 	return str;
 }
 
-pnt3 line::O( const pnt3 newO ){ 
+pnt3 line::setOrigin( const pnt3 newO ){ 
 	return o = newO.convertTo( r ); 
 };
 

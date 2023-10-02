@@ -41,15 +41,15 @@ class tomographyParameter{
 
 	tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	inline double ExposureTime( void ) const { return exposureTime; };
+	double ExposureTime( void ) const { return exposureTime; };
 
-	inline bool Scattering( void ) const{ return scattering; };
+	bool Scattering( void ) const{ return scattering; };
 
-	inline size_t MaxLoops( void ) const{ return maxRadiationLoops; };
+	size_t MaxLoops( void ) const{ return maxRadiationLoops; };
 
-	inline double ScatterPropability( void ) const{ return scatterPropability; };
+	double ScatterPropability( void ) const{ return scatterPropability; };
 
-	inline double RayStepSize( void ) const{ return rayStepSize; };
+	double RayStepSize( void ) const{ return rayStepSize; };
 
 	size_t serialize( vector<char>& binData ) const;
 

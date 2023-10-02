@@ -25,7 +25,7 @@
 /*!
  * @brief Class for unconfined surfaces
 */
-class surf : virtual public mathObj{
+class surf : public mathObj{
 
 	public:
 
@@ -61,19 +61,19 @@ class surf : virtual public mathObj{
 	 * @brief Get origin of surface
 	 * @return Origing
 	*/
-	inline pnt3  O( void ) const{ return o; };
+	pnt3  O( void ) const{ return o; };
 
 	/*!
 	 * @brief Get first direction vector
 	 * @return r1 of surface
 	*/
-	inline uvec3  R1( void ) const{ return r1; };
+	uvec3  R1( void ) const{ return r1; };
 
 	/*!
 	 * @brief Get second direction vector
 	 * @return r2 of surface
 	*/
-	inline uvec3  R2( void ) const{ return r2; };
+	uvec3  R2( void ) const{ return r2; };
 
 	/*!
 	 * @brief Get point on the surface based on parameters
@@ -102,9 +102,10 @@ class surf : virtual public mathObj{
 	 * @param b Surface parameter b
 	 * @return Always true for unconfined surfaces
 	*/
-	inline bool parasInBounds( const double a, const double b ) const { return true; };
+	virtual bool parasInBounds( const double a, const double b ) const { return true; };
 
 	size_t serialize( vector<char>& binData ) const;
+
 
 	protected:
 	uvec3  r1;					/*!<First direction vector*/
@@ -171,25 +172,25 @@ class surfLim : public surf{
 	 * @brief Get minimum of parameter a
 	 * @return Value of aMin
 	*/
-	inline double AMin( void ) const{ return pAMin; };
+	double AMin( void ) const{ return pAMin; };
 
 	/*!
 	 * @brief Get maximum of parameter a
 	 * @return Value of aMax
 	*/
-	inline double AMax( void ) const{ return pAMax; };
+	double AMax( void ) const{ return pAMax; };
 
 	/*!
 	 * @brief Get minimum of parameter b
 	 * @return Value of bMin
 	*/
-	inline double BMin( void ) const{ return pBMin; };
+	double BMin( void ) const{ return pBMin; };
 
 	/*!
 	 * @brief Get maximum of parameter b
 	 * @return Value of bMax
 	*/
-	inline double BMax( void ) const{ return pBMax; };
+	double BMax( void ) const{ return pBMax; };
 
 	/*!
 	 * @brief Convert surface to different coordinate system
@@ -204,7 +205,7 @@ class surfLim : public surf{
 	 * @param b Surface parameter b
 	 * @return True when parameters are inside surface bounds
 	*/
-	bool parasInBounds( const double a, const double b ) const;
+	bool parasInBounds( const double a, const double b ) const override;
 
 	/*!
 	 * @brief Get center point of limited surface
@@ -217,7 +218,6 @@ class surfLim : public surf{
 	 * @return Normal line
 	*/
 	line  NormalLine( void ) const;
-
 
 	size_t serialize( vector<char>& binData ) const;
 

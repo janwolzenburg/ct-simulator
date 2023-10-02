@@ -72,7 +72,7 @@ using std::string;
 	  * @brief Get the intersetion result
 	  * @return Intersection result
 	 */
-	 inline lineLine_Intersection_Result Result( void ) const{ return result; };
+	 lineLine_Intersection_Result Result( void ) const{ return result; };
 
 
 	 public:
@@ -140,7 +140,7 @@ class linSurfIntersection {
 	 * @brief Get the intersetion result
 	 * @return Intersection result
 	*/
-	inline linSurf_Intersection_Result Result( void ) const { return result; };
+	linSurf_Intersection_Result Result( void ) const { return result; };
 
 
 	public:
@@ -197,13 +197,13 @@ class rayVoxelIntersection {
 	 * @brief Get entrance into voxel
 	 * @return Intersection result of entrance
 	*/
-	inline rayVox_Intersection_Result Entrance( void ) const{ return entrance; };
+	rayVox_Intersection_Result Entrance( void ) const{ return entrance; };
 
 	/*!
 	 * @brief Get exit into voxel
 	 * @return Intersection result of exit
 	*/
-	inline rayVox_Intersection_Result Exit( void ) const{ return exit; };
+	rayVox_Intersection_Result Exit( void ) const{ return exit; };
 
 
 	public:

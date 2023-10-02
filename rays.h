@@ -98,7 +98,7 @@ class ray : public line{
 	 * @brief Get intensity
 	 * @return Intensity
 	*/
-	inline rayProperties Properties( void ) const{ return properties; };
+	rayProperties Properties( void ) const{ return properties; };
 
 	/*!
 	 * @brief Convert ray components to different coordinate system
@@ -134,7 +134,7 @@ class ray : public line{
 	 * @param para Parameter
 	 * @return True when parameter is valid
 	*/
-	bool paraInBounds( const double para ) const;
+	bool paraInBounds( const double para ) const override;
 
 	/*!
 	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit
@@ -154,11 +154,11 @@ class ray : public line{
 	*/
 	double getMeanFrequency( void ) const;
 
-	inline void incrementHitCounter( void ){ properties.voxHits++; };
+	void incrementHitCounter( void ){ properties.voxHits++; };
 
-	inline void resetHitCounter( void ){ properties.voxHits = 0; };
+	void resetHitCounter( void ){ properties.voxHits = 0; };
 
-	inline size_t VoxelHits( void ) const { return properties.voxHits; };
+	size_t VoxelHits( void ) const { return properties.voxHits; };
 
 
 	private:

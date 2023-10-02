@@ -88,7 +88,7 @@ class processingView : public Fl_Window{
 		reconstructionImageWidget.box( FL_BORDER_BOX );
 	}
 
-	inline void setNewRTFlag( void ){ newRTFlag = true; };
+	void setNewRTFlag( void ){ newRTFlag = true; };
 
 	void handleEvents( void ){
 

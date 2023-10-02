@@ -116,7 +116,7 @@ class tube{
 	 * @brief Get coordinate system
 	 * @return Pointer to coordinate system
 	*/
-	inline cartCSys* CSys( void ) const { return cSys; };
+	cartCSys* CSys( void ) const { return cSys; };
 
 	/*!
 	 * @brief Get the range of energies the tube emits

@@ -94,22 +94,22 @@ class monoImage{
 	 * @brief Get Width
 	 * @return Image width
 	*/
-	inline size_t Width( void ) const{ return width; };
+	size_t Width( void ) const{ return width; };
 	
 	/*!
 	 * @brief Get height
 	 * @return Image height
 	*/
-	inline size_t Height( void ) const{ return height; };
+	size_t Height( void ) const{ return height; };
 	
-	inline size_t NumPixel( void ) const{ return numPixel; };
+	size_t NumPixel( void ) const{ return numPixel; };
 	
 	/*!
 	 * @brief Get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
 	 * @return Pointer to data start in
 	*/
-	inline const unsigned char* getDataPtr( void ){ return imData.data(); };
+	const unsigned char* getDataPtr( void ){ return imData.data(); };
 
 	/*!
 	 * @brief Serialize this object

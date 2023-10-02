@@ -49,7 +49,7 @@ class detector {
 	 * @brief Get all detector pixel
 	 * @return Vector of pixels in one row
 	*/
-	inline vector<pixel> getPixel( void ) const{ return allPixel; };
+	vector<pixel> getPixel( void ) const{ return allPixel; };
 
 	/*!
 	 * @brief Reset all pixel
@@ -66,19 +66,19 @@ class detector {
 	 * @brief Get the radon parameters of detector
 	 * @return Radon parameters of detector
 	*/
-	inline detectorRadonParameter getSignalParameter( void ) const{ return radonParameters; };
+	detectorRadonParameter getSignalParameter( void ) const{ return radonParameters; };
 
 	/*!
 	 * @brief Get the physical parameters of detector
 	 * @return Physical parameters of detector
 	*/
-	inline detectorPhysicalParameter getPhysicalParameters( void ) const{ return physicalParameters; };
+	detectorPhysicalParameter getPhysicalParameters( void ) const{ return physicalParameters; };
 
 	/*!
 	 * @brief Get coordinate system of detector
 	 * @return Pointer to coordinate system
 	*/
-	inline cartCSys* CSys( void ) const{ return cSys; };
+	cartCSys* CSys( void ) const{ return cSys; };
 	
 
 	/*!

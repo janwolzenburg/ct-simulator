@@ -52,27 +52,28 @@ class filteredProjections : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	inline grid getGrid( void ) const { return (grid) *this; };
+	grid<> getGrid( void ) const;
 
 	/*!
 	 * @brief Get size of projections
 	 * @return Size of projections
 	*/
-	inline idx2CR Size( void ) const{ return grid::Size(); };
+	idx2CR Size( void ) const{ return grid::Size(); };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	inline v2CR Start( void ) const{ return grid::Start(); };
+	v2CR Start( void ) const{ return grid::Start(); };
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	inline v2CR Resolution( void ) const{ return grid::Resolution(); };
+	v2CR Resolution( void ) const{ return grid::Resolution(); };
 
-	inline discreteFilter Filter( void ) const { return filter; };
+	discreteFilter Filter( void ) const { return filter; };
+
 
 	private:
 
@@ -100,7 +101,7 @@ class reconstrucedImage : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	inline grid<> getGrid( void ) const{ return (grid<>) *this; };
+	 grid<> getGrid( void ) const;
 
 
 

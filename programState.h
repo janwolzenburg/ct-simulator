@@ -56,15 +56,15 @@ class programState{
 	~programState( void );
 
 
-	inline bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
 	bool loadModel( void );
 
-	inline const model& Model( void ){ return modelInstance; };
+	const model& Model( void ){ return modelInstance; };
 
-	inline const gantry& Gantry( void ){ return gantryInstance; };
+	const gantry& Gantry( void ){ return gantryInstance; };
 
-	inline grid<voxData>& Slice( void ){ return modelSliceInstance; };
+	grid<voxData>& Slice( void ){ return modelSliceInstance; };
 
 	static void createStorageDir( void );
 
@@ -83,42 +83,42 @@ class programState{
 
 	void resetModel( void );
 
-	inline slicePlane& Plane( void ) { return planeInstance; };
+	slicePlane& Plane( void ) { return planeInstance; };
 
 
-	inline const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
+	const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
 
-	inline const detectorRadonParameter& RadonParameter( void ) const{ return radonParameter; };
+	const detectorRadonParameter& RadonParameter( void ) const{ return radonParameter; };
 
-	inline const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
+	const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
 
-	inline modelViewParameter& ModelViewParameter( void ){ return modelViewPara; };
+	modelViewParameter& ModelViewParameter( void ){ return modelViewPara; };
 
-	inline tomography& Tomography( void ) { return tomographyInstance; };
+	tomography& Tomography( void ) { return tomographyInstance; };
 
-	inline tomographyParameter& TomographyParameter( void ){ return tomographyParamerter; };
+	tomographyParameter& TomographyParameter( void ){ return tomographyParamerter; };
 
-	inline radonTransformed& Projections( void ){ return currentProjections; };
+	radonTransformed& Projections( void ){ return currentProjections; };
 
-	inline filteredProjections& FilteredProjections( void ){ return currentFilteredProjections; };
+	filteredProjections& FilteredProjections( void ){ return currentFilteredProjections; };
 
-	inline reconstrucedImage& ReconstrucedImage( void ){ return currentReconstrucedImage; };
+	reconstrucedImage& ReconstrucedImage( void ){ return currentReconstrucedImage; };
 
-	inline bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
+	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
-	inline void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); };
+	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); };
 
-	//inline void setNewRadonTransformedFlag( void ){  }
+	//void setNewRadonTransformedFlag( void ){  }
 
-	inline void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
+	void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
 
-	inline void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
+	void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
 
-	inline mainView* MainWindow( void ) const{ return mainWindow; };
+	mainView* MainWindow( void ) const{ return mainWindow; };
 
-	inline processingView* ProcessingWindow( void ) const{ return processingWindow; };
+	processingView* ProcessingWindow( void ) const{ return processingWindow; };
 
-	inline processingParameter& ProcessingParameters( void ){ return currentProcessingParameters; };
+	processingParameter& ProcessingParameters( void ){ return currentProcessingParameters; };
 
 
 	private:

@@ -79,6 +79,9 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
+grid<> filteredProjections::getGrid( void ) const{ 
+	return (grid<>) *this; 
+}
 
 double filteredProjections::getValue( const size_t angleIdx, const double distance ) const{
 
@@ -116,6 +119,10 @@ reconstrucedImage::reconstrucedImage( void ) :
 
 }
 
+
+grid<> reconstrucedImage::getGrid( void ) const{
+	return ( grid<> ) *this;
+}
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 	grid( idx2CR{ projections.Size().row, projections.Size().row },

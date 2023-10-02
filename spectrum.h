@@ -94,9 +94,9 @@ class spectrum {
 	*/
 	void modify( std::function<void( v2& )> modFunction );
 
-	inline vector<v2> rawData( void ) const { return data; };
+	vector<v2> rawData( void ) const { return data; };
 
-	inline double EnergyResolution( void ) const { return energyResolution; };
+	double EnergyResolution( void ) const { return energyResolution; };
 
 	private:
 

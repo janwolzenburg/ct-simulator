@@ -61,13 +61,13 @@ class grid{
 	 * @brief Get size of grid
 	 * @return Size of grid
 	*/
-	inline idx2CR Size( void ) const{ return size; };
+	idx2CR Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	inline v2CR Start( void ) const{ return start; };
+	v2CR Start( void ) const{ return start; };
 
 	/*!
 	 * @brief Get ends of axis
@@ -79,7 +79,7 @@ class grid{
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	inline v2CR Resolution( void ) const{ return resolution; };
+	v2CR Resolution( void ) const{ return resolution; };
 
 	/*!
 	 * @brief Check indices for validity
@@ -95,9 +95,9 @@ class grid{
 	*/
 	D operator()( const idx2CR index ) const;
 
-	inline D getData( const idx2CR index ) const{ return this->operator()( index ); };
+	D getData( const idx2CR index ) const{ return this->operator()( index ); };
 
-	inline D getData( const v2CR coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
+	D getData( const v2CR coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
 
 	bool setData( const idx2CR index, const D newValue );
 
@@ -133,9 +133,9 @@ class grid{
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	inline D MaxValue( void ) const{ return maxValue; };
+	D MaxValue( void ) const{ return maxValue; };
 
-	inline D MinValue( void ) const{ return minValue; };
+	D MinValue( void ) const{ return minValue; };
 
 	private:
 	

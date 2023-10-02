@@ -82,19 +82,19 @@ class gantry {
 	 * @brief Get all pixel from detector 
 	 * @return Vector with pixel
 	*/
-	inline vector<pixel> getPixel( void ) const{ return rayDetector.getPixel();  };
+	vector<pixel> getPixel( void ) const{ return rayDetector.getPixel();  };
 
 	/*!
 	 * @brief Get radius of gantry
 	 * @return Radius
 	*/
-	inline double Radius( void ) const{ return radius; };
+	double Radius( void ) const{ return radius; };
 
 	/*!
 	 * @brief Get center of gantry
 	 * @return Center point
 	*/
-	inline pnt3 Center( void ) const{ return cSys->OPnt(); };
+	pnt3 Center( void ) const{ return cSys->OPnt(); };
 
 	/*!
 	 * @brief Rotate gantry counter clockwise around zAxis
@@ -117,14 +117,14 @@ class gantry {
 	 * @brief Get the coordinate system of gantry
 	 * @return Coordinate system of this gantry
 	*/
-	inline cartCSys* CSys( void ) const{ return cSys; };
+	cartCSys* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Get the detector radon parameters
 	 * @param cSys Reference coordinate system for radon transform
 	 * @return 
 	*/
-	inline detectorRadonParameter getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
+	detectorRadonParameter getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
 
 	/*!
 	 * @brief Get reference to scattering member object
@@ -136,13 +136,13 @@ class gantry {
 	 * @brief Get reference to detector instance
 	 * @return Reference to detector instance
 	*/
-	inline const detector& Detector( void ) const{ return rayDetector; };
+	const detector& Detector( void ) const{ return rayDetector; };
 
 	/*!
 	 * @brief Get reference to tube instance
 	 * @return Reference to tube instance
 	*/
-	inline const tube& Tube( void ) const{ return raySource; };
+	const tube& Tube( void ) const{ return raySource; };
 
 
 	private:

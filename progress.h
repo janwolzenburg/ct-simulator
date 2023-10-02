@@ -54,7 +54,7 @@ class Fl_Progress_Window : public Fl_Window{
 		updateOutput();
 	}
 
-	inline unsigned int NumLines( void ) const { return numLines; }
+	unsigned int NumLines( void ) const { return numLines; }
 
 	private:
 

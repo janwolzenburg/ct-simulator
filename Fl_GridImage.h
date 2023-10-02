@@ -46,7 +46,7 @@ class Fl_GridImage : public Fl_Widget{
 
 	void updateScaled( void );
 
-	inline bool imageAssigned( void ) const{ return imgAssigned; };
+	bool imageAssigned( void ) const{ return imgAssigned; };
 
 	private:
 
@@ -86,9 +86,9 @@ class Fl_GridImage_Adjust : public Fl_Group{
 
 	void setSliderBoundsFromImage( void );
 
-	inline range getContrast( void ) const{ return range( lowerBound.value(), upperBound.value() ); };
+	range getContrast( void ) const{ return range( lowerBound.value(), upperBound.value() ); };
 
-	inline bool imageAssigned( void ) const{ return imgWidget.imageAssigned(); };
+	bool imageAssigned( void ) const{ return imgWidget.imageAssigned(); };
 
 	private:
 	

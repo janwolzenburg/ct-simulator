@@ -64,7 +64,7 @@ class Fl_Selector : public Fl_Group{
 
 	void value( const string newValue );
 
-	inline string value( void ) const{ return *currentElement;	};
+	string value( void ) const{ return *currentElement;	};
 
 
 	private:

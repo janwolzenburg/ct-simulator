@@ -89,13 +89,13 @@ class primitiveCartCSys : public mathObj{
 	 * @param newOrigin New origin
 	 * @return New origin
 	*/
-	inline primitiveVec3 O( const primitiveVec3 newOrigin ){ return origin = newOrigin; };
+	primitiveVec3 O( const primitiveVec3 newOrigin ){ return origin = newOrigin; };
 
 	/*!
 	 * @brief Translate coordinate system
 	 * @param c Translation in x, y and z direction
 	*/
-	inline void translateM( const primitiveVec3 coords ){ origin = origin + coords; };
+	void translateM( const primitiveVec3 coords ){ origin = origin + coords; };
 
 	/*!
 	 * @brief Rotate coordinate system

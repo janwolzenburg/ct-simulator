@@ -72,7 +72,7 @@ class discreteFilter{
 	 * @brief Get values of filter kernel
 	 * @return Vector with values
 	*/
-	inline vector<double> Values( void ) const{ return values; };
+	vector<double> Values( void ) const{ return values; };
 
 	vectorPair PlotValues( void ) const{
 		
@@ -87,7 +87,7 @@ class discreteFilter{
 	 * @brief Get range of kernel
 	 * @return Range
 	*/
-	inline Zrange Range( void ) const{ return pointsRange; };
+	Zrange Range( void ) const{ return pointsRange; };
 
 	Zrange getRelevantRange( void ) const;
 

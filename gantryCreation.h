@@ -41,9 +41,9 @@ class gantryEdition : public Fl_Group{
 	gantryEdition( int x, int y, int w, int h );
 
 
-	inline void setUpdateFlag( void ){ updateGantry = true; };
+	void setUpdateFlag( void ){ updateGantry = true; };
 
-	inline bool UpdateGantry( void ){ return updateGantry ? ( !( updateGantry = false ) ) : false; };
+	bool UpdateGantry( void ){ return updateGantry ? ( !( updateGantry = false ) ) : false; };
 
 	void handleEvents( void );
 
