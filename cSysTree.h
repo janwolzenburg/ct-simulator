@@ -46,7 +46,7 @@ cartCSys* DUMMY_CSYS( void );
 /*!
  * @brief Class to store related coordinate systems. Singleton pattern
 */
-class cSysTree : virtual public mathObj{
+class cSysTree : public mathObj{
 
 	public:
 

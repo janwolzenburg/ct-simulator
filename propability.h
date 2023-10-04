@@ -89,7 +89,7 @@ class propabilityDistribution{
 	/*!
 	 * @brief Get the complete distribution
 	*/
-	vector<v2> getDistribution( void ) const;
+	vector<v2> getDistribution( void ) const{ return distribution; };
 
 
 	private:

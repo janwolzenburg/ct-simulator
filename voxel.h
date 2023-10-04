@@ -116,8 +116,8 @@ class voxData{
 
 	private:
 
-	static const double referenceEnergy;		/*!<Reference Energy for attenuation coefficients in eV*/
-	static const double referenceEnergy_3;		/*!<Cube of reference energy*/
+	static constexpr double referenceEnergy = 120000.;		/*!<Reference Energy for attenuation coefficients in eV*/
+	static constexpr double referenceEnergy_3 = 1.728e+15;		/*!<Cube of reference energy*/
 
 	double attenuation	= -1;					/*!<Absorption coefficient at reference Energy*/
 	specialEnumType specialProperties;

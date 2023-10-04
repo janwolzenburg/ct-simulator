@@ -179,7 +179,7 @@ bool test_nonUniformDetector( void ){
 		const line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->R(), previousNormalIt->O() };
 
 		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
-		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.Result().intersectionPoint;
+		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.result.intersectionPoint;
 
 		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
 
@@ -188,7 +188,7 @@ bool test_nonUniformDetector( void ){
 		const line lNextToCurrent{ -rotationAxis ^ nextNormalIt->R(), nextNormalIt->O() };
 
 		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
-		const pnt3 currentNextIntersectionPoint = currentNextIntersection.Result().intersectionPoint;
+		const pnt3 currentNextIntersectionPoint = currentNextIntersection.result.intersectionPoint;
 
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
 
@@ -299,7 +299,7 @@ bool test_modifiedDetector( void ){
 		const line currentNormal{ currentNormalVector, normalPoint };
 
 		// Index of normal in vector
-		const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
+		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
 
 		pnt3 currentPixelOrigin;
 		double currentPixelSize;
@@ -420,7 +420,7 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		1,
+		raysPerPixel,
 		1000.,
 		50,
 		false

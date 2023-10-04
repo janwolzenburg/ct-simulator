@@ -29,6 +29,20 @@ const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
 
 const double discreteFilter::threshold = 1e-4;
 
+const discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
+	for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
+
+		if( typeString == searchString ){
+
+			return typeEnum;
+
+		}
+	}
+
+	return constant;
+
+}
+
 discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
 	type( type_ ),
 	pointsRange( pointsRange_ ),
@@ -114,6 +128,15 @@ Zrange discreteFilter::getRelevantRange( void ) const{
 
 }
 
+
+vectorPair discreteFilter::PlotValues( void ) const{
+
+	vectorPair XY( vector<double>( numberPoints ), values );
+
+	std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start ) );
+
+	return XY;
+}
 
 size_t discreteFilter::getIndex( const signed long long Zidx ) const{
 	if( Zidx < pointsRange.start ) return 0;

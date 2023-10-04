@@ -31,7 +31,7 @@ class filteredProjections : private grid<> {
 	public:
 
 
-	filteredProjections( void );
+	filteredProjections( void ) : grid{} {};
 
 	/*!
 	 * @brief Constructor
@@ -52,7 +52,7 @@ class filteredProjections : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	grid<> getGrid( void ) const;
+	grid<> getGrid( void ) const{ return ( grid<> ) *this; };
 
 	/*!
 	 * @brief Get size of projections
@@ -89,7 +89,7 @@ class reconstrucedImage : private grid<> {
 
 	public:
 
-	reconstrucedImage( void );
+	reconstrucedImage( void ) : grid{} {};
 
 	/*!
 	 * @brief Constructor
@@ -101,7 +101,7 @@ class reconstrucedImage : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	 grid<> getGrid( void ) const;
+	 grid<> getGrid( void ) const{ return (grid<>) * this; };
 
 
 

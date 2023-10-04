@@ -71,7 +71,7 @@ size_t tomographyParameter::serialize( vector<char>& binData ) const{
 
 }
 
-
+/*
 tomography::tomography( void ) :
 	parameter(),
 	radonCSys( DUMMY_CSYS() )
@@ -81,7 +81,7 @@ tomography::tomography( void ) :
 tomography::tomography( const tomographyParameter parameter_ ) :
 	parameter( parameter_ ),
 	radonCSys( DUMMY_CSYS() )
-{}
+{}*/
 
 
 

@@ -25,11 +25,12 @@ using std::string;
    Implementations
 *********************************************************************/
 
-
+/*
 lineLine_Intersection_Result::lineLine_Intersection_Result( void )
 	: hasSolution( false ),
 	lineParameter1( 0 ), lineParameter2( 0 ),
 	intersectionPoint( pnt3{} ){}
+*/
 
 string lineLine_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
 	string str;
@@ -83,11 +84,12 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 /*
 	linSurf_Intersection_Result
 */
-
+/*
 linSurf_Intersection_Result::linSurf_Intersection_Result( void )
 	: hasSolution( false ),
 	linePara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
 	intersectionPoint( pnt3{} ){}
+*/
 
 string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
 	string str;
@@ -106,6 +108,7 @@ string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) cons
 	rayVox_Intersection_Result
 */
 
+/*
 rayVox_Intersection_Result::rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
 	linSurf_Intersection_Result( res_ ),
 	face( FACE_ID::INVALID )
@@ -117,7 +120,7 @@ rayVox_Intersection_Result::rayVox_Intersection_Result( void ) :
 	//linSurf_Intersection_Result( linSurf_Intersection_Result{} ),
 	face( FACE_ID::INVALID )
 {}
-
+*/
 
 
 /*
@@ -170,7 +173,7 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 
 			if( facePossible ){
 				// Check  if tRay intersects current face
-				entrance = linSurfIntersection{ r, v.getFace( i ) }.Result();
+				entrance = linSurfIntersection{ r, v.getFace( i ) }.result;
 				if( entrance.hasSolution ){
 					entrance.face = i; break;
 				}
@@ -206,7 +209,7 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 
 		if( facePossible ){
 			// Check  if tRay intersects current face
-			exit = linSurfIntersection{ r, v.getFace( i ) }.Result();
+			exit = linSurfIntersection{ r, v.getFace( i ) }.result;
 			if( exit.hasSolution ){
 				exit.face = i; break;
 			}

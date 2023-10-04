@@ -41,20 +41,20 @@ class tomographyParameter{
 
 	tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	double ExposureTime( void ) const { return exposureTime; };
+	//double ExposureTime( void ) const { return exposureTime; };
 
-	bool Scattering( void ) const{ return scattering; };
+	//bool Scattering( void ) const{ return scattering; };
 
-	size_t MaxLoops( void ) const{ return maxRadiationLoops; };
+	//size_t MaxLoops( void ) const{ return maxRadiationLoops; };
 
-	double ScatterPropability( void ) const{ return scatterPropability; };
+	//double ScatterPropability( void ) const{ return scatterPropability; };
 
-	double RayStepSize( void ) const{ return rayStepSize; };
+	//double RayStepSize( void ) const{ return rayStepSize; };
 
 	size_t serialize( vector<char>& binData ) const;
 
 
-	private:
+	public:
 
 	double exposureTime;
 	bool scattering;
@@ -76,9 +76,15 @@ class tomography{
 	 * @param gantry_ 
 	 * @param model_ 
 	*/
-	tomography( const tomographyParameter parameter_ );
+	tomography( const tomographyParameter parameter_ ) :
+		parameter( parameter_ ),
+		radonCSys( DUMMY_CSYS() )
+	{};
 
-	tomography( void );
+	tomography( void ) :
+		parameter( ),
+		radonCSys( DUMMY_CSYS() )
+	{};
 
 	/*!
 	 * @brief Record a slice

@@ -30,14 +30,18 @@ using std::string;
  /*!
   * @brief Class for an intersection result of two lines
  */
- class lineLine_Intersection_Result : virtual public mathObj{
+ class lineLine_Intersection_Result : public mathObj{
  
 	 public:
 
 	 /*!
 	  * @brief Default constructor
 	 */
-	 lineLine_Intersection_Result( void );
+	 lineLine_Intersection_Result( void ) : 
+		hasSolution( false ),
+		lineParameter1( 0 ), lineParameter2( 0 ),
+		intersectionPoint( pnt3{} )
+	{};
 
 	 /*!
 	  * @brief Convert result's data to string
@@ -68,12 +72,6 @@ using std::string;
 	 */
 	 lineLine_Intersection( const line l1_, const line l2_ );
 
-	 /*!
-	  * @brief Get the intersetion result
-	  * @return Intersection result
-	 */
-	 lineLine_Intersection_Result Result( void ) const{ return result; };
-
 
 	 public:
 
@@ -95,7 +93,11 @@ class linSurf_Intersection_Result : virtual public mathObj{
 	/*!
 	 * @brief Default constructor
 	*/
-	linSurf_Intersection_Result( void );
+	linSurf_Intersection_Result( void ) :
+		hasSolution( false ),
+		linePara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
+		intersectionPoint( pnt3{} )
+	{};
 
 	/*!
 	 * @brief Convert result's data to string
@@ -136,12 +138,6 @@ class linSurfIntersection {
 	*/
 	linSurfIntersection( const L l_, const S s_ );
 
-	/*!
-	 * @brief Get the intersetion result
-	 * @return Intersection result
-	*/
-	linSurf_Intersection_Result Result( void ) const { return result; };
-
 
 	public:
 	L l;									/*!<Line*/
@@ -164,12 +160,15 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 	 * @brief Constructor
 	 * @param res_ Instance of parent class
 	*/
-	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ );
+	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
+		linSurf_Intersection_Result( res_ ),
+		face( FACE_ID::INVALID )
+	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	rayVox_Intersection_Result( void );
+	rayVox_Intersection_Result( void ) : face( FACE_ID::INVALID ) {};
 
 
 	public:
@@ -192,18 +191,6 @@ class rayVoxelIntersection {
 	 * @param r_ Ray
 	*/
 	rayVoxelIntersection( const vox v_, const ray r_ );
-
-	/*!
-	 * @brief Get entrance into voxel
-	 * @return Intersection result of entrance
-	*/
-	rayVox_Intersection_Result Entrance( void ) const{ return entrance; };
-
-	/*!
-	 * @brief Get exit into voxel
-	 * @return Intersection result of exit
-	*/
-	rayVox_Intersection_Result Exit( void ) const{ return exit; };
 
 
 	public:

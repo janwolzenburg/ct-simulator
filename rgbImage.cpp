@@ -97,9 +97,9 @@ rgbImage::rgbImage( const vector<char>& binsourceData, vector<char>::const_itera
 {
 
 	for( size_t i = 0; i < numPixel; i++ ){
-		imageData.at( i ).red = deSerializeBuildIn( 0, binsourceData, it );
-		imageData.at( i ).green = deSerializeBuildIn( 0, binsourceData, it );
-		imageData.at( i ).blue = deSerializeBuildIn( 0, binsourceData, it );
+		imageData.at( i ).red = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		imageData.at( i ).green = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		imageData.at( i ).blue = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
 	}
 
 }

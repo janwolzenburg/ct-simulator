@@ -21,7 +21,7 @@
 *********************************************************************/
 
 
-void button_cb( Fl_Widget* widget, void* flag ){
+void button_cb( [[maybe_unused]] Fl_Widget* widget, void* flag ){
 	*( (bool*) flag ) = true;
 }
 
@@ -53,7 +53,7 @@ Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 
 };
 
-void Fl_Selector::goPrev( Fl_Widget* widget, void* p ){
+void Fl_Selector::goPrev( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 
@@ -67,7 +67,7 @@ void Fl_Selector::goPrev( Fl_Widget* widget, void* p ){
 }
 
 
-void Fl_Selector::goNext( Fl_Widget* widget, void* p ){
+void Fl_Selector::goNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 

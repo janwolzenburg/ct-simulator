@@ -77,7 +77,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		const line currentNormal{ currentNormalVector, normalPoint };
 
 		// Index of normal in vector
-		const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
+		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
 
 
 		pnt3 currentPixelOrigin;		// Origin of current pixel

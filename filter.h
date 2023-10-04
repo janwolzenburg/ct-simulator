@@ -54,19 +54,7 @@ class discreteFilter{
 		discreteFilter( Zrange( -5, 5 ), 1., constant )
 	{}
 
-	const static discreteFilter::TYPE getEnum( const string searchString ){
-		for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
-
-			if( typeString == searchString ){
-
-				return typeEnum;
-
-			}
-		}
-
-		return constant;
-
-	}
+	static const discreteFilter::TYPE getEnum( const string searchString );
 
 	/*!
 	 * @brief Get values of filter kernel
@@ -74,14 +62,7 @@ class discreteFilter{
 	*/
 	vector<double> Values( void ) const{ return values; };
 
-	vectorPair PlotValues( void ) const{
-		
-		vectorPair XY( vector<double>( numberPoints ), values );
-		
-		std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start ) );
-		
-		return XY;
-	}
+	vectorPair PlotValues( void ) const;
 
 	/*!
 	 * @brief Get range of kernel

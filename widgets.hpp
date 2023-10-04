@@ -66,9 +66,9 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 
 
 template< class C, typename T>
- void Fl_Bound_Input<C, T>::cbFunction( Fl_Widget* widget, void* p ){
+ void Fl_Bound_Input<C, T>::cbFunction( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
-	C* inputPtr = static_cast<C*>( widget );
+	//C* inputPtr = static_cast<C*>( widget );
 	Fl_Bound_Input* parentPtr = static_cast<Fl_Bound_Input*>( p );
 
 	parentPtr->checkBounds();

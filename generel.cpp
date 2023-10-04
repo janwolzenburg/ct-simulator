@@ -26,13 +26,13 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-const size_t numThreads = 1;
+constexpr size_t numThreads = 1;
 
 
 /*!
  * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor
 */
-const char stringPadding = (char) 0x9D;
+constexpr char stringPadding = (char) 0x9D;
 
 
 /*!
@@ -372,4 +372,14 @@ size_t toNum<size_t>( const string str ){
 
 	return std::stoll( str );
 
+}
+
+
+bool unsetFlag( bool& flag ){
+
+	const bool previouValue = flag;
+
+	flag = false;
+
+	return previouValue;
 }

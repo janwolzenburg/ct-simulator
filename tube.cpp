@@ -37,7 +37,7 @@ const std::map < tubeParameter::MATERIAL, std::pair<string, size_t>> tubeParamet
 		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
 };
 
-
+/*
 tubeParameter::tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
 	anodeVoltage_V( anodeVoltage_V_ ),
 	anodeCurrent_A( anodeCurrent_A_ ),
@@ -47,7 +47,7 @@ tubeParameter::tubeParameter( const double anodeVoltage_V_, const double anodeCu
 
 tubeParameter::tubeParameter( void ) :
 	tubeParameter{ 53000., .2, THUNGSTEN }
-{}
+{}*/
 
 
 tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
@@ -137,12 +137,12 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	xRay_spectrum = spectrum( energies, spectralPower );
 
 };
-
+/*
 range tube::getEnergyRange( void ) const{
 	
 	return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax()};
 
-}
+}*/
 
 vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
@@ -206,7 +206,6 @@ vectorPair tube::spectrumPoints( const bool integral ) const{
 	vectorPair points;
 	const vector<v2> spectrumPoints = xRay_spectrum.rawData();
 
-	double xCorrection = 1.;
 	double yCorrection = 1.;
 
 	if( integral ){

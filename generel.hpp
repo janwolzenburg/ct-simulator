@@ -40,8 +40,6 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 template< typename T >
 size_t serializeBuildIn( const T& val, vector<char>& binData ){
 
-	size_t i = 0;
-
 	char* valStartPtr = (char*) &val;
 
 	binData.insert( binData.end(), valStartPtr, valStartPtr + sizeof( T ) );

@@ -25,13 +25,13 @@ using std::for_each;
 /*********************************************************************
    Implementations
 *********************************************************************/
-
+/*
 spectrum::spectrum(void) : 
 	mean( 0. ),
 	energyResolution( 1. )
 {
 
-}
+}*/
 
 spectrum::spectrum(const vector<double> X, const vector<double> Y)
 {
@@ -105,9 +105,10 @@ double spectrum::getSum( void ) const{
 	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
 }
 
+/*
 double spectrum::getMean( void ) const{
 	return mean;
-}
+}*/
 
 void spectrum::updateMean( void ){
 
@@ -117,14 +118,14 @@ void spectrum::updateMean( void ){
 	mean = expectedValue / getSum();	
 }
 
-
+/*
 double spectrum::getMin( void ) const{
 	return data.front().x;
 }
 
 double spectrum::getMax( void ) const{
 	return data.back().x;
-}
+}*/
 
 void spectrum::modify( std::function<void( v2& )> modFunction ){
 	for( v2& v : data ){

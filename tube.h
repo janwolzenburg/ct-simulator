@@ -62,9 +62,15 @@ class tubeParameter {
 	 * @param anodeCurrent_A_ Anode Current in A
 	 * @param anodeMaterial_ Anode material
 	*/
-	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ );
+	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
+		anodeVoltage_V( anodeVoltage_V_ ),
+		anodeCurrent_A( anodeCurrent_A_ ),
+		anodeMaterial( anodeMaterial_ )
+	{};
 
-	tubeParameter( void );
+	tubeParameter( void ) : 
+		tubeParameter{ 53000., .2, THUNGSTEN }
+	{};
 
 	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
@@ -122,7 +128,7 @@ class tube{
 	 * @brief Get the range of energies the tube emits
 	 * @return Energy Range
 	*/
-	range getEnergyRange( void ) const;
+	range getEnergyRange( void ) const{ return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
 
 	/*!
 	 * @brief Get the spectrum points

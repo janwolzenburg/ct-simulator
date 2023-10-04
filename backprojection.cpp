@@ -20,12 +20,12 @@
    Implementations
 *********************************************************************/
 
-
+/*
 filteredProjections::filteredProjections( void ) :
 	grid()
 {
 
-}
+}*/
 
 filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType ) :
 	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. },		// Data grids have equal size
@@ -79,9 +79,10 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
+/*
 grid<> filteredProjections::getGrid( void ) const{ 
 	return (grid<>) *this; 
-}
+}*/
 
 double filteredProjections::getValue( const size_t angleIdx, const double distance ) const{
 
@@ -112,7 +113,7 @@ double filteredProjections::getValue( const size_t angleIdx, const double distan
 	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( (double) distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - (double) distanceIdxFloor );
 
 }
-
+/*
 reconstrucedImage::reconstrucedImage( void ) :
 	grid()
 {
@@ -122,7 +123,7 @@ reconstrucedImage::reconstrucedImage( void ) :
 
 grid<> reconstrucedImage::getGrid( void ) const{
 	return ( grid<> ) *this;
-}
+}*/
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 	grid( idx2CR{ projections.Size().row, projections.Size().row },

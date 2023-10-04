@@ -30,7 +30,7 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
 
-	double kWater = 0.01611970000;
+	//double kWater = 0.01611970000;
 
 	voxData bgData = { 0.01, 120000. };
 
@@ -107,8 +107,8 @@ bool test_modelTransmission( void ){
 	for( const ray r : testGantry.getBeam( 1. ) ){
 		
 		rayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
-		rayVox_Intersection_Result entrance = rayVoxIsect.Entrance();
-		rayVox_Intersection_Result exit = rayVoxIsect.Exit();
+		rayVox_Intersection_Result entrance = rayVoxIsect.entrance;
+		rayVox_Intersection_Result exit = rayVoxIsect.exit;
 
 		addSingleObject( ax1, "Entrance", entrance.intersectionPoint, string{ "g" } );
 		addSingleObject( ax1, "Exit", exit.intersectionPoint, string{ "r" } );

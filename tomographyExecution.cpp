@@ -66,11 +66,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
 
 
-	exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().ExposureTime() );
-	rayStepSizeIn.value( PROGRAM_STATE().TomographyParameter().RayStepSize() );
-	radiationLoopsIn.value( (double) PROGRAM_STATE().TomographyParameter().MaxLoops() );
-	scatterPropabilityIn.value( PROGRAM_STATE().TomographyParameter().ScatterPropability() );
-	scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().Scattering() );
+	exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().exposureTime );
+	rayStepSizeIn.value( PROGRAM_STATE().TomographyParameter().rayStepSize );
+	radiationLoopsIn.value( (double) PROGRAM_STATE().TomographyParameter().maxRadiationLoops );
+	scatterPropabilityIn.value( PROGRAM_STATE().TomographyParameter().scatterPropability );
+	scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().scattering );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	exposureTimeIn.callback( button_cb, &updateFlag );

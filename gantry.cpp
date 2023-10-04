@@ -102,9 +102,9 @@ void threadFunction(	const model& radModel, const tomographyParameter& tomoParam
 }
 
 
-void gantry::radiate( const model& radModel, const tomographyParameter parameter ) {
+void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 
-	vector<ray> rays = this->getBeam( parameter.ExposureTime() );		// Current rays. Start with rays from source
+	vector<ray> rays = this->getBeam( parameter.exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( ray& currentRay : rays ){
@@ -126,11 +126,12 @@ void gantry::radiate( const model& radModel, const tomographyParameter parameter
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < parameter.MaxLoops() && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop < parameter.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		const bool enableScattering = currentLoop < parameter.MaxLoops() && parameter.Scattering();	// No scattering in last iteration
+		parameter.scattering = currentLoop < parameter.maxRadiationLoops && parameter.scattering;	// No scattering in last iteration
+		
 		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
 
 

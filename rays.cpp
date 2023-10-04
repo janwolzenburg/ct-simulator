@@ -26,7 +26,7 @@ using std::string;
 /*
 	rayProperties implementation
 */
-
+/*
 rayProperties::rayProperties( const spectrum spectrum_ ) : 
 	energySpectrum( spectrum_ ),
 	voxHits( 0 )
@@ -39,7 +39,7 @@ rayProperties::rayProperties( void ) :
 
 spectrum rayProperties::EnergySpectrum( void ) const{
 	return energySpectrum;
-}
+}*/
 
 void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
 
@@ -60,7 +60,7 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 */
 
 ray::ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ )
-	: line( v_, p_ ),
+	: line{ v_, p_ },
 	properties( properties_ ){};
 
 ray::ray( const line line_, const rayProperties  properties_ )
@@ -68,7 +68,7 @@ ray::ray( const line line_, const rayProperties  properties_ )
 	properties( properties_ ){};
 
 ray::ray( void ) :
-	ray(vec3{ v3{ 1, 0, 0 }, DUMMY_CSYS()}, pnt3{v3{ 0, 0, 0}, DUMMY_CSYS() }, rayProperties{})
+	ray{vec3{ v3{ 1, 0, 0 }, DUMMY_CSYS()}, pnt3{v3{ 0, 0, 0}, DUMMY_CSYS() }, rayProperties{} }
 {
 
 }
@@ -91,7 +91,7 @@ void ray::updateProperties( const voxData& data, const double distance ){
 	properties.attenuateSpectrum( data, distance );
 }
 
-bool ray::paraInBounds(const double para) const { return para >= 0; };
+//bool ray::paraInBounds(const double para) const { return para >= 0; };
 
 
 

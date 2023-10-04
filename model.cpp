@@ -81,7 +81,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
 {
 	
-	if( numVox * sizeof( voxData ) == binData.end() - it ){
+	if( numVox * sizeof( voxData ) == (size_t) (binData.end() - it) ){
 		memcpy( parameter, &(*it) , numVox * sizeof(voxData));
 		it += numVox * sizeof( voxData );
 	}
@@ -104,8 +104,8 @@ model::~model(){
 }
 
 
-std::string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
-	return std::string( "" );
+string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
+	return string( "" );
 }
 
 
@@ -152,6 +152,14 @@ model& model::operator=( model&& mod ) noexcept{
 	return *this;
 }
 
+const voxData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
+	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+
+	return parameter[( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x];
+}
+
 voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -160,14 +168,14 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
 }
 
-
+/*
 voxData model::getVoxelData( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-}
+}*/
 
 bool model::setVoxelData( const voxData newData, const idx3 indices ){
 
@@ -192,6 +200,7 @@ bool model::setVoxelProperty( const voxData::specialProperty property, const idx
 
 }
 
+/*
 const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_t z ) const{
 
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
@@ -200,10 +209,10 @@ const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_
 
 	return parameter[( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x];
 
-}
+}*/
 
 
-
+/*
 voxData& model::operator() ( const idx3 indices ){
 	return ( *this )( indices.x, indices.y, indices.z );
 }
@@ -221,7 +230,7 @@ const voxData& model::getVoxelDataC( const idx3 indices ) const{
 
 const voxData& model::getVoxelDataC( const pnt3 p ) const{
 	return getVoxelDataC( getVoxelIndices( p ));
-}
+}*/
 
 
 vox model::Vox( void ) const{
@@ -239,11 +248,11 @@ bool model::checkIndices( const idx3 indices ) const{
 	return true;
 }
 
-
+/*
 bool model::validCoords( const v3 voxCoords ) const{
 	return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
 		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
-}
+}*/
 
 
 bool model::validCoords( const pnt3 point ) const{
@@ -286,7 +295,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	// Find entrance in model
 	const rayVoxelIntersection modelIsect{ Vox(), modelRay };
 
-	const rayVox_Intersection_Result rayEntrance = modelIsect.Entrance();
+	const rayVox_Intersection_Result rayEntrance = modelIsect.entrance;
 	if( !rayEntrance.hasSolution ) return modelRay;			// Return if ray does not intersect model
 
 
@@ -294,11 +303,11 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	/* ---------------------------------------------------------------------------------------------------- */
 
 	double currentRayStep = rayEntrance.linePara;					// Ray parameter at model entrance
-	const double lengthInModel = modelIsect.Exit().linePara - modelIsect.Entrance().linePara;
+	const double lengthInModel = modelIsect.exit.linePara - modelIsect.entrance.linePara;
 
 	// Get first point inside the model
-	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > tomoParameter.RayStepSize() ){
-		currentRayStep += tomoParameter.RayStepSize();
+	while( !pntInside( modelRay.getPnt( currentRayStep ) ) && lengthInModel > tomoParameter.rayStepSize ){
+		currentRayStep += tomoParameter.rayStepSize;
 	}
 
 	// Current point on the ray
@@ -309,7 +318,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
 	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
-	const double scatterConstant = tomoParameter.ScatterPropability() * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
+	const double scatterConstant = tomoParameter.scatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
 
 
 	// Iterate through model while current point is inside model
@@ -375,14 +384,14 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 			const double distance = rayParameter;		// The distance is the rayParameter
 
 			// Update ray properties whith distance travelled in current voxel
-			modelRay.updateProperties( this->getVoxelDataC( currentVoxelIndices ), distance );
+			modelRay.updateProperties( this->getVoxelData( currentVoxelIndices ), distance );
 			modelRay.incrementHitCounter();
 
-			currentRayStep += distance + tomoParameter.RayStepSize();				// New Step on ray
+			currentRayStep += distance + tomoParameter.rayStepSize;				// New Step on ray
 			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray
 		
 			// Scattering
-			if( tomoParameter.Scattering() ){
+			if( tomoParameter.scattering ){
 			
 				// Mean frequency of ray
 				const double meanFrequency = modelRay.getMeanFrequency();
@@ -466,12 +475,12 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	return indices;
 }
 
-
+/*
 vox model::getVoxel( const pnt3 point ) const{
 
 	return getVoxel( getVoxelIndices( point ) );
 
-}
+}*/
 
 
 size_t model::serialize( vector<char>& binData ) const{
@@ -578,7 +587,7 @@ void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mute
 		}
 
 		// Current voxel value
-		const voxData currentValue = modelRef.getVoxelDataC( currentPoint );
+		const voxData currentValue = modelRef.getVoxelData( currentPoint );
 
 		// Add pixel coordinates and pixel value to slice
 		sliceMutex.lock();

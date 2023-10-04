@@ -64,14 +64,14 @@ string surf::toStr( const unsigned int newLineTabulators ) const{
 
 	return str;
 }
-
+/*
 pnt3 surf::getPnt( const double surfParaA, const double surfParaB ) const{
 	return  o + ( r1 * surfParaA + r2 * surfParaB );
 }
 
 uvec3 surf::Normal( void ) const{
 	return  r1 ^ r2;
-};
+};*/
 
 surf surf::convertTo( const cartCSys* const cSys_ ) const{
 	return surf( r1.convertTo( cSys_ ), r2.convertTo( cSys_ ), o.convertTo( cSys_ ) );
@@ -110,9 +110,10 @@ surfLim::surfLim( const surf s,
 	: surfLim( s.R1(), s.R2(), s.O(),
 			   aMin, aMax, bMin, bMax ){}
 
+/*
 surfLim::surfLim( void ) : 
 	surfLim( surf{}, 0,1,0,1)
-{}
+{}*/
 
 surfLim::surfLim( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys ) :
 	surf{ binData, it, cSys },
@@ -138,9 +139,11 @@ string surfLim::toStr( const unsigned int newLineTabulators ) const{
 	return str;
 }
 
+/*
 surfLim surfLim::convertTo( const cartCSys* const cSys_ ) const{
 	return surfLim{ this->surf::convertTo( cSys_ ), pAMin, pAMax, pBMin, pBMax };
 }
+
 
 bool surfLim::parasInBounds( const double a, const double b ) const{
 	return pAMin <= a && a <= pAMax && pBMin <= b && b <= pBMax;
@@ -149,7 +152,7 @@ bool surfLim::parasInBounds( const double a, const double b ) const{
 pnt3 surfLim::getCenter( void ) const{
 	return this->getPnt( ( pAMax + pAMin ) / 2, ( pBMax + pBMin ) / 2 );
 }
-
+*/
 line  surfLim::NormalLine( void ) const{
 
 	return line{ this->Normal(), this->getCenter() };

@@ -81,13 +81,13 @@ class surf : public mathObj{
 	 * @param surfParaB Surface parameter b
 	 * @return Point p = o + r1*a + r2*b
 	*/
-	pnt3  getPnt( const double surfParaA, const double surfParaB ) const;
+	pnt3  getPnt( const double surfParaA, const double surfParaB ) const{ return  o + ( r1 * surfParaA + r2 * surfParaB ); };
 
 	/*!
 	 * @brief Get surface normal by cross product
 	 * @return Surface normal
 	*/
-	uvec3  Normal( void ) const;
+	uvec3  Normal( void ) const{ return r1 ^ r2; };
 
 	/*!
 	 * @brief Convert surface to different coordinate system
@@ -102,7 +102,7 @@ class surf : public mathObj{
 	 * @param b Surface parameter b
 	 * @return Always true for unconfined surfaces
 	*/
-	virtual bool parasInBounds( const double a, const double b ) const { return true; };
+	virtual bool parasInBounds( [[maybe_unused]] const double a, [[maybe_unused]] const double b ) const { return true; };
 
 	size_t serialize( vector<char>& binData ) const;
 
@@ -151,7 +151,7 @@ class surfLim : public surf{
 	/*!
 	 * @brief Default constructor
 	*/
-	surfLim( void );
+	surfLim( void ) : surfLim( surf{}, 0, 1, 0, 1 ) {};
 
 	/*!
 	 * @brief Construct from binary data
@@ -197,7 +197,7 @@ class surfLim : public surf{
 	 * @param cSys_ System to convert to
 	 * @return Converted surface
 	*/
-	surfLim convertTo( const cartCSys* const cSys_ ) const;
+	surfLim convertTo( const cartCSys* const cSys_ ) const{ return surfLim{ this->surf::convertTo( cSys_ ), pAMin, pAMax, pBMin, pBMax }; };
 
 	/*!
 	 * @brief Checks if parameters are inside surface bounds
@@ -205,13 +205,13 @@ class surfLim : public surf{
 	 * @param b Surface parameter b
 	 * @return True when parameters are inside surface bounds
 	*/
-	bool parasInBounds( const double a, const double b ) const override;
+	bool parasInBounds( const double a, const double b ) const override{ return pAMin <= a && a <= pAMax && pBMin <= b && b <= pBMax; };
 
 	/*!
 	 * @brief Get center point of limited surface
 	 * @return The center point
 	*/
-	pnt3  getCenter( void ) const;
+	pnt3  getCenter( void ) const{ return this->getPnt( ( pAMax + pAMin ) / 2, ( pBMax + pBMin ) / 2 ); };
 
 	/*!
 	 * @brief Get the surfaces normal as line through its center

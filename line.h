@@ -29,12 +29,16 @@ class line : public mathObj{
 
 	public:
 
+
+	explicit line( const uvec3 v, const pnt3 p );
+
 	/*!
 	 * @brief Constructor
 	 * @param v Line direction
 	 * @param p O
 	*/
 	explicit line( const vec3 v, const pnt3 p );
+
 
 	/*!
 	 * @brief Default constructor
@@ -59,7 +63,7 @@ class line : public mathObj{
 	 * @param newO New origin
 	 * @return Set origin
 	*/
-	pnt3 setOrigin( const pnt3 newO );
+	pnt3 setOrigin( const pnt3 newO ){ return o = newO.convertTo( r ); };
 
 	/*!
 	 * @brief Get line trajectory
@@ -72,14 +76,15 @@ class line : public mathObj{
 	 * @param target Target system
 	 * @return Line in target system
 	*/
-	line convertTo( const cartCSys* const target ) const;
+	line convertTo( const cartCSys* const target ) const{ return line{ r.convertTo( target ), o.convertTo( target ) }; };
 
 	/*!
 	 * @brief Get point on the line based on parameter
 	 * @param linPara Line parameter t
 	 * @return Point p = o + r*t
 	*/
-	pnt3 getPnt( const double linPara ) const;
+	pnt3 getPnt( const double linPara ) const{ return o + ( r * linPara ); };
+	
 
 	/*!
 	 * @brief Get line parameter corresponding to point
@@ -108,7 +113,7 @@ class line : public mathObj{
 	 * @param p Point
 	 * @return Distance in this line's unit
 	*/
-	double getDistance( const pnt3 p ) const;
+	double getDistance( const pnt3 p ) const{ return getLot( p ).Length(); };
 
 	/*!
 	 * @brief Get shortest distance between two lines
@@ -129,7 +134,7 @@ class line : public mathObj{
 	 * @param para Parameter
 	 * @return Always true
 	*/
-	virtual bool paraInBounds( const double para ) const { return true; };
+	virtual bool paraInBounds( [[maybe_unused]] const double para ) const { return true; };
 
 
 	protected:

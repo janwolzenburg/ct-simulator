@@ -24,6 +24,7 @@
 	pixel implementation
 */
 
+/*
 pixel::pixel( const surfLim surface ) : 
 	surfLim{ surface }
 {
@@ -33,7 +34,7 @@ pixel::pixel( const surfLim surface ) :
 void pixel::reset( void ){
 	detectedRayProperties.clear();
 }
-
+*/
 
 double pixel::getRadonValue( void ) const{
 
@@ -67,10 +68,10 @@ void  pixel::addDetectedProperties( const rayProperties properties ){
 /*
 	rayPix_Intersection_Result implementation
 */
-
+/*
 rayPix_Intersection_Result::rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult ) : 
 	linSurf_Intersection_Result( linSurfResult )
-{}
+{}*/
 
 
 
@@ -81,6 +82,6 @@ rayPix_Intersection_Result::rayPix_Intersection_Result( linSurf_Intersection_Res
 rayPix_Intersection::rayPix_Intersection( const ray r, const pixel px ) :
 	linSurfIntersection<ray, pixel>( r, px )
 {
-	result = linSurfIntersection<ray, pixel>::Result();
+	result = linSurfIntersection<ray, pixel>::result;
 	result.rayProps = r.Properties();
 }

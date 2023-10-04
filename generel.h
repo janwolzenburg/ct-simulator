@@ -388,4 +388,11 @@ T toNum( const string str );
 template<typename T>
 T writeThreadVar( T& var, const T& value, mutex& m );
 
+/*!
+ * @brief Set flag to false but return previous state of flag
+ * @param flag Flag to set to false
+ * @return Flag value before its reset
+*/
+bool unsetFlag( bool& flag );
+
 #include "generel.hpp"

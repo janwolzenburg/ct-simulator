@@ -27,11 +27,11 @@
 /*!
  * radonCoords implementation
 */
-
+/*
 radonCoords::radonCoords( const double theta_, const double distance_ ) : 
 	theta( theta_ ), 
 	distance( distance_ )
-{}
+{}*/
 
 radonCoords::radonCoords( const cartCSys* const cSys, const line l ) : 
 	theta( 0 ), 
@@ -76,7 +76,7 @@ radonCoords::radonCoords( const cartCSys* const cSys, const line l ) :
 
 }
 
-
+/*
 radonCoords::radonCoords( void ) : radonCoords( 0, 0 )
 {}
 
@@ -85,7 +85,7 @@ radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
 	coordinates( coordinates_ ),
 	value( value_ )
 {}
-
+*/
 
 
 /*!
@@ -112,18 +112,18 @@ radonTransformed::radonTransformed( const detectorRadonParameter detectorParamet
 	gridErrors = vector<vector<v2CR>>( Size().col, vector<v2CR>( Size().row, v2CR{ INFINITY, INFINITY }));
 }
 
-
+/*
 grid<> radonTransformed::Data( void ) const{
 	return (grid<>) *this;
 }
 
 void radonTransformed::assignData( const idx2CR index, const double value ){
 	this->setData( index, value );
-}
+}*/
 
-void radonTransformed::assignData( const radonPoint data ){
+void radonTransformed::assignData( const radonPoint dataPoint ){
 
-	v2CR point{ data.coordinates.theta, data.coordinates.distance };
+	v2CR point{ dataPoint.coordinates.theta, dataPoint.coordinates.distance };
 	idx2CR index = getIndex( point );
 	v2CR gridPoint{ getCoordinates( index )};
 
@@ -133,7 +133,7 @@ void radonTransformed::assignData( const radonPoint data ){
 	};
 
 	gridErrors.at( index.col ).at( index.row ) = error;
-	this->setData( index, data.value );
+	this->setData( index, dataPoint.value );
 }
 
 

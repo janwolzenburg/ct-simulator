@@ -123,7 +123,7 @@ class grid{
 	 * @param point Point in grid
 	 * @return Element value
 	*/
-	D operator()( const v2CR point ) const;
+	D operator()( const v2CR point ) const{ return this->operator()( getIndex( point ) ); };
 
 
 
@@ -171,7 +171,7 @@ class grid{
 	* @param point Point in grid
 	* @return Reference to element value
 	*/
-	D& operator()( const v2CR point );
+	D& operator()( const v2CR coordinates ){ return this->operator()( getIndex( coordinates ) ); };
 
 	void initializeMinMaxValue( void );
 

@@ -25,7 +25,7 @@ using std::cerr;  using std::endl; using std::cout;
  * @param  
  * @return 
 */
-int main( int argc, char** argv ){
+int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	/*
 	model testModel = getTestModel( GLOBAL_CSYS(), 20 );

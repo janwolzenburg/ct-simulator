@@ -43,7 +43,7 @@ class gantryEdition : public Fl_Group{
 
 	void setUpdateFlag( void ){ updateGantry = true; };
 
-	bool UpdateGantry( void ){ return updateGantry ? ( !( updateGantry = false ) ) : false; };
+	bool UpdateGantry( void ){ return unsetFlag( updateGantry ); };
 
 	void handleEvents( void );
 

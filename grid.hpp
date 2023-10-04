@@ -156,6 +156,7 @@ idx2CR grid<D>::getIndex( const v2CR coordinates ) const{
 	return index;
 }
 
+/*
 template<class D>
 D grid<D>::operator()( const v2CR coordinates ) const{
 	return this->operator()( getIndex( coordinates ) );
@@ -164,7 +165,7 @@ D grid<D>::operator()( const v2CR coordinates ) const{
 template<class D>
 D& grid<D>::operator()( const v2CR coordinates ){
 	return this->operator()( getIndex( coordinates ) );
-}
+}*/
 
 
 

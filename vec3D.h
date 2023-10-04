@@ -60,41 +60,41 @@ class vec3 : protected coordinates{
 	 * @param v2 Vector to compare with
 	 * @return True when all components are equal
 	*/
-	bool operator== ( const vec3 v2 ) const;
+	bool operator== ( const vec3 v2 ) const{ return this->coordinates::operator==( v2 ); };
 
 	/*!
 	 * @brief Addition operator
 	 * @param v2 Vector to add
 	 * @return Sum of vectors in unit of this vector
 	*/
-	vec3 operator+ ( const vec3 v2 ) const;
+	vec3 operator+ ( const vec3 v2 ) const{ return this->coordinates::operator+( v2 ); };
 
 	/*!
 	 * @brief Substraction operator
 	 * @param v2 Vector to substract
 	 * @return Difference (v1 - v2) of vectors in unit of this vector
 	*/
-	vec3 operator- ( const vec3 v2 ) const;
+	vec3 operator- ( const vec3 v2 ) const{ return this->coordinates::operator-( v2 ); };
 
 	/*!
 	 * @brief Negation operator
 	 * @return Negated vector
 	*/
-	vec3 operator- ( void ) const;
+	vec3 operator- ( void ) const{ return this->coordinates::operator-(); };
 
 	/*!
 	 * @brief Scale vector
 	 * @param scalar Factor
 	 * @return Scaled vector
 	*/
-	vec3 operator* ( const double scalar ) const;
+	vec3 operator* ( const double scalar ) const{ return this->coordinates::operator*( scalar ); };
 
 	/*!
 	 * @brief Divide vector
 	 * @param divisor Divisor
 	 * @return Divided vector
 	*/
-	vec3 operator/ ( const double divisor ) const;
+	vec3 operator/ ( const double divisor ) const{ return this->coordinates::operator/( divisor ); };
 
 	/*!
 	 * @brief Calculate dot product between to vectors
@@ -405,16 +405,18 @@ class uvec3 : public vec3{
 	 * @brief Converting constructor from vector
 	 * @param v Vector to convert
 	*/
-	uvec3( const vec3 v );
+	uvec3( const vec3 v ) : vec3( v ){
+		normalize();
+	};
 
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ Components
 	 * @param cSys_ Coordinate system
 	*/
-	uvec3( const v3 xyz_, const cartCSys* const cSys_ );
+	uvec3( const v3 xyz_, const cartCSys* const cSys_ ) : uvec3{ vec3{ xyz_, cSys_ } } {};
 
-	uvec3( void );
+	uvec3( void ) : uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() } {};
 
 	/*!
 	 * @brief Scaling unit vector does not have an effect
@@ -460,7 +462,7 @@ class pnt3 : public vec3{
 	 * @brief Converting constructor
 	 * @param v Vector to convert from
 	*/
-	pnt3( const vec3 v );
+	pnt3( const vec3 v ) : vec3( v ){};
 
 	/*!
 	 * @brief Convert point's data to string
@@ -486,7 +488,7 @@ class pnt3 : public vec3{
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( void ) const;
+	primitiveVec3 XYZ( void ) const{ return vec3::XYZ(); };
 
 	/*!
 	 * @brief Get x,y and z component

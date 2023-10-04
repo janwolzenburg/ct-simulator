@@ -33,12 +33,14 @@ class pixel : public surfLim{
 	 * @brief Constructor
 	 * @param surface Surface as base object
 	*/
-	pixel( const surfLim surface );
+	pixel( const surfLim surface ) :
+		surfLim( surface )
+	{};
 
 	/*!
 	 * @brief Reset detected rays
 	*/
-	void reset( void );
+	void reset( void ){ detectedRayProperties.clear(); };
 
 	/*!
 	 * @brief Get the value of radon point from detected ray properties
@@ -89,7 +91,9 @@ class rayPix_Intersection_Result : public linSurf_Intersection_Result{
 	 * @brief Constructor
 	 * @param linSurfResult Line surface intersection result
 	*/
-	rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult );
+	rayPix_Intersection_Result( const linSurf_Intersection_Result linSurfResult ) :
+		linSurf_Intersection_Result( linSurfResult )
+	{};
 
 	public:
 	rayProperties rayProps;  /*!< Properties of rays that hit the pixel*/

@@ -35,7 +35,10 @@ class radonCoords{
 	 * @param theta_ Angle
 	 * @param distance_ Distance
 	*/
-	radonCoords( const double theta_, const double distance_ );
+	radonCoords( const double theta_, const double distance_ ) : 
+		theta( theta_ ),
+		distance( distance_ )
+	{};
 
 	/*!
 	 * @brief Constructor
@@ -47,7 +50,7 @@ class radonCoords{
 	/*!
 	 * @brief Default constructor
 	*/
-	radonCoords( void );
+	radonCoords( void ) : radonCoords{ 0, 0 } {};
 
 
 	public:
@@ -70,8 +73,10 @@ class radonPoint{
 	 * @param coordinates_ Coordinates 
 	 * @param value_ Value
 	*/
-	radonPoint( const radonCoords coordinates_, const double value_ );
-	
+	radonPoint( const radonCoords coordinates_, const double value_ ) :
+		coordinates( coordinates_ ),
+		value( value_ )
+	{};
 
 	public:
 
@@ -110,13 +115,13 @@ class radonTransformed : private grid<> {
 	 * @brief Get grid data
 	 * @return Grid data
 	*/
-	grid<> Data( void ) const;
+	grid<> Data( void ) const{ return ( grid<> ) * this; };
 	
 	/*!
 	 * @brief Assign data at index 
 	 * @param data Data to assign
 	*/
-	void assignData( const idx2CR index, const double value );
+	void assignData( const idx2CR index, const double value ){ this->setData( index, value ); };
 
 	/*!
 	 * @brief Assign data to grid

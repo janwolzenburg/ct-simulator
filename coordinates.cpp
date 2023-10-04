@@ -57,14 +57,14 @@ coordinates coordinates::operator+ ( const coordinates coords ) const{
 	// Add converted coordinates' components to this componentes
 	primitiveVec3 locCoords = this->primitiveVec3::operator+( coords.convertTo( this->cSys ) );
 
-	return coordinates( locCoords, this->cSys );
+	return coordinates{ locCoords, this->cSys };
 }
 
 coordinates coordinates::operator- ( const coordinates coords ) const{
 	// Add converted coordinates' components to this componentes
 	primitiveVec3 locCoords = this->primitiveVec3::operator-( coords.convertTo( this->cSys ) );
 
-	return coordinates( locCoords, this->cSys );
+	return coordinates{ locCoords, this->cSys };
 }
 
 coordinates coordinates::operator- ( void ) const{
@@ -116,7 +116,7 @@ coordinates coordinates::toParentcSys( void ) const{
 	if( this->cSys->isGlobal() ) return *this;
 
 	// Values of coordinates in parent coordinate system
-	primitiveVec3 coordComps{ cSys->O() + cSys->Ex() * x + cSys->Ey() * y + cSys->Ez() * z };
+	primitiveVec3 coordComps{ cSys->Primitive().O() + cSys->Primitive().Ex() * x + cSys->Primitive().Ey() * y + cSys->Primitive().Ez() * z };
 	coordinates parentCoords{ coordComps, cSys->Parent() };
 
 	return parentCoords;
@@ -129,11 +129,11 @@ coordinates coordinates::toChildcSys( const cartCSys* const child_cSys ) const{
 	eqnSys tEqnSys( 3 );		// System of equation to solve for x,y and z in local coordinate system
 
 	// Poulate columns of system of equations
-	tEqnSys.populateColumn( child_cSys->Ex() );
-	tEqnSys.populateColumn( child_cSys->Ey() );
-	tEqnSys.populateColumn( child_cSys->Ez() );
+	tEqnSys.populateColumn( child_cSys->Primitive().Ex() );
+	tEqnSys.populateColumn( child_cSys->Primitive().Ey() );
+	tEqnSys.populateColumn( child_cSys->Primitive().Ez() );
 
-	tEqnSys.populateColumn( (primitiveVec3) *this - child_cSys->O() );
+	tEqnSys.populateColumn( (primitiveVec3) *this - child_cSys->Primitive().O() );
 
 	// Solve
 	eqnSysSolution tEqnSysSol = tEqnSys.solve();

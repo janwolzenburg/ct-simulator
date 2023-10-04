@@ -37,18 +37,24 @@ class rayProperties{
 	 * @brief Constructor
 	 * @param spectrum_ Ray spectrum
 	*/
-	rayProperties( const spectrum spectrum_ );
+	rayProperties( const spectrum spectrum_ ) :
+		energySpectrum( spectrum_ ),
+		voxHits( 0 )
+	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	rayProperties( void );
+	rayProperties( void ) :
+		energySpectrum( spectrum{} ),
+		voxHits( 0 )
+	{};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
 	 * @return Energy spectrum
 	*/
-	spectrum EnergySpectrum( void ) const;
+	spectrum EnergySpectrum( void ) const{ return energySpectrum; };
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
@@ -134,7 +140,7 @@ class ray : public line{
 	 * @param para Parameter
 	 * @return True when parameter is valid
 	*/
-	bool paraInBounds( const double para ) const override;
+	bool paraInBounds( const double para ) const override{ return para >= 0; };
 
 	/*!
 	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit

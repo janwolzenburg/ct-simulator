@@ -109,7 +109,7 @@ double propabilityDistribution::getRandom( void ) const{
 	if( randomIndex >= uniformPropabilities.size() ) randomIndex = uniformPropabilities.size() - 1;
 	return uniformPropabilities.at( randomIndex );
 }
-
+/*
 vector<v2> propabilityDistribution::getDistribution( void ) const{
 	return distribution;
-}
+}*/

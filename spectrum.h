@@ -36,7 +36,10 @@ class spectrum {
 	/*!
 	 * @brief Default constructor
 	*/
-	spectrum(void);
+	spectrum(void) :
+		mean( 0. ),
+		energyResolution( 1. )
+	{};
 
 	/*!
 	 * @brief Constructor
@@ -74,19 +77,19 @@ class spectrum {
 	 * @brief Get mean x value
 	 * @return Mean value of x by weightening by y value
 	*/
-	double getMean( void ) const;
+	double getMean( void ) const{ return mean; };
 
 	/*!
 	 * @brief Get minimum x value
 	 * @return Minimum x value
 	*/
-	double getMin( void ) const;
+	double getMin( void ) const{ return data.front().x; };
 
 	/*!
 	 * @brief Get maximum x value
 	 * @return Maximum x value
 	*/
-	double getMax( void ) const;
+	double getMax( void ) const{ return data.back().x; };
 
 	/*!
 	 * @brief Modify spectrum

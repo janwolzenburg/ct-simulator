@@ -96,11 +96,13 @@ class model : virtual public mathObj{
 
 	bool setVoxelProperty( const voxData::specialProperty property, const idx3 indices );
 
-	const voxData& getVoxelDataC( const size_t x, const size_t y, const size_t z ) const;
+	const voxData& operator()( const size_t x, const size_t y, const size_t z ) const;
 
-	const voxData& getVoxelDataC( const idx3 indices ) const;
+	const voxData& getVoxelData( const size_t x, const size_t y, const size_t z ) const{ return this->operator()( x, y, z); };
 
-	const voxData& getVoxelDataC( const pnt3 p ) const;
+	const voxData& getVoxelData( const idx3 indices ) const{ return getVoxelData( indices.x, indices.y, indices.z ); };
+
+	const voxData& getVoxelData( const pnt3 p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
 
 	/*!
 	 * @brief Element read
@@ -109,14 +111,14 @@ class model : virtual public mathObj{
 	 * @param z z-index of voxel
 	 * @return Voxel data
 	*/
-	voxData getVoxelData( const size_t x, const size_t y, const size_t z ) const;
+	//voxData getVoxelData( const size_t x, const size_t y, const size_t z ) const;
 
 	/*!
 	 * @brief Element read
 	 * @param indices Indices of voxel
 	 * @return Voxel data
 	*/
-	voxData getVoxelData( const idx3 indices ) const;
+	//voxData getVoxelData( const idx3 indices ) const;
 
 	/*!
 	 * @brief Get number of voxels
@@ -162,7 +164,10 @@ class model : virtual public mathObj{
 	 * @param voxCoords Coordinates to check
 	 * @return True if coordinates are defined in model
 	*/
-	bool validCoords( const v3 voxCoords ) const;
+	bool validCoords( const v3 voxCoords ) const{
+		return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
+			voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
+	};
 
 	/*!
 	 * @brief Checks if point is defined in model
@@ -190,7 +195,7 @@ class model : virtual public mathObj{
 	 * @param point Point in model
 	 * @return Voxel at point
 	*/
-	vox getVoxel( const pnt3 point ) const;
+	vox getVoxel( const pnt3 point ) const{ return getVoxel( getVoxelIndices( point ) ); };
 
 	/*!
 	 * @brief Checks if local point is inside model
@@ -272,6 +277,5 @@ class model : virtual public mathObj{
 	 * @param indices Indices of voxel
 	 * @return Reference to voxel data
 	*/
-	voxData& operator() ( const idx3 indices );
-
+	voxData& operator() ( const idx3 indices ){ return ( *this )( indices.x, indices.y, indices.z ); };
 };
