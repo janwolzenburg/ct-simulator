@@ -29,6 +29,8 @@ class tomographyExec : public Fl_Group{
 
 	~tomographyExec( void );
 
+	void updateInformation( void ){ informationUpdateFlag = true; };
+
 	void handleEvents( void );
 
 	private:
@@ -46,8 +48,8 @@ class tomographyExec : public Fl_Group{
 	Fl_Bound_Input<Fl_Float_Input, double> scatterPropabilityIn;
 	Fl_Toggle_Button scatteringOnOff;
 
-	Fl_Multiline_Output information;	// Energy, frames
-
+	Fl_Multiline_Output information;
+	
 	Fl_Group controlGrp;
 	Fl_Button radiationButton;
 
@@ -56,6 +58,7 @@ class tomographyExec : public Fl_Group{
 
 	bool radiateFlag;
 	bool updateFlag;
+	bool informationUpdateFlag;
 
  };
 

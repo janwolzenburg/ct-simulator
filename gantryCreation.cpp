@@ -187,7 +187,7 @@ void gantryEdition::handleEvents( void ){
 		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true ) );
 		spectrumPlot.assignData();
 
-
+		PROGRAM_STATE().setUpdateInformationFlag();
 
 		detectorPlot.plotRef().resetObjects();
 

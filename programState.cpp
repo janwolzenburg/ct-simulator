@@ -13,7 +13,7 @@
 
 #include "programState.h"
 #include "cSysTree.h"
-
+#include "mainWindow.h"
 
 
  /*********************************************************************
@@ -218,6 +218,12 @@ void programState::resetModel( void ){
 	centerModel();
 
 
+}
+
+
+void programState::setUpdateInformationFlag( void ) const{
+	if( mainWindow != nullptr )
+		mainWindow->tomographyExecution.updateInformation();
 }
 
 bool programState::loadModel( void ){

@@ -9,24 +9,25 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	Fl_Group( x, y, w, h ),
 	title( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"),
 
-	tomoParameterGrp(		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .3 ) ),
-	parameterTitle(			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .1 ), "Parameter" ),
+	tomoParameterGrp(		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) ),
+	parameterTitle(			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" ),
 	
-	exposureTimeIn(			X( tomoParameterGrp, .1 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .1 ),	H( tomoParameterGrp, .1 ), "Exposure time" ),
-	rayStepSizeIn(			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Ray step size" ),
+	exposureTimeIn(			X( tomoParameterGrp, .1 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .1 ),	H( tomoParameterGrp, .05 ), "Exposure time" ),
+	rayStepSizeIn(			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Ray step size" ),
 	
-	radiationLoopsIn(		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .1 ), "Maximum loops" ),
-	scatterPropabilityIn(	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Scattering prob." ),
-	scatteringOnOff(		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .1 ), "Scattering" ),
+	radiationLoopsIn(		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .05 ), "Maximum loops" ),
+	scatterPropabilityIn(	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering prob." ),
+	scatteringOnOff(		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" ),
 	
-	information(			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .6 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .4 ), "Information" ),
+	information(			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .6 ), "Information" ),
 
 
 	controlGrp( X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) ),
 	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .5 ), "Record Slice" ),
 
 	radiateFlag( false ),
-	updateFlag( false )
+	updateFlag( false ),
+	informationUpdateFlag( false )
 
 {
 	Fl_Group::box( FL_BORDER_BOX );
@@ -110,7 +111,10 @@ void tomographyExec::handleEvents( void ){
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(), 20, 5, "Radiation progress" );
 
-		state.Tomography() = tomography( state.TomographyParameter() );
+		state.Tomography() = tomography{ state.TomographyParameter() };
+
+
+
 		state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
 
 		if( state.ProcessingWindow() != nullptr ){
@@ -127,8 +131,28 @@ void tomographyExec::handleEvents( void ){
 
 	if( updateFlag ){
 		updateFlag = false;
+		informationUpdateFlag = true;
 
 		state.TomographyParameter() = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
+
+	}
+
+	if( informationUpdateFlag ){
+		informationUpdateFlag = false;
+
+		string informationString;
+
+		informationString += "Sinogramgröße:      " + toString( state.RadonParameter().numberPoints.col ) + " x " + toString( state.RadonParameter().numberPoints.row ) + '\n';
+		informationString += "Sinogramauflösung:  " + toString( state.RadonParameter().resolution.col / 2. / PI * 360. ) + "° x " + toString( state.RadonParameter().resolution.row ) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + toString( state.RadonParameter().framesToFillSinogram ) + '\n';
+		informationString += "Detektorwinkel:	  " + toString( state.DetectorPhysicalParameter().angle / 2. / PI * 360. ) + "°" + '\n';
+
+
+		informationString += "Elektrische Leistung:	  " + toString( state.Tube().electricalPower() ) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + toString( state.Tube().rayPower() ) + "W" + '\n';
+		informationString += "Strahlenergie:	  " + toString( state.Tube().getEnergy( state.TomographyParameter().exposureTime ) ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.TomographyParameter().exposureTime ) * state.RadonParameter().framesToFillSinogram ) + "J" + '\n';
+		information.value( informationString.c_str() );
 
 	}
 

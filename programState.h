@@ -92,6 +92,10 @@ class programState{
 
 	const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
 
+	const detectorPhysicalParameter DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().getPhysicalParameters(); };
+
+	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
+
 	modelViewParameter& ModelViewParameter( void ){ return modelViewPara; };
 
 	tomography& Tomography( void ) { return tomographyInstance; };
@@ -108,6 +112,7 @@ class programState{
 
 	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); };
 
+	void setUpdateInformationFlag( void ) const;
 	//void setNewRadonTransformedFlag( void ){  }
 
 	void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };

@@ -130,6 +130,12 @@ class tube{
 	*/
 	range getEnergyRange( void ) const{ return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
 
+	double getEnergy( const double exposureTime ) const;
+
+	double rayPower( void ) const{ return totalPower_W; };
+
+	double electricalPower( void ) const{ return anodeVoltage_V * anodeCurrent_A; };
+
 	/*!
 	 * @brief Get the spectrum points
 	 * @param integral Flag whether the sum or the integral should be equal to the tube power. 

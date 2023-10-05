@@ -228,3 +228,10 @@ vectorPair tube::spectrumPoints( const bool integral ) const{
 
 	return points;
 }
+
+
+double tube::getEnergy( const double exposureTime ) const{
+
+	return totalPower_W * exposureTime;
+
+}
