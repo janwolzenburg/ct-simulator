@@ -16,7 +16,7 @@
  #include <sstream>
 
  #include "Fl_OwnValuator.h"
-
+ #include "FL/fl_draw.H"
 
 /*********************************************************************
    Definitions
@@ -97,7 +97,22 @@ void Fl_OwnValuator<C>::updateLabel( void ){
 	stream << std::fixed << std::setprecision( significantDigits ) << this->value();
 
 	labelString = stream.str();
-	this->label( this->labelString.c_str() );
+
+	
+	int oldW, oldH;
+	this->measure_label( oldW, oldH );
+
+	int newW, newH, i = 0;
+	do{
+
+		labelString = " " + labelString;
+		fl_measure( labelString.c_str(), newW, newH, 1 );
+
+
+	}while( newW < oldW && i++ < 30 );
+
+
+	this->copy_label( this->labelString.c_str() );
 	this->redraw_label();
 
 }

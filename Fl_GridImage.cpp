@@ -186,8 +186,6 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 
 	this->hide();
 
-
-
 }
 
 void Fl_GridImage_Adjust::changeContrast( const range bounds ){

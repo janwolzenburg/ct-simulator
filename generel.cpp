@@ -26,7 +26,7 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-constexpr size_t numThreads = 1;
+constexpr size_t numThreads = 8;
 
 
 /*!
