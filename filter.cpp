@@ -22,12 +22,12 @@
 
 const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
 		{ constant,	"Constant" },
-		{ absolute,	"Absolute" },
+		//{ absolute,	"Absolute" },
 		{ ramLak,	"RamLak" },
 		{ sheppLogan,"SheppLogan" },
 };
 
-const double discreteFilter::threshold = 1e-4;
+const double discreteFilter::threshold = 1e-5;
 
 const discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
 	for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
@@ -66,10 +66,11 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				break;
 			}
 
+			/*
 			case discreteFilter::absolute:
 			{
 				// Constant to be able to approximate inverse FT of abs( w )
-				constexpr double e = 1;									
+				constexpr double e = 1.;									
 
 				const double e2 = pow( e, 2. );								// Epsilon squared
 				const double c2 = pow( 2. * PI * samplingInterval, 2. );	// Constant for calculation
@@ -81,7 +82,7 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				kernelValue = h;
 
 				break;
-			}
+			}*/
 
 			case discreteFilter::ramLak:
 			{

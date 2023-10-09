@@ -29,7 +29,7 @@ filteredProjections::filteredProjections( void ) :
 
 filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType ) :
 	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. },		// Data grids have equal size
-	filter( Zrange{ -( signed long long ) Size().row + 1, ( signed long long ) Size().row - 1 }, Resolution().row, filterType )
+	filter{ Zrange{ -( signed long long ) Size().row + 1, ( signed long long ) Size().row - 1 }, Resolution().row, filterType }
 {
 
 	// Define variables for easy access
@@ -40,7 +40,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	const double dD = Resolution().row;	// Distance resolution
 
 	// Create filter kernel. Range of discrete arguments must fir convolution
-//	discreteFilter filter{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
+	//	discreteFilter filter{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
 	// Local copy of projection data
 	const grid<> projectionsData = projections.Data();

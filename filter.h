@@ -33,7 +33,7 @@ class discreteFilter{
 	*/
 	enum TYPE{
 		constant,		/*!<No filter*/
-		absolute,		/*!<Mathematically correct but unpractical filter*/
+		//absolute,		/*!<Mathematically correct but unpractical filter*/
 		ramLak,			/*!<Ramachandran and Lakshminarayanan*/
 		sheppLogan		/*!<Shepp and Logan*/
 	};
