@@ -25,6 +25,8 @@
  #include "backprojection.h"
 
 
+ // TODO: Import/Export of projections
+
 
 class processingView : public Fl_Window{
 
