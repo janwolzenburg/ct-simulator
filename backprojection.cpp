@@ -11,8 +11,9 @@
   Includes
 *********************************************************************/
 
-#include "backprojection.h"
 
+#include <FL/Fl.H>
+#include "backprojection.h"
 
 
 
@@ -27,7 +28,7 @@ filteredProjections::filteredProjections( void ) :
 
 }*/
 
-filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType ) :
+filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress ) :
 	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. },		// Data grids have equal size
 	filter{ Zrange{ -( signed long long ) Size().row + 1, ( signed long long ) Size().row - 1 }, Resolution().row, filterType }
 {
@@ -39,8 +40,6 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 	const double dD = Resolution().row;	// Distance resolution
 
-	// Create filter kernel. Range of discrete arguments must fir convolution
-	//	discreteFilter filter{ Zrange{ -( signed long long ) nD + 1, ( signed long long ) nD - 1 }, dD, filterType };
 
 	// Local copy of projection data
 	const grid<> projectionsData = projections.Data();
@@ -48,7 +47,8 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
 
-
+		if( progress != nullptr )
+			progress->changeLineText(0,"Filtering angle " + toString( t + 1 ) + " of " + toString( nT ) );
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
@@ -74,6 +74,9 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 			this->setData( idx2CR{ t, n }, convolutionResult );
 
 		}
+
+
+		Fl::check();
 
 	}
 
@@ -125,7 +128,7 @@ grid<> reconstrucedImage::getGrid( void ) const{
 	return ( grid<> ) *this;
 }*/
 
-reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
+reconstrucedImage::reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress ) :
 	grid( idx2CR{ projections.Size().row, projections.Size().row },
 		  v2CR{ projections.Start().row, projections.Start().row }, 
 		  v2CR{ projections.Resolution().row, projections.Resolution().row }, 0. )
@@ -139,6 +142,10 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 
 	// Iterate all points on image. Points are spaced by the distance resolution in filtered projections
 	for( size_t xIdx = 0; xIdx < nD; xIdx++ ){
+
+		if( progress != nullptr )
+			progress->changeLineText( 1, "Reconstructing column " + toString( xIdx + 1 ) + " of " + toString( nD ) );
+		
 		for( size_t yIdx = 0; yIdx < nD; yIdx++ ){
 
 			double x = (double) ( ( signed long long ) xIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// x value on image
@@ -159,6 +166,8 @@ reconstrucedImage::reconstrucedImage( const filteredProjections projections ) :
 			this->setData( idx2CR{ xIdx, yIdx }, getData( idx2CR{ xIdx, yIdx } ) * PI / (double) nT );
 			//this->operator()( idx2CR{ xIdx, yIdx } ) *= PI / (double) nT;
 		}
+
+		Fl::check();
 	}
 
 }

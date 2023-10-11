@@ -16,7 +16,7 @@
 #include "filter.h"
 #include "radonTransform.h"
 #include "grid.h"
-
+#include "progress.h"
 
 
 /*********************************************************************
@@ -38,7 +38,7 @@ class filteredProjections : private grid<> {
 	 * @param projections UNfiltered projections 
 	 * @param filterType Type of filter to apply
 	*/
-	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType );
+	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
 
 	/*!
 	 * @brief Get value at angle index at given distance
@@ -95,7 +95,7 @@ class reconstrucedImage : private grid<> {
 	 * @brief Constructor
 	 * @param projections Filtered projections 
 	*/
-	reconstrucedImage( const filteredProjections projections );
+	reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress = nullptr );
 
 	/*!
 	 * @brief Get base  grid

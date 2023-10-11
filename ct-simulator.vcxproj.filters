@@ -497,5 +497,8 @@
     <ClCompile Include="tomographyExecution.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="processingWindow.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

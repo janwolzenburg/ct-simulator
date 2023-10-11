@@ -143,9 +143,9 @@ void tomographyExec::handleEvents( void ){
 		string informationString;
 
 		informationString += "Sinogramgröße:      " + toString( state.RadonParameter().numberPoints.col ) + " x " + toString( state.RadonParameter().numberPoints.row ) + '\n';
-		informationString += "Sinogramauflösung:  " + toString( state.RadonParameter().resolution.col / 2. / PI * 360. ) + "° x " + toString( state.RadonParameter().resolution.row ) + " mm" + '\n' + '\n';
+		informationString += "Sinogramauflösung:  " + toString( state.RadonParameter().resolution.col / 2. / PI * 360.,2 ) + "° x " + toString( state.RadonParameter().resolution.row, 2 ) + " mm" + '\n' + '\n';
 		informationString += "Gantryrotationen:   " + toString( state.RadonParameter().framesToFillSinogram ) + '\n';
-		informationString += "Detektorwinkel:	  " + toString( state.DetectorPhysicalParameter().angle / 2. / PI * 360. ) + "°" + '\n';
+		informationString += "Detektorwinkel:	  " + toString( state.DetectorPhysicalParameter().angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
 		informationString += "Elektrische Leistung:	  " + toString( state.Tube().electricalPower() ) + "W" + '\n';
