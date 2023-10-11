@@ -82,10 +82,6 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 }
 
-/*
-grid<> filteredProjections::getGrid( void ) const{ 
-	return (grid<>) *this; 
-}*/
 
 double filteredProjections::getValue( const size_t angleIdx, const double distance ) const{
 

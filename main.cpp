@@ -43,8 +43,8 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	Fl_Tooltip::enable();
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
-	mainView* mainWindow = new mainView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" );
-	processingView* procView = new processingView( (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" );
+	mainView* mainWindow = new mainView{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
+	processingView* procView = new processingView{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" };
 
 	mainWindow->hide();
 	procView->hide();
@@ -79,7 +79,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	delete mainWindow;
 	delete procView;
-
+	delete initialWindow;
 	return 0;
 	
 }

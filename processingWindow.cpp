@@ -5,9 +5,10 @@
 
 void processingView::recalcFilteredProjections( void ){
 
-	Fl_Window::window()->deactivate();
+	//Fl_Window::window()->deactivate();
 
-	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().ProcessingWindow(), 20, 5, "Processing progress");
+	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
+	//processingProgressWindow->show();
 
 	PROGRAM_STATE().FilteredProjections() = filteredProjections{ PROGRAM_STATE().Projections(), PROGRAM_STATE().ProcessingParameters().filterType, processingProgressWindow };
 
@@ -33,6 +34,6 @@ void processingView::recalcFilteredProjections( void ){
 
 	delete processingProgressWindow;
 
-	Fl_Window::window()->activate();
+	//Fl_Window::window()->activate();
 
 }
