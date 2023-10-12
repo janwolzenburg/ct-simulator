@@ -23,8 +23,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 
 
 	controlGrp( X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) ),
-	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .5 ), "Record Slice" ),
+	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .4 ), "Record Slice" ),
+	importButton(	 X( controlGrp, .05 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Import Sinogram" ),
+	exportButton(	 X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" ),
 
+	
 	radiateFlag( false ),
 	updateFlag( false ),
 	informationUpdateFlag( false )
@@ -85,7 +88,14 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	controlGrp.box( FL_BORDER_BOX );
 
 	controlGrp.add( radiationButton );
+	controlGrp.add( importButton );
+	controlGrp.add( exportButton );
+
+	exportButton.deactivate();
+
 	radiationButton.callback( button_cb, &radiateFlag );
+	importButton.callback( button_cb, &importFlag );
+	exportButton.callback( button_cb, &exportFlag );
 
 	this->deactivate();
 }
@@ -99,21 +109,23 @@ void tomographyExec::handleEvents( void ){
 
 	programState& state = PROGRAM_STATE();
 
-	if( state.ModelLoaded() && !this->active() ) this->activate();
+	if( state.ModelLoaded() && !this->active() ){
+		exportButton.deactivate();
+		this->activate();
+	}
 	else if( !state.ModelLoaded() ) this->deactivate();
 
-	if( radiateFlag ){
+	if( PROGRAM_STATE().RadonTransformedLoaded() && !exportButton.active() ){
+		exportButton.activate();
+	}
 
+	if(  unsetFlag( radiateFlag ) ){
 
 		Fl_Group::window()->deactivate();
 
-		radiateFlag = false;
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(), 20, 5, "Radiation progress" );
-
 		state.Tomography() = tomography{ state.TomographyParameter() };
-
-
 
 		state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
 
@@ -121,24 +133,48 @@ void tomographyExec::handleEvents( void ){
 			state.ProcessingWindow()->setNewRTFlag();
 		}
 
-
 		delete radiationProgressWindow;
 
-		Fl_Group::window()->activate();
 
+		exportButton.activate();
+		Fl_Group::window()->activate();
 
 	}
 
-	if( updateFlag ){
-		updateFlag = false;
+	if( unsetFlag( exportFlag ) ){
+
+		PROGRAM_STATE().exportSinogram();
+	}
+
+	if( unsetFlag( importFlag ) ){
+
+		path chosenPath = PROGRAM_STATE().importSinogram();
+
+		if( chosenPath.empty() ) return;
+
+		vector<char> binData = importSerialized( chosenPath );
+		vector<char>::const_iterator it = binData.cbegin();
+
+		radonTransformed importedSinogram{ binData, it };
+		state.assignRadonTransformed( importedSinogram );
+
+		if( state.ProcessingWindow() != nullptr ){
+			state.ProcessingWindow()->setNewRTFlag();
+		}
+
+		exportButton.activate();
+
+	}
+
+	if( unsetFlag( updateFlag )){
+		
 		informationUpdateFlag = true;
 
 		state.TomographyParameter() = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
 
 	}
 
-	if( informationUpdateFlag ){
-		informationUpdateFlag = false;
+	if( unsetFlag( informationUpdateFlag )){
 
 		string informationString;
 

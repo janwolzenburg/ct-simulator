@@ -125,6 +125,26 @@ class programState{
 
 	processingParameter& ProcessingParameters( void ){ return currentProcessingParameters; };
 
+	void exportSinogram( void ){
+		if( storedProjections.Loaded() ){
+
+			path exportPath = exportChooserInstance.choose();
+
+			if( exportPath.extension() != "sinogram" )
+				exportPath /= ".sinogram";
+
+			vector<char> binData;
+			currentProjections.serialize( binData );
+
+			exportSerialized( exportPath, binData );
+
+		}
+	}
+
+	path importSinogram( void ){
+		return  importChooserInstance.choose();
+
+	}
 
 	private:
 
@@ -171,6 +191,12 @@ class programState{
 
 	tomographyParameter tomographyParamerter;
 	storedObject<tomographyParameter> storedTomographyParamerter;
+
+	fileChooser exportChooserInstance;
+	storedObject<fileChooser> storedExportChooser;
+
+	fileChooser importChooserInstance;
+	storedObject<fileChooser> storedImportChooser;
 
 	tomography tomographyInstance;
 

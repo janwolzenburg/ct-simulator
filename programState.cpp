@@ -66,6 +66,12 @@ programState::programState( void ) :
 
 	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
 
+	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
+	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance },
+
+	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
+	storedExportChooser{ getPath( "storedExportChooser.txt" ), exportChooserInstance },
+
 	tomographyParamerter(),
 	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter ),
 
@@ -98,6 +104,8 @@ programState::~programState( void ) {
 	storedTomographyParamerter.saveObject( true );
 	storedProjections.saveObject();
 	storedProcessingParameters.saveObject( true );
+	storedImportChooser.saveObject( true );
+	storedExportChooser.saveObject( true );
 }
 
 
