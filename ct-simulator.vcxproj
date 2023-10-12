@@ -158,6 +158,7 @@
     <ClInclude Include="backprojection.h" />
     <ClInclude Include="cartesian.fwd.h" />
     <ClInclude Include="cartesian.h" />
+    <ClInclude Include="confirmButton.h" />
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="cSysTree.fwd.h" />
     <ClInclude Include="cSysTree.h" />

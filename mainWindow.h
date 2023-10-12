@@ -28,12 +28,16 @@ class mainView : public Fl_Window{
 	mainView( int w, int h, const char* label ) :
 		Fl_Window( w, h, label ),
 
-		modView( X( *this, 0. ), Y( *this, 0. ), W( *this, 0.3 ), H( *this, 1 ) ),
-		gantryBuild( hOff( modView ) + X( *this, .025 ), Y( *this, 0. ), W( *this, 0.25 ), H( *this, 1. ) ),
-		tomographyExecution( hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0. ), W( *this, 0.4 ), H( *this, 1. ) )
+		menu( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, 0.05 ) ),
+
+
+		modView( X( *this, 0. ), Y( *this, 0.1 ), W( *this, 0.3 ), H( *this, .95 ) ),
+		gantryBuild( hOff( modView ) + X( *this, .025 ), Y( *this, 0.1 ), W( *this, 0.25 ), H( *this, .95 ) ),
+		tomographyExecution( hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.1 ), W( *this, 0.4 ), H( *this, .95 ) )
 	{
 		Fl_Window::resizable( *this );
 
+		Fl_Window::add( menu );
 		Fl_Window::add( modView );
 		Fl_Window::add( gantryBuild );
 		Fl_Window::add( tomographyExecution );
@@ -61,6 +65,7 @@ class mainView : public Fl_Window{
 
 	public:
 
+	Fl_Group menu;
 	modelView modView;
 	gantryEdition gantryBuild;
 	tomographyExec tomographyExecution;
