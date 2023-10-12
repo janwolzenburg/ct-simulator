@@ -44,7 +44,7 @@ class fileChooser : private Fl_Native_File_Chooser{
 	 * @param fileFilter String with filter
 	 * @param defaultDirectory Directory to start
 	*/
-	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory = path{  } );
+	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, const Fl_Native_File_Chooser::Type type_ = Fl_Native_File_Chooser::Type::BROWSE_FILE );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -103,5 +103,5 @@ class fileChooser : private Fl_Native_File_Chooser{
 	string titleString;		/*!<Title string*/
 	string filterString;	/*!<Filter string*/
 	path startDirectory;	/*!<Start directory*/
-
+	Fl_Native_File_Chooser::Type chooserType;
  };

@@ -26,45 +26,51 @@ using std::vector;
 *********************************************************************/
 
 
-const string fileChooser::FILE_PREAMBLE{ "FILE_CHOOSER_FILE_PREAMBLE" };
+const string fileChooser::FILE_PREAMBLE{ "Ver01_FILE_CHOOSER_FILE_PREAMBLE" };
 
 
-fileChooser::fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory ) : 
+fileChooser::fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, Fl_Native_File_Chooser::Type type_ ) :
 	titleString( windowTitle ),
 	filterString( fileFilter ),
-	startDirectory( defaultDirectory )
+	startDirectory( defaultDirectory ),
+	chooserType( type_ )
 {
 
-	this->type( Fl_Native_File_Chooser::BROWSE_FILE );
+	this->type( chooserType );
 	
 	this->title( windowTitle.c_str() );
 	this->filter( fileFilter.c_str() );
 
 	this->directory( defaultDirectory.string().c_str() );
 
+	this->options( SAVEAS_CONFIRM );
+
 }
 
 
 fileChooser::fileChooser( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	fileChooser{ "", "" }
+	fileChooser{ "", "", path{} }
 {
-
-	this->type( Fl_Native_File_Chooser::BROWSE_FILE );
-
 	this->setTitle( deSerializeBuildIn<string>( string{ "File chooser" }, binData, it ) );
 	this->setFilter( deSerializeBuildIn<string>( string{ "" }, binData, it ) );
 	this->setStartDirectory( deSerializeBuildIn<string>( string{ "./" }, binData, it ) );
 
+	this->type( deSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binData, it ) );
+
+	this->options( SAVEAS_CONFIRM );
+
 }
 
 fileChooser::fileChooser( const fileChooser& fC ) : 
-	fileChooser{ fC.titleString, fC.filterString, fC.startDirectory }
+	fileChooser{ fC.titleString, fC.filterString, fC.startDirectory, fC.chooserType }
 {
 
 }
 
 fileChooser& fileChooser::operator=( const fileChooser& fC ){
 
+
+	this->type( fC.chooserType );
 	this->setTitle( fC.titleString );
 	this->setFilter( fC.filterString );
 	this->setStartDirectory( fC.startDirectory );
@@ -81,6 +87,7 @@ size_t fileChooser::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( string{ this->title() }, binData);
 	numBytes += serializeBuildIn( string{ this->filter() }, binData );
 	numBytes += serializeBuildIn( string{ this->directory() }, binData );
+	numBytes += serializeBuildIn<unsigned char>( (unsigned char) chooserType, binData );
 
 	return numBytes;
 
