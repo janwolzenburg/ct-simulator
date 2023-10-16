@@ -55,7 +55,7 @@ class programState{
 
 	~programState( void );
 
-	void resetStateStorageAtExit( void ){ resetStateAtExit = false; };
+	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
 
 	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
