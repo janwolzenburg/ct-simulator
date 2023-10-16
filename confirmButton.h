@@ -26,7 +26,8 @@ class Fl_Confirm_Button : public Fl_Button{
 		confirmationFlag( false )
 	{
 
-		Fl_Button::window()->add( confirmationWindow );
+		//confirmationWindow.
+		//Fl_Button::window()->add( confirmationWindow );
 
 		confirmationWindow.add( confirmationText );
 		confirmationWindow.add( yesButton );
