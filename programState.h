@@ -113,7 +113,7 @@ class programState{
 
 	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
-	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); };
+	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); storedProcessingParameters.setLoaded(); };
 
 	void setUpdateInformationFlag( void ) const;
 	//void setNewRadonTransformedFlag( void ){  }
@@ -132,6 +132,7 @@ class programState{
 		if( storedProjections.Loaded() ){
 
 			path exportPath = exportChooserInstance.choose();
+			storedExportChooser.setLoaded();
 			if( exportPath.empty() ) return;
 
 
@@ -147,6 +148,7 @@ class programState{
 	}
 
 	path importSinogram( void ){
+		storedImportChooser.setLoaded();
 		return  importChooserInstance.choose();
 
 	}

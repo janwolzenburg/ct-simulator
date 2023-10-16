@@ -105,16 +105,18 @@ programState::~programState( void ) {
 
 	storedModel.saveObject();
 	storedModelChooser.saveObject();
-	storedPlane.saveObject( true );
-	storedModelParameter.saveObject( true );
-	storedXRayTubeParameter.saveObject( true );
-	storedRadonParameter.saveObject( true );
-	storedDetectorParameter.saveObject( true );
-	storedTomographyParamerter.saveObject( true );
+	storedPlane.saveObject();
+	storedModelParameter.saveObject();
+
+	storedXRayTubeParameter.saveObject();
+	storedRadonParameter.saveObject();
+	storedDetectorParameter.saveObject();
+
+	storedTomographyParamerter.saveObject();
 	storedProjections.saveObject();
-	storedProcessingParameters.saveObject( true );
-	storedImportChooser.saveObject( true );
-	storedExportChooser.saveObject( true );
+	storedProcessingParameters.saveObject( );
+	storedImportChooser.saveObject();
+	storedExportChooser.saveObject();
 }
 
 
@@ -147,6 +149,9 @@ void programState::buildGantry( const tubeParameter tubeParameter_,
 	gantryInstance.reset();
 	gantry newGantry{ gantryInstance.CSys(), tubeParameter_, radonParameter, indipendentParameter };
 
+	storedXRayTubeParameter.setLoaded();
+	storedRadonParameter.setLoaded();
+	storedDetectorParameter.setLoaded();
 	gantryInstance = newGantry;
 
 };
@@ -217,12 +222,17 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 bool programState::sliceModel( void ){
 
+	storedPlane.setLoaded();
+	storedModelParameter.setLoaded();
+	storedTomographyParamerter.setLoaded();
+
 	grid<voxData> tempSlice = modelInstance.getSlice( planeInstance.surface, 1. );
 	
 	if( tempSlice.Size().col == 0 || tempSlice.Size().row == 0 )
 		return false;
 
 	modelSliceInstance = tempSlice;
+
 	return true;
 
 }
@@ -261,6 +271,7 @@ bool programState::loadModel( void ){
 	storedModelChooser.setLoaded();
 
 	if( !storedModel.load( modelToLoad ) ) return false;
+
 
 	return true;
 
