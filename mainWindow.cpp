@@ -18,13 +18,14 @@ void mainView::handleEvents( void ){
 		vector<char> binData = importSerialized( chosenPath );
 		vector<char>::const_iterator it = binData.cbegin();
 
-		radonTransformed importedSinogram{ binData, it };
-		PROGRAM_STATE().assignRadonTransformed( importedSinogram );
+		if( validBinaryData( radonTransformed::FILE_PREAMBLE, binData, it ) ){
+			radonTransformed importedSinogram{ binData, it };
+			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 
-		if( PROGRAM_STATE().ProcessingWindow() != nullptr ){
-			PROGRAM_STATE().ProcessingWindow()->setNewRTFlag();
+			if( PROGRAM_STATE().ProcessingWindow() != nullptr ){
+				PROGRAM_STATE().ProcessingWindow()->setNewRTFlag();
+			}
 		}
-
 	}
 
 
