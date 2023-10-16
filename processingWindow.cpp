@@ -6,6 +6,7 @@
 void processingView::recalcFilteredProjections( void ){
 
 	//Fl_Window::window()->deactivate();
+	PROGRAM_STATE().deactivateAll();
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 	//processingProgressWindow->show();
@@ -35,5 +36,6 @@ void processingView::recalcFilteredProjections( void ){
 	delete processingProgressWindow;
 
 	//Fl_Window::window()->activate();
+	PROGRAM_STATE().activateAll();
 
 }
