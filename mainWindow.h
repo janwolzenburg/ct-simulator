@@ -41,7 +41,7 @@ class mainView : public Fl_Window{
 		menu.add( resetProgramStateBtn );
 
 		resetProgramStateBtn.setTitle( "Confirm program reset" );
-		resetProgramStateBtn.setWindowText( "Do you want to reset program status? This will happen at the program's exit!" );
+		resetProgramStateBtn.setWindowText( "Do you want to reset program status?\nThis will happen at the program's exit!" );
 		resetProgramStateBtn.setButtonTexts( "Reset", "Don't reset" );
 
 		Fl_Window::add( modView );
