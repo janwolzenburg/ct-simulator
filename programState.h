@@ -55,7 +55,7 @@ class programState{
 
 	~programState( void );
 
-	void disableStateStorageAtExit( void ){ storeStateAtExit = false; };
+	void resetStateStorageAtExit( void ){ resetStateAtExit = false; };
 
 	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
@@ -68,6 +68,8 @@ class programState{
 	grid<voxData>& Slice( void ){ return modelSliceInstance; };
 
 	static void createStorageDir( void );
+
+	static void deleteStorageDir( void );
 
 	static path getPath( const string filename ){ return stateStorage / filename; };
 
@@ -130,9 +132,11 @@ class programState{
 		if( storedProjections.Loaded() ){
 
 			path exportPath = exportChooserInstance.choose();
+			if( exportPath.empty() ) return;
+
 
 			if( exportPath.extension() != "sinogram" )
-				exportPath /= ".sinogram";
+				exportPath += ".sinogram";
 
 			vector<char> binData;
 			currentProjections.serialize( binData );
@@ -161,7 +165,7 @@ class programState{
 	mainView* mainWindow = nullptr;
 	processingView* processingWindow = nullptr;
 
-	bool storeStateAtExit;
+	bool resetStateAtExit;
 
 	model modelInstance;
 	storedObject<model> storedModel;

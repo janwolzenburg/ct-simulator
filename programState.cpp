@@ -44,7 +44,7 @@ programState& programState::getInstance(){
 
 programState::programState( void ) :
 	
-	storeStateAtExit( true ),
+	resetStateAtExit( false ),
 
 	modelInstance{},
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
@@ -95,12 +95,16 @@ programState::programState( void ) :
 
 programState::~programState( void ) {
 	
-	if( !storeStateAtExit ) return;
+	if( resetStateAtExit ){
+		
+		deleteStorageDir();
 
+		return;
+	}
 	createStorageDir();
 
 	storedModel.saveObject();
-	storedModelChooser.saveObject( true );
+	storedModelChooser.saveObject();
 	storedPlane.saveObject( true );
 	storedModelParameter.saveObject( true );
 	storedXRayTubeParameter.saveObject( true );
@@ -118,6 +122,18 @@ void programState::createStorageDir( void ){
 
 	// Check if state storage directory erxists
 	if( !std::filesystem::is_directory( stateStorage ) ) std::filesystem::create_directory( stateStorage );
+
+}
+
+void programState::deleteStorageDir( void ){
+
+	// Check if state storage directory erxists
+	if( !std::filesystem::is_directory( stateStorage ) ) return;
+
+	// Remove all content
+	for( const auto& file : std::filesystem::directory_iterator( stateStorage ) )
+		std::filesystem::remove_all( file.path() );
+
 
 }
 
@@ -242,6 +258,7 @@ void programState::setUpdateInformationFlag( void ) const{
 bool programState::loadModel( void ){
 
 	path modelToLoad = modelChooserInstance.choose();
+	storedModelChooser.setLoaded();
 
 	if( !storedModel.load( modelToLoad ) ) return false;
 

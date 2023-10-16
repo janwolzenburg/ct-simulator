@@ -20,19 +20,55 @@ class Fl_Confirm_Button : public Fl_Button{
 		yesButton{ X( confirmationWindow, 0.1 ), Y( confirmationWindow, .8 ), W( confirmationWindow, .3 ), H( confirmationWindow, .2 ), "Yes" },
 		noButton{  X( confirmationWindow, 0.6 ), Y( confirmationWindow, .8 ), W( confirmationWindow, .3 ), H( confirmationWindow, .2 ), "No" },
 		confirmationString{},
-		flag( nullptr )
-
+		buttonPressed( false ),
+		yesPressed( false ),
+		noPressed( false ),
+		confirmationFlag( false )
 	{
-		confirmationWindow.hide();
 
 		confirmationWindow.add( confirmationText );
 		confirmationWindow.add( yesButton );
 		confirmationWindow.add( noButton );
 
+		confirmationWindow.hide();
 
+		Fl_Button::callback( button_cb, &buttonPressed );
+		yesButton.callback( button_cb, &yesPressed );
+		noButton.callback( button_cb, &noPressed );
 	};
 
-	
+	void setTitle( const string title ){
+		confirmationWindow.copy_label( title.c_str() );
+	}
+
+	void setWindowText( const string title ){
+		confirmationText.value( title.c_str() );
+	}
+
+	void setButtonTexts( const string yesText, const string noText ){
+		yesButton.copy_label( yesText.c_str() );
+		noButton.copy_label( noText.c_str() );
+	}
+
+
+	void handleEvents( void ){
+
+		if( unsetFlag( buttonPressed ) ){
+			confirmationWindow.show();
+		}
+
+		if( unsetFlag( yesPressed ) ){
+			confirmationFlag = true;
+			confirmationWindow.hide();
+		}
+
+		if( unsetFlag( noPressed ) ){
+			confirmationWindow.hide();
+		}
+
+	}
+
+	bool buttonPressConfirmed( void ){ return unsetFlag( confirmationFlag ); };
 
 	private:
 
@@ -43,6 +79,8 @@ class Fl_Confirm_Button : public Fl_Button{
 
 	string confirmationString;
 
-	bool* flag;
-
+	bool buttonPressed;
+	bool yesPressed;
+	bool noPressed;
+	bool confirmationFlag;
 };
