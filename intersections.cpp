@@ -25,13 +25,6 @@ using std::string;
    Implementations
 *********************************************************************/
 
-/*
-lineLine_Intersection_Result::lineLine_Intersection_Result( void )
-	: hasSolution( false ),
-	lineParameter1( 0 ), lineParameter2( 0 ),
-	intersectionPoint( pnt3{} ){}
-*/
-
 string lineLine_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
 	string str;
 	string newLine = { '\n' };
@@ -81,16 +74,6 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 };
 
 
-/*
-	linSurf_Intersection_Result
-*/
-/*
-linSurf_Intersection_Result::linSurf_Intersection_Result( void )
-	: hasSolution( false ),
-	linePara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
-	intersectionPoint( pnt3{} ){}
-*/
-
 string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
 	string str;
 	string newLine = { '\n' };
@@ -101,26 +84,6 @@ string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) cons
 	str += newLine + intersectionPoint.toStr();
 	return str;
 }
-
-
-
-/*
-	rayVox_Intersection_Result
-*/
-
-/*
-rayVox_Intersection_Result::rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
-	linSurf_Intersection_Result( res_ ),
-	face( FACE_ID::INVALID )
-{
-
-}
-
-rayVox_Intersection_Result::rayVox_Intersection_Result( void ) :
-	//linSurf_Intersection_Result( linSurf_Intersection_Result{} ),
-	face( FACE_ID::INVALID )
-{}
-*/
 
 
 /*

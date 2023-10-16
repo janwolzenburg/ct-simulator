@@ -1,3 +1,4 @@
+#pragma once
 /*********************************************************************
  * @file   cartesian.fwd.h
  * @brief  Forward declerations

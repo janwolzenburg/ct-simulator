@@ -21,6 +21,9 @@
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for a matrix
+*/
 class matx : public mathObj{
 
 	public:

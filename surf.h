@@ -104,6 +104,10 @@ class surf : public mathObj{
 	*/
 	virtual bool parasInBounds( [[maybe_unused]] const double a, [[maybe_unused]] const double b ) const { return true; };
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 
@@ -219,6 +223,10 @@ class surfLim : public surf{
 	*/
 	line  NormalLine( void ) const;
 
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 	private:

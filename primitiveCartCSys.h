@@ -16,6 +16,7 @@
 #include "primitiveVec3.h"
 
 
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -83,13 +84,6 @@ class primitiveCartCSys : public mathObj{
 
 
 	protected:
-
-	/*!
-	 * @brief Set origin
-	 * @param newOrigin New origin
-	 * @return New origin
-	*/
-	//primitiveVec3 O( const primitiveVec3 newOrigin ){ return origin = newOrigin; };
 
 	/*!
 	 * @brief Translate coordinate system

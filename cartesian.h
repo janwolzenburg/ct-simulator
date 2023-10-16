@@ -83,31 +83,12 @@ class cartCSys : private primitiveCartCSys {
 	*/
 	vector<const cartCSys*> getPathFromGlobal( void ) const;
 
+	/*!
+	 * @brief Get the primitive system
+	 * @return Primitive coordinate system without context
+	*/
 	primitiveCartCSys Primitive( void ) const{ return *this; };
 
-	/*!
-	 * @brief Get origin of this coordinate system in context of parent
-	 * @return Origin componenets
-	*/
-	//primitiveVec3 O( void ) const { return origin; };
-
-	/*!
-	 * @brief Get x-axis of this coordinate system in context of parent
-	 * @return x-axis values
-	*/
-	//primitiveVec3 Ex( void ) const{ return ex; };
-
-	/*!
-	 * @brief Get y-axis of this coordinate system in context of parent
-	 * @return y-axis values
-	*/
-	//primitiveVec3 Ey( void ) const{ return ey; };
-
-	/*!
-	 * @brief Get z-axis of this coordinate system in context of parent
-	 * @return z-axis values
-	*/
-	//primitiveVec3 Ez( void ) const{ return ez; };
 
 	/*!
 	 * @brief Get origin point in this system's context

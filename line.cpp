@@ -59,20 +59,6 @@ string line::toStr( unsigned int newLineTabulators ) const{
 	return str;
 }
 
-/*
-pnt3 line::setOrigin( const pnt3 newO ){ 
-	return o = newO.convertTo( r ); 
-};
-
-line line::convertTo( const cartCSys* const target ) const{
-	return line{ r.convertTo( target ), o.convertTo( target ) };
-};
-
-/*
-pnt3 line::getPnt( const double linPara ) const{
-	pnt3 p{ o + ( r * linPara ) };
-	return  p;
-}*/
 
 double line::getPara( const pnt3 p, bool* const success ) const{
 	pnt3 cP = p.convertTo( o );
@@ -99,10 +85,6 @@ vec3 line::getLot( const pnt3 p ) const{
 	return s - vP;
 }
 
-/*
-double line::getDistance( const pnt3 p ) const{
-	return getLot( p ).Length();
-};*/
 
 double line::getDistance( const line l ) const{
 	vec3 n{ r ^ l.r };

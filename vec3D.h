@@ -416,6 +416,9 @@ class uvec3 : public vec3{
 	*/
 	uvec3( const v3 xyz_, const cartCSys* const cSys_ ) : uvec3{ vec3{ xyz_, cSys_ } } {};
 
+	/*!
+	 * @brief Default constructor
+	*/
 	uvec3( void ) : uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() } {};
 
 	/*!

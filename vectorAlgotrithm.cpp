@@ -23,6 +23,7 @@ using std::vector;
 #include "generel.h"
 
 
+
  /*********************************************************************
 	Functions
  *********************************************************************/
@@ -32,51 +33,41 @@ vector<double> linearSpace(const double start, const double end, const size_t nu
 
 	if (start > end || numPoints < 2) return vector<double>{ start };
 
-	vector<double> vec;
+	vector<double> vec( numPoints, 0. );
 	const double delta = ( end - start ) / ( (double) numPoints - 1 );
 
 	for (size_t i = 0; i < numPoints; i++) {
-		vec.push_back( start + (double) i * delta );
+		vec.at( i ) = ( start + (double) i * delta );
 	}
 
 	return vec;
 }
 
 double sum( const vector<double> vec ) {
-
 	return std::accumulate( vec.begin(), vec.end(), 0. );
-
 }
 
-double sum( const vector<v2> vec ){
-
+double sumY( const vector<v2> vec ){
 	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const v2& b ){ return a + b.y; } );
-
 }
 
 void scale(vector<double>& vec, const double factor) {
-
 	std::for_each( vec.begin(), vec.end(), [&]( double& d ) { d *= factor; } );
-
 }
 
 
-void scale( vector<v2>& vec, const double factor ){
-
+void scaleY( vector<v2>& vec, const double factor ){
 	std::for_each( vec.begin(), vec.end(), [&] ( v2& d ){ d.y *= factor; } );
-
 }
 
 
 void normalizeThis( vector<v2>& vec ){
-
-	scale( vec, 1. / sum( vec ) );
-
+	scaleY( vec, 1. / sumY( vec ) );
 }
 
-vector<v2> normalize( const vector<v2> vec ){
+vector<v2> normalize( const vector<v2>& vec ){
 
-	vector<v2> normalizedVector = vec;
+	vector<v2> normalizedVector{ vec };
 
 	normalizeThis( normalizedVector );
 
@@ -86,15 +77,16 @@ vector<v2> normalize( const vector<v2> vec ){
 
 size_t closest( const vector<double>& vec, const double val ){
 
-	//std::sort( vec.begin(), vec.end() );
+	//!!! vec must be sorted!
 
 	// Iterator to element which is greater or equal to value
 	vector<double>::const_iterator it_geq = std::lower_bound( vec.cbegin(), vec.cend(), val );
 
-	// First element in vec is greater or equal => return iterator to first element
+	// First element in vec is greater or equal => return index of first element
 	if( it_geq == vec.cbegin() ) return 0;
 
-	if( it_geq == vec.cend() ) return vec.size() - 1;
+	// lower_bound return last if no element is found. Closest is then the last element
+	if( it_geq == vec.cend() - 1 ) return vec.size() - 1;
 
 	// Compare differences to value for two consecutive elements
 	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.cbegin() ) - 1;
@@ -128,9 +120,10 @@ double Min( const vector<double>& v ){
 }
 
 
+
 double Min( const vector<vector<double>>& v ){
 
-	vector<double> minima( v.size(), INFINITY );
+	vector<double> minima( v.size(), 0. );
 
 	for( vector<vector<double>>::const_iterator sV = v.cbegin(); sV < v.cend(); sV++ ){
 		
@@ -147,7 +140,7 @@ double Min( const vector<vector<double>>& v ){
 
 double Max( const vector<vector<double>>& v ){
 
-	vector<double> maxima( v.size(), INFINITY );
+	vector<double> maxima( v.size(), 0. );
 
 	for( vector<vector<double>>::const_iterator sV = v.cbegin(); sV < v.cend(); sV++ ){
 

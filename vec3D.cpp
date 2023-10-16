@@ -48,32 +48,6 @@ string vec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) cons
 	return str;
 }
 
-/*
-bool vec3::operator== ( const vec3 v2 ) const{
-	//vec3D v2Conv = v2.convertTo( this->cSys );
-	return this->coordinates::operator==( v2 );
-}
-
-vec3 vec3::operator+ ( const vec3 v2 ) const{
-	return this->coordinates::operator+( v2 );
-}
-
-vec3 vec3::operator- ( const vec3 v2 ) const{
-	return this->coordinates::operator-( v2 );
-}
-
-vec3 vec3::operator- ( void ) const{
-	return this->coordinates::operator-();
-};
-
-vec3 vec3::operator* ( const double scalar ) const{
-	return this->coordinates::operator*( scalar );
-}
-
-vec3 vec3::operator/ ( const double divisor ) const{
-	return this->coordinates::operator/( divisor );
-}*/
-
 double vec3::operator* ( const vec3 v2 ) const{
 	vec3 convVec = v2.convertTo( this->cSys );
 
@@ -295,56 +269,7 @@ vec3 vec3::negateX( void ) const{
 
 
 /*
-	uvec3D implementation
-*/
-
-/*
-uvec3::uvec3( vec3 v ) : vec3( v ){
-	// Normalize vec3Dtor
-	normalize();
-}*/
-/*
-uvec3::uvec3( const v3 xyz_, const cartCSys* const cSys_ ) :
-	uvec3{ vec3{ xyz_, cSys_ } }
-{}
-
-uvec3::uvec3( void ) : 
-	uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() }
-{  
-
-}*/
-
-/*
-mathObj::MATH_ERR uvec3::addXM( const double x_ ){
-	mathObj::MATH_ERR tErr = MATH_ERR::OK;
-	if( ( tErr = vec3::addXM( x_ ) ) != MATH_ERR::OK )		return tErr;
-	if( ( tErr = normalize() ) != MATH_ERR::OK )			return tErr;
-	return MATH_ERR::OK;
-};
-
-mathObj::MATH_ERR uvec3::addYM( const double y_ ){
-	mathObj::MATH_ERR tErr = MATH_ERR::OK;
-	if( ( tErr = vec3::addYM( y_ ) ) != MATH_ERR::OK )		return tErr;
-	if( ( tErr = normalize() ) != MATH_ERR::OK )			return tErr;
-	return MATH_ERR::OK;
-};
-
-mathObj::MATH_ERR uvec3::addZM( const double z_ ){
-	mathObj::MATH_ERR tErr = MATH_ERR::OK;
-	if( ( tErr = vec3::addZM( z_ ) ) != MATH_ERR::OK )		return tErr;
-	if( ( tErr = normalize() ) != MATH_ERR::OK )			return tErr;
-	return MATH_ERR::OK;
-};
-*(
-
-
-/*
 	pnt3D implementation
-*/
-
-/*
-pnt3::pnt3( vec3 v )
-	: vec3( v ){};
 */
 
 string pnt3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
@@ -371,11 +296,6 @@ pnt3 pnt3::convertTo( const cartCSys* const target_cSys ) const{
 pnt3 pnt3::convertTo( const pnt3 targetP ) const{
 	return pnt3::convertTo( targetP.cSys );
 }
-
-/*
-primitiveVec3 pnt3::XYZ( void ) const{
-	return vec3::XYZ();
-}*/
 
 primitiveVec3 pnt3::XYZ( const cartCSys* const target ) const{
 	return pnt3::convertTo( target ).XYZ();

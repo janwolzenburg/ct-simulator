@@ -135,9 +135,6 @@
     <ClInclude Include="tests_linear_algebra.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="vectorAlgorithm.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="voxel.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
@@ -345,6 +342,9 @@
     <ClInclude Include="confirmButton.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="vectorAlgorithm.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -370,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="tests_linear_algebra.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
-    </ClCompile>
-    <ClCompile Include="vectorAlgotrithm.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="voxel.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
@@ -505,6 +502,9 @@
     </ClCompile>
     <ClCompile Include="mainWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="vectorAlgotrithm.cpp">
+      <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

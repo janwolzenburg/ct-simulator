@@ -29,20 +29,23 @@ class line : public mathObj{
 
 	public:
 
-
+	/*!
+	 * @brief Cosntructor
+	 * @param v Unit vector
+	 * @param p Origin
+	*/
 	explicit line( const uvec3 v, const pnt3 p );
 
 	/*!
 	 * @brief Constructor
 	 * @param v Line direction
-	 * @param p O
+	 * @param p Origin
 	*/
 	explicit line( const vec3 v, const pnt3 p );
 
 
 	/*!
 	 * @brief Default constructor
-	 * @param  
 	*/
 	line( void );
 

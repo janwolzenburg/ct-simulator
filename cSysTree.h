@@ -56,6 +56,9 @@ class cSysTree : public mathObj{
 	*/
 	static cSysTree& getInstance();
 
+	/*!
+	 * @brief Destructor
+	*/
 	~cSysTree( void );
 
 	/*!

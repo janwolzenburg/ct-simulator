@@ -36,7 +36,7 @@ matx::matx( const size_t n_, const size_t m_ )
 	A( new double[n * m] ) {
 	if (n == 0) { checkErr( MATH_ERR::INPUT, "Matrix rows amount must be greater than zero!" ); n = 1; }
 	if (m == 0) { checkErr( MATH_ERR::INPUT, "Matrix columns amount must be greater than zero!" ); m = 1; }
-};
+}
 
 string matx::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 
