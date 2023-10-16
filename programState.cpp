@@ -43,6 +43,9 @@ programState& programState::getInstance(){
 
 
 programState::programState( void ) :
+	
+	storeStateAtExit( true ),
+
 	modelInstance{},
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
 
@@ -92,6 +95,8 @@ programState::programState( void ) :
 
 programState::~programState( void ) {
 	
+	if( !storeStateAtExit ) return;
+
 	createStorageDir();
 
 	storedModel.saveObject();

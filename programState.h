@@ -55,6 +55,7 @@ class programState{
 
 	~programState( void );
 
+	void disableStateStorageAtExit( void ){ storeStateAtExit = false; };
 
 	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
@@ -159,6 +160,8 @@ class programState{
 
 	mainView* mainWindow = nullptr;
 	processingView* processingWindow = nullptr;
+
+	bool storeStateAtExit;
 
 	model modelInstance;
 	storedObject<model> storedModel;
