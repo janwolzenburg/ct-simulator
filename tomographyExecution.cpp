@@ -24,7 +24,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 
 	controlGrp( X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) ),
 	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .4 ), "Record Slice" ),
-	importButton(	 X( controlGrp, .05 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Import Sinogram" ),
 	exportButton(	 X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" ),
 
 	
@@ -88,13 +87,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	controlGrp.box( FL_BORDER_BOX );
 
 	controlGrp.add( radiationButton );
-	controlGrp.add( importButton );
 	controlGrp.add( exportButton );
 
 	exportButton.deactivate();
 
 	radiationButton.callback( button_cb, &radiateFlag );
-	importButton.callback( button_cb, &importFlag );
 	exportButton.callback( button_cb, &exportFlag );
 
 	this->deactivate();
@@ -110,19 +107,21 @@ void tomographyExec::handleEvents( void ){
 	programState& state = PROGRAM_STATE();
 
 	if( state.ModelLoaded() && !this->active() ){
-		exportButton.deactivate();
 		this->activate();
 	}
-	else if( !state.ModelLoaded() ) this->deactivate();
-
-	if( PROGRAM_STATE().RadonTransformedLoaded() && !exportButton.active() ){
+	else if( !state.ModelLoaded() ){
+		this->deactivate();
+	}
+	if( PROGRAM_STATE().RadonTransformedLoaded() ){
 		exportButton.activate();
+	}
+	else{
+		exportButton.deactivate();
 	}
 
 	if(  unsetFlag( radiateFlag ) ){
 
-		Fl_Group::window()->deactivate();
-
+		PROGRAM_STATE().deactivateAll();
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(), 20, 5, "Radiation progress" );
 		state.Tomography() = tomography{ state.TomographyParameter() };
@@ -135,9 +134,7 @@ void tomographyExec::handleEvents( void ){
 
 		delete radiationProgressWindow;
 
-
-		exportButton.activate();
-		Fl_Group::window()->activate();
+		PROGRAM_STATE().activateAll();
 
 	}
 
@@ -146,25 +143,6 @@ void tomographyExec::handleEvents( void ){
 		PROGRAM_STATE().exportSinogram();
 	}
 
-	if( unsetFlag( importFlag ) ){
-
-		path chosenPath = PROGRAM_STATE().importSinogram();
-
-		if( chosenPath.empty() ) return;
-
-		vector<char> binData = importSerialized( chosenPath );
-		vector<char>::const_iterator it = binData.cbegin();
-
-		radonTransformed importedSinogram{ binData, it };
-		state.assignRadonTransformed( importedSinogram );
-
-		if( state.ProcessingWindow() != nullptr ){
-			state.ProcessingWindow()->setNewRTFlag();
-		}
-
-		exportButton.activate();
-
-	}
 
 	if( unsetFlag( updateFlag )){
 		

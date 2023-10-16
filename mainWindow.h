@@ -31,6 +31,10 @@ class mainView : public Fl_Window{
 		Fl_Window( w, h, label ),
 
 		menu( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, 0.035 ) ),
+
+		importSinogramBtn(	X( menu, .7 ), Y( menu, 0 ), W( menu, .15 ), H( menu, 1. ), "Import Sinogram" ),
+		importSinogramFlag( false ),
+
 		resetProgramStateBtn{ X( menu, .9 ), Y( menu, 0. ), W( menu, .1 ), H( menu, 1. ), "Reset program" },
 		resetButtonPressed( false ),
 		modView( X( *this, 0. ), Y( *this, 0.04 ), W( *this, 0.3 ), H( *this, .95 ) ),
@@ -40,6 +44,10 @@ class mainView : public Fl_Window{
 		Fl_Window::resizable( *this );
 
 		Fl_Window::add( menu );
+
+		menu.add( importSinogramBtn );
+		importSinogramBtn.callback( button_cb, &importSinogramFlag );
+
 		menu.add( resetProgramStateBtn );
 		resetProgramStateBtn.callback( button_cb, &resetButtonPressed );
 
@@ -62,26 +70,32 @@ class mainView : public Fl_Window{
 
 	}
 
-
-	void handleEvents( void ){
-
-		//resetProgramStateBtn.handleEvents();
-		if( unsetFlag( resetButtonPressed ) ){
-			if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
-				PROGRAM_STATE().resetStateStorageAtExit();
-		}
-
-
-		modView.handleEvents();
-		gantryBuild.handleEvents();
-		tomographyExecution.handleEvents();
-
+	void deactivate( void ){
+		Fl_Window::deactivate();
+		menu.deactivate();
+		modView.deactivate();
+		gantryBuild.deactivate();
+		tomographyExecution.deactivate();
 	}
+
+	void activate( void ){
+		Fl_Window::activate();
+		menu.activate();
+		modView.activate();
+		gantryBuild.activate();
+		tomographyExecution.activate();
+	}
+
+
+
+	void handleEvents( void );
 
 
 	public:
 
 	Fl_Group menu;
+	Fl_Button importSinogramBtn;
+	bool importSinogramFlag;
 	Fl_Button resetProgramStateBtn;
 	bool resetButtonPressed;
 	//Fl_Confirm_Button resetProgramStateBtn;

@@ -53,12 +53,12 @@ class tomographyExec : public Fl_Group{
 	Fl_Group controlGrp;
 	Fl_Button radiationButton;
 
-	Fl_Button importButton;
+	//Fl_Button importButton;
 	Fl_Button exportButton;
 
 
 	bool radiateFlag;
-	bool importFlag;
+	//bool importFlag;
 	bool exportFlag;
 
 	bool updateFlag;

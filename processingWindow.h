@@ -92,6 +92,23 @@ class processingView : public Fl_Window{
 
 	void setNewRTFlag( void ){ newRTFlag = true; };
 
+	void deactivate( void ){
+		Fl_Window::deactivate();
+		sinogramGrp.deactivate();
+		filterGrp.deactivate();
+		filteredProjGrp.deactivate();
+		reconstructionGrp.deactivate();
+	}
+
+	void activate( void ){
+		Fl_Window::activate();
+		sinogramGrp.activate();
+		filterGrp.activate();
+		filteredProjGrp.activate();
+		reconstructionGrp.activate();
+	}
+
+
 	void handleEvents( void ){
 
 		if( PROGRAM_STATE().RadonTransformedLoaded() && newRTFlag ){
