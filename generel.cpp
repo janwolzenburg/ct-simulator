@@ -300,7 +300,7 @@ bool exportSerialized( const string fileName, const vector<char>& binData ){
 
 vector<char> importSerialized( const path filePath ){
 
-	return importSerialized( filePath.string() );
+	return std::move( importSerialized( filePath.string() ) );
 
 }
 
@@ -327,7 +327,7 @@ vector<char> importSerialized( const string fileName ){
 
 	delete[] dArray;
 
-	return binData;
+	return std::move( binData );
 
 }
 
