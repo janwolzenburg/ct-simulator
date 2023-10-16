@@ -153,6 +153,10 @@ class programState{
 
 	}
 
+	void activateAll( void );
+
+	void deactivateAll( void );
+
 	private:
 
 	programState( void );

@@ -14,6 +14,7 @@
 #include "programState.h"
 #include "cSysTree.h"
 #include "mainWindow.h"
+#include "processingWindow.h"
 
 
  /*********************************************************************
@@ -119,6 +120,16 @@ programState::~programState( void ) {
 	storedExportChooser.saveObject();
 }
 
+void programState::activateAll( void ){
+	mainWindow->activate();
+	processingWindow->activate();
+}
+
+
+void programState::deactivateAll( void ){
+	mainWindow->deactivate();
+	processingWindow->deactivate();
+}
 
 void programState::createStorageDir( void ){
 

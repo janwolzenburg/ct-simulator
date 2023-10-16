@@ -259,6 +259,7 @@
     </ClInclude>
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="gui.cpp" />
+    <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="plots.cpp" />
     <ClCompile Include="monoImage.cpp" />
     <ClCompile Include="line.cpp" />
