@@ -103,7 +103,7 @@ class programState{
 
 	tomography& Tomography( void ) { return tomographyInstance; };
 
-	tomographyParameter& TomographyParameter( void ){ return tomographyParamerter; };
+	tomographyParameter& TomographyParameter( void ){ return tomographyParamerters; };
 
 	radonTransformed& Projections( void ){ return currentProjections; };
 
@@ -202,7 +202,7 @@ class programState{
 
 	gantry gantryInstance;
 
-	tomographyParameter tomographyParamerter;
+	tomographyParameter tomographyParamerters;
 	storedObject<tomographyParameter> storedTomographyParamerter;
 
 	fileChooser exportChooserInstance;

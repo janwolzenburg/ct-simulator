@@ -9,9 +9,11 @@
 
 
 
- /*********************************************************************
+/*********************************************************************
 	Includes
- *********************************************************************/
+*********************************************************************/
+#include <array>
+using std::array;
 #include "cartesian.h"
 
 
@@ -55,11 +57,6 @@ class cSysTree : public mathObj{
 	 * @return Reference to instance
 	*/
 	static cSysTree& getInstance();
-
-	/*!
-	 * @brief Destructor
-	*/
-	~cSysTree( void );
 
 	/*!
 	 * @brief Convert coordinate tree's data
@@ -117,13 +114,13 @@ class cSysTree : public mathObj{
 	 * @brief Get dummy system
 	 * @return Pointer to dummy
 	*/
-	cartCSys* getDummy( void ){ return &systems[0]; };
+	cartCSys* getDummy( void ){ return &( *systems.begin() ); };
 
 	/*!
 	 * @brief Get global system
 	 * @return Pointer to global system
 	*/
-	const cartCSys* getGlobal( void ){ return &systems[1]; };
+	const cartCSys* getGlobal( void ){ return &( systems.at( 1 ) ); };
 
 	/*!
 	 * @brief Check if pointed to system is valid
@@ -153,6 +150,6 @@ class cSysTree : public mathObj{
 
 
 	private:
-	size_t numSystems;			/*!< Number of systems in tree*/
-	cartCSys* systems;			/*!< Array with all systems*/
+	size_t numSystems;								/*!< Number of systems in tree*/
+	array<cartCSys, MAX_CSYS_IN_TREE> systems;		/*!< Array with all systems*/
 };

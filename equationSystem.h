@@ -12,6 +12,8 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
+#include <vector>
+using std::vector;
 #include "generel.h"
 #include "generelMath.h"
 
@@ -36,24 +38,6 @@ class matx : public mathObj{
 	matx( const size_t n_, const size_t m_ );
 
 	/*!
-	 * @brief Copy constructor
-	 * @param mtx Matrix to copy from
-	*/
-	matx( const matx& mtx );
-
-	/*!
-	 * @brief Assignment operator
-	 * @param mtx Source matrix
-	 * @return Reference to this matrix
-	*/
-	matx& operator=( const matx& mtx );
-
-	/*!
-	 * @brief Destructor freeing memory
-	*/
-	~matx();
-
-	/*!
 	 * @brief Element assignment
 	 * @param row Row index
 	 * @param col Column index
@@ -66,7 +50,7 @@ class matx : public mathObj{
 	 * @param idx Cell indices
 	 * @return Reference to matrix element
 	*/
-	double& operator() ( const idx2 idx );
+	double& operator() ( const idx2 idx ){ return (*this)(idx.y, idx.x); };
 
 	/*!
 	 * @brief Element read
@@ -80,7 +64,7 @@ class matx : public mathObj{
 	 * @param idx Cell indices
 	 * @return Value of matrix element
 	*/
-	double operator() ( const idx2 idx ) const;
+	double operator() ( const idx2 idx ) const{ return (*this)(idx.y, idx.x); };
 
 	/*!
 	 * @brief Convert matrice's data to string
@@ -147,7 +131,7 @@ class matx : public mathObj{
 
 	size_t n;				/*!<Rows*/
 	size_t m;				/*!<Columns*/
-	double* A;				/*!<Data-> Access with [m  * row + col] left to right - top to bottom*/
+	vector<double> A;		/*!<Data-> Access with [m  * row + col] left to right - top to bottom*/
 };
 
 
@@ -217,7 +201,7 @@ class eqnSys : private matx{
 /*!
  * @brief Class describing solution of linear system of equations
 */
-class eqnSysSolution : virtual public mathObj{
+class eqnSysSolution : public mathObj{
 
 	public:
 
@@ -228,27 +212,9 @@ class eqnSysSolution : virtual public mathObj{
 	eqnSysSolution( const eqnSys sys );
 
 	/*!
-	 * @brief Copy constructor
-	 * @param sysSol Instance to copy from
-	*/
-	eqnSysSolution( const eqnSysSolution& sysSol );
-
-	/*!
 	 * @brief Deleted default constructor
 	*/
 	eqnSysSolution( void ) = delete;
-
-	/*!
-	 * @brief Assignment operator
-	 * @param sysSol System to assign
-	 * @return This system
-	*/
-	eqnSysSolution& operator=( const eqnSysSolution& sysSol );
-
-	/*!
-	 * @brief Destructor freein memory
-	 */
-	~eqnSysSolution( void );
 
 	/*!
 	 * @brief Convert solutions's data to string
@@ -293,6 +259,6 @@ class eqnSysSolution : virtual public mathObj{
 	private:
 
 	size_t varNum;				/*!<Amount of variables*/
-	double* vars;				/*!<Array of variables*/
+	vector<double> vars;		/*!<Array of variables*/
 	bool success;				/*!<System has solution*/
 };

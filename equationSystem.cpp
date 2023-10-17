@@ -33,7 +33,7 @@
 matx::matx( const size_t n_, const size_t m_ )
 	: n( n_ ),
 	m( m_ ),
-	A( new double[n * m] ) {
+	A( n * m, 0. ) {
 	if (n == 0) { checkErr( MATH_ERR::INPUT, "Matrix rows amount must be greater than zero!" ); n = 1; }
 	if (m == 0) { checkErr( MATH_ERR::INPUT, "Matrix columns amount must be greater than zero!" ); m = 1; }
 }
@@ -54,49 +54,18 @@ string matx::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) cons
 	return str;
 }
 
-matx::matx( const matx& mtx )
-	: n( mtx.n ),
-	m( mtx.m ),
-	A( new double[n * m] ) {
-	memcpy( A, mtx.A, n * m * sizeof( double ) );	// Copy matrix data
-};
-
-matx& matx::operator=( const matx& mtx ) {
-	n = mtx.n;
-	m = mtx.m;
-
-	delete[] A;
-	A = new double[n * m];
-
-	memcpy( A, mtx.A, n * m * sizeof( double ) );	// Copy matrix data
-
-	return *this;
-};
-
-matx::~matx() {
-	delete[] A;
-};
-
 double& matx::operator() ( const size_t row, const size_t col ) {
 	if (row >= n) { checkErr( MATH_ERR::INPUT, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
 	if (col >= m) { checkErr( MATH_ERR::INPUT, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
 
-	return A[m * row + col];
-};
-
-double& matx::operator() ( const idx2 idx ) {
-	return (*this)(idx.y, idx.x);
-};
+	return A.at(m * row + col);;
+}
 
 double matx::operator() ( const size_t row, const size_t col ) const {
 	if (row >= n) { checkErr( MATH_ERR::INPUT, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
 	if (col >= m) { checkErr( MATH_ERR::INPUT, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	return A[m * row + col];
-};
-
-double matx::operator() ( const idx2 idx ) const {
-	return (*this)( idx.y, idx.x );
-};
+	return A.at(m * row + col);
+}
 
 mathObj::MATH_ERR matx::swapCols( const size_t c1, const size_t c2 ) {
 	if (c1 >= m || c2 >= m) return checkErr( MATH_ERR::BOUNDS, "Column or row indices exceed matrix size!" );
@@ -340,19 +309,9 @@ eqnSysSolution eqnSys::solve( void ){
 
 eqnSysSolution::eqnSysSolution( const eqnSys sys )
 	: varNum( sys.varNum ),
-	vars( new double[ varNum ] ),
+	vars( varNum, 0. ),
 	success( false ){};
 
-eqnSysSolution::eqnSysSolution( const eqnSysSolution& sysSol )
-	: varNum( sysSol.varNum ),
-	vars( new double[ varNum ] ),
-	success( sysSol.success ){
-	memcpy( vars, sysSol.vars, varNum * sizeof( double ) );	// Copy data
-};
-
-eqnSysSolution::~eqnSysSolution( void ){
-	delete[] vars;
-}
 
 string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
 	string str;
@@ -373,25 +332,13 @@ string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
 
 }
 
-eqnSysSolution& eqnSysSolution::operator=( const eqnSysSolution& sysSol ){
-
-	success = sysSol.success;
-	varNum = sysSol.varNum;
-	delete[] vars;
-
-	vars = new double[ varNum ];
-
-	memcpy( vars, sysSol.vars, varNum * sizeof( double ) );	// Copy data
-	return *this;
-};
-
 void eqnSysSolution::setVar( const size_t idx, const double val ){
 	if( idx >= varNum ) checkErr( MATH_ERR::INPUT, "Index exceeds amount of variables!" );
 
 	vars[ idx ] = val;
-};
+}
 
 double eqnSysSolution::getVar( const size_t idx ) const{
 	if( idx >= varNum ) checkErr( MATH_ERR::INPUT, "Index exceeds amount of variables!" );
 	return vars[ idx ];
-};
+}

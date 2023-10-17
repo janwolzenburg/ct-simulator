@@ -62,34 +62,9 @@ class model : public mathObj{
 	model( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Copy constructor
-	 * @param mod Model to copy from
-	*/
-	model( const model& mod );
-
-	/*!
 	 * @brief Default constructor
 	*/
 	model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){};
-
-	/*!
-	 * @brief Destructor
-	*/
-	~model();
-
-	/*!
-	 * @brief Copy assignment oeprator
-	 * @param mod Model to assign
-	 * @return Reference to this
-	*/
-	model& operator=( const model& mod );
-
-	/*!
-	 * @brief Move assignment operator
-	 * @param source Model to move
-	 * @return Reference to this model
-	*/
-	model& operator=( model&& source ) noexcept;
 
 	/*!
 	 * @brief Convert model's data to string
@@ -275,7 +250,7 @@ class model : public mathObj{
 	v3 voxSize3D;								/*!<Voxelsize in each dimension in mm*/
 	v3 size3D;									/*!<Size of complete model in mm*/
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
-	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
+	vector<voxData> parameter;					/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
 	double attenuationMin;						/*!<Minimum attenuation in model*/
 	double attenuationMax;						/*!<Maximum attenuation in model*/

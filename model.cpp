@@ -47,7 +47,7 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
-	parameter( new voxData[ numVox ] ),
+	parameter( numVox, voxData{} ),
 	cSys( cSys_ ),
 	attenuationMin( -1. ),
 	attenuationMax( -1. ),
@@ -56,14 +56,6 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 }
 
-model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name )
-	
-{
-	attenuationMin = mod.attenuationMin;
-	attenuationMax = mod.attenuationMax;
-	
-	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
-}
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	numVox3D( idx3( binData, it ) ),
@@ -72,7 +64,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z ) ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
-	parameter( new voxData[numVox] ),
+	parameter( numVox, voxData{} ),
 	cSys( CSYS_TREE().addCSys( binData, it ) ),
 	attenuationMin( deSerializeBuildIn<double>( -1., binData, it ) ),
 	attenuationMax( deSerializeBuildIn<double>( -1., binData, it ) ),
@@ -80,7 +72,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 {
 	
 	if( numVox * sizeof( voxData ) == (size_t) (binData.end() - it) ){
-		memcpy( parameter, &(*it) , numVox * sizeof(voxData));
+		memcpy( parameter.data(), &( *it ), numVox * sizeof(voxData));
 		it += numVox * sizeof( voxData );
 	}
 	else{
@@ -91,55 +83,9 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	}
 }
 
-model::~model(){
-	delete[] parameter;
-}
 
 string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return string( "" );
-}
-
-model& model::operator=( const model& mod ){
-	cSys = mod.cSys;
-	numVox3D = mod.numVox3D;
-	voxSize3D = mod.voxSize3D;
-
-	size3D = mod.size3D;
-	numVox = mod.numVox;
-
-	attenuationMin = mod.attenuationMin;
-	attenuationMax = mod.attenuationMax;
-	name = mod.name;
-
-	delete[] parameter;
-	parameter = new voxData[ numVox ];
-	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
-
-	return *this;
-}
-
-model& model::operator=( model&& mod ) noexcept{
-	
-	if( this == &mod ) return *this;
-
-	cSys = mod.cSys;
-	numVox3D = mod.numVox3D;
-	voxSize3D = mod.voxSize3D;
-
-	size3D = mod.size3D;
-	numVox = mod.numVox;
-
-	attenuationMin = mod.attenuationMin;
-	attenuationMax = mod.attenuationMax;
-	name = mod.name;
-
-	delete[] parameter;
-	parameter = mod.parameter;
-	
-	mod.parameter = nullptr;
-	mod.numVox = 0;
-
-	return *this;
 }
 
 vox model::Vox( void ) const{
@@ -151,7 +97,7 @@ const voxData& model::operator() ( const size_t x, const size_t y, const size_t 
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
 
-	return parameter[( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x];
+	return parameter.at(( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x);
 }
 
 voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
@@ -159,7 +105,7 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 
-	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
+	return parameter.at( ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x );
 }
 
 bool model::checkIndices( const idx3 indices ) const{
@@ -381,7 +327,7 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 	idx3 newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
 	// New model
-	model newModel( cSys, newVoxNum3D, voxSize3D );
+	model newModel{ cSys, newVoxNum3D, voxSize3D };
 
 
 	// Copy data to new model
@@ -393,7 +339,7 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 		}
 	}
 
-	*this = newModel;
+	*this = std::move( newModel );
 
 	return true;
 }
@@ -408,7 +354,7 @@ size_t model::serialize( vector<char>& binData ) const{
 	expectedSize += sizeof( attenuationMin );
 	expectedSize += sizeof( attenuationMax );
 	expectedSize += name.size() + 1;
-	expectedSize += numVox * sizeof( *(parameter) );
+	expectedSize += numVox * sizeof( parameter.front() );
 
 	binData.reserve( expectedSize );
 
@@ -421,7 +367,9 @@ size_t model::serialize( vector<char>& binData ) const{
 	numBytes += serializeBuildIn( attenuationMax, binData );
 	numBytes += serializeBuildIn( name, binData );
 
-	binData.insert( binData.end(), (char*) parameter, (char*) parameter + sizeof( voxData ) * numVox );
+	
+	binData.insert( binData.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(voxData) * numVox);
+	//binData.insert( binData.end(), parameter.cbegin(), parameter.cend() );
 
 	return numBytes;
 

@@ -76,8 +76,8 @@ programState::programState( void ) :
 	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
 	storedExportChooser{ getPath( "storedExportChooser.txt" ), exportChooserInstance },
 
-	tomographyParamerter(),
-	storedTomographyParamerter( programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerter ),
+	tomographyParamerters{},
+	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
 
 	currentProjections(),
 	storedProjections( programState::getPath( "storedProjections.txt" ), currentProjections ),
