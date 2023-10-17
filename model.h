@@ -39,7 +39,7 @@ class model : public mathObj{
 	
 	public:
 
-	static const string FILE_PREAMBLE;
+	static const string FILE_PREAMBLE;		/*!<String at the beginning of file with exported model*/
 
 
 	public:
@@ -70,13 +70,25 @@ class model : public mathObj{
 	/*!
 	 * @brief Default constructor
 	*/
-	model( void );
+	model( void ) : model( DUMMY_CSYS(), idx3{ 1, 1, 1 }, v3{ 1, 1, 1 } ){};
 
 	/*!
 	 * @brief Destructor
 	*/
 	~model();
 
+	/*!
+	 * @brief Copy assignment oeprator
+	 * @param mod Model to assign
+	 * @return Reference to this
+	*/
+	model& operator=( const model& mod );
+
+	/*!
+	 * @brief Move assignment operator
+	 * @param source Model to move
+	 * @return Reference to this model
+	*/
 	model& operator=( model&& source ) noexcept;
 
 	/*!
@@ -85,41 +97,6 @@ class model : public mathObj{
 	 * @return String with model's data
 	*/
 	string toStr( const unsigned int newLineTabulators = 0 ) const override;
-
-	/*!
-	 * @brief Assignment oeprator
-	 * @param mod Model to assign
-	 * @return Reference to this
-	*/
-	model& operator=( const model& mod );
-
-	bool setVoxelData( const voxData newData, const idx3 indices );
-
-	bool setVoxelProperty( const voxData::specialProperty property, const idx3 indices );
-
-	const voxData& operator()( const size_t x, const size_t y, const size_t z ) const;
-
-	const voxData& getVoxelData( const size_t x, const size_t y, const size_t z ) const{ return this->operator()( x, y, z); };
-
-	const voxData& getVoxelData( const idx3 indices ) const{ return getVoxelData( indices.x, indices.y, indices.z ); };
-
-	const voxData& getVoxelData( const pnt3 p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
-
-	/*!
-	 * @brief Element read
-	 * @param x x-index of voxel
-	 * @param y y-index of voxel
-	 * @param z z-index of voxel
-	 * @return Voxel data
-	*/
-	//voxData getVoxelData( const size_t x, const size_t y, const size_t z ) const;
-
-	/*!
-	 * @brief Element read
-	 * @param indices Indices of voxel
-	 * @return Voxel data
-	*/
-	//voxData getVoxelData( const idx3 indices ) const;
 
 	/*!
 	 * @brief Get number of voxels
@@ -133,8 +110,6 @@ class model : public mathObj{
 	*/
 	v3 ModSize( void ) const{ return size3D; };
 
-	double LongestSide( void ) const{ return Max( Max(size3D.x, size3D.y), size3D.z ); };
-
 	/*!
 	 * @brief Get size of voxel
 	 * @return Voxel size
@@ -146,6 +121,24 @@ class model : public mathObj{
 	 * @return coordinate system of base voxel
 	*/
 	cartCSys* CSys( void ) const{ return cSys; };
+
+	/*!
+	 * @brief Get range of attenuation in model
+	 * @return Range of attenuation
+	*/
+	range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
+
+	/*!
+	 * @brief Get model name
+	 * @return Name
+	*/
+	string Name( void ) const{ return name; };
+
+	/*!
+	 * @brief Get the longest edge
+	 * @return Length of longest edge
+	*/
+	double LongestSide( void ) const{ return Max( Max( size3D.x, size3D.y ), size3D.z ); };
 
 	/*!
 	 * @brief Get voxel describing model boundaries
@@ -167,15 +160,14 @@ class model : public mathObj{
 	*/
 	bool validCoords( const v3 voxCoords ) const{
 		return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
-			voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
-	};
+			voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z; };
 
 	/*!
-	 * @brief Checks if point is defined in model
-	 * @param point Point to check
-	 * @return True if coordinates are defined in model
+	 * @brief Checks if local point is inside model
+	 * @param localPnt Point to check
+	 * @return True when point is inside model
 	*/
-	bool validCoords( const pnt3 point ) const;
+	bool pntInside( const pnt3 localPnt ) const;
 
 	/*!
 	 * @brief Get voxel indices for given coordinates in local coordinate system
@@ -183,6 +175,45 @@ class model : public mathObj{
 	 * @return Indices of voxels where coordinates are located
 	*/
 	idx3 getVoxelIndices( const pnt3 voxpnt ) const;
+
+	/*!
+	 * @brief Set voxel data
+	 * @param newData Data to set
+	 * @param indices Indices of target voxel
+	 * @return True when indices are valid
+	*/
+	bool setVoxelData( const voxData newData, const idx3 indices );
+
+	/*!
+	 * @brief Set voxel's special properties
+	 * @param property Data to set
+	 * @param indices Indices of target voxel
+	 * @return True when indices are valid
+	*/
+	bool setVoxelProperty( const voxData::specialProperty property, const idx3 indices );
+
+	/*!
+	 * @brief Access voxel data
+	 * @param x x-index of voxel
+	 * @param y y-index of voxel
+	 * @param z z-index of voxel
+	 * @return Const reference to voxel data
+	*/
+	const voxData& getVoxelData( const size_t x, const size_t y, const size_t z ) const{ return this->operator()( x, y, z); };
+
+	/*!
+	 * @brief Access voxel data
+	 * @param indices inidices of voxel
+	 * @return Const reference to voxel data
+	*/
+	const voxData& getVoxelData( const idx3 indices ) const{ return getVoxelData( indices.x, indices.y, indices.z ); };
+
+	/*!
+	 * @brief Access voxel data
+	 * @param p Point in model
+	 * @return Const reference to voxel data
+	*/
+	const voxData& getVoxelData( const pnt3 p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
 
 	/*!
 	 * @brief Get voxel instance for given indices
@@ -197,13 +228,6 @@ class model : public mathObj{
 	 * @return Voxel at point
 	*/
 	vox getVoxel( const pnt3 point ) const{ return getVoxel( getVoxelIndices( point ) ); };
-
-	/*!
-	 * @brief Checks if local point is inside model
-	 * @param localPnt Point to check
-	 * @return True when point is inside model
-	*/
-	bool pntInside( const pnt3 localPnt ) const;
 
 	/*!
 	 * @brief Calculate ray transmission through model
@@ -235,11 +259,15 @@ class model : public mathObj{
 	*/
 	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
 
-	range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
 
-	string Name( void ) const{ return name; };
-
+	/*!
+	 * @brief Alter special properties in the specified sphere
+	 * @param property Property to add
+	 * @param center Center of sphere
+	 * @param radius Radius of sphere
+	*/
 	void addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius );
+
 
 	private:
 
@@ -249,9 +277,10 @@ class model : public mathObj{
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	voxData* parameter;							/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
 	cartCSys* cSys;								/*!<Coordinate system*/
-	double attenuationMin;
-	double attenuationMax;
+	double attenuationMin;						/*!<Minimum attenuation in model*/
+	double attenuationMax;						/*!<Maximum attenuation in model*/
 	string name;								/*!<Model name*/
+
 
 	private:
 
@@ -265,7 +294,16 @@ class model : public mathObj{
 	idx3 getVoxelIndices( const v3 locCoords ) const;
 
 	/*!
-	 * @brief Element assignment
+	 * @brief Element access
+	 * @param x x-index of voxel
+	 * @param y y-index of voxel
+	 * @param z z-index of voxel
+	 * @return Const reference to voxel data
+	*/
+	const voxData& operator()( const size_t x, const size_t y, const size_t z ) const;
+
+	/*!
+	 * @brief Element access
 	 * @param x x-index of voxel
 	 * @param y y-index of voxel
 	 * @param z z-index of voxel
@@ -274,7 +312,7 @@ class model : public mathObj{
 	voxData& operator() ( const size_t x, const size_t y, const size_t z );
 
 	/*!
-	 * @brief Element assignment
+	 * @brief Element access
 	 * @param indices Indices of voxel
 	 * @return Reference to voxel data
 	*/

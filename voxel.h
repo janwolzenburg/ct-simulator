@@ -11,6 +11,9 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
+
+#include <array> 
+using std::array;
 #include "generelMath.h"
 #include "vec3D.h"
 #include "surf.h"
@@ -25,7 +28,7 @@
  /*!
   * @brief Face identifiers of voxel
  */
-enum class FACE_ID : size_t{
+enum class FACE_ID : unsigned char{
 	BEGIN,
 	YZ_Xp = BEGIN,		/*!<Y-Z plane at positive x*/
 	XZ_Yp,				/*!<X-Z plane at positive y*/
@@ -43,24 +46,30 @@ enum class FACE_ID : size_t{
 	Classes
 */
 
-
-
-
 /*!
  * @brief Physical voxel data
 */
-#pragma pack(push, 1)
+#pragma pack(push, 1)	// Memory alignment for serializing model data without serializing single voxel data 
 class voxData{
 	
 	public:
 
-	typedef unsigned char specialEnumType;
+	typedef unsigned char specialEnumType;		/*!<Type to store up tu 8 special properties*/
 
+	/*!
+	 * @brief Special propterties a voxel can have
+	*/
 	enum specialProperty : specialEnumType{
 		NONE =			0b00000000,
 		METAL =			0b00000001,
 		UNDEFINED =		0b00000010
 	};
+
+	/*!
+	 * @brief Return the reference energy globally used
+	 * @return Reference energy in eV
+	*/
+	static double ReferencyEnergy( void ) { return referenceEnergy; };
 
 	/*!
 	 * @brief Constructor
@@ -79,10 +88,20 @@ class voxData{
 	/*!
 	 * @brief Default constructor
 	*/
-	voxData( void );
+	voxData( void ) : attenuation( -1 ), specialProperties( UNDEFINED ){};
 
+	/*!
+	 * @brief Comparison
+	 * @param d2 Second voxel data
+	 * @return True when attenuation of left operand is smaller than right's
+	*/
 	bool operator<( const voxData& d2 ) const{ return this->attenuation < d2.attenuation; };
 
+	/*!
+	 * @brief Comparison
+	 * @param d2 Second voxel data
+	 * @return True when attenuation of left operand is greater than right's
+	*/
 	bool operator>( const voxData& d2 ) const{ return !operator<( d2 ); };
 
 	/*!
@@ -99,30 +118,45 @@ class voxData{
 	double attenuationAtRefE( void ) const{ return attenuation; };
 
 	/*!
+	 * @brief Add special property
+	 * @param property Property to add
+	*/
+	void addSpecialProperty( const specialProperty property ){ specialProperties |= toUnderlying( property ); };
+
+	/*!
+	 * @brief Remove special property
+	 * @param property Property to remove
+	*/
+	void removeSpecialProperty( const specialProperty property ){ specialProperties &= ~toUnderlying( property ); };
+
+	/*!
+	 * @brief Check if there is a special property
+	 * @return True when is has at least one property
+	*/
+	bool hasSpecialProperty( void ) const{ return specialProperties != NONE; };
+	
+	/*!
+	 * @brief Check for specific property
+	 * @param property Property to check
+	 * @return True when voxel has specific property
+	*/
+	bool hasSpecificProperty( const specialProperty property ) const;
+
+	/*!
 	 * @brief Serialize this object
 	 * @param binData Reference to vector where data will be appended
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	void addSpecialProperty( const specialProperty property );
-
-	void removeSpecialProperty( const specialProperty property );
-
-	bool hasSpecialProperty( void ) const;
-	
-	bool hasSpecificProperty( const specialProperty property ) const;
-
-	static double ReferencyEnergy( void ) { return referenceEnergy; };
-
+		
 	private:
 
-	static constexpr double referenceEnergy = 120000.;		/*!<Reference Energy for attenuation coefficients in eV*/
+	static constexpr double referenceEnergy = 120000.;			/*!<Reference Energy for attenuation coefficients in eV*/
 	static constexpr double referenceEnergy_3 = 1.728e+15;		/*!<Cube of reference energy*/
 
-	double attenuation	= -1;					/*!<Absorption coefficient at reference Energy*/
-	specialEnumType specialProperties;
+	double attenuation	= -1;									/*!<Absorption coefficient at reference Energy*/
+	specialEnumType specialProperties;							/*!<Special properties in voxel*/
 
-	private:
 
 	/*!
 	 * @brief Return the 
@@ -140,7 +174,7 @@ class voxData{
 /*!
  * @brief Class for voxels
 */
-class vox : virtual public mathObj{
+class vox : public mathObj{
 
 	public:
 
@@ -155,26 +189,13 @@ class vox : virtual public mathObj{
 	/*!
 	 * @brief Default constructor
 	*/
-	vox();
-
-	/*!
-	 * @brief Copy constructor
-	 * @param v Voxel to copy from
-	*/
-	vox( const vox& v );
+	vox( void ) : vox{ pnt3{ v3{ 0, 0, 0 }, DUMMY_CSYS() }, v3{1, 1, 1}, voxData{} }{};
 
 	/*!
 	 * @brief Convert result's data to string
 	 * @return String with result's data
 	*/
 	string toStr( unsigned int newLineTabulators = 0 ) const override;
-
-	/*!
-	 * @brief Assignment constructor
-	 * @param v Voxel to assign to this
-	 * @return This voxel
-	*/
-	vox& operator=( const vox& v );
 
 	/*!
 	 * @brief Get origin point of voxel
@@ -199,13 +220,13 @@ class vox : virtual public mathObj{
 	 * @param id_ Face ID
 	 * @return Bounded surface which is the face
 	*/
-	surfLim getFace( FACE_ID id_ ) const;
+	surfLim getFace( FACE_ID id_ ) const{ return faces[ toUnderlying( id_ ) ]; };
 
 	/*!
 	 * @brief Get center of voxel
 	 * @return Point at center of voxel
 	*/
-	pnt3 getCenter( void ) const;
+	pnt3 getCenter( void ) const{ return o + vec3{ v3{ size.x / 2, size.y / 2, size.z / 2 } , o.CSys() }; };
 
 	/*!
 	 * @brief Check if voxel contains point
@@ -217,8 +238,8 @@ class vox : virtual public mathObj{
 
 	private:
 
-	v3 size;										/*!<Size in local coordinate system*/
-	voxData data;									/*!<Physical voxel data*/
-	pnt3 o;											/*!<Point as origin of voxel in coordinate system*/
-	surfLim faces[ toUnderlying( FACE_ID::END ) ];	/*!<Faces in global context*/
+	v3 size;											/*!<Size in local coordinate system*/
+	voxData data;										/*!<Physical voxel data*/
+	pnt3 o;												/*!<Point as origin of voxel in coordinate system*/
+	array<surfLim, toUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
 };

@@ -26,10 +26,6 @@
 	voxData implementation
  */
 
-
-//constexpr double voxData::referenceEnergy = 120000.;									/*!< Energy at which the attenuation coefficient is valid */
-//constexpr double voxData::referenceEnergy_3 = pow( voxData::referenceEnergy, 3. );
-
 voxData::voxData( const double attenuationAtFrequency, const double frequency, const specialProperty specProperty ) :
 	attenuation( attenuationAtRefE( attenuationAtFrequency, frequency ) ),
 	specialProperties( specProperty )
@@ -38,13 +34,6 @@ voxData::voxData( const double attenuationAtFrequency, const double frequency, c
 voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
 	attenuation( deSerializeBuildIn<double>( 0., binData, it ) ),
 	specialProperties( deSerializeBuildIn<specialEnumType>( specialProperty::UNDEFINED, binData, it ) )
-{
-
-}
-
-voxData::voxData( void ) : 
-	attenuation( -1 ),
-	specialProperties( UNDEFINED )
 {}
 
 double voxData::attenuationAt( const double energy ) const{
@@ -62,14 +51,14 @@ double voxData::attenuationAt( const double energy ) const{
 	return attenuation * pow( energyPhotoFXChange_eV / energy, 3. );
 
 
-};
+}
 
 size_t voxData::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
 	numBytes += serializeBuildIn( attenuation, binData );
 	numBytes += serializeBuildIn( specialProperties, binData );
 	return numBytes;
-};
+}
 
 double voxData::attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const{
 
@@ -81,19 +70,7 @@ double voxData::attenuationAtRefE( const double attenuationAtEnergy, const doubl
 		return attenuationAtEnergy * pow( energyPhotoFXChange_eV / referenceEnergy, 3. );
 	}
 
-};
-
-void voxData::addSpecialProperty( const specialProperty property ){
-
-	specialProperties |= toUnderlying( property );
-
-};
-
-void voxData::removeSpecialProperty( const specialProperty property ){
-
-	specialProperties &= ~toUnderlying( property );
-
-};
+}
 
 bool voxData::hasSpecificProperty( const specialProperty property ) const{
 
@@ -102,13 +79,8 @@ bool voxData::hasSpecificProperty( const specialProperty property ) const{
 	if( specialProperties & propertyToCheck ) return true;
 	return false;
 
-};
+}
 
-bool voxData::hasSpecialProperty( void ) const{
-
-	return specialProperties != NONE;
-
-};
 
 /*
 	vox implementation
@@ -130,11 +102,6 @@ vox::vox( const pnt3 o_, const v3 size_, const voxData data_ ) :
 	if( size.x <= 0 || size.y <= 0 || size.z <= 0 ) checkErr( MATH_ERR::INPUT, "Size of voxel in each dimension must be greater than zero!" );
 };
 
-vox::vox( void )
-	: vox( pnt3{ v3{ 0, 0, 0 }, DUMMY_CSYS() }, v3{1, 1, 1}, voxData{} ){};
-
-vox::vox( const vox& v )
-	: vox( v.o, v.size, v.data ){};
 
 string vox::toStr( unsigned int newLineTabulators ) const{
 	string str;
@@ -159,22 +126,7 @@ string vox::toStr( unsigned int newLineTabulators ) const{
 	return str;
 }
 
-vox& vox::operator=( const vox& v ){
-	o = v.o;
-	size = v.size;
-	data = v.data;
 
-	memcpy( faces, v.faces, toUnderlying( FACE_ID::END ) * sizeof( surfLim ) );
-	return *this;
-};
-
-surfLim vox::getFace( FACE_ID id_ ) const{
-	return faces[ toUnderlying( id_ ) ];
-}
-
-pnt3 vox::getCenter( void ) const{
-	return o + vec3{ v3{ size.x / 2, size.y / 2, size.z / 2 } , o.CSys() };
-}
 
 bool vox::contains( const pnt3 p ) const{
 

@@ -56,7 +56,6 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 	if( cSys->isGlobal() ) checkErr( MATH_ERR::INPUT, "Model coordinate system must be child of global system!" );
 }
 
-
 model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D, mod.name )
 	
 {
@@ -65,7 +64,6 @@ model::model( const model& mod ) : model( mod.cSys, mod.numVox3D, mod.voxSize3D,
 	
 	memcpy( parameter, mod.parameter, numVox * sizeof( voxData ) );		// Copy data
 }
-
 
 model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	numVox3D( idx3( binData, it ) ),
@@ -91,23 +89,15 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 			parameter[i] = voxData( binData, it );
 		}
 	}
-
-
-
 }
-
-model::model( void ) : model( DUMMY_CSYS(), idx3{1, 1, 1}, v3{1, 1, 1}){}
-
 
 model::~model(){
 	delete[] parameter;
 }
 
-
 string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
 	return string( "" );
 }
-
 
 model& model::operator=( const model& mod ){
 	cSys = mod.cSys;
@@ -152,6 +142,10 @@ model& model::operator=( model&& mod ) noexcept{
 	return *this;
 }
 
+vox model::Vox( void ) const{
+	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
+}
+
 const voxData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
 	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
@@ -168,14 +162,50 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
 }
 
-/*
-voxData model::getVoxelData( const size_t x, const size_t y, const size_t z ) const{
-	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
-	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
-	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
+bool model::checkIndices( const idx3 indices ) const{
+	if( indices.x >= numVox3D.x ||
+		indices.y >= numVox3D.y ||
+		indices.z >= numVox3D.z ){
+		return false;
+	}
+	return true;
+}
 
-	return parameter[ ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x ];
-}*/
+bool model::pntInside( const pnt3 p ) const{
+	return validCoords( p.XYZ( cSys ) );
+}
+
+idx3 model::getVoxelIndices( const v3 locCoords ) const{
+	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
+		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
+		return idx3{ 0, 0, 0 };
+	}
+
+	idx3 indices{
+		(size_t) ( locCoords.x / voxSize3D.x ),
+		(size_t) ( locCoords.y / voxSize3D.y ),
+		(size_t) ( locCoords.z / voxSize3D.z )
+	};
+
+	// Supress checkErr when index is exactly on the edge
+	if( indices.x == numVox3D.x ) indices.x = numVox3D.x - 1;
+	if( indices.y == numVox3D.y ) indices.y = numVox3D.y - 1;
+	if( indices.z == numVox3D.z ) indices.z = numVox3D.z - 1;
+
+	if( !checkIndices( indices ) ){
+		checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
+	}
+
+	if( indices.x >= numVox3D.x ) indices.x = numVox3D.x - 1;
+	if( indices.y >= numVox3D.y ) indices.y = numVox3D.y - 1;
+	if( indices.z >= numVox3D.z ) indices.z = numVox3D.z - 1;
+
+	return indices;
+}
+
+idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
+	return getVoxelIndices( voxpnt.XYZ( cSys ) );
+}
 
 bool model::setVoxelData( const voxData newData, const idx3 indices ){
 
@@ -189,7 +219,6 @@ bool model::setVoxelData( const voxData newData, const idx3 indices ){
 	return true;
 }
 
-
 bool model::setVoxelProperty( const voxData::specialProperty property, const idx3 indices ){
 
 	if( !checkIndices( indices ) ) return false;
@@ -200,93 +229,20 @@ bool model::setVoxelProperty( const voxData::specialProperty property, const idx
 
 }
 
-/*
-const voxData& model::getVoxelDataC( const size_t x, const size_t y, const size_t z ) const{
-
-	if( x >= numVox3D.x ){ checkErr( MATH_ERR::INPUT, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
-	if( y >= numVox3D.y ){ checkErr( MATH_ERR::INPUT, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
-	if( z >= numVox3D.z ){ checkErr( MATH_ERR::INPUT, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
-
-	return parameter[( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x];
-
-}*/
-
-
-/*
-voxData& model::operator() ( const idx3 indices ){
-	return ( *this )( indices.x, indices.y, indices.z );
-}
-
-
-voxData model::getVoxelData( const idx3 indices ) const{
-	return getVoxelData( indices.x, indices.y, indices.z );
-}
-
-
-const voxData& model::getVoxelDataC( const idx3 indices ) const{
-	return getVoxelDataC( indices.x, indices.y, indices.z );
-	
-};
-
-const voxData& model::getVoxelDataC( const pnt3 p ) const{
-	return getVoxelDataC( getVoxelIndices( p ));
-}*/
-
-
-vox model::Vox( void ) const{
-	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
-}
-
-
-bool model::checkIndices( const idx3 indices ) const{
-	if( indices.x >= numVox3D.x ||
-		indices.y >= numVox3D.y ||
-		indices.z >= numVox3D.z ){
-		return false;
-	}
-
-	return true;
-}
-
-/*
-bool model::validCoords( const v3 voxCoords ) const{
-	return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
-		voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z;
-}*/
-
-
-bool model::validCoords( const pnt3 point ) const{
-
-	v3 voxCoords = point.XYZ( cSys );
-
-	return validCoords( voxCoords );
-}
-
-
-idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
-	return getVoxelIndices( voxpnt.XYZ( cSys ) );
-}
-
-
 vox model::getVoxel( const idx3 indices ) const{
-	if( indices.x >= numVox3D.x || indices.y >= numVox3D.y || indices.z >= numVox3D.z ){
+
+	if( !checkIndices( indices ) ){
 		checkErr( MATH_ERR::INPUT, "Indices exceed model!" );
-		return vox();
+		return vox{};
 	}
 
 	pnt3 voxOrigin{ v3{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
 
 	// Get voxel data and create voxel instance
-	vox voxel( voxOrigin, voxSize3D, getVoxelData( indices ) );
+	vox voxel{ voxOrigin, voxSize3D, getVoxelData( indices ) };
 
 	return voxel;
 }
-
-
-bool model::pntInside( const pnt3 p ) const{
-	return validCoords( p.XYZ( cSys ) );
-}
-
 
 ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
 
@@ -405,11 +361,8 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 					// Scatter the ray
 					return scatteringProperties.scatterRay( modelRay, currentPntOnRay );
 				}
-
 			}
 		}
-
-
 	}
 
 	// New origin "outside" the model to return
@@ -417,7 +370,6 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 	return modelRay;
 }
-
 
 bool model::crop( const v3 minCoords, const v3 maxCoords ){
 	if( !validCoords( minCoords ) || !validCoords( maxCoords ) ) return false;
@@ -447,42 +399,6 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 }
 
 
-idx3 model::getVoxelIndices( const v3 locCoords ) const{
-	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
-		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
-		return idx3{ 0, 0, 0 };
-	}
-
-	idx3 indices{
-		(size_t) ( locCoords.x / voxSize3D.x ),
-		(size_t) ( locCoords.y / voxSize3D.y ),
-		(size_t) ( locCoords.z / voxSize3D.z )
-	};
-
-	// Supress checkErr when index is exactly on the edge
-	if( indices.x == numVox3D.x ) indices.x = numVox3D.x - 1;
-	if( indices.y == numVox3D.y ) indices.y = numVox3D.y - 1;
-	if( indices.z == numVox3D.z ) indices.z = numVox3D.z - 1;
-
-	if( !checkIndices( indices ) ){
-		checkErr( MATH_ERR::INPUT, "Coordinates exceed model size!" );
-	}
-
-	if( indices.x >= numVox3D.x ) indices.x = numVox3D.x - 1;
-	if( indices.y >= numVox3D.y ) indices.y = numVox3D.y - 1;
-	if( indices.z >= numVox3D.z ) indices.z = numVox3D.z - 1;
-
-	return indices;
-}
-
-/*
-vox model::getVoxel( const pnt3 point ) const{
-
-	return getVoxel( getVoxelIndices( point ) );
-
-}*/
-
-
 size_t model::serialize( vector<char>& binData ) const{
 
 	size_t expectedSize = FILE_PREAMBLE.size() + 1;
@@ -507,12 +423,6 @@ size_t model::serialize( vector<char>& binData ) const{
 
 	binData.insert( binData.end(), (char*) parameter, (char*) parameter + sizeof( voxData ) * numVox );
 
-	/*for( size_t i = 0; i < numVox; i++ ){
-
-		numBytes += parameter[i].serialize( binData );
-
-	}*/
-
 	return numBytes;
 
 }
@@ -530,8 +440,7 @@ void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mute
 		size_t localXIdx, localYIdx;
 
 		// Lock
-		currentXMutex.lock();
-		currentYMutex.lock();
+		currentXMutex.lock(); currentYMutex.lock();
 
 		localXIdx = xIdx;
 		localYIdx = yIdx;
@@ -545,8 +454,7 @@ void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mute
 		}
 
 		//Unlock
-		currentXMutex.unlock();
-		currentYMutex.unlock();
+		currentXMutex.unlock(); currentYMutex.unlock();
 
 
 		// Check 
@@ -561,11 +469,10 @@ void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mute
 
 
 		// Are cooradinates defined in model?
-		if( !modelRef.validCoords( currentPoint ) ){
+		if( !modelRef.pntInside( currentPoint ) ){
 			slice.setData( gridIndices, voxData( 0., 1., voxData::UNDEFINED ) );
 			continue;	// Goto next iteration
 		}
-
 
 
 		// Check if current x and y values in plane are new real start/end
@@ -597,7 +504,7 @@ void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mute
 
 	}
 
-};
+}
 
 grid<voxData> model::getSlice( const surf sliceLocation, const double resolution ) const{
 
@@ -653,13 +560,10 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	}
 
 	// Write data to smaller grid
-
-
 	grid<voxData> slice( range( realStart.col, realEnd.col ), range( realStart.row, realEnd.row ), sliceResolution, voxData() );
 
 
 	// Iterate grid
-
 	v2CR coords;
 	voxData currentData;
 
@@ -674,10 +578,7 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 				slice.setData( coords, voxData( largeSlice.MaxValue().attenuationAtRefE(), voxData::ReferencyEnergy()));
 			else
 				slice.setData( coords, currentData );
-
-
 		}
-
 	}
 
 
@@ -688,11 +589,10 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 void model::addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius ){
 	
 	// Exit when coords invalid
-	if ( !validCoords( center ) ) return;
+	if ( !pntInside( center ) ) return;
 	
 	// Center indices
 	const idx3 centerIdx = getVoxelIndices( center );
-
 
 	// Index distance from center in each dimension
 	idx3 indexDelta{
@@ -700,7 +600,6 @@ void model::addSpecialSphere( const voxData::specialProperty property, const pnt
 		Fmax( (size_t) ceil( radius / voxSize3D.y ), Min( centerIdx.y, numVox3D.y - centerIdx.y ) ),
 		Fmax( (size_t) ceil( radius / voxSize3D.z ), Min( centerIdx.z, numVox3D.z - centerIdx.z ) )
 	};
-
 
 	for( size_t x = centerIdx.x - indexDelta.x; x < centerIdx.x + indexDelta.x; x++ ){
 		for( size_t y = centerIdx.y - indexDelta.y; x < centerIdx.y + indexDelta.y; y++ ){
@@ -713,6 +612,4 @@ void model::addSpecialSphere( const voxData::specialProperty property, const pnt
 			}
 		}
 	}
-
-
 }
