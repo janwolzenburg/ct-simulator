@@ -57,7 +57,7 @@ double vec3::operator* ( const vec3 v2 ) const{
 vec3 vec3::operator^( const vec3 v2 ) const{
 	vec3 convVec = v2.convertTo( this->cSys );
 
-	return vec3( v3{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->cSys );
+	return vec3{ v3{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->cSys };
 };
 
 bool vec3::sameSystem( const vec3 v ) const{
@@ -178,10 +178,15 @@ vec3 vec3::addZ( const double z_ ) const{
 
 double vec3::angle( const vec3 v2 ) const{
 	// Check if one vec3Dtor has length zero
-	if( iseqErr( len, 0 ) || iseqErr( v2.len, 0 ) ) return 0;
+	if( iseqErr( len, 0 ) || iseqErr( v2.len, 0 ) ) return 0.;
+
+	const double scalarProduct = ( ( *this ) * v2 );
+	const double lengthMult = this->len * v2.len;
+
+	if( iseqErr( scalarProduct, lengthMult ) ) return 0.;
 
 	// Return angle in radians
-	return acos( ( ( *this ) * v2 ) / ( this->len * v2.len ) );
+	return acos( scalarProduct / lengthMult );
 }
 
 bool vec3::isOrtho( const vec3 v2 ) const{

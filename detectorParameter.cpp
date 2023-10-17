@@ -98,7 +98,7 @@ detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPer
 
 
 detectorIndipendentParameter::detectorIndipendentParameter( void ) :
-	detectorIndipendentParameter{ 1, 1000., 5., true, .15 }
+	detectorIndipendentParameter{ 1, 1000., 5., true, 5. / 360. * 2. * PI }
 {}
 
 
@@ -108,7 +108,7 @@ detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& 
 	arcRadius( deSerializeBuildIn( 1000., binData, it ) ),
 	columnSize( deSerializeBuildIn( 50., binData, it ) ),
 	structured( deSerializeBuildIn( true, binData, it ) ),
-	maxRayAngleDetectable( deSerializeBuildIn( .15, binData, it ) ){
+	maxRayAngleDetectable( deSerializeBuildIn( 5. / 360. * 2. * PI, binData, it ) ){
 
 }
 

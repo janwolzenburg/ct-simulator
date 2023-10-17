@@ -84,7 +84,7 @@ class detectorIndipendentParameter{
 	 * @param structured_ Flag for anti scattering structure
 	 * @param maxRayAngleDetectable_ maximum angle between pixel normal and incident ray allowed by anti-scattering structure
 	*/
-	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  0.15 );
+	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  5. / 360. * 2. * PI );
 
 	detectorIndipendentParameter( void );
 
@@ -104,7 +104,7 @@ class detectorIndipendentParameter{
 	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
 	double columnSize;				/*!<Size of one pixel in column direction*/
 	bool structured;				/*!<Flag for anti scatter structure*/
-	double maxRayAngleDetectable;	/*!<Maximum angle between pixel normal and ray*/
+	double maxRayAngleDetectable;	/*!<Maximum angle between pixel normal and ray in radians*/
 };
 
 
