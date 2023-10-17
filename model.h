@@ -26,6 +26,7 @@ using std::filesystem::path;
  #include "tomography.fwd.h"
 
 
+
   /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -34,7 +35,7 @@ using std::filesystem::path;
 /*!
  * @brief Class for 3D-Models
 */
-class model : virtual public mathObj{
+class model : public mathObj{
 	
 	public:
 
