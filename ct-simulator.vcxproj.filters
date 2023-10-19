@@ -491,9 +491,6 @@
     <ClCompile Include="rgbImage.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="grid.cpp">
-      <Filter>Quelldateien\Processing</Filter>
-    </ClCompile>
     <ClCompile Include="tomographyExecution.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>

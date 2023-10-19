@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include <type_traits>
+#include <limits>
 
 #include "vectorAlgorithm.h"
 #include "grid.h"
@@ -52,8 +53,6 @@ grid<D>::grid( const range columnRange, const range rowRange, const v2CR resolut
 					rowRange.start } ),
 	resolution( v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
 						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } )
-
-
 {
 	initializeMinMaxValue();
 	fillVectors( defaultValue );
@@ -64,8 +63,7 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	size( idx2CR( binData, it ) ),
 	start( v2CR( binData, it ) ),
 	resolution( v2CR( binData, it ) )
-
-	{
+{
 
 		fillVectors( D() );
 
@@ -87,11 +85,7 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 					rowData = D( binData, it );
 			}
 		}
-
-
-
 }
-
 
 template<class D>
 void grid<D>::fillVectors( const D defaultValue ){
@@ -118,14 +112,6 @@ template<class D>
 		return false;
 	}
 	return true;
-}
-
-
-template<class D>
-v2CR grid<D>::End( void ) const{
-
-	return getCoordinates( idx2CR{ size.col - 1, size.row - 1 } );
-
 }
 
 template<class D>
@@ -156,28 +142,6 @@ idx2CR grid<D>::getIndex( const v2CR coordinates ) const{
 	return index;
 }
 
-/*
-template<class D>
-D grid<D>::operator()( const v2CR coordinates ) const{
-	return this->operator()( getIndex( coordinates ) );
-}
-
-template<class D>
-D& grid<D>::operator()( const v2CR coordinates ){
-	return this->operator()( getIndex( coordinates ) );
-}*/
-
-
-
-template<class D>
-bool grid<D>::setData( const v2CR coordinates, const D newValue ){
-
-	return this->setData( getIndex( coordinates ), newValue );
-
-}
-
-
-
 template<class D>
 v2CR grid<D>::getCoordinates( const idx2CR index ) const{
 
@@ -189,6 +153,40 @@ v2CR grid<D>::getCoordinates( const idx2CR index ) const{
 	return v2CR{ column, row };
 }
 
+template<class D>
+void grid<D>::initializeMinMaxValue( void ){
+
+	if constexpr( std::is_arithmetic_v<D> ){
+		minValue = (std::numeric_limits<D>::min)(); // Additional () needed to stop macro expansion of min() and max()!!!
+		maxValue = (std::numeric_limits<D>::max)();
+	}
+	// Special for own voxData class
+	else if( std::is_same_v<D, voxData> ){
+		minValue = voxData{ INFINITY, 1. };
+		maxValue = voxData{ -INFINITY, 1. };
+	}
+}
+
+template<class D>
+bool grid<D>::setData( const idx2CR index, const D newValue ){
+
+	if( !checkIndex( index ) ) return false;
+
+	if constexpr( std::is_arithmetic_v<D> ){
+		if( newValue < minValue ) minValue = newValue;
+		if( newValue > maxValue ) maxValue = newValue;;
+	}
+	// Special for own voxData class
+	else if( std::is_same_v<D, voxData> ){
+		if( newValue < minValue && !newValue.hasSpecificProperty( voxData::UNDEFINED ) ) minValue = newValue;
+		if( newValue > maxValue && !newValue.hasSpecificProperty( voxData::UNDEFINED ) ) maxValue = newValue;
+	}
+
+	this->operator()( index ) = newValue;
+
+	return true;
+
+}
 
 template<class D>
 size_t grid<D>::serialize( vector<char>& binData ) const{

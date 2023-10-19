@@ -261,7 +261,6 @@
     <ClInclude Include="grid.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="grid.cpp" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="plots.cpp" />
