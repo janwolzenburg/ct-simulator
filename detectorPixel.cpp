@@ -24,18 +24,6 @@
 	pixel implementation
 */
 
-/*
-pixel::pixel( const surfLim surface ) : 
-	surfLim{ surface }
-{
-
-}
-
-void pixel::reset( void ){
-	detectedRayProperties.clear();
-}
-*/
-
 double pixel::getRadonValue( void ) const{
 
 	double intensitySum = 0;
@@ -47,32 +35,13 @@ double pixel::getRadonValue( void ) const{
 	return intensitySum;
 }
 
-line  pixel::NormalLine( void ) const{
-
+line pixel::NormalLine( void ) const{
 	return line{ this->Normal(), this->o };		// Line origin is surface origin for pixel and not the middle center!
-
 }
 
 pixel pixel::convertTo( const cartCSys* const target_CSys ) const{
-
-	return pixel{ this->surfLim::convertTo( target_CSys ) };
-
+	return pixel{ this->surfLim::convertTo( target_CSys ), this->detectedRayProperties };
 }
-
-void  pixel::addDetectedProperties( const rayProperties properties ){
-	detectedRayProperties.push_back( properties );
-}
-
-
-
-/*
-	rayPix_Intersection_Result implementation
-*/
-/*
-rayPix_Intersection_Result::rayPix_Intersection_Result( linSurf_Intersection_Result linSurfResult ) : 
-	linSurf_Intersection_Result( linSurfResult )
-{}*/
-
 
 
 /*

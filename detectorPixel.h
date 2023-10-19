@@ -34,7 +34,18 @@ class pixel : public surfLim{
 	 * @param surface Surface as base object
 	*/
 	pixel( const surfLim surface ) :
-		surfLim( surface )
+		surfLim{ surface },
+		detectedRayProperties( 0, rayProperties{} )
+	{};
+
+	/*!
+	 * @brief Constructor
+	 * @param surface Surface as base object
+	 * @param properties Detected ray's properties
+	*/
+	pixel( const surfLim surface, const vector<rayProperties> properties ) :
+		surfLim{ surface },
+		detectedRayProperties( properties )
 	{};
 
 	/*!
@@ -65,7 +76,8 @@ class pixel : public surfLim{
 	 * @brief Add ray properties
 	 * @param properties Properties to add
 	*/
-	void  addDetectedProperties( const rayProperties properties );
+	void  addDetectedProperties( const rayProperties properties ){
+		detectedRayProperties.push_back( properties ); };
 
 	/*!
 	 * @brief Get the detected ray properties

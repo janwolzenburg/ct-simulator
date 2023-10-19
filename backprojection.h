@@ -31,7 +31,10 @@ class filteredProjections : private grid<> {
 
 	public:
 
-
+	/*!
+	 * @brief Default construnctor
+	 * @param  
+	*/
 	filteredProjections( void ) : grid{} {};
 
 	/*!
@@ -94,6 +97,9 @@ class reconstrucedImage : private grid<> {
 
 	public:
 
+	/*!
+	 * @brief Default constructor
+	*/
 	reconstrucedImage( void ) : grid{} {};
 
 	/*!
@@ -102,6 +108,16 @@ class reconstrucedImage : private grid<> {
 	*/
 	reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress = nullptr );
 
+	/*!
+	 * @brief Reconstruct image column wise
+	 * @param currentX Current x-index
+	 * @param currentXMutex Mutex for x-index
+	 * @param image Reference to image
+	 * @param imageMutex Mutex for image
+	 * @param progress Progress window
+	 * @param progressMutex Mutex for progress
+	 * @param projections Projections
+	*/
 	static void reconstructColumn(  size_t& currentX, mutex& currentXMutex, reconstrucedImage& image, 
 									mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
 									const filteredProjections& projections );

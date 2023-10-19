@@ -5,12 +5,24 @@
 Done:
 All generel
 All linear algebra
+
 model.h model.cpp
+
 rays.h rays.cpp
 scatter.h scatter.cpp
 spectrum.h spectrum.cpp
+propability.h propability.cpp
+
 generelMath.h generelMath.cpp
 grid.h grid.hpp
+
 radonTransform.h radonTransform.cpp
 backprojection.h backprojection.cpp
 filter.h filter.cpp
+
+detector.h .cpp
+detectorParameter.h .cpp
+detectorPixel.h .cpp
+gantry.h .cpp
+tomography.h .cpp
+tube.h .cpp

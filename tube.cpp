@@ -37,19 +37,6 @@ const std::map < tubeParameter::MATERIAL, std::pair<string, size_t>> tubeParamet
 		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
 };
 
-/*
-tubeParameter::tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
-	anodeVoltage_V( anodeVoltage_V_ ),
-	anodeCurrent_A( anodeCurrent_A_ ),
-	anodeMaterial( anodeMaterial_ )
-{}
-
-
-tubeParameter::tubeParameter( void ) :
-	tubeParameter{ 53000., .2, THUNGSTEN }
-{}*/
-
-
 tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
 	anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
@@ -59,18 +46,12 @@ tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_i
 
 const tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
 	for( auto& [matEnum, value] : tubeParameter::material ){
-
-		if( materialString == value.first ){
-
+		if( materialString == value.first )
 			return matEnum;
-
-		}
 	}
 
 	return THUNGSTEN;
-
 }
-
 
 size_t tubeParameter::serialize( vector<char>& binData ) const{
 	size_t numBytes = 0;
@@ -85,9 +66,8 @@ size_t tubeParameter::serialize( vector<char>& binData ) const{
 }
 
 
-
 /*
-	tube
+	tube implementation
 */
 
 tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
@@ -136,13 +116,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	// Write frequency and power values to spectrum
 	xRay_spectrum = spectrum( energies, spectralPower );
 
-};
-/*
-range tube::getEnergyRange( void ) const{
-	
-	return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax()};
-
-}*/
+}
 
 vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
@@ -195,11 +169,8 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 
 	}
 
-
 	return rays;
-
 }
-
 
 vectorPair tube::spectrumPoints( const bool integral ) const{
 
@@ -227,11 +198,4 @@ vectorPair tube::spectrumPoints( const bool integral ) const{
 	}
 
 	return points;
-}
-
-
-double tube::getEnergy( const double exposureTime ) const{
-
-	return totalPower_W * exposureTime;
-
 }

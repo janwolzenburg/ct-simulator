@@ -42,10 +42,17 @@ class detectorRadonParameter{
 	*/
 	detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ );
 
-	detectorRadonParameter( void );
+	/*!
+	 * @brief Default constructor
+	*/
+	detectorRadonParameter( void ): detectorRadonParameter{ idx2CR{ 32, 16 }, 500. } {};
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it );
-
 
 	/*!
 		* @brief Serialize this object
@@ -85,11 +92,19 @@ class detectorIndipendentParameter{
 	 * @param maxRayAngleDetectable_ maximum angle between pixel normal and incident ray allowed by anti-scattering structure
 	*/
 	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  5. / 360. * 2. * PI );
+	
+	/*!
+	 * @brief Default constructor
+	*/
+	detectorIndipendentParameter( void ) :
+		detectorIndipendentParameter{ 1, 1000., 5., true, 5. / 360. * 2. * PI }{};
 
-	detectorIndipendentParameter( void );
-
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it );
-
 
 	/*!
 		* @brief Serialize this object

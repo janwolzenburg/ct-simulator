@@ -11,15 +11,14 @@
  /*********************************************************************
    Includes
 *********************************************************************/
+#include <thread>
+using std::ref;
+using std::cref;
 
 #include "gantry.h"
 #include "cSysTree.h"
-#include <thread>
-#include <mutex>
 #include "tomography.h"
 
-using std::ref;
-using std::cref;
 
 
 /*********************************************************************
@@ -57,7 +56,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
-void gantry::threadFunction(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
+void gantry::transmitRays(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
 								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<ray>& raysForNextIteration, mutex& iterationMutex,
 								detector& rayDetector, mutex& detectorMutex ){
@@ -139,7 +138,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 		vector<std::thread> threads;
 
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-			threads.emplace_back( threadFunction,	cref( radModel ), cref( parameter ), cref( rayScatterAngles ),
+			threads.emplace_back( transmitRays,	cref( radModel ), cref( parameter ), cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 													ref( rayDetector ), ref( detectorMutex ) );

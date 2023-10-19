@@ -42,7 +42,9 @@ class tubeParameter {
 
 	static const string FILE_PREAMBLE;
 	
-
+	/*!
+	 * @brief Enumeration for anode materials
+	*/
 	enum MATERIAL{
 		COPPER,
 		MOLYBDENUM,
@@ -68,10 +70,18 @@ class tubeParameter {
 		anodeMaterial( anodeMaterial_ )
 	{};
 
-	tubeParameter( void ) : 
-		tubeParameter{ 53000., .2, THUNGSTEN }
+	/*!
+	 * @brief Default constructor
+	 * @param  
+	*/
+	tubeParameter( void ) : tubeParameter{ 53000., .2, THUNGSTEN }
 	{};
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
 	/*!
@@ -130,10 +140,23 @@ class tube{
 	*/
 	range getEnergyRange( void ) const{ return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
 
-	double getEnergy( const double exposureTime ) const;
+	/*!
+	 * @brief Get energy of beam when switched on for exposure time
+	 * @param exposureTime Time in seconds
+	 * @return Energy in joule
+	*/
+	double getEnergy( const double exposureTime ) const{ return totalPower_W * exposureTime; };
 
+	/*!
+	 * @brief Get ray power
+	 * @return Ray power in watt
+	*/
 	double rayPower( void ) const{ return totalPower_W; };
 
+	/*!
+	 * @brief Get the electrical power
+	 * @return Power in watt
+	*/
 	double electricalPower( void ) const{ return anodeVoltage_V * anodeCurrent_A; };
 
 	/*!

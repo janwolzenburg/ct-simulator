@@ -44,9 +44,7 @@ tomographyParameter::tomographyParameter( const double exposureTime_, const bool
 	maxRadiationLoops( maxRadiationLoops_ ),
 	scatterPropability( scatterPropability_ ),
 	rayStepSize( rayStepSize_ )
-{
-
-}
+{}
 
 tomographyParameter::tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) ),
@@ -70,18 +68,6 @@ size_t tomographyParameter::serialize( vector<char>& binData ) const{
 	return numBytes;
 
 }
-
-/*
-tomography::tomography( void ) :
-	parameter(),
-	radonCSys( DUMMY_CSYS() )
-{}
-
-
-tomography::tomography( const tomographyParameter parameter_ ) :
-	parameter( parameter_ ),
-	radonCSys( DUMMY_CSYS() )
-{}*/
 
 
 

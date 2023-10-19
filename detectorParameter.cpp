@@ -29,6 +29,7 @@ const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FIL
 /*!
  * detectorRadonParameter implementation
 */
+
 detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, const double distanceRange_ ) :
 	distanceRange( Fpos( distanceRange_ ) ),
 	numberPoints{	Fmin( numberPoints_.col, (size_t) 2 ),
@@ -54,13 +55,7 @@ detectorRadonParameter::detectorRadonParameter( const idx2CR numberPoints_, cons
 		resolution.row = distanceRange / (double) ( numberPoints.row - 1 );
 		framesToFillSinogram = numberPoints.col - 1 + numberPoints.row - 1;
 	}
-
-
 }
-
-detectorRadonParameter::detectorRadonParameter( void ) :
-	detectorRadonParameter{ idx2CR{ 32, 16 }, 500. }
-{};
 
 
 detectorRadonParameter::detectorRadonParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
@@ -96,12 +91,6 @@ detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPer
 	maxRayAngleDetectable( Fmax( Fmin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
 {}
 
-
-detectorIndipendentParameter::detectorIndipendentParameter( void ) :
-	detectorIndipendentParameter{ 1, 1000., 5., true, 5. / 360. * 2. * PI }
-{}
-
-
 detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
 
 	raysPerPixel( deSerializeBuildIn( (size_t) 1, binData, it ) ),
@@ -127,7 +116,6 @@ size_t detectorIndipendentParameter::serialize( vector<char>& binData ) const{
 }
 
 
-
 /*!
  * detectorPhysicalParameter implementation
 */
@@ -138,6 +126,4 @@ detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParamet
 	detectorFocusDistance( indipendentParameter.arcRadius ),
 	structured( indipendentParameter.structured ),
 	maxRayAngleDetectable( indipendentParameter.maxRayAngleDetectable )
-{
-	
-}
+{}

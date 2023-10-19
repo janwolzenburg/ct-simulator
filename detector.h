@@ -94,7 +94,7 @@ class detector {
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 	vector<pixel> allPixelConverted;				/*!<Pixel in different coordinate system*/
 
-	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is importanct since physicalParameters constructor changes radonParameters
+	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is important since physicalParameters constructor changes radonParameters
 	detectorRadonParameter radonParameters;			/*!<Radon parameters*/
 
 };

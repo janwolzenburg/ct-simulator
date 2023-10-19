@@ -35,34 +35,45 @@ class tomographyParameter{
 
 	static const string FILE_PREAMBLE;
 
+	/*!
+	 * @brief Default constructor
+	*/
 	tomographyParameter( void );
 
+	/*!
+	 * @brief Constructor
+	 * @param exposureTime_ Exposure time in seconds 
+	 * @param scattering_ Enable ray scattering during transmission
+	 * @param maxRadiationLoops_ Maximum amount of loops, when rays are scattered
+	 * @param scatterPropability_ Approximate propability that a ray is scattered once when transmitted through whole model
+	 * @param rayStepSize_ Step size used in ray tracing
+	*/
 	tomographyParameter( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ );
-
+	
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binData Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
+	*/
 	tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it );
 
-	//double ExposureTime( void ) const { return exposureTime; };
-
-	//bool Scattering( void ) const{ return scattering; };
-
-	//size_t MaxLoops( void ) const{ return maxRadiationLoops; };
-
-	//double ScatterPropability( void ) const{ return scatterPropability; };
-
-	//double RayStepSize( void ) const{ return rayStepSize; };
-
+	/*!
+	 * @brief Serialize this object
+	 * @param binData Reference to vector where data will be appended
+	*/
 	size_t serialize( vector<char>& binData ) const;
 
 
 	public:
 
-	double exposureTime;
-	bool scattering;
-	size_t maxRadiationLoops;
-	double scatterPropability;
-	double rayStepSize;
+	double exposureTime;			/*!<Exposure time in seconds*/
+	bool scattering;				/*!<Enable scattering*/
+	size_t maxRadiationLoops;		/*!<Max. amount rays can be scattered*/
+	double scatterPropability;		/*!<Approximate propability that a ray is scattered once when transmitted through whole model*/
+	double rayStepSize;				/*!<Step size used in ray tracing in mm*/
 
 };
+
 
 /*!
  * @brief Class for computed tomography
@@ -77,13 +88,14 @@ class tomography{
 	 * @param model_ 
 	*/
 	tomography( const tomographyParameter parameter_ ) :
-		parameter( parameter_ ),
-		radonCSys( DUMMY_CSYS() )
+		parameter( parameter_ ), radonCSys( DUMMY_CSYS() )
 	{};
 
+	/*!
+	 * @brief Default constructor
+	*/
 	tomography( void ) :
-		parameter( ),
-		radonCSys( DUMMY_CSYS() )
+		parameter( ), radonCSys( DUMMY_CSYS() )
 	{};
 
 	/*!

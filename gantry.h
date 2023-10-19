@@ -150,7 +150,7 @@ class gantry {
 	 * @param rayDetector Reference to ray detector
 	 * @param iterationMutex Mutex for vector with rays for next iteration
 	*/
-	static void threadFunction( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
+	static void transmitRays( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
 								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<ray>& raysForNextIteration, mutex& detectorMutex,
 								detector& rayDetector, mutex& iterationMutex );
