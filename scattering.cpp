@@ -27,6 +27,10 @@ rayScattering::rayScattering( const size_t anglesAmount, const range energyRange
 	energyResolution( ( energyRange.end - energyRange.start ) / (double) ( energiesAmount - 1 ) ),
 	scatteringNormal( scatteredNormal_ )
 {
+	
+	// Resolution of angles
+	const double angleResolution = ( 2. * PI ) / (double) ( anglesAmount - 1 );
+
 	// Iterate all frequencies
 	for( size_t currentEnergyIndex = 0; currentEnergyIndex < energiesAmount; currentEnergyIndex++ ){
 
@@ -37,10 +41,7 @@ rayScattering::rayScattering( const size_t anglesAmount, const range energyRange
 
 		// Initial photon energy
 		const double a = currentEnergy / m_0c2_eV;
-
-
-		const double angleResolution = ( PI + PI ) / (double) ( anglesAmount - 1 );
-
+	
 		// Iterate all angles
 		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount - 1; currentAngleIndex++ ){
 
@@ -54,7 +55,7 @@ rayScattering::rayScattering( const size_t anglesAmount, const range energyRange
 		}
 
 		distributions.emplace_back( pseudoDistribution, 256 );
-		energies.emplace_back( currentEnergy );
+		energies.push_back( currentEnergy );
 	}
 
 

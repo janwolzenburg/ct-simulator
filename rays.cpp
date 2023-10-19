@@ -26,20 +26,6 @@ using std::string;
 /*
 	rayProperties implementation
 */
-/*
-rayProperties::rayProperties( const spectrum spectrum_ ) : 
-	energySpectrum( spectrum_ ),
-	voxHits( 0 )
-{};
-
-rayProperties::rayProperties( void ) : 
-	energySpectrum( spectrum{} ),
-	voxHits( 0 )
-{};
-
-spectrum rayProperties::EnergySpectrum( void ) const{
-	return energySpectrum;
-}*/
 
 void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
 
@@ -49,29 +35,12 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 		spectrumPoint.y *= exp( -k * distance );
 
 	} );
-
-
-
 }
 
 
 /*
 	ray implementation
 */
-
-ray::ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ )
-	: line{ v_, p_ },
-	properties( properties_ ){};
-
-ray::ray( const line line_, const rayProperties  properties_ )
-	: line( line_ ),
-	properties( properties_ ){};
-
-ray::ray( void ) :
-	ray{vec3{ v3{ 1, 0, 0 }, DUMMY_CSYS()}, pnt3{v3{ 0, 0, 0}, DUMMY_CSYS() }, rayProperties{} }
-{
-
-}
 
 ray ray::convertTo( const cartCSys* const target ) const{
 	return ray{ this->line::convertTo( target ), properties };
@@ -90,10 +59,6 @@ ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
 void ray::updateProperties( const voxData& data, const double distance ){
 	properties.attenuateSpectrum( data, distance );
 }
-
-//bool ray::paraInBounds(const double para) const { return para >= 0; };
-
-
 
 vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 
@@ -124,12 +89,4 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 	}
 		return possibleFaces;
 
-}
-
-void ray::scaleSpectrum( const double factor ){
-	properties.energySpectrum.scale( factor );
-}
-
-double ray::getMeanFrequency( void ) const{
-	return properties.energySpectrum.getMean();
 }

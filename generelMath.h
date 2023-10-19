@@ -29,7 +29,6 @@ constexpr double PI =   3.1415926535897932384626433832795;		/*!< PI */
 constexpr double PI_2 = 9.8696044010893586188344909998761;		/*!< PI ^ 2*/
 constexpr double c_mPers = 299792456;							/*!< Speed of light in m/s */
 constexpr double e_As = 1.6021917E-19;							/*!< Electron charge in As */
-//constexpr double e_eV_Per_V = 1.6021917;						/*!<Electron charge in Electronvolt per Volt*/
 constexpr double h_Js = 6.626196E-34;							/*!< Planck's constant */
 constexpr double h_eVs = 4.1357E-15;							
 
@@ -70,8 +69,22 @@ bool iseqErr( const double a, const double b, const double tolerance );
 */
 bool iseqErr( const double a, const double b );
 
+/*!
+ * @brief Compares two values with tolerance
+ * @param a Value 1
+ * @param b Value 2
+ * @param fraction Relative deviation between values  with respect to Value 1
+ * @return True when |a - b| / |a| < fraction
+*/
 bool isEqErrPercent( const double a, const double b, const double fraction );
 
+/*!
+ * @brief Get the relative deviation between two values
+ * @tparam T 
+ * @param a 
+ * @param b 
+ * @return 
+*/
 template <typename T>
 double relDeviation( const T a, const T b );
 

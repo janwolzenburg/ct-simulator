@@ -62,12 +62,6 @@ class spectrum {
 	void scale( const double factor );
 
 	/*!
-	 * @brief Get the intregral of spectrum
-	 * @return Integral
-	*/
-	double getIntegral( void ) const;
-
-	/*!
 	 * @brief Get sum of all y values
 	 * @return Sum of all y values
 	*/
@@ -97,9 +91,18 @@ class spectrum {
 	*/
 	void modify( std::function<void( v2& )> modFunction );
 
+	/*!
+	 * @brief Get raw data
+	 * @return Vector of points
+	*/
 	vector<v2> rawData( void ) const { return data; };
 
+	/*!
+	 * @brief Get the energy resolution
+	 * @return Energy resolution
+	*/
 	double EnergyResolution( void ) const { return energyResolution; };
+
 
 	private:
 
@@ -108,11 +111,8 @@ class spectrum {
 	*/
 	void updateMean( void );
 
-
-	private:
-
-	vector<v2> data;		/*!<2D point data sorted by x value*/
-	double energyResolution;
-	double mean;			/*!<Mean Frequency of spectrum*/
+	vector<v2> data;			/*!<2D point data sorted by x value*/
+	double energyResolution;	/*!<Reolution of energies in spectrum*/
+	double mean;				/*!<Mean Frequency of spectrum*/
 
 };

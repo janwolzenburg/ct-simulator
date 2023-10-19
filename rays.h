@@ -86,19 +86,21 @@ class ray : public line{
 	 * @param p_ O
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ );
+	explicit ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ ) : 
+		line{ v_, p_ }, properties{ properties_ }{};
 
 	/*!
 	 * @brief Constructor
 	 * @param line_ Line
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const line line_, const rayProperties  properties_ );
+	explicit ray( const line line_, const rayProperties  properties_ ) :
+	line{ line_ }, properties{ properties_ }{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ray( void );
+	ray( void ) : ray{ line{}, rayProperties{} }{};
 
 	/*!
 	 * @brief Get intensity
@@ -152,18 +154,28 @@ class ray : public line{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void scaleSpectrum( const double factor );
+	void scaleSpectrum( const double factor ){ properties.energySpectrum.scale( factor ); };
 
 	/*!
 	 * @brief Get the mean frequency of spectrum
 	 * @return Mean frequency
 	*/
-	double getMeanFrequency( void ) const;
+	double getMeanFrequency( void ) const{ return properties.energySpectrum.getMean(); };
 
+	/*!
+	 * @brief Increment the voxel hit count
+	*/
 	void incrementHitCounter( void ){ properties.voxHits++; };
 
+	/*!
+	 * @brief Reset hit counter 
+	*/
 	void resetHitCounter( void ){ properties.voxHits = 0; };
 
+	/*!
+	 * @brief Get voxel hits
+	 * @return Amount of voxel the ray has hit
+	*/
 	size_t VoxelHits( void ) const { return properties.voxHits; };
 
 

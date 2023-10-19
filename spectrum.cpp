@@ -17,7 +17,6 @@ using std::sort;
 using std::for_each;
 
 #include <numeric>
-
 #include "spectrum.h"
 
 
@@ -25,13 +24,6 @@ using std::for_each;
 /*********************************************************************
    Implementations
 *********************************************************************/
-/*
-spectrum::spectrum(void) : 
-	mean( 0. ),
-	energyResolution( 1. )
-{
-
-}*/
 
 spectrum::spectrum(const vector<double> X, const vector<double> Y)
 {
@@ -62,8 +54,7 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 	}
 
 	updateMean();
-};
-
+}
 
 void spectrum::scale( const double factor ){
 
@@ -71,44 +62,18 @@ void spectrum::scale( const double factor ){
 	updateMean();
 }
 
-
 spectrum spectrum::getScaled( const double factor ) const {
 
 	spectrum scaledSpectrum{ *this };
-	
 	scaledSpectrum.scale( factor );
 
 	return scaledSpectrum;
 
 }
 
-
-double spectrum::getIntegral( void ) const{
-
-	double integral = 0.;
-
-	// Iterate all data
-	for( auto dataIt = data.cbegin(); dataIt < data.cend() - 1; dataIt++ ){
-
-		double xDelta = (dataIt + 1)->x - dataIt->x;
-		double yValue = dataIt->y;
-
-		integral += xDelta * yValue;
-
-	}
-
-	return integral;
-}
-
-
 double spectrum::getSum( void ) const{
 	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
 }
-
-/*
-double spectrum::getMean( void ) const{
-	return mean;
-}*/
 
 void spectrum::updateMean( void ){
 
@@ -117,15 +82,6 @@ void spectrum::updateMean( void ){
 
 	mean = expectedValue / getSum();	
 }
-
-/*
-double spectrum::getMin( void ) const{
-	return data.front().x;
-}
-
-double spectrum::getMax( void ) const{
-	return data.back().x;
-}*/
 
 void spectrum::modify( std::function<void( v2& )> modFunction ){
 	for( v2& v : data ){

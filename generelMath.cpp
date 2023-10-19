@@ -38,14 +38,12 @@ bool isEqErrPercent( const double a, const double b, const double fraction ){
 	if( a == b ) return true;
 
 	// Inprecise comparison
-	if( std::abs( a - b ) / std::abs( a ) < fraction ) return true;
+	if(  relDeviation( a, b ) < fraction ) return true;
 	return false;
 
 }
 
 bool iseqErr( const double a, const double b ){
-	
-
 	return iseqErr( a, b, EPSILON );
 }
 

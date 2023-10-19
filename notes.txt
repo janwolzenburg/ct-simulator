@@ -1,0 +1,9 @@
+
+// Done: Linear algebra, model, generel
+
+
+Done:
+rays.h rays.cpp
+scatter.h scatter.cpp
+spectrum.h spectrum.cpp
+generelMath.h generelMath.cpp
