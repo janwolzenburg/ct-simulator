@@ -3,7 +3,14 @@
 
 
 Done:
+All generel
+All linear algebra
+model.h model.cpp
 rays.h rays.cpp
 scatter.h scatter.cpp
 spectrum.h spectrum.cpp
 generelMath.h generelMath.cpp
+grid.h grid.hpp
+radonTransform.h radonTransform.cpp
+backprojection.h backprojection.cpp
+filter.h filter.cpp

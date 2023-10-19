@@ -376,11 +376,11 @@ size_t model::serialize( vector<char>& binData ) const{
 }
 
 
-void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
-							v2CR& realStart, mutex& realStartMutex, v2CR& realEnd, mutex& realEndMutex,
-							grid<voxData>& slice, mutex& sliceMutex,
-							const surf& slicePlane,
-							const model& modelRef ){
+void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
+									v2CR& realStart, mutex& realStartMutex, v2CR& realEnd, mutex& realEndMutex,
+									grid<voxData>& slice, mutex& sliceMutex,
+									const surf& slicePlane,
+									const model& modelRef ){
 
 	// Iterate through all columns
 	while( xIdx < slice.Size().col ){

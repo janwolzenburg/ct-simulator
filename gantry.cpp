@@ -57,10 +57,10 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->rotateM( cSys->zAxis(), angle );
 }
 
-void threadFunction(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
-						const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-						vector<ray>& raysForNextIteration, mutex& iterationMutex,
-						detector& rayDetector, mutex& detectorMutex ){
+void gantry::threadFunction(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
+								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+								vector<ray>& raysForNextIteration, mutex& iterationMutex,
+								detector& rayDetector, mutex& detectorMutex ){
 
 	size_t currentRayIndex;
 	ray currentRay;

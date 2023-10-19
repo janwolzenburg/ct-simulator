@@ -31,27 +31,6 @@ using std::mutex;
    Definitions
 *********************************************************************/
 
-
-
-/*!
- * @brief Thread function to speed up transmission of multiple rays through model
- * @param radModel Reference to model
- * @param enableScattering Flag that enables scattering
- * @param rayScatterAngles Reference to object with information about ray scattering
- * @param rays Reference to vector with rays to transmit
- * @param sharedCurrentRayIndex Index of the next ray in vector to transmit. Will be changed at each call
- * @param currentRayIndexMutex Mutex instance for ray index
- * @param raysForNextIteration Reference to vector which hold the rays for the next iteration
- * @param detectorMutex Mutex for the detector Object
- * @param rayDetector Reference to ray detector
- * @param iterationMutex Mutex for vector with rays for next iteration
-*/
-void threadFunction( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
-					 const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-					 vector<ray>& raysForNextIteration, mutex& detectorMutex,
-					 detector& rayDetector, mutex& iterationMutex );
-
-
 /*!
  * @brief Class for a gantry with xRay source and detector
 */
@@ -157,4 +136,23 @@ class gantry {
 	double radius;						/*!<Radius of gantry*/
 
 	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
+
+	/*!
+	 * @brief Thread function to speed up transmission of multiple rays through model
+	 * @param radModel Reference to model
+	 * @param enableScattering Flag that enables scattering
+	 * @param rayScatterAngles Reference to object with information about ray scattering
+	 * @param rays Reference to vector with rays to transmit
+	 * @param sharedCurrentRayIndex Index of the next ray in vector to transmit. Will be changed at each call
+	 * @param currentRayIndexMutex Mutex instance for ray index
+	 * @param raysForNextIteration Reference to vector which hold the rays for the next iteration
+	 * @param detectorMutex Mutex for the detector Object
+	 * @param rayDetector Reference to ray detector
+	 * @param iterationMutex Mutex for vector with rays for next iteration
+	*/
+	static void threadFunction( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
+								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+								vector<ray>& raysForNextIteration, mutex& detectorMutex,
+								detector& rayDetector, mutex& iterationMutex );
+
 };

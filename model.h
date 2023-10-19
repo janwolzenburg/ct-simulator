@@ -234,7 +234,6 @@ class model : public mathObj{
 	*/
 	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
 
-
 	/*!
 	 * @brief Alter special properties in the specified sphere
 	 * @param property Property to add
@@ -258,6 +257,15 @@ class model : public mathObj{
 
 
 	private:
+
+	/*!
+	 * @brief Function for multi threaded model slicing
+	*/
+	static void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
+										v2CR& realStart, mutex& realStartMutex, v2CR& realEnd, mutex& realEndMutex,
+										grid<voxData>& slice, mutex& sliceMutex,
+										const surf& slicePlane,
+										const model& modelRef );
 
 	/*!
 	* @brief Get voxel indices for given coordinates in local coordinate system
