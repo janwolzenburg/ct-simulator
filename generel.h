@@ -38,11 +38,6 @@ using std::mutex;
 	Definitions
  *********************************************************************/
 
-/*!
- * @brief Amount of Threads used during radiation
-*/
-extern const size_t numThreads;	
-
 
 /*!
  * @brief Pair of vectors

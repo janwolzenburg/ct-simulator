@@ -138,7 +138,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 		// Start threads
 		vector<std::thread> threads;
 
-		for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			threads.emplace_back( threadFunction,	cref( radModel ), cref( parameter ), cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
@@ -152,12 +152,6 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 		rays = raysForNextIteration;
 
 	}
-
-
-
-
-
-
 }
 
 

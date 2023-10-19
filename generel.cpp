@@ -26,8 +26,6 @@ using std::string;
 	Implementations
  *********************************************************************/
 
-constexpr size_t numThreads = 8;
-
 
 /*!
  * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor

@@ -491,7 +491,7 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < numThreads; threadIdx++ ){
+	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 		threads.emplace_back( sliceThreadFunction,	ref( xIdx ), ref( currentXMutex ), ref( yIdx ), ref( currentYMutex ),
 													ref( realStart ), ref( realStartMutex), ref( realEnd ), ref( realEndMutex ),
 													ref( largeSlice ), ref( sliceMutex ),
