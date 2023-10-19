@@ -27,15 +27,9 @@
 /*!
  * radonCoords implementation
 */
-/*
-radonCoords::radonCoords( const double theta_, const double distance_ ) : 
-	theta( theta_ ), 
-	distance( distance_ )
-{}*/
 
 radonCoords::radonCoords( const cartCSys* const cSys, const line l ) : 
-	theta( 0 ), 
-	distance( 0 )
+	theta( 0 ), distance( 0 )
 {
 	// Project ray on XY plane
 	const line projectedLine = l.projectOnXYPlane( cSys );
@@ -76,17 +70,6 @@ radonCoords::radonCoords( const cartCSys* const cSys, const line l ) :
 
 }
 
-/*
-radonCoords::radonCoords( void ) : radonCoords( 0, 0 )
-{}
-
-
-radonPoint::radonPoint( const radonCoords coordinates_, const double value_ ) :
-	coordinates( coordinates_ ),
-	value( value_ )
-{}
-*/
-
 
 /*!
  * radonTransformed implementation
@@ -111,15 +94,6 @@ radonTransformed::radonTransformed( const detectorRadonParameter detectorParamet
 {
 	gridErrors = vector<vector<v2CR>>( Size().col, vector<v2CR>( Size().row, v2CR{ INFINITY, INFINITY }));
 }
-
-/*
-grid<> radonTransformed::Data( void ) const{
-	return (grid<>) *this;
-}
-
-void radonTransformed::assignData( const idx2CR index, const double value ){
-	this->setData( index, value );
-}*/
 
 void radonTransformed::assignData( const radonPoint dataPoint ){
 
@@ -150,6 +124,4 @@ size_t radonTransformed::serialize( vector<char>& binData ) const{
 radonTransformed::radonTransformed( const vector<char>& binData, vector<char>::const_iterator& it ) : 
 	grid<>( binData, it ),
 	gridErrors( deSerialize< vector<vector<v2CR>> >( binData, it ) )
-{
-	
-}
+{}

@@ -36,9 +36,12 @@ class radonCoords{
 	 * @param distance_ Distance
 	*/
 	radonCoords( const double theta_, const double distance_ ) : 
-		theta( theta_ ),
-		distance( distance_ )
-	{};
+		theta( theta_ ), distance( distance_ ) {};
+
+	/*!
+	 * @brief Default constructor
+	*/
+	radonCoords( void ) : radonCoords{ 0, 0 } {};
 
 	/*!
 	 * @brief Constructor
@@ -46,11 +49,6 @@ class radonCoords{
 	 * @param l Line
 	*/
 	radonCoords( const cartCSys* const cSys, const line l );
-
-	/*!
-	 * @brief Default constructor
-	*/
-	radonCoords( void ) : radonCoords{ 0, 0 } {};
 
 
 	public:
@@ -74,9 +72,7 @@ class radonPoint{
 	 * @param value_ Value
 	*/
 	radonPoint( const radonCoords coordinates_, const double value_ ) :
-		coordinates( coordinates_ ),
-		value( value_ )
-	{};
+		coordinates( coordinates_ ), value( value_ ) {};
 
 	public:
 
@@ -96,6 +92,9 @@ class radonTransformed : private grid<> {
 
 	static const string FILE_PREAMBLE;
 
+	/*!
+	 * @brief Default constructor
+	*/
 	radonTransformed( void );
 
 	/*!
