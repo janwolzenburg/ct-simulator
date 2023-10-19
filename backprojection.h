@@ -19,6 +19,7 @@
 #include "progress.h"
 
 
+
 /*********************************************************************
   Definitions
 *********************************************************************/
@@ -72,12 +73,16 @@ class filteredProjections : private grid<> {
 	*/
 	v2CR Resolution( void ) const{ return grid::Resolution(); };
 
+	/*!
+	 * @brief Return used filter
+	 * @return Filter used in backprojections
+	*/
 	discreteFilter Filter( void ) const { return filter; };
 
 
 	private:
 
-	discreteFilter filter;
+	discreteFilter filter;		/*!<Filter used in backprojection*/
 
 };
 
@@ -97,12 +102,14 @@ class reconstrucedImage : private grid<> {
 	*/
 	reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress = nullptr );
 
+	static void reconstructColumn(  size_t& currentX, mutex& currentXMutex, reconstrucedImage& image, 
+									mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
+									const filteredProjections& projections );
+
 	/*!
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
 	 grid<> getGrid( void ) const{ return (grid<>) * this; };
-
-
 
 };
