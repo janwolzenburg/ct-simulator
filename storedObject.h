@@ -25,78 +25,58 @@ using std::vector;
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for a persisting object instance to be stored on Disc
+ * @tparam C Class of object
+*/
 template< class C >
 class storedObject{
 
 	public:
+
+	/*!
+	 * @brief Constructor
+	 * @param filePath_ Path to file
+	 * @param objectRef Reference to object
+	*/
 	storedObject( const path filePath_, C& objectRef );
 
+	/*!
+	 * @brief Load object from specific file
+	 * @param filePath Path to serialized file
+	 * @return True if file exists and contains valid data
+	*/
 	bool load( const path filePath );
 
+	/*!
+	 * @brief Save the object
+	 * @param force When false only store if object was loaded before
+	*/
 	void saveObject( const bool force = false ) const;
 
+	/*!
+	 * @brief Check if an object was loaded
+	 * @return True when object was loaded
+	*/
 	bool Loaded( void ) const{ return loaded; };
 
+	/*!
+	 * @brief Set loaded flag
+	*/
 	void setLoaded( void ){ loaded = true; };
 
 
 	private:
 
-	path file;
-	C& object;
-	bool loaded;
+	path file;		/*!>Path to file on filesystem*/
+	C& object;		/*!>Reference to object*/
+	bool loaded;	/*!>Flag to */
 
+	/*!
+	 * @brief Load file from stored path
+	*/
 	void loadStored( void );
 
 };
 
-
-template< class C >
-storedObject<C>::storedObject( const path filePath_, C& objectRef ) :
-	file( filePath_ ),
-	object( objectRef ),
-	loaded( false ){
-	loadStored();
-};
-
-
-template< class C >
-bool storedObject<C>::load( const path filePath ){
-
-	// Does the file exist?
-	if( !std::filesystem::exists( filePath ) ) return false;
-
-	// Load file
-	vector<char> binaryData = std::move( importSerialized( filePath ) );
-	vector<char>::iterator binaryDataIt = binaryData.begin();
-
-	if( !validBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
-
-	if constexpr( std::is_same<C, model>::value )
-		object = std::move( C{ binaryData, binaryDataIt } );
-	else
-		object = C{ binaryData, binaryDataIt };
-	
-	loaded = true;
-	return loaded;
-};
-
-
-template< class C >
-void storedObject<C>::saveObject( const bool force ) const{
-
-	if( !loaded && !force ) return;
-
-	vector<char> binaryData;
-	object.serialize( binaryData );
-
-	exportSerialized( file, binaryData );
-
-};
-
-template< class C >
-void storedObject<C>::loadStored( void ){
-
-	load( file );
-
-};
+#include "storedObject.hpp"

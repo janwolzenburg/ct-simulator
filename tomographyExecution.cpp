@@ -69,11 +69,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
 
 
-	exposureTimeIn.value( PROGRAM_STATE().TomographyParameter().exposureTime );
-	rayStepSizeIn.value( PROGRAM_STATE().TomographyParameter().rayStepSize );
-	radiationLoopsIn.value( (double) PROGRAM_STATE().TomographyParameter().maxRadiationLoops );
-	scatterPropabilityIn.value( PROGRAM_STATE().TomographyParameter().scatterPropability );
-	scatteringOnOff.value( PROGRAM_STATE().TomographyParameter().scattering );
+	exposureTimeIn.value( PROGRAM_STATE().tomographyParamerters.exposureTime );
+	rayStepSizeIn.value( PROGRAM_STATE().tomographyParamerters.rayStepSize );
+	radiationLoopsIn.value( (double) PROGRAM_STATE().tomographyParamerters.maxRadiationLoops );
+	scatterPropabilityIn.value( PROGRAM_STATE().tomographyParamerters.scatterPropability );
+	scatteringOnOff.value( PROGRAM_STATE().tomographyParamerters.scattering );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	exposureTimeIn.callback( button_cb, &updateFlag );
@@ -124,9 +124,9 @@ void tomographyExec::handleEvents( void ){
 		PROGRAM_STATE().deactivateAll();
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(), 20, 5, "Radiation progress" );
-		state.Tomography() = tomography{ state.TomographyParameter() };
+		state.tomographyInstance = tomography{ state.tomographyParamerters };
 
-		state.assignRadonTransformed( state.Tomography().recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
+		state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
 
 		if( state.ProcessingWindow() != nullptr ){
 			state.ProcessingWindow()->setNewRTFlag();
@@ -148,7 +148,7 @@ void tomographyExec::handleEvents( void ){
 		
 		informationUpdateFlag = true;
 
-		state.TomographyParameter() = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
+		state.tomographyParamerters = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
 
 	}
 
@@ -164,8 +164,8 @@ void tomographyExec::handleEvents( void ){
 
 		informationString += "Elektrische Leistung:	  " + toString( state.Tube().electricalPower() ) + "W" + '\n';
 		informationString += "Strahlleistung:	  " + toString( state.Tube().rayPower() ) + "W" + '\n';
-		informationString += "Strahlenergie:	  " + toString( state.Tube().getEnergy( state.TomographyParameter().exposureTime ) ) + "J" + '\n';
-		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.TomographyParameter().exposureTime ) * state.RadonParameter().framesToFillSinogram ) + "J" + '\n';
+		informationString += "Strahlenergie:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * state.RadonParameter().framesToFillSinogram ) + "J" + '\n';
 		information.value( informationString.c_str() );
 
 	}

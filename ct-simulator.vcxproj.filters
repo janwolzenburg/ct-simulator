@@ -504,4 +504,7 @@
       <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="notes.txt" />
+  </ItemGroup>
 </Project>

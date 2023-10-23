@@ -109,16 +109,16 @@ modelView::modelView( int x, int y, int w, int h ) :
 
 
 	// Set values
-	xRot.value( PROGRAM_STATE().Plane().rotationAngleX );
-	yRot.value( PROGRAM_STATE().Plane().rotationAngleY );
-	zTrans.value( PROGRAM_STATE().Plane().positionZ );
+	xRot.value( PROGRAM_STATE().planeInstance.rotationAngleX );
+	yRot.value( PROGRAM_STATE().planeInstance.rotationAngleY );
+	zTrans.value( PROGRAM_STATE().planeInstance.positionZ );
 
 	// Hide initially
 	moveGrp.hide();
 
 	if( PROGRAM_STATE().ModelLoaded() ){
 		viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
-		viewImg.changeContrast( PROGRAM_STATE().ModelViewParameter().viewContrast );
+		viewImg.changeContrast( PROGRAM_STATE().modelViewPara.viewContrast );
 	}
 
 }
@@ -136,7 +136,7 @@ void modelView::loadModel( void ){
 	UpdateModel();
 
 	viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
-	PROGRAM_STATE().ModelViewParameter().viewContrast = viewImg.getContrast();
+	PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
@@ -162,7 +162,7 @@ void modelView::handleEvents( void ){
 
 	if( viewImg.handleEvents() ){
 		// Store contrast
-		PROGRAM_STATE().ModelViewParameter().viewContrast = viewImg.getContrast();
+		PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
 	}
 
 }
@@ -184,7 +184,7 @@ void modelView::resetModel( void ){
 	zTrans.value( 0. );
 
 	PROGRAM_STATE().sliceModel();
-	viewImg.assignImage( PROGRAM_STATE().Slice(), true );
+	viewImg.assignImage( PROGRAM_STATE().modelSliceInstance, true );
 
 	Fl_Group::window()->activate();
 
@@ -210,7 +210,7 @@ void modelView::UpdateModel( void ){
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		viewImg.assignImage( PROGRAM_STATE().Slice(), true );
+		viewImg.assignImage( PROGRAM_STATE().modelSliceInstance, true );
 	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();

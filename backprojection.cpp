@@ -160,7 +160,6 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 }
 
 
-//TODO: multithreading
 reconstrucedImage::reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress ) :
 	grid( idx2CR{ projections.Size().row, projections.Size().row },
 		  v2CR{ projections.Start().row, projections.Start().row }, 

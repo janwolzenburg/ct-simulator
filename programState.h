@@ -34,6 +34,8 @@
  #include "processingParameters.h"
  #include "modelViewParameter.h"
 
+
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -47,34 +49,58 @@ class programState{
 	public:
 
 	static const path stateStorage;
-
-
-	public:
-
 	static programState& getInstance();
+	
 
+	slicePlane planeInstance;
+	grid<voxData> modelSliceInstance;
+	modelViewParameter modelViewPara;
+	tomography tomographyInstance;
+	tomographyParameter tomographyParamerters;
+	radonTransformed currentProjections;
+	filteredProjections currentFilteredProjections;
+	reconstrucedImage currentReconstrucedImage;
+	processingParameter currentProcessingParameters;
+
+	
 	~programState( void );
 
+
+	/*********************************************** Storage ***************************************/
+	/***********************************************************************************************/
+
+
+	void createStorageDir( void );
+
+	void deleteStorageDir( void );
+
 	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
+	
+	path getPath( const string filename ){ return stateStorage / filename; };
+
+
+	/*********************************************** GUI *******************************************/
+	/***********************************************************************************************/
+
+	void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
+
+	void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
+
+	mainView* MainWindow( void ) const{ return mainWindow; };
+
+	processingView* ProcessingWindow( void ) const{ return processingWindow; };
+			
+	void activateAll( void );
+
+	void deactivateAll( void );
+
+
+	
+	const model& Model( void ){ return modelInstance; };
 
 	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
 	bool loadModel( void );
-
-	const model& Model( void ){ return modelInstance; };
-
-	const gantry& Gantry( void ){ return gantryInstance; };
-
-	grid<voxData>& Slice( void ){ return modelSliceInstance; };
-
-	static void createStorageDir( void );
-
-	static void deleteStorageDir( void );
-
-	static path getPath( const string filename ){ return stateStorage / filename; };
-
-	void buildGantry( const tubeParameter tubeParameter_,
-					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 	string modelDescription( void ) const;
 
@@ -86,8 +112,16 @@ class programState{
 
 	void resetModel( void );
 
-	slicePlane& Plane( void ) { return planeInstance; };
 
+	
+	const gantry& Gantry( void ){ return gantryInstance; };
+
+	void buildGantry( const tubeParameter tubeParameter_,
+					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
+
+
+					  
+	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
 
 	const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
 
@@ -97,65 +131,23 @@ class programState{
 
 	const detectorPhysicalParameter DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().getPhysicalParameters(); };
 
-	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
 
-	modelViewParameter& ModelViewParameter( void ){ return modelViewPara; };
-
-	tomography& Tomography( void ) { return tomographyInstance; };
-
-	tomographyParameter& TomographyParameter( void ){ return tomographyParamerters; };
-
-	radonTransformed& Projections( void ){ return currentProjections; };
-
-	filteredProjections& FilteredProjections( void ){ return currentFilteredProjections; };
-
-	reconstrucedImage& ReconstrucedImage( void ){ return currentReconstrucedImage; };
 
 	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
 	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); storedProcessingParameters.setLoaded(); };
-
+	
 	void setUpdateInformationFlag( void ) const;
-	//void setNewRadonTransformedFlag( void ){  }
 
-	void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
+	void exportSinogram( void );
 
-	void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
-
-	mainView* MainWindow( void ) const{ return mainWindow; };
-
-	processingView* ProcessingWindow( void ) const{ return processingWindow; };
-
-	processingParameter& ProcessingParameters( void ){ return currentProcessingParameters; };
-
-	void exportSinogram( void ){
-		if( storedProjections.Loaded() ){
-
-			path exportPath = exportChooserInstance.choose();
-			storedExportChooser.setLoaded();
-			if( exportPath.empty() ) return;
+	path importSinogram( void );
 
 
-			if( exportPath.extension() != "sinogram" )
-				exportPath += ".sinogram";
 
-			vector<char> binData;
-			currentProjections.serialize( binData );
 
-			exportSerialized( exportPath, binData );
 
-		}
-	}
 
-	path importSinogram( void ){
-		storedImportChooser.setLoaded();
-		return  importChooserInstance.choose();
-
-	}
-
-	void activateAll( void );
-
-	void deactivateAll( void );
 
 	private:
 
@@ -166,7 +158,6 @@ class programState{
 	programState& operator=( const programState& ) = delete;
 
 
-	private:
 
 	mainView* mainWindow = nullptr;
 	processingView* processingWindow = nullptr;
@@ -179,12 +170,8 @@ class programState{
 	fileChooser modelChooserInstance;
 	storedObject<fileChooser> storedModelChooser;
 
-	slicePlane planeInstance;
 	storedObject<slicePlane> storedPlane;
 
-	grid<voxData> modelSliceInstance;
-	
-	modelViewParameter modelViewPara;
 	storedObject<modelViewParameter> storedModelParameter;
 
 
@@ -202,7 +189,6 @@ class programState{
 
 	gantry gantryInstance;
 
-	tomographyParameter tomographyParamerters;
 	storedObject<tomographyParameter> storedTomographyParamerter;
 
 	fileChooser exportChooserInstance;
@@ -211,18 +197,9 @@ class programState{
 	fileChooser importChooserInstance;
 	storedObject<fileChooser> storedImportChooser;
 
-	tomography tomographyInstance;
-
-	radonTransformed currentProjections;
 	storedObject<radonTransformed> storedProjections;
 
-	processingParameter currentProcessingParameters;
 	storedObject<processingParameter> storedProcessingParameters;
-
-	filteredProjections currentFilteredProjections;
-
-	reconstrucedImage currentReconstrucedImage;
-
 
 
 };

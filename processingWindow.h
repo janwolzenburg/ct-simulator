@@ -70,7 +70,7 @@ class processingView : public Fl_Window{
 		for( auto& el : discreteFilter::filterTypes ) filterNames.push_back( el.second );
 
 		filterTypeSelector.setElements( filterNames );
-		string filterName = discreteFilter::filterTypes.at( PROGRAM_STATE().ProcessingParameters().filterType );
+		string filterName = discreteFilter::filterTypes.at( PROGRAM_STATE().currentProcessingParameters.filterType );
 		filterTypeSelector.value( filterName );
 
 
@@ -114,7 +114,7 @@ class processingView : public Fl_Window{
 
 			newRTFlag = false;
 
-			assignSinogram( PROGRAM_STATE().Projections() );
+			assignSinogram( PROGRAM_STATE().currentProjections );
 
 			recalcFilteredProjections();
 
@@ -123,14 +123,14 @@ class processingView : public Fl_Window{
 
 		if( sinogramWidget.handleEvents() ){
 			// Store contrast
-			 PROGRAM_STATE().ProcessingParameters().projectionsContrast = sinogramWidget.getContrast();
+			 PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.getContrast();
 		}
 
 
 		if( filterChanged ){
 			filterChanged = false;
 
-			PROGRAM_STATE().ProcessingParameters().filterType = discreteFilter::getEnum( filterTypeSelector.value() );
+			PROGRAM_STATE().currentProcessingParameters.filterType = discreteFilter::getEnum( filterTypeSelector.value() );
 
 			recalcFilteredProjections();
 
@@ -139,13 +139,13 @@ class processingView : public Fl_Window{
 		if( filteredProjWidget.handleEvents() ){
 
 			if( filteredProjWidget.imageAssigned() )
-				PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast = filteredProjWidget.getContrast();
+				PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
 		}
 
 		if( reconstructionImageWidget.handleEvents() ){
 
 			if( reconstructionImageWidget.imageAssigned() )
-				PROGRAM_STATE().ProcessingParameters().reconstrucedImageContrast = reconstructionImageWidget.getContrast();
+				PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.getContrast();
 		}
 
 	}
@@ -162,7 +162,7 @@ class processingView : public Fl_Window{
 
 		sinogramWidget.assignImage( sinogramImg );
 
-		sinogramWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().projectionsContrast );
+		sinogramWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 
 		//filteredProjImage = monoImage(  )
 

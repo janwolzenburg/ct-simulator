@@ -79,13 +79,13 @@ programState::programState( void ) :
 	tomographyParamerters{},
 	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
 
-	currentProjections(),
-	storedProjections( programState::getPath( "storedProjections.txt" ), currentProjections ),
+	currentProjections{},
+	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
 
-	currentProcessingParameters(),
-	storedProcessingParameters( programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters ),
+	currentProcessingParameters{},
+	storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
 
-	currentFilteredProjections()
+	currentFilteredProjections{}
 
 {
 
@@ -289,3 +289,28 @@ bool programState::loadModel( void ){
 }
 
 
+
+void programState::exportSinogram( void ){
+	if( storedProjections.Loaded() ){
+
+		path exportPath = exportChooserInstance.choose();
+		storedExportChooser.setLoaded();
+		if( exportPath.empty() ) return;
+
+
+		if( exportPath.extension() != "sinogram" )
+			exportPath += ".sinogram";
+
+		vector<char> binData;
+		currentProjections.serialize( binData );
+
+		exportSerialized( exportPath, binData );
+
+	}
+}
+
+path programState::importSinogram( void ){
+	storedImportChooser.setLoaded();
+	return  importChooserInstance.choose();
+
+}

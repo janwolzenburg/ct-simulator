@@ -11,27 +11,27 @@ void processingView::recalcFilteredProjections( void ){
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 	//processingProgressWindow->show();
 
-	PROGRAM_STATE().FilteredProjections() = filteredProjections{ PROGRAM_STATE().Projections(), PROGRAM_STATE().ProcessingParameters().filterType, processingProgressWindow };
+	PROGRAM_STATE().currentFilteredProjections = filteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().FilteredProjections().Filter().getRelevantRange(), range(), 1., 1. } );//pow( PROGRAM_STATE().FilteredProjections().Resolution().row, 2. ) });
-	filterPlot.plotRef().assignData( PROGRAM_STATE().FilteredProjections().Filter().PlotValues() );
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().getRelevantRange(), range(), 1., 1. } );//pow( PROGRAM_STATE().currentFilteredProjections.Resolution().row, 2. ) });
+	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().PlotValues() );
 	filterPlot.assignData();
 
-	filteredProjImage = monoImage{ PROGRAM_STATE().FilteredProjections().getGrid(), true };
+	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.getGrid(), true };
 
 	filteredProjWidget.assignImage( filteredProjImage );
 	filteredProjWidget.setSliderBoundsFromImage();
-	//filteredProjWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast );
-	PROGRAM_STATE().ProcessingParameters().filteredProjectionsContrast = filteredProjWidget.getContrast();
+	//filteredProjWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast );
+	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
 
-	PROGRAM_STATE().ReconstrucedImage() = reconstrucedImage{ PROGRAM_STATE().FilteredProjections(), processingProgressWindow };
+	PROGRAM_STATE().currentReconstrucedImage = reconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = monoImage{ PROGRAM_STATE().ReconstrucedImage().getGrid(), true };
+	reconstructionImage = monoImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.assignImage( reconstructionImage );
-	//reconstructionImageWidget.changeContrast( PROGRAM_STATE().ProcessingParameters().reconstrucedImageContrast );
+	//reconstructionImageWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast );
 	reconstructionImageWidget.setSliderBoundsFromImage();
-	PROGRAM_STATE().ProcessingParameters().reconstrucedImageContrast = reconstructionImageWidget.getContrast();
+	PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.getContrast();
 
 	delete processingProgressWindow;
 
