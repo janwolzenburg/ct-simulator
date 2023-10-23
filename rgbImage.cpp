@@ -29,14 +29,11 @@ rgbImage::rgbImage( const size_t width_, const size_t height_ ) :
 	height( height_ ),
 	numPixel( width* height ),
 	imageData( numPixel, rgb_Int{ 255, 255, 0 } )
-{
-
-}
+{}
 
 rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t newHeight ) :
-	rgbImage{ newWidth, newHeight }{
-
-
+	rgbImage{ newWidth, newHeight }
+{
 	for( size_t c = 0; c < this->Width(); c++ ){
 
 		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
