@@ -198,8 +198,8 @@ void gantryEdition::handleEvents( void ){
 			const pnt3 startP = pixel.getPnt( pixel.AMin(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
 			const pnt3 endP = pixel.getPnt( pixel.AMax(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
 
-			const v2 start = v2( startP.X(), startP.Y() );
-			const v2 end = v2( endP.X(), endP.Y() );
+			const v2 start{ startP.X(), startP.Y() };
+			const v2 end{ endP.X(), endP.Y() };
 
 			detectorPlot.plotRef().addLine( start, end );
 
