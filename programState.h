@@ -126,42 +126,100 @@ class programState{
 	/***********************************************************************************************/
 	
 	/*!
-	 * @brief Get 
-	 * @param  
-	 * @return 
+	 * @brief Get Reference to model
+	 * @return Constant reference to model
 	*/
 	const model& Model( void ){ return modelInstance; };
 
-	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
-
+	/*!
+	 * @brief Load the model a stored path
+	 * @return True at success
+	*/
 	bool loadModel( void );
 
-	string modelDescription( void ) const;
+	/*!
+	 * @brief Check if a model has been loaded
+	 * @return True when a model has been loaded
+	*/
+	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
 
+	/*!
+	 * @brief Reset model to defautl state
+	*/
+	void resetModel( void );
+	
+	/*!
+	 * @brief Move model to given values with respect to the slice plane coordinate system
+	 * @param targetXRot Rotation around x-axis
+	 * @param targetYRot Rotation around y-axis
+	 * @param targetZTrans Translation in z-direction
+	 * @return True at success
+	*/
 	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
-
+	
+	/*!
+	 * @brief Center the model
+	*/
+	void centerModel( void );
+	
+	/*!
+	 * @brief Slice model with stored slice plane
+	 * @return True at success
+	*/
 	bool sliceModel( void );
 
-	void centerModel( void );
-
-	void resetModel( void );
+	/*!
+	 * @brief Get the model description
+	 * @return String with model information
+	*/
+	string modelDescription( void ) const;
 
 
 	/********************************************* Gantry ******************************************/
 	/***********************************************************************************************/
-					  
+	
+	/*!
+	 * @brief Get reference to tube instance
+	 * @return Constant reference to tube instance
+	*/
 	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
 
+	/*!
+	 * @brief Get reference to tube parameter
+	 * @return Constant reference to tube parameter
+	*/
 	const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
 
+	/*!
+	 * @brief Get reference to radon parameter
+	 * @return Constant reference to radon parameter
+	*/
 	const detectorRadonParameter& RadonParameter( void ) const{ return radonParameter; };
 
+	/*!
+	 * @brief Get reference to detector parameter
+	 * @return Constant reference to detector parameter
+	*/
 	const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
 
+	/*!
+	 * @brief Get physical detector parameter
+	 * @return Physical detector parameter
+	*/
 	const detectorPhysicalParameter DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().getPhysicalParameters(); };
 		
+	/*!
+	 * @brief Get reference to gantry
+	 * @return Constant reference to gantry
+	*/
 	const gantry& Gantry( void ){ return gantryInstance; };
 
+	/*!
+	 * @brief Build gantry and store given parameter
+	 * @param tubeParameter_ Tube parameter
+	 * @param radonParameter Radon parameter for detector
+	 * @param indipendentParameter Detector parameter
+	*/
 	void buildGantry( const tubeParameter tubeParameter_,
 					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
@@ -169,14 +227,33 @@ class programState{
 	/***************************************** Tomography ******************************************/
 	/***********************************************************************************************/
 
+	/*!
+	 * @brief Check if a radon transformed is loaded
+	 * @return True when a radon transform is currently loaded
+	*/
 	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
+	/*!
+	 * @brief Assign a radon transformed 
+	 * @details Store as current projections and set flags
+	 * @param rt Radon transform to assign
+	*/
 	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); storedProcessingParameters.setLoaded(); };
 	
-	void setUpdateInformationFlag( void ) const;
+	/*!
+	 * @brief Set flag to update tomography parameter information
+	*/
+	void setUpdateInformationFlag( void );
 
+	/*!
+	 * @brief Export current sinogram
+	*/
 	void exportSinogram( void );
 
+	/*!
+	 * @brief Choose path to import sinogram
+	 * @return Path to chosen sinogram
+	*/
 	path importSinogram( void );
 
 

@@ -254,9 +254,6 @@ void programState::resetModel( void ){
 	centerModel();
 }
 
-
-
-
 bool programState::loadModel( void ){
 
 	path modelToLoad = modelChooserInstance.choose();
@@ -267,7 +264,7 @@ bool programState::loadModel( void ){
 	return true;
 }
 
-void programState::setUpdateInformationFlag( void ) const{
+void programState::setUpdateInformationFlag( void ){
 	if( mainWindow != nullptr )
 		mainWindow->tomographyExecution.updateInformation();
 }

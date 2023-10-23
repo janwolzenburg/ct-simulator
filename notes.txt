@@ -23,4 +23,4 @@ gantry.h .cpp
 tomography.h .cpp
 tube.h .cpp
 
-storedObject.h
+storedObject.h .hpp
