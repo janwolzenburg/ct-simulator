@@ -42,7 +42,6 @@ programState& programState::getInstance(){
 	return instance;
 }
 
-
 programState::programState( void ) :
 	
 	resetStateAtExit( false ),
@@ -88,18 +87,13 @@ programState::programState( void ) :
 	currentFilteredProjections{}
 
 {
-
 	createStorageDir();
-
 }
-
 
 programState::~programState( void ) {
 	
 	if( resetStateAtExit ){
-		
 		deleteStorageDir();
-
 		return;
 	}
 	createStorageDir();
@@ -120,22 +114,10 @@ programState::~programState( void ) {
 	storedExportChooser.saveObject();
 }
 
-void programState::activateAll( void ){
-	mainWindow->activate();
-	processingWindow->activate();
-}
-
-
-void programState::deactivateAll( void ){
-	mainWindow->deactivate();
-	processingWindow->deactivate();
-}
 
 void programState::createStorageDir( void ){
-
 	// Check if state storage directory erxists
 	if( !std::filesystem::is_directory( stateStorage ) ) std::filesystem::create_directory( stateStorage );
-
 }
 
 void programState::deleteStorageDir( void ){
@@ -146,8 +128,22 @@ void programState::deleteStorageDir( void ){
 	// Remove all content
 	for( const auto& file : std::filesystem::directory_iterator( stateStorage ) )
 		std::filesystem::remove_all( file.path() );
+}
 
+void programState::activateAll( void ){
+	if( mainWindow != nullptr )
+		mainWindow->activate();
 
+	if( processingWindow != nullptr )
+		processingWindow->activate();
+}
+
+void programState::deactivateAll( void ){
+	if( mainWindow != nullptr )
+		mainWindow->deactivate();
+
+	if( processingWindow != nullptr )
+		processingWindow->deactivate();
 }
 
 void programState::buildGantry( const tubeParameter tubeParameter_,
@@ -164,8 +160,7 @@ void programState::buildGantry( const tubeParameter tubeParameter_,
 	storedRadonParameter.setLoaded();
 	storedDetectorParameter.setLoaded();
 	gantryInstance = newGantry;
-
-};
+}
 
 string programState::modelDescription( void ) const{
 
@@ -213,11 +208,9 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		modelInstance.CSys()->translateM( ( (vec3) planeInstance.surface.Normal() ) * translation );
 	}
 
-
 	// Return if succeeded
 	if( sliceModel() ) return true;
 	
-
 	// Revert changes
 	planeInstance = backupPlane;
 	modelInstance.CSys()->setPrimitive( backupCSys );
@@ -228,7 +221,6 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 
 	return false;
-
 }
 
 bool programState::sliceModel( void ){
@@ -245,7 +237,6 @@ bool programState::sliceModel( void ){
 	modelSliceInstance = tempSlice;
 
 	return true;
-
 }
 
 void programState::centerModel( void ){
@@ -254,8 +245,6 @@ void programState::centerModel( void ){
 	v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
 
 	modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } );
-
-
 }
 
 void programState::resetModel( void ){
@@ -266,15 +255,10 @@ void programState::resetModel( void ){
 	planeInstance.positionZ = 0.;
 
 	centerModel();
-
-
 }
 
 
-void programState::setUpdateInformationFlag( void ) const{
-	if( mainWindow != nullptr )
-		mainWindow->tomographyExecution.updateInformation();
-}
+
 
 bool programState::loadModel( void ){
 
@@ -283,12 +267,13 @@ bool programState::loadModel( void ){
 
 	if( !storedModel.load( modelToLoad ) ) return false;
 
-
 	return true;
-
 }
 
-
+void programState::setUpdateInformationFlag( void ) const{
+	if( mainWindow != nullptr )
+		mainWindow->tomographyExecution.updateInformation();
+}
 
 void programState::exportSinogram( void ){
 	if( storedProjections.Loaded() ){
@@ -312,5 +297,4 @@ void programState::exportSinogram( void ){
 path programState::importSinogram( void ){
 	storedImportChooser.setLoaded();
 	return  importChooserInstance.choose();
-
 }

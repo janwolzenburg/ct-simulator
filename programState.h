@@ -48,54 +48,88 @@ class programState{
 
 	public:
 
-	static const path stateStorage;
+	static const path stateStorage;		/*!< Path to persisting storage location*/
+	
+	/*!
+	 * @brief Get reference of singlular instance
+	 * @return Reference to program state
+	*/
 	static programState& getInstance();
 	
 
-	slicePlane planeInstance;
-	grid<voxData> modelSliceInstance;
-	modelViewParameter modelViewPara;
-	tomography tomographyInstance;
-	tomographyParameter tomographyParamerters;
-	radonTransformed currentProjections;
-	filteredProjections currentFilteredProjections;
-	reconstrucedImage currentReconstrucedImage;
-	processingParameter currentProcessingParameters;
+	slicePlane planeInstance;			/*!<Surface to slice model with*/
+	grid<voxData> modelSliceInstance;	/*!<Slice through model as gridded data*/
+	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
+	tomography tomographyInstance;				/*!<Instance of the tomography*/
+	tomographyParameter tomographyParamerters;	/*!<Parameter of tomography*/
+	radonTransformed currentProjections;		/*!<The current projections from last tomography*/
+
+	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
+	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
+	reconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 	
+	mainView* mainWindow = nullptr;					/*!<Pointer to the main window*/
+	processingView* processingWindow = nullptr;		/*!<Pointer to the processing window*/
+
+
+	/*!
+	 * @brief Destructor
+	 * @details Stores objects in persisting storage
+	*/
 	~programState( void );
 
 
 	/*********************************************** Storage ***************************************/
 	/***********************************************************************************************/
 
-
-	void createStorageDir( void );
-
-	void deleteStorageDir( void );
-
+	/*!
+	 * @brief Set flag to reset program state at program exit
+	*/
 	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
 	
-	path getPath( const string filename ){ return stateStorage / filename; };
+	/*!
+	 * @brief Get persitent storage path of file with given name
+	 * @param filename Name of file
+	 * @return Absoulte path of file
+	*/
+	path getPath( const string filename ) const{ return stateStorage / filename; };
 
 
 	/*********************************************** GUI *******************************************/
 	/***********************************************************************************************/
 
-	void registerMainWindow( mainView* const ptr ) { mainWindow = ptr; };
+	/*!
+	 * @brief Store pointer to main window for usage in program
+	 * @param ptr Pointer to the main window
+	*/
+	void registerMainWindow( mainView* const ptr ){ mainWindow = ptr; };
 
+	/*!
+	 * @brief Store pointer to processing window for usage in program
+	 * @param ptr Pointer to the processing window
+	*/
 	void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
-
-	mainView* MainWindow( void ) const{ return mainWindow; };
-
-	processingView* ProcessingWindow( void ) const{ return processingWindow; };
-			
+	
+	/*!
+	 * @brief Activate main and processing window
+	*/
 	void activateAll( void );
 
+	/*!
+	 * @brief Deactivate main and processing window
+	*/
 	void deactivateAll( void );
 
 
+	/********************************************* Model *******************************************/
+	/***********************************************************************************************/
 	
+	/*!
+	 * @brief Get 
+	 * @param  
+	 * @return 
+	*/
 	const model& Model( void ){ return modelInstance; };
 
 	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
@@ -113,13 +147,8 @@ class programState{
 	void resetModel( void );
 
 
-	
-	const gantry& Gantry( void ){ return gantryInstance; };
-
-	void buildGantry( const tubeParameter tubeParameter_,
-					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
-
-
+	/********************************************* Gantry ******************************************/
+	/***********************************************************************************************/
 					  
 	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
 
@@ -130,8 +159,15 @@ class programState{
 	const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
 
 	const detectorPhysicalParameter DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().getPhysicalParameters(); };
+		
+	const gantry& Gantry( void ){ return gantryInstance; };
+
+	void buildGantry( const tubeParameter tubeParameter_,
+					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 
+	/***************************************** Tomography ******************************************/
+	/***********************************************************************************************/
 
 	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
 
@@ -144,62 +180,63 @@ class programState{
 	path importSinogram( void );
 
 
-
-
-
-
-
 	private:
 
+	/*!
+	 * @brief Constructor
+	*/
 	programState( void );
 
+	/*!
+	 * @brief Copy constructor 
+	 * @details Deleted for singleton pattern
+	*/
 	programState( const programState& ) = delete;
 
+	/*!
+	 * @brief Copy assignment 
+	 * @details Deleted for singleton pattern
+	*/
 	programState& operator=( const programState& ) = delete;
 
+	/*!
+	 * @brief Create the storage directory
+	*/
+	void createStorageDir( void );
+
+	/*!
+	 * @brief Delete storage directory
+	*/
+	void deleteStorageDir( void );
 
 
-	mainView* mainWindow = nullptr;
-	processingView* processingWindow = nullptr;
+	bool resetStateAtExit;							/*!<Flag indicating whether to reset the program state at program exit*/
 
-	bool resetStateAtExit;
+	model modelInstance;									/*!<Current model*/
+	storedObject<model> storedModel;						/*!<Persisting storage of current model*/
+	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
+	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
+	storedObject<modelViewParameter> storedModelParameter;	/*!<Persisting storage of view parameters*/
+	storedObject<slicePlane> storedPlane;					/*!<Persisting storage of the slice plane*/
 
-	model modelInstance;
-	storedObject<model> storedModel;
+	tubeParameter xRayTubeParameter;									/*!<xRay tube attributes*/
+	storedObject<tubeParameter> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
+	detectorRadonParameter radonParameter;								/*!<Parameter in radon space affecting the detector*/
+	storedObject<detectorRadonParameter> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	detectorIndipendentParameter detectorParameter;						/*!<Parameter only dependent on the physical properties od detector*/
+	storedObject<detectorIndipendentParameter> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
+	gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
-	fileChooser modelChooserInstance;
-	storedObject<fileChooser> storedModelChooser;
+	storedObject<tomographyParameter> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
+	storedObject<radonTransformed> storedProjections;				/*!<Persisting storage of projections*/
+	storedObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
-	storedObject<slicePlane> storedPlane;
+	fileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
+	storedObject<fileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
 
-	storedObject<modelViewParameter> storedModelParameter;
+	fileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
+	storedObject<fileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
-
-	// Voltage, Current, material
-	tubeParameter xRayTubeParameter;
-	storedObject<tubeParameter> storedXRayTubeParameter;
-
-	// Numberpoints (2D), Distance range
-	detectorRadonParameter radonParameter;
-	storedObject<detectorRadonParameter> storedRadonParameter;
-
-	// Pixel arc radius, pixel size col direction, Structere, structure max angle
-	detectorIndipendentParameter detectorParameter;
-	storedObject<detectorIndipendentParameter> storedDetectorParameter;
-
-	gantry gantryInstance;
-
-	storedObject<tomographyParameter> storedTomographyParamerter;
-
-	fileChooser exportChooserInstance;
-	storedObject<fileChooser> storedExportChooser;
-
-	fileChooser importChooserInstance;
-	storedObject<fileChooser> storedImportChooser;
-
-	storedObject<radonTransformed> storedProjections;
-
-	storedObject<processingParameter> storedProcessingParameters;
 
 
 };

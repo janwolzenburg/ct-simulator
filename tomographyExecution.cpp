@@ -68,12 +68,14 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	scatterPropabilityIn.tooltip( "Probability that a ray will be scattered once when going through complete model." );
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
 
+	
+	programState& state = PROGRAM_STATE();
 
-	exposureTimeIn.value( PROGRAM_STATE().tomographyParamerters.exposureTime );
-	rayStepSizeIn.value( PROGRAM_STATE().tomographyParamerters.rayStepSize );
-	radiationLoopsIn.value( (double) PROGRAM_STATE().tomographyParamerters.maxRadiationLoops );
-	scatterPropabilityIn.value( PROGRAM_STATE().tomographyParamerters.scatterPropability );
-	scatteringOnOff.value( PROGRAM_STATE().tomographyParamerters.scattering );
+	exposureTimeIn.value( state.tomographyParamerters.exposureTime );
+	rayStepSizeIn.value( state.tomographyParamerters.rayStepSize );
+	radiationLoopsIn.value( (double) state.tomographyParamerters.maxRadiationLoops );
+	scatterPropabilityIn.value( state.tomographyParamerters.scatterPropability );
+	scatteringOnOff.value( state.tomographyParamerters.scattering );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	exposureTimeIn.callback( button_cb, &updateFlag );
@@ -112,7 +114,7 @@ void tomographyExec::handleEvents( void ){
 	else if( !state.ModelLoaded() ){
 		this->deactivate();
 	}
-	if( PROGRAM_STATE().RadonTransformedLoaded() ){
+	if( state.RadonTransformedLoaded() ){
 		exportButton.activate();
 	}
 	else{
@@ -121,26 +123,32 @@ void tomographyExec::handleEvents( void ){
 
 	if(  unsetFlag( radiateFlag ) ){
 
-		PROGRAM_STATE().deactivateAll();
+		state.deactivateAll();
 
-		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) PROGRAM_STATE().MainWindow(), 20, 5, "Radiation progress" );
+		Fl_Progress_Window* radiationProgressWindow = nullptr;
+		if( state.mainWindow != nullptr )
+			radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) state.mainWindow, 20, 5, "Radiation progress" );
+		
+
 		state.tomographyInstance = tomography{ state.tomographyParamerters };
 
-		state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
-
-		if( state.ProcessingWindow() != nullptr ){
-			state.ProcessingWindow()->setNewRTFlag();
+		if( radiationProgressWindow != nullptr ){
+			state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.Gantry(), state.Model(), 0, radiationProgressWindow ) );
+			delete radiationProgressWindow;
 		}
 
-		delete radiationProgressWindow;
+		if( state.processingWindow != nullptr )
+			state.processingWindow->setNewRTFlag();
+		
 
-		PROGRAM_STATE().activateAll();
+
+		state.activateAll();
 
 	}
 
 	if( unsetFlag( exportFlag ) ){
 
-		PROGRAM_STATE().exportSinogram();
+		state.exportSinogram();
 	}
 
 

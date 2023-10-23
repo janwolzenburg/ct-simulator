@@ -22,8 +22,8 @@ void mainView::handleEvents( void ){
 			radonTransformed importedSinogram{ binData, it };
 			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 
-			if( PROGRAM_STATE().ProcessingWindow() != nullptr ){
-				PROGRAM_STATE().ProcessingWindow()->setNewRTFlag();
+			if( PROGRAM_STATE().processingWindow != nullptr ){
+				PROGRAM_STATE().processingWindow->setNewRTFlag();
 			}
 		}
 	}
