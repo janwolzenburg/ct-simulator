@@ -30,8 +30,6 @@ class monoImage{
 	static const string FILE_PREAMBLE;
 
 
-	public:
-
 	/*!
 	 * @brief Construct empty image with given size
 	 * @param width_ Width
@@ -42,17 +40,21 @@ class monoImage{
 	/*!
 	 * @brief Default constructor
 	*/
-	monoImage( void );
+	monoImage( void )  : monoImage{ 0, 0 }{};
 
 	/*!
 	 * @brief Construct image from grid
 	 * @param source Source grid
+	 * @param normalize Flag for normalization
 	*/
 	monoImage( const grid<>& source, const bool normalize = false );
 
+	/*!
+	 * @brief Construct image from voxel-data grid
+	 * @param source Source grid with voxel data
+	 * @param normalize Flag for normalization
+	*/
 	monoImage( const grid<voxData>& source, const bool normalize = false );
-
-
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -69,27 +71,7 @@ class monoImage{
 	 * @param it Iterator to start reading from
 	*/
 	monoImage( const vector<char>& binData, vector<char>::const_iterator& it );
-
-
-	size_t index( const size_t c, const size_t r ) const;
-
-	/*!
-	 * @brief Assignment operator
-	 * @param srcImg Source image
-	 * @return Reference to this
-	*/
-	monoImage& operator=( const monoImage& srcImg );
-
-	/*!
-	 * @brief Acces operator
-	 * @param c Column
-	 * @param r Row
-	 * @return Value at ( c, r )
-	*/
-	double operator()( const size_t c, const size_t r ) const;
-
-	unsigned char charData( const size_t c, const size_t r ) const;
-
+	
 	/*!
 	 * @brief Get Width
 	 * @return Image width
@@ -102,8 +84,44 @@ class monoImage{
 	*/
 	size_t Height( void ) const{ return height; };
 	
+	/*!
+	 * @brief Get amount of pixel
+	 * @return Amount of pixel
+	*/
 	size_t NumPixel( void ) const{ return numPixel; };
-	
+
+	/*!
+	 * @brief Get the 1D index of grid element
+	 * @param c Column index
+	 * @param r Row index
+	 * @return Index of Row|Column element
+	*/
+	size_t index( const size_t c, const size_t r ) const;
+
+	/*!
+	 * @brief Acces operator
+	 * @param c Column
+	 * @param r Row
+	 * @return Value at ( c, r )
+	*/
+	double operator()( const size_t c, const size_t r ) const{ return data.at( index( c, r ) ); };
+
+	/*!
+	 * @brief Acces operator
+	 * @param c Column
+	 * @param r Row
+	 * @return Reference to value at ( c, r )
+	*/
+	double& operator()( const size_t c, const size_t r ){ return data.at( index( c, r ) ); };
+
+	/*!
+	 * @brief Get character data for image drawing
+	 * @param c Column
+	 * @param r Row
+	 * @return Grayscale value
+	*/
+	unsigned char charData( const size_t c, const size_t r ) const{ return imData.at( index( c, r ) ); };
+
 	/*!
 	 * @brief Get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
@@ -112,29 +130,35 @@ class monoImage{
 	const unsigned char* getDataPtr( void ){ return imData.data(); };
 
 	/*!
+	 * @brief Get minimum of image data
+	 * @return Minimum value in data
+	*/
+	double minimum( void ) const{ return Min( data ); };
+
+	/*!
+	 * @brief Get maximum of image data
+	 * @return maximum value in data
+	*/
+	double maximum( void ) const{ return Max( data ); };
+
+	/*!
+	 * @brief Change the images contrast to given range
+	 * @param dataRange Range of value to show. Value over or under values in range will be bounded
+	*/
+	void adjustContrast( const range dataRange );
+
+	/*!
+	* @brief Normalize unsigned char data
+	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
+	*/
+	void normalize( void );
+
+	/*!
 	 * @brief Serialize this object
 	 * @param binData Reference to vector where data will be appended
 	*/
 	size_t serialize( vector<char>& binData ) const;
 
-	double minimum( void ) const;
-
-	double maximum( void ) const;
-
-	void adjustContrast( const range dataRange );
-	/*!
- * @brief Acces operator
- * @param c Column
- * @param r Row
- * @return Reference to value at ( c, r )
-*/
-	double& operator()( const size_t c, const size_t r );
-
-	/*!
- * @brief Normalize unsigned char data
- * @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
-*/
-	void normalize( void );
 
 	private:
 
@@ -147,12 +171,13 @@ class monoImage{
 
 
 	private:
-
-
-
-	unsigned char& charData( const size_t c, const size_t r );
-
-
+	
+	/*!
+	 * @brief Get reference to image date
+	 * @param c Column
+	 * @param r Row
+	 * @return Reference to pixel value
+	*/
+	unsigned char& charData( const size_t c, const size_t r ){ return imData.at( index( c, r ) ); };
 
 };
-

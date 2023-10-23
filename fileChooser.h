@@ -43,12 +43,12 @@ class fileChooser : private Fl_Native_File_Chooser{
 	 * @param windowTitle Title of window 
 	 * @param fileFilter String with filter
 	 * @param defaultDirectory Directory to start
+	 * @param type_ File chooser type
 	*/
 	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, const Fl_Native_File_Chooser::Type type_ = Fl_Native_File_Chooser::Type::BROWSE_FILE );
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
 	 * @param binData Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
@@ -103,5 +103,5 @@ class fileChooser : private Fl_Native_File_Chooser{
 	string titleString;		/*!<Title string*/
 	string filterString;	/*!<Filter string*/
 	path startDirectory;	/*!<Start directory*/
-	Fl_Native_File_Chooser::Type chooserType;
+	Fl_Native_File_Chooser::Type chooserType;	/*!<Type of file chooser*/
  };

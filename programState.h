@@ -287,7 +287,7 @@ class programState{
 	void deleteStorageDir( void );
 
 
-	bool resetStateAtExit;							/*!<Flag indicating whether to reset the program state at program exit*/
+	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit*/
 
 	model modelInstance;									/*!<Current model*/
 	storedObject<model> storedModel;						/*!<Persisting storage of current model*/

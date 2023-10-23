@@ -24,24 +24,21 @@ using std::pair;
 
 #include "generel.h"
 
+
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
 
 
-
+/*!
+ * @brief RGB value
+*/
 struct rgb_Int{
 	unsigned char red;
 	unsigned char green;
 	unsigned char blue;
 };
-
-enum color : unsigned char{
-	R = 0,
-	G = 1,
-	B = 2
- };
-
 
 class rgbImage{
 
@@ -62,9 +59,7 @@ class rgbImage{
 	/*!
 	 * @brief Default constructor
 	*/
-	rgbImage( void );
-
-
+	rgbImage( void ) : rgbImage{ 0, 0 }{};
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -74,9 +69,14 @@ class rgbImage{
 	 * @param newHeight Height of constucted image
 	*/
 	rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t newHeight );
-
-
-
+	
+	/*!
+	 * @brief Construct from grayscale image with new width and overlay
+	 * @param srcImg Grayscale image
+	 * @param newWidth New width
+	 * @param newHeight New height
+	 * @param overlay Overlay to draw
+	*/
 	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay = vector<pair<bool, rgb_Int>>( 0 ) );
 
 	/*!
@@ -85,18 +85,6 @@ class rgbImage{
 	 * @param it Iterator to start reading from
 	*/
 	rgbImage( const vector<char>& binData, vector<char>::const_iterator& it );
-
-
-	size_t pixelIndex( const size_t c, const size_t r ) const;
-
-	/*!
-	 * @brief Assignment operator
-	 * @param srcImg Source image
-	 * @return Reference to this
-	*/
-	rgbImage& operator=( const rgbImage& srcImg );
-
-	rgb_Int charData( const size_t c, const size_t r ) const;
 
 	/*!
 	 * @brief Get Width
@@ -111,13 +99,34 @@ class rgbImage{
 	size_t Height( void ) const{ return height; };
 
 	/*!
+	 * @brief Get the 1D index of grid element
+	 * @param c Column index
+	 * @param r Row index
+	 * @return Index of Row|Column element
+	*/
+	size_t pixelIndex( const size_t c, const size_t r ) const;
+
+	/*!
+	 * @brief Get the image data
+	 * @param c Column
+	 * @param r Row
+	 * @return Color at row and column
+	*/
+	rgb_Int charData( const size_t c, const size_t r ) const{ return imageData.at( pixelIndex( c, r ) ); };
+
+	/*!
 	 * @brief Get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
 	 * @return Pointer to data start in
 	*/
 	const rgb_Int* getDataPtr( void ){ return imageData.data(); };
 
-	void setPixel( const idx2CR& pixel, const rgb_Int& value );
+	/*!
+	 * @brief Set pixel value
+	 * @param pixel Pixel indices
+	 * @param value Value to set pixel to
+	*/
+	void setPixel( const idx2CR& pixel, const rgb_Int& value ){ charData( pixel.col, pixel.row ) = value; };
 
 	/*!
 	 * @brief Serialize this object
@@ -132,11 +141,17 @@ class rgbImage{
 	size_t height;					/*!<Image height*/
 	size_t numPixel;				/*!<Amount of pixel in image*/
 
-	vector<rgb_Int> imageData;			/*!<Data as unsigned char values*/
+	vector<rgb_Int> imageData;		/*!<Data as unsigned char values*/
 
 
 	private:
 
-	rgb_Int& charData( const size_t c, const size_t r );
+	/*!
+	 * @brief Get reference to image data
+	 * @param c Column
+	 * @param r Row
+	 * @return Reference to color data
+	*/
+	rgb_Int& charData( const size_t c, const size_t r ){ return imageData.at( pixelIndex( c, r ) ); };
 
 };

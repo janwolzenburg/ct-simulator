@@ -64,7 +64,7 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 	
 
 
-	originalImage = monoImage( modGrid.Size().col, modGrid.Size().row );
+	originalImage = monoImage{ modGrid.Size().col, modGrid.Size().row };
 	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 
 	const size_t width = originalImage.Width();

@@ -24,3 +24,9 @@ tomography.h .cpp
 tube.h .cpp
 
 storedObject.h .hpp
+programState.h .cpp
+fileChooser.h .cpp
+processingParameter.h .cpp
+slicePlane.h .cpp
+monoImage.h .cpp
+rgbImage.h .cpp

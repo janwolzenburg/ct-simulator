@@ -14,7 +14,6 @@
 
 #include "rgbImage.h"
 #include "monoImage.h"
-//#include "vectorAlgorithm.h"
 
 
 /*********************************************************************
@@ -29,18 +28,10 @@ rgbImage::rgbImage( const size_t width_, const size_t height_ ) :
 	width( width_ ),
 	height( height_ ),
 	numPixel( width* height ),
-	imageData( numPixel, rgb_Int{ 255, 255, 0 } ){
+	imageData( numPixel, rgb_Int{ 255, 255, 0 } )
+{
 
 }
-
-
-rgbImage::rgbImage( void ) :
-	rgbImage{ 0, 0 }{
-
-}
-
-
-
 
 rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t newHeight ) :
 	rgbImage{ newWidth, newHeight }{
@@ -58,14 +49,11 @@ rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t 
 
 		}
 	}
-
 }
 
 rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay ) :
 	rgbImage{ newWidth, newHeight }
 {
-
-
 	for( size_t c = 0; c < this->Width(); c++ ){
 
 		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
@@ -85,7 +73,6 @@ rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t
 			}
 		}
 	}
-
 }
 
 
@@ -95,25 +82,11 @@ rgbImage::rgbImage( const vector<char>& binsourceData, vector<char>::const_itera
 	numPixel( width* height ),
 	imageData( numPixel, rgb_Int{ 0, 0, 0 } )
 {
-
 	for( size_t i = 0; i < numPixel; i++ ){
 		imageData.at( i ).red = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
 		imageData.at( i ).green = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
 		imageData.at( i ).blue = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
 	}
-
-}
-
-
-rgbImage& rgbImage::operator=( const rgbImage& srcImg ){
-
-	width = srcImg.width;
-	height = srcImg.height;
-	numPixel = srcImg.numPixel;
-
-	imageData = srcImg.imageData;
-
-	return *this;
 }
 
 size_t rgbImage::pixelIndex( const size_t c, const size_t r ) const{
@@ -124,22 +97,6 @@ size_t rgbImage::pixelIndex( const size_t c, const size_t r ) const{
 	}
 
 	return idx;
-}
-
-void rgbImage::setPixel( const idx2CR& pixel, const rgb_Int& value ){
-	charData( pixel.col, pixel.row ) = value;
-} 
-
-rgb_Int rgbImage::charData( const size_t c, const size_t r ) const{
-
-	return imageData.at( pixelIndex( c, r ) );
-
-}
-
-rgb_Int& rgbImage::charData( const size_t c, const size_t r ){
-
-	return imageData.at( pixelIndex( c, r ) );
-
 }
 
 size_t rgbImage::serialize( vector<char>& binsourceData ) const{
@@ -157,4 +114,3 @@ size_t rgbImage::serialize( vector<char>& binsourceData ) const{
 
 	return numBytes;
 }
-

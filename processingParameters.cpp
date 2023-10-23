@@ -7,22 +7,18 @@ const string processingParameter::FILE_PREAMBLE{ "PROCESSINGPARAMETERS_FILE_PREA
 
 
 processingParameter::processingParameter( void ) :
-	projectionsContrast(),
+	projectionsContrast{},
 	filterType( discreteFilter::TYPE::constant ),
-	filteredProjectionsContrast(),
-	reconstrucedImageContrast()
-{
-
-}
+	filteredProjectionsContrast{},
+	reconstrucedImageContrast{}
+{}
 
 processingParameter::processingParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	projectionsContrast( binData, it ),
+	projectionsContrast{ binData, it },
 	filterType( discreteFilter::getEnum( deSerializeBuildIn<string>( string(), binData, it ) ) ),
-	filteredProjectionsContrast( binData, it ),
-	reconstrucedImageContrast( binData, it )
-{
-
-}
+	filteredProjectionsContrast{ binData, it },
+	reconstrucedImageContrast{ binData, it }
+{}
 
 size_t processingParameter::serialize( vector<char>& binData ) const{
 

@@ -27,25 +27,14 @@ const string monoImage::FILE_PREAMBLE{ "GREY_IMAGE_FILE_PREAMBLE       " };
 monoImage::monoImage( const size_t width_, const size_t height_ ) :
 	width( width_ ),
 	height( height_ ),
-	numPixel( width* height ),
+	numPixel( width * height ),
 	data( numPixel, 0. ),
 	imData( numPixel, 0 )
-{
-
-}
-
-
-monoImage::monoImage( void ) :
-	monoImage{ 0, 0 }
-{
-
-}
-
+{}
 
 monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
-	monoImage{ source.Size().col, source.Size().row }{
-
-
+	monoImage{ source.Size().col, source.Size().row }
+{
 
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
@@ -58,9 +47,8 @@ monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
 }
 
 monoImage::monoImage( const grid<voxData>& source, const bool normalizeImg ) :
-	monoImage( source.Size().col, source.Size().row ){
-
-
+	monoImage{ source.Size().col, source.Size().row }
+{
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
 
@@ -72,13 +60,11 @@ monoImage::monoImage( const grid<voxData>& source, const bool normalizeImg ) :
 
 	if( normalizeImg )
 		normalize();
-
 }
 
 monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
-	monoImage{ newWidth, newHeight }{
-
-
+	monoImage{ newWidth, newHeight }
+{
 	for( size_t c = 0; c < this->Width(); c++ ){
 
 		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
@@ -92,7 +78,6 @@ monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size
 
 		}
 	}
-
 }
 
 
@@ -106,24 +91,6 @@ monoImage::monoImage( const vector<char>& binData, vector<char>::const_iterator&
 	for( size_t i = 0; i < numPixel; i++ ){
 		data.at( i ) = deSerializeBuildIn( 0., binData, it );
 	}
-
-	//normalize();
-}
-
-
-
-
-
-monoImage& monoImage::operator=( const monoImage& srcImg ){
-
-	width = srcImg.width;
-	height = srcImg.height;
-	numPixel = srcImg.numPixel;
-
-	data = srcImg.data;
-	imData = srcImg.imData;
-
-	return *this;
 }
 
 size_t monoImage::index( const size_t c, const size_t r ) const{
@@ -132,29 +99,6 @@ size_t monoImage::index( const size_t c, const size_t r ) const{
 		idx = numPixel - 1;
 	}
 	return idx;
-}
-
-double monoImage::operator()( const size_t c, const size_t r ) const{
-
-	return data.at( index( c, r ) );
-
-}
-
-unsigned char monoImage::charData( const size_t c, const size_t r ) const{
-
-	return imData.at( index( c, r ) );
-
-}
-
-double& monoImage::operator()( const size_t c, const size_t r ){
-
-	return data.at( index( c, r ) );
-}
-
-unsigned char& monoImage::charData( const size_t c, const size_t r ){
-
-	return imData.at( index( c, r ) );
-
 }
 
 size_t monoImage::serialize( vector<char>& binData ) const{
@@ -171,7 +115,6 @@ size_t monoImage::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-
 void monoImage::normalize( void ){
 
 	if( data.size() == 0 ) return;
@@ -182,18 +125,6 @@ void monoImage::normalize( void ){
 	for( size_t i = 0; i < numPixel; i++ ){
 		imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
 	}
-}
-
-double monoImage::minimum( void ) const{
-
-	return Min( data );
-
-}
-
-double monoImage::maximum( void ) const{
-
-	return Max( data );
-
 }
 
 void monoImage::adjustContrast( const range dataRange ){
