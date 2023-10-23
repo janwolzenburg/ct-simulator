@@ -38,9 +38,9 @@ using std::string;
 	  * @brief Default constructor
 	 */
 	 lineLine_Intersection_Result( void ) : 
+		intersectionPoint( pnt3{} ),
 		hasSolution( false ),
-		lineParameter1( 0 ), lineParameter2( 0 ),
-		intersectionPoint( pnt3{} )
+		lineParameter1( 0 ), lineParameter2( 0 )
 	{};
 
 	 /*!
@@ -94,9 +94,9 @@ class linSurf_Intersection_Result : virtual public mathObj{
 	 * @brief Default constructor
 	*/
 	linSurf_Intersection_Result( void ) :
+		intersectionPoint( pnt3{} ),
 		hasSolution( false ),
-		linePara( 0 ), surfParaA( 0 ), surfParaB( 0 ),
-		intersectionPoint( pnt3{} )
+		linePara( 0 ), surfParaA( 0 ), surfParaB( 0 )
 	{};
 
 	/*!

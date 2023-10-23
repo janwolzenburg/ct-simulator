@@ -58,9 +58,9 @@ string cSysTree::toStr( const unsigned int newLineTabulators ) const{
 }
 
 cSysTree::cSysTree( void ) :
+	numSystems( 2 ),
 	systems{	cartCSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Dummy system" },
-				cartCSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Global system" } },
-	numSystems( 2 )
+				cartCSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Global system" } }
 {
 	systems.at( 0 ).parent = &systems.at( 1 );
 }

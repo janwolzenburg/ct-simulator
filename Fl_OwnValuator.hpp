@@ -67,7 +67,7 @@ double Fl_OwnValuator<C>::value( void ) const{
 template< class C >
 int Fl_OwnValuator<C>::value( double newVal ){
 
-	bool valueReturn = Fl_Valuator::value( newVal );
+	bool valueReturn = static_cast<bool>( Fl_Valuator::value( newVal ) );
 
 	changeFlag = true;
 

@@ -44,47 +44,44 @@ programState& programState::getInstance(){
 
 programState::programState( void ) :
 	
+	
+	planeInstance{},
+	modelSliceInstance{},
+	modelViewPara{},
+	tomographyInstance{},
+	tomographyParamerters{},
+	currentProjections{},
+	currentProcessingParameters{},
+	currentFilteredProjections{},
+	currentReconstrucedImage{},
+	mainWindow( nullptr ),
+	processingWindow( nullptr ), 
+
 	resetStateAtExit( false ),
 
 	modelInstance{},
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
-
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
 	storedModelChooser{ getPath( "storedModelChooser.txt" ), modelChooserInstance },
-
-	planeInstance{},
-	storedPlane{ programState::getPath( "storedViewPlane.txt" ), planeInstance },
-
-	modelViewPara(),
 	storedModelParameter( programState::getPath( "storedModelContrast.txt" ), modelViewPara ),
+	storedPlane{ programState::getPath( "storedViewPlane.txt" ), planeInstance },
 
 	xRayTubeParameter{},
 	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
-
 	radonParameter{},
 	storedRadonParameter{ programState::getPath( "storedRadonParameter.txt" ), radonParameter },
-
 	detectorParameter{},
 	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), detectorParameter },
-
 	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
-
+	
+	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
+	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
+	storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
+	
 	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
 	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance },
-
 	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
-	storedExportChooser{ getPath( "storedExportChooser.txt" ), exportChooserInstance },
-
-	tomographyParamerters{},
-	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
-
-	currentProjections{},
-	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
-
-	currentProcessingParameters{},
-	storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
-
-	currentFilteredProjections{}
+	storedExportChooser{ getPath( "storedExportChooser.txt" ), exportChooserInstance }
 
 {
 	createStorageDir();

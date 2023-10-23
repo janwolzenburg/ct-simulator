@@ -73,7 +73,7 @@ model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
 	
 	if( numVox * sizeof( voxData ) == (size_t) (binData.end() - it) ){
 		memcpy( parameter.data(), &( *it ), numVox * sizeof(voxData));
-		it += numVox * sizeof( voxData );
+		it += static_cast<long long int>( numVox * sizeof( voxData ) );
 	}
 	else{
 
@@ -220,7 +220,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
 	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
-	const double scatterConstant = tomoParameter.scatterPropability * meanFrequencyTube / ( meanVoxelSideLength * meanVoxelAmount );
+	const double scatterConstant = tomoParameter.scatterPropability * meanFrequencyTube / ( meanVoxelSideLength * static_cast<double>( meanVoxelAmount ) );
 
 
 	// Iterate through model while current point is inside model
@@ -243,32 +243,32 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 			switch( currentFace ){
 
 				case FACE_ID::YZ_Xp:
-					planePosistion = ( currentVoxelIndices.x + 1 ) * this->voxSize3D.x;		// Position of positive yz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxSize3D.x;		// Position of positive yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();		// Ray parameter at intersection
 					break;
 
 				case FACE_ID::YZ_Xm:
-					planePosistion = ( currentVoxelIndices.x     ) * this->voxSize3D.x;		// Position of negative yz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxSize3D.x;		// Position of negative yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();
 					break;
 
 				case FACE_ID::XZ_Yp:
-					planePosistion = ( currentVoxelIndices.y + 1 ) * this->voxSize3D.y;		// Position of positive xz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxSize3D.y;		// Position of positive xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
 					break;
 
 				case FACE_ID::XZ_Ym:
-					planePosistion = ( currentVoxelIndices.y     ) * this->voxSize3D.y;		// Position of negative xz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxSize3D.y;		// Position of negative xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
 					break;
 
 				case FACE_ID::XY_Zp:
-					planePosistion = ( currentVoxelIndices.z + 1 ) * this->voxSize3D.z;		// Position of positive xy-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxSize3D.z;		// Position of positive xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
 					break;
 
 				case FACE_ID::XY_Zm:
-					planePosistion = ( currentVoxelIndices.z    ) * this->voxSize3D.z;		// Position of negative xy-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxSize3D.z;		// Position of negative xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
 					break;
 

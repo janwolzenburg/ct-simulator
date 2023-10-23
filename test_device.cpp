@@ -447,7 +447,7 @@ bool test_gantry( void ){
 	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
-	testGantry.rotateCounterClockwise( ( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
+	testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
 
 	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 

@@ -28,7 +28,7 @@ class Fl_Progress_Window : public Fl_Window{
 
 	public:
 	Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label ) :
-		Fl_Window( 20 * textSize, Fmin( numLines, (unsigned int) 1 ) * textSize, label ),
+		Fl_Window( 20 * textSize, static_cast<int>( Fmin( numLines, (unsigned int) 1 ) * textSize ), label ),
 		numLines( Fmin( numLines, (unsigned int ) 1 ) ),
 		textDisplay( 0, 0, Fl_Window::w(), Fl_Window::h() ),
 		lines( numLines ),

@@ -87,7 +87,7 @@ propabilityDistribution::propabilityDistribution( const vector<v2> distribution_
 	double smallestPropability = sortedDistribution.front().y;
 
 	// Check against maximum number of bins
-	if( 1. / smallestPropability > maxNumberOfBins ) smallestPropability = 1. / maxNumberOfBins;
+	if( 1. / smallestPropability > static_cast<double>( maxNumberOfBins ) ) smallestPropability = 1. / static_cast<double>( maxNumberOfBins );
 
 	// Insert amount corrensponding to probability into uniform distribution
 	for( const v2& currentValue : distribution ){

@@ -29,7 +29,7 @@ const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
 
 const double discreteFilter::threshold = 1e-5;
 
-const discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
+discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
 	for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
 
 		if( typeString == searchString ){
@@ -46,7 +46,7 @@ const discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
 discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
 	type( type_ ),
 	pointsRange( pointsRange_ ),
-	numberPoints( pointsRange.end - pointsRange.start + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
+	numberPoints( static_cast<size_t>( pointsRange.end - pointsRange.start ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
 	samplingInterval( samplingInterval_ ),
 	values( numberPoints, 0. )
 {
@@ -143,7 +143,7 @@ size_t discreteFilter::getIndex( const signed long long Zidx ) const{
 	if( Zidx < pointsRange.start ) return 0;
 	if( Zidx > pointsRange.end ) return numberPoints - 1;
 
-	return Zidx - pointsRange.start;
+	return static_cast<size_t>( Zidx - pointsRange.start );
 }
 
 double& discreteFilter::set( const size_t idx ){

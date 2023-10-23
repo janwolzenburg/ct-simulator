@@ -89,7 +89,7 @@ class tubeParameter {
 	 * @param materialString String to find material for
 	 * @return Material
 	*/
-	static const MATERIAL getEnum( const string materialString );
+	static MATERIAL getEnum( const string materialString );
 
 	/*!
 		* @brief Serialize this object

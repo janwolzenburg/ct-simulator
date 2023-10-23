@@ -54,7 +54,7 @@ class discreteFilter{
 		discreteFilter( Zrange( -5, 5 ), 1., constant )
 	{}
 
-	static const discreteFilter::TYPE getEnum( const string searchString );
+	static discreteFilter::TYPE getEnum( const string searchString );
 
 	/*!
 	 * @brief Get values of filter kernel

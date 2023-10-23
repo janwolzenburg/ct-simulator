@@ -67,8 +67,9 @@ plot::plot( const path imgPath_, const string xlabel_, const string ylabel_,
 
 	imagePath( imgPath_ ),
 	xlabel( xlabel_ ), ylabel( ylabel_ ),
-	limits( limits_ ), imgSize( imgSize_ ),
-	grid( grid_ ){
+	grid( grid_ ),
+	limits( limits_ ),
+	imgSize( imgSize_ ){
 	reset();
 }
 

@@ -30,7 +30,7 @@ using std::string;
 /*!
  * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor
 */
-constexpr char stringPadding = (char) 0x9D;
+constexpr char stringPadding = static_cast<char>( 0x9D );
 
 
 /*!
@@ -131,7 +131,7 @@ range::range( const vector<char>& binData, vector<char>::const_iterator& it ) :
 
 double range::Resolution( const size_t number ) const{
 	if( number < 2 ) return 1;
-	return Diff() / ( number - 1 );
+	return Diff() / static_cast<double>( number - 1 );
 }
 
 size_t range::serialize( vector<char>& binData ) const{
@@ -298,7 +298,7 @@ bool exportSerialized( const string fileName, const vector<char>& binData ){
 
 vector<char> importSerialized( const path filePath ){
 
-	return std::move( importSerialized( filePath.string() ) );
+	return importSerialized( filePath.string() );
 
 }
 
@@ -368,7 +368,7 @@ long long toNum<long long>( const string str ){
 template<>
 size_t toNum<size_t>( const string str ){
 
-	return std::stoll( str );
+	return static_cast<size_t>( std::stoll( str ) );
 
 }
 

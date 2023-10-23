@@ -44,7 +44,7 @@ tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_i
 {}
 
 
-const tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
+tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
 	for( auto& [matEnum, value] : tubeParameter::material ){
 		if( materialString == value.first )
 			return matEnum;
@@ -75,7 +75,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 	anodeVoltage_V( Fpos( parameter_.anodeVoltage_V )),
 	anodeCurrent_A( Fpos( parameter_.anodeCurrent_A )),
 	anodeAtomicNumber( Fpos( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
-	totalPower_W( k_1PerV * anodeAtomicNumber * anodeCurrent_A * pow( anodeVoltage_V, 2 ) ),
+	totalPower_W( k_1PerV * static_cast<double>( anodeAtomicNumber ) * anodeCurrent_A * pow( anodeVoltage_V, 2 ) ),
 	maxRadiationEnergy_eV( anodeVoltage_V )
 {
 

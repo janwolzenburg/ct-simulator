@@ -29,8 +29,8 @@
 
 relPosition::relPosition( double x_, double y_, double w_, double h_ ) :
 	w( Fmax( Fmin( w_, 0. ), 1. ) ),
-	x( Fmax( Fmin( x_, 0. ), 1. - w ) ),
 	h( Fmax( Fmin( h_, 0. ), 1. ) ),
+	x( Fmax( Fmin( x_, 0. ), 1. - w ) ),
 	y( Fmax( Fmin( y_, 0. ), 1. - h ) ){}
 
 

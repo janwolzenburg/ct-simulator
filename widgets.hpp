@@ -126,6 +126,7 @@ void Fl_Bound_Input<C, T>::checkBounds( void ){
 			if( !isEven( current ) ) current++;
 			break;
 
+		case NONE:
 		default:
 			break;
 	}

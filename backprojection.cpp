@@ -97,7 +97,7 @@ double filteredProjections::getValue( const size_t angleIdx, const double distan
 	double valueAtCeil = this->operator()( idx2CR{ angleIdx, distanceIdxCeil } );	// Value at ceil index
 
 	// Return the interpolated value
-	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( (double) distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - (double) distanceIdxFloor );
+	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( static_cast<double>( distanceIdxCeil - distanceIdxFloor ) ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) );
 
 }
 

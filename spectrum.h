@@ -37,8 +37,8 @@ class spectrum {
 	 * @brief Default constructor
 	*/
 	spectrum(void) :
-		mean( 0. ),
-		energyResolution( 1. )
+		energyResolution( 1. ),
+		mean( 0. )
 	{};
 
 	/*!

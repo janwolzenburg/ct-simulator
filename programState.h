@@ -69,8 +69,8 @@ class programState{
 	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
 	reconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 	
-	mainView* mainWindow = nullptr;					/*!<Pointer to the main window*/
-	processingView* processingWindow = nullptr;		/*!<Pointer to the processing window*/
+	mainView* mainWindow;				/*!<Pointer to the main window*/
+	processingView* processingWindow;	/*!<Pointer to the processing window*/
 
 
 	/*!

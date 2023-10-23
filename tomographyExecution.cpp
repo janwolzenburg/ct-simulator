@@ -173,7 +173,7 @@ void tomographyExec::handleEvents( void ){
 		informationString += "Elektrische Leistung:	  " + toString( state.Tube().electricalPower() ) + "W" + '\n';
 		informationString += "Strahlleistung:	  " + toString( state.Tube().rayPower() ) + "W" + '\n';
 		informationString += "Strahlenergie:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
-		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * state.RadonParameter().framesToFillSinogram ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
 		information.value( informationString.c_str() );
 
 	}

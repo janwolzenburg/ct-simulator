@@ -28,8 +28,8 @@
 template<class D>
 grid<D>::grid( void ) : 
 	size( 3, 3 ),
-	resolution( 1., 1. ),
-	start( 0. ,0. )
+	start( 0. ,0. ),
+	resolution( 1., 1. )
 {
 	initializeMinMaxValue();
 	fillVectors( D() );

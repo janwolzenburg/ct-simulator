@@ -78,7 +78,7 @@ class detector {
 	 * @brief Get coordinate system of detector
 	 * @return Pointer to coordinate system
 	*/
-	cartCSys* CSys( void ) const{ return cSys; };
+	//cartCSys* CSys( void ) const{ return cSys; };
 	
 
 	/*!
