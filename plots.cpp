@@ -45,36 +45,16 @@ void plot::initialize( const path path_, const string label_, const string xlabe
 
 }
 
-void plot::setLimits( const plotLimits newLimits ){
-	limits = newLimits;
-}
-
-void plot::setSize( const idx2CR size ){
-	imgSize = size;
-}
-
-idx2CR plot::getSize( void ) const{
-	return imgSize;
-}
-
-void plot::redraw( void ){
-	reset();
-	drawPlot();
-}
-
 plot::plot( const path imgPath_, const string xlabel_, const string ylabel_,
 		const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
-
 	imagePath( imgPath_ ),
 	xlabel( xlabel_ ), ylabel( ylabel_ ),
 	grid( grid_ ),
 	limits( limits_ ),
-	imgSize( imgSize_ ){
+	imgSize( imgSize_ )
+{
 	reset();
 }
-
-plot::plot( void ) :
-	plot( "Dummy", "X", "Y", plotLimits{}, idx2CR{ 5, 5 }, false ){}
 
 void plot::reset( void ){
 	plot2D.cleanup();
@@ -113,9 +93,6 @@ void plot::drawPlot( void ){
 	}
 
 	sciplot::Figure  fig = { {plot2D} };
-
-	
-
 	sciplot::Canvas canvas = { {fig} };
 
 	canvas.size( (size_t) ( imgSize.col ), (size_t) ( imgSize.row ) );
@@ -124,21 +101,19 @@ void plot::drawPlot( void ){
 }
 
 
-
 /*
 	lineplot implementation
 */
 
 lineplot::lineplot( const string name_, const string xlabel_, const string ylabel_,
 			const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
-	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ),
-	X(), Y(){
-
-}
+	plot{ name_, xlabel_, ylabel_, limits_, imgSize_, grid_ },
+	X(), Y()
+{}
 
 lineplot::lineplot( void ) :
-	plot(),
-	X(), Y(){}
+	plot{}, X(), Y()
+{}
 
 void lineplot::assignData( const vector<double> X_, const vector<double> Y_ ){
 
@@ -160,62 +135,26 @@ void lineplot::assignData( const vector<double> X_, const vector<double> Y_ ){
 	create();
 }
 
-
-void lineplot::assignData( const vectorPair XY ){
-
-	assignData( XY.first, XY.second );
-
-}
-
 void lineplot::create( void ){
-
 	plot::reset();
 	plot::plot2D.drawCurve( X, Y );
 	plot::drawPlot();
-
 }
 
 void dotplot::create( void ){
-	
 	plot::reset();
 	plot::plot2D.drawPoints( X, Y );
 	plot::drawPlot();
-
 }
-
 
 
 /*
 	geoplot implementation
 */
 
-geoplot::geoplot( const string name_, const string xlabel_, const string ylabel_,
-		 const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
-	plot( name_, xlabel_, ylabel_, limits_, imgSize_, grid_ ){
-
-}
-
-geoplot::geoplot( void ) :
-	plot(){}
-
-
-void geoplot::addLine( const v2 start, const v2 end ){
-
-	lines.emplace_back( v2( limits.xFactor * start.x, limits.yFactor * start.y ), v2( limits.xFactor * end.x, limits.yFactor * end.y ) );
-
-}
-
-void geoplot::addPoint( const v2 point ){
-
-	points.emplace_back( v2( limits.xFactor * point.x, limits.yFactor * point.y ) );
-
-}
-
 void geoplot::resetObjects( void ){
-
 	lines.clear();
 	points.clear();
-
 }
 
 void geoplot::create( void ){
@@ -239,5 +178,4 @@ void geoplot::create( void ){
 	}
 
 	plot::drawPlot();
-
 }

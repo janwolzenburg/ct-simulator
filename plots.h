@@ -15,69 +15,122 @@
  #include "generel.h"
  #include "sciplot/sciplot.hpp"
 
+/*!
+ * @brief Class to store property of axis limtis
+*/
+struct plotLimits{
 
-class plotLimits{
+	bool autoXRange = true;				/*!<Enable or disable automatic x-axis limits*/
+	bool autoYRange = true;				/*!<Enable or disable automatic y-axis limits*/
 
-	public:
+	range xRange = range{ 0., 1. };		/*!<x-range*/
+	range yRange = range{ 0., 1. };		/*!<y-range*/
 
-	bool autoXRange = true;
-	bool autoYRange = true;
-
-	range xRange = range{ 0., 1. };
-	range yRange = range{ 0., 1. };
-
-	double xFactor = 1.;
-	double yFactor = 1.;
+	double xFactor = 1.;				/*!<Factor for x-axis sclaing*/
+	double yFactor = 1.;				/*!<Factor for y-axis sclaing*/
 
  };
 
 
+/*!
+ * @brief Class for a scientific plot using sciplot library 
+*/
 class plot{
 
 	public:
 
+	/*!
+	 * @brief Get string of path where plot image is stored
+	 * @return String with path
+	*/
 	string getImgPath( void ) const { return imagePath.string(); };
 
+	/*!
+	 * @brief Initialize the plot
+	 * @param path_ Storage path for plot image
+	 * @param label_ Figure label
+	 * @param xlabel_ x-axis label
+	 * @param ylabel_ y-axis label
+	 * @param limits_ Plot limits
+	 * @param imgSize_ Desired size of image
+	 * @param xFormat_ x-ticks format string
+	 * @param yFormat_ y-ticks format string
+	 * @param axisEqual_ Flag to make axis equally scaled
+	 * @param grid_ Flag to show grid
+	*/
 	void initialize( const path path_, const string label_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
-	void setLimits( const plotLimits newLimits );
+	/*!
+	 * @brief Set plot limits
+	 * @param newLimits New limits
+	*/
+	void setLimits( const plotLimits newLimits ){ limits = newLimits; };
 
-	void setSize( const idx2CR size );
+	/*!
+	 * @brief Set image size
+	 * @param size New size of image
+	*/
+	void setSize( const idx2CR size ){ imgSize = size; };
 
-	idx2CR getSize( void ) const;
+	/*!
+	 * @brief Get the image size
+	 * @return Current image size
+	*/
+	idx2CR getSize( void ) const{ return imgSize; };
 
-	void redraw( void );
+	/*!
+	 * @brief Redraw the plot
+	*/
+	void redraw( void ){ reset(); drawPlot(); };
 
 
 	protected:
 
+	/*!
+	 * @brief Constructor
+	 * @param imgPath_ Storage path for plot image
+	 * @param xlabel_ x-axis label
+	 * @param ylabel_ y-axis label
+	 * @param limits_ Plot limits
+	 * @param imgSize_ Desired image size
+	 * @param grid_ Flag to show grid
+	*/
 	plot( const path imgPath_, const string xlabel_, const string ylabel_,
 		  const plotLimits limits_, const idx2CR imgSize_, const bool grid_ );
 
-	plot( void );
+	/*!
+	 * @brief Default constructor
+	*/
+	plot( void ) : plot{ "Dummy", "X", "Y", plotLimits{}, idx2CR{ 5, 5 }, false }{};
 
+	/*!
+	 * @brief Reset the plot
+	*/
 	void reset( void );
 
+	/*!
+	 * @brief Draw the plot
+	 * @details Draws and stored plot image at given path
+	*/
 	void drawPlot( void );
 	
 
 	protected:
 	
-	string label;
-	path imagePath;
-	string xlabel;
-	string ylabel;
+	string label;	/*!<Figure label*/
+	path imagePath;	/*!<Path to image. Plots are exported to this direction*/
+	string xlabel;	/*!<Label of x-axis*/
+	string ylabel;	/*!<Lable of y-axis*/
 
-	bool axisEqual = false;
-	bool grid = false;
+	bool axisEqual = false;	/*!<Flag to make axis equally scaled*/
+	bool grid = false;		/*!<Flag to make grid visible*/
 
-	string xFormat;
-	string yFormat;
+	string xFormat;		/*!<Format string for x-axis tick values*/
+	string yFormat;		/*!<Format string for y-axis tick values*/
+	plotLimits limits;	/*!<Limits of plot*/
 
-	plotLimits limits;
-
-	idx2CR imgSize;
-	sciplot::Plot2D plot2D;
+	idx2CR imgSize;				/*!<Size of image*/
+	sciplot::Plot2D plot2D;		/*!<Instance of sciplot 2D-plot*/
 
  };
