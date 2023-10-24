@@ -54,8 +54,8 @@ programState::programState( void ) :
 	currentProcessingParameters{},
 	currentFilteredProjections{},
 	currentReconstrucedImage{},
-	mainWindow( nullptr ),
-	processingWindow( nullptr ), 
+	mainWindow_( nullptr ),
+	processingWindow_( nullptr ), 
 
 	resetStateAtExit( false ),
 
@@ -128,19 +128,19 @@ void programState::deleteStorageDir( void ){
 }
 
 void programState::activateAll( void ){
-	if( mainWindow != nullptr )
-		mainWindow->activate();
+	if( mainWindow_ != nullptr )
+		mainWindow_->activate();
 
-	if( processingWindow != nullptr )
-		processingWindow->activate();
+	if( processingWindow_ != nullptr )
+		processingWindow_->activate();
 }
 
 void programState::deactivateAll( void ){
-	if( mainWindow != nullptr )
-		mainWindow->deactivate();
+	if( mainWindow_ != nullptr )
+		mainWindow_->deactivate();
 
-	if( processingWindow != nullptr )
-		processingWindow->deactivate();
+	if( processingWindow_ != nullptr )
+		processingWindow_->deactivate();
 }
 
 void programState::buildGantry( const tubeParameter tubeParameter_,
@@ -265,8 +265,8 @@ bool programState::loadModel( void ){
 }
 
 void programState::setUpdateInformationFlag( void ){
-	if( mainWindow != nullptr )
-		mainWindow->tomographyExecution.updateInformation();
+	if( mainWindow_ != nullptr )
+		mainWindow_->tomographyExecution.updateInformation();
 }
 
 void programState::exportSinogram( void ){

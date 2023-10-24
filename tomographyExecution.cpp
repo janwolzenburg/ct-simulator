@@ -126,8 +126,8 @@ void tomographyExec::handleEvents( void ){
 		state.deactivateAll();
 
 		Fl_Progress_Window* radiationProgressWindow = nullptr;
-		if( state.mainWindow != nullptr )
-			radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) state.mainWindow, 20, 5, "Radiation progress" );
+		if( state.mainWindow_ != nullptr )
+			radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) state.mainWindow_, 20, 5, "Radiation progress" );
 		
 
 		state.tomographyInstance = tomography{ state.tomographyParamerters };
@@ -137,8 +137,8 @@ void tomographyExec::handleEvents( void ){
 			delete radiationProgressWindow;
 		}
 
-		if( state.processingWindow != nullptr )
-			state.processingWindow->setNewRTFlag();
+		if( state.processingWindow_ != nullptr )
+			state.processingWindow_->setNewRTFlag();
 		
 
 

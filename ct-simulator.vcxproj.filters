@@ -330,9 +330,6 @@
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
-    <ClInclude Include="confirmButton.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="vectorAlgorithm.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>

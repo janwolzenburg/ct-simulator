@@ -27,11 +27,11 @@
 
 
 
-class processingView : public Fl_Window{
+class processingWindow : public Fl_Window{
 
 	public:
 
-	processingView( int w, int h, const char* label ) :
+	processingWindow( int w, int h, const char* label ) :
 		Fl_Window( w, h, label ),
 		
 		newRTFlag( false ),

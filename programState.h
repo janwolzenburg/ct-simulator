@@ -69,8 +69,8 @@ class programState{
 	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
 	reconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 	
-	mainView* mainWindow;				/*!<Pointer to the main window*/
-	processingView* processingWindow;	/*!<Pointer to the processing window*/
+	mainWindow* mainWindow_;				/*!<Pointer to the main window*/
+	processingWindow* processingWindow_;	/*!<Pointer to the processing window*/
 
 
 	/*!
@@ -103,13 +103,13 @@ class programState{
 	 * @brief Store pointer to main window for usage in program
 	 * @param ptr Pointer to the main window
 	*/
-	void registerMainWindow( mainView* const ptr ){ mainWindow = ptr; };
+	void registerMainWindow( mainWindow* const ptr ){ mainWindow_ = ptr; };
 
 	/*!
 	 * @brief Store pointer to processing window for usage in program
 	 * @param ptr Pointer to the processing window
 	*/
-	void registerProcessingWindow( processingView* const ptr ){ processingWindow = ptr; };
+	void registerProcessingWindow( processingWindow* const ptr ){ processingWindow_ = ptr; };
 	
 	/*!
 	 * @brief Activate main and processing window

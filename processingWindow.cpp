@@ -3,7 +3,7 @@
 
 
 
-void processingView::recalcFilteredProjections( void ){
+void processingWindow::recalcFilteredProjections( void ){
 
 	//Fl_Window::window()->deactivate();
 	PROGRAM_STATE().deactivateAll();
