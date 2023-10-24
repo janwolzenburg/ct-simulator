@@ -30,3 +30,5 @@ processingParameter.h .cpp
 slicePlane.h .cpp
 monoImage.h .cpp
 rgbImage.h .cpp
+plots.h .cpp
+lineplot.h geoplot.h

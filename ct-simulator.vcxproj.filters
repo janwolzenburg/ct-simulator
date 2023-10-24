@@ -243,12 +243,6 @@
     <ClInclude Include="programState.fwd.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="gui.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="window.h">
-      <Filter>Headerdateien\Program\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="storedObject.hpp">
       <Filter>Quelldateien\Program</Filter>
     </ClInclude>
@@ -309,9 +303,6 @@
     <ClInclude Include="fileChooser.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="window.hpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="lineplot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
@@ -344,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="vectorAlgorithm.h">
       <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="positions.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -452,9 +446,6 @@
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
-    <ClCompile Include="gui.cpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="positions.cpp">
       <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
@@ -468,9 +459,6 @@
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="gantryCreation.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="window.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="monoImage.cpp">

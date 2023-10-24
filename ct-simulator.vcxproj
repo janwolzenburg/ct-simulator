@@ -181,7 +181,6 @@
     <ClInclude Include="generelMath.hpp" />
     <ClInclude Include="geoplot.h" />
     <ClInclude Include="grid.h" />
-    <ClInclude Include="gui.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="modelViewParameter.h" />
     <ClInclude Include="monoImage.fwd.h" />
@@ -200,6 +199,7 @@
     <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
+    <ClInclude Include="positions.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="processingParameters.h" />
@@ -236,8 +236,6 @@
     <ClInclude Include="voxel.h" />
     <ClInclude Include="widgets.h" />
     <ClInclude Include="widgets.hpp" />
-    <ClInclude Include="window.h" />
-    <ClInclude Include="window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="backprojection.cpp" />
@@ -261,7 +259,6 @@
     <ClInclude Include="grid.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="gui.cpp" />
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="plots.cpp" />
     <ClCompile Include="monoImage.cpp" />
@@ -298,7 +295,6 @@
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />
     <ClCompile Include="widgets.cpp" />
-    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

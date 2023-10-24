@@ -12,7 +12,6 @@ using std::cerr;  using std::endl; using std::cout;
 #include <type_traits>
 
 #include "programState.h"
-#include "gui.h"
 #include "test_model.h"
 #include "cSysTree.h"
 #include "progress.h"
