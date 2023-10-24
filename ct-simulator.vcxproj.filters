@@ -333,9 +333,6 @@
     <ClInclude Include="vectorAlgorithm.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>
-    <ClInclude Include="positions.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -442,9 +439,6 @@
     </ClCompile>
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
-    </ClCompile>
-    <ClCompile Include="positions.cpp">
-      <Filter>Quelldateien\Program\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Fl_GridImage.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>

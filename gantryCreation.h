@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   modelView.h
+ * @file   gantryCreation.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -34,42 +34,62 @@ using std::vector;
 #include "lineplot.h"
 #include "geoplot.h"
 
+
+/*!
+ * @brief Class for a GUI element for gantry creation
+*/
 class gantryEdition : public Fl_Group{
 
 	public:
 
+	/*!
+	 * @brief Constructor
+	 * @param x x-position
+	 * @param y y-position
+	 * @param w Width
+	 * @param h Height
+	*/
 	gantryEdition( int x, int y, int w, int h );
 
-
+	/*!
+	 * @brief Set flag for gantry update
+	*/
 	void setUpdateFlag( void ){ updateGantry = true; };
 
+	/*!
+	 * @brief Check if gantry needs update 
+	 * @return True when gantry needs update
+	*/
 	bool UpdateGantry( void ){ return unsetFlag( updateGantry ); };
 
+	/*!
+	 * @brief Handle events
+	*/
 	void handleEvents( void );
 
 
 	private:
 
-	Fl_Box title;
+	Fl_Box title;		/*!<Title*/
 
-	Fl_Group tubeGrp;
-	Fl_Box tubeTitle;
-	Fl_Bound_Input<Fl_Float_Input, double> tubeVoltageIn;
-	Fl_Bound_Input<Fl_Float_Input, double> tubeCurrentIn;
-	Fl_Selector materialIn;
-	Fl_Plot<lineplot> spectrumPlot;
+	Fl_Group tubeGrp;					/*!<Group of tube elements*/
+	Fl_Box tubeTitle;					/*!<Tube group title*/
+	Fl_Bound_Input<Fl_Float_Input, double> tubeVoltageIn;	/*!<Tube voltage*/
+	Fl_Bound_Input<Fl_Float_Input, double> tubeCurrentIn;	/*!<Tube current*/
+	Fl_Selector materialIn;				/*!<Anode material*/
+	Fl_Plot<lineplot> spectrumPlot;		/*!<Plot of tube sepctrum*/
 
-	Fl_Group detectorGrp;
-	Fl_Box detectorTitle;
-	Fl_Bound_Input<Fl_Int_Input, size_t> colPnts;
-	Fl_Bound_Input<Fl_Int_Input, size_t> rowPnts;
-	Fl_Bound_Input<Fl_Float_Input, double> distRange;
-	Fl_Bound_Input<Fl_Int_Input, int> raysPerPixelIn;
-	Fl_Bound_Input<Fl_Float_Input, double> arcRadiusIn;
-	Fl_Toggle_Button structureIn;
-	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;
-	Fl_Plot<geoplot> detectorPlot;
+	Fl_Group detectorGrp;	/*!<Group for detector elemnts*/
+	Fl_Box detectorTitle;	/*!<Detector group title*/
+	Fl_Bound_Input<Fl_Int_Input, size_t> colPnts;			/*!<Amount of angles in sinogram*/
+	Fl_Bound_Input<Fl_Int_Input, size_t> rowPnts;			/*!<Amount of distances in sinogram*/
+	Fl_Bound_Input<Fl_Float_Input, double> distRange;		/*!<Measure field*/
+	Fl_Bound_Input<Fl_Int_Input, int> raysPerPixelIn;		/*!<Amount of rays per pixel to simulate*/
+	Fl_Bound_Input<Fl_Float_Input, double> arcRadiusIn;		/*!<Detector arc radius*/
+	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
+	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
+	Fl_Plot<geoplot> detectorPlot;							/*!<Plot for detector geometry*/
 
-	bool updateGantry;
+	bool updateGantry;	/*!<Flag for gantry update*/
 
 };

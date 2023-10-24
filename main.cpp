@@ -48,7 +48,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	mainWindow_->hide();
 	procView->hide();
 
-	Fl_Progress_Window* initialWindow = new Fl_Progress_Window( mainWindow_, 20, 3, "Initialisation" );
+	Fl_Progress_Window* initialWindow = new Fl_Progress_Window{ mainWindow_, 20, 3, "Initialisation" };
 	initialWindow->changeLineText( 1, "Loading program state..." );
 	initialWindow->show();
 

@@ -44,8 +44,6 @@ programState& programState::getInstance(){
 
 programState::programState( void ) :
 	
-	
-	planeInstance{},
 	modelSliceInstance{},
 	modelViewPara{},
 	tomographyInstance{},
@@ -63,8 +61,7 @@ programState::programState( void ) :
 	storedModel{ getPath( "storedModel.model" ), modelInstance },
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
 	storedModelChooser{ getPath( "storedModelChooser.txt" ), modelChooserInstance },
-	storedModelParameter( programState::getPath( "storedModelContrast.txt" ), modelViewPara ),
-	storedPlane{ programState::getPath( "storedViewPlane.txt" ), planeInstance },
+	storedViewParameter( programState::getPath( "storedViewParameter.txt" ), modelViewPara ),
 
 	xRayTubeParameter{},
 	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
@@ -97,8 +94,7 @@ programState::~programState( void ) {
 
 	storedModel.saveObject();
 	storedModelChooser.saveObject();
-	storedPlane.saveObject();
-	storedModelParameter.saveObject();
+	storedViewParameter.saveObject();
 
 	storedXRayTubeParameter.saveObject();
 	storedRadonParameter.saveObject();
@@ -174,7 +170,9 @@ string programState::modelDescription( void ) const{
 
 bool programState::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
-	const slicePlane backupPlane = planeInstance; 
+	const slicePlane backupPlane = modelViewPara.plane; 
+	slicePlane& planeInstance =  modelViewPara.plane;
+
 	const primitiveCartCSys backupCSys = modelInstance.CSys()->getPrimitive();
 
 	if( targetXRot != planeInstance.rotationAngleX ){
@@ -222,11 +220,10 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 bool programState::sliceModel( void ){
 
-	storedPlane.setLoaded();
-	storedModelParameter.setLoaded();
+	storedViewParameter.setLoaded();
 	storedTomographyParamerter.setLoaded();
 
-	grid<voxData> tempSlice = modelInstance.getSlice( planeInstance.surface, 1. );
+	grid<voxData> tempSlice = modelInstance.getSlice(  modelViewPara.plane.surface, 1. );
 	
 	if( tempSlice.Size().col == 0 || tempSlice.Size().row == 0 )
 		return false;
@@ -247,9 +244,9 @@ void programState::centerModel( void ){
 void programState::resetModel( void ){
 
 	// Reset plane
-	planeInstance.rotationAngleX = 0.;
-	planeInstance.rotationAngleY = 0.;
-	planeInstance.positionZ = 0.;
+	 modelViewPara.plane.rotationAngleX = 0.;
+	 modelViewPara.plane.rotationAngleY = 0.;
+	 modelViewPara.plane.positionZ = 0.;
 
 	centerModel();
 }
@@ -275,7 +272,6 @@ void programState::exportSinogram( void ){
 		path exportPath = exportChooserInstance.choose();
 		storedExportChooser.setLoaded();
 		if( exportPath.empty() ) return;
-
 
 		if( exportPath.extension() != "sinogram" )
 			exportPath += ".sinogram";

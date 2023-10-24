@@ -15,7 +15,6 @@
 #include "modelView.h"
 
 
-
 /*********************************************************************
   Implementations
 *********************************************************************/
@@ -23,25 +22,23 @@
 
 modelView::modelView( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
-	headGrp{ X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .05 ) },
-	loadBtn{ X( headGrp, .3 ),	Y( headGrp, .05 ),	W( headGrp, .4 ),	H( headGrp, .9 ),	"Load model" },
+	headGrp{	X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .05 ) },
+	loadBtn{	X( headGrp, .3 ),	Y( headGrp, .05 ),	W( headGrp, .4 ),	H( headGrp, .9 ),	"Load model" },
 
-	viewGrp{ X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .7 ) },
-	modelData{ X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .15 ) },
-	viewBox{ X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
-	viewImg{ X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
+	viewGrp{	X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .7 ) },
+	modelData{	X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .15 ) },
+	viewBox{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
+	viewImg{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
 
-	moveGrp{ X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .25 ) },
-	xRot{ X( moveGrp, .1 ),	Y( moveGrp, .1 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "x-Rotation" },
-	yRot{ X( moveGrp, .1 ),	Y( moveGrp, .35 ),	W( moveGrp, .5 ),	H( moveGrp, .1), "y-Rotation" },
-	zTrans{ X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "z-Translation" },
-	resetBtn{ X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
-
+	moveGrp{	X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .25 ) },
+	xRot{		X( moveGrp, .1 ),	Y( moveGrp, .1 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "x-Rotation" },
+	yRot{		X( moveGrp, .1 ),	Y( moveGrp, .35 ),	W( moveGrp, .5 ),	H( moveGrp, .1), "y-Rotation" },
+	zTrans{		X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "z-Translation" },
+	resetBtn{	X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
 
 	loadBtnPressed( false ),
 	updateModelFlag( false ),
 	resetBtnPressed( false )
-
 
 {
 
@@ -109,9 +106,9 @@ modelView::modelView( int x, int y, int w, int h ) :
 
 
 	// Set values
-	xRot.value( PROGRAM_STATE().planeInstance.rotationAngleX );
-	yRot.value( PROGRAM_STATE().planeInstance.rotationAngleY );
-	zTrans.value( PROGRAM_STATE().planeInstance.positionZ );
+	xRot.value( PROGRAM_STATE().modelViewPara.plane.rotationAngleX );
+	yRot.value( PROGRAM_STATE().modelViewPara.plane.rotationAngleY );
+	zTrans.value( PROGRAM_STATE().modelViewPara.plane.positionZ );
 
 	// Hide initially
 	moveGrp.hide();
@@ -120,9 +117,7 @@ modelView::modelView( int x, int y, int w, int h ) :
 		viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
 		viewImg.changeContrast( PROGRAM_STATE().modelViewPara.viewContrast );
 	}
-
 }
-
 
 void modelView::loadModel( void ){
 
@@ -143,13 +138,11 @@ void modelView::loadModel( void ){
 	Fl_Group::window()->activate();
 }
 
-
 void modelView::handleEvents( void ){
 
 	if( LoadBtnPressed() ){
 		loadModel();
 	}
-
 
 	if( ModelNeedsUpdate() ){
 		UpdateModel();
@@ -159,14 +152,11 @@ void modelView::handleEvents( void ){
 		resetModel();
 	}
 
-
 	if( viewImg.handleEvents() ){
 		// Store contrast
 		PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
 	}
-
 }
-
 
 void modelView::sliceModel( void ){
 	Fl_Group::window()->deactivate();
@@ -189,8 +179,6 @@ void modelView::resetModel( void ){
 	Fl_Group::window()->activate();
 
 }
-
-
 
 void modelView::UpdateModel( void ){
 
@@ -222,19 +210,8 @@ void modelView::UpdateModel( void ){
 
 }
 
-const string modelViewParameter::FILE_PREAMBLE{ "MODELVIEWPARAMETER_FILE_PREAMBLE" };
 
-
-
-modelViewParameter::modelViewParameter( void ) :
-	viewContrast(){
-
-}
-
-modelViewParameter::modelViewParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	viewContrast( binData, it ){
-
-}
+const string modelViewParameter::FILE_PREAMBLE{ "Ver01MODELVIEWPARAMETER_FILE_PREAMBLE" };
 
 size_t modelViewParameter::serialize( vector<char>& binData ) const{
 
@@ -242,6 +219,7 @@ size_t modelViewParameter::serialize( vector<char>& binData ) const{
 
 	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
 	numBytes += viewContrast.serialize( binData );
+	numBytes += plane.serialize( binData );
 
 	return numBytes;
 

@@ -32,3 +32,8 @@ monoImage.h .cpp
 rgbImage.h .cpp
 plots.h .cpp
 lineplot.h geoplot.h
+
+mainWindow.h .cpp
+modelView.h .cpp
+modelVieParameter.h
+gantryCreatiion.h .cpp

@@ -198,7 +198,6 @@
     <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
-    <ClInclude Include="positions.h" />
     <ClInclude Include="primitiveCartCSys.h" />
     <ClInclude Include="primitiveVec3.h" />
     <ClInclude Include="processingParameters.h" />
@@ -267,7 +266,6 @@
     <ClCompile Include="intersections.cpp" />
     <ClCompile Include="modelView.cpp" />
     <ClCompile Include="plotting.cpp" />
-    <ClCompile Include="positions.cpp" />
     <ClCompile Include="primitiveCartCSys.cpp" />
     <ClCompile Include="primitiveVec3.cpp" />
     <ClCompile Include="processingParameters.cpp" />

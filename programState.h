@@ -56,8 +56,6 @@ class programState{
 	*/
 	static programState& getInstance();
 	
-
-	slicePlane planeInstance;			/*!<Surface to slice model with*/
 	grid<voxData> modelSliceInstance;	/*!<Slice through model as gridded data*/
 	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
@@ -293,8 +291,7 @@ class programState{
 	storedObject<model> storedModel;						/*!<Persisting storage of current model*/
 	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
 	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
-	storedObject<modelViewParameter> storedModelParameter;	/*!<Persisting storage of view parameters*/
-	storedObject<slicePlane> storedPlane;					/*!<Persisting storage of the slice plane*/
+	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/
 
 	tubeParameter xRayTubeParameter;									/*!<xRay tube attributes*/
 	storedObject<tubeParameter> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
