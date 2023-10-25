@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   widgets.h
+ * @file   Fl_GridImage.h
  * @brief
  *
  * @author Jan Wolzenburg
