@@ -14,21 +14,23 @@
 
 #include <string>
 using std::string;
-
 #include <vector>
 using std::vector;
 
 #include "generel.h"
 
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Counter.H>
 #include <FL/Fl_Multiline_Output.H>
 #include <FL/Fl_Window.H>
-#include "widgets.h"
 
 #include "programState.h"
 #include "storedObject.h"
 #include "slicePlane.h"
 #include "modelViewParameter.h"
+#include "Fl_GridImage_Adjust.h"
 
 
 /*********************************************************************

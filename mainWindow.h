@@ -13,14 +13,19 @@
  *********************************************************************/
 
 #include "FL/Fl_Window.H"
+#include "FL/Fl_Group.H"
 #include "FL/Fl_Button.H"
-#include "FL/fl_ask.H"
 
 #include "programState.h"
-
 #include "modelView.h"
 #include "gantryCreation.h"
 #include "tomographyExecution.h"
+
+
+
+ /*********************************************************************
+	Definitions
+ *********************************************************************/
 
 /*!
  * @brief Class for main window with model view, gantry creation and tomography execution

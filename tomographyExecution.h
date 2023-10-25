@@ -15,6 +15,8 @@
 
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Counter.H>
 #include <FL/Fl_Float_Input.H>
 #include <FL/Fl_Toggle_Button.H>
 

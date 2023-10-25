@@ -24,12 +24,10 @@ using std::vector;
 #include <FL/Fl_Toggle_Button.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Tooltip.H>
-#include <FL/Fl_Window.H>
 
 #include "programState.h"
 #include "storedObject.h"
 #include "gantry.h"
-#include "widgets.h"
 #include "Fl_Plot.h"
 #include "Fl_Bound_Input.h"
 #include "Fl_Selector.h"

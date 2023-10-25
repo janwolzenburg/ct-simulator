@@ -342,6 +342,9 @@
     <ClInclude Include="Fl_Bound_Input.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="Fl_GridImage_Adjust.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -495,6 +498,9 @@
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Fl_Selector.cpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Fl_GridImage_Adjust.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>

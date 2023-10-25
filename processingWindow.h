@@ -12,12 +12,11 @@
 	Includes
  *********************************************************************/
 
- #include "widgets.h"
-
  #include "FL/Fl_Window.H"
 
- #include "Fl_GridImage.h"
+ #include "Fl_GridImage_Adjust.h"
  #include "Fl_Selector.h"
+ #include "Fl_Plot.h"
  #include "monoImage.h"
  #include "lineplot.h"
 

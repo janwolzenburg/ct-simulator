@@ -7,7 +7,7 @@
 * ********************************************************************/
 
 #include "processingWindow.h"
-
+#include "widgets.h"
 
 processingWindow::processingWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },

@@ -1,19 +1,39 @@
-#include "mainWindow.h"
+/*********************************************************
+* @file   programState.cpp
+* @brief  Implementations
+*
+* @author Jan Wolzenburg
+* @date   October 2023
+* ********************************************************************/
+
+
+/*********************************************************************
+	Includes
+ *********************************************************************/
+ 
+ #include "mainWindow.h"
+#include "FL/Fl_ask.H"
 #include "processingWindow.h"
+
+
+
+ /*********************************************************************
+	Implementations
+ *********************************************************************/
 
 mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
 
-	menu{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, 0.035 ) },
+	menu{					X( *this, 0. ),							Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ) },
 
-	importSinogramBtn{	X( menu, .7 ), Y( menu, 0 ), W( menu, .15 ), H( menu, 1. ), "Import Sinogram" },
+	importSinogramBtn{		X( menu, .7 ),							Y( menu, 0 ),		W( menu, .15 ),		H( menu, 1. ), "Import Sinogram" },
 	importSinogramFlag( false ),
 
-	resetProgramStateBtn{ X( menu, .9 ), Y( menu, 0. ), W( menu, .1 ), H( menu, 1. ), "Reset program" },
+	resetProgramStateBtn{	X( menu, .9 ),							Y( menu, 0. ),		W( menu, .1 ),		H( menu, 1. ), "Reset program" },
 	resetButtonPressed( false ),
-	modView{ X( *this, 0. ), Y( *this, 0.04 ), W( *this, 0.3 ), H( *this, .95 ) },
-	gantryBuild{ hOff( modView ) + X( *this, .025 ), Y( *this, 0.04 ), W( *this, 0.25 ), H( *this, .95 ) },
-	tomographyExecution{ hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ), W( *this, 0.4 ), H( *this, .95 ) }
+	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ) },
+	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ) },
+	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ) }
 {
 	Fl_Window::resizable( *this );
 
