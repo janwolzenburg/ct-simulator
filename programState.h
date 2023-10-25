@@ -19,20 +19,22 @@
  using std::vector;
 
  #include "programState.fwd.h"
-
- #include "model.h"
- #include "gantry.h"
-
- #include "fileChooser.h"
- #include "slicePlane.h"
- #include "storedObject.h"
- #include "monoImage.h"
+ #include "generel.h"
+ #include "grid.h"
+ #include "voxel.h"
+ #include "modelViewParameter.h"
  #include "tomography.h"
+ #include "radonTransform.h"
+ #include "processingParameters.h"
  #include "backprojection.h"
  #include "mainWindow.fwd.h"
  #include "processingWindow.fwd.h"
- #include "processingParameters.h"
- #include "modelViewParameter.h"
+ #include "model.h"
+ #include "storedObject.h"
+ #include "fileChooser.h"
+ #include "tube.h"
+ #include "detectorParameter.h"
+ #include "gantry.h"
 
 
 
@@ -236,7 +238,7 @@ class programState{
 	 * @details Store as current projections and set flags
 	 * @param rt Radon transform to assign
 	*/
-	void assignRadonTransformed( const radonTransformed rt ){ currentProjections = rt; storedProjections.setLoaded(); storedProcessingParameters.setLoaded(); };
+	void assignRadonTransformed( const radonTransformed rt );
 	
 	/*!
 	 * @brief Set flag to update tomography parameter information

@@ -13,12 +13,6 @@
 *********************************************************************/
 
 #include <random>
-#include <vector>
-using std::vector;
-#include <mutex>
-using std::mutex;
-
-#include "propability.fwd.h"
 #include "generel.h"
 
 

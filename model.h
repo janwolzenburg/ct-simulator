@@ -11,19 +11,16 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
-#include <filesystem>
-using std::filesystem::path;
- #include <utility>
- using std::pair;
 #include <algorithm>
 
-
- #include "generelMath.h"
- #include "cartesian.h"
- #include "voxel.h"
- #include "scattering.h"
- #include "grid.h"
- #include "tomography.fwd.h"
+#include "generel.h"
+#include "generelMath.h"
+#include "cartesian.h"
+#include "voxel.h"
+#include "rays.h"
+#include "scattering.h"
+#include "grid.h"
+#include "tomography.fwd.h"
 
 
 

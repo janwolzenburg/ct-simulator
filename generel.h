@@ -27,8 +27,8 @@ using std::cerr; using std::endl; using std::cout;
 #include <filesystem>
 using std::filesystem::path;
 
-#include <sstream>
-#include <tuple>
+#include <utility>
+ using std::pair;
 #include <mutex>
 using std::mutex;
 
@@ -42,7 +42,7 @@ using std::mutex;
 /*!
  * @brief Pair of vectors
 */
-typedef std::pair<vector<double>, vector<double>> vectorPair;
+typedef pair<vector<double>, vector<double>> vectorPair;
 
 
 /*!

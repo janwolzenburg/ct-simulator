@@ -14,7 +14,7 @@
 
  #include "generel.h"
  #include "generelMath.h"
- #include "simulation.h"
+ 
 
 
 

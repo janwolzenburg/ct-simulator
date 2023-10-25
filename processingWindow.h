@@ -22,7 +22,6 @@
 
  #include "programState.h"
  #include "radonTransform.h"
- #include "backprojection.h"
 
 
 

@@ -15,8 +15,6 @@
 
  #include <vector>
  using std::vector;
- #include <mutex>
- using std::mutex;
 
 #include "generelMath.h"
 #include "detectorPixel.h"

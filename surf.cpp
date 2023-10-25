@@ -11,7 +11,6 @@
 	Includes
  *********************************************************************/
 
-#include "cartesian.h"
 #include "cSysTree.h"
 #include "vec3D.h"
 #include "line.h"

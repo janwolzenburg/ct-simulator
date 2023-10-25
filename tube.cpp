@@ -13,9 +13,8 @@
 *********************************************************************/
 
 #include "vectorAlgorithm.h"
-#include "tube.h" 
-#include "detectorPixel.h"
-
+#include "tube.h"
+#include "simulation.h"
 
 
 /*********************************************************************

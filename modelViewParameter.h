@@ -14,6 +14,7 @@ using std::string;
 using std::vector;
 
 #include "generel.h"
+#include "slicePlane.h"
 
 
 /*!

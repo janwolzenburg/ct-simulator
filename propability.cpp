@@ -13,7 +13,6 @@
 *********************************************************************/
 
 #include <chrono>
-#include <mutex>
 
 #include "propability.h"
 #include "vectorAlgorithm.h"

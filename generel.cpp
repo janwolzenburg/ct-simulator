@@ -11,13 +11,7 @@
 	Includes
  *********************************************************************/
 
-#include <vector>
-using std::vector;
-#include <string>
-using std::string;
 #include <fstream>
-#include <filesystem>
-
 #include "generel.h"
 
 

@@ -54,7 +54,7 @@ class lineplot : public plot{
 	/*!
 	 * @brief Create the plot
 	*/
-	void create( void );
+	virtual void create( void );
 
 
 	protected:
@@ -76,6 +76,6 @@ class dotplot : public lineplot{
 	/*!
 	 * @brief Create the plot
 	*/
-	void create( void );
+	void create( void ) override;
 
 };

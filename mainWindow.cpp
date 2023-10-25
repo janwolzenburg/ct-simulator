@@ -11,10 +11,9 @@
 	Includes
  *********************************************************************/
  
- #include "mainWindow.h"
+#include "mainWindow.h"
 #include "FL/Fl_ask.H"
-#include "processingWindow.h"
-
+#include "widgets.h"
 
 
  /*********************************************************************
@@ -95,10 +94,6 @@ void mainWindow::handleEvents( void ){
 		if( validBinaryData( radonTransformed::FILE_PREAMBLE, binData, it ) ){
 			radonTransformed importedSinogram{ binData, it };
 			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
-
-			if( PROGRAM_STATE().processingWindow_ != nullptr ){
-				PROGRAM_STATE().processingWindow_->setNewRTFlag();
-			}
 		}
 	}
 

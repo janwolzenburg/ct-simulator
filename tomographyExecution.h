@@ -22,8 +22,6 @@
 
 #include "Fl_Bound_Input.h"
 #include "programState.h"
-#include "widgets.h"
-
 
 /*!
  * @brief Class for tomography execution

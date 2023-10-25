@@ -12,6 +12,7 @@
 	Includes
  *********************************************************************/
  #include "surf.h"
+ #include "rays.h"
  #include "intersections.h"
 
 

@@ -13,17 +13,14 @@
 *********************************************************************/
 
 #include "detectorParameter.h"
+#include "simulation.h"
 
 
 /*********************************************************************
   Implementations
 *********************************************************************/
 
-
-
 const string detectorRadonParameter::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
-
-const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FILE_PREAMBLE" };
 
 
 /*!
@@ -82,6 +79,9 @@ size_t detectorRadonParameter::serialize( vector<char>& binData ) const{
 /*!
  * detectorIndipendentParameter implementation
 */
+
+
+const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FILE_PREAMBLE" };
 
 detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
 	raysPerPixel( raysPerPixel_ ),

@@ -45,7 +45,6 @@ progress.h .cpp
 
 TODO: Class and member variable names, includes
 
-
-
-
-Precomputation for 
+Precomputation for presentation
+Model creation
+DICOM converter

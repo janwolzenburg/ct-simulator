@@ -15,7 +15,6 @@
 #include <string>
 using std::string;
 
-#include "generel.h"
 #include "generelMath.h"
 #include "primitiveVec3.h"
 

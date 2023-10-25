@@ -18,7 +18,7 @@ using std::for_each;
 
 #include <numeric>
 #include "spectrum.h"
-
+#include "generelMath.h"
 
 
 /*********************************************************************

@@ -261,6 +261,15 @@ bool programState::loadModel( void ){
 	return true;
 }
 
+void programState::assignRadonTransformed( const radonTransformed rt ){ 
+	currentProjections = rt; 
+	storedProjections.setLoaded(); 
+	storedProcessingParameters.setLoaded(); 
+	if( processingWindow_ != nullptr ){
+		processingWindow_->setNewRTFlag();
+	}
+}
+
 void programState::setUpdateInformationFlag( void ){
 	if( mainWindow_ != nullptr )
 		mainWindow_->tomographyExecution.updateInformation();

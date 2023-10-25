@@ -18,7 +18,7 @@ using std::cref;
 #include "gantry.h"
 #include "cSysTree.h"
 #include "tomography.h"
-
+#include "simulation.h"
 
 
 /*********************************************************************

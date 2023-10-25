@@ -21,6 +21,7 @@
   #include "test_model.h"
   #include "tomography.h"
   #include "tube.h"
+#include "simulation.h"
 
 bool test_scattered_angle_propabilities( void ){
 

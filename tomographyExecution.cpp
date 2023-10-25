@@ -16,6 +16,8 @@
 #include "processingWindow.h"
 #include "backprojection.h"
 #include "progress.h"
+#include "widgets.h"
+
 
 tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
@@ -132,7 +134,7 @@ void tomographyExec::handleEvents( void ){
 
 		Fl_Progress_Window* radiationProgressWindow = nullptr;
 		if( state.mainWindow_ != nullptr )
-			radiationProgressWindow = new Fl_Progress_Window( (Fl_Window*) state.mainWindow_, 20, 5, "Radiation progress" );
+			radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) state.mainWindow_, 20, 5, "Radiation progress" };
 		
 
 		state.tomographyInstance = tomography{ state.tomographyParamerters };

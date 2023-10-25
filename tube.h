@@ -12,17 +12,13 @@
   Includes
 *********************************************************************/
 
-#include <vector>
-using std::vector;
 #include <map>
 
-#include "generelMath.h"
+#include "generel.h"
 #include "cartesian.h"
 #include "spectrum.h"
 #include "rays.h"
 #include "detectorPixel.h"
-#include "simulation.h"
-
 
 
 /*********************************************************************

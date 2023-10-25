@@ -14,10 +14,8 @@
 
 #include "generel.h"
 #include "vec3D.h"
-
 #include "detector.h"
 #include "radonTransform.h"
-
 
 
 /*********************************************************************

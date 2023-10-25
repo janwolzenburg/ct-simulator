@@ -16,7 +16,6 @@
 #include "gantryCreation.h"
 #include "widgets.h"
 #include "plots.h"
-#include "Fl_Plot.h"
 
 
 
@@ -160,8 +159,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 }
-
-
 
 void gantryEdition::handleEvents( void ){
 

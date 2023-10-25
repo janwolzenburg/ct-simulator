@@ -18,8 +18,6 @@ constexpr double alFilterGradiantFactor = -3.5;						/*!< Quotient of filter gra
 constexpr double MAX_DETECTOR_ANGLE = 2. * PI * ( 60. / 360. );		/*!<Maximum angle of detector arc*/
 constexpr double MIN_DETECTOR_ANGLE = 2. * PI * ( 40. / 360. );		/*!<Minimum angle of detector arc*/
 
-
-
 constexpr double rayStepSize_Def = 5e-2;							/*!<Stepsize during ray iteration in ray direction vector's unit*/
 constexpr double completeModelScatterPropability_Def = 0.05;		/*!<Propability that a ray is scattered when transmitting through complete model*/
 

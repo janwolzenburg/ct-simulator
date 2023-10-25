@@ -18,7 +18,7 @@
 #include "vectorAlgorithm.h"
 #include "grid.h"
 #include "generelMath.h"
-
+#include "voxel.h"
 
 
 /*********************************************************************
@@ -27,9 +27,9 @@
 
 template<class D>
 grid<D>::grid( void ) : 
-	size( 3, 3 ),
-	start( 0. ,0. ),
-	resolution( 1., 1. )
+	size{ 3, 3 },
+	start{ 0. ,0. },
+	resolution{ 1., 1. }
 {
 	initializeMinMaxValue();
 	fillVectors( D() );
@@ -47,12 +47,12 @@ grid<D>::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D 
 
 template<class D>
 grid<D>::grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue ) :
-	size( idx2CR{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
-					(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } ),
-	start( v2CR{	columnRange.start,
-					rowRange.start } ),
-	resolution( v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
-						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } )
+	size{ idx2CR{	(size_t) ( ( columnRange.end - columnRange.start ) / resolution_.col ) + 1,
+					(size_t) ( ( rowRange.end - rowRange.start ) / resolution_.row ) + 1 } },
+	start{ v2CR{	columnRange.start,
+					rowRange.start } },
+	resolution{ v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
+						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } }
 {
 	initializeMinMaxValue();
 	fillVectors( defaultValue );
@@ -73,8 +73,8 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 		}
 		else{
 
-			minValue = D( binData, it );
-			maxValue = D( binData, it );
+			minValue = D{ binData, it };
+			maxValue = D{ binData, it };
 		}
 
 		for( vector<D>& column : data ){
@@ -82,7 +82,7 @@ grid<D>::grid( const vector<char>& binData, vector<char>::const_iterator& it ) :
 				if constexpr( std::is_fundamental_v<D> )
 					rowData = deSerializeBuildIn( D{}, binData, it );
 				else
-					rowData = D( binData, it );
+					rowData = D{ binData, it };
 			}
 		}
 }

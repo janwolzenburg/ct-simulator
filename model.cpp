@@ -14,16 +14,15 @@
 
 #include <fstream>
 #include <thread>
+using std::thread;
 #include <mutex>
 using std::ref;
 using std::cref;
 
 #include "model.h"
 #include "cSysTree.h"
-#include "rays.h"
 #include "intersections.h"
 #include "propability.h"
-#include "scattering.h"
 #include "tomography.h"
 
 

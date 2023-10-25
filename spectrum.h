@@ -13,13 +13,8 @@
    Includes
 *********************************************************************/
 
-#include <vector>
-using std::vector;
 #include <functional>
-
 #include "generel.h"
-#include "voxel.h"
-
 
 
 /*********************************************************************

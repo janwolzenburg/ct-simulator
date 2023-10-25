@@ -13,8 +13,6 @@
 	Includes
  *********************************************************************/
  #include <cmath>
- #include <vector>
- using std::vector;
 
  #include "generelMath.h"
  #include "equationSystem.h"

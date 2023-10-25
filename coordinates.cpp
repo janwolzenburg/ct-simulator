@@ -14,7 +14,6 @@
  #include <format>
 
 #include "coordinates.h"
-#include "cSysTree.h"
 #include "equationSystem.h"
 
 

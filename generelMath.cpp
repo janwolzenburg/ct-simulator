@@ -10,7 +10,6 @@
 	Includes
  *********************************************************************/
 
-#include <iostream>
 #include <cmath>
 
 #include "generelMath.h"

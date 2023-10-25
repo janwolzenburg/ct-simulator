@@ -11,12 +11,6 @@
  /*********************************************************************
 	Includes
  *********************************************************************/
-
-#include <string>
-using std::string;
-#include <vector>
-using std::vector;
-
 #include "generel.h"
 
 #include <FL/Fl_Group.H>
@@ -27,9 +21,6 @@ using std::vector;
 #include <FL/Fl_Window.H>
 
 #include "programState.h"
-#include "storedObject.h"
-#include "slicePlane.h"
-#include "modelViewParameter.h"
 #include "Fl_GridImage_Adjust.h"
 
 

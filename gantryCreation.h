@@ -12,12 +12,6 @@
 	Includes
  *********************************************************************/
 
-#include <string>
-using std::string;
-
-#include <vector>
-using std::vector;
-
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Int_Input.H>
 #include <FL/Fl_Float_Input.H>
@@ -26,8 +20,6 @@ using std::vector;
 #include <FL/Fl_Tooltip.H>
 
 #include "programState.h"
-#include "storedObject.h"
-#include "gantry.h"
 #include "Fl_Plot.h"
 #include "Fl_Bound_Input.h"
 #include "Fl_Selector.h"

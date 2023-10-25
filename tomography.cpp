@@ -16,10 +16,8 @@
 #include <FL/Fl.H>
 
 #include "tomography.h"
-#include "generel.h"
 #include "cSysTree.h"
-#include "plotting.h"
-
+#include "simulation.h"
 
 
 /*********************************************************************

@@ -12,15 +12,11 @@
 	Includes
  *********************************************************************/
 
-#include <vector>
-using std::vector;
-
 #include <algorithm>
 #include <numeric>
 
 #include "vectorAlgorithm.h"
-#include "generelMath.h" 
-#include "generel.h"
+#include "generelMath.h"
 
 
 

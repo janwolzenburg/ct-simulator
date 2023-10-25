@@ -16,7 +16,6 @@
 using std::vector;
 
 #include "generel.h"
-#include "rgbImage.h"
 
 
 

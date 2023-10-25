@@ -10,12 +10,7 @@
 /*********************************************************************
 	Includes
  *********************************************************************/
-#include <string>
-using std::string;
 
- #include "vec3D.h"
- #include "line.h"
- #include "surf.h"
  #include "equationSystem.h"
  #include "intersections.h"
 
