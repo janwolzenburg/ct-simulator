@@ -62,16 +62,16 @@ void scaleY( vector<v2>& vec, const double factor );
 
 /*!
  * @brief Normalize 2D Vector. Sum of y-values will be one afterwards
- * @param vec Vector to normalize
+ * @param vec Vector to normalise
 */
-void normalizeThis( vector<v2>& vec );
+void normaliseThis( vector<v2>& vec );
 
 /*!
  * @brief Normalize 2D vector
- * @param vec Vector to normalize
+ * @param vec Vector to normalise
  * @return Normalized vector
 */
-vector<v2> normalize( const vector<v2>& vec );
+vector<v2> normalise( const vector<v2>& vec );
 
 /*!
  * @brief Search element in vector closest to value

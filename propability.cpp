@@ -72,7 +72,7 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins )
 {
 	// Normalize 
-	distribution = normalize( distribution_ );
+	distribution = normalise( distribution_ );
 
 	// Sort by angle
 	std::sort( distribution.begin(), distribution.end(), [] ( const v2& a, const v2& b ){ return a.x < b.x; } );

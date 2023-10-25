@@ -109,7 +109,7 @@ bool test_nonUniformDetector( void ){
 
 		// Lot on normal perpendicualr to rotation axis
 		vec3 normalLot =  rotationAxis ^ currentNormalVec;
-		normalLot.normalize();	// Set length to one
+		normalLot.normalise();	// Set length to one
 
 		//addSingleObject( ax1, "NormalLot", normalLot, "g", cSys->OPnt() );
 

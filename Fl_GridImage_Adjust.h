@@ -32,7 +32,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 
 	void assignImage( const monoImage& img );
 
-	void assignImage( const grid<voxData>& modGrid, const bool normalize = false );
+	void assignImage( const grid<voxData>& modGrid, const bool normalise = false );
 
 	void setSliderBounds( const range newBound );
 

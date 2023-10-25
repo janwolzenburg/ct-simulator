@@ -46,9 +46,9 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 }
 
-void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool normalize ){
+void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool normalise ){
 
-	imgWidget.assignImage( modGrid, normalize );
+	imgWidget.assignImage( modGrid, normalise );
 
 	if( !boundsSet )
 		setSliderBoundsFromImage();

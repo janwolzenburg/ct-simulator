@@ -68,7 +68,7 @@ void primitiveVec3::scale( const double scalar ){
 	z *= scalar;
 }
 
-mathObj::MATH_ERR primitiveVec3::normalize( void ){
+mathObj::MATH_ERR primitiveVec3::normalise( void ){
 
 	// New length
 	double len = this->Length();
@@ -125,9 +125,9 @@ mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi 
 	// n must have direction
 	if( iseqErr( n.Length(), 0 ) ) return checkErr( MATH_ERR::INPUT, "Rotation axis must have length!" );
 
-	// Create copy and normalize
+	// Create copy and normalise
 	primitiveVec3 nCpy{ n };
-	nCpy.normalize();
+	nCpy.normalise();
 
 	double d = sqrt( pow( nCpy.x, 2 ) + pow( nCpy.y, 2 ) );		// Length of the axis projection on x-y plane
 	if( errno != 0 ) return checkErr( MATH_ERR::GENERAL, "Error calculation square root!" );		// Check error flag
@@ -145,7 +145,7 @@ mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi 
 	}
 
 	// Gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
-	double sinGam = d;				// Rotation axis vector has been normalized - sine of Gamma is d / 1
+	double sinGam = d;				// Rotation axis vector has been normalised - sine of Gamma is d / 1
 	double cosGam = nCpy.z;			// Cosine is just the z-component of vector n_z / 1
 
 	// Clockwise rotation of this vector around y-axis

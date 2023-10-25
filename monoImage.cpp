@@ -32,7 +32,7 @@ monoImage::monoImage( const size_t width_, const size_t height_ ) :
 	imData( numPixel, 0 )
 {}
 
-monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
+monoImage::monoImage( const grid<>& source, const bool normaliseImg ) :
 	monoImage{ source.Size().col, source.Size().row }
 {
 
@@ -42,11 +42,11 @@ monoImage::monoImage( const grid<>& source, const bool normalizeImg ) :
 		}
 	}
 
-	if( normalizeImg )
-		normalize();
+	if( normaliseImg )
+		normalise();
 }
 
-monoImage::monoImage( const grid<voxData>& source, const bool normalizeImg ) :
+monoImage::monoImage( const grid<voxData>& source, const bool normaliseImg ) :
 	monoImage{ source.Size().col, source.Size().row }
 {
 	for( size_t c = 0; c < width; c++ ){
@@ -58,8 +58,8 @@ monoImage::monoImage( const grid<voxData>& source, const bool normalizeImg ) :
 		}
 	}
 
-	if( normalizeImg )
-		normalize();
+	if( normaliseImg )
+		normalise();
 }
 
 monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight ) :
@@ -115,7 +115,7 @@ size_t monoImage::serialize( vector<char>& binData ) const{
 	return numBytes;
 }
 
-void monoImage::normalize( void ){
+void monoImage::normalise( void ){
 
 	if( data.size() == 0 ) return;
 

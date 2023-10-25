@@ -131,7 +131,7 @@ class primitiveVec3 : public v3, public mathObj{
 	 * @brief Normalize values of components
 	 * @return Error code
 	*/
-	MATH_ERR normalize( void );
+	MATH_ERR normalise( void );
 
 	/*!
 	 * @brief Add value to x component

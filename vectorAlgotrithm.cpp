@@ -57,17 +57,17 @@ void scaleY( vector<v2>& vec, const double factor ){
 }
 
 
-void normalizeThis( vector<v2>& vec ){
+void normaliseThis( vector<v2>& vec ){
 	scaleY( vec, 1. / sumY( vec ) );
 }
 
-vector<v2> normalize( const vector<v2>& vec ){
+vector<v2> normalise( const vector<v2>& vec ){
 
-	vector<v2> normalizedVector{ vec };
+	vector<v2> normalisedVector{ vec };
 
-	normalizeThis( normalizedVector );
+	normaliseThis( normalisedVector );
 
-	return normalizedVector;
+	return normalisedVector;
 
 }
 

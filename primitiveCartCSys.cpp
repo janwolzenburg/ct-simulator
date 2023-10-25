@@ -31,9 +31,9 @@ primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primiti
 	ez( ez_ )
 {
 	// Normalize vectors
-	ex.normalize();
-	ey.normalize();
-	ez.normalize();
+	ex.normalise();
+	ey.normalise();
+	ez.normalise();
 
 	// Vector have to be orthogonal to each other
 	if( !iseqErr( ex * ey, 0 ) ||
@@ -48,9 +48,9 @@ primitiveCartCSys::primitiveCartCSys( const vector<char>& binData, vector<char>:
 	ez( deSerialize<primitiveVec3>( binData, it ) )
 {
 	// Normalize vectors
-	ex.normalize();
-	ey.normalize();
-	ez.normalize();
+	ex.normalise();
+	ey.normalise();
+	ez.normalise();
 
 	// Vector have to be orthogonal to each other
 	if( !iseqErr( ex * ey, 0 ) ||

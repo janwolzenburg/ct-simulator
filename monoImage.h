@@ -45,16 +45,16 @@ class monoImage{
 	/*!
 	 * @brief Construct image from grid
 	 * @param source Source grid
-	 * @param normalize Flag for normalization
+	 * @param normalise Flag for normalisation
 	*/
-	monoImage( const grid<>& source, const bool normalize = false );
+	monoImage( const grid<>& source, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from voxel-data grid
 	 * @param source Source grid with voxel data
-	 * @param normalize Flag for normalization
+	 * @param normalise Flag for normalisation
 	*/
-	monoImage( const grid<voxData>& source, const bool normalize = false );
+	monoImage( const grid<voxData>& source, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -151,7 +151,7 @@ class monoImage{
 	* @brief Normalize unsigned char data
 	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
 	*/
-	void normalize( void );
+	void normalise( void );
 
 	/*!
 	 * @brief Serialize this object

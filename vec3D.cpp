@@ -132,11 +132,11 @@ mathObj::MATH_ERR vec3::scale( const double scalar ){
 	return updateLength();
 }
 
-mathObj::MATH_ERR vec3::normalize( void ){
+mathObj::MATH_ERR vec3::normalise( void ){
 	mathObj::MATH_ERR tErr = MATH_ERR::OK;
 	mathObj::MATH_ERR err = MATH_ERR::OK;
 
-	if( ( tErr = primitiveVec3::normalize() ) != MATH_ERR::OK ) err = tErr;
+	if( ( tErr = primitiveVec3::normalise() ) != MATH_ERR::OK ) err = tErr;
 	if( ( tErr = updateLength() ) != MATH_ERR::OK ) err = tErr;
 
 	// Scale and return error code

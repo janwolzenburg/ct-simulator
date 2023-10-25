@@ -30,7 +30,6 @@
 */
 
 rgb_Int getBgColor( void ){
-
 	rgb_Int backgroundRGB{ 0, 0, 0 };
 	Fl::get_color( FL_BACKGROUND_COLOR, backgroundRGB.red, backgroundRGB.green, backgroundRGB.blue );
 
@@ -45,7 +44,7 @@ Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	hasOverlay( false )
 {
 
-};
+}
 
 void Fl_GridImage::assignImage( const monoImage& img ) 
 {
@@ -57,11 +56,7 @@ void Fl_GridImage::assignImage( const monoImage& img )
 	updateScaled();
 }
 
-
-
-void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalize ){
-	
-
+void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalise ){
 
 	originalImage = monoImage{ modGrid.Size().col, modGrid.Size().row };
 	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
@@ -94,37 +89,24 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 		}
 	}
 
-	if( normalize )
-		originalImage.normalize();
-
+	if( normalise )
+		originalImage.normalise();
 
 	imgAssigned = true;
-
-
 	updateScaled();
 
 }
 
 void Fl_GridImage::draw( void ){
 
-
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.Width() ) / 2;
-	//int centerY = this->parent()->y() + ( this->parent()->h() - (int) scaledImage.Height() ) / 2;
-
-	//fl_rectf( this->parent()->x(), this->parent()->y(), this->parent()->w(), this->parent()->h(), 216 );
-
 	fl_draw_image( (unsigned char*) colorImage.getDataPtr(), centerX, y(), (int) colorImage.Width(), (int) colorImage.Height() );
 }
 
-
 void Fl_GridImage::resize( int x, int y, int w, int h ){
-
 	Fl_Widget::resize( x, y, w, h );
-
 	updateScaled();
-
 }
-
 
 void Fl_GridImage::calculateScaled( void ){
 
@@ -156,9 +138,6 @@ void Fl_GridImage::calculateScaled( void ){
 }
 
 void Fl_GridImage::updateScaled( void ){
-
 	calculateScaled();
-
 	redraw();
-
 }

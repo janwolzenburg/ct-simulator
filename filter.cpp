@@ -65,24 +65,6 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 				break;
 			}
 
-			/*
-			case discreteFilter::absolute:
-			{
-				// Constant to be able to approximate inverse FT of abs( w )
-				constexpr double e = 1.;									
-
-				const double e2 = pow( e, 2. );								// Epsilon squared
-				const double c2 = pow( 2. * PI * samplingInterval, 2. );	// Constant for calculation
-				const double k2 = pow( (double) n, 2. );					// Double version of n^2
-
-				// Kernel value
-				const double h = ( e2 -  c2 * k2 ) / pow( e2 + c2 * k2, 2. );
-
-				kernelValue = h;
-
-				break;
-			}*/
-
 			case discreteFilter::ramLak:
 			{
 				// Conditions for filter calculation

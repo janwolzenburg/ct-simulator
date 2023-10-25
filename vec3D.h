@@ -237,7 +237,7 @@ class vec3 : protected coordinates{
 	 * @return Error code
 	 * @details Error code ist set when vector's length is zero
 	*/
-	MATH_ERR normalize( void );
+	MATH_ERR normalise( void );
 
 	/*!
 	 * @brief Add value to x component of this vector
@@ -406,7 +406,7 @@ class uvec3 : public vec3{
 	 * @param v Vector to convert
 	*/
 	uvec3( const vec3 v ) : vec3( v ){
-		normalize();
+		normalise();
 	};
 
 	/*!
@@ -429,21 +429,21 @@ class uvec3 : public vec3{
 	MATH_ERR scale( const double scalar ) = delete;
 
 	/*!
-	 * @brief Add value to x component of this vector and normalize again
+	 * @brief Add value to x component of this vector and normalise again
 	 * @param x_ Value to add in vector's unit
 	 * @return Error code
 	*/
 	MATH_ERR addXM( const double x_ ) = delete;
 
 	/*!
-	 * @brief Add value to y component of this vector and normalize again
+	 * @brief Add value to y component of this vector and normalise again
 	 * @param y_ Value to add in vector's unit
 	 * @return Error code
 	*/
 	MATH_ERR addYM( const double y_ ) = delete;
 
 	/*!
-	 * @brief Add value to z component of this vector and normalize again
+	 * @brief Add value to z component of this vector and normalise again
 	 * @param z_ Value to add in vector's unit
 	 * @return Error code
 	*/

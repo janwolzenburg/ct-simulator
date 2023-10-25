@@ -1,6 +1,24 @@
+#pragma once
+/*********************************************************************
+* @file   Fl_Selector.cpp
+* @brief  Implementations
+*
+* @author Jan Wolzenburg
+* @date   October 2023
+* ********************************************************************/
+
+
+/*********************************************************************
+	Includes
+ *********************************************************************/
+
 #include "Fl_Selector.h"
 #include "widgets.h"
 
+
+ /*********************************************************************
+	Implementations
+ *********************************************************************/
 
 Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h },
@@ -27,7 +45,7 @@ Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 	currentElement = elements.cbegin();
 
 
-};
+}
 
 void Fl_Selector::goPrev( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
@@ -41,7 +59,6 @@ void Fl_Selector::goPrev( [[maybe_unused]] Fl_Widget* widget, void* p ){
 	selectorGrp->do_callback();
 
 }
-
 
 void Fl_Selector::goNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
