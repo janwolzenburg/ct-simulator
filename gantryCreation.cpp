@@ -170,7 +170,7 @@ void gantryEdition::handleEvents( void ){
 
 		Fl_Group::window()->deactivate();
 
-		tubeParameter newTubeParameter{ tubeVoltageIn.current, tubeCurrentIn.current, tubeParameter::getEnum( materialIn.value() ) };
+		tubeParameter newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), tubeParameter::getEnum(materialIn.value())};
 		detectorRadonParameter newRadonParameter{ idx2CR{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 

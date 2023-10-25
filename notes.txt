@@ -37,3 +37,15 @@ mainWindow.h .cpp
 modelView.h .cpp
 modelVieParameter.h
 gantryCreatiion.h .cpp
+tomographyExecution.h .cpp
+
+processingWindow.h .cpp
+progress.h .cpp
+
+
+TODO: Class and member variable names, includes
+
+
+
+
+Precomputation for 

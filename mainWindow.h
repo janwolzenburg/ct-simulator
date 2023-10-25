@@ -49,7 +49,6 @@ class mainWindow : public Fl_Window{
 
 	/*!
 	 * @brief Handle event in main window
-	 * @param  
 	*/
 	void handleEvents( void );
 

@@ -31,6 +31,8 @@ using std::vector;
 #include "gantry.h"
 #include "widgets.h"
 #include "Fl_Plot.h"
+#include "Fl_Bound_Input.h"
+#include "Fl_Selector.h"
 #include "lineplot.h"
 #include "geoplot.h"
 

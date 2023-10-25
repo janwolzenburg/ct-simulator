@@ -1,34 +1,47 @@
-#include "tomographyExecution.h"
+/******************************************************************
+* @file   tomographyExecution.cpp
+* @brief  Implementations
+*
+* @author Jan Wolzenburg
+* @date   September 2023
+* ********************************************************************/
 
+
+
+/*********************************************************************
+  Includes
+*********************************************************************/
+#include "tomographyExecution.h"
 
 #include "processingWindow.h"
 #include "backprojection.h"
 #include "progress.h"
 
 tomographyExec::tomographyExec( int x, int y, int w, int h ) :
-	Fl_Group( x, y, w, h ),
-	title( X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"),
+	Fl_Group{ x, y, w, h },
+	title{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"},
 
-	tomoParameterGrp(		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) ),
-	parameterTitle(			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" ),
+	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) },
+	parameterTitle{			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" },
 	
-	exposureTimeIn(			X( tomoParameterGrp, .1 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .1 ),	H( tomoParameterGrp, .05 ), "Exposure time" ),
-	rayStepSizeIn(			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Ray step size" ),
+	exposureTimeIn{			X( tomoParameterGrp, .1 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .1 ),	H( tomoParameterGrp, .05 ), "Exposure time" },
+	rayStepSizeIn{			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Ray step size" },
 	
-	radiationLoopsIn(		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .05 ), "Maximum loops" ),
-	scatterPropabilityIn(	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering prob." ),
-	scatteringOnOff(		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" ),
+	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .05 ), "Maximum loops" },
+	scatterPropabilityIn{	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering prob." },
+	scatteringOnOff{		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" },
 	
-	information(			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .6 ), "Information" ),
+	information{			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .6 ), "Information" },
 
 
-	controlGrp( X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) ),
-	radiationButton( X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .4 ), "Record Slice" ),
-	exportButton(	 X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" ),
+	controlGrp{				X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) },
+	radiationButton{		X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .4 ), "Record Slice" },
+	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
 	radiateFlag( false ),
 	updateFlag( false ),
+	exportFlag( false ),
 	informationUpdateFlag( false )
 
 {
@@ -99,28 +112,20 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	this->deactivate();
 }
 
-tomographyExec::~tomographyExec( void ){
-
-}
-
-
 void tomographyExec::handleEvents( void ){
 
 	programState& state = PROGRAM_STATE();
 
-	if( state.ModelLoaded() && !this->active() ){
+	if( state.ModelLoaded() && !this->active() )
 		this->activate();
-	}
-	else if( !state.ModelLoaded() ){
+	else if( !state.ModelLoaded() )
 		this->deactivate();
-	}
-	if( state.RadonTransformedLoaded() ){
+	
+	if( state.RadonTransformedLoaded() )
 		exportButton.activate();
-	}
-	else{
+	else
 		exportButton.deactivate();
-	}
-
+	
 	if(  unsetFlag( radiateFlag ) ){
 
 		state.deactivateAll();
@@ -139,25 +144,17 @@ void tomographyExec::handleEvents( void ){
 
 		if( state.processingWindow_ != nullptr )
 			state.processingWindow_->setNewRTFlag();
-		
-
 
 		state.activateAll();
-
 	}
 
-	if( unsetFlag( exportFlag ) ){
-
+	if( unsetFlag( exportFlag ) )
 		state.exportSinogram();
-	}
-
+	
 
 	if( unsetFlag( updateFlag )){
-		
 		informationUpdateFlag = true;
-
 		state.tomographyParamerters = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
-
 	}
 
 	if( unsetFlag( informationUpdateFlag )){
@@ -177,5 +174,4 @@ void tomographyExec::handleEvents( void ){
 		information.value( informationString.c_str() );
 
 	}
-
 }

@@ -333,6 +333,15 @@
     <ClInclude Include="vectorAlgorithm.h">
       <Filter>Headerdateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="Fl_Selector.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Fl_Bound_Input.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Fl_Bound_Input.hpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -481,6 +490,12 @@
     </ClCompile>
     <ClCompile Include="vectorAlgotrithm.cpp">
       <Filter>Quelldateien\Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="progress.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Fl_Selector.cpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

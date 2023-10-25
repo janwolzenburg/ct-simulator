@@ -171,7 +171,10 @@
     <ClInclude Include="equationSystem.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
+    <ClInclude Include="Fl_Bound_Input.h" />
+    <ClInclude Include="Fl_Bound_Input.hpp" />
     <ClInclude Include="Fl_GridImage.h" />
+    <ClInclude Include="Fl_Selector.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="gantryCreation.h" />
     <ClInclude Include="generel.h" />
@@ -250,6 +253,7 @@
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClCompile Include="Fl_Selector.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
@@ -271,6 +275,7 @@
     <ClCompile Include="processingParameters.cpp" />
     <ClCompile Include="processingWindow.cpp" />
     <ClCompile Include="programState.cpp" />
+    <ClCompile Include="progress.cpp" />
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="rgbImage.cpp" />
     <ClCompile Include="scattering.cpp" />
