@@ -33,14 +33,20 @@ class discreteFilter{
 	*/
 	enum TYPE{
 		constant,		/*!<No filter*/
-		//absolute,		/*!<Mathematically correct but unpractical filter*/
 		ramLak,			/*!<Ramachandran and Lakshminarayanan*/
 		sheppLogan		/*!<Shepp and Logan*/
 	};
 
-	static const std::map<TYPE, string> filterTypes;
+	static const std::map<TYPE, string> filterTypes;	/*!<Filter types with names*/
+	static const double threshold;						/*!<Threshold to determine significant range*/
+	
+	/*!
+	 * @brief Get filter type by string
+	 * @param searchString Name of filter type
+	 * @return Filter enumeration value
+	*/
+	static discreteFilter::TYPE getEnum( const string searchString );
 
-	static const double threshold;
 
 	/*!
 	 * @brief Constructor
@@ -50,11 +56,12 @@ class discreteFilter{
 	*/
 	discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const TYPE type );
 
+	/*!
+	 * @brief Default constructor
+	 * @param  
+	*/
 	discreteFilter( void ) : 
-		discreteFilter( Zrange( -5, 5 ), 1., constant )
-	{}
-
-	static discreteFilter::TYPE getEnum( const string searchString );
+		discreteFilter( Zrange{ -5, 5 }, 1., constant ) {};
 
 	/*!
 	 * @brief Get values of filter kernel
@@ -62,6 +69,10 @@ class discreteFilter{
 	*/
 	vector<double> Values( void ) const{ return values; };
 
+	/*!
+	 * @brief Get the filter as points
+	 * @return Vector with x,y points
+	*/
 	vectorPair PlotValues( void ) const;
 
 	/*!
@@ -70,6 +81,10 @@ class discreteFilter{
 	*/
 	Zrange Range( void ) const{ return pointsRange; };
 
+	/*!
+	 * @brief Get the relevant range by threshold
+	 * @return Range of indices where the filter values are significant
+	*/
 	Zrange getRelevantRange( void ) const;
 
 	/*!
