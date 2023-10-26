@@ -204,17 +204,13 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	double currentRayStep = rayEntrance.linePara;					// Ray parameter at model entrance
+	double currentRayStep = rayEntrance.linePara + tomoParameter.rayStepSize;		// Ray parameter at model entrance
 	const double lengthInModel = modelIsect.exit.linePara - modelIsect.entrance.linePara;
 
 	// Go a tiny step further down the ray from intersection point with model and test if inside
 	// Return when the point on the ray is not inside the model meaning that the ray just barely hit the model
-	if( !pntInside( modelRay.getPnt( currentRayStep += tomoParameter.rayStepSize )  ) ) return modelRay;
+	if( !pntInside( modelRay.getPnt( currentRayStep ) ) ) return modelRay;
 
-	// Get first point inside the model
-	/*while( !pntInside(modelRay.getPnt(currentRayStep)) && lengthInModel > currentRayStep ){
-		currentRayStep += tomoParameter.rayStepSize;
-	}*/
 
 	// Current point on the ray
 	Point3D currentPntOnRay = modelRay.getPnt( currentRayStep );		// Point of model entrance
