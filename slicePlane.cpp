@@ -29,7 +29,7 @@ slicePlane::slicePlane( void ) :
 	rotationAngleX( 0. ),
 	rotationAngleY( 0. ),
 	positionZ( 0. ){
-};
+}
 
 slicePlane::slicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	cSys{ CSYS_TREE().addCSys( binary_data, it ) },
@@ -37,17 +37,11 @@ slicePlane::slicePlane( const vector<char>& binary_data, vector<char>::const_ite
 	rotationAngleX( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),
 	rotationAngleY( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),
 	positionZ( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) )
-{
-
-
-
-}
-
+{}
 
 size_t slicePlane::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += cSys->Serialize( binary_data );
 	num_bytes += surface.Serialize( binary_data );
 	num_bytes += SerializeBuildIn( rotationAngleX, binary_data );
@@ -56,4 +50,4 @@ size_t slicePlane::Serialize( vector<char>& binary_data ) const{
 
 	return num_bytes;
 
-};
+}

@@ -29,9 +29,6 @@
 	const path programState::stateStorage{ "./stateStorage/" };
 #endif // WIN32
 
-const string slicePlane::FILE_PREAMBLE{ "VIEWPLANE_FILE_PREAMBLE" };
-
-
 
 programState& PROGRAM_STATE( void ){
 	return programState::getInstance();

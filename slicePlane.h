@@ -17,8 +17,6 @@ class slicePlane{
 
 
 	public:
-	
-	static const string FILE_PREAMBLE;
 
 	/*!
 	 * @brief Default constructor 
