@@ -34,7 +34,7 @@ bool IsNearlyEqual( const double a, const double b, const double tolerance, cons
 }
 
 bool IsNearlyEqualDistance( const double a, const double b ){
-	return IsNearlyEqual( a, b, max_distance_error_for_equality_mm );
+	return IsNearlyEqual( a, b, max_distance_error_for_equality_mm, ComparisonMode::Absolute );
 }
 
 

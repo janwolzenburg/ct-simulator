@@ -65,7 +65,7 @@ enum ComparisonMode{
  * @param mode Comparison mode: tolerance is absolute difference or relative difference
  * @return True when the difference is less than tolerance
 */
-bool IsNearlyEqual( const double a, const double b, const double tolerance, const ComparisonMode mode = Absolute);
+bool IsNearlyEqual( const double a, const double b, const double tolerance, const ComparisonMode mode );
 
 /*!
  * @brief Compares to values for their equality with tolerance
