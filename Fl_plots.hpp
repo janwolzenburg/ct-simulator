@@ -45,6 +45,7 @@ Fl_Plot<plotType>::~Fl_Plot(){
 template<class plotType>
 void Fl_Plot<plotType>::initialisePlot( const path path_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
+
 	plotInstance.initialise( path_, label, xlabel_, ylabel_, limits_, idx2CR{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
 }
 
@@ -110,6 +111,7 @@ template<class plotType>
 void Fl_Plot<plotType>::assignImage( const path filename ){
 
 	delete sourceImage;
+
 	sourceImage = new Fl_PNG_Image{ filename.string().c_str() };
 
 	redraw();
