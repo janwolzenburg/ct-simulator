@@ -17,7 +17,6 @@
 #include "Fl_Plot.h"
 
 
-
 /*********************************************************************
    Implementations
 *********************************************************************/
@@ -29,7 +28,7 @@
 
 template<class plotType>
 Fl_Plot<plotType>::Fl_Plot( int x, int y, int w, int h, const char* label_ ) :
-	Fl_Widget( x, y, w, h, label_ ),
+	Fl_Widget{ x, y, w, h, label_ },
 	label( label_ ),
 	plotInstance(),
 	sourceImage( nullptr ),
@@ -40,27 +39,13 @@ Fl_Plot<plotType>::Fl_Plot( int x, int y, int w, int h, const char* label_ ) :
 template<class plotType>
 Fl_Plot<plotType>::~Fl_Plot(){
 	delete image;
+	delete sourceImage;
 }
 
 template<class plotType>
 void Fl_Plot<plotType>::initializePlot( const path path_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
-
 	plotInstance.initialize( path_, label, xlabel_, ylabel_, limits_, idx2CR{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
-
-}
-template<class plotType>
-void Fl_Plot<plotType>::setLimits( const plotLimits newLimits ){
-
-	plotInstance.setLimits( newLimits );
-
-}
-
-template<class plotType>
-void Fl_Plot<plotType>::assignData( void ){
-
-	assignImage( plotInstance.getImgPath() );
-
 }
 
 template<class plotType>
@@ -85,9 +70,7 @@ void Fl_Plot<plotType>::resize( int x, int y, int w, int h ){
 		plotInstance.setSize( idx2CR{ (size_t) w, (size_t) h } );
 		plotInstance.create();
 		assignImage( plotInstance.getImgPath() );
-	}
-	//calculateScaled();
-
+	} 
 	redraw();
 
 }

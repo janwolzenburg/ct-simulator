@@ -47,7 +47,7 @@ class Fl_Selector : public Fl_Group{
 	 * @brief Set alignment for title
 	 * @param alignment Alignment
 	*/
-	void align( Fl_Align alignment );
+	void align( Fl_Align alignment ){ current.align( alignment ); };
 
 	/*!
 	 * @brief Set selectable elements

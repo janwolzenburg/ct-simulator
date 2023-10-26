@@ -18,10 +18,10 @@
  #include "Fl_OwnValuator.h"
  #include "FL/fl_draw.H"
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
-
 
 
 template< class C >
@@ -33,9 +33,7 @@ void Fl_OwnValuator<C>::cbFunction( Fl_Widget* widgetPtr, void* flag ){
 	if( valuatorPtr->valueToLabel ){
 		valuatorPtr->updateLabel();
 	}
-
 }
-
 
 template< class C >
 Fl_OwnValuator<C>::Fl_OwnValuator( int x, int y, int w, int h, const char* label ) :
@@ -45,29 +43,10 @@ Fl_OwnValuator<C>::Fl_OwnValuator( int x, int y, int w, int h, const char* label
 	Fl_Valuator::callback( cbFunction, &changeFlag );
 }
 
-
-template< class C >
-bool Fl_OwnValuator<C>::ChangeFlag( void ){
-
-	if( changeFlag ){
-		changeFlag = false;
-		return true;
-	}
-
-	return false;
-}
-
-
-template< class C >
-double Fl_OwnValuator<C>::value( void ) const{
-	return Fl_Valuator::value();
-}
-
-
 template< class C >
 int Fl_OwnValuator<C>::value( double newVal ){
 
-	bool valueReturn = static_cast<bool>( Fl_Valuator::value( newVal ) );
+	int valueReturn = Fl_Valuator::value( newVal );
 
 	changeFlag = true;
 
@@ -77,26 +56,22 @@ int Fl_OwnValuator<C>::value( double newVal ){
 	return valueReturn;
 }
 
-
 template< class C >
 void Fl_OwnValuator<C>::ValueToLabel( const bool yesNo ){
 	valueToLabel = yesNo;
 	if( yesNo ) updateLabel();
 }
 
-
 template< class C >
 void Fl_OwnValuator<C>::updateLabel( void ){
 
 	int significantDigits = (int) ceil(  - log10( Fl_Valuator::step() ) );
-
 	if( significantDigits < 0 ) significantDigits = 0;
 
 	std::stringstream stream;
-
 	stream << std::fixed << std::setprecision( significantDigits ) << this->value();
 
-	labelString = stream.str();
+	string labelString = stream.str();
 
 	
 	int oldW, oldH;
@@ -104,15 +79,13 @@ void Fl_OwnValuator<C>::updateLabel( void ){
 
 	int newW, newH, i = 0;
 	do{
-
 		labelString = " " + labelString;
 		fl_measure( labelString.c_str(), newW, newH, 1 );
-
 
 	}while( newW < oldW && i++ < 30 );
 
 
-	this->copy_label( this->labelString.c_str() );
+	this->copy_label( labelString.c_str() );
 	this->redraw_label();
 
 }

@@ -1,3 +1,17 @@
+#pragma once
+/*********************************************************************
+* @file   Fl_Bound_Input.hpp
+* @brief  Implementations
+*
+* @author Jan Wolzenburg
+* @date   October 2023
+* ********************************************************************/
+
+
+/*********************************************************************
+	Includes
+*********************************************************************/
+
 #include "Fl_Bound_Input.h"
 #include "generel.h"
 #include "generelMath.h"
@@ -14,46 +28,23 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 	constraint( NONE )
 {
 	Fl_Group::add( input );
-
 	input.callback( cbFunction, (Fl_Widget*) this );
-
 }
-
 
 template< class C, typename T>
  void Fl_Bound_Input<C, T>::cbFunction( [[maybe_unused]] Fl_Widget* widget, void* p ){
-
-	//C* inputPtr = static_cast<C*>( widget );
 	Fl_Bound_Input* parentPtr = static_cast<Fl_Bound_Input*>( p );
 
 	parentPtr->checkBounds();
-
 	parentPtr->Fl_Group::do_callback();
-
 }
-
-
-template< class C, typename T>
-void Fl_Bound_Input<C, T>::align( Fl_Align alignment ){
-	input.align( alignment );
-}
-
 
 template< class C, typename T>
 void Fl_Bound_Input<C, T>::value( const T newValue ){
-
 	valueString = toString( newValue, precision );
 	input.value( valueString.c_str() );
 	checkBounds();
-
 }
-
-
-template< class C, typename T>
-T Fl_Bound_Input<C, T>::value( void ) const{
-	return current;
-}
-
 
 template< class C, typename T>
 void Fl_Bound_Input<C, T>::setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ ){
@@ -62,7 +53,6 @@ void Fl_Bound_Input<C, T>::setProperties( const T min_, const T max_, const int 
 	precision = precision_;
 	constraint = constraint_;
 }
-
 
 template< class C, typename T>
 void Fl_Bound_Input<C, T>::checkBounds( void ){
@@ -89,6 +79,4 @@ void Fl_Bound_Input<C, T>::checkBounds( void ){
 
 	valueString = toString( current, precision );
 	input.value( valueString.c_str() );
-
-
-};
+}

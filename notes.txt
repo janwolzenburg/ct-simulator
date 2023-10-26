@@ -45,6 +45,14 @@ progress.h .cpp
 
 TODO: Class and member variable names, includes
 
+Naming convention:
+	- classes and types: CamelCase
+	- functions: CamelCase
+	- enums: CamelCase
+	- variables: snake_case
+		- member: trailing underscore
+		- struct: no underscore
+
 Precomputation for presentation
 Model creation
 DICOM converter

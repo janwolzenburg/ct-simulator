@@ -4,7 +4,7 @@
  * @brief
  *
  * @author Jan Wolzenburg
- * @date   March 2023
+ * @date   September 2023
  *********************************************************************/
 
 
@@ -16,7 +16,6 @@
 
 #include "monoImage.h"
 #include "rgbImage.h"
-
 
 
  /*********************************************************************
@@ -45,7 +44,7 @@ class Fl_GridImage : public Fl_Widget{
 	/*!
 	 * @brief Draw the image
 	*/
-	virtual void draw( void );
+	void draw( void ) override;
 
 	/*!
 	 * @brief Resize the image
@@ -54,7 +53,7 @@ class Fl_GridImage : public Fl_Widget{
 	 * @param w New width
 	 * @param h New height
 	*/
-	virtual void resize( int x, int y, int w, int h );
+	void resize( int x, int y, int w, int h ) override;
 
 	/*!
 	 * @brief Assign grayscale image as new image data
@@ -84,6 +83,7 @@ class Fl_GridImage : public Fl_Widget{
 	 * @return True when an image was previously assigned
 	*/
 	bool imageAssigned( void ) const{ return imgAssigned; };
+
 
 	private:
 

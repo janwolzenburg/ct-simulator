@@ -1,11 +1,10 @@
 /******************************************************************
-* @file   widgets.cpp
+* @file   Fl_Grid_Image.cpp
 * @brief  Implementations
 *
 * @author Jan Wolzenburg
-* @date   March 2023
+* @date   September 2023
 * ********************************************************************/
-
 
 
 /*********************************************************************
@@ -18,16 +17,9 @@
 #include "Fl_GridImage.h"
 
 
-
 /*********************************************************************
   Implementations
 *********************************************************************/
-
-
-
-/*
-	Fl_GridImage implementation
-*/
 
 rgb_Int getBgColor( void ){
 	rgb_Int backgroundRGB{ 0, 0, 0 };
@@ -38,13 +30,15 @@ rgb_Int getBgColor( void ){
 
 rgb_Int Fl_GridImage::bgColor = getBgColor();
 
+/*
+	Fl_GridImage implementation
+*/
+
 Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Widget{ x, y, w, h, label },
 	imgAssigned( false ),
 	hasOverlay( false )
-{
-
-}
+{}
 
 void Fl_GridImage::assignImage( const monoImage& img ) 
 {

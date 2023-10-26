@@ -98,7 +98,7 @@ class model : public mathObj{
 	 * @brief Get range of attenuation in model
 	 * @return Range of attenuation
 	*/
-	range attenuationRange( void ) const{ return range( attenuationMin, attenuationMax ); };
+	range attenuationRange( void ) const{ return range{ attenuationMin, attenuationMax }; };
 
 	/*!
 	 * @brief Get model name

@@ -22,12 +22,20 @@ using std::string;
 	Definitions
  *********************************************************************/
 
+/*!
+ * @brief Constraints for the bound input
+*/
 enum INPUT_CONSTRAINTS{
 	NONE,
 	EVEN,
 	ODD
 };
 
+/*!
+ * @brief Class for a bound number input
+ * @tparam C Class derived from Fl_Input
+ * @tparam T Arithmetic type to input
+*/
 template< class C, typename T>
 class Fl_Bound_Input : public Fl_Group{
 
@@ -37,32 +45,69 @@ class Fl_Bound_Input : public Fl_Group{
 	
 	public:
 
+	/*!
+	 * @brief Constructor
+	 * @param x x-position
+	 * @param y y-position
+	 * @param w Width
+	 * @param h Height
+	 * @param label Label
+	*/
 	Fl_Bound_Input( int x, int y, int w, int h, const char* label );
 
-	void align( Fl_Align alignment );
+	/*!
+	 * @brief Set alignment for title
+	 * @param alignment Alignment
+	*/
+	void align( Fl_Align alignment ){ input.align( alignment ); };
 
+	/*!
+	 * @brief Set new value
+	 * @param newValue New value
+	*/
 	void value( const T newValue );
 
-	T value( void ) const;
+	/*!
+	 * @brief Get current value 
+	 * @return Current value
+	*/
+	T value( void ) const{ return current; }; 
 
+	/*!
+	 * @brief Set properties of input
+	 * @param min_ Minimum value
+	 * @param max_ Maximum value
+	 * @param precision_ Precision of number to show. Use negative numbers to round to multiples of ten
+	 * @param constraint_ Contrains for inputted values
+	*/
 	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  );
 
-	void checkBounds( void );
-
-	static void cbFunction( Fl_Widget* widget, void* p );
-	
 
 	private:
 
-	C input;
+	/*!
+	 * @brief Check if current value is in bounds and violating constrains
+	 * @details Updates value to conform
+	*/
+	void checkBounds( void );
 
-	int precision;
-	T current;
-	string valueString;
+	/*!
+	 * @brief Callback for value change
+	 * @param widget Pointer to widget which triggered the callback
+	 * @param p Pointer to userdata. Here a pointer to the Fl_Bound_Input must be passed
+	*/
+	static void cbFunction( Fl_Widget* widget, void* p );
+	
 
-	T maxVal;
-	T minVal;
-	INPUT_CONSTRAINTS constraint;
+	C input;				/*!<A Fl_Input derivation*/
+				
+	int precision;			/*!<Precision of number. Negative to round to significant digits*/
+	T current;				/*!<Current value*/
+	string valueString;		/*!<String with formatted value*/
+
+	T maxVal;				/*!<Maximum allowed value*/
+	T minVal;				/*!<Minimum allowed value*/
+	INPUT_CONSTRAINTS constraint;	/*!<Constraints for the input*/
 
 };
 

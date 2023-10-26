@@ -72,18 +72,12 @@ void Fl_Selector::goNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 }
 
-
-void Fl_Selector::align( Fl_Align alignment ){
-	current.align( alignment );
-}
-
 void Fl_Selector::setElements( const vector<string> newElements ){
 	elements = newElements;
 	currentElement = elements.cbegin();
 
 	checkActivation();
 }
-
 
 void Fl_Selector::value( const string newValue ){
 
@@ -98,7 +92,7 @@ void Fl_Selector::value( const string newValue ){
 			break;
 		}
 	}
-};
+}
 
 void Fl_Selector::checkActivation( void ){
 
