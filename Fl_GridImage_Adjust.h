@@ -43,7 +43,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @brief Change contrast
 	 * @param bounds Lower and upper limit. Values below lower limit are black; values beyond upper limit are white
 	*/
-	void changeContrast( const range bounds );
+	void changeContrast( const NumberRange bounds );
 
 	/*!
 	 * @brief Assign grayscale image as new image data
@@ -62,7 +62,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @brief Set the slider range
 	 * @param newBound Raw limits
 	*/
-	void setSliderBounds( const range newBound );
+	void setSliderBounds( const NumberRange newBound );
 
 	/*!
 	 * @brief Handle events
@@ -79,7 +79,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @brief Get the current slider values 
 	 * @return Current contrast
 	*/
-	range getContrast( void ) const{ return range{ lowerBound.value(), upperBound.value() }; };
+	NumberRange getContrast( void ) const{ return NumberRange{ lowerBound.value(), upperBound.value() }; };
 
 	/*!
 	 * @brief Check if an image was assigned 

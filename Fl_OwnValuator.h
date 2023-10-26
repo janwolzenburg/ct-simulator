@@ -47,7 +47,7 @@ class Fl_OwnValuator : public C{
 	 * @brief Check if value changed and reset the flag
 	 * @return True, when value changed
 	*/
-	bool ChangeFlag( void ){ return unsetFlag( changeFlag ); };
+	bool ChangeFlag( void ){ return UnsetFlag( changeFlag ); };
 
 	/*!
 	 * @brief Get the current value

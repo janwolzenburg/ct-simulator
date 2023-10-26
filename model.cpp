@@ -24,6 +24,7 @@ using std::cref;
 #include "intersections.h"
 #include "propability.h"
 #include "tomography.h"
+#include "serialization.h"
 
 
 
@@ -39,7 +40,7 @@ using std::cref;
 
 const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver2"};
 
-model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, const string name_ ) :
+model::model( cartCSys* const cSys_, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ ) :
 	numVox3D( numVox3D_ ),
 	voxSize3D( voxSize3D_ ),
 	size3D( { (double) numVox3D.x * voxSize3D.x,
@@ -56,28 +57,28 @@ model::model( cartCSys* const cSys_, const idx3 numVox3D_, const v3 voxSize3D_, 
 }
 
 
-model::model( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	numVox3D( idx3( binData, it ) ),
-	voxSize3D( v3( binData, it ) ),
-	size3D( v3( (double) numVox3D.x * voxSize3D.x,
+model::model( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	numVox3D( Index3D( binary_data, it ) ),
+	voxSize3D( Tuple3D( binary_data, it ) ),
+	size3D( Tuple3D( (double) numVox3D.x * voxSize3D.x,
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z ) ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
 	parameter( numVox, voxData{} ),
-	cSys( CSYS_TREE().addCSys( binData, it ) ),
-	attenuationMin( deSerializeBuildIn<double>( -1., binData, it ) ),
-	attenuationMax( deSerializeBuildIn<double>( -1., binData, it ) ),
-	name( deSerializeBuildIn( string{ "Default model name"}, binData, it ) )
+	cSys( CSYS_TREE().addCSys( binary_data, it ) ),
+	attenuationMin( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
+	attenuationMax( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
+	name( DeSerializeBuildIn( string{ "Default model name"}, binary_data, it ) )
 {
 	
-	if( numVox * sizeof( voxData ) == (size_t) (binData.end() - it) ){
+	if( numVox * sizeof( voxData ) == (size_t) (binary_data.end() - it) ){
 		memcpy( parameter.data(), &( *it ), numVox * sizeof(voxData));
 		it += static_cast<long long int>( numVox * sizeof( voxData ) );
 	}
 	else{
 
 		for( size_t i = 0; i < numVox; i++ ){
-			parameter[i] = voxData( binData, it );
+			parameter[i] = voxData( binary_data, it );
 		}
 	}
 }
@@ -88,7 +89,7 @@ string model::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) con
 }
 
 vox model::Vox( void ) const{
-	return  vox{ pnt3{v3 { 0, 0, 0 }, cSys}, size3D, voxData{} };
+	return  vox{ pnt3{Tuple3D { 0, 0, 0 }, cSys}, size3D, voxData{} };
 }
 
 const voxData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
@@ -107,7 +108,7 @@ voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	return parameter.at( ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x );
 }
 
-bool model::checkIndices( const idx3 indices ) const{
+bool model::checkIndices( const Index3D indices ) const{
 	if( indices.x >= numVox3D.x ||
 		indices.y >= numVox3D.y ||
 		indices.z >= numVox3D.z ){
@@ -120,13 +121,13 @@ bool model::pntInside( const pnt3 p ) const{
 	return validCoords( p.XYZ( cSys ) );
 }
 
-idx3 model::getVoxelIndices( const v3 locCoords ) const{
+Index3D model::getVoxelIndices( const Tuple3D locCoords ) const{
 	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
 		checkErr( MATH_ERR::INPUT, "Only positive coordinates allowed in model!" );
-		return idx3{ 0, 0, 0 };
+		return Index3D{ 0, 0, 0 };
 	}
 
-	idx3 indices{
+	Index3D indices{
 		(size_t) ( locCoords.x / voxSize3D.x ),
 		(size_t) ( locCoords.y / voxSize3D.y ),
 		(size_t) ( locCoords.z / voxSize3D.z )
@@ -148,11 +149,11 @@ idx3 model::getVoxelIndices( const v3 locCoords ) const{
 	return indices;
 }
 
-idx3 model::getVoxelIndices( const pnt3 voxpnt ) const{
+Index3D model::getVoxelIndices( const pnt3 voxpnt ) const{
 	return getVoxelIndices( voxpnt.XYZ( cSys ) );
 }
 
-bool model::setVoxelData( const voxData newData, const idx3 indices ){
+bool model::setVoxelData( const voxData newData, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
@@ -164,7 +165,7 @@ bool model::setVoxelData( const voxData newData, const idx3 indices ){
 	return true;
 }
 
-bool model::setVoxelProperty( const voxData::specialProperty property, const idx3 indices ){
+bool model::setVoxelProperty( const voxData::specialProperty property, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
@@ -174,14 +175,14 @@ bool model::setVoxelProperty( const voxData::specialProperty property, const idx
 
 }
 
-vox model::getVoxel( const idx3 indices ) const{
+vox model::getVoxel( const Index3D indices ) const{
 
 	if( !checkIndices( indices ) ){
 		checkErr( MATH_ERR::INPUT, "Indices exceed model!" );
 		return vox{};
 	}
 
-	pnt3 voxOrigin{ v3{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
+	pnt3 voxOrigin{ Tuple3D{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
 
 	// Get voxel data and create voxel instance
 	vox voxel{ voxOrigin, voxSize3D, getVoxelData( indices ) };
@@ -225,7 +226,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	// Iterate through model while current point is inside model
 	while( pntInside( currentPntOnRay ) ){
 
-		const idx3 currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
+		const Index3D currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
 		const vector<FACE_ID> possibleFaces = modelRay.getPossibleVoxelExits();		// The possible exit faces
 
@@ -316,14 +317,14 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	return modelRay;
 }
 
-bool model::crop( const v3 minCoords, const v3 maxCoords ){
+bool model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	if( !validCoords( minCoords ) || !validCoords( maxCoords ) ) return false;
 
-	idx3 minIdcs = getVoxelIndices( minCoords );			// Minimum boundary indices
-	idx3 maxIdcs = getVoxelIndices( maxCoords );			// Maximum boundary indices
+	Index3D minIdcs = getVoxelIndices( minCoords );			// Minimum boundary indices
+	Index3D maxIdcs = getVoxelIndices( maxCoords );			// Maximum boundary indices
 
 	// Parameters of cropped model
-	idx3 newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
+	Index3D newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
 	// New model
 	model newModel{ cSys, newVoxNum3D, voxSize3D };
@@ -344,7 +345,7 @@ bool model::crop( const v3 minCoords, const v3 maxCoords ){
 }
 
 
-size_t model::serialize( vector<char>& binData ) const{
+size_t model::Serialize( vector<char>& binary_data ) const{
 
 	size_t expectedSize = FILE_PREAMBLE.size() + 1;
 	expectedSize += sizeof( numVox3D );
@@ -355,34 +356,34 @@ size_t model::serialize( vector<char>& binData ) const{
 	expectedSize += name.size() + 1;
 	expectedSize += numVox * sizeof( parameter.front() );
 
-	binData.reserve( expectedSize );
+	binary_data.reserve( expectedSize );
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += numVox3D.serialize( binData );
-	numBytes += voxSize3D.serialize( binData );
-	numBytes += cSys->serialize( binData );
-	numBytes += serializeBuildIn( attenuationMin, binData );
-	numBytes += serializeBuildIn( attenuationMax, binData );
-	numBytes += serializeBuildIn( name, binData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += numVox3D.Serialize( binary_data );
+	num_bytes += voxSize3D.Serialize( binary_data );
+	num_bytes += cSys->Serialize( binary_data );
+	num_bytes += SerializeBuildIn( attenuationMin, binary_data );
+	num_bytes += SerializeBuildIn( attenuationMax, binary_data );
+	num_bytes += SerializeBuildIn( name, binary_data );
 
 	
-	binData.insert( binData.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(voxData) * numVox);
-	//binData.insert( binData.end(), parameter.cbegin(), parameter.cend() );
+	binary_data.insert( binary_data.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(voxData) * numVox);
+	//binary_data.insert( binary_data.end(), parameter.cbegin(), parameter.cend() );
 
-	return numBytes;
+	return num_bytes;
 
 }
 
 
 void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
-									v2CR& realStart, mutex& realStartMutex, v2CR& realEnd, mutex& realEndMutex,
+									GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
 									grid<voxData>& slice, mutex& sliceMutex,
 									const surf& slicePlane,
 									const model& modelRef ){
 
 	// Iterate through all columns
-	while( xIdx < slice.Size().col ){
+	while( xIdx < slice.Size().c ){
 
 		size_t localXIdx, localYIdx;
 
@@ -392,7 +393,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 		localXIdx = xIdx;
 		localYIdx = yIdx;
 
-		if( yIdx >= slice.Size().row ){
+		if( yIdx >= slice.Size().r ){
 			xIdx++;
 			yIdx = 0;
 		}
@@ -405,14 +406,14 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 
 		// Check 
-		if( localXIdx > slice.Size().col - 1 || localYIdx > slice.Size().row - 1 ) continue;
+		if( localXIdx > slice.Size().c - 1 || localYIdx > slice.Size().r - 1 ) continue;
 		
 		// Grid indices
-		const idx2CR gridIndices( localXIdx, localYIdx );
+		const GridIndex gridIndices( localXIdx, localYIdx );
 
 		// Get point on surface for current grid indices
-		const v2CR surfaceCoordinate = slice.getCoordinates( gridIndices );
-		const pnt3 currentPoint = slicePlane.getPnt( surfaceCoordinate.col, surfaceCoordinate.row );
+		const GridCoordinates surfaceCoordinate = slice.getCoordinates( gridIndices );
+		const pnt3 currentPoint = slicePlane.getPnt( surfaceCoordinate.c, surfaceCoordinate.r );
 
 
 		// Are cooradinates defined in model?
@@ -424,20 +425,20 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 		// Check if current x and y values in plane are new real start/end
 
-		if( surfaceCoordinate.col < realStart.col ){
-			writeThreadVar( realStart.col, surfaceCoordinate.col, realStartMutex );
+		if( surfaceCoordinate.c < realStart.c ){
+			WriteThreadVar( realStart.c, surfaceCoordinate.c, realStartMutex );
 		}
 		
-		if( surfaceCoordinate.col > realEnd.col ){
-			writeThreadVar( realEnd.col, surfaceCoordinate.col, realEndMutex );
+		if( surfaceCoordinate.c > realEnd.c ){
+			WriteThreadVar( realEnd.c, surfaceCoordinate.c, realEndMutex );
 		}
 
-		if( surfaceCoordinate.row < realStart.row ){
-			writeThreadVar( realStart.row, surfaceCoordinate.row, realStartMutex );
+		if( surfaceCoordinate.r < realStart.r ){
+			WriteThreadVar( realStart.r, surfaceCoordinate.r, realStartMutex );
 		}
 
-		if( surfaceCoordinate.row > realEnd.row ){
-			writeThreadVar( realEnd.row, surfaceCoordinate.row, realEndMutex );
+		if( surfaceCoordinate.r > realEnd.r ){
+			WriteThreadVar( realEnd.r, surfaceCoordinate.r, realEndMutex );
 		}
 
 		// Current voxel value
@@ -464,11 +465,11 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	const surf localSurface = sliceLocation.convertTo( cSys );
 
 
-	v2CR sliceStart( -cornerDistance, -cornerDistance );
-	v2CR sliceEnd( cornerDistance, cornerDistance );
-	v2CR sliceResolution( resolution, resolution );
+	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
+	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
+	GridCoordinates sliceResolution( resolution, resolution );
 
-	grid<voxData> largeSlice( range( sliceStart.col, sliceEnd.col ), range( sliceStart.row, sliceEnd.row ), sliceResolution, voxData() );
+	grid<voxData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, voxData() );
 
 	// Update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
 	sliceStart = largeSlice.Start();
@@ -476,8 +477,8 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	sliceResolution = largeSlice.Resolution();
 
 
-	v2CR realStart( INFINITY, INFINITY );
-	v2CR realEnd( -INFINITY, -INFINITY );
+	GridCoordinates realStart( INFINITY, INFINITY );
+	GridCoordinates realEnd( -INFINITY, -INFINITY );
 
 	size_t xIdx = 0, yIdx = 0;
 
@@ -500,25 +501,25 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 	for( std::thread& currentThread : threads ) currentThread.join();
 
 	// Check if restart and end have infinity in them
-	if( realStart.col == INFINITY || realStart.row == INFINITY || realEnd.col == -INFINITY || realEnd.row == -INFINITY ){
+	if( realStart.c == INFINITY || realStart.r == INFINITY || realEnd.c == -INFINITY || realEnd.r == -INFINITY ){
 		// This means that no model voxel is in slice
-		return grid<voxData>( idx2CR( 0, 0 ), v2CR( 0., 0. ), v2CR( 1., 1. ) );
+		return grid<voxData>( GridIndex( 0, 0 ), GridCoordinates( 0., 0. ), GridCoordinates( 1., 1. ) );
 
 	}
 
 	// Write data to smaller grid
-	grid<voxData> slice( range( realStart.col, realEnd.col ), range( realStart.row, realEnd.row ), sliceResolution, voxData() );
+	grid<voxData> slice( NumberRange( realStart.c, realEnd.c ), NumberRange( realStart.r, realEnd.r ), sliceResolution, voxData() );
 
 
 	// Iterate grid
-	v2CR coords;
+	GridCoordinates coords;
 	voxData currentData;
 
-	for( size_t colIdx = 0; colIdx < slice.Size().col; colIdx++ ){
+	for( size_t colIdx = 0; colIdx < slice.Size().c; colIdx++ ){
 
-		for( size_t rowIdx = 0; rowIdx < slice.Size().row; rowIdx++ ){
+		for( size_t rowIdx = 0; rowIdx < slice.Size().r; rowIdx++ ){
 
-			coords = slice.getCoordinates( idx2CR( colIdx, rowIdx ) );
+			coords = slice.getCoordinates( GridIndex( colIdx, rowIdx ) );
 			currentData = largeSlice.getData( coords );
 
 			if( currentData.hasSpecificProperty( voxData::UNDEFINED ) )
@@ -539,10 +540,10 @@ void model::addSpecialSphere( const voxData::specialProperty property, const pnt
 	if ( !pntInside( center ) ) return;
 	
 	// Center indices
-	const idx3 centerIdx = getVoxelIndices( center );
+	const Index3D centerIdx = getVoxelIndices( center );
 
 	// Index distance from center in each dimension
-	idx3 indexDelta{
+	Index3D indexDelta{
 		Fmax( (size_t) ceil( radius / voxSize3D.x ), Min( centerIdx.x, numVox3D.x - centerIdx.x ) ),
 		Fmax( (size_t) ceil( radius / voxSize3D.y ), Min( centerIdx.y, numVox3D.y - centerIdx.y ) ),
 		Fmax( (size_t) ceil( radius / voxSize3D.z ), Min( centerIdx.z, numVox3D.z - centerIdx.z ) )
@@ -552,7 +553,7 @@ void model::addSpecialSphere( const voxData::specialProperty property, const pnt
 		for( size_t y = centerIdx.y - indexDelta.y; x < centerIdx.y + indexDelta.y; y++ ){
 			for( size_t z = centerIdx.z - indexDelta.z; x < centerIdx.z + indexDelta.z; z++ ){
 
-				pnt3 p( v3( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
+				pnt3 p( Tuple3D( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
 
 				if( ( center - p ).Length() <= radius )  (*this).operator()( x, y, z ).addSpecialProperty( property );
 				

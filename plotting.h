@@ -35,7 +35,7 @@ enum GANTRY_SPECIFIERS{
  };
 
 
-ofstream openAxis( path fileName, const bool reset );
+ofstream openAxis( path file_name, const bool reset );
 
 void closeAxis( ofstream& axis );
 

@@ -31,7 +31,7 @@ class lineplot : public plot{
 	 * @param grid_ Flag to show grid
 	*/
 	lineplot( const string name_, const string xlabel_, const string ylabel_,
-			  const plotLimits limits_, const idx2CR imgSize_, const bool grid_ );
+			  const plotLimits limits_, const GridIndex imgSize_, const bool grid_ );
 
 	/*!
 	 * @brief Default constructor 
@@ -49,7 +49,7 @@ class lineplot : public plot{
 	 * @brief Assign data to plot
 	 * @param XY Pair of vectors with data
 	*/
-	void assignData( const vectorPair XY ){ assignData( XY.first, XY.second ); };
+	void assignData( const VectorPair XY ){ assignData( XY.first, XY.second ); };
 
 	/*!
 	 * @brief Create the plot

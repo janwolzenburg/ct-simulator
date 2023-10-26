@@ -82,7 +82,7 @@ coordinates coordinates::operator/ ( const double divisor ) const{
 
 coordinates coordinates::convertTo( const cartCSys* const target_cSys ) const{
 	
-	coordinates tempC{ v3{ x, y, z }, this->cSys };
+	coordinates tempC{ Tuple3D{ x, y, z }, this->cSys };
 
 	if( this->sameSystem( target_cSys ) ) return tempC;
 
@@ -138,5 +138,5 @@ coordinates coordinates::toChildcSys( const cartCSys* const child_cSys ) const{
 	eqnSysSolution tEqnSysSol = tEqnSys.solve();
 
 	// System solution are new coordinates
-	return coordinates{ v3{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_cSys };
+	return coordinates{ Tuple3D{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_cSys };
 }

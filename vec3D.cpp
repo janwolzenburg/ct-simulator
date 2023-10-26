@@ -32,7 +32,7 @@ vec3::vec3( const coordinates coords ) :
 	updateLength();
 }
 
-vec3::vec3( const v3 xyz_, const cartCSys* const cSys_ ) :
+vec3::vec3( const Tuple3D xyz_, const cartCSys* const cSys_ ) :
 	vec3{ coordinates{ xyz_, cSys_ } }
 {}
 
@@ -57,7 +57,7 @@ double vec3::operator* ( const vec3 v2 ) const{
 vec3 vec3::operator^( const vec3 v2 ) const{
 	vec3 convVec = v2.convertTo( this->cSys );
 
-	return vec3{ v3{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->cSys };
+	return vec3{ Tuple3D{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->cSys };
 };
 
 bool vec3::sameSystem( const vec3 v ) const{
@@ -269,7 +269,7 @@ vec3 vec3::projectOnXYPlane( const cartCSys* const cSys_ ) const{
 
 
 vec3 vec3::negateX( void ) const{
-	return vec3{ v3{ -this->x, this->y, this->z }, this->cSys };
+	return vec3{ Tuple3D{ -this->x, this->y, this->z }, this->cSys };
 }
 
 

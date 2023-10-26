@@ -21,11 +21,11 @@ using std::vector;
 using std::string;
 using std::to_string;
 
-#include <iostream>
-using std::cerr; using std::endl; using std::cout;
-
 #include <filesystem>
 using std::filesystem::path;
+
+#include <iostream>
+using std::cerr; using std::endl; using std::cout;
 
 #include <utility>
  using std::pair;
@@ -42,47 +42,43 @@ using std::mutex;
 /*!
  * @brief Pair of vectors
 */
-typedef pair<vector<double>, vector<double>> vectorPair;
+typedef pair<vector<double>, vector<double>> VectorPair;
 
 
 /*!
- * @brief Class for 2D indices
+ * @brief 2D indices
 */
-class idx2{
-
-	public:
-
-	idx2( const size_t x_, const size_t y_ ) : x( x_ ), y( y_ ) {};
-
-	idx2( void ) : idx2{ 0, 0 }{};
-
-
-	public:
-
-	size_t x;
-	size_t y;
+struct Index2D{
+	size_t x = 0;
+	size_t y = 0;
  };
+
+
+ /*!
+ * @brief Primitive 2D vector
+*/
+struct Tuple2D{
+	double x = 0.;
+	double y = 0.;
+};
 
 
  /*!
  * @brief Class for 3D indices
 */
-class idx3{
+class Index3D{
 
 	public:
 
-	idx3( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ) {};
+	Index3D( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ) {};
 
-	idx3( void ) : idx3{ 0, 0, 0 }{};
+	Index3D( void ) : Index3D{ 0, 0, 0 }{};
 
-	idx3( const vector<char>& binData, vector<char>::const_iterator& it );
+	Index3D( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
-	bool operator==( const idx3& second ) const{ return x == second.x && y == second.y && z == second.y; };
-
-
-	public:
+	bool operator==( const Index3D& second ) const{ return x == second.x && y == second.y && z == second.y; };
 
 	size_t x;
 	size_t y;
@@ -91,41 +87,19 @@ class idx3{
 
 
 /*!
- * @brief Class for 2D vector
-*/
-class v2{
-
-	public:
-
-	v2( const double x_, const double y_ ) : x( x_ ), y( y_ ) {};
-
-	v2( void ) : v2{ 0., 0. } {};
-
-
-	public:
-
-	double x;
-	double y;
-};
-
-
-/*!
 * @brief Class for 3D vector
 */
-class v3{
+class Tuple3D{
 
 	public:
 
-	v3( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
+	Tuple3D( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
 
-	v3( void ) : v3{ 0., 0., 0. } {};
+	Tuple3D( void ) : Tuple3D{ 0., 0., 0. } {};
 
-	v3( const vector<char>& binData, vector<char>::const_iterator& it );
+	Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
-	size_t serialize( vector<char>& binData ) const;
-
-
-	public:
+	size_t Serialize( vector<char>& binary_data ) const;
 
 	double x;
 	double y;
@@ -136,92 +110,104 @@ class v3{
 /*!
  * @brief Class for indicies to data organized in row/column structure
 */
-class idx2CR{
+class GridIndex{
 
 	public:
 
-	idx2CR( const size_t col_, const size_t row_ ) : col( col_ ), row( row_ ) {};
+	GridIndex( const size_t column, const size_t row ) : c( column ), r( row ) {};
 
-	idx2CR( void ) : idx2CR{ 0, 0 } {};
+	GridIndex( void ) : GridIndex{ 0, 0 } {};
 
-	idx2CR( const vector<char>& binData, vector<char>::const_iterator& it );
+	GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	public:
 
-	size_t col;
-	size_t row;
+	size_t c;	/*!<Column*/
+	size_t r;	/*!<Row*/
 };
 
 
 /*!
  * @brief Class for  data organized in row/column structure
 */
-class v2CR {
+class GridCoordinates {
 
 	public:
 
-	v2CR( const double col_, const double row_ ) : col( col_ ), row( row_ ) {};
+	GridCoordinates( const double column, const double row ) : c( column ), r( row ) {};
 
-	v2CR( void ) : v2CR{ 0., 0. } {};
+	GridCoordinates( void ) : GridCoordinates{ 0., 0. } {};
 
-	v2CR( const vector<char>& binData, vector<char>::const_iterator& it );
+	GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
-	double col;
-	double row;
+	double c;
+	double r;
 };
 
 
 /*!
  * @brief Class for a range of whole numbers
 */
-class Zrange{
+class NaturalNumberRange{
 
 	public:
 
-	Zrange( const signed long long start_, const signed long long end_ );
+	NaturalNumberRange( const signed long long start, const signed long long end );
+
+	signed long long start( void ) const{ return start_; };
+
+	signed long long end( void ) const{ return end_; };
+
+	void start( const signed long long newStart ){ start_ = ( newStart < end_ ) ? newStart : end_ - 1; };
+
+	void end( const signed long long newEnd ){ end_ = ( newEnd > start_ ) ? newEnd : start_ + 1; };
 
 
-	public:
+	private:
 
-	signed long long start;
-	signed long long end;
+	signed long long start_;
+	signed long long end_;
 };
 
 
 /*!
  * @brief Class for a range of real numbers with start
 */
-class range{
+class NumberRange{
 
 	public:
+	
 
-	range( const double start_, const double end_ );
 
-	range( void );
+	NumberRange( const double start, const double end );
 
-	range( const Zrange naturalRange );
+	NumberRange( void );
 
-	range( const vector<char>& binData, vector<char>::const_iterator& it );
+	NumberRange( const NaturalNumberRange naturalRange );
 
-	size_t serialize( vector<char>& binData ) const;
+	NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
-	double Diff( void ) const{ return end - start; };
+	size_t Serialize( vector<char>& binary_data ) const;
+
+	double Diff( void ) const{ return end_ - start_; };
 
 	double Resolution( const size_t number ) const;
 
+	double start( void ) const{ return start_; };
 
-	public:
+	double end( void ) const{ return end_; };
 
-	double start;
-	double end;
+
+	private:
+	
+	double start_;
+	double end_;
 };
-
-
 
 
 
@@ -237,7 +223,7 @@ class range{
  * @return Value of var cast to underlying type
 */
 template <typename T>
-constexpr typename std::underlying_type_t<T> toUnderlying( T var );
+constexpr typename std::underlying_type_t<T> ToUnderlying( T var );
 
 /*!
  * @brief Postincrement operator for enumeratable variable
@@ -259,101 +245,6 @@ template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 );
 
 /*!
- * @brief Serialize build in datatype
- * @tparam T Type of variable
- * @param val Value
- * @param binData Vector to append binary data
- * @return Amount of bytes appended
-*/
-template< typename T >
-size_t serializeBuildIn( const T& val, vector<char>& binData );
-
-/*!
- * @brief Serialize string
- * @param val String to serialize
- * @param binData Reference to vector to append to
- * @return Amount of bytes appended
-*/
-template<>
-size_t serializeBuildIn<string>( const string& val, vector<char>& binData );
-
-/*!
- * @brief Serialize 2D-vector of grid points
- * @param val Object to serialize
- * @param binData Reference to vector to append to
- * @return Amount of bytes appended
-*/
-template<>
-size_t serializeBuildIn<vector<vector<v2CR>>>( const vector<vector<v2CR>>& val, vector<char>& binData );
-
-/*!
- * @brief Deserialize build in data type
- * @tparam T Expected type
- * @param val Reference to write value to
- * @param binData Vector with binary data
- * @param it Iterator to start reading from. Will be advanced
- * @return Amount of bytes read
-*/
-template< typename T >
-size_t deSerializeBuildIn( T& val, T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
-
-template<>
-size_t deSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
-
-/*!
- * @brief Deserialize build in data type
- * @tparam T Type
- * @param defaultVal Default value 
- * @param binData Vector with binary data
- * @param it Iterator to start reading from. Will be advanced
- * @return Deserialized object
-*/
-template< typename T>
-T deSerializeBuildIn( T defaultVal, const vector<char>& binData, vector<char>::const_iterator& it );
-
-/*!
- * @brief Deserialize and return object
- * @tparam T Type
- * @param binData Binary data 
- * @param it Iterator
- * @return Deserialized object
-*/
-template< typename T>
-T deSerialize( const vector<char>& binData, vector<char>::const_iterator& it );
-
-template<>
-vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binData, vector<char>::const_iterator& it );
-
-
-/*!
- * @brief Export serial data to file
- * @param fileName Filename
- * @param binData Vector with binary data
- * @return True at success
-*/
-bool exportSerialized( const string fileName, const vector<char>& binData );
-
-bool exportSerialized( const path filePath, const vector<char>& binData );
-
-
-/*!
- * @brief Import serial data from file
- * @param fileName Filename
- * @return Vector with data
-*/
-vector<char> importSerialized( const string fileName );
-
-vector<char> importSerialized( const path filePath );
-
-/*!
-	* @brief Check if data in vector is from a valid file
-	* @param binData Reference to vector with binary data
-	* @param it Iterator to start of data in vector
-	* @return True when preambles match
-*/
-bool validBinaryData( const string preamble, const vector<char>& binData, vector<char>::const_iterator& it );
-
-/*!
  * @brief Convert number to string with given precision
  * @tparam T Type of number
  * @param value Value
@@ -361,7 +252,7 @@ bool validBinaryData( const string preamble, const vector<char>& binData, vector
  * @return Number as string
 */
 template<typename T>
-string toString( T value, const int precision = 0 );
+string ToString( T value, const int precision = 0 );
 
 /*!
  * @brief Convert string to number
@@ -370,7 +261,7 @@ string toString( T value, const int precision = 0 );
  * @return Number corresponding to string
 */
 template<typename T>
-T toNum( const string str );
+T ToNum( const string str );
 
 /*!
  * @brief Write to a variable used in multiple threads
@@ -381,13 +272,13 @@ T toNum( const string str );
  * @return Written value
 */
 template<typename T>
-T writeThreadVar( T& var, const T& value, mutex& m );
+T WriteThreadVar( T& var, const T& value, mutex& m );
 
 /*!
  * @brief Set flag to false but return previous state of flag
  * @param flag Flag to set to false
  * @return Flag value before its reset
 */
-bool unsetFlag( bool& flag );
+bool UnsetFlag( bool& flag );
 
 #include "generel.hpp"

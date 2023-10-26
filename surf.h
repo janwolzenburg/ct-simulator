@@ -39,11 +39,11 @@ class surf : public mathObj{
 
 	/*!
 	 * @brief Construct from binary data
-	 * @param binData Data vector
+	 * @param binary_data Data vector
 	 * @param it Iterator
 	 * @param cSys_ System to assign surface to
 	*/
-	surf( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
+	surf( const vector<char>& binary_data, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
 	 * @brief Default constructor
@@ -106,9 +106,9 @@ class surf : public mathObj{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	protected:
@@ -159,11 +159,11 @@ class surfLim : public surf{
 
 	/*!
 	 * @brief Construct from binary data
-	 * @param binData Data vector
+	 * @param binary_data Data vector
 	 * @param it Iterator
 	 * @param cSys_ System to assign surface to
 	*/
-	surfLim( const vector<char>& binData, vector<char>::const_iterator& it, cartCSys* cSys_ );
+	surfLim( const vector<char>& binary_data, vector<char>::const_iterator& it, cartCSys* cSys_ );
 
 	/*!
 	 * @brief Convert surface's data to string
@@ -225,9 +225,9 @@ class surfLim : public surf{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 	private:
 

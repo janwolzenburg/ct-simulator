@@ -30,11 +30,11 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 {
 
 	// Important parameter
-	const size_t nDistance = radonParameters.numberPoints.row;									// Amount of distances or pixel
-	const double distanceRange = (double) ( nDistance - 1) * radonParameters.resolution.row;	// Covered field of measure
+	const size_t nDistance = radonParameters.numberPoints.r;									// Amount of distances or pixel
+	const double distanceRange = (double) ( nDistance - 1) * radonParameters.resolution.r;	// Covered field of measure
 
-	const double deltaTheta = radonParameters.resolution.col;		// Angle resolution
-	const double deltaDistance = radonParameters.resolution.row;	// Distance resolution
+	const double deltaTheta = radonParameters.resolution.c;		// Angle resolution
+	const double deltaDistance = radonParameters.resolution.r;	// Distance resolution
 
 	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin
 

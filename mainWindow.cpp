@@ -14,6 +14,7 @@
 #include "mainWindow.h"
 #include "FL/Fl_ask.H"
 #include "widgets.h"
+#include "serialization.h"
 
 
  /*********************************************************************
@@ -77,22 +78,22 @@ void mainWindow::activate( void ){
 
 void mainWindow::handleEvents( void ){
 
-	if( unsetFlag( resetButtonPressed ) ){
+	if( UnsetFlag( resetButtonPressed ) ){
 		if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
 			PROGRAM_STATE().resetStateStorageAtExit();
 	}
 
-	if( unsetFlag( importSinogramFlag ) ){
+	if( UnsetFlag( importSinogramFlag ) ){
 
 		path chosenPath = PROGRAM_STATE().importSinogram();
 
 		if( chosenPath.empty() ) return;
 
-		vector<char> binData = importSerialized( chosenPath );
-		vector<char>::const_iterator it = binData.cbegin();
+		vector<char> binary_data = ImportSerialized( chosenPath );
+		vector<char>::const_iterator it = binary_data.cbegin();
 
-		if( validBinaryData( radonTransformed::FILE_PREAMBLE, binData, it ) ){
-			radonTransformed importedSinogram{ binData, it };
+		if( ValidBinaryData( radonTransformed::FILE_PREAMBLE, binary_data, it ) ){
+			radonTransformed importedSinogram{ binary_data, it };
 			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 		}
 	}

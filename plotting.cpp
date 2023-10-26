@@ -22,12 +22,12 @@
 	 Implementations
   *********************************************************************/
 
-ofstream openAxis( path fileName, const bool reset ){
+ofstream openAxis( path file_name, const bool reset ){
 	ofstream outFile;
 
 
-	if( reset ) outFile.open( fileName, std::ios::out | std::ios::trunc );
-	else outFile.open( fileName, std::ios::out | std::ios::app );
+	if( reset ) outFile.open( file_name, std::ios::out | std::ios::trunc );
+	else outFile.open( file_name, std::ios::out | std::ios::app );
 
 	return outFile;
 }
@@ -94,7 +94,7 @@ string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
 }
 
 template<>
-string getObjectString<vector<v2>>( const vector<v2> data ){
+string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data ){
 
 	string str = "plot ";
 
@@ -152,12 +152,12 @@ string getObjectString<grid<>>( const grid<> data, const bool image ){
 	if( image ){
 
 		string str = "image ";
-		str += to_string( data.Size().col ) + "," + to_string( data.Start().col ) + "," + to_string( data.Resolution().col ) + ";";
-		str += to_string( data.Size().row ) + "," + to_string( data.Start().row ) + "," + to_string( data.Resolution().row ) + ";";
+		str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
+		str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
 
-		for( size_t row = 0; row < data.Size().row; row++ ){
-			for( size_t column = 0; column < data.Size().col; column++ ){
-				str += to_string( data( idx2CR{ column, row } ) ) + ",";
+		for( size_t row = 0; row < data.Size().r; row++ ){
+			for( size_t column = 0; column < data.Size().c; column++ ){
+				str += to_string( data( GridIndex{ column, row } ) ) + ",";
 			}
 		}
 		str.pop_back();
@@ -168,14 +168,14 @@ string getObjectString<grid<>>( const grid<> data, const bool image ){
 
 		vector<double> XValues, YValues, DataValues;
 
-		for( size_t row = 0; row < data.Size().row; row++ ){
-			for( size_t column = 0; column < data.Size().col; column++ ){
+		for( size_t row = 0; row < data.Size().r; row++ ){
+			for( size_t column = 0; column < data.Size().c; column++ ){
 
-				v2CR coordinates = data.getCoordinates( idx2CR{ column, row });
+				GridCoordinates coordinates = data.getCoordinates( GridIndex{ column, row });
 
-				XValues.push_back( coordinates.col );
-				YValues.push_back( coordinates.row );
-				DataValues.push_back( data( idx2CR{ column, row } ) );
+				XValues.push_back( coordinates.c );
+				YValues.push_back( coordinates.r );
+				DataValues.push_back( data( GridIndex{ column, row } ) );
 
 			}
 		}
@@ -254,13 +254,13 @@ template<>
 void addObject<model, double>( std::ofstream& axis, std::string name, model mod, std::string parameter, double threshold ){
 	vox modVox = mod.Vox();
 	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
-		addSingleObject( axis, "modelFace" + to_string( toUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
+		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
 	}
 
 	for( size_t iX = 0; iX < mod.NumVox().x; iX++ ){
 		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
-				vox voxel = mod.getVoxel( idx3{ iX, iY, iZ } );
+				vox voxel = mod.getVoxel( Index3D{ iX, iY, iZ } );
 				if( voxel.Data().attenuationAtRefE() >= (double) threshold ){
 					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.getCenter(), parameter );
 				}

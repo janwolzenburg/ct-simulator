@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 #include "primitiveCartCSys.h"
-
+#include "serialization.h"
 
 
  /*********************************************************************
@@ -41,11 +41,11 @@ primitiveCartCSys::primitiveCartCSys( const primitiveVec3 origin_, const primiti
 		!iseqErr( ex * ez, 0 ) ) checkErr( MATH_ERR::INPUT, "Unit axis must be orthogonal to each other!" );
 }
 
-primitiveCartCSys::primitiveCartCSys( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	origin( deSerialize<primitiveVec3>( binData, it ) ),
-	ex( deSerialize<primitiveVec3>( binData, it ) ),
-	ey( deSerialize<primitiveVec3>( binData, it ) ),
-	ez( deSerialize<primitiveVec3>( binData, it ) )
+primitiveCartCSys::primitiveCartCSys( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
+	origin( DeSerialize<primitiveVec3>( binary_data, it ) ),
+	ex( DeSerialize<primitiveVec3>( binary_data, it ) ),
+	ey( DeSerialize<primitiveVec3>( binary_data, it ) ),
+	ez( DeSerialize<primitiveVec3>( binary_data, it ) )
 {
 	// Normalize vectors
 	ex.normalise();
@@ -81,13 +81,13 @@ mathObj::MATH_ERR primitiveCartCSys::rotateM( const primitiveVec3 n, const doubl
 }
 
 
-size_t primitiveCartCSys::serialize( vector<char>& binData ) const{
+size_t primitiveCartCSys::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
-	numBytes += origin.serialize( binData );
-	numBytes += ex.serialize( binData );
-	numBytes += ey.serialize( binData );
-	numBytes += ez.serialize( binData );
+	size_t num_bytes = 0;
+	num_bytes += origin.Serialize( binary_data );
+	num_bytes += ex.Serialize( binary_data );
+	num_bytes += ey.Serialize( binary_data );
+	num_bytes += ez.Serialize( binary_data );
 
-	return numBytes;
+	return num_bytes;
 }

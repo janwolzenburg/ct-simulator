@@ -42,7 +42,7 @@ class vec3 : protected coordinates{
 	 * @param xyz_ Components of vector
 	 * @param cSys_ Coordinate system of components
 	*/
-	vec3( const v3 xyz_, const cartCSys* const cSys_ );
+	vec3( const Tuple3D xyz_, const cartCSys* const cSys_ );
 
 	/*!
 	 * @brief Default constructor initializing components to zero coordinate system to global
@@ -414,12 +414,12 @@ class uvec3 : public vec3{
 	 * @param xyz_ Components
 	 * @param cSys_ Coordinate system
 	*/
-	uvec3( const v3 xyz_, const cartCSys* const cSys_ ) : uvec3{ vec3{ xyz_, cSys_ } } {};
+	uvec3( const Tuple3D xyz_, const cartCSys* const cSys_ ) : uvec3{ vec3{ xyz_, cSys_ } } {};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	uvec3( void ) : uvec3{ v3{ 1, 0, 0 }, DUMMY_CSYS() } {};
+	uvec3( void ) : uvec3{ Tuple3D{ 1, 0, 0 }, DUMMY_CSYS() } {};
 
 	/*!
 	 * @brief Scaling unit vector does not have an effect

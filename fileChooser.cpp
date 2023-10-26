@@ -16,6 +16,7 @@
 using std::vector;
 
 #include "generel.h"
+#include "serialization.h"
 #include "fileChooser.h"
 #include "FL/Fl_Native_File_Chooser.H"
 
@@ -48,14 +49,14 @@ fileChooser::fileChooser( const string windowTitle, const string fileFilter, con
 }
 
 
-fileChooser::fileChooser( const vector<char>& binData, vector<char>::const_iterator& it ) :
+fileChooser::fileChooser( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	fileChooser{ "", "", path{} }
 {
-	this->setTitle( deSerializeBuildIn<string>( string{ "File chooser" }, binData, it ) );
-	this->setFilter( deSerializeBuildIn<string>( string{ "" }, binData, it ) );
-	this->setStartDirectory( deSerializeBuildIn<string>( string{ "./" }, binData, it ) );
+	this->setTitle( DeSerializeBuildIn<string>( string{ "File chooser" }, binary_data, it ) );
+	this->setFilter( DeSerializeBuildIn<string>( string{ "" }, binary_data, it ) );
+	this->setStartDirectory( DeSerializeBuildIn<string>( string{ "./" }, binary_data, it ) );
 
-	this->type( deSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binData, it ) );
+	this->type( DeSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binary_data, it ) );
 
 	this->options( SAVEAS_CONFIRM );
 
@@ -78,16 +79,16 @@ fileChooser& fileChooser::operator=( const fileChooser& fC ){
 }
 
 
-size_t fileChooser::serialize( vector<char>& binData ) const{
+size_t fileChooser::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += serializeBuildIn( string{ this->title() }, binData);
-	numBytes += serializeBuildIn( string{ this->filter() }, binData );
-	numBytes += serializeBuildIn( string{ this->directory() }, binData );
-	numBytes += serializeBuildIn<unsigned char>( (unsigned char) chooserType, binData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += SerializeBuildIn( string{ this->title() }, binary_data);
+	num_bytes += SerializeBuildIn( string{ this->filter() }, binary_data );
+	num_bytes += SerializeBuildIn( string{ this->directory() }, binary_data );
+	num_bytes += SerializeBuildIn<unsigned char>( (unsigned char) chooserType, binary_data );
 
-	return numBytes;
+	return num_bytes;
 
 }
 
@@ -110,8 +111,8 @@ path fileChooser::choose( void ){
 
 	if( this->show() != 0 ) return path{};
 
-	path filePath = path{ this->filename() };
-	setStartDirectory( filePath.parent_path() );
+	path file_path = path{ this->filename() };
+	setStartDirectory( file_path.parent_path() );
 	
-	return filePath;
+	return file_path;
 }

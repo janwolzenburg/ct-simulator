@@ -28,16 +28,16 @@ using std::for_each;
 spectrum::spectrum(const vector<double> X, const vector<double> Y)
 {
 	if (X.size() != Y.size() || X.size() < 2) {
-		data = vector<v2>{ v2{0, 0}, v2{1, 0} };
+		data = vector<Tuple2D>{ Tuple2D{0, 0}, Tuple2D{1, 0} };
 		return;
 	}
 
 	for (size_t i = 0; i < X.size(); i++) {
-		data.push_back(v2{ X.at(i), Y.at(i) });
+		data.push_back(Tuple2D{ X.at(i), Y.at(i) });
 	}
 
 	// Sort data by x value
-	sort( data.begin(), data.end(), []( const v2& d1, const v2& d2) { return d1.x < d2.x; } );
+	sort( data.begin(), data.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
 	energyResolution = data.at( 1 ).x - data.at( 0 ).x;
 
@@ -58,7 +58,7 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 
 void spectrum::scale( const double factor ){
 
-	for_each( data.begin(), data.end(), [ & ] ( v2& v ) { v.y *= factor; } );
+	for_each( data.begin(), data.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
 	updateMean();
 }
 
@@ -72,19 +72,19 @@ spectrum spectrum::getScaled( const double factor ) const {
 }
 
 double spectrum::getSum( void ) const{
-	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ) { return currentSum + currentValue.y; });
+	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
 }
 
 void spectrum::updateMean( void ){
 
 	// Get the sum of products. In principle an "expected value"
-	const double expectedValue = std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const v2& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
+	const double expectedValue = std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
 
 	mean = expectedValue / getSum();	
 }
 
-void spectrum::modify( std::function<void( v2& )> modFunction ){
-	for( v2& v : data ){
+void spectrum::modify( std::function<void( Tuple2D& )> modFunction ){
+	for( Tuple2D& v : data ){
 		modFunction( v );
 	}
 

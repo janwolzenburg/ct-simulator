@@ -14,6 +14,7 @@
 
 #include "monoImage.h"
 #include "vectorAlgorithm.h"
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -33,12 +34,12 @@ monoImage::monoImage( const size_t width_, const size_t height_ ) :
 {}
 
 monoImage::monoImage( const grid<>& source, const bool normaliseImg ) :
-	monoImage{ source.Size().col, source.Size().row }
+	monoImage{ source.Size().c, source.Size().r }
 {
 
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
-			data.at( c + r * width ) = source.operator()( idx2CR{ c, r } );
+			data.at( c + r * width ) = source.operator()( GridIndex{ c, r } );
 		}
 	}
 
@@ -47,14 +48,14 @@ monoImage::monoImage( const grid<>& source, const bool normaliseImg ) :
 }
 
 monoImage::monoImage( const grid<voxData>& source, const bool normaliseImg ) :
-	monoImage{ source.Size().col, source.Size().row }
+	monoImage{ source.Size().c, source.Size().r }
 {
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
 
 			
 
-			data.at( c + r * width ) = source.operator()( idx2CR( c, r ) ).attenuationAtRefE();
+			data.at( c + r * width ) = source.operator()( GridIndex( c, r ) ).attenuationAtRefE();
 		}
 	}
 
@@ -81,15 +82,15 @@ monoImage::monoImage( const monoImage& srcImg, const size_t newWidth, const size
 }
 
 
-monoImage::monoImage( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	width( deSerializeBuildIn( (size_t) 1, binData, it ) ),
-	height( deSerializeBuildIn( (size_t) 1, binData, it ) ),
+monoImage::monoImage( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	width( DeSerializeBuildIn( (size_t) 1, binary_data, it ) ),
+	height( DeSerializeBuildIn( (size_t) 1, binary_data, it ) ),
 	numPixel( width* height ),
 	data( numPixel, 0. ),
 	imData( numPixel, 0 ){
 
 	for( size_t i = 0; i < numPixel; i++ ){
-		data.at( i ) = deSerializeBuildIn( 0., binData, it );
+		data.at( i ) = DeSerializeBuildIn( 0., binary_data, it );
 	}
 }
 
@@ -101,18 +102,18 @@ size_t monoImage::index( const size_t c, const size_t r ) const{
 	return idx;
 }
 
-size_t monoImage::serialize( vector<char>& binData ) const{
+size_t monoImage::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += serializeBuildIn( width, binData );
-	numBytes += serializeBuildIn( height, binData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += SerializeBuildIn( width, binary_data );
+	num_bytes += SerializeBuildIn( height, binary_data );
 
 	for( size_t i = 0; i < numPixel; i++ ){
-		numBytes += serializeBuildIn( data.at( i ), binData );
+		num_bytes += SerializeBuildIn( data.at( i ), binary_data );
 	}
 
-	return numBytes;
+	return num_bytes;
 }
 
 void monoImage::normalise( void ){
@@ -127,13 +128,13 @@ void monoImage::normalise( void ){
 	}
 }
 
-void monoImage::adjustContrast( const range dataRange ){
+void monoImage::adjustContrast( const NumberRange dataRange ){
 
 	if( data.size() == 0 ) return;
 
 	for( size_t i = 0; i < numPixel; i++ ){
 
-		double diffToStart = data.at( i ) - dataRange.start;
+		double diffToStart = data.at( i ) - dataRange.start();
 		if( diffToStart < 0 ) diffToStart = 0.;
 		if( diffToStart > dataRange.Diff() ) diffToStart = dataRange.Diff();
 

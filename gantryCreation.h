@@ -52,7 +52,7 @@ class gantryEdition : public Fl_Group{
 	 * @brief Check if gantry needs update 
 	 * @return True when gantry needs update
 	*/
-	bool UpdateGantry( void ){ return unsetFlag( updateGantry ); };
+	bool UpdateGantry( void ){ return UnsetFlag( updateGantry ); };
 
 	/*!
 	 * @brief Handle events

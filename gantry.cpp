@@ -42,7 +42,7 @@ gantry::gantry( cartCSys* const cSys_, const tubeParameter tubeParameter_,
 	primitiveCartCSys xAxisAligned{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 0, 1 } };
 	cSys->setPrimitive( xAxisAligned );
 
-	raySource.CSys()->translateM( vec3{ v3{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	raySource.CSys()->translateM( vec3{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
 	
 }
 

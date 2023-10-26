@@ -13,7 +13,7 @@
  *********************************************************************/
 
  #include "voxel.h"
-
+ #include "serialization.h"
 
 
   /*********************************************************************
@@ -30,9 +30,9 @@ voxData::voxData( const double attenuationAtFrequency, const double frequency, c
 	specialProperties( specProperty )
 {}
 
-voxData::voxData( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-	attenuation( deSerializeBuildIn<double>( 0., binData, it ) ),
-	specialProperties( deSerializeBuildIn<specialEnumType>( specialProperty::UNDEFINED, binData, it ) )
+voxData::voxData( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
+	attenuation( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
+	specialProperties( DeSerializeBuildIn<specialEnumType>( specialProperty::UNDEFINED, binary_data, it ) )
 {}
 
 double voxData::attenuationAt( const double energy ) const{
@@ -52,11 +52,11 @@ double voxData::attenuationAt( const double energy ) const{
 
 }
 
-size_t voxData::serialize( vector<char>& binData ) const{
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( attenuation, binData );
-	numBytes += serializeBuildIn( specialProperties, binData );
-	return numBytes;
+size_t voxData::Serialize( vector<char>& binary_data ) const{
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( attenuation, binary_data );
+	num_bytes += SerializeBuildIn( specialProperties, binary_data );
+	return num_bytes;
 }
 
 double voxData::attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const{
@@ -73,7 +73,7 @@ double voxData::attenuationAtRefE( const double attenuationAtEnergy, const doubl
 
 bool voxData::hasSpecificProperty( const specialProperty property ) const{
 
-	specialEnumType propertyToCheck = toUnderlying( property );
+	specialEnumType propertyToCheck = ToUnderlying( property );
 
 	if( specialProperties & propertyToCheck ) return true;
 	return false;
@@ -85,7 +85,7 @@ bool voxData::hasSpecificProperty( const specialProperty property ) const{
 	vox implementation
 */
 
-vox::vox( const pnt3 o_, const v3 size_, const voxData data_ ) :
+vox::vox( const pnt3 o_, const Tuple3D size_, const voxData data_ ) :
 	size( size_ ),
 	data( data_ ),
 	o( o_ ),

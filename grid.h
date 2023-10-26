@@ -36,7 +36,7 @@ class grid{
 	 * @param resolution_ Axis resolution
 	 * @param defaultValue Default value
 	*/
-	grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D defaultValue = D() );
+	grid( const GridIndex size_, const GridCoordinates start_, const GridCoordinates resolution_, D defaultValue = D() );
 
 	/*!
 	 * @brief Constructor
@@ -45,39 +45,39 @@ class grid{
 	 * @param resolution_ Resolutions
 	 * @param defaultValue Default value
 	*/
-	grid( const range columnRange, const range rowRange, const v2CR resolution_, D defaultValue = D() );
+	grid( const NumberRange columnRange, const NumberRange rowRange, const GridCoordinates resolution_, D defaultValue = D() );
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	grid( const vector<char>& binData, vector<char>::const_iterator& it );
+	grid( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Get size of grid
 	 * @return Size of grid
 	*/
-	idx2CR Size( void ) const{ return size; };
+	GridIndex Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	v2CR Start( void ) const{ return start; };
+	GridCoordinates Start( void ) const{ return start; };
 
 	/*!
 	 * @brief Get ends of axis
 	 * @return Ens of axis
 	*/
-	v2CR End( void ) const{
-		return getCoordinates( idx2CR{ size.col - 1, size.row - 1 } ); }
+	GridCoordinates End( void ) const{
+		return getCoordinates( GridIndex{ size.c - 1, size.r - 1 } ); }
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	v2CR Resolution( void ) const{ return resolution; };
+	GridCoordinates Resolution( void ) const{ return resolution; };
 
 	/*!
 	 * @brief Get the maximum value in grid
@@ -96,42 +96,42 @@ class grid{
 	 * @param index Indices to check
 	 * @return True when valid
 	*/
-	bool checkIndex( const idx2CR index ) const;
+	bool checkIndex( const GridIndex index ) const;
 
 	/*!
 	 * @brief Get indices corresponding to coordinates
 	 * @param coordinate Coordinates
 	 * @return Indices of coordinate
 	*/
-	idx2CR getIndex( const v2CR coordinate ) const;
+	GridIndex getIndex( const GridCoordinates coordinate ) const;
 	
 	/*!
 	 * @brief Get coordinates to given indices
 	 * @param index Indices
 	 * @return Coordinate of indices
 	*/
-	v2CR getCoordinates( const idx2CR index ) const;
+	GridCoordinates getCoordinates( const GridIndex index ) const;
 
 	/*!
 	 * @brief Get element value
 	 * @param index Index of element
 	 * @return Element value
 	*/
-	D operator()( const idx2CR index ) const;
+	D operator()( const GridIndex index ) const;
 
 	/*!
 	 * @brief Get element value
 	 * @param index Index of element
 	 * @return Value of Element
 	*/
-	D getData( const idx2CR index ) const{ return this->operator()( index ); };
+	D getData( const GridIndex index ) const{ return this->operator()( index ); };
 
 	/*!
 	 * @brief Get element value
 	 * @param coordinates Coordinates of element
 	 * @return Value of Element
 	*/
-	D getData( const v2CR coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
+	D getData( const GridCoordinates coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
 
 	/*!
 	 * @brief Set Element data
@@ -140,7 +140,7 @@ class grid{
 	 * @return True when index is valid
 	 * @details For non arithmetic types additional code is needed in implementation
 	*/
-	bool setData( const idx2CR index, const D newValue );
+	bool setData( const GridIndex index, const D newValue );
 
 	/*!
 	 * @brief Set Element data
@@ -148,14 +148,14 @@ class grid{
 	 * @param newValue New value
 	 * @return True when coordinates are valid
 	*/
-	bool setData( const v2CR coordinates, const D newValue ){
+	bool setData( const GridCoordinates coordinates, const D newValue ){
 		return this->setData( getIndex( coordinates ), newValue ); }
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	private:
@@ -169,9 +169,9 @@ class grid{
 
 	private:
 
-	idx2CR size;					/*!<Size of grid*/
-	v2CR start;						/*!<Start of axis*/
-	v2CR resolution;				/*!<Resolution of grid*/
+	GridIndex size;					/*!<Size of grid*/
+	GridCoordinates start;						/*!<Start of axis*/
+	GridCoordinates resolution;				/*!<Resolution of grid*/
 
 	vector<double> columnPoints;	/*!<Vector with values on column axis*/
 	vector<double> rowPoints;		/*!<Vector with values on row axis*/
@@ -186,14 +186,14 @@ class grid{
 	 * @param index Index of element
 	 * @return Reference to element value
 	*/
-	D& operator()( const idx2CR index );
+	D& operator()( const GridIndex index );
 
 	/*!
 	* @brief Access operator for grid elemenrt
 	* @param point Point in grid
 	* @return Reference to element value
 	*/
-	D& operator()( const v2CR coordinates ){ return this->operator()( getIndex( coordinates ) ); };
+	D& operator()( const GridCoordinates coordinates ){ return this->operator()( getIndex( coordinates ) ); };
 
 	/*!
 	 * @brief Initialise minimum and maximum value

@@ -345,6 +345,12 @@
     <ClInclude Include="Fl_GridImage_Adjust.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="serialization.h">
+      <Filter>Headerdateien\Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="serialization.hpp">
+      <Filter>Quelldateien\Generel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -502,6 +508,9 @@
     </ClCompile>
     <ClCompile Include="Fl_GridImage_Adjust.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="serialization.cpp">
+      <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

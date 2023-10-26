@@ -41,10 +41,10 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 
 }
 
-void Fl_GridImage_Adjust::changeContrast( const range bounds ){
+void Fl_GridImage_Adjust::changeContrast( const NumberRange bounds ){
 
-	lowerBound.value( Frange( bounds.start, lowerBound.minimum(), lowerBound.maximum() ) );
-	upperBound.value( Frange( bounds.end, upperBound.minimum(), upperBound.maximum() ) );
+	lowerBound.value( Frange( bounds.start(), lowerBound.minimum(), lowerBound.maximum() ) );
+	upperBound.value( Frange( bounds.end(), upperBound.minimum(), upperBound.maximum() ) );
 
 }
 
@@ -55,7 +55,7 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 	if( !boundsSet )
 		setSliderBoundsFromImage();
 
-	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
+	imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
 
 	this->show();
@@ -70,7 +70,7 @@ void Fl_GridImage_Adjust::assignImage( const grid<voxData>& modGrid, const bool 
 	if( !boundsSet )
 		setSliderBoundsFromImage();
 
-	imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
+	imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
 
 	this->show();
@@ -91,13 +91,13 @@ void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
 	boundsSet = true;
 }
 
-void Fl_GridImage_Adjust::setSliderBounds( const range newBound ){
+void Fl_GridImage_Adjust::setSliderBounds( const NumberRange newBound ){
 
-	lowerBound.bounds( newBound.start, newBound.end );
-	upperBound.bounds( newBound.start, newBound.end );
+	lowerBound.bounds( newBound.start(), newBound.end() );
+	upperBound.bounds( newBound.start(), newBound.end() );
 
-	lowerBound.value( newBound.start );
-	upperBound.value( newBound.end );
+	lowerBound.value( newBound.start() );
+	upperBound.value( newBound.end() );
 
 	lowerBound.step( newBound.Diff() / 100. );
 	upperBound.step( newBound.Diff() / 100. );
@@ -129,7 +129,7 @@ bool Fl_GridImage_Adjust::handleEvents( void ){
 
 	if( updateImage ){
 
-		imgWidget.originalImage.adjustContrast( range( lowerBound.value(), upperBound.value() ) );
+		imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 		imgWidget.updateScaled();
 
 	}

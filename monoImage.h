@@ -67,10 +67,10 @@ class monoImage{
 
 	/*!
 	 * @brief Construct image from binary data
-	 * @param binData Binary data
+	 * @param binary_data Binary data
 	 * @param it Iterator to start reading from
 	*/
-	monoImage( const vector<char>& binData, vector<char>::const_iterator& it );
+	monoImage( const vector<char>& binary_data, vector<char>::const_iterator& it );
 	
 	/*!
 	 * @brief Get Width
@@ -145,7 +145,7 @@ class monoImage{
 	 * @brief Change the images contrast to given range
 	 * @param dataRange Range of value to show. Value over or under values in range will be bounded
 	*/
-	void adjustContrast( const range dataRange );
+	void adjustContrast( const NumberRange dataRange );
 
 	/*!
 	* @brief Normalize unsigned char data
@@ -155,9 +155,9 @@ class monoImage{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	private:

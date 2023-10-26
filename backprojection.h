@@ -62,19 +62,19 @@ class filteredProjections : private grid<> {
 	 * @brief Get size of projections
 	 * @return Size of projections
 	*/
-	idx2CR Size( void ) const{ return grid::Size(); };
+	GridIndex Size( void ) const{ return grid::Size(); };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	v2CR Start( void ) const{ return grid::Start(); };
+	GridCoordinates Start( void ) const{ return grid::Start(); };
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return Resolution of axis
 	*/
-	v2CR Resolution( void ) const{ return grid::Resolution(); };
+	GridCoordinates Resolution( void ) const{ return grid::Resolution(); };
 
 	/*!
 	 * @brief Return used filter

@@ -18,6 +18,7 @@
 #include "tomography.h"
 #include "cSysTree.h"
 #include "simulation.h"
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -44,26 +45,26 @@ tomographyParameter::tomographyParameter( const double exposureTime_, const bool
 	rayStepSize( rayStepSize_ )
 {}
 
-tomographyParameter::tomographyParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	exposureTime( deSerializeBuildIn<double>( 1., binData, it ) ),
-	scattering( deSerializeBuildIn<bool>(true, binData, it) ),
-	maxRadiationLoops( deSerializeBuildIn<size_t>( maxRadiationLoops_Def, binData, it ) ),
-	scatterPropability( deSerializeBuildIn<double>( completeModelScatterPropability_Def, binData, it ) ),
-	rayStepSize( deSerializeBuildIn<double>( rayStepSize_Def, binData, it ) )
+tomographyParameter::tomographyParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	exposureTime( DeSerializeBuildIn<double>( 1., binary_data, it ) ),
+	scattering( DeSerializeBuildIn<bool>(true, binary_data, it) ),
+	maxRadiationLoops( DeSerializeBuildIn<size_t>( maxRadiationLoops_Def, binary_data, it ) ),
+	scatterPropability( DeSerializeBuildIn<double>( completeModelScatterPropability_Def, binary_data, it ) ),
+	rayStepSize( DeSerializeBuildIn<double>( rayStepSize_Def, binary_data, it ) )
 {
 }
 
-size_t tomographyParameter::serialize( vector<char>& binData ) const{
+size_t tomographyParameter::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += serializeBuildIn( exposureTime, binData );
-	numBytes += serializeBuildIn( scattering, binData );
-	numBytes += serializeBuildIn( maxRadiationLoops, binData );
-	numBytes += serializeBuildIn( scatterPropability, binData );
-	numBytes += serializeBuildIn( rayStepSize, binData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += SerializeBuildIn( exposureTime, binary_data );
+	num_bytes += SerializeBuildIn( scattering, binary_data );
+	num_bytes += SerializeBuildIn( maxRadiationLoops, binary_data );
+	num_bytes += SerializeBuildIn( scatterPropability, binary_data );
+	num_bytes += SerializeBuildIn( rayStepSize, binary_data );
 
-	return numBytes;
+	return num_bytes;
 
 }
 
@@ -95,7 +96,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + toString( currentFrame ) + " of " + toString( radonParameter.framesToFillSinogram ) );
+			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radonParameter.framesToFillSinogram ) );
 
 		// Radiate
 		Gantry.radiate( Model, parameter );
@@ -118,7 +119,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 		}
 		
 		// Rotate gantry
-		Gantry.rotateCounterClockwise( radonParameter.resolution.col );
+		Gantry.rotateCounterClockwise( radonParameter.resolution.c );
 
 		Fl::check();
 

@@ -24,7 +24,7 @@
 
 void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
 
-	energySpectrum.modify(  [ & ] ( v2& spectrumPoint ) -> void {
+	energySpectrum.modify(  [ & ] ( Tuple2D& spectrumPoint ) -> void {
 		
 		const double k = voxelData.attenuationAt( spectrumPoint.x );
 		spectrumPoint.y *= exp( -k * distance );

@@ -31,7 +31,7 @@ detector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
 	detectorRadonParameter radonParameter{
-		idx2CR{ 63, 21 },
+		GridIndex{ 63, 21 },
 		500
 	};
 
@@ -153,8 +153,8 @@ bool test_nonUniformDetector( void ){
 			pixelNormals.at( ( nDistance - 1 ) / 2 - currentIndex ) = pixelNormal;
 
 			const line symPixelNormal{
-				uvec3 { v3{ -pixelNormal.R().X(), pixelNormal.R().Y(), pixelNormal.R().Z() }, pixelNormal.R().CSys() },
-				pnt3 { v3{ -pixelNormal.O().X(), pixelNormal.O().Y(), pixelNormal.O().Z() }, pixelNormal.O().CSys() }
+				uvec3 { Tuple3D{ -pixelNormal.R().X(), pixelNormal.R().Y(), pixelNormal.R().Z() }, pixelNormal.R().CSys() },
+				pnt3 { Tuple3D{ -pixelNormal.O().X(), pixelNormal.O().Y(), pixelNormal.O().Z() }, pixelNormal.O().CSys() }
 			};
 
 			pixelNormals.at( ( nDistance - 1 ) / 2 + currentIndex ) = symPixelNormal;
@@ -407,7 +407,7 @@ bool test_detector(void) {
 
 }
 
-gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
+gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
 	tubeParameter tubeParas{ 100000,
 								0.2,
@@ -434,7 +434,7 @@ gantry getTestGantry( const idx2CR sinogramSize, const size_t raysPerPixel ){
 
 bool test_gantry( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 600, 200 }, 3 );
+	gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
 	const cartCSys* const radonCSys = testGantry.CSys()->createCopy( "Radon System" );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
@@ -447,7 +447,7 @@ bool test_gantry( void ){
 	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
-	testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.row - 1 ) / 2. * testGantry.getDetectorParameter().resolution.col );
+	testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );
 
 	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 

@@ -79,10 +79,10 @@ class cSysTree : public mathObj{
 	/*!
 	 * @brief Constructor from serialized data
 	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	cartCSys* addCSys( const vector<char>& binData, vector<char>::const_iterator& it );
+	cartCSys* addCSys( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Add system to tree with global system as parent

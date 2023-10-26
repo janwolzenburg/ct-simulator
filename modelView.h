@@ -49,19 +49,19 @@ class modelView : public Fl_Group{
 	 * @brief Check if load button was pressed
 	 * @return True when it was pressed
 	*/
-	bool LoadBtnPressed( void ){ return unsetFlag( loadBtnPressed ); };
+	bool LoadBtnPressed( void ){ return UnsetFlag( loadBtnPressed ); };
 
 	/*!
 	 * @brief Check if model needs update
 	 * @return True when model need update and a model is loaded
 	*/
-	bool ModelNeedsUpdate( void ){ return unsetFlag( updateModelFlag )&& PROGRAM_STATE().ModelLoaded(); };
+	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& PROGRAM_STATE().ModelLoaded(); };
 
 	/*!
 	 * @brief Check if reset button was pressed
 	 * @return True when it was pressed
 	*/
-	bool ResetBtnPressed( void ){ return unsetFlag( resetBtnPressed ); };
+	bool ResetBtnPressed( void ){ return UnsetFlag( resetBtnPressed ); };
 
 	/*!
 	 * @brief Load a model from persisting storage

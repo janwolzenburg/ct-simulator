@@ -33,21 +33,21 @@ class modelViewParameter{
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	modelViewParameter( const vector<char>& binData, vector<char>::const_iterator& it ) : 
-		viewContrast{ binData, it }, plane{ binData, it }{};
+	modelViewParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
+		viewContrast{ binary_data, it }, plane{ binary_data, it }{};
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	public:
 
-	range viewContrast;			/*!<Contrast of slice image*/
+	NumberRange viewContrast;			/*!<Contrast of slice image*/
 	slicePlane plane;			/*!<Surface to slice model with*/
 };

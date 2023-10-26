@@ -42,16 +42,16 @@ discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
 
 }
 
-discreteFilter::discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
+discreteFilter::discreteFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
 	type( type_ ),
 	pointsRange( pointsRange_ ),
-	numberPoints( static_cast<size_t>( pointsRange.end - pointsRange.start ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
+	numberPoints( static_cast<size_t>( pointsRange.end() - pointsRange.start() ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
 	samplingInterval( samplingInterval_ ),
 	values( numberPoints, 0. )
 {
 
 	// Iterate over all whole numbers in range
-	for( signed long long n = pointsRange.start; n <= pointsRange.end; n++ ){
+	for( signed long long n = pointsRange.start(); n <= pointsRange.end(); n++ ){
 
 		double kernelValue = 0.;
 
@@ -88,20 +88,20 @@ discreteFilter::discreteFilter( const Zrange pointsRange_, const double sampling
 
 }
 
-Zrange discreteFilter::getRelevantRange( void ) const{
+NaturalNumberRange discreteFilter::getRelevantRange( void ) const{
 
-	Zrange relevant( -1, 1 );
+	NaturalNumberRange relevant( -1, 1 );
 
-	for( signed long long int i = pointsRange.start; i < 0; i++ ){
+	for( signed long long int i = pointsRange.start(); i < 0; i++ ){
 		if( abs( this->operator()( i ) ) > threshold ){
-			relevant.start = i;
+			relevant.start( i );
 			break;
 		}
 	}
 
-	for( signed long long int i = pointsRange.end; i > 0; i-- ){
+	for( signed long long int i = pointsRange.end(); i > 0; i-- ){
 		if( abs( this->operator()( i ) ) > threshold ){
-			relevant.end = i;
+			relevant.end( i );
 			break;
 		}
 	}
@@ -111,20 +111,20 @@ Zrange discreteFilter::getRelevantRange( void ) const{
 }
 
 
-vectorPair discreteFilter::PlotValues( void ) const{
+VectorPair discreteFilter::PlotValues( void ) const{
 
-	vectorPair XY( vector<double>( numberPoints ), values );
+	VectorPair XY( vector<double>( numberPoints ), values );
 
-	std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start ) );
+	std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start() ) );
 
 	return XY;
 }
 
 size_t discreteFilter::getIndex( const signed long long Zidx ) const{
-	if( Zidx < pointsRange.start ) return 0;
-	if( Zidx > pointsRange.end ) return numberPoints - 1;
+	if( Zidx < pointsRange.start() ) return 0;
+	if( Zidx > pointsRange.end() ) return numberPoints - 1;
 
-	return static_cast<size_t>( Zidx - pointsRange.start );
+	return static_cast<size_t>( Zidx - pointsRange.start() );
 }
 
 double& discreteFilter::set( const size_t idx ){

@@ -20,11 +20,11 @@
 *********************************************************************/
 
 
-rayScattering::rayScattering( const size_t anglesAmount, const range energyRange_, const size_t energyAmount_, const uvec3 scatteredNormal_ ) :
+rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const uvec3 scatteredNormal_ ) :
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
 	energiesAmount( Fpos( energyAmount_ ) ),
 	energyRange( energyRange_ ),
-	energyResolution( ( energyRange.end - energyRange.start ) / (double) ( energiesAmount - 1 ) ),
+	energyResolution( ( energyRange.end() - energyRange.start() ) / (double) ( energiesAmount - 1 ) ),
 	scatteringNormal( scatteredNormal_ )
 {
 	
@@ -34,10 +34,10 @@ rayScattering::rayScattering( const size_t anglesAmount, const range energyRange
 	// Iterate all frequencies
 	for( size_t currentEnergyIndex = 0; currentEnergyIndex < energiesAmount; currentEnergyIndex++ ){
 
-		const double currentEnergy = energyRange.start + (double) currentEnergyIndex * energyResolution;
+		const double currentEnergy = energyRange.start() + (double) currentEnergyIndex * energyResolution;
 
 		// Calculate pseudo propability distribution
-		vector<v2> pseudoDistribution;
+		vector<Tuple2D> pseudoDistribution;
 
 		// Initial photon energy
 		const double a = currentEnergy / m_0c2_eV;
@@ -71,15 +71,15 @@ ray rayScattering::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
 double rayScattering::getRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start ) / energyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 	
 	return distributions.at( distributionIndex ).getRandom();
 
 }
 
-vector<v2> rayScattering::getDistribution( const double energy ) const{
+vector<Tuple2D> rayScattering::getDistribution( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start ) / energyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 
 	return distributions.at( distributionIndex ).getDistribution();
 

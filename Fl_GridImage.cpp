@@ -52,7 +52,7 @@ void Fl_GridImage::assignImage( const monoImage& img )
 
 void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalise ){
 
-	originalImage = monoImage{ modGrid.Size().col, modGrid.Size().row };
+	originalImage = monoImage{ modGrid.Size().c, modGrid.Size().r };
 	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 
 	const size_t width = originalImage.Width();
@@ -63,7 +63,7 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){
 			
-			const idx2CR pixel( c, r );
+			const GridIndex pixel( c, r );
 			const voxData& data = modGrid.operator()( pixel );
 
 			originalImage.operator()( c, r ) = data.attenuationAtRefE();

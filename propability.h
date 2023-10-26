@@ -73,7 +73,7 @@ class propabilityDistribution{
 	 * @param distribution_ Pseudo distribution. Sum of y values can be not equal to one
 	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
 	*/
-	propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins );
+	propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins );
 
 	/*!
 	 * @brief Get a random value according to distribution
@@ -83,12 +83,12 @@ class propabilityDistribution{
 	/*!
 	 * @brief Get the complete distribution
 	*/
-	vector<v2> getDistribution( void ) const{ return distribution; };
+	vector<Tuple2D> getDistribution( void ) const{ return distribution; };
 
 
 	private:
 
-	vector<v2> distribution;				/*!<Distribution*/
+	vector<Tuple2D> distribution;				/*!<Distribution*/
 	vector<double> uniformPropabilities;	/*!<Vector with values from distribution reated according to their propability*/
 
 };

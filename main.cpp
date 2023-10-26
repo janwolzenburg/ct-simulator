@@ -30,7 +30,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	model testModel = getTestModel( GLOBAL_CSYS(), 20 );
 
 	vector<char> modelBin;
-	testModel.serialize( modelBin );
+	testModel.Serialize( modelBin );
 	exportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
 
 	return 0;

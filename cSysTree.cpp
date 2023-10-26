@@ -13,7 +13,7 @@
  *********************************************************************/
 #include "cSysTree.h"
 #include "cartesian.h"
-
+#include "serialization.h"
 
 
  /*********************************************************************
@@ -59,8 +59,8 @@ string cSysTree::toStr( const unsigned int newLineTabulators ) const{
 
 cSysTree::cSysTree( void ) :
 	numSystems( 2 ),
-	systems{	cartCSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Dummy system" },
-				cartCSys{ primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Global system" } }
+	systems{	cartCSys{ primitiveVec3{ Tuple3D{ 0, 0, 0 } }, primitiveVec3{ Tuple3D{ 1, 0, 0 } }, primitiveVec3{ Tuple3D{ 0, 1, 0 } }, primitiveVec3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Dummy system" },
+				cartCSys{ primitiveVec3{ Tuple3D{ 0, 0, 0 } }, primitiveVec3{ Tuple3D{ 1, 0, 0 } }, primitiveVec3{ Tuple3D{ 0, 1, 0 } }, primitiveVec3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Global system" } }
 {
 	systems.at( 0 ).parent = &systems.at( 1 );
 }
@@ -84,22 +84,22 @@ cartCSys* cSysTree::addCSys( const primitiveVec3 origin_, const primitiveVec3 ex
 }
 
 cartCSys* cSysTree::addCSys( const cartCSys* parent_, const string name_ ){
-	return addCSys( primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, parent_, name_ );
+	return addCSys( primitiveVec3{ Tuple3D{ 0, 0, 0 } }, primitiveVec3{ Tuple3D{ 1, 0, 0 } }, primitiveVec3{ Tuple3D{ 0, 1, 0 } }, primitiveVec3{ Tuple3D{ 0, 0, 1 } }, parent_, name_ );
 }
 
 cartCSys* cSysTree::addCSys( const string name_ ){
 	return addCSys( getGlobal(), name_ );
 }
 
-cartCSys* cSysTree::addCSys( const vector<char>& binData, vector<char>::const_iterator& it )
+cartCSys* cSysTree::addCSys( const vector<char>& binary_data, vector<char>::const_iterator& it )
 {
 
-	primitiveVec3 origin{ binData, it };
-	primitiveVec3 ex{ binData, it };
-	primitiveVec3 ey{ binData, it };
-	primitiveVec3 ez{ binData, it };
+	primitiveVec3 origin{ binary_data, it };
+	primitiveVec3 ex{ binary_data, it };
+	primitiveVec3 ey{ binary_data, it };
+	primitiveVec3 ez{ binary_data, it };
 
-	string name = deSerializeBuildIn<string>( string{""}, binData, it);
+	string name = DeSerializeBuildIn<string>( string{""}, binary_data, it);
 
 	return addCSys( origin, ex, ey, ez, GLOBAL_CSYS(), name );
 

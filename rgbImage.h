@@ -81,10 +81,10 @@ class rgbImage{
 
 	/*!
 	 * @brief Construct image from binary data
-	 * @param binData Binary data
+	 * @param binary_data Binary data
 	 * @param it Iterator to start reading from
 	*/
-	rgbImage( const vector<char>& binData, vector<char>::const_iterator& it );
+	rgbImage( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Get Width
@@ -126,13 +126,13 @@ class rgbImage{
 	 * @param pixel Pixel indices
 	 * @param value Value to set pixel to
 	*/
-	void setPixel( const idx2CR& pixel, const rgb_Int& value ){ charData( pixel.col, pixel.row ) = value; };
+	void setPixel( const GridIndex& pixel, const rgb_Int& value ){ charData( pixel.c, pixel.r ) = value; };
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	private:

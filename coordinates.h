@@ -38,12 +38,12 @@ class coordinates : protected primitiveVec3{
 	 * @brief Constructor
 	 * @param vec3_ Values
 	*/
-	coordinates( const v3 vec3_, const cartCSys* const cSys_ ) : primitiveVec3{ vec3_ }, cSys( cSys_ ) {};
+	coordinates( const Tuple3D vec3_, const cartCSys* const cSys_ ) : primitiveVec3{ vec3_ }, cSys( cSys_ ) {};
 
 	/*!
 	 * @brief Defaulkt constructor
 	*/
-	coordinates( void ) : coordinates{ v3{}, DUMMY_CSYS() } {};
+	coordinates( void ) : coordinates{ Tuple3D{}, DUMMY_CSYS() } {};
 
 	/*!
 	 * @brief Convert coordinate's data to string

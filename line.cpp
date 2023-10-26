@@ -41,7 +41,7 @@ line::line( const vec3 v, const pnt3 p ) :
 }
 
 line::line( void ) : 
-	line{ vec3{ v3{1, 0, 0}, DUMMY_CSYS() }, pnt3{ v3{ 0, 0, 0 }, DUMMY_CSYS() }}
+	line{ vec3{ Tuple3D{1, 0, 0}, DUMMY_CSYS() }, pnt3{ Tuple3D{ 0, 0, 0 }, DUMMY_CSYS() }}
 {
 
 }

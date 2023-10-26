@@ -93,7 +93,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		tubeGrp.add( spectrumPlot );
-		spectrumPlot.initialisePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrumPlot.initialisePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -109,10 +109,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
 		colPnts.setProperties( 3, 10000, 0 );
-		colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.col );
+		colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.c );
 
 		rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
-		rowPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.row );
+		rowPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.r );
 
 		distRange.setProperties( 1., 10000., 0 );
 		distRange.value( PROGRAM_STATE().RadonParameter().distanceRange );
@@ -155,7 +155,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		detectorGrp.add( detectorPlot );
-		detectorPlot.initialisePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, range{ 0, 1 }, range{ 0, 1 } }, "", "", true, true );
+		detectorPlot.initialisePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
 
 
 }
@@ -168,12 +168,12 @@ void gantryEdition::handleEvents( void ){
 		Fl_Group::window()->deactivate();
 
 		tubeParameter newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), tubeParameter::getEnum(materialIn.value())};
-		detectorRadonParameter newRadonParameter{ idx2CR{ colPnts.value(), rowPnts.value() }, distRange.value() };
+		detectorRadonParameter newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 
-		rowPnts.value( newRadonParameter.numberPoints.row );
-		colPnts.value( newRadonParameter.numberPoints.col );
+		rowPnts.value( newRadonParameter.numberPoints.r );
+		colPnts.value( newRadonParameter.numberPoints.c );
 
 
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
@@ -195,15 +195,15 @@ void gantryEdition::handleEvents( void ){
 			const pnt3 startP = pixel.getPnt( pixel.AMin(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
 			const pnt3 endP = pixel.getPnt( pixel.AMax(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
 
-			const v2 start{ startP.X(), startP.Y() };
-			const v2 end{ endP.X(), endP.Y() };
+			const Tuple2D start{ startP.X(), startP.Y() };
+			const Tuple2D end{ endP.X(), endP.Y() };
 
 			detectorPlot.plotRef().addLine( start, end );
 
 		}
 
 		const pnt3 gantryCenter = PROGRAM_STATE().Gantry().Center();
-		detectorPlot.plotRef().addPoint( v2( gantryCenter.X(), gantryCenter.Y() ) );
+		detectorPlot.plotRef().addPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
 		detectorPlot.plotRef().create();
 		detectorPlot.assignData();
 

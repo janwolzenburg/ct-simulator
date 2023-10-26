@@ -26,17 +26,17 @@
 bool test_scattered_angle_propabilities( void ){
 
 	double angleResolution = 2. / 360 * 2 * PI;
-	range energyRange = range{ alFilterCutOffEnergy_eV, 150000. };
+	NumberRange energyRange = NumberRange{ alFilterCutOffEnergy_eV, 150000. };
 	size_t numEnergies = 20;
 	//double energyResolution = energyRange.Resolution( numEnergies );
 
-	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, uvec3{v3{1., 0., 0.}, GLOBAL_CSYS()}};
+	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, uvec3{Tuple3D{1., 0., 0.}, GLOBAL_CSYS()}};
 
 	const double testEnergy = 100000.;
-	vector<v2> distribution = anglePropabilites.getDistribution( testEnergy );
+	vector<Tuple2D> distribution = anglePropabilites.getDistribution( testEnergy );
 
-	vector<v2> experimentalDistribution = distribution;
-	for( v2& currentValue : experimentalDistribution ) currentValue.y = 0;
+	vector<Tuple2D> experimentalDistribution = distribution;
+	for( Tuple2D& currentValue : experimentalDistribution ) currentValue.y = 0;
 
 	double angleStart = experimentalDistribution.front().x;
 
@@ -66,7 +66,7 @@ bool test_scattered_angle_propabilities( void ){
 
 bool test_ray_scattering(void){
 
-	gantry testGantry = getTestGantry( idx2CR{ 70, 20 }, 1000 );
+	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1000 );
 	model mod = getTestModel( GLOBAL_CSYS(), 1 );
 
 	ofstream ax1 = openAxis( path( "./test_ray_scattering.txt" ), true );
@@ -81,7 +81,7 @@ bool test_ray_scattering(void){
 	size_t maxRadiationLoopsTest = 10;
 	vector<double> angles;
 
-	vector<v2> anglesHistogram;
+	vector<Tuple2D> anglesHistogram;
 
 	vector<double> discreteAngles;
 	for( double a = 0; a <= PI; a += PI / 1080 ){

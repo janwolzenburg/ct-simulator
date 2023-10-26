@@ -75,10 +75,10 @@ class tubeParameter {
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+	tubeParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Get enumeration from string
@@ -89,9 +89,9 @@ class tubeParameter {
 
 	/*!
 		* @brief Serialize this object
-		* @param binData Reference to vector where data will be appended
+		* @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	public:
@@ -134,7 +134,7 @@ class tube{
 	 * @brief Get the range of energies the tube emits
 	 * @return Energy Range
 	*/
-	range getEnergyRange( void ) const{ return range{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
+	NumberRange getEnergyRange( void ) const{ return NumberRange{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
 
 	/*!
 	 * @brief Get energy of beam when switched on for exposure time
@@ -160,7 +160,7 @@ class tube{
 	 * @param integral Flag whether the sum or the integral should be equal to the tube power. 
 	 * @return 
 	*/
-	vectorPair spectrumPoints( const bool integral = false ) const;
+	VectorPair spectrumPoints( const bool integral = false ) const;
 
 
 	private:

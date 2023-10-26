@@ -46,7 +46,7 @@ template<class plotType>
 void Fl_Plot<plotType>::initialisePlot( const path path_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
 
-	plotInstance.initialise( path_, label, xlabel_, ylabel_, limits_, idx2CR{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
+	plotInstance.initialise( path_, label, xlabel_, ylabel_, limits_, GridIndex{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
 }
 
 template<class plotType>
@@ -64,11 +64,11 @@ void Fl_Plot<plotType>::resize( int x, int y, int w, int h ){
 
 	Fl_Widget::resize( x, y, w, h );
 
-	idx2CR currentImgSize = plotInstance.getSize();
-	if( relDeviation( (int) currentImgSize.col, w ) > 0.15 ||
-		relDeviation( (int) currentImgSize.row, h ) > 0.15 ){
+	GridIndex currentImgSize = plotInstance.getSize();
+	if( relDeviation( (int) currentImgSize.c, w ) > 0.15 ||
+		relDeviation( (int) currentImgSize.r, h ) > 0.15 ){
 
-		plotInstance.setSize( idx2CR{ (size_t) w, (size_t) h } );
+		plotInstance.setSize( GridIndex{ (size_t) w, (size_t) h } );
 		plotInstance.create();
 		assignImage( plotInstance.getImgPath() );
 	} 

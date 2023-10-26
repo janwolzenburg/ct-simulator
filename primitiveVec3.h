@@ -23,7 +23,7 @@
 /*!
  * @brief Class for a primitve 3D Vector with some operations
 */
-class primitiveVec3 : public v3, public mathObj{
+class primitiveVec3 : public Tuple3D, public mathObj{
 
 	public:
 
@@ -33,13 +33,13 @@ class primitiveVec3 : public v3, public mathObj{
 	 * @param y_ y value
 	 * @param z_ z value
 	*/
-	primitiveVec3( const double x, const double y, const double z ) : v3( x, y, z ) {};
+	primitiveVec3( const double x, const double y, const double z ) : Tuple3D( x, y, z ) {};
 
 	/*!
 	* @brief Constructor
 	* @param xyz_ x, y and z values
 	*/
-	primitiveVec3( const v3 xyz ) : v3( xyz ) {};
+	primitiveVec3( const Tuple3D xyz ) : Tuple3D( xyz ) {};
 
 	/*!
 	 * @brief Default constructor
@@ -48,10 +48,10 @@ class primitiveVec3 : public v3, public mathObj{
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	primitiveVec3( const vector<char>& binData, vector<char>::const_iterator& it );
+	primitiveVec3( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert data to string

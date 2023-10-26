@@ -80,10 +80,10 @@ class voxData{
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Vector with serialized data
+	 * @param binary_data Vector with serialized data
 	 * @param it Start of data for this object
 	*/
-	voxData( const vector<char>& binData, vector<char>::const_iterator& it );
+	voxData( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Default constructor
@@ -121,13 +121,13 @@ class voxData{
 	 * @brief Add special property
 	 * @param property Property to add
 	*/
-	void addSpecialProperty( const specialProperty property ){ specialProperties |= toUnderlying( property ); };
+	void addSpecialProperty( const specialProperty property ){ specialProperties |= ToUnderlying( property ); };
 
 	/*!
 	 * @brief Remove special property
 	 * @param property Property to remove
 	*/
-	void removeSpecialProperty( const specialProperty property ){ specialProperties &= ~toUnderlying( property ); };
+	void removeSpecialProperty( const specialProperty property ){ specialProperties &= ~ToUnderlying( property ); };
 
 	/*!
 	 * @brief Check if there is a special property
@@ -144,9 +144,9 @@ class voxData{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 		
 	private:
@@ -184,12 +184,12 @@ class vox : public mathObj{
 	 * @param size_	Size of voxel in unit of coordinate system's axes
 	 * @param data_	Physical data of voxel
 	*/
-	vox( const pnt3 o_, const v3 size_, const voxData data_ );
+	vox( const pnt3 o_, const Tuple3D size_, const voxData data_ );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	vox( void ) : vox{ pnt3{ v3{ 0, 0, 0 }, DUMMY_CSYS() }, v3{1, 1, 1}, voxData{} }{};
+	vox( void ) : vox{ pnt3{ Tuple3D{ 0, 0, 0 }, DUMMY_CSYS() }, Tuple3D{1, 1, 1}, voxData{} }{};
 
 	/*!
 	 * @brief Convert result's data to string
@@ -207,7 +207,7 @@ class vox : public mathObj{
 	 * @brief Get size of voxel
 	 * @return Size of voxel
 	*/
-	v3 Size( void ) const{ return size; };
+	Tuple3D Size( void ) const{ return size; };
 
 	/*!
 	 * @brief Get data of voxel
@@ -220,13 +220,13 @@ class vox : public mathObj{
 	 * @param id_ Face ID
 	 * @return Bounded surface which is the face
 	*/
-	surfLim getFace( FACE_ID id_ ) const{ return faces[ toUnderlying( id_ ) ]; };
+	surfLim getFace( FACE_ID id_ ) const{ return faces[ ToUnderlying( id_ ) ]; };
 
 	/*!
 	 * @brief Get center of voxel
 	 * @return Point at center of voxel
 	*/
-	pnt3 getCenter( void ) const{ return o + vec3{ v3{ size.x / 2, size.y / 2, size.z / 2 } , o.CSys() }; };
+	pnt3 getCenter( void ) const{ return o + vec3{ Tuple3D{ size.x / 2, size.y / 2, size.z / 2 } , o.CSys() }; };
 
 	/*!
 	 * @brief Check if voxel contains point
@@ -238,8 +238,8 @@ class vox : public mathObj{
 
 	private:
 
-	v3 size;											/*!<Size in local coordinate system*/
+	Tuple3D size;											/*!<Size in local coordinate system*/
 	voxData data;										/*!<Physical voxel data*/
 	pnt3 o;												/*!<Point as origin of voxel in coordinate system*/
-	array<surfLim, toUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
+	array<surfLim, ToUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
 };

@@ -30,17 +30,17 @@ class storedObject{
 
 	/*!
 	 * @brief Constructor
-	 * @param filePath_ Path to file
+	 * @param file_path_ Path to file
 	 * @param objectRef Reference to object
 	*/
-	storedObject( const path filePath_, C& objectRef );
+	storedObject( const path file_path_, C& objectRef );
 
 	/*!
 	 * @brief Load object from specific file
-	 * @param filePath Path to serialized file
+	 * @param file_path Path to serialized file
 	 * @return True if file exists and contains valid data
 	*/
-	bool load( const path filePath );
+	bool load( const path file_path );
 
 	/*!
 	 * @brief Save the object

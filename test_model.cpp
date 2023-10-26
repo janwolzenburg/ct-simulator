@@ -26,24 +26,24 @@
 
 model getTestModel( const cartCSys* const parent, const size_t res ){
 
-	cartCSys* modelSys = parent->addCSys( v3{ -200, -200, -200 }, v3{ 1, 0, 0 }, v3{ 0, 1, 0 }, v3{ 0, 0, 1 }, "Model system" );
+	cartCSys* modelSys = parent->addCSys( Tuple3D{ -200, -200, -200 }, Tuple3D{ 1, 0, 0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, idx3 {  20 * res, 20 * res, 20 * res}, v3 {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
+	model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
 
 	//double kWater = 0.01611970000;
 
 	voxData bgData = { 0.01, 120000. };
 
-	pnt3 sp1_center = { v3{ 120, 120, 200 }, mod.CSys() };
+	pnt3 sp1_center = { Tuple3D{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
 	voxData sp1_data = { 0.3, 120000. };
 
-	pnt3 sp2_center = { v3{ 280, 280, 200 }, mod.CSys() };
+	pnt3 sp2_center = { Tuple3D{ 280, 280, 200 }, mod.CSys() };
 	double sp2_radius = 70;
 	voxData sp2_data = { 0.5, 120000. };
 
 
-	pnt3 artifact{ v3{ 250, 200, 200}, mod.CSys() };
+	pnt3 artifact{ Tuple3D{ 250, 200, 200}, mod.CSys() };
 	double artRadius = 15;
 
 
@@ -72,8 +72,8 @@ void save_testModel( void ){
 
 	model mod = getTestModel( GLOBAL_CSYS(), 10 );
 	
-	vector<char> binData;
-	mod.serialize( binData );
+	vector<char> binary_data;
+	mod.Serialize( binary_data );
 
 }
 
@@ -94,7 +94,7 @@ bool test_testModel( void ){
 
 bool test_modelTransmission( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 70, 20 }, 1 );
+	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1 );
 	model mod{ getTestModel( GLOBAL_CSYS() ) };
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
@@ -123,7 +123,7 @@ bool test_modelTransmission( void ){
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });
 
-	vector<v2> primitiveDetectionResult( detectorPixel.size(), v2{0, 0});
+	vector<Tuple2D> primitiveDetectionResult( detectorPixel.size(), Tuple2D{0, 0});
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;

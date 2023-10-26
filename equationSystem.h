@@ -48,7 +48,7 @@ class matx : public mathObj{
 	 * @param idx Cell indices
 	 * @return Reference to matrix element
 	*/
-	double& operator() ( const idx2 idx ){ return (*this)(idx.y, idx.x); };
+	double& operator() ( const Index2D idx ){ return (*this)(idx.y, idx.x); };
 
 	/*!
 	 * @brief Element read
@@ -62,7 +62,7 @@ class matx : public mathObj{
 	 * @param idx Cell indices
 	 * @return Value of matrix element
 	*/
-	double operator() ( const idx2 idx ) const{ return (*this)(idx.y, idx.x); };
+	double operator() ( const Index2D idx ) const{ return (*this)(idx.y, idx.x); };
 
 	/*!
 	 * @brief Convert matrice's data to string
@@ -105,7 +105,7 @@ class matx : public mathObj{
 	 * @param botCorner Bottom-right corner of submatrix
 	 * @return Cell indices of maximum
 	*/
-	idx2 findMax( const idx2 topCorner, const idx2 botCorner );
+	Index2D findMax( const Index2D topCorner, const Index2D botCorner );
 
 	/*!
 	 * @brief Scale row by factor
@@ -166,14 +166,14 @@ class eqnSys : private matx{
 	 * @param v Vector to populate column with
 	 * @return Error code
 	*/
-	MATH_ERR populateColumn( const v3 v );
+	MATH_ERR populateColumn( const Tuple3D v );
 
 	/*!
 	 * @brief Add column to system of equation with two variables
 	 * @param v Column to add
 	 * @return Error code
 	*/
-	MATH_ERR populateColumn( const v2 v );
+	MATH_ERR populateColumn( const Tuple2D v );
 
 	/*!
 	 * @brief Check population status

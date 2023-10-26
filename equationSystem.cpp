@@ -95,9 +95,9 @@ mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
 	return MATH_ERR::OK;
 }
 
-idx2 matx::findMax( const idx2 topCorner, const idx2 botCorner ) {
+Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
 	double curMax = 0, curVal;
-	idx2 curMaxIndx = topCorner;
+	Index2D curMaxIndx = topCorner;
 
 
 	if (topCorner.y >= n || topCorner.x >= m || botCorner.y >= n || botCorner.x >= m) {
@@ -174,7 +174,7 @@ std::string eqnSys::toStr( const unsigned int newLineTabulators ) const{
 
 }
 
-mathObj::MATH_ERR eqnSys::populateColumn( const v3 v ){
+mathObj::MATH_ERR eqnSys::populateColumn( const Tuple3D v ){
 
 	// For now only implemented with three vars
 	if( isPopulated() || varNum != 3 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to three!" );
@@ -188,7 +188,7 @@ mathObj::MATH_ERR eqnSys::populateColumn( const v3 v ){
 	return MATH_ERR::OK;
 }
 
-mathObj::MATH_ERR eqnSys::populateColumn( const v2 v ){
+mathObj::MATH_ERR eqnSys::populateColumn( const Tuple2D v ){
 
 	// For now only implemented with three vars
 	if( isPopulated() || varNum != 2 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to two!" );
@@ -212,10 +212,10 @@ eqnSysSolution eqnSys::solve( void ){
 	size_t rows = getRows(); size_t cols = getCols();
 
 
-	idx2 topC{};										// Top-left corner of submatrix						
-	idx2 botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
+	Index2D topC{};										// Top-left corner of submatrix						
+	Index2D botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
 
-	idx2 maxIndx;							// Indices of maximum in submatrix
+	Index2D maxIndx;							// Indices of maximum in submatrix
 	double maxVal;							// Value of maximum in submatrix
 
 

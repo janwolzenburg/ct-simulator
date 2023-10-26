@@ -16,6 +16,7 @@
 #include "vec3D.h"
 #include "line.h"
 #include "surf.h"
+#include "serialization.h"
 
 
  /*********************************************************************
@@ -34,7 +35,7 @@ cartCSys::cartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const 
 	name( name_ ){};
 
 cartCSys::cartCSys( void )
-	: cartCSys( primitiveVec3{ v3{ 0, 0, 0 } }, primitiveVec3{ v3{ 1, 0, 0 } }, primitiveVec3{ v3{ 0, 1, 0 } }, primitiveVec3{ v3{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
+	: cartCSys( primitiveVec3{ Tuple3D{ 0, 0, 0 } }, primitiveVec3{ Tuple3D{ 1, 0, 0 } }, primitiveVec3{ Tuple3D{ 0, 1, 0 } }, primitiveVec3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
 
 string cartCSys::toStr( const unsigned int newLineTabulators ) const{
 	string str;
@@ -94,7 +95,7 @@ vector<const cartCSys*> cartCSys::getPathFromGlobal( void ) const{
 
 
 pnt3 cartCSys::OPnt( void ) const{
-	return pnt3{ v3{0, 0, 0}, this };
+	return pnt3{ Tuple3D{0, 0, 0}, this };
 }
 
 pnt3 cartCSys::OPntPrnt( void ) const{
@@ -103,15 +104,15 @@ pnt3 cartCSys::OPntPrnt( void ) const{
 }
 
 uvec3 cartCSys::ExVec( void ) const{
-	return uvec3{ v3{1, 0, 0},  this };
+	return uvec3{ Tuple3D{1, 0, 0},  this };
 }
 
 uvec3 cartCSys::EyVec( void ) const{
-	return uvec3{ v3{0, 1, 0},   this };
+	return uvec3{ Tuple3D{0, 1, 0},   this };
 }
 
 uvec3 cartCSys::EzVec( void ) const{
-	return uvec3{ v3{0, 0, 1},  this };
+	return uvec3{ Tuple3D{0, 0, 1},  this };
 }
 
 line cartCSys::xAxis( void ) const{
@@ -202,18 +203,18 @@ void cartCSys::setPrimitive( const primitiveCartCSys primitiveCSys ){
 
 }
 
-size_t cartCSys::serialize( vector<char>& binData ) const{
+size_t cartCSys::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
+	size_t num_bytes = 0;
 
-	numBytes += OPnt().gXYZ().serialize( binData );
+	num_bytes += OPnt().gXYZ().Serialize( binary_data );
 
-	numBytes += ExVec().gXYZ().serialize( binData );
-	numBytes += EyVec().gXYZ().serialize( binData );
-	numBytes += EzVec().gXYZ().serialize( binData );
+	num_bytes += ExVec().gXYZ().Serialize( binary_data );
+	num_bytes += EyVec().gXYZ().Serialize( binary_data );
+	num_bytes += EzVec().gXYZ().Serialize( binary_data );
 	
-	numBytes += serializeBuildIn( name, binData );
+	num_bytes += SerializeBuildIn( name, binary_data );
 
-	return numBytes;
+	return num_bytes;
 
 }

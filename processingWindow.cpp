@@ -131,7 +131,7 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentFilteredProjections = filteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().getRelevantRange(), range{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().row, 2.)});
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().getRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().r, 2.)});
 	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().PlotValues() );
 	filterPlot.assignData();
 

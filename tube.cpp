@@ -15,6 +15,7 @@
 #include "vectorAlgorithm.h"
 #include "tube.h"
 #include "simulation.h"
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -36,10 +37,10 @@ const std::map < tubeParameter::MATERIAL, std::pair<string, size_t>> tubeParamet
 		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
 };
 
-tubeParameter::tubeParameter( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	anodeVoltage_V( deSerializeBuildIn( 53000., binData, it ) ),
-	anodeCurrent_A( deSerializeBuildIn( .2, binData, it ) ),
-	anodeMaterial( (MATERIAL) deSerializeBuildIn( toUnderlying( MATERIAL::THUNGSTEN ), binData, it ) )
+tubeParameter::tubeParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	anodeVoltage_V( DeSerializeBuildIn( 53000., binary_data, it ) ),
+	anodeCurrent_A( DeSerializeBuildIn( .2, binary_data, it ) ),
+	anodeMaterial( (MATERIAL) DeSerializeBuildIn( ToUnderlying( MATERIAL::THUNGSTEN ), binary_data, it ) )
 {}
 
 
@@ -52,16 +53,16 @@ tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
 	return THUNGSTEN;
 }
 
-size_t tubeParameter::serialize( vector<char>& binData ) const{
-	size_t numBytes = 0;
+size_t tubeParameter::Serialize( vector<char>& binary_data ) const{
+	size_t num_bytes = 0;
 
 
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += serializeBuildIn( anodeVoltage_V, binData );
-	numBytes += serializeBuildIn( anodeCurrent_A, binData );
-	numBytes += serializeBuildIn( toUnderlying( anodeMaterial ), binData );
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += SerializeBuildIn( anodeVoltage_V, binary_data );
+	num_bytes += SerializeBuildIn( anodeCurrent_A, binary_data );
+	num_bytes += SerializeBuildIn( ToUnderlying( anodeMaterial ), binary_data );
 
-	return numBytes;
+	return num_bytes;
 }
 
 
@@ -171,10 +172,10 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 	return rays;
 }
 
-vectorPair tube::spectrumPoints( const bool integral ) const{
+VectorPair tube::spectrumPoints( const bool integral ) const{
 
-	vectorPair points;
-	const vector<v2> spectrumPoints = xRay_spectrum.rawData();
+	VectorPair points;
+	const vector<Tuple2D> spectrumPoints = xRay_spectrum.rawData();
 
 	double yCorrection = 1.;
 

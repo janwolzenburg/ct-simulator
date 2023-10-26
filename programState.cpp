@@ -15,6 +15,7 @@
 #include "cSysTree.h"
 #include "mainWindow.h"
 #include "processingWindow.h"
+#include "serialization.h"
 
 
  /*********************************************************************
@@ -161,9 +162,9 @@ string programState::modelDescription( void ) const{
 
 	modelDataString.clear();
 	modelDataString += "Name: \t" + modelInstance.Name() + '\n';
-	modelDataString += "Voxel: \t\t\t" + toString( modelInstance.NumVox().x ) + " x " + toString( modelInstance.NumVox().y ) + " x " + toString( modelInstance.NumVox().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + toString( modelInstance.VoxSize().x, 2 ) + " x " + toString( modelInstance.VoxSize().y, 2 ) + " x " + toString( modelInstance.VoxSize().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + toString( modelInstance.ModSize().x ) + " x " + toString( modelInstance.ModSize().y ) + " x " + toString( modelInstance.ModSize().z ) + "  mm^3";
+	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.NumVox().x ) + " x " + ToString( modelInstance.NumVox().y ) + " x " + ToString( modelInstance.NumVox().z ) + "\n";
+	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.VoxSize().x, 2 ) + " x " + ToString( modelInstance.VoxSize().y, 2 ) + " x " + ToString( modelInstance.VoxSize().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model Größe: \t" + ToString( modelInstance.ModSize().x ) + " x " + ToString( modelInstance.ModSize().y ) + " x " + ToString( modelInstance.ModSize().z ) + "  mm^3";
 
 	return modelDataString;
 }
@@ -225,7 +226,7 @@ bool programState::sliceModel( void ){
 
 	grid<voxData> tempSlice = modelInstance.getSlice(  modelViewPara.plane.surface, 1. );
 	
-	if( tempSlice.Size().col == 0 || tempSlice.Size().row == 0 )
+	if( tempSlice.Size().c == 0 || tempSlice.Size().r == 0 )
 		return false;
 
 	modelSliceInstance = tempSlice;
@@ -236,9 +237,9 @@ bool programState::sliceModel( void ){
 void programState::centerModel( void ){
 
 	// Center model
-	v3 center = primitiveVec3{ modelInstance.ModSize() } / -2.;
+	Tuple3D center = primitiveVec3{ modelInstance.ModSize() } / -2.;
 
-	modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, v3{1,0,0}, v3{0,1,0}, v3{0,0,1} } );
+	modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
 }
 
 void programState::resetModel( void ){
@@ -285,10 +286,10 @@ void programState::exportSinogram( void ){
 		if( exportPath.extension() != "sinogram" )
 			exportPath += ".sinogram";
 
-		vector<char> binData;
-		currentProjections.serialize( binData );
+		vector<char> binary_data;
+		currentProjections.Serialize( binary_data );
 
-		exportSerialized( exportPath, binData );
+		ExportSerialized( exportPath, binary_data );
 
 	}
 }

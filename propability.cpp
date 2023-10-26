@@ -69,27 +69,27 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 	propabilityDistribution implementation
 */
 
-propabilityDistribution::propabilityDistribution( const vector<v2> distribution_, const size_t maxNumberOfBins )
+propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins )
 {
 	// Normalize 
 	distribution = normalise( distribution_ );
 
 	// Sort by angle
-	std::sort( distribution.begin(), distribution.end(), [] ( const v2& a, const v2& b ){ return a.x < b.x; } );
+	std::sort( distribution.begin(), distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 
 	// Sorted distribution by propability
-	vector<v2> sortedDistribution = distribution;
+	vector<Tuple2D> sortedDistribution = distribution;
 
 	// Get the smallest probability
-	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const v2& a, const v2& b ){ return a.y < b.y; } );
+	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
 	double smallestPropability = sortedDistribution.front().y;
 
 	// Check against maximum number of bins
 	if( 1. / smallestPropability > static_cast<double>( maxNumberOfBins ) ) smallestPropability = 1. / static_cast<double>( maxNumberOfBins );
 
 	// Insert amount corrensponding to probability into uniform distribution
-	for( const v2& currentValue : distribution ){
+	for( const Tuple2D& currentValue : distribution ){
 
 		const double currentProbabilty = currentValue.y;
 

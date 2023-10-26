@@ -84,13 +84,13 @@ class spectrum {
 	 * @brief Modify spectrum
 	 * @param modFunction Function taking reference to spectrum point to modify
 	*/
-	void modify( std::function<void( v2& )> modFunction );
+	void modify( std::function<void( Tuple2D& )> modFunction );
 
 	/*!
 	 * @brief Get raw data
 	 * @return Vector of points
 	*/
-	vector<v2> rawData( void ) const { return data; };
+	vector<Tuple2D> rawData( void ) const { return data; };
 
 	/*!
 	 * @brief Get the energy resolution
@@ -106,7 +106,7 @@ class spectrum {
 	*/
 	void updateMean( void );
 
-	vector<v2> data;			/*!<2D point data sorted by x value*/
+	vector<Tuple2D> data;			/*!<2D point data sorted by x value*/
 	double energyResolution;	/*!<Reolution of energies in spectrum*/
 	double mean;				/*!<Mean Frequency of spectrum*/
 

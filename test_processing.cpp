@@ -23,6 +23,7 @@
 #include "test_device.h"
 #include "filter.h"
 #include "backprojection.h"
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -33,7 +34,7 @@ bool test_radonTransform( void ){
 
 
 	detectorRadonParameter radonParameter{
-											idx2CR{ 125, 41 },
+											GridIndex{ 125, 41 },
 											500
 	};
 
@@ -50,7 +51,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( idx2CR{ 21, 7 }, 1 );
+	gantry testGantry = getTestGantry( GridIndex{ 21, 7 }, 1 );
 
 	ofstream ax2 = openAxis( path( "test_detector_to_sinogram_gantry.txt" ), true );
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
@@ -87,7 +88,7 @@ bool test_detector_to_sinogram( void ){
 
 
 		// Rotate gantry
-		testGantry.rotateCounterClockwise( radonParameter.resolution.col );
+		testGantry.rotateCounterClockwise( radonParameter.resolution.c );
 	}
 
 
@@ -101,7 +102,7 @@ bool test_detector_to_sinogram( void ){
 bool test_Tomography( void ){
 
 	auto start = std::chrono::system_clock::now();
-	gantry testGantry = getTestGantry( idx2CR{ 900, 300 }, 1 );
+	gantry testGantry = getTestGantry( GridIndex{ 900, 300 }, 1 );
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;
 	cout << "Time for gantry construction: " << diff << endl;
@@ -133,8 +134,8 @@ bool test_Tomography( void ){
 
 	start = std::chrono::system_clock::now();
 	vector<char> serializedData;
-	sinogram.serialize( serializedData );
-	exportSerialized( string{"test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt"}, serializedData );
+	sinogram.Serialize( serializedData );
+	ExportSerialized( string{"test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt"}, serializedData );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test sinogram export: " << diff << endl;
@@ -159,7 +160,7 @@ bool test_Tomography( void ){
 void serialisedToImage( void ){
 
 	
-	vector<char> importedData = importSerialized( string{ "./test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" } );
+	vector<char> importedData = ImportSerialized( string{ "./test_Tomography_serialized_sinogram_900x300_1_10xModelRes.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 
@@ -181,45 +182,45 @@ void serialisedToImage( void ){
 bool test_serialisation( void ){
 
 	detectorRadonParameter radonParameter{
-											idx2CR{ 8, 8 },
+											GridIndex{ 8, 8 },
 											500
 	};
 
 	radonTransformed testSinogram{ radonParameter };
 
-	for( size_t col = 0; col < testSinogram.Data().Size().col; col++ ){
-		for( size_t row = 0; row < testSinogram.Data().Size().row; row++ ){
-			testSinogram.assignData( idx2CR{ col, row }, 1. * (double) (col * testSinogram.Data().Size().row + row ));
+	for( size_t col = 0; col < testSinogram.Data().Size().c; col++ ){
+		for( size_t row = 0; row < testSinogram.Data().Size().r; row++ ){
+			testSinogram.assignData( GridIndex{ col, row }, 1. * (double) (col * testSinogram.Data().Size().r + row ));
 		}
 	}
 
 	vector<char> serializedData;
-	testSinogram.serialize( serializedData );
+	testSinogram.Serialize( serializedData );
 
-	exportSerialized( string{"test_serialisation.txt"}, serializedData );
+	ExportSerialized( string{"test_serialisation.txt"}, serializedData );
 
-	vector<char> importedData = importSerialized( string{ "test_serialisation.txt" } );
+	vector<char> importedData = ImportSerialized( string{ "test_serialisation.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
 
 
-	if( testSinogram.Data().Size().col != importedSinogram.Data().Size().col ) return false;
-	if( testSinogram.Data().Size().row != importedSinogram.Data().Size().row ) return false;
+	if( testSinogram.Data().Size().c != importedSinogram.Data().Size().c ) return false;
+	if( testSinogram.Data().Size().r != importedSinogram.Data().Size().r ) return false;
 
-	if( testSinogram.Data().Start().col != importedSinogram.Data().Start().col ) return false;
-	if( testSinogram.Data().Start().row != importedSinogram.Data().Start().row ) return false;
+	if( testSinogram.Data().Start().c != importedSinogram.Data().Start().c ) return false;
+	if( testSinogram.Data().Start().r != importedSinogram.Data().Start().r ) return false;
 
-	if( testSinogram.Data().Resolution().col != importedSinogram.Data().Resolution().col ) return false;
-	if( testSinogram.Data().Resolution().row != importedSinogram.Data().Resolution().row ) return false;
+	if( testSinogram.Data().Resolution().c != importedSinogram.Data().Resolution().c ) return false;
+	if( testSinogram.Data().Resolution().r != importedSinogram.Data().Resolution().r ) return false;
 
 
-	for( size_t col = 0; col < testSinogram.Data().Size().col; col++ ){
-		for( size_t row = 0; row < testSinogram.Data().Size().row; row++ ){
+	for( size_t col = 0; col < testSinogram.Data().Size().c; col++ ){
+		for( size_t row = 0; row < testSinogram.Data().Size().r; row++ ){
 
 			
 
-			if( testSinogram.Data().getData( idx2CR{ col, row }) != importedSinogram.Data().getData( idx2CR{ col, row } ) ) return false;
+			if( testSinogram.Data().getData( GridIndex{ col, row }) != importedSinogram.Data().getData( GridIndex{ col, row } ) ) return false;
 		}
 	}
 
@@ -231,14 +232,14 @@ bool test_serialisation( void ){
 bool test_filter( void ){
 
 	signed long long N = 101;
-	Zrange range{ -N + 1, N - 1 };
+	NaturalNumberRange NumberRange{ -N + 1, N - 1 };
 	double samplingInterval = 5;
 
-	discreteFilter h{ range, samplingInterval, discreteFilter::ramLak };
+	discreteFilter h{ NumberRange, samplingInterval, discreteFilter::ramLak };
 
-	vector<v2> plot;
+	vector<Tuple2D> plot;
 
-	for( signed long long int n = h.Range().start; n <= h.Range().end; n++ ) plot.emplace_back( (double) n, h( n ) );
+	for( signed long long int n = h.Range().start(); n <= h.Range().end(); n++ ) plot.emplace_back( (double) n, h( n ) );
 
 	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
 
@@ -251,7 +252,7 @@ bool test_filter( void ){
 
 bool test_filteredProjection( void ){
 
-	vector<char> importedData = importSerialized( string{ "test_Tomography_serialized_sinogram_300x100_1.txt" } );
+	vector<char> importedData = ImportSerialized( string{ "test_Tomography_serialized_sinogram_300x100_1.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };
@@ -269,7 +270,7 @@ bool test_filteredProjection( void ){
 
 bool test_reconstruction( void ){
 
-	vector<char> importedData = importSerialized( string{ "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt"} );
+	vector<char> importedData = ImportSerialized( string{ "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt"} );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	radonTransformed importedSinogram{ importedData, readStart };

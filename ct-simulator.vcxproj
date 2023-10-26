@@ -214,6 +214,8 @@
     <ClInclude Include="propability.h" />
     <ClInclude Include="rgbImage.h" />
     <ClInclude Include="scattering.h" />
+    <ClInclude Include="serialization.h" />
+    <ClInclude Include="serialization.hpp" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="slicePlane.h" />
     <ClInclude Include="storedObject.hpp" />
@@ -281,6 +283,7 @@
     <ClCompile Include="propability.cpp" />
     <ClCompile Include="rgbImage.cpp" />
     <ClCompile Include="scattering.cpp" />
+    <ClCompile Include="serialization.cpp" />
     <ClCompile Include="slicePlane.cpp" />
     <ClInclude Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />

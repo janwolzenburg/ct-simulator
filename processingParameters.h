@@ -32,23 +32,23 @@ class processingParameter{
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	processingParameter( const vector<char>& binData, vector<char>::const_iterator& it );
+	processingParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	public:
 
-	range projectionsContrast;			/*!<Contrast for sinogram*/
+	NumberRange projectionsContrast;			/*!<Contrast for sinogram*/
 	discreteFilter::TYPE filterType;	/*!<The filter for filtering the projections*/
-	range filteredProjectionsContrast;	/*!<Contrast for filteredsinogram*/
-	range reconstrucedImageContrast;	/*!<Contrast for reconstructed image*/
+	NumberRange filteredProjectionsContrast;	/*!<Contrast for filteredsinogram*/
+	NumberRange reconstrucedImageContrast;	/*!<Contrast for reconstructed image*/
 
 };

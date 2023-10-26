@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "slicePlane.h"
-
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -23,20 +23,20 @@
 
 slicePlane::slicePlane( void ) :
 	cSys( CSYS_TREE().addCSys( "Slice plane system" ) ),
-	surface{ uvec3{ v3{ 1, 0, 0 }, cSys },
-				uvec3{ v3{ 0, 1, 0 }, cSys },
-				pnt3{  v3{0, 0, 0}, cSys } },
+	surface{ uvec3{ Tuple3D{ 1, 0, 0 }, cSys },
+				uvec3{ Tuple3D{ 0, 1, 0 }, cSys },
+				pnt3{  Tuple3D{0, 0, 0}, cSys } },
 	rotationAngleX( 0. ),
 	rotationAngleY( 0. ),
 	positionZ( 0. ){
 };
 
-slicePlane::slicePlane( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	cSys{ CSYS_TREE().addCSys( binData, it ) },
-	surface{ binData, it, cSys },
-	rotationAngleX( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
-	rotationAngleY( deSerializeBuildIn<double>( (double) 0., binData, it ) ),
-	positionZ( deSerializeBuildIn<double>( (double) 0., binData, it ) )
+slicePlane::slicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	cSys{ CSYS_TREE().addCSys( binary_data, it ) },
+	surface{ binary_data, it, cSys },
+	rotationAngleX( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),
+	rotationAngleY( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),
+	positionZ( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) )
 {
 
 
@@ -44,16 +44,16 @@ slicePlane::slicePlane( const vector<char>& binData, vector<char>::const_iterato
 }
 
 
-size_t slicePlane::serialize( vector<char>& binData ) const{
+size_t slicePlane::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += cSys->serialize( binData );
-	numBytes += surface.serialize( binData );
-	numBytes += serializeBuildIn( rotationAngleX, binData );
-	numBytes += serializeBuildIn( rotationAngleY, binData );
-	numBytes += serializeBuildIn( positionZ, binData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += cSys->Serialize( binary_data );
+	num_bytes += surface.Serialize( binary_data );
+	num_bytes += SerializeBuildIn( rotationAngleX, binary_data );
+	num_bytes += SerializeBuildIn( rotationAngleY, binary_data );
+	num_bytes += SerializeBuildIn( positionZ, binary_data );
 
-	return numBytes;
+	return num_bytes;
 
 };

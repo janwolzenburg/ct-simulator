@@ -44,7 +44,7 @@ double sum( const vector<double> vec );
  * @param vec Vector of 2D points
  * @return Sum of y-values
 */
-double sumY( const vector<v2> vec );
+double sumY( const vector<Tuple2D> vec );
 
 /*!
  * @brief Scale each element in vector
@@ -58,20 +58,20 @@ void scale( vector<double>& vec, const double factor );
  * @param vec Vector with 2D elements
  * @param factor Factor to scael
 */
-void scaleY( vector<v2>& vec, const double factor );
+void scaleY( vector<Tuple2D>& vec, const double factor );
 
 /*!
  * @brief Normalize 2D Vector. Sum of y-values will be one afterwards
  * @param vec Vector to normalise
 */
-void normaliseThis( vector<v2>& vec );
+void normaliseThis( vector<Tuple2D>& vec );
 
 /*!
  * @brief Normalize 2D vector
  * @param vec Vector to normalise
  * @return Normalized vector
 */
-vector<v2> normalise( const vector<v2>& vec );
+vector<Tuple2D> normalise( const vector<Tuple2D>& vec );
 
 /*!
  * @brief Search element in vector closest to value

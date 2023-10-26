@@ -13,6 +13,7 @@
 *********************************************************************/
 
 #include "modelView.h"
+#include "serialization.h"
 #include "widgets.h"
 
 
@@ -213,14 +214,14 @@ void modelView::UpdateModel( void ){
 
 const string modelViewParameter::FILE_PREAMBLE{ "Ver01MODELVIEWPARAMETER_FILE_PREAMBLE" };
 
-size_t modelViewParameter::serialize( vector<char>& binData ) const{
+size_t modelViewParameter::Serialize( vector<char>& binary_data ) const{
 
-	size_t numBytes = 0;
+	size_t num_bytes = 0;
 
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binData );
-	numBytes += viewContrast.serialize( binData );
-	numBytes += plane.serialize( binData );
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
+	num_bytes += viewContrast.Serialize( binary_data );
+	num_bytes += plane.Serialize( binary_data );
 
-	return numBytes;
+	return num_bytes;
 
 }

@@ -128,7 +128,7 @@ void tomographyExec::handleEvents( void ){
 	else
 		exportButton.deactivate();
 	
-	if(  unsetFlag( radiateFlag ) ){
+	if(  UnsetFlag( radiateFlag ) ){
 
 		state.deactivateAll();
 
@@ -150,29 +150,29 @@ void tomographyExec::handleEvents( void ){
 		state.activateAll();
 	}
 
-	if( unsetFlag( exportFlag ) )
+	if( UnsetFlag( exportFlag ) )
 		state.exportSinogram();
 	
 
-	if( unsetFlag( updateFlag )){
+	if( UnsetFlag( updateFlag )){
 		informationUpdateFlag = true;
 		state.tomographyParamerters = tomographyParameter{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
 	}
 
-	if( unsetFlag( informationUpdateFlag )){
+	if( UnsetFlag( informationUpdateFlag )){
 
 		string informationString;
 
-		informationString += "Sinogramgröße:      " + toString( state.RadonParameter().numberPoints.col ) + " x " + toString( state.RadonParameter().numberPoints.row ) + '\n';
-		informationString += "Sinogramauflösung:  " + toString( state.RadonParameter().resolution.col / 2. / PI * 360.,2 ) + "° x " + toString( state.RadonParameter().resolution.row, 2 ) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + toString( state.RadonParameter().framesToFillSinogram ) + '\n';
-		informationString += "Detektorwinkel:	  " + toString( state.DetectorPhysicalParameter().angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Sinogramgröße:      " + ToString( state.RadonParameter().numberPoints.c ) + " x " + ToString( state.RadonParameter().numberPoints.r ) + '\n';
+		informationString += "Sinogramauflösung:  " + ToString( state.RadonParameter().resolution.c / 2. / PI * 360.,2 ) + "° x " + ToString( state.RadonParameter().resolution.r, 2 ) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ToString( state.RadonParameter().framesToFillSinogram ) + '\n';
+		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
-		informationString += "Elektrische Leistung:	  " + toString( state.Tube().electricalPower() ) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + toString( state.Tube().rayPower() ) + "W" + '\n';
-		informationString += "Strahlenergie:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
-		informationString += "Strahlenergie gesamt:	  " + toString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
+		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().electricalPower() ) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ToString( state.Tube().rayPower() ) + "W" + '\n';
+		informationString += "Strahlenergie:	  " + ToString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + ToString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
 		information.value( informationString.c_str() );
 
 	}

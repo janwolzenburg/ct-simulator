@@ -36,7 +36,7 @@ class rayScattering{
 	 * @param energiesAmount_ For how many energies should  the probabilities be calculated
 	 * @param scatteredNormal_ Normal around which rays shoul´d be rpteated wehen scattered
 	*/
-	rayScattering( const size_t anglesAmount, const range energyRange_, const size_t energiesAmount_, const uvec3 scatteredNormal_ );
+	rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energiesAmount_, const uvec3 scatteredNormal_ );
 
 	/*!
 	 * @brief Scatter given ray
@@ -58,13 +58,13 @@ class rayScattering{
 	 * @param frequency Frequency
 	 * @return Propability distribution for given frequency
 	*/
-	vector<v2> getDistribution( const double frequency ) const;
+	vector<Tuple2D> getDistribution( const double frequency ) const;
 
 
 	private:
 
 	size_t energiesAmount;			/*!<Amount of frequencies*/
-	range energyRange;				/*!<Range of frequencies*/
+	NumberRange energyRange;				/*!<Range of frequencies*/
 	double energyResolution;		/*!<Frequency Resolution*/
 
 	vector<propabilityDistribution> distributions;	/*!<Vector with propability distributions*/

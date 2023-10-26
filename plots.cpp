@@ -28,7 +28,7 @@
 */
 
 void plot::initialise( const path path_, const string label_, const string xlabel_, const string ylabel_,
-				 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
+				 const plotLimits limits_, const GridIndex imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
 
 	label = label_;
 	imagePath = path_;
@@ -46,7 +46,7 @@ void plot::initialise( const path path_, const string label_, const string xlabe
 }
 
 plot::plot( const path imgPath_, const string xlabel_, const string ylabel_,
-		const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
+		const plotLimits limits_, const GridIndex imgSize_, const bool grid_ ) :
 	imagePath( imgPath_ ),
 	xlabel( xlabel_ ), ylabel( ylabel_ ),
 	grid( grid_ ),
@@ -67,10 +67,10 @@ void plot::drawPlot( void ){
 	plot2D.legend().hide();
 
 	if( !limits.autoXRange )
-		plot2D.xrange( limits.xRange.start, limits.xRange.end );
+		plot2D.xrange( limits.xRange.start(), limits.xRange.end() );
 
 	if( !limits.autoYRange )
-		plot2D.yrange( limits.yRange.start, limits.yRange.end );
+		plot2D.yrange( limits.yRange.start(), limits.yRange.end() );
 
 	if( !xFormat.empty() )
 		plot2D.gnuplot( "set format x '" + xFormat + "'" );
@@ -85,7 +85,7 @@ void plot::drawPlot( void ){
 		plot2D.grid().show();
 
 	plot2D.palette( "set1" );
-	plot2D.fontSize( imgSize.row / 20 );
+	plot2D.fontSize( imgSize.r / 20 );
 
 	if( !label.empty() ){
 		plot2D.gnuplot( "set title \"" + label + "\"" );
@@ -95,7 +95,7 @@ void plot::drawPlot( void ){
 	sciplot::Figure  fig = { {plot2D} };
 	sciplot::Canvas canvas = { {fig} };
 
-	canvas.size( (size_t) ( imgSize.col ), (size_t) ( imgSize.row ) );
+	canvas.size( (size_t) ( imgSize.c ), (size_t) ( imgSize.r ) );
 	canvas.save( imagePath.string() );
 
 }
@@ -106,7 +106,7 @@ void plot::drawPlot( void ){
 */
 
 lineplot::lineplot( const string name_, const string xlabel_, const string ylabel_,
-			const plotLimits limits_, const idx2CR imgSize_, const bool grid_ ) :
+			const plotLimits limits_, const GridIndex imgSize_, const bool grid_ ) :
 	plot{ name_, xlabel_, ylabel_, limits_, imgSize_, grid_ },
 	X(), Y()
 {}

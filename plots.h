@@ -23,8 +23,8 @@ struct plotLimits{
 	bool autoXRange = true;				/*!<Enable or disable automatic x-axis limits*/
 	bool autoYRange = true;				/*!<Enable or disable automatic y-axis limits*/
 
-	range xRange = range{ 0., 1. };		/*!<x-range*/
-	range yRange = range{ 0., 1. };		/*!<y-range*/
+	NumberRange xRange = NumberRange{ 0., 1. };		/*!<x-range*/
+	NumberRange yRange = NumberRange{ 0., 1. };		/*!<y-range*/
 
 	double xFactor = 1.;				/*!<Factor for x-axis sclaing*/
 	double yFactor = 1.;				/*!<Factor for y-axis sclaing*/
@@ -59,7 +59,7 @@ class plot{
 	 * @param grid_ Flag to show grid
 	*/
 	void initialise( const path path_, const string label_, const string xlabel_, const string ylabel_,
-					 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
+					 const plotLimits limits_, const GridIndex imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
 	/*!
 	 * @brief Set plot limits
@@ -71,13 +71,13 @@ class plot{
 	 * @brief Set image size
 	 * @param size New size of image
 	*/
-	void setSize( const idx2CR size ){ imgSize = size; };
+	void setSize( const GridIndex size ){ imgSize = size; };
 
 	/*!
 	 * @brief Get the image size
 	 * @return Current image size
 	*/
-	idx2CR getSize( void ) const{ return imgSize; };
+	GridIndex getSize( void ) const{ return imgSize; };
 
 	/*!
 	 * @brief Redraw the plot
@@ -97,12 +97,12 @@ class plot{
 	 * @param grid_ Flag to show grid
 	*/
 	plot( const path imgPath_, const string xlabel_, const string ylabel_,
-		  const plotLimits limits_, const idx2CR imgSize_, const bool grid_ );
+		  const plotLimits limits_, const GridIndex imgSize_, const bool grid_ );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	plot( void ) : plot{ "Dummy", "X", "Y", plotLimits{}, idx2CR{ 5, 5 }, false }{};
+	plot( void ) : plot{ "Dummy", "X", "Y", plotLimits{}, GridIndex{ 5, 5 }, false }{};
 
 	/*!
 	 * @brief Reset the plot
@@ -130,7 +130,7 @@ class plot{
 	string yFormat;		/*!<Format string for y-axis tick values*/
 	plotLimits limits;	/*!<Limits of plot*/
 
-	idx2CR imgSize;				/*!<Size of image*/
+	GridIndex imgSize;				/*!<Size of image*/
 	sciplot::Plot2D plot2D;		/*!<Instance of sciplot 2D-plot*/
 
  };

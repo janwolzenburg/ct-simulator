@@ -27,16 +27,16 @@ class slicePlane{
 
 	/*!
 	 * @brief Constructor from serialized data
-	 * @param binData Reference to vector with binary data
+	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	slicePlane( const vector<char>& binData, vector<char>::const_iterator& it );
+	slicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binData Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
-	size_t serialize( vector<char>& binData ) const;
+	size_t Serialize( vector<char>& binary_data ) const;
 
 	public:
 

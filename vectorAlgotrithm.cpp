@@ -43,8 +43,8 @@ double sum( const vector<double> vec ) {
 	return std::accumulate( vec.begin(), vec.end(), 0. );
 }
 
-double sumY( const vector<v2> vec ){
-	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const v2& b ){ return a + b.y; } );
+double sumY( const vector<Tuple2D> vec ){
+	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const Tuple2D& b ){ return a + b.y; } );
 }
 
 void scale(vector<double>& vec, const double factor) {
@@ -52,18 +52,18 @@ void scale(vector<double>& vec, const double factor) {
 }
 
 
-void scaleY( vector<v2>& vec, const double factor ){
-	std::for_each( vec.begin(), vec.end(), [&] ( v2& d ){ d.y *= factor; } );
+void scaleY( vector<Tuple2D>& vec, const double factor ){
+	std::for_each( vec.begin(), vec.end(), [&] ( Tuple2D& d ){ d.y *= factor; } );
 }
 
 
-void normaliseThis( vector<v2>& vec ){
+void normaliseThis( vector<Tuple2D>& vec ){
 	scaleY( vec, 1. / sumY( vec ) );
 }
 
-vector<v2> normalise( const vector<v2>& vec ){
+vector<Tuple2D> normalise( const vector<Tuple2D>& vec ){
 
-	vector<v2> normalisedVector{ vec };
+	vector<Tuple2D> normalisedVector{ vec };
 
 	normaliseThis( normalisedVector );
 

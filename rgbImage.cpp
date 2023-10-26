@@ -14,6 +14,7 @@
 
 #include "rgbImage.h"
 #include "monoImage.h"
+#include "serialization.h"
 
 
 /*********************************************************************
@@ -74,15 +75,15 @@ rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t
 
 
 rgbImage::rgbImage( const vector<char>& binsourceData, vector<char>::const_iterator& it ) :
-	width( deSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
-	height( deSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
+	width( DeSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
+	height( DeSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
 	numPixel( width* height ),
 	imageData( numPixel, rgb_Int{ 0, 0, 0 } )
 {
 	for( size_t i = 0; i < numPixel; i++ ){
-		imageData.at( i ).red = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
-		imageData.at( i ).green = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
-		imageData.at( i ).blue = deSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		imageData.at( i ).red = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		imageData.at( i ).green = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		imageData.at( i ).blue = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
 	}
 }
 
@@ -96,18 +97,18 @@ size_t rgbImage::pixelIndex( const size_t c, const size_t r ) const{
 	return idx;
 }
 
-size_t rgbImage::serialize( vector<char>& binsourceData ) const{
+size_t rgbImage::Serialize( vector<char>& binsourceData ) const{
 
-	size_t numBytes = 0;
-	numBytes += serializeBuildIn( FILE_PREAMBLE, binsourceData );
-	numBytes += serializeBuildIn( width, binsourceData );
-	numBytes += serializeBuildIn( height, binsourceData );
+	size_t num_bytes = 0;
+	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binsourceData );
+	num_bytes += SerializeBuildIn( width, binsourceData );
+	num_bytes += SerializeBuildIn( height, binsourceData );
 
 	for( size_t i = 0; i < numPixel; i++ ){
-		numBytes += serializeBuildIn( imageData.at( i ).red, binsourceData );
-		numBytes += serializeBuildIn( imageData.at( i ).green, binsourceData );
-		numBytes += serializeBuildIn( imageData.at( i ).blue, binsourceData );
+		num_bytes += SerializeBuildIn( imageData.at( i ).red, binsourceData );
+		num_bytes += SerializeBuildIn( imageData.at( i ).green, binsourceData );
+		num_bytes += SerializeBuildIn( imageData.at( i ).blue, binsourceData );
 	}
 
-	return numBytes;
+	return num_bytes;
 }

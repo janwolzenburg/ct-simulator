@@ -41,13 +41,13 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 	// Create system of equations with two variables
 	eqnSys sys( 2 );
 
-	v3 column0 = l1.R().XYZ();
-	v3 column1 = -l2.R().XYZ( l1.R() );
-	v3 column2 = l2.O().XYZ( l1.O() ) - l1.O().XYZ();
+	Tuple3D column0 = l1.R().XYZ();
+	Tuple3D column1 = -l2.R().XYZ( l1.R() );
+	Tuple3D column2 = l2.O().XYZ( l1.O() ) - l1.O().XYZ();
 
-	sys.populateColumn( v2{ column0.x, column0.y } );
-	sys.populateColumn( v2{ column1.x, column1.y } );
-	sys.populateColumn( v2{ column2.x, column2.y } );
+	sys.populateColumn( Tuple2D{ column0.x, column0.y } );
+	sys.populateColumn( Tuple2D{ column1.x, column1.y } );
+	sys.populateColumn( Tuple2D{ column2.x, column2.y } );
 
 	// Solve system
 	eqnSysSolution sysSol = sys.solve();
@@ -91,7 +91,7 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 {
 
 	// Components of ray trajectory in voxel coordinate system
-	v3 comps = r.R().XYZ( v.O() );
+	Tuple3D comps = r.R().XYZ( v.O() );
 	bool facePossible = true;
 
 	// Find Entrance

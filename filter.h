@@ -54,14 +54,14 @@ class discreteFilter{
 	 * @param samplingInterval_ Sampling interval
 	 * @param type Filter type
 	*/
-	discreteFilter( const Zrange pointsRange_, const double samplingInterval_, const TYPE type );
+	discreteFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const TYPE type );
 
 	/*!
 	 * @brief Default constructor
 	 * @param  
 	*/
 	discreteFilter( void ) : 
-		discreteFilter( Zrange{ -5, 5 }, 1., constant ) {};
+		discreteFilter( NaturalNumberRange{ -5, 5 }, 1., constant ) {};
 
 	/*!
 	 * @brief Get values of filter kernel
@@ -73,19 +73,19 @@ class discreteFilter{
 	 * @brief Get the filter as points
 	 * @return Vector with x,y points
 	*/
-	vectorPair PlotValues( void ) const;
+	VectorPair PlotValues( void ) const;
 
 	/*!
 	 * @brief Get range of kernel
 	 * @return Range
 	*/
-	Zrange Range( void ) const{ return pointsRange; };
+	NaturalNumberRange Range( void ) const{ return pointsRange; };
 
 	/*!
 	 * @brief Get the relevant range by threshold
 	 * @return Range of indices where the filter values are significant
 	*/
-	Zrange getRelevantRange( void ) const;
+	NaturalNumberRange getRelevantRange( void ) const;
 
 	/*!
 	 * @brief Get value of filter at index
@@ -122,7 +122,7 @@ class discreteFilter{
 	private:
 
 	TYPE type;					/*!<Type of filter*/
-	Zrange pointsRange;			/*!<Range of discrete sampling points*/
+	NaturalNumberRange pointsRange;			/*!<Range of discrete sampling points*/
 	size_t numberPoints;		/*!<Amount of points*/
 	double samplingInterval;	/*!<Sampling interval*/
 	vector<double> values;		/*!<Values*/

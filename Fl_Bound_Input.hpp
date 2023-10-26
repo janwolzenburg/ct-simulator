@@ -22,7 +22,7 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 	input{ x, y, w, h, label },
 	precision( 0 ),
 	current( (T) 0 ),
-	valueString( toString( current, precision ) ),
+	valueString( ToString( current, precision ) ),
 	maxVal( (T) 100 ),
 	minVal( (T) 0 ),
 	constraint( NONE )
@@ -41,7 +41,7 @@ template< class C, typename T>
 
 template< class C, typename T>
 void Fl_Bound_Input<C, T>::value( const T newValue ){
-	valueString = toString( newValue, precision );
+	valueString = ToString( newValue, precision );
 	input.value( valueString.c_str() );
 	checkBounds();
 }
@@ -57,7 +57,7 @@ void Fl_Bound_Input<C, T>::setProperties( const T min_, const T max_, const int 
 template< class C, typename T>
 void Fl_Bound_Input<C, T>::checkBounds( void ){
 
-	current = toNum<T>( input.value() );
+	current = ToNum<T>( input.value() );
 	if( current < minVal ) current = minVal;
 	if( current > maxVal ) current = maxVal;
 
@@ -77,6 +77,6 @@ void Fl_Bound_Input<C, T>::checkBounds( void ){
 	}
 
 
-	valueString = toString( current, precision );
+	valueString = ToString( current, precision );
 	input.value( valueString.c_str() );
 }

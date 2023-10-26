@@ -38,8 +38,8 @@ string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulato
 	return str;
 }
 
-primitiveVec3::primitiveVec3( const vector<char>& binData, vector<char>::const_iterator& it ) :
-	v3{ binData, it }
+primitiveVec3::primitiveVec3( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	Tuple3D{ binary_data, it }
 {}
 
 bool primitiveVec3::operator== ( const primitiveVec3 v ) const{

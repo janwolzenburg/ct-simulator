@@ -21,4 +21,4 @@ bool test_gantry( void );
 
 detector getTestDetector( void );
 
-gantry getTestGantry( const idx2CR sinogramSize, const size_t raysInBeam );
+gantry getTestGantry( const GridIndex sinogramSize, const size_t raysInBeam );
