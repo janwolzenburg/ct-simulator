@@ -134,7 +134,7 @@ class cSysTree : public mathObj{
 
 	/*!
 	 * @brief Default Constructor
-	 * @details Initializes all systems in array to default cartCSys
+	 * @details Initialises all systems in array to default cartCSys
 	*/
 	cSysTree( void );
 

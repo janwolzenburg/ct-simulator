@@ -93,7 +93,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		tubeGrp.add( spectrumPlot );
-		spectrumPlot.initializePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrumPlot.initialisePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, range{ 10., 200. }, range{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -155,7 +155,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 
 		detectorGrp.add( detectorPlot );
-		detectorPlot.initializePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, range{ 0, 1 }, range{ 0, 1 } }, "", "", true, true );
+		detectorPlot.initialisePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, range{ 0, 1 }, range{ 0, 1 } }, "", "", true, true );
 
 
 }

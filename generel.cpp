@@ -248,7 +248,7 @@ vector<vector<v2CR>> deSerialize<vector<vector<v2CR>>>( const vector<char>& binD
 		// Amount of elements in sub vector
 		size_t numElements = deSerializeBuildIn<size_t>( (size_t) 0, binData, it );
 		
-		// Initialize sub vector
+		// Initialise sub vector
 		vector<v2CR> subVec( numElements, v2CR( 0., 0. ) );
 
 		// Assign deserialsized data to sub vector elements 

@@ -53,7 +53,7 @@ class Fl_Plot : public Fl_Widget{
 	 * @param axisEqual_ 
 	 * @param grid_ 
 	*/
-	void initializePlot( const path path_, const string xlabel_, const string ylabel_,
+	void initialisePlot( const path path_, const string xlabel_, const string ylabel_,
 						 const plotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
 	void setLimits( const plotLimits newLimits ){ plotInstance.setLimits( newLimits ); };

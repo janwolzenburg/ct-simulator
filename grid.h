@@ -196,10 +196,10 @@ class grid{
 	D& operator()( const v2CR coordinates ){ return this->operator()( getIndex( coordinates ) ); };
 
 	/*!
-	 * @brief Initialize minimum and maximum value
+	 * @brief Initialise minimum and maximum value
 	 * @details For own non arithmetic types of D additional code in function implementation is necessary
 	*/
-	void initializeMinMaxValue( void );
+	void initialiseMinMaxValue( void );
 
 };
 

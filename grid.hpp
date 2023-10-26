@@ -31,7 +31,7 @@ grid<D>::grid( void ) :
 	start{ 0. ,0. },
 	resolution{ 1., 1. }
 {
-	initializeMinMaxValue();
+	initialiseMinMaxValue();
 	fillVectors( D() );
 }
 
@@ -41,7 +41,7 @@ grid<D>::grid( const idx2CR size_, const v2CR start_, const v2CR resolution_, D 
 	resolution( resolution_ ),
 	start( start_ )
 {
-	initializeMinMaxValue();
+	initialiseMinMaxValue();
 	fillVectors( defaultValue );
 }
 
@@ -54,7 +54,7 @@ grid<D>::grid( const range columnRange, const range rowRange, const v2CR resolut
 	resolution{ v2CR{ ( columnRange.end - start.col ) / (double) ( size.col - 1 ),
 						( rowRange.end - start.row ) / (double) ( size.row - 1 ) } }
 {
-	initializeMinMaxValue();
+	initialiseMinMaxValue();
 	fillVectors( defaultValue );
 }
 
@@ -154,7 +154,7 @@ v2CR grid<D>::getCoordinates( const idx2CR index ) const{
 }
 
 template<class D>
-void grid<D>::initializeMinMaxValue( void ){
+void grid<D>::initialiseMinMaxValue( void ){
 
 	if constexpr( std::is_arithmetic_v<D> ){
 		minValue = (std::numeric_limits<D>::min)(); // Additional () needed to stop macro expansion of min() and max()!!!

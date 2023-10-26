@@ -46,7 +46,7 @@ class plot{
 	string getImgPath( void ) const { return imagePath.string(); };
 
 	/*!
-	 * @brief Initialize the plot
+	 * @brief Initialise the plot
 	 * @param path_ Storage path for plot image
 	 * @param label_ Figure label
 	 * @param xlabel_ x-axis label
@@ -58,7 +58,7 @@ class plot{
 	 * @param axisEqual_ Flag to make axis equally scaled
 	 * @param grid_ Flag to show grid
 	*/
-	void initialize( const path path_, const string label_, const string xlabel_, const string ylabel_,
+	void initialise( const path path_, const string label_, const string xlabel_, const string ylabel_,
 					 const plotLimits limits_, const idx2CR imgSize_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ );
 
 	/*!

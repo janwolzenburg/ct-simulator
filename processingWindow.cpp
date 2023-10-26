@@ -52,7 +52,7 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 	filterTypeSelector.value( filterName );
 
 
-	filterPlot.initializePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "", plotLimits{ true, true }, "", "", false, true );
+	filterPlot.initialisePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "", plotLimits{ true, true }, "", "", false, true );
 
 
 
