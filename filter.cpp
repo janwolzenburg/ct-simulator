@@ -69,7 +69,7 @@ discreteFilter::discreteFilter( const NaturalNumberRange pointsRange_, const dou
 			{
 				// Conditions for filter calculation
 				if( n == 0 )				kernelValue = 1. / ( 4. * pow( samplingInterval, 2. ) );
-				else if( isEven( n ) )		kernelValue = 0.;
+				else if( IsEven( n ) )		kernelValue = 0.;
 				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
 
 				break;

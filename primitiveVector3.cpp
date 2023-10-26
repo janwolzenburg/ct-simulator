@@ -1,5 +1,5 @@
 /*********************************************************************
- * @file   primitiveVec3.cpp
+ * @file   PrimitiveVector3.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -16,7 +16,7 @@
 using std::string;
 
 #include "generelMath.h"
-#include "primitiveVec3.h"
+#include "primitiveVector3.h"
 
 
 
@@ -26,10 +26,10 @@ using std::string;
 
 
 /*
-	primitiveVec3 implementation
+	PrimitiveVector3 implementation
 */
 
-string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
+string PrimitiveVector3::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	string str;
 	char tempCharArr[ 64 ] = { 0 };
 	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
@@ -38,57 +38,49 @@ string primitiveVec3::toStr( [[maybe_unused]] const unsigned int newLineTabulato
 	return str;
 }
 
-primitiveVec3::primitiveVec3( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	Tuple3D{ binary_data, it }
-{}
+bool PrimitiveVector3::operator== ( const PrimitiveVector3 v ) const{
 
-bool primitiveVec3::operator== ( const primitiveVec3 v ) const{
+	const PrimitiveVector3 diffVec = v - *this;
 
-	const primitiveVec3 diffVec = v - *this;
-
-	return iseqErr( diffVec.Length(), 0 );
+	return IsNearlyEqualDistance( diffVec.Length(), 0 );
 }
 
-bool primitiveVec3::operator!= ( const primitiveVec3 v ) const{
-	return !( this->operator==( v ) );
-}
-
-primitiveVec3 primitiveVec3::operator/ ( const double divisor ) const{
+PrimitiveVector3 PrimitiveVector3::operator/ ( const double divisor ) const{
 	if( divisor == 0 ) return *this;
-	return primitiveVec3{ x / divisor, y / divisor, z / divisor };
+	return PrimitiveVector3{ x / divisor, y / divisor, z / divisor };
 }
 
-double primitiveVec3::Length( void ) const{
+double PrimitiveVector3::Length( void ) const{
 	return sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 }
 
-void primitiveVec3::scale( const double scalar ){
+void PrimitiveVector3::Scale( const double scalar ){
 	x *= scalar;
 	y *= scalar;
 	z *= scalar;
 }
 
-mathObj::MATH_ERR primitiveVec3::normalise( void ){
+MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
-	// New length
+	// New length_
 	double len = this->Length();
 
 	// Length must not by zero
-	if( iseqErr( len, 0 ) ) return checkErr( MATH_ERR::OPERATION, "Normalization only possible with vector that has length!" );
+	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length_!" );
 
-	// Exit when length is already one
-	if( iseqErr( len, 1 ) ) return MATH_ERR::OK;
+	// Exit when length_ is already one
+	if( IsNearlyEqualDistance( len, 1 ) ) return MathError::Ok;
 
-	// Calculate scaling factor as reciprocal of length
+	// Calculate scaling factor as reciprocal of length_
 	double lenRec = 1 / len;
 
 	// Scale and return error code
-	scale( lenRec );
+	Scale( lenRec );
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
-void primitiveVec3::rotXM( const double sinPhi, const double cosPhi ){
+void PrimitiveVector3::RotateAroundXAxis( const double sinPhi, const double cosPhi ){
 	// Apply rotation matrix
 	double x_ = x;
 	double y_ = y * cosPhi - z * sinPhi;
@@ -97,7 +89,7 @@ void primitiveVec3::rotXM( const double sinPhi, const double cosPhi ){
 	x = x_; y = y_; z = z_;
 }
 
-void primitiveVec3::rotYM( const double sinPhi, const double cosPhi ){
+void PrimitiveVector3::RotateAroundYAxis( const double sinPhi, const double cosPhi ){
 	// Apply rotation matrix
 	double x_ = x * cosPhi + z * sinPhi;
 	double y_ = y;
@@ -106,7 +98,7 @@ void primitiveVec3::rotYM( const double sinPhi, const double cosPhi ){
 	x = x_; y = y_; z = z_;
 }
 
-void primitiveVec3::rotZM( const double sinPhi, const double cosPhi ){
+void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosPhi ){
 	// Apply rotation matrix
 	double x_ = x * cosPhi - y * sinPhi;
 	double y_ = x * sinPhi + y * cosPhi;
@@ -115,59 +107,59 @@ void primitiveVec3::rotZM( const double sinPhi, const double cosPhi ){
 	x = x_; y = y_; z = z_;
 }
 
-mathObj::MATH_ERR primitiveVec3::rotNM( const primitiveVec3 n, const double phi ){
+MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n, const double phi ){
 	// Steps for rotation:
 	// 1: rotate around z axis to tilt rot. axis into x-z plane
 	// 2: rotate around y-axis to align rot. axis with z-axis
-	// 3. rotate this primitiveVec3 by phi around z-axis
+	// 3. rotate this PrimitiveVector3 by phi around z-axis
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( iseqErr( n.Length(), 0 ) ) return checkErr( MATH_ERR::INPUT, "Rotation axis must have length!" );
+	if( IsNearlyEqualDistance( n.Length(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length_!" );
 
-	// Create copy and normalise
-	primitiveVec3 nCpy{ n };
-	nCpy.normalise();
+	// Create copy and Normalise
+	PrimitiveVector3 nCpy{ n };
+	nCpy.Normalise();
 
 	double d = sqrt( pow( nCpy.x, 2 ) + pow( nCpy.y, 2 ) );		// Length of the axis projection on x-y plane
-	if( errno != 0 ) return checkErr( MATH_ERR::GENERAL, "Error calculation square root!" );		// Check error flag
+	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculation square root!" );		// Check error flag
 
-	double sinThe = 0, cosThe = 1;								// Sine and cosine of angle Theta (angle between rot. axis projection onto x-y plane and x axis)
+	double sinThe = 0, cosThe = 1;								// Sine and cosine of GetAngle Theta (GetAngle between rot. axis projection onto x-y plane and x axis)
 
 	// Avoid division by zero. d = 0 means rot. axis is parallel to z
 	if( d > 0 ){
-		sinThe = nCpy.y / d;		// Sine of the angle Theta
-		cosThe = nCpy.x / d;		// Cosine of the angle Theta
+		sinThe = nCpy.y / d;		// Sine of the GetAngle Theta
+		cosThe = nCpy.x / d;		// Cosine of the GetAngle Theta
 
 		// Clockwise rotation of rotation axis and this vector around z-axis to align rotation axis to x-z plane
-		nCpy.rotZM( -sinThe, cosThe );
-		this->rotZM( -sinThe, cosThe );
+		nCpy.RotateAroundZAxis( -sinThe, cosThe );
+		this->RotateAroundZAxis( -sinThe, cosThe );
 	}
 
-	// Gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
+	// Gamma is the GetAngle between the rotation axis (aligned to x-z plane) and the z-axis
 	double sinGam = d;				// Rotation axis vector has been normalised - sine of Gamma is d / 1
 	double cosGam = nCpy.z;			// Cosine is just the z-component of vector n_z / 1
 
 	// Clockwise rotation of this vector around y-axis
-	this->rotYM( -sinGam, cosGam );
+	this->RotateAroundYAxis( -sinGam, cosGam );
 
 	// The axis rotation vector is now aligned with the z-axis
 
-	// Sine and cosine of angle to rotate around
+	// Sine and cosine of GetAngle to rotate around
 	double sinPhi = sin( phi );
 	double cosPhi = cos( phi );
 
 	// Counter-clockwise z-axis rotation of this vector by Phi
-	this->rotZM( sinPhi, cosPhi );
+	this->RotateAroundZAxis( sinPhi, cosPhi );
 
 	// Counter-clockwise y-axis rotation of this vector by Gamma to reverse step 2
-	this->rotYM( sinGam, cosGam );
+	this->RotateAroundYAxis( sinGam, cosGam );
 
 
 	if( d > 0 ){
 		// Counter-clockwise z-axis rotation of this vector by Theta to reverse step 1
-		this->rotZM( sinThe, cosThe );
+		this->RotateAroundZAxis( sinThe, cosThe );
 	}
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 

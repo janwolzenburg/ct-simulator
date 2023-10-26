@@ -24,7 +24,7 @@
 /*!
  * @brief Class for a matrix
 */
-class matx : public mathObj{
+class matx : public MathematicalObject{
 
 	public:
 
@@ -66,10 +66,10 @@ class matx : public mathObj{
 
 	/*!
 	 * @brief Convert matrice's data to string
-	 * @param newLineTabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators Amount of tabulators to insert after each line break
 	 * @return String with line's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Get amount of rows
@@ -89,7 +89,7 @@ class matx : public mathObj{
 	 * @param c2 Column 2
 	 * @return Error code
 	*/
-	MATH_ERR swapCols( const size_t c1, const size_t c2 );
+	MathError swapCols( const size_t c1, const size_t c2 );
 
 	/*!
 	 * @brief Swap two rows
@@ -97,7 +97,7 @@ class matx : public mathObj{
 	 * @param r2 Row 2
 	 * @return Error code
 	*/
-	MATH_ERR swapRows( const size_t r1, const size_t r2 );
+	MathError swapRows( const size_t r1, const size_t r2 );
 
 	/*!
 	 * @brief Find indices of maximum absolute value in submatrix
@@ -113,7 +113,7 @@ class matx : public mathObj{
 	 * @param scalar Factor to scale by
 	 * @return Error code
 	*/
-	MATH_ERR scaleRow( const size_t r, const double scalar );
+	MathError scaleRow( const size_t r, const double scalar );
 
 	/*!
 	 * @brief Substract rows with r2 = r2 - r1
@@ -121,7 +121,7 @@ class matx : public mathObj{
 	 * @param r2 Row to substract r1 from
 	 * @return Error code
 	*/
-	MATH_ERR subRows( const size_t r1, const size_t r2 );
+	MathError subRows( const size_t r1, const size_t r2 );
 
 
 	
@@ -154,7 +154,7 @@ class eqnSys : private matx{
 	 * @brief Convert system's data to string
 	 * @return String with system's data
 	*/
-	string toStr( unsigned int newLineTabulators = 0 ) const override;
+	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Assignment operator deleted
@@ -166,14 +166,14 @@ class eqnSys : private matx{
 	 * @param v Vector to populate column with
 	 * @return Error code
 	*/
-	MATH_ERR populateColumn( const Tuple3D v );
+	MathError populateColumn( const Tuple3D v );
 
 	/*!
 	 * @brief Add column to system of equation with two variables
 	 * @param v Column to add
 	 * @return Error code
 	*/
-	MATH_ERR populateColumn( const Tuple2D v );
+	MathError populateColumn( const Tuple2D v );
 
 	/*!
 	 * @brief Check population status
@@ -199,7 +199,7 @@ class eqnSys : private matx{
 /*!
  * @brief Class describing solution of linear system of equations
 */
-class eqnSysSolution : public mathObj{
+class eqnSysSolution : public MathematicalObject{
 
 	public:
 
@@ -218,7 +218,7 @@ class eqnSysSolution : public mathObj{
 	 * @brief Convert solutions's data to string
 	 * @return String with solutions's data
 	*/
-	string toStr( unsigned int newLineTabulators = 0 ) const override;
+	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Get amount of variables

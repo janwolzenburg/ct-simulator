@@ -43,11 +43,11 @@ double voxData::attenuationAt( const double energy ) const{
 	}
 
 	// Attenuation coefficient in voxel is at energy smaller than cut energy
-	if constexpr( referenceEnergy < energyPhotoFXChange_eV ){
+	if constexpr( referenceEnergy < photoeffect_change_energy_eV ){
 		return attenuation * pow( referenceEnergy / energy, 3. );
 	}
 	
-	return attenuation * pow( energyPhotoFXChange_eV / energy, 3. );
+	return attenuation * pow( photoeffect_change_energy_eV / energy, 3. );
 
 
 }
@@ -62,11 +62,11 @@ size_t voxData::Serialize( vector<char>& binary_data ) const{
 double voxData::attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const{
 
 
-	if constexpr( referenceEnergy < energyPhotoFXChange_eV ){
+	if constexpr( referenceEnergy < photoeffect_change_energy_eV ){
 		return attenuationAtEnergy * pow( energy / referenceEnergy, 3. );
 	}
 	else{
-		return attenuationAtEnergy * pow( energyPhotoFXChange_eV / referenceEnergy, 3. );
+		return attenuationAtEnergy * pow( photoeffect_change_energy_eV / referenceEnergy, 3. );
 	}
 
 }
@@ -85,52 +85,52 @@ bool voxData::hasSpecificProperty( const specialProperty property ) const{
 	vox implementation
 */
 
-vox::vox( const pnt3 o_, const Tuple3D size_, const voxData data_ ) :
+vox::vox( const Point3D o_, const Tuple3D size_, const voxData data_ ) :
 	size( size_ ),
 	data( data_ ),
 	o( o_ ),
 	faces{
-				surfLim{ o.CSys()->EyVec(), o.CSys()->EzVec(), o + o.CSys()->ExVec() * size.x, 0, size.y, 0, size.z },
-				surfLim{ o.CSys()->ExVec(), o.CSys()->EzVec(), o + o.CSys()->EyVec() * size.y, 0, size.x, 0, size.z },
-				surfLim{ o.CSys()->ExVec(), o.CSys()->EyVec(), o + o.CSys()->EzVec() * size.z, 0, size.x, 0, size.y },
-				surfLim{ o.CSys()->ExVec(), o.CSys()->EyVec(), o, 0, size.x, 0, size.y },
-				surfLim{ o.CSys()->ExVec(), o.CSys()->EzVec(), o, 0, size.x, 0, size.z },
-				surfLim{ o.CSys()->EyVec(), o.CSys()->EzVec(), o, 0, size.y, 0, size.z }
+				surfLim{ o.GetCoordinateSystem()->UnitY(), o.GetCoordinateSystem()->UnitZ(), o + o.GetCoordinateSystem()->UnitX() * size.x, 0, size.y, 0, size.z },
+				surfLim{ o.GetCoordinateSystem()->UnitX(), o.GetCoordinateSystem()->UnitZ(), o + o.GetCoordinateSystem()->UnitY() * size.y, 0, size.x, 0, size.z },
+				surfLim{ o.GetCoordinateSystem()->UnitX(), o.GetCoordinateSystem()->UnitY(), o + o.GetCoordinateSystem()->UnitZ() * size.z, 0, size.x, 0, size.y },
+				surfLim{ o.GetCoordinateSystem()->UnitX(), o.GetCoordinateSystem()->UnitY(), o, 0, size.x, 0, size.y },
+				surfLim{ o.GetCoordinateSystem()->UnitX(), o.GetCoordinateSystem()->UnitZ(), o, 0, size.x, 0, size.z },
+				surfLim{ o.GetCoordinateSystem()->UnitY(), o.GetCoordinateSystem()->UnitZ(), o, 0, size.y, 0, size.z }
 }
 {
-	if( size.x <= 0 || size.y <= 0 || size.z <= 0 ) checkErr( MATH_ERR::INPUT, "Size of voxel in each dimension must be greater than zero!" );
+	if( size.x <= 0 || size.y <= 0 || size.z <= 0 ) CheckForAndOutputError( MathError::Input, "Size of voxel in each dimension must be greater than zero!" );
 };
 
 
-string vox::toStr( unsigned int newLineTabulators ) const{
+string vox::ToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 
 	char tempCharArr[ 256 ];
 	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f)", size.x, size.y, size.z );
 
-	str += "o=" + newLine + o.toStr( newLineTabulators + 1 );
+	str += "o=" + newLine + o.ToString( newline_tabulators + 1 );
 	str += "size=" + string( tempCharArr );
 	str += newLine + "data=" + std::to_string( data.attenuationAtRefE() );
-	str += newLine + "face[0]=" + newLine + faces[ 0 ].toStr( newLineTabulators + 1 );
-	str += newLine + "face[1]=" + newLine + faces[ 1 ].toStr( newLineTabulators + 1 );
-	str += newLine + "face[2]=" + newLine + faces[ 2 ].toStr( newLineTabulators + 1 );
-	str += newLine + "face[3]=" + newLine + faces[ 3 ].toStr( newLineTabulators + 1 );
-	str += newLine + "face[4]=" + newLine + faces[ 4 ].toStr( newLineTabulators + 1 );
-	str += newLine + "face[5]=" + newLine + faces[ 5 ].toStr( newLineTabulators + 1 );
+	str += newLine + "face[0]=" + newLine + faces[ 0 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[1]=" + newLine + faces[ 1 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[2]=" + newLine + faces[ 2 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[3]=" + newLine + faces[ 3 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[4]=" + newLine + faces[ 4 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[5]=" + newLine + faces[ 5 ].ToString( newline_tabulators + 1 );
 
 	return str;
 }
 
 
 
-bool vox::contains( const pnt3 p ) const{
+bool vox::contains( const Point3D p ) const{
 
 	// Create copy of point in voxel's coordinate system
-	pnt3 pHere { p.convertTo( this->O() ) };
+	Point3D pHere { p.ConvertTo( this->O() ) };
 
 	// Check all components
 	return	o.X() <= pHere.X() && pHere.X() <= o.X() + size.x &&

@@ -70,30 +70,30 @@ size_t tubeParameter::Serialize( vector<char>& binary_data ) const{
 	tube implementation
 */
 
-tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
-	cSys( cSys_ ),
-	anodeVoltage_V( Fpos( parameter_.anodeVoltage_V )),
-	anodeCurrent_A( Fpos( parameter_.anodeCurrent_A )),
-	anodeAtomicNumber( Fpos( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
+tube::tube( CoordinateSystem* const coordinate_system, const tubeParameter parameter_ ) :
+	cSys( coordinate_system ),
+	anodeVoltage_V( ForcePositive( parameter_.anodeVoltage_V )),
+	anodeCurrent_A( ForcePositive( parameter_.anodeCurrent_A )),
+	anodeAtomicNumber( ForcePositive( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
 	totalPower_W( k_1PerV * static_cast<double>( anodeAtomicNumber ) * anodeCurrent_A * pow( anodeVoltage_V, 2 ) ),
 	maxRadiationEnergy_eV( anodeVoltage_V )
 {
 
 	// Frequencies
-	vector<double> energies = linearSpace( alFilterCutOffEnergy_eV, maxRadiationEnergy_eV, numPointsInSpectrum);
+	vector<double> energies = CreateLinearSpace( al_filter_cut_off_energy_eV, maxRadiationEnergy_eV, numPointsInSpectrum);
 
 	// Values
 	vector<double> spectralPower( energies.size(), 0.);
 
 	// Frequency to which the filter dominates spectral behavious
-	double changeEnergy = energies.front() + ( energies.back() - energies.front()) / (1. - alFilterGradiantFactor);
+	double changeEnergy = energies.front() + ( energies.back() - energies.front()) / (1. - al_filter_gradiant_factor);
 
 	// Fill value vector
 	for (auto energyIt = energies.begin(); energyIt < energies.end(); energyIt++) {
 		size_t curIdx = energyIt - energies.begin();	// Current index
 
 		double bremsGradient = -1;											// Gradient of brems spectrum
-		double filterGradient = alFilterGradiantFactor * bremsGradient;		// Gradient of filter spectrum
+		double filterGradient = al_filter_gradiant_factor * bremsGradient;		// Gradient of filter spectrum
 
 		// Filter dominates
 		if ( *energyIt < changeEnergy ) {
@@ -107,11 +107,11 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 
 
 	// Calculate correction factor for spectrum for its values to sum up to totalPower
-	double currentSum = sum(spectralPower);
+	double currentSum = Sum(spectralPower);
 	double correctionFactor = totalPower_W / currentSum;
 
 	// Correct values for sums to match
-	scale(spectralPower, correctionFactor);
+	Scale(spectralPower, correctionFactor);
 
 	// Write frequency and power values to spectrum
 	xRay_spectrum = spectrum( energies, spectralPower );
@@ -121,7 +121,7 @@ tube::tube( cartCSys* const cSys_, const tubeParameter parameter_ ) :
 vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
 	// Force minimum of one
-	raysPerPixel = Fmin1( raysPerPixel );
+	raysPerPixel = ForceToMin1( raysPerPixel );
 
 	const size_t numRays = raysPerPixel * detectorPixel.size();
 
@@ -140,8 +140,8 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 		
 		// Get points on the edge of pixel
 
-		const pnt3 pMin = currentPixel.getPnt( currentPixel.AMin(), 0);		// Point on "minimum" edge
-		const pnt3 pMax = currentPixel.getPnt( currentPixel.AMax(), 0 );	// Point on "maximum" edge
+		const Point3D pMin = currentPixel.getPnt( currentPixel.AMin(), 0);		// Point on "minimum" edge
+		const Point3D pMax = currentPixel.getPnt( currentPixel.AMax(), 0 );	// Point on "maximum" edge
 		const line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).Length();								// Distance between edge points
@@ -150,17 +150,17 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 		// Iterate all rays hitting current pixel
 		for( size_t currentRayIndex = 0; currentRayIndex < raysPerPixel; currentRayIndex++ ){
 			
-			// Offset of current ray origin
+			// Offset of current ray origin_
 			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
 
-			// Current ray origin
-			const pnt3 currentOrigin = connectionLine.getPnt( currentOffset );
+			// Current ray origin_
+			const Point3D currentOrigin = connectionLine.getPnt( currentOffset );
 
 			// Tempory line pointing from pixel to tube
-			const line tempLine{ currentPixel.Normal().convertTo( cSys ), currentOrigin.convertTo( cSys ) };
+			const line tempLine{ currentPixel.Normal().ConvertTo( cSys ), currentOrigin.ConvertTo( cSys ) };
 
 			// Origin of ray with specific distance to pixel
-			const pnt3 rayOrigin = tempLine.getPnt( detectorFocusDistance );
+			const Point3D rayOrigin = tempLine.getPnt( detectorFocusDistance );
 
 			// Add ray in tube's coordinate system to vector
 			rays.emplace_back( -tempLine.R(), rayOrigin, beamProperties);

@@ -30,27 +30,27 @@ const string detectorRadonParameter::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBL
 */
 
 detectorRadonParameter::detectorRadonParameter( const GridIndex numberPoints_, const double distanceRange_ ) :
-	distanceRange( Fpos( distanceRange_ ) ),
-	numberPoints{	Fmin( numberPoints_.c, (size_t) 2 ),
-					Fmin( FOdd ( numberPoints_.r ), (size_t) 3 ) },
+	distanceRange( ForcePositive( distanceRange_ ) ),
+	numberPoints{	ForceToMin( numberPoints_.c, (size_t) 2 ),
+					ForceToMin( ForceOdd ( numberPoints_.r ), (size_t) 3 ) },
 	resolution{ PI / (double) ( numberPoints.c - 1 ),
-				Fpos( distanceRange ) / (double) ( numberPoints.r - 1 ) },
+				ForcePositive( distanceRange ) / (double) ( numberPoints.r - 1 ) },
 	framesToFillSinogram( numberPoints.c - 1 + numberPoints.r - 1)
 {
 
-	// Check angle
+	// Check GetAngle
 	double currentAngle = (double) ( numberPoints.r - 1 ) * resolution.c;
 
 	// Store current number of distances 
 	size_t newNumberPointsRow = numberPoints.r;
 
-	// Detector angle exceeds maximum or minimum
-	if( currentAngle > MAX_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) floor( MAX_DETECTOR_ANGLE / resolution.c ) + 1;
-	if( currentAngle < MIN_DETECTOR_ANGLE ) newNumberPointsRow = (size_t) ceil( MIN_DETECTOR_ANGLE / resolution.c ) + 1;
+	// Detector GetAngle exceeds maximum or minimum
+	if( currentAngle > max_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) floor( max_detetector_arc_angle_rad / resolution.c ) + 1;
+	if( currentAngle < min_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) ceil( min_detetector_arc_angle_rad / resolution.c ) + 1;
 
 	// Recalculate if number of point changed
 	if( newNumberPointsRow != numberPoints.r ){
-		numberPoints.r = Fmin( FOdd( newNumberPointsRow ), (size_t) 3 );
+		numberPoints.r = ForceToMin( ForceOdd( newNumberPointsRow ), (size_t) 3 );
 		resolution.r = distanceRange / (double) ( numberPoints.r - 1 );
 		framesToFillSinogram = numberPoints.c - 1 + numberPoints.r - 1;
 	}
@@ -88,9 +88,9 @@ const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FIL
 detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
 	raysPerPixel( raysPerPixel_ ),
 	arcRadius( arcRadius_ ),
-	columnSize( Fpos( columnSize_ ) ),
+	columnSize( ForcePositive( columnSize_ ) ),
 	structured( structured_ ),
-	maxRayAngleDetectable( Fmax( Fmin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
+	maxRayAngleDetectable( ForceToMax( ForceToMin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
 {}
 
 detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :

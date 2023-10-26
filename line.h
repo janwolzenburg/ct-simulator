@@ -13,7 +13,7 @@
 	Includes
  *********************************************************************/
 #include "generelMath.h"
-#include "vec3D.h"
+#include "vector3D.h"
 
 
 
@@ -25,7 +25,7 @@
 /*!
  * @brief Class for a line
 */
-class line : public mathObj{
+class line : public MathematicalObject{
 
 	public:
 
@@ -34,14 +34,14 @@ class line : public mathObj{
 	 * @param v Unit vector
 	 * @param p Origin
 	*/
-	explicit line( const uvec3 v, const pnt3 p );
+	explicit line( const UnitVector3D v, const Point3D p );
 
 	/*!
 	 * @brief Constructor
 	 * @param v Line direction
 	 * @param p Origin
 	*/
-	explicit line( const vec3 v, const pnt3 p );
+	explicit line( const Vector3D v, const Point3D p );
 
 
 	/*!
@@ -53,40 +53,40 @@ class line : public mathObj{
 	 * @brief Convert line's data to string
 	 * @return String with line's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get origin of line
-	 * @return O
+	 * @brief Get origin_ of line
+	 * @return Origin
 	*/
-	pnt3 O( void ) const { return o; };
+	Point3D O( void ) const { return o; };
 
 	/*!
-	 * @brief Set origin
-	 * @param newO New origin
-	 * @return Set origin
+	 * @brief Set origin_
+	 * @param newO New origin_
+	 * @return Set origin_
 	*/
-	pnt3 setOrigin( const pnt3 newO ){ return o = newO.convertTo( r ); };
+	Point3D setOrigin( const Point3D newO ){ return o = newO.ConvertTo( r ); };
 
 	/*!
 	 * @brief Get line trajectory
 	 * @return Trajectory
 	*/
-	uvec3 R( void ) const { return r; };
+	UnitVector3D R( void ) const { return r; };
 
 	/*!
 	 * @brief Convert line components to different coordinate system
 	 * @param target Target system
 	 * @return Line in target system
 	*/
-	line convertTo( const cartCSys* const target ) const{ return line{ r.convertTo( target ), o.convertTo( target ) }; };
+	line convertTo( const CoordinateSystem* const target ) const{ return line{ r.ConvertTo( target ), o.ConvertTo( target ) }; };
 
 	/*!
 	 * @brief Get point on the line based on parameter
 	 * @param linPara Line parameter t
 	 * @return Point p = o + r*t
 	*/
-	pnt3 getPnt( const double linPara ) const{ return o + ( r * linPara ); };
+	Point3D getPnt( const double linPara ) const{ return o + ( r * linPara ); };
 	
 
 	/*!
@@ -95,10 +95,10 @@ class line : public mathObj{
 	 * @param success Is set to true when the given point lies on the line. False if not
 	 * @return Line parameter
 	*/
-	double getPara( const pnt3 p, bool* const success ) const;
+	double getPara( const Point3D p, bool* const success ) const;
 
 	/*!
-	 * @brief Get angle between line and surface
+	 * @brief Get GetAngle between line and surface
 	 * @param s Surface
 	 * @return Angle in radians
 	*/
@@ -109,14 +109,14 @@ class line : public mathObj{
 	 * @param p Point to get the lot to
 	 * @return To this line perpendicular vector connecting this line and point p
 	*/
-	vec3 getLot( const pnt3 p ) const;
+	Vector3D getLot( const Point3D p ) const;
 
 	/*!
 	 * @brief Get shortest distance between line and point
 	 * @param p Point
 	 * @return Distance in this line's unit
 	*/
-	double getDistance( const pnt3 p ) const{ return getLot( p ).Length(); };
+	double getDistance( const Point3D p ) const{ return getLot( p ).Length(); };
 
 	/*!
 	 * @brief Get shortest distance between two lines
@@ -127,10 +127,10 @@ class line : public mathObj{
 
 	/*!
 	 * @brief Project line on XY plane of coordinate system
-	 * @param cSys System to project on
+	 * @param coordinate_system_ System to project on
 	 * @return Projected line
 	*/
-	line projectOnXYPlane( const cartCSys* const cSys ) const;
+	line projectOnXYPlane( const CoordinateSystem* const cSys ) const;
 
 	/*!
 	 * @brief Check if parameters are in bound
@@ -142,6 +142,6 @@ class line : public mathObj{
 
 	protected:
 
-	uvec3 r;			/*!< Line trajectory */
-	pnt3 o;		 		/*!< Line origin */
+	UnitVector3D r;			/*!< Line trajectory */
+	Point3D o;		 		/*!< Line origin_ */
 };

@@ -88,14 +88,14 @@ class tomography{
 	 * @param model_ 
 	*/
 	tomography( const tomographyParameter parameter_ ) :
-		parameter( parameter_ ), radonCSys( DUMMY_CSYS() )
+		parameter( parameter_ ), radonCSys( DummySystem() )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	tomography( void ) :
-		parameter( ), radonCSys( DUMMY_CSYS() )
+		parameter( ), radonCSys( DummySystem() )
 	{};
 
 	/*!
@@ -108,6 +108,6 @@ class tomography{
 	private:
 
 	tomographyParameter parameter;	/*!<Parameter used for tomography*/
-	cartCSys* radonCSys;			/*!<Coordinate system to use as reference for radon coordinates calculation*/
+	CoordinateSystem* radonCSys;			/*!<Coordinate system to use as reference for radon Coordinates calculation*/
 };
 

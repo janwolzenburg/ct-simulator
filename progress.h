@@ -33,7 +33,7 @@ class Fl_Progress_Window : public Fl_Window{
 
 	/*!
 	 * @brief Constructor
-	 * @param parent Parent used for window placement on screen
+	 * @param parent_ Parent used for window placement on screen
 	 * @param textSize Size of text
 	 * @param numLines Amount of lines
 	 * @param label Window label

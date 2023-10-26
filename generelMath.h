@@ -37,14 +37,14 @@ constexpr double m_0c2_eV = 0.511E6;							/*!< Compton Wavelength in eV */
 constexpr double J_Per_eV = e_As;								/*!<Joules in on eV */
 constexpr double m_0c2_J = m_0c2_eV * J_Per_eV;					/*!<Compton wavelenth in Joule */
 
-constexpr double energyPhotoFXChange_eV = 40000.;				/*!<Photonenergy under which photo effect dominates absorption*/
+constexpr double photoeffect_change_energy_eV = 40000.;			/*!<Photonenergy under which photo effect dominates absorption*/
 
-constexpr double muAir = 0.00001883552;							/*!<Absorption air in 1 / mm	for 120keV*/
-constexpr double muWater = 0.01611970000;						/*!<Absorption Water in 1 / mm for 120keV*/
+constexpr double mu_air = 0.00001883552;						/*!<Absorption air in 1 / mm	for 120keV*/
+constexpr double mu_water = 0.01611970000;						/*!<Absorption Water in 1 / mm for 120keV*/
 
 
-inline std::ostream& mathErrOut = std::cerr;					/*!< Outstream for errors */
-inline std::ostream& stdOut = std::cout;						/*!< Standard out stream */
+inline std::ostream& math_error_out = std::cerr;					/*!< Outstream for errors */
+inline std::ostream& standard_out = std::cout;						/*!< Standard out stream */
 
 
 
@@ -52,14 +52,20 @@ inline std::ostream& stdOut = std::cout;						/*!< Standard out stream */
 	Functions
  *********************************************************************/
 
+enum ComparisonMode{
+	Absolute,
+	Relative
+};
+
 /*!
  * @brief Compares to values for their equality with tolerance
  * @param a Value 1
  * @param b Value 2
- * @param tolerance Maximum difference between a and b for them to be considered equal
+ * @param tolerance Maximum difference between a and b for them to be considered equal. Absolute or relative depending on next argument
+ * @param mode Comparison mode: tolerance is absolute difference or relative difference
  * @return True when the difference is less than tolerance
 */
-bool iseqErr( const double a, const double b, const double tolerance );
+bool IsNearlyEqual( const double a, const double b, const double tolerance, const ComparisonMode mode = Absolute);
 
 /*!
  * @brief Compares to values for their equality with tolerance
@@ -67,16 +73,7 @@ bool iseqErr( const double a, const double b, const double tolerance );
  * @param b Value 2
  * @return True when the difference is less than EPSILON
 */
-bool iseqErr( const double a, const double b );
-
-/*!
- * @brief Compares two values with tolerance
- * @param a Value 1
- * @param b Value 2
- * @param fraction Relative deviation between values  with respect to Value 1
- * @return True when |a - b| / |a| < fraction
-*/
-bool isEqErrPercent( const double a, const double b, const double fraction );
+bool IsNearlyEqualDistance( const double a, const double b );
 
 /*!
  * @brief Get the relative deviation between two values
@@ -86,7 +83,7 @@ bool isEqErrPercent( const double a, const double b, const double fraction );
  * @return 
 */
 template <typename T>
-double relDeviation( const T a, const T b );
+double RelativeDeviation( const T a, const T b );
 
 /*!
  * @brief Checks if number is even
@@ -96,7 +93,7 @@ double relDeviation( const T a, const T b );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, bool>
-isEven( const T integer );
+IsEven( const T integer );
 
 /*!
  * @brief Return the minimum of two values
@@ -129,12 +126,18 @@ Max( const T a, const T b );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-Fmax( const T value, const T maximum );
+ForceToMax( const T value, const T maximum );
 
-
+/*!
+ * @brief Force a minimum value
+ * @tparam T Arithmetic type
+ * @param value Value
+ * @param  m minimum value
+ * @return a or minValue when a is less than minValue
+*/
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-Frange( const T value, const T minimum, const T maximum );
+ForceToMin( T value, T minimum );
 
 /*!
  * @brief Force a minimum value of one
@@ -144,18 +147,7 @@ Frange( const T value, const T minimum, const T maximum );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
-Fmin1( T a );
-
-/*!
- * @brief Force a minimum value
- * @tparam T Arithmetic type
- * @param a Value a
- * @param minValue minimum value
- * @return a or minValue when a is less than minValue
-*/
-template <typename T>
-typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-Fmin( T a, T minValue );
+ForceToMin1( T a );
 
 /*!
  * @brief Force value to be positive
@@ -165,7 +157,7 @@ Fmin( T a, T minValue );
 */
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T> 
-Fpos( T a );
+ForcePositive( T a );
 
 /*!
  * @brief Force value to an odd value
@@ -175,8 +167,19 @@ Fpos( T a );
 */
 template <typename T>
 typename std::enable_if_t<std::is_integral_v<T>, T>
-FOdd( T a );
+ForceOdd( T a );
 
+/*!
+ * @brief Force value to a range
+ * @tparam T Arithmetic type
+ * @param value Value
+ * @param minimum Minimum value
+ * @param maximum Maximum value
+ * @return Value constraint to range
+*/
+template <typename T>
+typename std::enable_if_t<std::is_arithmetic_v<T>, T>
+ForceRange( const T value, const T minimum, const T maximum );
 
 
 /*********************************************************************
@@ -187,48 +190,48 @@ FOdd( T a );
  * @brief Abstract class for mathematical objects
  * @details Class with function prototypes to convert object's data to strings, dumping the data and outputting error messages
 */
-class mathObj{
+class MathematicalObject{
 	public:
 
 	/*!
 	 * @brief Enumeration of error codes
 	*/
-	enum class MATH_ERR{
-		OK,				/*!<  No error */
-		GENERAL,		/*!<  Abstract math error */
-		OPERATION,		/*!<  Error during mathematical operation */
-		BOUNDS,			/*!<  Out of bounds error */
-		INPUT			/*!<  Invalid input in function */
+	enum class MathError{
+		Ok,				/*!<  No error */
+		General,		/*!<  Abstract math error */
+		Operation,		/*!<  Error during mathematical operation */
+		Bounds,			/*!<  Out of bounds error */
+		Input			/*!<  Invalid input in function */
 	};
 
 	/*!
 	 * @brief Convert object's data to string
-	 * @param newLineTabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators Amount of tabulators to insert after each line break
 	 * @return String with object's data
 	 * @details Virtual for object specific implementation
 	*/
-	virtual string toStr( [[maybe_unused]] const unsigned int newLineTabulators = 0 ) const = 0;
+	virtual string ToString( [[maybe_unused]] const unsigned int newline_tabulators = 0 ) const = 0;
 
 	/*!
 	 * @brief Dump object's type and data to output stream
 	 * @param output Output stream to dump to
 	 * @param objName Name of the object to include in the dump
 	*/
-	void dump( std::ostream& output, const string objName ) const;
+	void Dump( std::ostream& output, const string objName ) const;
 
 	/*!
 	 * @brief Convert last error to string<
 	 * @param code Error code
 	 * @return String describing error
 	*/
-	string errStr( const MATH_ERR code ) const;
+	string GetErrorString( const MathError code ) const;
 
 	/*!
 	 * @brief Outputs error string to stream when it's not MATH_ERR::OK
 	 * @param code Error code
 	 * @return Same as code
 	*/
-	MATH_ERR checkErr( const MATH_ERR code ) const;
+	MathError CheckForAndOutputError( const MathError code ) const;
 
 	/*!
 	 * @brief Outputs error string to stream when it's not MATH_ERR::OK
@@ -236,7 +239,7 @@ class mathObj{
 	 * @param message Message to output on mathErrOut
 	 * @return Same as code
 	*/
-	MATH_ERR checkErr( const MATH_ERR code, const string message ) const;
+	MathError CheckForAndOutputError( const MathError code, const string message ) const;
 };
 
 #include "generelMath.hpp"

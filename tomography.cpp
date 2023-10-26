@@ -16,7 +16,7 @@
 #include <FL/Fl.H>
 
 #include "tomography.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "simulation.h"
 #include "serialization.h"
 
@@ -31,9 +31,9 @@ const string tomographyParameter::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_V
 tomographyParameter::tomographyParameter( void ) :
 	exposureTime( 1. ),
 	scattering( true ),
-	maxRadiationLoops( maxRadiationLoops_Def ),
-	scatterPropability( completeModelScatterPropability_Def ),
-	rayStepSize( rayStepSize_Def )
+	maxRadiationLoops( default_max_radiation_loops ),
+	scatterPropability( default_complete_model_scatter_propability ),
+	rayStepSize( default_ray_step_size_mm )
 
 {}
 
@@ -48,9 +48,9 @@ tomographyParameter::tomographyParameter( const double exposureTime_, const bool
 tomographyParameter::tomographyParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	exposureTime( DeSerializeBuildIn<double>( 1., binary_data, it ) ),
 	scattering( DeSerializeBuildIn<bool>(true, binary_data, it) ),
-	maxRadiationLoops( DeSerializeBuildIn<size_t>( maxRadiationLoops_Def, binary_data, it ) ),
-	scatterPropability( DeSerializeBuildIn<double>( completeModelScatterPropability_Def, binary_data, it ) ),
-	rayStepSize( DeSerializeBuildIn<double>( rayStepSize_Def, binary_data, it ) )
+	maxRadiationLoops( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
+	scatterPropability( DeSerializeBuildIn<double>( default_complete_model_scatter_propability, binary_data, it ) ),
+	rayStepSize( DeSerializeBuildIn<double>( default_ray_step_size_mm, binary_data, it ) )
 {
 }
 
@@ -78,10 +78,10 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 
 	// Translate Gantry
 	if( zPosition != 0. )
-		Gantry.CSys()->translateM( Gantry.CSys()->EzVec() * zPosition );
+		Gantry.CSys()->Translate( Gantry.CSys()->UnitZ() * zPosition );
 
 	// Assign gantry csys-data to radon coordinate system
-	this->radonCSys->copyFrom( Gantry.CSys() );
+	this->radonCSys->CopyPrimitiveFrom( Gantry.CSys() );
 
 
 	// Get the radon paramters for the detector
@@ -108,7 +108,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 		// Iterate all pixel
 		for( const pixel& currentPixel : detectionPixel ){
 
-			// Get coordinates for pixel
+			// Get Coordinates for pixel
 			const radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
 
 			// Get the radon point

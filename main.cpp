@@ -13,7 +13,7 @@ using std::cerr;  using std::endl; using std::cout;
 
 #include "programState.h"
 #include "test_model.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "progress.h"
 
 #include "mainWindow.h"
@@ -27,7 +27,7 @@ using std::cerr;  using std::endl; using std::cout;
 int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	/*
-	model testModel = getTestModel( GLOBAL_CSYS(), 20 );
+	model testModel = getTestModel( GlobalSystem(), 20 );
 
 	vector<char> modelBin;
 	testModel.Serialize( modelBin );

@@ -93,13 +93,13 @@ void grid<D>::fillVectors( const D defaultValue ){
 
 	if( size.c == 0 || size.r == 0 ) return;
 
-	resolution.c = Fpos( resolution.c );
-	resolution.r = Fpos( resolution.r );
+	resolution.c = ForcePositive( resolution.c );
+	resolution.r = ForcePositive( resolution.r );
 
 
 	// Fill axis
-	columnPoints = linearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
-	rowPoints = linearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
+	columnPoints = CreateLinearSpace( start.c, start.c + (double) ( size.c - 1 ) * resolution.c, size.c );
+	rowPoints = CreateLinearSpace( start.r, start.r + (double) ( size.r - 1 ) * resolution.r, size.r );
 
 	// Create data structure
 	data = vector<vector<D>>( size.c, vector<D>( size.r, defaultValue ) );

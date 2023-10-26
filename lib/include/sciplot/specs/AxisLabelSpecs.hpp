@@ -42,7 +42,7 @@ class AxisLabelSpecs : public TextSpecsOf<AxisLabelSpecs>
     /// Set the text of the axis label.
     auto text(std::string text) -> AxisLabelSpecs&;
 
-    /// Specify that the axis label should be rotated by a given angle in degrees.
+    /// Specify that the axis label should be rotated by a given GetAngle in degrees.
     auto rotateBy(int degrees) -> AxisLabelSpecs&;
 
     /// Specify that the axis label should be rotated to be in parallel to the corresponding axis (for 3D plots).

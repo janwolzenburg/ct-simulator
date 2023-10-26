@@ -71,10 +71,10 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 
 propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins )
 {
-	// Normalize 
-	distribution = normalise( distribution_ );
+	// Normalise 
+	distribution = Normalise( distribution_ );
 
-	// Sort by angle
+	// Sort by GetAngle
 	std::sort( distribution.begin(), distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 

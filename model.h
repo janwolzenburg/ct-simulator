@@ -15,7 +15,7 @@
 
 #include "generel.h"
 #include "generelMath.h"
-#include "cartesian.h"
+#include "coordinateSystem.h"
 #include "voxel.h"
 #include "rays.h"
 #include "scattering.h"
@@ -32,7 +32,7 @@
 /*!
  * @brief Class for 3D-Models
 */
-class model : public mathObj{
+class model : public MathematicalObject{
 	
 	public:
 
@@ -43,12 +43,12 @@ class model : public mathObj{
 
 	/*!
 	 * @brief Constructor
-	 * @param cSys_ Position and orientation of model in global system
+	 * @param coordinate_system Position and orientation of model in global system
 	 * @param numVox3D_	Amount of voxels in each spacial dimension
 	 * @param voxSize3D_ Spacial size of voxels
 	 * @param name_ Name of model
 	*/
-	model( cartCSys* const cSys_, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ = "Default model name" );
+	model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ = "Default model name_" );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -61,14 +61,14 @@ class model : public mathObj{
 	/*!
 	 * @brief Default constructor
 	*/
-	model( void ) : model( DUMMY_CSYS(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
+	model( void ) : model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
 
 	/*!
 	 * @brief Convert model's data to string
-	 * @param newLineTabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators Amount of tabulators to insert after each line break
 	 * @return String with model's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Get number of voxels
@@ -92,7 +92,7 @@ class model : public mathObj{
 	 * @brief Get coordinate system of model
 	 * @return coordinate system of base voxel
 	*/
-	cartCSys* CSys( void ) const{ return cSys; };
+	CoordinateSystem* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Get range of attenuation in model
@@ -101,7 +101,7 @@ class model : public mathObj{
 	NumberRange attenuationRange( void ) const{ return NumberRange{ attenuationMin, attenuationMax }; };
 
 	/*!
-	 * @brief Get model name
+	 * @brief Get model name_
 	 * @return Name
 	*/
 	string Name( void ) const{ return name; };
@@ -126,9 +126,9 @@ class model : public mathObj{
 	bool checkIndices( const Index3D indices ) const;
 
 	/*!
-	 * @brief Checks if local voxel coordinates are defined in model
+	 * @brief Checks if local voxel Coordinates are defined in model
 	 * @param voxCoords Coordinates to check
-	 * @return True if coordinates are defined in model
+	 * @return True if Coordinates are defined in model
 	*/
 	bool validCoords( const Tuple3D voxCoords ) const{
 		return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
@@ -139,14 +139,14 @@ class model : public mathObj{
 	 * @param localPnt Point to check
 	 * @return True when point is inside model
 	*/
-	bool pntInside( const pnt3 localPnt ) const;
+	bool pntInside( const Point3D localPnt ) const;
 
 	/*!
-	 * @brief Get voxel indices for given coordinates in local coordinate system
+	 * @brief Get voxel indices for given Coordinates in local coordinate system
 	 * @param voxpnt Point in coordinate system of model
-	 * @return Indices of voxels where coordinates are located
+	 * @return Indices of voxels where Coordinates are located
 	*/
-	Index3D getVoxelIndices( const pnt3 voxpnt ) const;
+	Index3D getVoxelIndices( const Point3D voxpnt ) const;
 
 	/*!
 	 * @brief Set voxel data
@@ -185,7 +185,7 @@ class model : public mathObj{
 	 * @param p Point in model
 	 * @return Const reference to voxel data
 	*/
-	const voxData& getVoxelData( const pnt3 p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
+	const voxData& getVoxelData( const Point3D p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
 
 	/*!
 	 * @brief Get voxel instance for given indices
@@ -199,7 +199,7 @@ class model : public mathObj{
 	 * @param point Point in model
 	 * @return Voxel at point
 	*/
-	vox getVoxel( const pnt3 point ) const{ return getVoxel( getVoxelIndices( point ) ); };
+	vox getVoxel( const Point3D point ) const{ return getVoxel( getVoxelIndices( point ) ); };
 
 	/*!
 	 * @brief Calculate ray transmission through model
@@ -211,7 +211,7 @@ class model : public mathObj{
 
 	/*!
 	 * @brief Crop model
-	 * @param minCoords Start coordinates of new model
+	 * @param minCoords Start Coordinates of new model
 	 * @param maxCoords	End coordinate of new model
 	 * @return True if succeeded
 	*/
@@ -237,7 +237,7 @@ class model : public mathObj{
 	 * @param center Center of sphere
 	 * @param radius Radius of sphere
 	*/
-	void addSpecialSphere( const voxData::specialProperty property, const pnt3 center, const double radius );
+	void addSpecialSphere( const voxData::specialProperty property, const Point3D center, const double radius );
 
 
 	private:
@@ -247,10 +247,10 @@ class model : public mathObj{
 	Tuple3D size3D;									/*!<Size of complete model in mm*/
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
 	vector<voxData> parameter;					/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
-	cartCSys* cSys;								/*!<Coordinate system*/
+	CoordinateSystem* cSys;								/*!<Coordinate system*/
 	double attenuationMin;						/*!<Minimum attenuation in model*/
 	double attenuationMax;						/*!<Maximum attenuation in model*/
-	string name;								/*!<Model name*/
+	string name;								/*!<Model name_*/
 
 
 	private:
@@ -265,11 +265,11 @@ class model : public mathObj{
 										const model& modelRef );
 
 	/*!
-	* @brief Get voxel indices for given coordinates in local coordinate system
+	* @brief Get voxel indices for given Coordinates in local coordinate system
 	* @param x x-coordinate
 	* @param y y-coordinate
 	* @param z	z-coordinate
-	* @return Indices of voxels where coordinates are located
+	* @return Indices of voxels where Coordinates are located
 	*/
 	Index3D getVoxelIndices( const Tuple3D locCoords ) const;
 

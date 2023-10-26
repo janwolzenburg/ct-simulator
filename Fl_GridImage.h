@@ -64,7 +64,7 @@ class Fl_GridImage : public Fl_Widget{
 	/*!
 	 * @brief Assign gridded voxel data 
 	 * @param modGrid Data grid
-	 * @param normalise Flag for normalisation
+	 * @param Normalise Flag for normalisation
 	*/
 	void assignImage( const grid<voxData>& modGrid, const bool normalise = false );
 

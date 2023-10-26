@@ -41,13 +41,13 @@ class gantry {
 	
 	/*!
 	 * @brief Constructor
-	 * @param cSys_ Coordinate system
+	 * @param coordinate_system Coordinate system
 	 * @param raysPerPixel_ Amount of rays per pixel in beam
 	 * @param tubeParameters Parameter of xRay tube
 	 * @param radonParameters Radon parameter of xRay detector
 	 * @param indipendentParameter Other parameter
 	*/
-	gantry( cartCSys* const cSys_,  const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
+	gantry( CoordinateSystem* const coordinate_system,  const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
 			const detectorIndipendentParameter indipendentParameter );
 
 	/*!
@@ -73,11 +73,11 @@ class gantry {
 	 * @brief Get center of gantry
 	 * @return Center point
 	*/
-	pnt3 Center( void ) const{ return cSys->OPnt(); };
+	Point3D Center( void ) const{ return cSys->Origin(); };
 
 	/*!
-	 * @brief Rotate gantry counter clockwise around zAxis
-	 * @param angle Rotation angle
+	 * @brief Rotate gantry counter clockwise around ZAxis
+	 * @param GetAngle Rotation GetAngle
 	*/
 	void rotateCounterClockwise( const double angle );
 
@@ -96,11 +96,11 @@ class gantry {
 	 * @brief Get the coordinate system of gantry
 	 * @return Coordinate system of this gantry
 	*/
-	cartCSys* CSys( void ) const{ return cSys; };
+	CoordinateSystem* CSys( void ) const{ return cSys; };
 
 	/*!
 	 * @brief Get the detector radon parameters
-	 * @param cSys Reference coordinate system for radon transform
+	 * @param coordinate_system_ Reference coordinate system for radon transform
 	 * @return 
 	*/
 	detectorRadonParameter getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
@@ -126,8 +126,8 @@ class gantry {
 
 	private:
 	
-	cartCSys* cSys;						/*!<Coordinate system*/
-	primitiveCartCSys resetPostition;	/*!<Initial position of coordinate system*/
+	CoordinateSystem* cSys;						/*!<Coordinate system*/
+	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
 
 	detector rayDetector;				/*!<Ray detector*/
 	tube raySource;						/*!<xRay source*/
@@ -135,7 +135,7 @@ class gantry {
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
+	rayScattering rayScatterAngles;		/*!<Object with information about scattering and GetAngle propabilities*/
 
 	/*!
 	 * @brief Thread function to speed up transmission of multiple rays through model

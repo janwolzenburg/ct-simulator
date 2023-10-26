@@ -14,7 +14,7 @@
 #include <type_traits>
 
 #include "generelMath.h"
-#include "vec3D.h"
+#include "vector3D.h"
 #include "line.h"
 #include "surf.h"
 #include "rays.h"
@@ -28,7 +28,7 @@
  /*!
   * @brief Class for an intersection result of two lines
  */
- class lineLine_Intersection_Result : public mathObj{
+ class lineLine_Intersection_Result : public MathematicalObject{
  
 	 public:
 
@@ -36,7 +36,7 @@
 	  * @brief Default constructor
 	 */
 	 lineLine_Intersection_Result( void ) : 
-		intersectionPoint( pnt3{} ),
+		intersectionPoint( Point3D{} ),
 		hasSolution( false ),
 		lineParameter1( 0 ), lineParameter2( 0 )
 	{};
@@ -45,12 +45,12 @@
 	  * @brief Convert result's data to string
 	  * @return String with result's data
 	 */
-	 string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	 string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 
 	 public:
 
-	 pnt3 intersectionPoint;		/*!<Point of intersection*/
+	 Point3D intersectionPoint;		/*!<Point of intersection*/
 	 bool hasSolution;			/*!Flag whether the lines intersect*/
 	 double lineParameter1;		/*!Parameter of first line at intersection*/
 	 double lineParameter2;		/*!Parameter of second line at intersection*/
@@ -84,7 +84,7 @@
 /*!
  * @brief Class describing the intersection result of a line and surface
 */
-class linSurf_Intersection_Result : virtual public mathObj{
+class linSurf_Intersection_Result : virtual public MathematicalObject{
 
 	public:
 
@@ -92,7 +92,7 @@ class linSurf_Intersection_Result : virtual public mathObj{
 	 * @brief Default constructor
 	*/
 	linSurf_Intersection_Result( void ) :
-		intersectionPoint( pnt3{} ),
+		intersectionPoint( Point3D{} ),
 		hasSolution( false ),
 		linePara( 0 ), surfParaA( 0 ), surfParaB( 0 )
 	{};
@@ -101,12 +101,12 @@ class linSurf_Intersection_Result : virtual public mathObj{
 	 * @brief Convert result's data to string
 	 * @return String with result's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 
 	public:
 
-	pnt3 intersectionPoint;					/*!< Point of intersection */
+	Point3D intersectionPoint;					/*!< Point of intersection */
 	bool hasSolution;						/*!< Line intersects surface */
 	double linePara;						/*!< Line parameter where intersection occurs */
 	double surfParaA;						/*!< Surface parameter a where intersection occurs */
@@ -156,7 +156,7 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 
 	/*!
 	 * @brief Constructor
-	 * @param res_ Instance of parent class
+	 * @param res_ Instance of parent_ class
 	*/
 	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
 		linSurf_Intersection_Result( res_ ),

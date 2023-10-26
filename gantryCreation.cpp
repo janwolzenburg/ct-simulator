@@ -45,7 +45,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Rays / Pix" },
 	arcRadiusIn{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Arc Radius" },
 	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Anti scat." },
-	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Max. angle" },
+	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"MaxElement. GetAngle" },
 
 	detectorPlot{	X( detectorGrp, .0 ),	Y( detectorGrp, .35 ),	W( detectorGrp, 1. ),	H( detectorGrp, .65 ),	"Detector Plot" },
 
@@ -150,7 +150,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
 		arcRadiusIn.tooltip( "Radius of the arc where the pixel lie." );
-		maxRayAngleIn.tooltip( "Maximum detecable angle in degree between pixel and ray. Only valid when anti scattering is activated." );
+		maxRayAngleIn.tooltip( "Maximum detecable GetAngle in degree between pixel and ray. Only valid when anti scattering is activated." );
 		structureIn.tooltip( "Activate anti scattering structure." );
 
 
@@ -192,8 +192,8 @@ void gantryEdition::handleEvents( void ){
 
 		for( const auto& pixel : allPixel ){
 
-			const pnt3 startP = pixel.getPnt( pixel.AMin(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
-			const pnt3 endP = pixel.getPnt( pixel.AMax(), 0. ).convertTo( PROGRAM_STATE().Gantry().CSys() );
+			const Point3D startP = pixel.getPnt( pixel.AMin(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
+			const Point3D endP = pixel.getPnt( pixel.AMax(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
 
 			const Tuple2D start{ startP.X(), startP.Y() };
 			const Tuple2D end{ endP.X(), endP.Y() };
@@ -202,7 +202,7 @@ void gantryEdition::handleEvents( void ){
 
 		}
 
-		const pnt3 gantryCenter = PROGRAM_STATE().Gantry().Center();
+		const Point3D gantryCenter = PROGRAM_STATE().Gantry().Center();
 		detectorPlot.plotRef().addPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
 		detectorPlot.plotRef().create();
 		detectorPlot.assignData();

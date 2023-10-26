@@ -36,10 +36,10 @@ double pixel::getRadonValue( void ) const{
 }
 
 line pixel::NormalLine( void ) const{
-	return line{ this->Normal(), this->o };		// Line origin is surface origin for pixel and not the middle center!
+	return line{ this->Normal(), this->o };		// Line origin_ is surface origin_ for pixel and not the middle center!
 }
 
-pixel pixel::convertTo( const cartCSys* const target_CSys ) const{
+pixel pixel::convertTo( const CoordinateSystem* const target_CSys ) const{
 	return pixel{ this->surfLim::convertTo( target_CSys ), this->detectedRayProperties };
 }
 

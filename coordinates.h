@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   coordinates.h
- * @brief  Classes for coordinates in cartesian system
+ * @file   Coordinates.h
+ * @brief  Classes for Coordinates in cartesian system
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -13,9 +13,9 @@
 	Includes
 *********************************************************************/
 #include "generelMath.h"
-#include "primitiveVec3.h"
-#include "cartesian.h"
-#include "cSysTree.h"
+#include "primitiveVector3.h"
+#include "coordinateSystem.h"
+#include "coordinateSystemTree.h"
 
 
  /*********************************************************************
@@ -24,12 +24,12 @@
 
 
  /*!
- * @brief Class for coordinates with coordinate system with context
+ * @brief Class for Coordinates with coordinate system with context
 */
-class coordinates : protected primitiveVec3{
+class Coordinates : protected PrimitiveVector3{
 
 	protected:
-	const cartCSys* cSys;						/*!< Pointer to coordinate system*/
+	const CoordinateSystem* coordinate_system_;						/*!< Pointer to coordinate system*/
 
 
 	public:
@@ -38,94 +38,94 @@ class coordinates : protected primitiveVec3{
 	 * @brief Constructor
 	 * @param vec3_ Values
 	*/
-	coordinates( const Tuple3D vec3_, const cartCSys* const cSys_ ) : primitiveVec3{ vec3_ }, cSys( cSys_ ) {};
+	Coordinates( const Tuple3D vec3_, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ vec3_ }, coordinate_system_( coordinate_system ) {};
 
 	/*!
 	 * @brief Defaulkt constructor
 	*/
-	coordinates( void ) : coordinates{ Tuple3D{}, DUMMY_CSYS() } {};
+	Coordinates( void ) : Coordinates{ Tuple3D{}, DummySystem() } {};
 
 	/*!
 	 * @brief Convert coordinate's data to string
 	 * @return String with coordinate's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Comparison operator
-	 * @param coords Coordinates to compare with
+	 * @param coordinates Coordinates to compare with
 	 * @return True when all components are the same in global coordinate system
 	*/
-	bool operator== ( const coordinates coords ) const;
+	bool operator== ( const Coordinates coordinates ) const;
 
 	/*!
 	 * @brief Addition operator
-	 * @param coords Coordinates to add
+	 * @param coordinates Coordinates to add
 	 * @return Coordinates with sum of components in coordinate system of first operand
 	*/
-	coordinates operator+ ( const coordinates coords ) const;
+	Coordinates operator+ ( const Coordinates coordinates ) const;
 
 	/*!
 	 * @brief Substraction operator
-	 * @param coords Coordinates to add
+	 * @param coordinates Coordinates to add
 	 * @return Coordinates with difference of components in coordinate system of first operand
 	*/
-	coordinates operator- ( const coordinates coords ) const;
+	Coordinates operator- ( const Coordinates coordinates ) const;
 
 	/*!
 	 * @brief Negation operator
-	 * @return Negated coordinates
+	 * @return Negated Coordinates
 	*/
-	coordinates operator- ( void ) const;
+	Coordinates operator- ( void ) const;
 
 	/*!
-	 * @brief Scale coordinates
+	 * @brief Scale Coordinates
 	 * @param scalar Factor to scale by
-	 * @return Scaled coordinates
+	 * @return Scaled Coordinates
 	*/
-	coordinates operator* ( const double scalar ) const;
+	Coordinates operator* ( const double scalar ) const;
 
 	/*!
-	 * @brief Divide coordinates
+	 * @brief Divide Coordinates
 	 * @param divisor Value to divide by
-	 * @return Divided coordinates
+	 * @return Divided Coordinates
 	*/
-	coordinates operator/ ( const double divisor ) const;
+	Coordinates operator/ ( const double divisor ) const;
 
 	/*!
 	 * @brief Check if coordinate system is this coordinate's system
-	 * @param cSys_ System to check
+	 * @param coordinate_system System to check
 	 * @return True when given system is this coordinate's system
 	*/
-	bool sameSystem( const cartCSys* const cSys_ ) const { return this->cSys == cSys_; };
+	bool IsSameSystem( const CoordinateSystem* const coordinate_system ) const { return this->coordinate_system_ == coordinate_system; };
 
 	/*!
-	 * @brief Check if two coordinates have the same coordiante system
-	 * @param c Second set of coordinates
-	 * @return True when both coordinates have the same coordiante system
+	 * @brief Check if two Coordinates have the same coordiante system
+	 * @param c Second set of Coordinates
+	 * @return True when both Coordinates have the same coordiante system
 	*/
-	bool sameSystem( const coordinates c ) const { return sameSystem( c.cSys ); };
+	bool IsSameSystem( const Coordinates coordinates ) const { return IsSameSystem( coordinates.coordinate_system_ ); };
 
 	/*!
-	 * @brief Convert coordinates to a different coordinate system
-	 * @param target_cSys System to convert to
+	 * @brief Convert Coordinates to a different coordinate system
+	 * @param target_coordinate_system System to convert to
 	 * @return Coordinates in target system
 	*/
-	coordinates convertTo( const cartCSys* const target_cSys ) const;
+	Coordinates convertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 
 	private:
 
 	/*!
-		* @brief Convert coordinate values to parent coordinate system
-		* @return Coordinates in parent's system
+		* @brief Convert coordinate values to parent_ coordinate system
+		* @return Coordinates in parent_'s system
 	*/
-	coordinates toParentcSys( void ) const;
+	Coordinates ConvertToParentSystem( void ) const;
 
 	/*!
 		* @brief Convert coordiante values to child coordinate system
-		* @param child_cSys
+		* @param child_coordinate_system
 		* @return Coordinates in child system
 	*/
-	coordinates toChildcSys( const cartCSys* const child_cSys ) const;
+	Coordinates ConvertToChildSystem( const CoordinateSystem* const child_coordinate_system ) const;
 };

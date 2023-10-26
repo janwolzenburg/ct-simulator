@@ -111,7 +111,7 @@
     <ClInclude Include="generel.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
-    <ClInclude Include="vec3D.fwd.h">
+    <ClInclude Include="vector3D.fwd.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="line.fwd.h">
@@ -120,7 +120,7 @@
     <ClInclude Include="surf.fwd.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="vec3D.h">
+    <ClInclude Include="vector3D.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="line.h">
@@ -141,22 +141,22 @@
     <ClInclude Include="model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
-    <ClInclude Include="cartesian.fwd.h">
+    <ClInclude Include="coordinateSystem.fwd.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="cartesian.h">
+    <ClInclude Include="coordinateSystem.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="primitiveVec3.h">
+    <ClInclude Include="primitiveVector3.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="primitiveCartCSys.h">
+    <ClInclude Include="primitiveCoordinateSystem.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="cSysTree.h">
+    <ClInclude Include="coordinateSystemTree.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="cSysTree.fwd.h">
+    <ClInclude Include="coordinateSystemTree.fwd.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="coordinates.h">
@@ -362,7 +362,7 @@
     <ClCompile Include="generel.cpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
-    <ClCompile Include="vec3D.cpp">
+    <ClCompile Include="vector3D.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="line.cpp">
@@ -383,16 +383,16 @@
     <ClCompile Include="model.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
     </ClCompile>
-    <ClCompile Include="primitiveVec3.cpp">
+    <ClCompile Include="primitiveVector3.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
-    <ClCompile Include="cartesian.cpp">
+    <ClCompile Include="coordinateSystem.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
-    <ClCompile Include="primitiveCartCSys.cpp">
+    <ClCompile Include="primitiveCoordinateSystem.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
-    <ClCompile Include="cSysTree.cpp">
+    <ClCompile Include="coordinateSystemTree.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="coordinates.cpp">

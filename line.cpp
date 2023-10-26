@@ -11,8 +11,8 @@
 	Includes
  *********************************************************************/
 
-#include "cSysTree.h"
-#include "vec3D.h"
+#include "coordinateSystemTree.h"
+#include "vector3D.h"
 #include "line.h"
 #include "surf.h"
 
@@ -27,38 +27,38 @@
 	line implementation
 */
 
-line::line( const uvec3 v, const pnt3 p ) : 
+line::line( const UnitVector3D v, const Point3D p ) : 
 	r( v ), o( p )
 {
-	if( !v.sameSystem( p ) ) checkErr( MATH_ERR::INPUT, "Line origin and trajectory must be defined in the same coordinate system!" );
+	if( !v.IsSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
 }
 
-line::line( const vec3 v, const pnt3 p ) : 
-	r( uvec3{ v } ), o( p )
+line::line( const Vector3D v, const Point3D p ) : 
+	r( UnitVector3D{ v } ), o( p )
 {
-	if( iseqErr( r.Length(), 0 ) ) checkErr( MATH_ERR::INPUT, "Trajectory vector must have length!" );
-	if( !v.sameSystem( p ) ) checkErr( MATH_ERR::INPUT, "Line origin and trajectory must be defined in the same coordinate system!" );
+	if( IsNearlyEqualDistance( r.Length(), 0 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vector must have length_!" );
+	if( !v.IsSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
 }
 
 line::line( void ) : 
-	line{ vec3{ Tuple3D{1, 0, 0}, DUMMY_CSYS() }, pnt3{ Tuple3D{ 0, 0, 0 }, DUMMY_CSYS() }}
+	line{ Vector3D{ Tuple3D{1, 0, 0}, DummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }}
 {
 
 }
 
-string line::toStr( unsigned int newLineTabulators ) const{
+string line::ToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += "r=" + r.toStr() + newLine + "u=" + o.toStr();
+	str += "r=" + r.ToString() + newLine + "u=" + o.ToString();
 	return str;
 }
 
 
-double line::getPara( const pnt3 p, bool* const success ) const{
-	pnt3 cP = p.convertTo( o );
+double line::getPara( const Point3D p, bool* const success ) const{
+	Point3D cP = p.ConvertTo( o );
 
 	double t = ( cP.X() - o.X() ) / r.X();
 
@@ -69,25 +69,25 @@ double line::getPara( const pnt3 p, bool* const success ) const{
 double line::getAngle( const surf s ) const{
 
 	// Angle between direction vector and surface normal
-	double angle = r.angle( s.Normal() );
+	double angle = r.GetAngle( s.Normal() );
 
 	return abs( PI / 2 - angle );
 };
 
-vec3 line::getLot( const pnt3 p ) const{
-	vec3 vP{ p.convertTo( r.CSys() ) };
+Vector3D line::getLot( const Point3D p ) const{
+	Vector3D vP{ p.ConvertTo( r.GetCoordinateSystem() ) };
 
 	double linePara = ( r * vP - r * o );
-	vec3 s{ o + r * linePara };
+	Vector3D s{ o + r * linePara };
 	return s - vP;
 }
 
 
 double line::getDistance( const line l ) const{
-	vec3 n{ r ^ l.r };
+	Vector3D n{ r ^ l.r };
 	return abs( ( l.o - o ) * n ) / n.Length();
 }
 
-line line::projectOnXYPlane( const cartCSys* const cSys ) const{
-	return line{ this->r.projectOnXYPlane( cSys ), this->o.projectOnXYPlane( cSys ) };
+line line::projectOnXYPlane( const CoordinateSystem* const cSys ) const{
+	return line{ this->r.ProjectOnXYPlane( cSys ), this->o.ProjectOnXYPlane( cSys ) };
 }

@@ -12,3 +12,24 @@ Naming convention:
 Precomputation for presentation
 Model creation
 DICOM converter
+
+
+
+Renaming done:
+
+Generel
+	generel
+	serialization
+	simulation
+	vectorAlgorithm
+
+Physics
+	Linear Algebra
+		Cartesian
+			primitiveVector3
+			primitiveCoordinateSystem
+			coordinateSystem
+			coordinateSystemTree
+			coordinates
+
+		vector3D

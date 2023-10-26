@@ -99,14 +99,14 @@ class grid{
 	bool checkIndex( const GridIndex index ) const;
 
 	/*!
-	 * @brief Get indices corresponding to coordinates
+	 * @brief Get indices corresponding to Coordinates
 	 * @param coordinate Coordinates
 	 * @return Indices of coordinate
 	*/
 	GridIndex getIndex( const GridCoordinates coordinate ) const;
 	
 	/*!
-	 * @brief Get coordinates to given indices
+	 * @brief Get Coordinates to given indices
 	 * @param index Indices
 	 * @return Coordinate of indices
 	*/
@@ -128,7 +128,7 @@ class grid{
 
 	/*!
 	 * @brief Get element value
-	 * @param coordinates Coordinates of element
+	 * @param Coordinates Coordinates of element
 	 * @return Value of Element
 	*/
 	D getData( const GridCoordinates coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
@@ -144,9 +144,9 @@ class grid{
 
 	/*!
 	 * @brief Set Element data
-	 * @param coordinates Coordinates of element
+	 * @param Coordinates Coordinates of element
 	 * @param newValue New value
-	 * @return True when coordinates are valid
+	 * @return True when Coordinates are valid
 	*/
 	bool setData( const GridCoordinates coordinates, const D newValue ){
 		return this->setData( getIndex( coordinates ), newValue ); }

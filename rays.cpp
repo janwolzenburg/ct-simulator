@@ -37,17 +37,17 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 	ray implementation
 */
 
-ray ray::convertTo( const cartCSys* const target ) const{
+ray ray::convertTo( const CoordinateSystem* const target ) const{
 	return ray{ this->line::convertTo( target ), properties };
 };
 
-double ray::getPara( const pnt3 p, bool* const success ) const{
+double ray::getPara( const Point3D p, bool* const success ) const{
 	double t = line::getPara( p, success );
 	*success = *success && ( t >= 0 );
 	return t;
 }
 
-ray ray::projectOnXYPlane( const cartCSys* const cSys ) const{
+ray ray::projectOnXYPlane( const CoordinateSystem* const cSys ) const{
 	return ray{ this->line::projectOnXYPlane( cSys ), this->properties };
 }
 

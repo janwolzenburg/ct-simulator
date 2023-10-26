@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   vec3D.h
+ * @file   vector3D.h
  * @brief  Classes for vectors, unit vectors and points
  *
  * @author Jan Wolzenburg
@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 #include "coordinates.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 
 
 
@@ -23,11 +23,7 @@
 /*!
  * @brief Class for vectors in three dimensional cartesian coordinate systems
 */
-class vec3 : protected coordinates{
-
-	private:
-	double len;				/*!< Length */
-
+class Vector3D : protected Coordinates{
 
 	public:
 
@@ -35,80 +31,80 @@ class vec3 : protected coordinates{
 	 * @brief Constructor
 	 * @param coords Coordinates of vector
 	*/
-	vec3( const coordinates coords );
+	Vector3D( const Coordinates coords );
 
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ Components of vector
-	 * @param cSys_ Coordinate system of components
+	 * @param coordinate_system Coordinate system of components
 	*/
-	vec3( const Tuple3D xyz_, const cartCSys* const cSys_ );
+	Vector3D( const Tuple3D xyz_, const CoordinateSystem* const coordinate_system );
 
 	/*!
 	 * @brief Default constructor initializing components to zero coordinate system to global
 	*/
-	vec3( void );
+	Vector3D( void );
 
 	/*!
 	 * @brief Convert vector's data to string
 	 * @return String with vector's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Comparison operator
 	 * @param v2 Vector to compare with
 	 * @return True when all components are equal
 	*/
-	bool operator== ( const vec3 v2 ) const{ return this->coordinates::operator==( v2 ); };
+	bool operator== ( const Vector3D v2 ) const{ return this->Coordinates::operator==( v2 ); };
 
 	/*!
 	 * @brief Addition operator
 	 * @param v2 Vector to add
 	 * @return Sum of vectors in unit of this vector
 	*/
-	vec3 operator+ ( const vec3 v2 ) const{ return this->coordinates::operator+( v2 ); };
+	Vector3D operator+ ( const Vector3D v2 ) const{ return this->Coordinates::operator+( v2 ); };
 
 	/*!
 	 * @brief Substraction operator
 	 * @param v2 Vector to substract
 	 * @return Difference (v1 - v2) of vectors in unit of this vector
 	*/
-	vec3 operator- ( const vec3 v2 ) const{ return this->coordinates::operator-( v2 ); };
+	Vector3D operator- ( const Vector3D v2 ) const{ return this->Coordinates::operator-( v2 ); };
 
 	/*!
 	 * @brief Negation operator
 	 * @return Negated vector
 	*/
-	vec3 operator- ( void ) const{ return this->coordinates::operator-(); };
+	Vector3D operator- ( void ) const{ return this->Coordinates::operator-(); };
 
 	/*!
 	 * @brief Scale vector
 	 * @param scalar Factor
 	 * @return Scaled vector
 	*/
-	vec3 operator* ( const double scalar ) const{ return this->coordinates::operator*( scalar ); };
+	Vector3D operator* ( const double scalar ) const{ return this->Coordinates::operator*( scalar ); };
 
 	/*!
 	 * @brief Divide vector
 	 * @param divisor Divisor
 	 * @return Divided vector
 	*/
-	vec3 operator/ ( const double divisor ) const{ return this->coordinates::operator/( divisor ); };
+	Vector3D operator/ ( const double divisor ) const{ return this->Coordinates::operator/( divisor ); };
 
 	/*!
 	 * @brief Calculate dot product between to vectors
 	 * @param v2 Second vector
 	 * @return Dot product in unit of this vector squared
 	*/
-	double operator* ( const vec3 v2 ) const;
+	double operator* ( const Vector3D v2 ) const;
 
 	/*!
 	 * @brief Calculate cross product
 	 * @param v2 Second vector
 	 * @return Cross product this * v2 in unit of this vector
 	*/
-	vec3 operator^( const vec3 v2 ) const;
+	Vector3D operator^( const Vector3D v2 ) const;
 
 	/*!
 	 * @brief Get x component
@@ -129,237 +125,190 @@ class vec3 : protected coordinates{
 	double Z( void ) const{ return z; };
 
 	/*!
-	 * @brief Get length of vector
+	 * @brief Get length_ of vector
 	 * @return Length of vector in local coordinate system
 	*/
-	double Length( void ) const{ return len; };
+	double Length( void ) const{ return length_; };
 
 	/*!
 	 * @brief Get Pointer to coordinate system
 	 * @return Pointer to this vector's coordinate system
 	*/
-	const cartCSys* CSys( void ) const{ return cSys; };
+	const CoordinateSystem* GetCoordinateSystem( void ) const{ return coordinate_system_; };
 
 	/*!
 	 * @brief Check if vector's are defined in same system
 	 * @param v Second vector
 	 * @return true when this and vector v are defined in the same coordinate system
 	*/
-	bool sameSystem( const vec3 v ) const;
+	bool IsSameSystem( const Vector3D v ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
-	 * @param target_cSys System to convert to
+	 * @param target_coordinate_system System to convert to
 	 * @return Converted vector
 	*/
-	vec3 convertTo( const cartCSys* const target_cSys ) const;
+	Vector3D ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param v Vector to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3 convertTo( const vec3 v ) const;
+	Vector3D ConvertTo( const Vector3D v ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param l Line to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3 convertTo( const line l ) const;
+	Vector3D ConvertTo( const line l ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param s Surface to which system this gets converted
 	 * @return Converted vector
 	*/
-	vec3 convertTo( const surf s ) const;
+	Vector3D ConvertTo( const surf s ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( void ) const{ return (primitiveVec3) *this; };
+	PrimitiveVector3 Components( void ) const{ return static_cast<PrimitiveVector3>( *this ); };
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @param target Coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const cartCSys* const target ) const;
+	PrimitiveVector3 Components( const CoordinateSystem* const target ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @param targetV Vector with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const vec3 targetV ) const;
+	PrimitiveVector3 Components( const Vector3D targetV ) const;
 
 	/*!
 	 * @brief Get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	primitiveVec3 gXYZ( void ) const;
+	PrimitiveVector3 GlobalComponents( void ) const;
 
 	/*!
 	 * @brief Get global x component
 	 * @return x component in global coordinate system
 	*/
-	double gX( void ) const;
+	double GlobalX( void ) const;
 
 	/*!
 	 * @brief Get global y component
 	 * @return y component in global coordinate system
 	*/
-	double gY( void ) const;
+	double GlobalY( void ) const;
 
 	/*!
 	 * @brief Get global z component
 	 * @return z component in global coordinate system
 	*/
-	double gZ( void ) const;
+	double GlobalZ( void ) const;
 
-	/*!
-	 * @brief Calculates vector's length corresponding to vector component and stores it in member
-	 * @return Error code
-	*/
-	MATH_ERR updateLength( void );
 
 	/*!
 	 * @brief Scale vector by factor
 	 * @param scalar Factor
 	 * @return Error code
 	*/
-	MATH_ERR scale( const double scalar );
+	MathError Scale( const double scalar );
 
 	/*!
-	 * @brief Normalize vector's length to one
+	 * @brief Normalise vector's length_ to one
 	 * @return Error code
-	 * @details Error code ist set when vector's length is zero
+	 * @details Error code ist set when vector's length_ is zero
 	*/
-	MATH_ERR normalise( void );
+	MathError Normalise( void );
 
 	/*!
 	 * @brief Add value to x component of this vector
 	 * @param x_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addXM( const double x_ );
+	MathError AddToX( const double x_ );
 
 	/*!
 	 * @brief Add value to y component of this vector
 	 * @param y_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addYM( const double y_ );
+	MathError AddToY( const double y_ );
 
 	/*!
 	 * @brief Add value to z component of this vector
 	 * @param z_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addZM( const double z_ );
+	MathError AddToZ( const double z_ );
 
 	/*!
-	 * @brief Add value to x component
-	 * @param x_ Value to add in vector's unit
-	 * @return Vector with added value
-	*/
-	vec3 addX( const double x_ ) const;
-
-	/*!
-	 * @brief Add value to y component
-	 * @param y_ Value to add in vector's unit
-	 * @return Vector with added value
-	*/
-	vec3 addY( const double y_ ) const;
-
-	/*!
-	 * @brief Add value to z component
-	 * @param z_ Value to add in vector's unit
-	 * @return Vector with added value
-	*/
-	vec3 addZ( const double z_ ) const;
-
-	/*!
-	 * @brief Calculate angle between this and another vector
+	 * @brief Calculate GetAngle between this and another vector
 	 * @param v2 Second vector
 	 * @return Angle in radians
 	*/
-	double angle( const vec3 v2 ) const;
+	double GetAngle( const Vector3D v2 ) const;
 
 	/*!
 	 * @brief Checks whether two vectors are orthogonal
 	 * @param v2 Second vector
 	 * @return True when vectors are orthogonal
 	*/
-	bool isOrtho( const vec3 v2 ) const;
+	bool IsOrthogonal( const Vector3D v2 ) const;
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sinPhi Sine of the GetAngle
+	 * @param cosPhi Cosine of the GetAngle
 	 * @return Error code
 	*/
-	MATH_ERR rotXM( const double sinPhi, const double cosPhi );
+	MathError RotateAroundXAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sinPhi Sine of the GetAngle
+	 * @param cosPhi Cosine of the GetAngle
 	 * @return Error code
 	*/
-	MATH_ERR rotYM( const double sinPhi, const double cosPhi );
+	MathError RotateAroundYAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sinPhi Sine of the GetAngle
+	 * @param cosPhi Cosine of the GetAngle
 	 * @return Error code
 	*/
-	MATH_ERR rotZM( const double sinPhi, const double cosPhi );
+	MathError RotateAroundZAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
 	 * @param phi Angle in radians
 	 * @return Error code
 	*/
-	MATH_ERR rotXM( const double phi );
+	MathError RotateAroundXAxis( const double phi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
 	 * @param phi Angle in radians
 	 * @return Error code
 	*/
-	MATH_ERR rotYM( const double phi );
+	MathError RotateAroundYAxis( const double phi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
 	 * @param phi Angle in radians
 	 * @return Error code
 	*/
-	MATH_ERR rotZM( const double phi );
-
-	/*!
-	 * @brief Counterclockwise rotation of vector around x-axis
-	 * @param phi Angle in radians
-	 * @return Rotated vector
-	*/
-	vec3 rotX( const double phi ) const;
-
-	/*!
-	 * @brief Counterclockwise rotation of vector around y-axis
-	 * @param phi Angle in radians
-	 * @return Rotated vector
-	*/
-	vec3 rotY( const double phi ) const;
-
-	/*!
-	 * @brief Counterclockwise rotation of vector around z-axis
-	 * @param phi Angle in radians
-	 * @return Rotated vector
-	*/
-	vec3 rotZ( const double phi ) const;
+	MathError RotateAroundZAxis( const double phi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around second vector
@@ -367,7 +316,7 @@ class vec3 : protected coordinates{
 	 * @param phi Angle in radians
 	 * @return Error code
 	*/
-	MATH_ERR rotNM( const vec3 n, const double phi );
+	MathError Rotate( const Vector3D n, const double phi );
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around second vector
@@ -375,29 +324,39 @@ class vec3 : protected coordinates{
 	 * @param phi Angle in radians
 	 * @return Rotated vector
 	*/
-	vec3 rotN( const vec3 n, const double phi ) const;
+	Vector3D RotateConstant( const Vector3D n, const double phi ) const;
 
 	/*!
 	 * @brief Project vector on XY plane of given coordinate system
-	 * @param cSys Coordinate system
+	 * @param coordinate_system_ Coordinate system
 	 * @return Projected vector
 	*/
-	vec3 projectOnXYPlane( const cartCSys* const cSys ) const;
+	Vector3D ProjectOnXYPlane( const CoordinateSystem* const cSys ) const;
 
 	/*!
 	 * @brief Flip x-values
 	 * @return Vector with negated x values
 	*/
-	vec3 negateX( void ) const;
+	Vector3D NegateXComponent( void ) const;
+
+
+	private:
+	double length_;				/*!< Length */
+
+	/*!
+	 * @brief Calculates vector's length_ corresponding to vector component and stores it in member
+	 * @return Error code
+	*/
+	MathError UpdateLength( void );
 
 };
 
 
 
 /*!
- * @brief Class for unit vectors with length one
+ * @brief Class for unit vectors with length_ one
 */
-class uvec3 : public vec3{
+class UnitVector3D : public Vector3D{
 
 	public:
 
@@ -405,49 +364,49 @@ class uvec3 : public vec3{
 	 * @brief Converting constructor from vector
 	 * @param v Vector to convert
 	*/
-	uvec3( const vec3 v ) : vec3( v ){
-		normalise();
+	UnitVector3D( const Vector3D v ) : Vector3D( v ){
+		Normalise();
 	};
 
 	/*!
 	 * @brief Constructor
 	 * @param xyz_ Components
-	 * @param cSys_ Coordinate system
+	 * @param coordinate_system Coordinate system
 	*/
-	uvec3( const Tuple3D xyz_, const cartCSys* const cSys_ ) : uvec3{ vec3{ xyz_, cSys_ } } {};
+	UnitVector3D( const Tuple3D xyz_, const CoordinateSystem* const coordinate_system ) : UnitVector3D{ Vector3D{ xyz_, coordinate_system } } {};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	uvec3( void ) : uvec3{ Tuple3D{ 1, 0, 0 }, DUMMY_CSYS() } {};
+	UnitVector3D( void ) : UnitVector3D{ Tuple3D{ 1, 0, 0 }, DummySystem() } {};
 
 	/*!
 	 * @brief Scaling unit vector does not have an effect
 	 * @param scalar
 	 * @return
 	*/
-	MATH_ERR scale( const double scalar ) = delete;
+	MathError Scale( const double scalar ) = delete;
 
 	/*!
-	 * @brief Add value to x component of this vector and normalise again
+	 * @brief Add value to x component of this vector and Normalise again
 	 * @param x_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addXM( const double x_ ) = delete;
+	MathError AddToX( const double x_ ) = delete;
 
 	/*!
-	 * @brief Add value to y component of this vector and normalise again
+	 * @brief Add value to y component of this vector and Normalise again
 	 * @param y_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addYM( const double y_ ) = delete;
+	MathError AddToY( const double y_ ) = delete;
 
 	/*!
-	 * @brief Add value to z component of this vector and normalise again
+	 * @brief Add value to z component of this vector and Normalise again
 	 * @param z_ Value to add in vector's unit
 	 * @return Error code
 	*/
-	MATH_ERR addZM( const double z_ ) = delete;
+	MathError AddToZ( const double z_ ) = delete;
 };
 
 
@@ -455,9 +414,9 @@ class uvec3 : public vec3{
 /*!
  * @brief Class for points in cartesian coordinate system
 */
-class pnt3 : public vec3{
+class Point3D : public Vector3D{
 
-	using vec3::vec3;
+	using Vector3D::Vector3D;
 
 	public:
 
@@ -465,76 +424,76 @@ class pnt3 : public vec3{
 	 * @brief Converting constructor
 	 * @param v Vector to convert from
 	*/
-	pnt3( const vec3 v ) : vec3( v ){};
+	Point3D( const Vector3D v ) : Vector3D( v ){};
 
 	/*!
 	 * @brief Convert point's data to string
 	 * @return String with point's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Convert point to different coordinate system
-	 * @param target_cSys Target system
+	 * @param target_coordinate_system Target system
 	 * @return Converted point
 	*/
-	pnt3 convertTo( const cartCSys* const target_cSys ) const;
+	Point3D ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief Convert point to different coordinate system
 	 * @param targetP Point with target system
 	 * @return Converted point
 	*/
-	pnt3 convertTo( const pnt3 targetP ) const;
+	Point3D ConvertTo( const Point3D targetP ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( void ) const{ return vec3::XYZ(); };
+	PrimitiveVector3 Components( void ) const{ return Vector3D::Components(); };
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @param target Coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const cartCSys* const target ) const;
+	PrimitiveVector3 Components( const CoordinateSystem* const target ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @param targetV Point with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	primitiveVec3 XYZ( const pnt3 targetP ) const;
+	PrimitiveVector3 Components( const Point3D targetP ) const;
 
 	/*!
 	 * @brief Get global x component
 	 * @return x component in global coordinate system
 	*/
-	double gX( void ) const;
+	double GlobalX( void ) const;
 
 	/*!
 	 * @brief Get global y component
 	 * @return y component in global coordinate system
 	*/
-	double gY( void ) const;
+	double GlobalY( void ) const;
 
 	/*!
 	 * @brief Get global z component
 	 * @return z component in global coordinate system
 	*/
-	double gZ( void ) const;
+	double GlobalZ( void ) const;
 
 	/*!
 	 * @brief Get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	primitiveVec3 gXYZ( void ) const;
+	PrimitiveVector3 GlobalComponents( void ) const;
 
 	/*!
 	 * @brief Project point on XY plane of given coordinate system
-	 * @param cSys Coordinate system
+	 * @param coordinate_system_ Coordinate system
 	 * @return Projected point
 	*/
-	pnt3 projectOnXYPlane( const cartCSys* const cSys ) const;
+	Point3D ProjectOnXYPlane( const CoordinateSystem* const cSys ) const;
 };

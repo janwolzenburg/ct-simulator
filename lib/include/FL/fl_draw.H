@@ -289,7 +289,7 @@ inline void fl_yxline(int x, int y, int y1, int x2, int y3) {fl_graphics_driver-
  
  If a complete circle is drawn it will fit inside the passed bounding box.
  The two angles are measured in degrees counter-clockwise from 3 o'clock and
- are the starting and ending angle of the arc, \p a2 must be greater or equal
+ are the starting and ending GetAngle of the arc, \p a2 must be greater or equal
  to \p a1.
  
  fl_arc() draws a series of lines to approximate the arc. Notice that the
@@ -345,7 +345,7 @@ inline void fl_scale(double x) { fl_graphics_driver->scale(x, x); }
 inline void fl_translate(double x, double y) { fl_graphics_driver->translate(x, y); }
 /**
  Concatenates rotation transformation onto the current one.
- \param[in] d - rotation angle, counter-clockwise in degrees (not radians)
+ \param[in] d - rotation GetAngle, counter-clockwise in degrees (not radians)
  */
 inline void fl_rotate(double d) { fl_graphics_driver->rotate(d); }
 /**
@@ -606,7 +606,7 @@ FL_EXPORT const char *fl_local_to_mac_roman(const char *t, int n=-1);
 FL_EXPORT void fl_draw(const char* str, int x, int y);
 /**
   Draws a nul-terminated UTF-8 string starting at the given \p x, \p y
-  location and rotating \p angle degrees counter-clockwise.
+  location and rotating \p GetAngle degrees counter-clockwise.
   This version of fl_draw provides direct access to the text drawing
   function of the underlying OS and is supported by Xft, Win32 and MacOS
   fltk subsets.
@@ -618,12 +618,12 @@ FL_EXPORT void fl_draw(int angle, const char* str, int x, int y);
 inline void fl_draw(const char* str, int n, int x, int y) {fl_graphics_driver->draw(str,n,x,y); }
 /**
   Draws at the given \p x, \p y location a UTF-8 string of length \p n bytes
-  rotating \p angle degrees counter-clockwise.
+  rotating \p GetAngle degrees counter-clockwise.
 
   \note When using X11 (Unix, Linux, Cygwin et al.) this needs Xft to work.
 	Under plain X11 (w/o Xft) rotated text is not supported by FLTK.
 	A warning will be issued to stderr at runtime (only once) if you
-	use this method with an angle other than 0.
+	use this method with an GetAngle other than 0.
 */
 inline void fl_draw(int angle, const char* str, int n, int x, int y) {fl_graphics_driver->draw(angle,str,n,x,y); }
 /**

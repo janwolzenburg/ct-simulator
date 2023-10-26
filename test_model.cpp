@@ -13,7 +13,7 @@
 
 #include "plotting.h"
 #include "test_model.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "gantry.h"
 #include "test_device.h"
 #include "tomography.h"
@@ -24,9 +24,9 @@
   *********************************************************************/
 
 
-model getTestModel( const cartCSys* const parent, const size_t res ){
+model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
-	cartCSys* modelSys = parent->addCSys( Tuple3D{ -200, -200, -200 }, Tuple3D{ 1, 0, 0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0, 0, 1 }, "Model system" );
+	CoordinateSystem* modelSys = parent->AddCoordinateSystem( Tuple3D{ -200, -200, -200 }, Tuple3D{ 1, 0, 0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0, 0, 1 }, "Model system" );
 
 	model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
 
@@ -34,23 +34,23 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 	voxData bgData = { 0.01, 120000. };
 
-	pnt3 sp1_center = { Tuple3D{ 120, 120, 200 }, mod.CSys() };
+	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
 	voxData sp1_data = { 0.3, 120000. };
 
-	pnt3 sp2_center = { Tuple3D{ 280, 280, 200 }, mod.CSys() };
+	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.CSys() };
 	double sp2_radius = 70;
 	voxData sp2_data = { 0.5, 120000. };
 
 
-	pnt3 artifact{ Tuple3D{ 250, 200, 200}, mod.CSys() };
+	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.CSys() };
 	double artRadius = 15;
 
 
 	for( size_t x = 0; x < mod.NumVox().x; x++ ){
 		for( size_t y = 0; y < mod.NumVox().y; y++ ){
 			for( size_t z = 0; z < mod.NumVox().z; z++ ){
-				pnt3 p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
+				Point3D p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
 
 
 				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) )  mod.setVoxelData( sp1_data, { x, y, z } );
@@ -70,7 +70,7 @@ model getTestModel( const cartCSys* const parent, const size_t res ){
 
 void save_testModel( void ){
 
-	model mod = getTestModel( GLOBAL_CSYS(), 10 );
+	model mod = getTestModel( GlobalSystem(), 10 );
 	
 	vector<char> binary_data;
 	mod.Serialize( binary_data );
@@ -80,7 +80,7 @@ void save_testModel( void ){
 bool test_testModel( void ){
 
 	
-	model mod = getTestModel( GLOBAL_CSYS() );
+	model mod = getTestModel( GlobalSystem() );
 
 	ofstream ax1 = openAxis( path( "./test_testModel.txt" ), true );
 
@@ -95,7 +95,7 @@ bool test_testModel( void ){
 bool test_modelTransmission( void ){
 
 	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1 );
-	model mod{ getTestModel( GLOBAL_CSYS() ) };
+	model mod{ getTestModel( GlobalSystem() ) };
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
 

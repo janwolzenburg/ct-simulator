@@ -18,7 +18,7 @@ using std::cerr; using std::cout; using std::endl;
 using std::vector;
 
 #include "generelMath.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "test_device.h"
 #include "tube.h"
 #include "detector.h"
@@ -42,8 +42,8 @@ detector getTestDetector( void ){
 		false
 	};
 
-	// 50 degree angle
-	detector testDetector{ GLOBAL_CSYS()->createCopy( "Detector system" ), radonParameter, indipendentParameter };
+	// 50 degree GetAngle
+	detector testDetector{ GlobalSystem()->CreateCopy( "Detector system" ), radonParameter, indipendentParameter };
 
 	return testDetector;
 }
@@ -54,7 +54,7 @@ bool test_tube(void) {
 								0.2,
 								tubeParameter::THUNGSTEN };
 
-	tube testTube{ GLOBAL_CSYS()->createCopy( "Tube system" ), tubeParas };
+	tube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
 
 	detector test_detector = getTestDetector();
@@ -78,10 +78,10 @@ bool test_nonUniformDetector( void ){
 
 	ofstream ax1 = openAxis( path( "./test_nonUniformDetector.txt" ), true );
 
-	cartCSys* cSys = GLOBAL_CSYS()->createCopy( "Detector system" );
+	CoordinateSystem* cSys = GlobalSystem()->CreateCopy( "Detector system" );
 
 	const size_t nTheta = 100;
-	const size_t nDistance = FOdd( 33 );
+	const size_t nDistance = ForceOdd( 33 );
 
 	const double distanceRange = 500;
 	const double arcRadius = 1000;
@@ -89,8 +89,8 @@ bool test_nonUniformDetector( void ){
 	const double deltaTheta = PI / (double) ( nTheta - 1 );
 	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
 
-	const uvec3 middleNormalVec = cSys->EyVec();			// Middle normal is the negative y axis
-	const uvec3 rotationAxis = cSys->EzVec();			//Rotation axis is z axis
+	const UnitVector3D middleNormalVec = cSys->UnitY();			// Middle normal is the negative y axis
+	const UnitVector3D rotationAxis = cSys->UnitZ();			//Rotation axis is z axis
 
 
 
@@ -99,34 +99,34 @@ bool test_nonUniformDetector( void ){
 	// Iterate one "half" of normals
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
-		// Rotation angle to rotate the middle normal by
+		// Rotation GetAngle to rotate the middle normal by
 		const double rotationAngle = (double) ( currentIndex ) * deltaTheta;
 
 		// Rotated normal
-		const uvec3 currentNormalVec = middleNormalVec.rotN( rotationAxis, rotationAngle );
+		const UnitVector3D currentNormalVec = middleNormalVec.RotateConstant( rotationAxis, rotationAngle );
 
-		//addSingleObject( ax1, "RotatedNormalVec", currentNormalVec, "g", cSys->OPnt() );
+		//addSingleObject( ax1, "RotatedNormalVec", currentNormalVec, "g", coordinate_system_->Origin() );
 
 		// Lot on normal perpendicualr to rotation axis
-		vec3 normalLot =  rotationAxis ^ currentNormalVec;
-		normalLot.normalise();	// Set length to one
+		Vector3D normalLot =  rotationAxis ^ currentNormalVec;
+		normalLot.Normalise();	// Set length_ to one
 
-		//addSingleObject( ax1, "NormalLot", normalLot, "g", cSys->OPnt() );
+		//addSingleObject( ax1, "NormalLot", normalLot, "g", coordinate_system_->Origin() );
 
-		// Distance from origin to normal
+		// Distance from origin_ to normal
 		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
-		// Set lot length to distance
-		normalLot.scale( currentDistance );
-		//addSingleObject( ax1, "NormalLotScaled", normalLot, "g", cSys->OPnt() );
+		// Set lot length_ to distance
+		normalLot.Scale( currentDistance );
+		//addSingleObject( ax1, "NormalLotScaled", normalLot, "g", coordinate_system_->Origin() );
 
 		// Point on Normal
-		const pnt3 normalPoint{ normalLot };
+		const Point3D normalPoint{ normalLot };
 		//addSingleObject( ax1, "NormalPoint", normalPoint, "g" );
 
 		// Get point on pixel which lies on an arc with radius R
-		const primitiveVec3 o = normalPoint.XYZ();
-		const primitiveVec3 r = currentNormalVec.XYZ();
+		const PrimitiveVector3 o = normalPoint.Components();
+		const PrimitiveVector3 r = currentNormalVec.Components();
 		const double R = arcRadius;
 
 
@@ -140,7 +140,7 @@ bool test_nonUniformDetector( void ){
 		//addSingleObject( ax1, "NormalLine", currentNormal, "c", arcRadius );
 
 		// Point on Pixel
-		const pnt3 pointOnPixel = currentNormal.getPnt( lambda );
+		const Point3D pointOnPixel = currentNormal.getPnt( lambda );
 		//addSingleObject( ax1, "PixelPoint", pointOnPixel, "c" );
 		
 		const line pixelNormal{ -currentNormalVec, pointOnPixel };
@@ -153,8 +153,8 @@ bool test_nonUniformDetector( void ){
 			pixelNormals.at( ( nDistance - 1 ) / 2 - currentIndex ) = pixelNormal;
 
 			const line symPixelNormal{
-				uvec3 { Tuple3D{ -pixelNormal.R().X(), pixelNormal.R().Y(), pixelNormal.R().Z() }, pixelNormal.R().CSys() },
-				pnt3 { Tuple3D{ -pixelNormal.O().X(), pixelNormal.O().Y(), pixelNormal.O().Z() }, pixelNormal.O().CSys() }
+				UnitVector3D { Tuple3D{ -pixelNormal.R().X(), pixelNormal.R().Y(), pixelNormal.R().Z() }, pixelNormal.R().GetCoordinateSystem() },
+				Point3D { Tuple3D{ -pixelNormal.O().X(), pixelNormal.O().Y(), pixelNormal.O().Z() }, pixelNormal.O().GetCoordinateSystem() }
 			};
 
 			pixelNormals.at( ( nDistance - 1 ) / 2 + currentIndex ) = symPixelNormal;
@@ -179,7 +179,7 @@ bool test_nonUniformDetector( void ){
 		const line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->R(), previousNormalIt->O() };
 
 		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
-		const pnt3 currentPreviousIntersectionPoint = currentPreviousIntersection.result.intersectionPoint;
+		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.result.intersectionPoint;
 
 		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
 
@@ -188,7 +188,7 @@ bool test_nonUniformDetector( void ){
 		const line lNextToCurrent{ -rotationAxis ^ nextNormalIt->R(), nextNormalIt->O() };
 
 		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
-		const pnt3 currentNextIntersectionPoint = currentNextIntersection.result.intersectionPoint;
+		const Point3D currentNextIntersectionPoint = currentNextIntersection.result.intersectionPoint;
 
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
 
@@ -245,13 +245,13 @@ bool test_modifiedDetector( void ){
 
 	ofstream ax1 = openAxis( path( "./test_modifiedDetector.txt" ), true );
 
-	cartCSys* cSys = GLOBAL_CSYS()->createCopy( "Detector system" );
+	CoordinateSystem* cSys = GlobalSystem()->CreateCopy( "Detector system" );
 
 
-	addSingleObject( ax1, "Origin", cSys->OPnt(), "c" );
+	addSingleObject( ax1, "Origin", cSys->Origin(), "c" );
 
 	const size_t nTheta = 700;
-	const size_t nDistance = FOdd( 301 );
+	const size_t nDistance = ForceOdd( 301 );
 
 	const double distanceRange = 500;
 	const double detectorCenterDistance = 500;
@@ -260,8 +260,8 @@ bool test_modifiedDetector( void ){
 	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
 
 	// Important vectors
-	const uvec3 middleNormalVector = cSys->EyVec();					// y-axis of coordinate system is the middle normal vector
-	const uvec3 rotationVector = cSys->EzVec();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middleNormalVector = cSys->UnitY();					// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotationVector = cSys->UnitZ();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// All pixel normals
@@ -279,21 +279,21 @@ bool test_modifiedDetector( void ){
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation angle around rotation vector
-		const uvec3 currentNormalVector = middleNormalVector.rotN( rotationVector, rotationAngle );
+		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
 		// Find a point with the distance corresponding to distance in sinogram
-		// The point's origin vector must be perpendicular to the current normal vector
+		// The point's origin_ vector must be perpendicular to the current normal vector
 
 		// The lot is perpendicular to the current normal vector and it lies in xy-plane
-		const uvec3 normalLot = rotationVector ^ currentNormalVector;
+		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
-		// Distance from origin to normal. Is the distance in the sinogram
+		// Distance from origin_ to normal. Is the distance in the sinogram
 		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
-		// Point which lies on the current normal and has the correct distance from the origin 
-		const pnt3 normalPoint = vec3{ normalLot } * currentDistance;
+		// Point which lies on the current normal and has the correct distance from the origin_ 
+		const Point3D normalPoint = Vector3D{ normalLot } * currentDistance;
 
 		// The current normal 
 		const line currentNormal{ currentNormalVector, normalPoint };
@@ -301,7 +301,7 @@ bool test_modifiedDetector( void ){
 		// Index of normal in vector
 		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
 
-		pnt3 currentPixelOrigin;
+		Point3D currentPixelOrigin;
 		double currentPixelSize;
 
 
@@ -310,21 +310,21 @@ bool test_modifiedDetector( void ){
 			// This is the starting point
 			currentPixelOrigin = currentNormal.getPnt( detectorCenterDistance );
 			
-			// First pixel size so that the neighbooring pixel intersects at half angle
+			// First pixel size so that the neighbooring pixel intersects at half GetAngle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
 		else{
 			// Intersection point of pixel
-			const pnt3 pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
+			const Point3D pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
-			const vec3 pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
+			const Vector3D pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
 
-			// Get the pixel normal's origin which lies on the shortest line connection the intersection with current normal
+			// Get the pixel normal's origin_ which lies on the shortest line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size is double the lot length
+			// Pixel size is double the lot length_
 			currentPixelSize = 2 * pixelIntersectionLot.Length();
 		}
 
@@ -336,7 +336,7 @@ bool test_modifiedDetector( void ){
 		previousPixelSize = currentPixelSize;
 
 		// Vector perpendicualr to the normal pointing to the next pixel
-		const uvec3 currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
+		const UnitVector3D currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
 
 		// Add pixel
 		allPixel.emplace_back( currentSurfaceVector,
@@ -352,12 +352,12 @@ bool test_modifiedDetector( void ){
 
 			// Mirror current normal around y-axis
 			const line mirroredPixelNormal{
-				pixelNormal.R().negateX(),
-				pixelNormal.O().negateX()
+				pixelNormal.R().NegateXComponent(),
+				pixelNormal.O().NegateXComponent()
 			};
 
 			// Add mirrored pixel
-			const uvec3 mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
+			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
 			allPixel.emplace_back( mirroredSurfaceVector,
 								   rotationVector,
 								   mirroredPixelNormal.O(),
@@ -426,7 +426,7 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 		false
 	};
 
-	gantry testGantry{ GLOBAL_CSYS()->createCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
+	gantry testGantry{ GlobalSystem()->CreateCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }
@@ -435,7 +435,7 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 bool test_gantry( void ){
 
 	gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
-	const cartCSys* const radonCSys = testGantry.CSys()->createCopy( "Radon System" );
+	const CoordinateSystem* const radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 	ofstream ax2 = openAxis( path( "./test_gantry_sinogram.txt" ), true );

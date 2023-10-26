@@ -36,7 +36,7 @@ class rayScattering{
 	 * @param energiesAmount_ For how many energies should  the probabilities be calculated
 	 * @param scatteredNormal_ Normal around which rays shoul´d be rpteated wehen scattered
 	*/
-	rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energiesAmount_, const uvec3 scatteredNormal_ );
+	rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energiesAmount_, const UnitVector3D scatteredNormal_ );
 
 	/*!
 	 * @brief Scatter given ray
@@ -44,10 +44,10 @@ class rayScattering{
 	 * @param newOrigin Point where the scattering happens
 	 * @return Scattered ray
 	*/
-	ray scatterRay( const ray r, const pnt3 newOrigin ) const;
+	ray scatterRay( const ray r, const Point3D newOrigin ) const;
 
 	/*!
-	 * @brief Get a random angle to given frequency
+	 * @brief Get a random GetAngle to given frequency
 	 * @param frequency Frequency of ray
 	 * @return Random angöe
 	*/
@@ -70,5 +70,5 @@ class rayScattering{
 	vector<propabilityDistribution> distributions;	/*!<Vector with propability distributions*/
 	vector<double> energies;						/*!<Vector with frequencies the vector with distribution describes*/
 
-	uvec3 scatteringNormal;							/*!<Rotation normal for scattered rays*/
+	UnitVector3D scatteringNormal;							/*!<Rotation normal for scattered rays*/
  };

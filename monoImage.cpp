@@ -120,8 +120,8 @@ void monoImage::normalise( void ){
 
 	if( data.size() == 0 ) return;
 
-	const double maxVal = Max( data );
-	const double minVal = Min( data );
+	const double maxVal = MaxElement( data );
+	const double minVal = MinElement( data );
 
 	for( size_t i = 0; i < numPixel; i++ ){
 		imData.at( i ) = (unsigned char) ( ( ( data.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );

@@ -12,7 +12,7 @@
  *********************************************************************/
 
 #include "programState.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "mainWindow.h"
 #include "processingWindow.h"
 #include "serialization.h"
@@ -67,7 +67,7 @@ programState::programState( void ) :
 	storedRadonParameter{ programState::getPath( "storedRadonParameter.txt" ), radonParameter },
 	detectorParameter{},
 	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), detectorParameter },
-	gantryInstance{ CSYS_TREE().addCSys( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
+	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
 	
 	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
 	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
@@ -171,7 +171,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	const slicePlane backupPlane = modelViewPara.plane; 
 	slicePlane& planeInstance =  modelViewPara.plane;
 
-	const primitiveCartCSys backupCSys = modelInstance.CSys()->getPrimitive();
+	const PrimitiveCoordinateSystem backupCSys = modelInstance.CSys()->Primitive();
 
 	if( targetXRot != planeInstance.rotationAngleX ){
 
@@ -180,7 +180,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 		const line axis{ planeInstance.surface.R1(), planeInstance.surface.O() };
 
-		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetYRot != planeInstance.rotationAngleY ){
@@ -190,7 +190,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 		const line axis{ planeInstance.surface.R2(), planeInstance.surface.O() };
 
-		modelInstance.CSys()->rotateM( axis, rotationAngle / 360. * 2. * PI );
+		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetZTrans != planeInstance.positionZ ){
@@ -198,7 +198,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		const double translation = targetZTrans - planeInstance.positionZ;
 		planeInstance.positionZ = targetZTrans;
 
-		modelInstance.CSys()->translateM( ( (vec3) planeInstance.surface.Normal() ) * translation );
+		modelInstance.CSys()->Translate( ( (Vector3D) planeInstance.surface.Normal() ) * translation );
 	}
 
 	// Return if succeeded
@@ -206,7 +206,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	
 	// Revert changes
 	planeInstance = backupPlane;
-	modelInstance.CSys()->setPrimitive( backupCSys );
+	modelInstance.CSys()->Primitive( backupCSys );
 
 	targetXRot = planeInstance.rotationAngleX;
 	targetYRot = planeInstance.rotationAngleY;
@@ -234,9 +234,9 @@ bool programState::sliceModel( void ){
 void programState::centerModel( void ){
 
 	// Center model
-	Tuple3D center = primitiveVec3{ modelInstance.ModSize() } / -2.;
+	Tuple3D center = PrimitiveVector3{ modelInstance.ModSize() } / -2.;
 
-	modelInstance.CSys()->setPrimitive( primitiveCartCSys{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+	modelInstance.CSys()->Primitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
 }
 
 void programState::resetModel( void ){

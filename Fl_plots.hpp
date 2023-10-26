@@ -65,8 +65,8 @@ void Fl_Plot<plotType>::resize( int x, int y, int w, int h ){
 	Fl_Widget::resize( x, y, w, h );
 
 	GridIndex currentImgSize = plotInstance.getSize();
-	if( relDeviation( (int) currentImgSize.c, w ) > 0.15 ||
-		relDeviation( (int) currentImgSize.r, h ) > 0.15 ){
+	if( RelativeDeviation( (int) currentImgSize.c, w ) > 0.15 ||
+		RelativeDeviation( (int) currentImgSize.r, h ) > 0.15 ){
 
 		plotInstance.setSize( GridIndex{ (size_t) w, (size_t) h } );
 		plotInstance.create();

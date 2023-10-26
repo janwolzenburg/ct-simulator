@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   primitiveCartCSys.h
+ * @file   PrimitiveCoordinateSystem.h
  * @brief  Classes for cartesian coordinate systems
  *
  * @author Jan Wolzenburg
@@ -13,7 +13,7 @@
 	Includes
  *********************************************************************/
 #include "generelMath.h"
-#include "primitiveVec3.h"
+#include "primitiveVector3.h"
 
 
 
@@ -25,56 +25,56 @@
 /*!
  * @brief Class describing a right-handed cartesian coordinate system
 */
-class primitiveCartCSys : public mathObj{
+class PrimitiveCoordinateSystem : public MathematicalObject{
 	
 	public:
 	
 	/*!
 	 * @brief Constructor
-	 * @param origin_ O of coordinate system
-	 * @param ex_ x-axis
-	 * @param ey_ y-axis
-	 * @param ez_ z-axis
+	 * @param origin Origin of coordinate system
+	 * @param ex x-axis
+	 * @param ey y-axis
+	 * @param ez z-axis
 	 * @details Axes must be orthogonal to each other
 	*/
-	primitiveCartCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_ );
+	PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez );
 
 	/*!
 	 * @brief Constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	primitiveCartCSys( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Convert coordinate system's data to string
 	 * @return String with coordinate system's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get primitive origin
-	 * @return Primitive represantation of the origin
+	 * @brief Get primitive origin_
+	 * @return Primitive represantation of the origin_
 	*/
-	primitiveVec3 O( void ) const{ return origin; };
+	PrimitiveVector3 Origin( void ) const{ return origin_; };
 
 	/*!
 	 * @brief Get primitive x Axis
 	 * @return Primitive represantation of the x Axis
 	*/
-	primitiveVec3 Ex( void ) const{ return ex; };
+	PrimitiveVector3 UnitX( void ) const{ return ex_; };
 
 	/*!
 	 * @brief Get primitive y Axis
 	 * @return Primitive represantation of the y Axis
 	*/
-	primitiveVec3 Ey( void ) const{ return ey; };
+	PrimitiveVector3 UnitY( void ) const{ return ey_; };
 
 	/*!
 	 * @brief Get primitive z Axis
 	 * @return Primitive represantation of the z Axis
 	*/
-	primitiveVec3 Ez( void ) const{ return ez; };
+	PrimitiveVector3 UnitZ( void ) const{ return ez_; };
 
 	/*!
 	 * @brief Serialize this object
@@ -87,22 +87,22 @@ class primitiveCartCSys : public mathObj{
 
 	/*!
 	 * @brief Translate coordinate system
-	 * @param c Translation in x, y and z direction
+	 * @param direction Translation in x, y and z direction
 	*/
-	void translateM( const primitiveVec3 coords ){ origin = origin + coords; };
+	void Translate( const PrimitiveVector3 direction ){ origin_ = origin_ + direction; };
 
 	/*!
 	 * @brief Rotate coordinate system
-	 * @param n Rotation axis
-	 * @param phi Rotation angle
+	 * @param axis Rotation axis
+	 * @param GetAngle Rotation GetAngle
 	*/
-	MATH_ERR rotateM( const primitiveVec3 n, const double phi );
+	MathError Rotate( const PrimitiveVector3 axis, const double angle );
 
 
 	protected:
 
-	primitiveVec3 origin;		/*!< Origin point */
-	primitiveVec3 ex;			/*!< x-axis unit vector */
-	primitiveVec3 ey;			/*!< y-axis unit vector */
-	primitiveVec3 ez;			/*!< z-axis unit vector */
+	PrimitiveVector3 origin_;		/*!< Origin point */
+	PrimitiveVector3 ex_;			/*!< x-axis unit vector */
+	PrimitiveVector3 ey_;			/*!< y-axis unit vector */
+	PrimitiveVector3 ez_;			/*!< z-axis unit vector */
 };

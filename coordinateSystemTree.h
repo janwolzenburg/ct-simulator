@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   cSysTree.h
- * @brief  Class for collection of cartesian coordinate systems
+ * @file   CoordinateSystemTree.h
+ * @brief  Class for collection of cartesian coordinate systems_
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -14,7 +14,7 @@
 *********************************************************************/
 #include <array>
 using std::array;
-#include "cartesian.h"
+#include "coordinateSystem.h"
 
 
 
@@ -22,33 +22,35 @@ using std::array;
 	Definitions
  *********************************************************************/
 
- // Maximum amount of Coordinate systems in tree
-constexpr size_t MAX_CSYS_IN_TREE = 64;
+
 
 /*!
  * @brief Get singleton instance of cartesian system tree
  * @return Reference to tree
 */
-cSysTree& CSYS_TREE( void );
+CoordinateSystemTree& CoordinateSystems( void );
 
 /*!
  * @brief Get global coordinate system
  * @return Pointer to global system
 */
-const cartCSys* GLOBAL_CSYS( void );
+const CoordinateSystem* GlobalSystem( void );
 
 /*!
  * @brief Get dummy system
  * @return Pointer to dummy system
 */
-cartCSys* DUMMY_CSYS( void );
+CoordinateSystem* DummySystem( void );
 
 
 
 /*!
- * @brief Class to store related coordinate systems. Singleton pattern
+ * @brief Class to store related coordinate systems_. Singleton pattern
 */
-class cSysTree : public mathObj{
+class CoordinateSystemTree : public MathematicalObject{
+
+	 // Maximum amount of Coordinate systems_ in tree
+	static constexpr size_t max_systems_in_tree = 64;
 
 	public:
 
@@ -56,25 +58,25 @@ class cSysTree : public mathObj{
 	 * @brief Get single instance
 	 * @return Reference to instance
 	*/
-	static cSysTree& getInstance();
+	static CoordinateSystemTree& GetInstance();
 
 	/*!
 	 * @brief Convert coordinate tree's data
 	 * @return String with tree's data
 	*/
-	string toStr( const unsigned int newLineTabulators = 0 ) const override;
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Add system to tree
-	 * @param origin_ O of coordinate system
+	 * @param origin_ Origin of coordinate system
 	 * @param ex_ x-axis
 	 * @param ey_ y-axis
 	 * @param ez_ z-axis
-	 * @param parent_ Pointer to parent system
+	 * @param parent_ Pointer to parent_ system
 	 * @param name_ Name of the system
 	 * @return Pointer to new system
 	*/
-	cartCSys* addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const cartCSys* parent_, const string name_ );
+	CoordinateSystem* AddSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const CoordinateSystem* parent_, const string name_ );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -82,74 +84,74 @@ class cSysTree : public mathObj{
 	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	cartCSys* addCSys( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	CoordinateSystem* AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Add system to tree with global system as parent
-	 * @param origin_ O of coordinate system
+	 * @brief Add system to tree with global system as parent_
+	 * @param origin_ Origin of coordinate system
 	 * @param ex_ x-axis
 	 * @param ey_ y-axis
 	 * @param ez_ z-axis
 	 * @param name_ Name of the system
 	 * @return Pointer to new system
 	*/
-	cartCSys* addCSys( const primitiveVec3 origin_, const primitiveVec3 ex_, const primitiveVec3 ey_, const primitiveVec3 ez_, const string name_ );
+	CoordinateSystem* AddSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const string name_ );
 
 	/*!
-	 * @brief Add system to tree at origin of parent
+	 * @brief Add system to tree at origin_ of parent_
 	 * @param parent_ Parent system
 	 * @param name_ Name
 	 * @return Pointer to new system
 	*/
-	cartCSys* addCSys( const cartCSys* parent_, const string name_ );
+	CoordinateSystem* AddSystem( const CoordinateSystem* parent_, const string name_ );
 
 	/*!
-	 * @brief Ass system to tree at origin of global system
+	 * @brief Ass system to tree at origin_ of global system
 	 * @param name_ Name
 	 * @return Pointer to new system
 	*/
-	cartCSys* addCSys( const string name_ );
+	CoordinateSystem* AddSystem( const string name_ );
 
 	/*!
 	 * @brief Get dummy system
 	 * @return Pointer to dummy
 	*/
-	cartCSys* getDummy( void ){ return &( *systems.begin() ); };
+	CoordinateSystem* GetDummy( void ){ return &( *systems_.begin() ); };
 
 	/*!
 	 * @brief Get global system
 	 * @return Pointer to global system
 	*/
-	const cartCSys* getGlobal( void ){ return &( systems.at( 1 ) ); };
+	const CoordinateSystem* GetGlobal( void ){ return &( systems_.at( 1 ) ); };
 
 	/*!
 	 * @brief Check if pointed to system is valid
 	 * @param element System to check
 	 * @return True when system is part of this tree
 	*/
-	bool validTreeElement( const cartCSys* const element ) const;
+	bool IsValidTreeElement( const CoordinateSystem* const element ) const;
 
 
 	private:
 
 	/*!
 	 * @brief Default Constructor
-	 * @details Initialises all systems in array to default cartCSys
+	 * @details Initialises all systems_ in array to default CoordinateSystem
 	*/
-	cSysTree( void );
+	CoordinateSystemTree( void );
 
 	/*!
 	 * @brief Deleted copy constructor
 	*/
-	cSysTree( const cSysTree& tree_ ) = delete;
+	CoordinateSystemTree( const CoordinateSystemTree& tree_ ) = delete;
 
 	/*!
 	 * @brief Deleted assignment operator
 	*/
-	cSysTree& operator=( const cSysTree& tree_ ) = delete;
+	CoordinateSystemTree& operator=( const CoordinateSystemTree& tree_ ) = delete;
 
 
 	private:
-	size_t numSystems;								/*!< Number of systems in tree*/
-	array<cartCSys, MAX_CSYS_IN_TREE> systems;		/*!< Array with all systems*/
+	size_t system_count_;									/*!< Number of systems_ in tree*/
+	array<CoordinateSystem, max_systems_in_tree> systems_;	/*!< Array with all systems_*/
 };

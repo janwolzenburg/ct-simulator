@@ -37,11 +37,11 @@ class detector {
 
 	/*!
 	 * @brief Cnstructor
-	 * @param cSys_ Coordinate system
+	 * @param coordinate_system Coordinate system
 	 * @param radonParameter Radon parameter
 	 * @param indipendentParameter Parameter indipendent of radon parameter
 	*/
-	detector(cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
+	detector(CoordinateSystem* const coordinate_system, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -76,19 +76,19 @@ class detector {
 	 * @brief Get coordinate system of detector
 	 * @return Pointer to coordinate system
 	*/
-	//cartCSys* CSys( void ) const{ return cSys; };
+	//CoordinateSystem* GetCoordinateSystem( void ) const{ return coordinate_system_; };
 	
 
 	/*!
 	 * @brief Convert all comnverted pixel to this system
 	 * @param targetCSys Target
 	*/
-	void convertPixel( const cartCSys* const targetCSys );
+	void convertPixel( const CoordinateSystem* const targetCSys );
 
 
 	private:
 
-	cartCSys* cSys;									/*!<Local coordinate system*/
+	CoordinateSystem* cSys;									/*!<Local coordinate system*/
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 	vector<pixel> allPixelConverted;				/*!<Pixel in different coordinate system*/
 

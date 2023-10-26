@@ -45,7 +45,7 @@ class filteredProjections : private grid<> {
 	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
 
 	/*!
-	 * @brief Get value at angle index at given distance
+	 * @brief Get value at GetAngle index at given distance
 	 * @param angleIdx Angle index
 	 * @param distance Distance
 	 * @return Filtered value

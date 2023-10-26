@@ -16,7 +16,7 @@
   #include "scattering.h"
   #include "vectorAlgorithm.h"
   #include "plotting.h"
-  #include "cSysTree.h"
+  #include "coordinateSystemTree.h"
   #include "test_device.h"
   #include "test_model.h"
   #include "tomography.h"
@@ -26,11 +26,11 @@
 bool test_scattered_angle_propabilities( void ){
 
 	double angleResolution = 2. / 360 * 2 * PI;
-	NumberRange energyRange = NumberRange{ alFilterCutOffEnergy_eV, 150000. };
+	NumberRange energyRange = NumberRange{ al_filter_cut_off_energy_eV, 150000. };
 	size_t numEnergies = 20;
 	//double energyResolution = energyRange.Resolution( numEnergies );
 
-	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, uvec3{Tuple3D{1., 0., 0.}, GLOBAL_CSYS()}};
+	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
 
 	const double testEnergy = 100000.;
 	vector<Tuple2D> distribution = anglePropabilites.getDistribution( testEnergy );
@@ -44,7 +44,7 @@ bool test_scattered_angle_propabilities( void ){
 		
 		double angle = anglePropabilites.getRandomAngle( testEnergy );
 		
-		size_t angleIndex = Fmax( (size_t) floor( ( angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
+		size_t angleIndex = ForceToMax( (size_t) floor( ( angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
 
 		( experimentalDistribution.at( angleIndex ).y )++;
 
@@ -67,7 +67,7 @@ bool test_scattered_angle_propabilities( void ){
 bool test_ray_scattering(void){
 
 	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1000 );
-	model mod = getTestModel( GLOBAL_CSYS(), 1 );
+	model mod = getTestModel( GlobalSystem(), 1 );
 
 	ofstream ax1 = openAxis( path( "./test_ray_scattering.txt" ), true );
 
@@ -105,7 +105,7 @@ bool test_ray_scattering(void){
 
 			if( mod.pntInside( retRay.O() ) ){
 				addSingleObject( ax1, "Ray", r, "m", plotLength );
-				angles.push_back( r.R().angle( retRay.R() ) );
+				angles.push_back( r.R().GetAngle( retRay.R() ) );
 				raysForNextIteration.push_back( retRay );
 
 			} 
@@ -134,7 +134,7 @@ bool test_ray_scattering(void){
 
 	for( auto current : angles ){
 
-		size_t idx = closest( discreteAngles, current );
+		size_t idx = GetClosestElementIndex( discreteAngles, current );
 		if( idx >= anglesHistogram.size() ) idx = anglesHistogram.size() - 1;
 		anglesHistogram.at( idx ).y++;
 	}

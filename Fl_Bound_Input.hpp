@@ -64,11 +64,11 @@ void Fl_Bound_Input<C, T>::checkBounds( void ){
 	switch( constraint ){
 
 		case ODD:
-			if( isEven( current ) ) current++;
+			if( IsEven( current ) ) current++;
 			break;
 
 		case EVEN:
-			if( !isEven( current ) ) current++;
+			if( !IsEven( current ) ) current++;
 			break;
 
 		case NONE:

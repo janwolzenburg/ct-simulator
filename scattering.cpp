@@ -20,9 +20,9 @@
 *********************************************************************/
 
 
-rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const uvec3 scatteredNormal_ ) :
+rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const UnitVector3D scatteredNormal_ ) :
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
-	energiesAmount( Fpos( energyAmount_ ) ),
+	energiesAmount( ForcePositive( energyAmount_ ) ),
 	energyRange( energyRange_ ),
 	energyResolution( ( energyRange.end() - energyRange.start() ) / (double) ( energiesAmount - 1 ) ),
 	scatteringNormal( scatteredNormal_ )
@@ -61,9 +61,9 @@ rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-ray rayScattering::scatterRay( const ray r, const pnt3 newOrigin ) const{
+ray rayScattering::scatterRay( const ray r, const Point3D newOrigin ) const{
 
-	const uvec3 newDirection = r.R().rotN( scatteringNormal, getRandomAngle( r.getMeanFrequency() ) );
+	const UnitVector3D newDirection = r.R().RotateConstant( scatteringNormal, getRandomAngle( r.getMeanFrequency() ) );
 
 	return ray{ newDirection, newOrigin, r.Properties() };
 
@@ -71,7 +71,7 @@ ray rayScattering::scatterRay( const ray r, const pnt3 newOrigin ) const{
 
 double rayScattering::getRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 	
 	return distributions.at( distributionIndex ).getRandom();
 
@@ -79,7 +79,7 @@ double rayScattering::getRandomAngle( const double energy ) const{
 
 vector<Tuple2D> rayScattering::getDistribution( const double energy ) const{
 
-	const size_t distributionIndex = Fmax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 
 	return distributions.at( distributionIndex ).getDistribution();
 

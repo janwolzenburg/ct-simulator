@@ -19,7 +19,7 @@
 #include "tomography.h"
 #include "test_model.h"
 #include "model.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "test_device.h"
 #include "filter.h"
 #include "backprojection.h"
@@ -58,7 +58,7 @@ bool test_detector_to_sinogram( void ){
 	closeAxis( ax2 );
 
 	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
-	cartCSys* radonCSys = testGantry.CSys()->createCopy( "Radon System" );
+	CoordinateSystem* radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
 
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };
@@ -69,7 +69,7 @@ bool test_detector_to_sinogram( void ){
 
 		// Iterate all pixel
 		for( pixel currentPixel : detectionPixel ){
-			// Get coordinates for pixel
+			// Get Coordinates for pixel
 			radonCoords newRadonCoordinates{ radonCSys, currentPixel.NormalLine() };
 			// Get the radon point
 			radonPoint newRadonPoint{ newRadonCoordinates, 1. };
@@ -108,7 +108,7 @@ bool test_Tomography( void ){
 	cout << "Time for gantry construction: " << diff << endl;
 
 	start = std::chrono::system_clock::now();
-	model mod = getTestModel( GLOBAL_CSYS(), 10 );
+	model mod = getTestModel( GlobalSystem(), 10 );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test model construction: " << diff << endl;

@@ -1,5 +1,5 @@
 /*********************************************************************
- * @file   coordinates.cpp
+ * @file   Coordinates.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -23,120 +23,120 @@
 
 
 /*
-	coordinates implementation
+	Coordinates implementation
 */
 
-string coordinates::toStr( const unsigned int newLineTabulators ) const{
+string Coordinates::ToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	char tempCharArr[ 64 ] = { 0 };
 	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
 
 	str += newLine + tempCharArr;
-	str += newLine + "Parent cSys:" + std::format( "{:#X}", (size_t) cSys );
+	str += newLine + "Parent coordinate_system_:" + std::format( "{:#X}", (size_t) coordinate_system_ );
 
 	return str;
 }
 
-bool coordinates::operator== ( const coordinates coords ) const{
-	if( this->sameSystem( coords ) ) return this->primitiveVec3::operator==( coords );
+bool Coordinates::operator== ( const Coordinates coords ) const{
+	if( this->IsSameSystem( coords ) ) return this->PrimitiveVector3::operator==( coords );
 
-	// Convert both coordinates to global system
-	coordinates globalCoords_1 = this->convertTo( GLOBAL_CSYS() );
-	coordinates globalCoords_2 = coords.convertTo( GLOBAL_CSYS() );
+	// Convert both Coordinates to global system
+	Coordinates globalCoords_1 = this->convertTo( GlobalSystem() );
+	Coordinates globalCoords_2 = coords.convertTo( GlobalSystem() );
 
 	// Compare components
-	return globalCoords_1.primitiveVec3::operator==( globalCoords_2 );
+	return globalCoords_1.PrimitiveVector3::operator==( globalCoords_2 );
 };
 
-coordinates coordinates::operator+ ( const coordinates coords ) const{
-	// Add converted coordinates' components to this componentes
-	primitiveVec3 locCoords = this->primitiveVec3::operator+( coords.convertTo( this->cSys ) );
+Coordinates Coordinates::operator+ ( const Coordinates coords ) const{
+	// Add converted Coordinates' components to this componentes
+	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator+( coords.convertTo( this->coordinate_system_ ) );
 
-	return coordinates{ locCoords, this->cSys };
+	return Coordinates{ locCoords, this->coordinate_system_ };
 }
 
-coordinates coordinates::operator- ( const coordinates coords ) const{
-	// Add converted coordinates' components to this componentes
-	primitiveVec3 locCoords = this->primitiveVec3::operator-( coords.convertTo( this->cSys ) );
+Coordinates Coordinates::operator- ( const Coordinates coords ) const{
+	// Add converted Coordinates' components to this componentes
+	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator-( coords.convertTo( this->coordinate_system_ ) );
 
-	return coordinates{ locCoords, this->cSys };
+	return Coordinates{ locCoords, this->coordinate_system_ };
 }
 
-coordinates coordinates::operator- ( void ) const{
-	return coordinates{ this->primitiveVec3::operator-(), this->cSys };
+Coordinates Coordinates::operator- ( void ) const{
+	return Coordinates{ this->PrimitiveVector3::operator-(), this->coordinate_system_ };
 }
 
-coordinates coordinates::operator* ( const double scalar ) const{
-	primitiveVec3 scaledCoords = this->primitiveVec3::operator*( scalar );
+Coordinates Coordinates::operator* ( const double scalar ) const{
+	PrimitiveVector3 scaledCoords = this->PrimitiveVector3::operator*( scalar );
 
-	return coordinates{ scaledCoords, this->cSys };
+	return Coordinates{ scaledCoords, this->coordinate_system_ };
 }
 
-coordinates coordinates::operator/ ( const double divisor ) const{
-	return coordinates{ this->primitiveVec3::operator/( divisor ), this->cSys };
+Coordinates Coordinates::operator/ ( const double divisor ) const{
+	return Coordinates{ this->PrimitiveVector3::operator/( divisor ), this->coordinate_system_ };
 }
 
-coordinates coordinates::convertTo( const cartCSys* const target_cSys ) const{
+Coordinates Coordinates::convertTo( const CoordinateSystem* const target_coordinate_system ) const{
 	
-	coordinates tempC{ Tuple3D{ x, y, z }, this->cSys };
+	Coordinates tempC{ Tuple3D{ x, y, z }, this->coordinate_system_ };
 
-	if( this->sameSystem( target_cSys ) ) return tempC;
+	if( this->IsSameSystem( target_coordinate_system ) ) return tempC;
 
-	// Loop until coordinates are in context of global system
-	while( !tempC.cSys->isGlobal() ){
-		tempC = tempC.toParentcSys();
+	// Loop until Coordinates are in context of global system
+	while( !tempC.coordinate_system_->IsGlobal() ){
+		tempC = tempC.ConvertToParentSystem();
 	}
 
 
 	// Target system is not global system
-	if( !target_cSys->isGlobal() ){
+	if( !target_coordinate_system->IsGlobal() ){
 		// Find path from global system to target system
-		vector<const cartCSys*> path = target_cSys->getPathFromGlobal();
+		vector<const CoordinateSystem*> path = target_coordinate_system->GetPathFromGlobal();
 
 		// Target system is not the global system
 		if( path.size() > 0 ){
 			// Iterate each coordinate system in path
-			for( vector<const cartCSys*>::const_iterator cur_cSys_It = path.begin(); cur_cSys_It < path.end(); cur_cSys_It++ ){
-				tempC = tempC.toChildcSys( *cur_cSys_It );
+			for( vector<const CoordinateSystem*>::const_iterator cur_coordinate_systemIt = path.begin(); cur_coordinate_systemIt < path.end(); cur_coordinate_systemIt++ ){
+				tempC = tempC.ConvertToChildSystem( *cur_coordinate_systemIt );
 			}
 		}
 
-		tempC = tempC.toChildcSys( target_cSys );
+		tempC = tempC.ConvertToChildSystem( target_coordinate_system );
 	}
 	return tempC;
 }
 
-coordinates coordinates::toParentcSys( void ) const{
-	// Return this coordinates if this' coordinate system is the global system
-	if( this->cSys->isGlobal() ) return *this;
+Coordinates Coordinates::ConvertToParentSystem( void ) const{
+	// Return this Coordinates if this' coordinate system is the global system
+	if( this->coordinate_system_->IsGlobal() ) return *this;
 
-	// Values of coordinates in parent coordinate system
-	primitiveVec3 coordComps{ cSys->Primitive().O() + cSys->Primitive().Ex() * x + cSys->Primitive().Ey() * y + cSys->Primitive().Ez() * z };
-	coordinates parentCoords{ coordComps, cSys->Parent() };
+	// Values of Coordinates in parent_ coordinate system
+	PrimitiveVector3 coordComps{ coordinate_system_->Primitive().Origin() + coordinate_system_->Primitive().UnitX() * x + coordinate_system_->Primitive().UnitY() * y + coordinate_system_->Primitive().UnitZ() * z };
+	Coordinates parentCoords{ coordComps, coordinate_system_->Parent() };
 
 	return parentCoords;
 }
 
-coordinates coordinates::toChildcSys( const cartCSys* const child_cSys ) const{
-	// Error when child's parent system is not this system
-	if( !this->sameSystem( child_cSys->Parent() ) ) checkErr( MATH_ERR::INPUT, "Parent of child system is not this system!" );
+Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const child_coordinate_system ) const{
+	// Error when child's parent_ system is not this system
+	if( !this->IsSameSystem( child_coordinate_system->Parent() ) ) CheckForAndOutputError( MathError::Input, "Parent of child system is not this system!" );
 
 	eqnSys tEqnSys( 3 );		// System of equation to solve for x,y and z in local coordinate system
 
 	// Poulate columns of system of equations
-	tEqnSys.populateColumn( child_cSys->Primitive().Ex() );
-	tEqnSys.populateColumn( child_cSys->Primitive().Ey() );
-	tEqnSys.populateColumn( child_cSys->Primitive().Ez() );
+	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitX() );
+	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitY() );
+	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitZ() );
 
-	tEqnSys.populateColumn( (primitiveVec3) *this - child_cSys->Primitive().O() );
+	tEqnSys.populateColumn( (PrimitiveVector3) *this - child_coordinate_system->Primitive().Origin() );
 
 	// Solve
 	eqnSysSolution tEqnSysSol = tEqnSys.solve();
 
-	// System solution are new coordinates
-	return coordinates{ Tuple3D{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_cSys };
+	// System solution are new Coordinates
+	return Coordinates{ Tuple3D{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_coordinate_system };
 }

@@ -1,11 +1,10 @@
+#pragma once
 /*********************************************************************
- * @file   vec.fwd.h
- * @brief  Forward decleration for vector, unit vector and point
+ * @file   CoordinateSystemTree.fwd.h
+ * @brief  Forward decleration
  *
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
 
-class vec3;
-class pnt3;
-class uvec3;
+class CoordinateSystemTree;

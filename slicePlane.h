@@ -7,7 +7,7 @@
  * @date   April 2023
  *********************************************************************/
 
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "surf.h"
 
 /*!
@@ -38,10 +38,10 @@ class slicePlane{
 
 	public:
 
-	cartCSys* cSys;			/*!<Coordinate system of slice plane*/
+	CoordinateSystem* cSys;			/*!<Coordinate system of slice plane*/
 	surf surface;			/*!<Surface for slicing*/
-	double rotationAngleX;	/*!<Current x-rotation angle*/
-	double rotationAngleY;	/*!<Current y-rotation angle*/
+	double rotationAngleX;	/*!<Current x-rotation GetAngle*/
+	double rotationAngleY;	/*!<Current y-rotation GetAngle*/
 	double positionZ;		/*!<Current z-position*/
 
 };

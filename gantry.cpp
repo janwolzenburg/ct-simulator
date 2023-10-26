@@ -16,7 +16,7 @@ using std::ref;
 using std::cref;
 
 #include "gantry.h"
-#include "cSysTree.h"
+#include "coordinateSystemTree.h"
 #include "tomography.h"
 #include "simulation.h"
 
@@ -26,23 +26,23 @@ using std::cref;
 *********************************************************************/
 
 
-gantry::gantry( cartCSys* const cSys_, const tubeParameter tubeParameter_, 
+gantry::gantry( CoordinateSystem* const coordinate_system, const tubeParameter tubeParameter_, 
 				const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	cSys( cSys_ ),
-	resetPostition( cSys->getPrimitive() ),
-	rayDetector{ cSys->addCSys( primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, -1, 0 }, primitiveVec3{ 0, 0, 1 }, "xRay detector" ),
+	cSys( coordinate_system ),
+	resetPostition( cSys->Primitive() ),
+	rayDetector{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
-	raySource{ cSys->addCSys( primitiveVec3{ 0, 0, 0}, primitiveVec3{1, 0, 0}, primitiveVec3{0, -1, 0}, primitiveVec3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	raysPerPixel( Fpos( indipendentParameter.raysPerPixel )),
+	raySource{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ },
+	raysPerPixel( ForcePositive( indipendentParameter.raysPerPixel )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
-	rayScatterAngles{ 127, raySource.getEnergyRange(), 64, cSys->EzVec() }
+	rayScatterAngles{ 127, raySource.getEnergyRange(), 64, cSys->UnitZ() }
 
 {
 	// Align detector - tube axis with x axis
-	primitiveCartCSys xAxisAligned{ primitiveVec3{ 0, 0, 0 }, primitiveVec3{ 0, 1, 0 }, primitiveVec3{ 1, 0, 0 }, primitiveVec3{ 0, 0, 1 } };
-	cSys->setPrimitive( xAxisAligned );
+	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
+	cSys->Primitive( xAxisAligned );
 
-	raySource.CSys()->translateM( vec3{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	raySource.CSys()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
 	
 }
 
@@ -53,7 +53,7 @@ vector<ray> gantry::getBeam( const double exposureTime ) const{
 
 
 void gantry::rotateCounterClockwise( const double angle ){
-	this->cSys->rotateM( cSys->zAxis(), angle );
+	this->cSys->Rotate( cSys->ZAxis(), angle );
 }
 
 void gantry::transmitRays(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
@@ -83,7 +83,7 @@ void gantry::transmitRays(	const model& radModel, const tomographyParameter& tom
 
 		// Transmit ray through model
 		returnedRay = radModel.rayTransmission( currentRay, tomoParameter, rayScatterAngles );
-		returnedRay.Properties().EnergySpectrum().scale( 1. / (double) returnedRay.VoxelHits() );
+		returnedRay.Properties().EnergySpectrum().Scale( 1. / (double) returnedRay.VoxelHits() );
 
 		// Is the ray outside the model
 		if( !radModel.pntInside( returnedRay.O() ) ){
@@ -114,7 +114,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 	rayDetector.convertPixel( radModel.CSys() );
 
 	// Scattered rays should lie in the same plane as the detector 
-	const uvec3 scatteringRotationNormal = this->cSys->EzVec().convertTo( radModel.CSys() );
+	const UnitVector3D scatteringRotationNormal = this->cSys->UnitZ().ConvertTo( radModel.CSys() );
 
 	rayDetector.reset();								// Reset all pixel
 
@@ -157,7 +157,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 void gantry::reset( void ){
 	
 	// Set to initial position
-	cSys->setPrimitive( resetPostition );
+	cSys->Primitive( resetPostition );
 
 	// Reset detector
 	rayDetector.reset();

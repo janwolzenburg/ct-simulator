@@ -79,7 +79,7 @@ class gantryEdition : public Fl_Group{
 	Fl_Bound_Input<Fl_Int_Input, int> raysPerPixelIn;		/*!<Amount of rays per pixel to simulate*/
 	Fl_Bound_Input<Fl_Float_Input, double> arcRadiusIn;		/*!<Detector arc radius*/
 	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
-	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
+	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum GetAngle when structure is enabled*/
 	Fl_Plot<geoplot> detectorPlot;							/*!<Plot for detector geometry*/
 
 	bool updateGantry;	/*!<Flag for gantry update*/

@@ -55,7 +55,7 @@ class window : private Fl_Window{
 	 * @brief Add widget
 	 * @tparam W Widget type
 	 * @param position Relative postion in widget
-	 * @param parent Parent of widget
+	 * @param parent_ Parent of widget
 	 * @param label Label of widget
 	 * @return Reference to added widget
 	*/
@@ -66,7 +66,7 @@ class window : private Fl_Window{
 	 * @brief Add widget
 	 * @tparam W Widget type
 	 * @param position Relative postion in widget
-	 * @param parent Parent of widget
+	 * @param parent_ Parent of widget
 	 * @return Reference to added widget
 	*/
 	template<class W>

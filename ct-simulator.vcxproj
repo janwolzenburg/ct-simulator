@@ -160,11 +160,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="backprojection.h" />
-    <ClInclude Include="cartesian.fwd.h" />
-    <ClInclude Include="cartesian.h" />
+    <ClInclude Include="coordinateSystem.fwd.h" />
+    <ClInclude Include="coordinateSystem.h" />
     <ClInclude Include="coordinates.h" />
-    <ClInclude Include="cSysTree.fwd.h" />
-    <ClInclude Include="cSysTree.h" />
+    <ClInclude Include="coordinateSystemTree.fwd.h" />
+    <ClInclude Include="coordinateSystemTree.h" />
     <ClInclude Include="detector.h" />
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
@@ -202,8 +202,8 @@
     <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
-    <ClInclude Include="primitiveCartCSys.h" />
-    <ClInclude Include="primitiveVec3.h" />
+    <ClInclude Include="primitiveCoordinateSystem.h" />
+    <ClInclude Include="primitiveVector3.h" />
     <ClInclude Include="processingParameters.h" />
     <ClInclude Include="processingWindow.fwd.h" />
     <ClInclude Include="processingWindow.h" />
@@ -234,8 +234,8 @@
     <ClInclude Include="test_model.h" />
     <ClInclude Include="tomographyExecution.h" />
     <ClInclude Include="tube.h" />
-    <ClInclude Include="vec3D.fwd.h" />
-    <ClInclude Include="vec3D.h" />
+    <ClInclude Include="vector3D.fwd.h" />
+    <ClInclude Include="vector3D.h" />
     <ClInclude Include="vectorAlgorithm.h" />
     <ClInclude Include="voxel.h" />
     <ClInclude Include="widgets.h" />
@@ -243,9 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="backprojection.cpp" />
-    <ClCompile Include="cartesian.cpp" />
+    <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
-    <ClCompile Include="cSysTree.cpp" />
+    <ClCompile Include="coordinateSystemTree.cpp" />
     <ClCompile Include="detector.cpp" />
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
@@ -274,8 +274,8 @@
     <ClCompile Include="intersections.cpp" />
     <ClCompile Include="modelView.cpp" />
     <ClCompile Include="plotting.cpp" />
-    <ClCompile Include="primitiveCartCSys.cpp" />
-    <ClCompile Include="primitiveVec3.cpp" />
+    <ClCompile Include="primitiveCoordinateSystem.cpp" />
+    <ClCompile Include="primitiveVector3.cpp" />
     <ClCompile Include="processingParameters.cpp" />
     <ClCompile Include="processingWindow.cpp" />
     <ClCompile Include="programState.cpp" />
@@ -298,7 +298,7 @@
     <ClCompile Include="tomography.cpp" />
     <ClCompile Include="tomographyExecution.cpp" />
     <ClCompile Include="tube.cpp" />
-    <ClCompile Include="vec3D.cpp" />
+    <ClCompile Include="vector3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />
     <ClCompile Include="widgets.cpp" />

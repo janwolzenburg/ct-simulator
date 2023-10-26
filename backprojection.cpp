@@ -43,7 +43,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	for( size_t t = 0; t < nT; t++ ){
 
 		if( progress != nullptr )
-			progress->changeLineText(0,"Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
+			progress->changeLineText(0,"Filtering GetAngle " + ToString( t + 1 ) + " of " + ToString( nT ) );
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
@@ -80,11 +80,11 @@ double filteredProjections::getValue( const size_t angleIdx, const double distan
 	double exactDistanceIdx = distance / dD + ( (double) nD - 1. ) / 2.;		// Exact "index" of distance
 
 	// Index must be in bounds
-	exactDistanceIdx = Fmin( exactDistanceIdx, 0. );
-	exactDistanceIdx = Fmax( exactDistanceIdx, (double) nD - 1.);
+	exactDistanceIdx = ForceToMin( exactDistanceIdx, 0. );
+	exactDistanceIdx = ForceToMax( exactDistanceIdx, (double) nD - 1.);
 
 	// If the exact index is a whole number
-	if( iseqErr( round( exactDistanceIdx ), exactDistanceIdx ) ){
+	if( IsNearlyEqualDistance( round( exactDistanceIdx ), exactDistanceIdx ) ){
 		// Return value at distance index
 		return this->operator()( GridIndex{ angleIdx, (size_t) exactDistanceIdx });
 	}
@@ -139,8 +139,8 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 			// Iterate and sum filtered projections over all angles
 			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
 
-				const double angle = (double) angleIdx * dT;			// Current angle value
-				const double t = x * cos( angle ) + y * sin( angle );	// Current "distance" or magnitude in polar coordinates
+				const double angle = (double) angleIdx * dT;			// Current GetAngle value
+				const double t = x * cos( angle ) + y * sin( angle );	// Current "distance" or magnitude in polar Coordinates
 
 				// Get the projection value and add to current value
 				const double projectionValue = projections.getValue( angleIdx, t );

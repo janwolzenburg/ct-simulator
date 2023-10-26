@@ -25,7 +25,7 @@
 
 
 /*!
- * @brief Class for radon coordinates
+ * @brief Class for radon Coordinates
 */
 class radonCoords{
 
@@ -45,10 +45,10 @@ class radonCoords{
 
 	/*!
 	 * @brief Constructor
-	 * @param cSys Reference coordinate system
+	 * @param coordinate_system_ Reference coordinate system
 	 * @param l Line
 	*/
-	radonCoords( const cartCSys* const cSys, const line l );
+	radonCoords( const CoordinateSystem* const cSys, const line l );
 
 
 	public:

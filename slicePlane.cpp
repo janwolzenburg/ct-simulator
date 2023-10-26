@@ -22,17 +22,17 @@
 
 
 slicePlane::slicePlane( void ) :
-	cSys( CSYS_TREE().addCSys( "Slice plane system" ) ),
-	surface{ uvec3{ Tuple3D{ 1, 0, 0 }, cSys },
-				uvec3{ Tuple3D{ 0, 1, 0 }, cSys },
-				pnt3{  Tuple3D{0, 0, 0}, cSys } },
+	cSys( CoordinateSystems().AddSystem( "Slice plane system" ) ),
+	surface{ UnitVector3D{ Tuple3D{ 1, 0, 0 }, cSys },
+				UnitVector3D{ Tuple3D{ 0, 1, 0 }, cSys },
+				Point3D{  Tuple3D{0, 0, 0}, cSys } },
 	rotationAngleX( 0. ),
 	rotationAngleY( 0. ),
 	positionZ( 0. ){
 }
 
 slicePlane::slicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	cSys{ CSYS_TREE().addCSys( binary_data, it ) },
+	cSys{ CoordinateSystems().AddSystem( binary_data, it ) },
 	surface{ binary_data, it, cSys },
 	rotationAngleX( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),
 	rotationAngleY( DeSerializeBuildIn<double>( (double) 0., binary_data, it ) ),

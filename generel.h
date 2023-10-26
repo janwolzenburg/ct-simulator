@@ -80,6 +80,7 @@ class Index3D{
 
 	bool operator==( const Index3D& second ) const{ return x == second.x && y == second.y && z == second.y; };
 
+
 	size_t x;
 	size_t y;
 	size_t z;
@@ -100,6 +101,7 @@ class Tuple3D{
 	Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	size_t Serialize( vector<char>& binary_data ) const;
+
 
 	double x;
 	double y;
@@ -123,8 +125,6 @@ class GridIndex{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	public:
-
 	size_t c;	/*!<Column*/
 	size_t r;	/*!<Row*/
 };
@@ -144,6 +144,7 @@ class GridCoordinates {
 	GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	size_t Serialize( vector<char>& binary_data ) const;
+
 
 	double c;
 	double r;
@@ -182,8 +183,6 @@ class NumberRange{
 
 	public:
 	
-
-
 	NumberRange( const double start, const double end );
 
 	NumberRange( void );

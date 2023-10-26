@@ -43,8 +43,8 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 
 void Fl_GridImage_Adjust::changeContrast( const NumberRange bounds ){
 
-	lowerBound.value( Frange( bounds.start(), lowerBound.minimum(), lowerBound.maximum() ) );
-	upperBound.value( Frange( bounds.end(), upperBound.minimum(), upperBound.maximum() ) );
+	lowerBound.value( ForceRange( bounds.start(), lowerBound.minimum(), lowerBound.maximum() ) );
+	upperBound.value( ForceRange( bounds.end(), upperBound.minimum(), upperBound.maximum() ) );
 
 }
 

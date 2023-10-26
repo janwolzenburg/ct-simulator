@@ -45,14 +45,14 @@ class monoImage{
 	/*!
 	 * @brief Construct image from grid
 	 * @param source Source grid
-	 * @param normalise Flag for normalisation
+	 * @param Normalise Flag for normalisation
 	*/
 	monoImage( const grid<>& source, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from voxel-data grid
 	 * @param source Source grid with voxel data
-	 * @param normalise Flag for normalisation
+	 * @param Normalise Flag for normalisation
 	*/
 	monoImage( const grid<voxData>& source, const bool normalise = false );
 
@@ -133,13 +133,13 @@ class monoImage{
 	 * @brief Get minimum of image data
 	 * @return Minimum value in data
 	*/
-	double minimum( void ) const{ return Min( data ); };
+	double minimum( void ) const{ return MinElement( data ); };
 
 	/*!
 	 * @brief Get maximum of image data
 	 * @return maximum value in data
 	*/
-	double maximum( void ) const{ return Max( data ); };
+	double maximum( void ) const{ return MaxElement( data ); };
 
 	/*!
 	 * @brief Change the images contrast to given range
@@ -148,7 +148,7 @@ class monoImage{
 	void adjustContrast( const NumberRange dataRange );
 
 	/*!
-	* @brief Normalize unsigned char data
+	* @brief Normalise unsigned char data
 	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
 	*/
 	void normalise( void );

@@ -18,7 +18,6 @@ using std::vector;
 #include "generel.h"
 
 
-
  /*********************************************************************
 	Functions
  *********************************************************************/
@@ -30,48 +29,48 @@ using std::vector;
  * @param numPoints Total amount of points
  * @return Vector with elements
 */
-vector<double> linearSpace(const double start, const double end, const size_t numPoints);
+vector<double> CreateLinearSpace(const double start, const double end, const size_t numPoints);
 
 /*!
  * @brief Sum of all elements
  * @param vec Vector to sum
  * @return Sum
 */
-double sum( const vector<double> vec );
+double Sum( const vector<double> vec );
 
 /*!
  * @brief Sum all y-values of vector elements
  * @param vec Vector of 2D points
  * @return Sum of y-values
 */
-double sumY( const vector<Tuple2D> vec );
+double SumYValues( const vector<Tuple2D> vec );
 
 /*!
  * @brief Scale each element in vector
  * @param vec Vector with elements to scale
  * @param factor Factor to scale by
 */
-void scale( vector<double>& vec, const double factor );
+void Scale( vector<double>& vec, const double factor );
 
 /*!
  * @brief Scale all y-values
  * @param vec Vector with 2D elements
  * @param factor Factor to scael
 */
-void scaleY( vector<Tuple2D>& vec, const double factor );
+void ScaleYValues( vector<Tuple2D>& vec, const double factor );
 
 /*!
- * @brief Normalize 2D Vector. Sum of y-values will be one afterwards
- * @param vec Vector to normalise
+ * @brief Normalise 2D Vector. Sum of y-values will be one afterwards
+ * @param vec Vector to Normalise
 */
-void normaliseThis( vector<Tuple2D>& vec );
+void Normalise( vector<Tuple2D>& vec );
 
 /*!
- * @brief Normalize 2D vector
- * @param vec Vector to normalise
- * @return Normalized vector
+ * @brief Normalise 2D vector
+ * @param vec Vector to Normalise
+ * @return Normalised vector
 */
-vector<Tuple2D> normalise( const vector<Tuple2D>& vec );
+vector<Tuple2D> Normalise( const vector<Tuple2D>& vec );
 
 /*!
  * @brief Search element in vector closest to value
@@ -79,38 +78,32 @@ vector<Tuple2D> normalise( const vector<Tuple2D>& vec );
  * @param val Value to search for
  * @return Index of closest element in vector
 */
-size_t closest( const vector<double>& vec, const double val );
-
-/*!
- * @brief Sort vector and remove adjecent equivelent elements
- * @param v Vector to process
-*/
-void sortUnique( vector<double>& v );
+size_t GetClosestElementIndex( const vector<double>& vec, const double val );
 
 /*!
  * @brief Get maximum element of vector
  * @param v Vector to search
  * @return Maximum value
 */
-double Max( const vector<double>& v );
+double MaxElement( const vector<double>& v );
 
 /*!
  * @brief Get minimum element of vector
  * @param v Vector to search
  * @return Minimum value
 */
-double Min( const vector<double>& v );
-
-/*! 
- * @brief Get minimum value in 2D vector
- * @param v Vector
- * @return Minimum value
-*/
-double Min( const vector<vector<double>>& v );
+double MinElement( const vector<double>& v );
 
 /*!
  * @brief Get maximum value in 2D vector
  * @param v Vector
  * @return Maximum value
 */
-double Max( const vector<vector<double>>& v );
+double MaxElement( const vector<vector<double>>& v );
+
+/*! 
+ * @brief Get minimum value in 2D vector
+ * @param v Vector
+ * @return Minimum value
+*/
+double MinElement( const vector<vector<double>>& v );

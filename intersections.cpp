@@ -20,14 +20,14 @@
    Implementations
 *********************************************************************/
 
-string lineLine_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
+string lineLine_Intersection_Result::ToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	str += "solution=" + hasSolution;
-	str += newLine + intersectionPoint.toStr();
+	str += newLine + intersectionPoint.ToString();
 	return str;
 }
 
@@ -41,9 +41,9 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 	// Create system of equations with two variables
 	eqnSys sys( 2 );
 
-	Tuple3D column0 = l1.R().XYZ();
-	Tuple3D column1 = -l2.R().XYZ( l1.R() );
-	Tuple3D column2 = l2.O().XYZ( l1.O() ) - l1.O().XYZ();
+	Tuple3D column0 = l1.R().Components();
+	Tuple3D column1 = -l2.R().Components( l1.R() );
+	Tuple3D column2 = l2.O().Components( l1.O() ) - l1.O().Components();
 
 	sys.populateColumn( Tuple2D{ column0.x, column0.y } );
 	sys.populateColumn( Tuple2D{ column1.x, column1.y } );
@@ -54,7 +54,7 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 
 	// No solution found
 	if( !sysSol.Success() || 
-		!iseqErr( sysSol.getVar( 0 ) * column0.z + sysSol.getVar( 1 ) * column1.z, column0.z ) ){
+		!IsNearlyEqualDistance( sysSol.getVar( 0 ) * column0.z + sysSol.getVar( 1 ) * column1.z, column0.z ) ){
 		return;
 	}
 
@@ -69,14 +69,14 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 };
 
 
-string linSurf_Intersection_Result::toStr( unsigned int newLineTabulators ) const{
+string linSurf_Intersection_Result::ToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	str += "solution=" + hasSolution;
-	str += newLine + intersectionPoint.toStr();
+	str += newLine + intersectionPoint.ToString();
 	return str;
 }
 
@@ -91,12 +91,12 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 {
 
 	// Components of ray trajectory in voxel coordinate system
-	Tuple3D comps = r.R().XYZ( v.O() );
+	Tuple3D comps = r.R().Components( v.O() );
 	bool facePossible = true;
 
 	// Find Entrance
 
-	// Ray origin inside voxel
+	// Ray origin_ inside voxel
 	if(  v.contains( r.O() ) ){
 		entrance.hasSolution = true;
 		entrance.linePara = 0;

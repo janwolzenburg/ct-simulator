@@ -15,7 +15,7 @@
 #include <array> 
 using std::array;
 #include "generelMath.h"
-#include "vec3D.h"
+#include "vector3D.h"
 #include "surf.h"
 
 
@@ -174,7 +174,7 @@ class voxData{
 /*!
  * @brief Class for voxels
 */
-class vox : public mathObj{
+class vox : public MathematicalObject{
 
 	public:
 
@@ -184,24 +184,24 @@ class vox : public mathObj{
 	 * @param size_	Size of voxel in unit of coordinate system's axes
 	 * @param data_	Physical data of voxel
 	*/
-	vox( const pnt3 o_, const Tuple3D size_, const voxData data_ );
+	vox( const Point3D o_, const Tuple3D size_, const voxData data_ );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	vox( void ) : vox{ pnt3{ Tuple3D{ 0, 0, 0 }, DUMMY_CSYS() }, Tuple3D{1, 1, 1}, voxData{} }{};
+	vox( void ) : vox{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{1, 1, 1}, voxData{} }{};
 
 	/*!
 	 * @brief Convert result's data to string
 	 * @return String with result's data
 	*/
-	string toStr( unsigned int newLineTabulators = 0 ) const override;
+	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get origin point of voxel
+	 * @brief Get origin_ point of voxel
 	 * @return Origin point
 	*/
-	pnt3 O( void ) const{ return o; };
+	Point3D O( void ) const{ return o; };
 
 	/*!
 	 * @brief Get size of voxel
@@ -226,20 +226,20 @@ class vox : public mathObj{
 	 * @brief Get center of voxel
 	 * @return Point at center of voxel
 	*/
-	pnt3 getCenter( void ) const{ return o + vec3{ Tuple3D{ size.x / 2, size.y / 2, size.z / 2 } , o.CSys() }; };
+	Point3D getCenter( void ) const{ return o + Vector3D{ Tuple3D{ size.x / 2, size.y / 2, size.z / 2 } , o.GetCoordinateSystem() }; };
 
 	/*!
 	 * @brief Check if voxel contains point
 	 * @param p Point to check
 	 * @return True when p is inside the voxel
 	*/
-	bool contains( const pnt3 p ) const;
+	bool contains( const Point3D p ) const;
 
 
 	private:
 
 	Tuple3D size;											/*!<Size in local coordinate system*/
 	voxData data;										/*!<Physical voxel data*/
-	pnt3 o;												/*!<Point as origin of voxel in coordinate system*/
+	Point3D o;												/*!<Point as origin_ of voxel in coordinate system*/
 	array<surfLim, ToUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
 };

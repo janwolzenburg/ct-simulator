@@ -83,10 +83,10 @@ class ray : public line{
 	/*!
 	 * @brief Constructor
 	 * @param v_ Trajectory
-	 * @param p_ O
+	 * @param p_ Origin
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const vec3 v_, const pnt3 p_, const rayProperties properties_ ) : 
+	explicit ray( const Vector3D v_, const Point3D p_, const rayProperties properties_ ) : 
 		line{ v_, p_ }, properties{ properties_ }{};
 
 	/*!
@@ -113,7 +113,7 @@ class ray : public line{
 	 * @param target Target system
 	 * @return Ray in target system
 	*/
-	ray convertTo( const cartCSys* const target ) const;
+	ray convertTo( const CoordinateSystem* const target ) const;
 
 	/*!
 	 * @brief Get ray parameter corresponding to point
@@ -121,7 +121,7 @@ class ray : public line{
 	 * @param success Is set to true when the given point lies on the ray. False if not
 	 * @return Ray parameter
 	*/
-	double getPara( const pnt3 p, bool* const success ) const;
+	double getPara( const Point3D p, bool* const success ) const;
 
 	/*!
 	 * @brief Update ray properties passing through voxel for specific distance
@@ -132,10 +132,10 @@ class ray : public line{
 
 	/*!
 	 * @brief Project ray on XY plane of coordinate system
-	 * @param cSys System to project on
+	 * @param coordinate_system_ System to project on
 	 * @return Projected ray
 	*/
-	ray projectOnXYPlane( const cartCSys* const cSys ) const;
+	ray projectOnXYPlane( const CoordinateSystem* const cSys ) const;
 
 	/*!
 	 * @brief Checks if parameter is greater than one
@@ -154,7 +154,7 @@ class ray : public line{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void scaleSpectrum( const double factor ){ properties.energySpectrum.scale( factor ); };
+	void scaleSpectrum( const double factor ){ properties.energySpectrum.Scale( factor ); };
 
 	/*!
 	 * @brief Get the mean frequency of spectrum

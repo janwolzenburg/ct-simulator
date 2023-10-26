@@ -62,7 +62,7 @@ class pixel : public surfLim{
 
 	/*!
 	 * @brief Get the normal of the pixel
-	 * @return Line with pixel's center as origin an direction of surface normal
+	 * @return Line with pixel's center as origin_ an direction of surface normal
 	*/
 	line NormalLine( void ) const;
 
@@ -71,7 +71,7 @@ class pixel : public surfLim{
 	 * @param target_CSys Target system 
 	 * @return This pixel in given coordiante system
 	*/
-	pixel convertTo( const cartCSys* const target_CSys ) const;
+	pixel convertTo( const CoordinateSystem* const target_CSys ) const;
 
 	/*!
 	 * @brief Add ray properties

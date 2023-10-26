@@ -89,7 +89,7 @@ class programState{
 	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
 	
 	/*!
-	 * @brief Get persitent storage path of file with given name
+	 * @brief Get persitent storage path of file with given name_
 	 * @param filename Name of file
 	 * @return Absoulte path of file
 	*/

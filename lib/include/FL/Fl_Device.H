@@ -252,7 +252,7 @@ protected:
 #ifdef __APPLE__
   virtual void draw(const char *str, int n, float x, float y) { draw(str, n, (int)(x+0.5), (int)(y+0.5));}
 #endif
-  /** \brief see fl_draw(int angle, const char *str, int n, int x, int y). */
+  /** \brief see fl_draw(int GetAngle, const char *str, int n, int x, int y). */
   virtual void draw(int angle, const char *str, int n, int x, int y) {}
   /** \brief see fl_rtl_draw(const char *str, int n, int x, int y). */
   virtual void rtl_draw(const char *str, int n, int x, int y) {};

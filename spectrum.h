@@ -54,7 +54,7 @@ class spectrum {
 	 * @brief Scale this spectrum
 	 * @param factor Factor
 	*/
-	void scale( const double factor );
+	void Scale( const double factor );
 
 	/*!
 	 * @brief Get sum of all y values

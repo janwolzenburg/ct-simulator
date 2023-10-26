@@ -46,7 +46,7 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 
 		double diff = ( dataIt )->x - ( dataIt - 1 )->x;
 
-		if( !isEqErrPercent( energyResolution, diff, .005 ) ){
+		if( !IsNearlyEqual( energyResolution, diff, .005, ComparisonMode::Relative ) ){
 			cerr << "Spectrum must have energies equally spaced!" << endl;
 		}
 
@@ -56,7 +56,7 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 	updateMean();
 }
 
-void spectrum::scale( const double factor ){
+void spectrum::Scale( const double factor ){
 
 	for_each( data.begin(), data.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
 	updateMean();
@@ -65,7 +65,7 @@ void spectrum::scale( const double factor ){
 spectrum spectrum::getScaled( const double factor ) const {
 
 	spectrum scaledSpectrum{ *this };
-	scaledSpectrum.scale( factor );
+	scaledSpectrum.Scale( factor );
 
 	return scaledSpectrum;
 

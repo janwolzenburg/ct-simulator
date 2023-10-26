@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "generel.h"
-#include "vec3D.h"
+#include "vector3D.h"
 #include "detector.h"
 #include "radonTransform.h"
 
@@ -23,8 +23,8 @@
 *********************************************************************/
 
 
-detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	cSys( cSys_ ),
+detector::detector( CoordinateSystem* const coordinate_system, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+	cSys( coordinate_system ),
 	physicalParameters{ radonParameter, indipendentParameter },
 	radonParameters( radonParameter )
 {
@@ -36,11 +36,11 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 	const double deltaTheta = radonParameters.resolution.c;		// Angle resolution
 	const double deltaDistance = radonParameters.resolution.r;	// Distance resolution
 
-	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin
+	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
-	const uvec3 middleNormalVector = cSys->EyVec();					// y-axis of coordinate system is the middle normal vector
-	const uvec3 rotationVector = cSys->EzVec();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middleNormalVector = cSys->UnitY();					// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotationVector = cSys->UnitZ();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// Persistent variables
@@ -55,21 +55,21 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation angle around rotation vector
-		const uvec3 currentNormalVector = middleNormalVector.rotN( rotationVector, rotationAngle );
+		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
 		// Find a point with the distance corresponding to distance in sinogram
-		// The point's origin vector must be perpendicular to the current normal vector
+		// The point's origin_ vector must be perpendicular to the current normal vector
 
 		// The lot is perpendicular to the current normal vector and it lies in xy-plane
-		const uvec3 normalLot = rotationVector ^ currentNormalVector;
+		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
-		// Distance from origin to normal. Is the distance in the sinogram
+		// Distance from origin_ to normal. Is the distance in the sinogram
 		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
-		// Point which lies on the current normal and has the correct distance from the origin 
-		const pnt3 normalPoint = vec3{ normalLot } *currentDistance;
+		// Point which lies on the current normal and has the correct distance from the origin_ 
+		const Point3D normalPoint = Vector3D{ normalLot } *currentDistance;
 
 		// The current normal 
 		const line currentNormal{ currentNormalVector, normalPoint };
@@ -78,7 +78,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
 
 
-		pnt3 currentPixelOrigin;		// Origin of current pixel
+		Point3D currentPixelOrigin;		// Origin of current pixel
 		double currentPixelSize;		// Size of current pixel
 
 
@@ -87,21 +87,21 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 			// This is the starting point
 			currentPixelOrigin = currentNormal.getPnt( detectorCenterDistance );
 
-			// First pixel size so that the neighbooring pixel intersects at half angle
+			// First pixel size so that the neighbooring pixel intersects at half GetAngle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
 		else{
 			// Intersection point of pixel
-			const pnt3 pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
+			const Point3D pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
-			const vec3 pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
+			const Vector3D pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
 
-			// Get the pixel normal's origin which lies on the shortest line connection the intersection with current normal
+			// Get the pixel normal's origin_ which lies on the shortest line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size is double the lot length
+			// Pixel size is double the lot length_
 			currentPixelSize = 2 * pixelIntersectionLot.Length();
 		}
 
@@ -113,7 +113,7 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 		previousPixelSize = currentPixelSize;
 
 		// Vector perpendicualr to the normal pointing to the next pixel
-		const uvec3 currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
+		const UnitVector3D currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
 
 		// Add pixel
 		allPixel.emplace_back( currentSurfaceVector,
@@ -129,12 +129,12 @@ detector::detector( cartCSys* const cSys_, const detectorRadonParameter radonPar
 
 			// Mirror current normal around y-axis
 			const line mirroredPixelNormal{
-				pixelNormal.R().negateX(),
-				pixelNormal.O().negateX()
+				pixelNormal.R().NegateXComponent(),
+				pixelNormal.O().NegateXComponent()
 			};
 
 			// Add mirrored pixel
-			const uvec3 mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
+			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
 			allPixel.emplace_back( mirroredSurfaceVector,
 								   rotationVector,
 								   mirroredPixelNormal.O(),
@@ -172,7 +172,7 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 		// Do they intersect?
 		if( pixelHit.Result().hasSolution ){
 			
-			// If structured and angle allowed by structure
+			// If structured and GetAngle allowed by structure
 			if( !physicalParameters.structured || ( PI / 2. - r.getAngle( (surf) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
 				allPixelLock.lock();
 				allPixel.at( pixelIdx ).addDetectedProperties( r.Properties() );		// Add detected ray properties to pixel
@@ -190,7 +190,7 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 }
 
 
-void detector::convertPixel( const cartCSys* const targetCSys ){
+void detector::convertPixel( const CoordinateSystem* const targetCSys ){
 
 	// Iterate all pixel in detector
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){

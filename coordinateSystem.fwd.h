@@ -1,10 +1,11 @@
 #pragma once
 /*********************************************************************
- * @file   cSysTree.fwd.h
- * @brief  Forward decleration
+ * @file   cartesian.fwd.h
+ * @brief  Forward declerations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
 
-class cSysTree;
+ class CoordinateSystemTree;
+ class CoordinateSystem;

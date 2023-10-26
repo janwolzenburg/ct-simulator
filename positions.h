@@ -20,7 +20,7 @@
 
 
 /*!
- * @brief Class for a raltive position inside a parent
+ * @brief Class for a raltive position inside a parent_
 */
 class relPosition{
 
@@ -43,7 +43,7 @@ class relPosition{
 
 
 /*!
- * @brief Class for a relative position centered horizontally in parent
+ * @brief Class for a relative position centered horizontally in parent_
 */
 class relPosition_Hor : public relPosition{
 

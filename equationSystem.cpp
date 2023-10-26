@@ -32,11 +32,11 @@ matx::matx( const size_t n_, const size_t m_ )
 	: n( n_ ),
 	m( m_ ),
 	A( n * m, 0. ) {
-	if (n == 0) { checkErr( MATH_ERR::INPUT, "Matrix rows amount must be greater than zero!" ); n = 1; }
-	if (m == 0) { checkErr( MATH_ERR::INPUT, "Matrix columns amount must be greater than zero!" ); m = 1; }
+	if (n == 0) { CheckForAndOutputError( MathError::Input, "Matrix rows amount must be greater than zero!" ); n = 1; }
+	if (m == 0) { CheckForAndOutputError( MathError::Input, "Matrix columns amount must be greater than zero!" ); m = 1; }
 }
 
-string matx::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) const{
+string matx::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	char tempCharArr[ 256 ];
@@ -53,20 +53,20 @@ string matx::toStr( [[maybe_unused]] const unsigned int newLineTabulators ) cons
 }
 
 double& matx::operator() ( const size_t row, const size_t col ) {
-	if (row >= n) { checkErr( MATH_ERR::INPUT, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	if (col >= m) { checkErr( MATH_ERR::INPUT, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
+	if (row >= n) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
+	if (col >= m) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
 
 	return A.at(m * row + col);;
 }
 
 double matx::operator() ( const size_t row, const size_t col ) const {
-	if (row >= n) { checkErr( MATH_ERR::INPUT, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	if (col >= m) { checkErr( MATH_ERR::INPUT, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
+	if (row >= n) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
+	if (col >= m) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
 	return A.at(m * row + col);
 }
 
-mathObj::MATH_ERR matx::swapCols( const size_t c1, const size_t c2 ) {
-	if (c1 >= m || c2 >= m) return checkErr( MATH_ERR::BOUNDS, "Column or row indices exceed matrix size!" );
+MathematicalObject::MathError matx::swapCols( const size_t c1, const size_t c2 ) {
+	if (c1 >= m || c2 >= m) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
 
 	double tempVal;
 
@@ -77,11 +77,11 @@ mathObj::MATH_ERR matx::swapCols( const size_t c1, const size_t c2 ) {
 		(*this)(curR, c2) = tempVal;
 	}
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
-mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= n || r2 >= n) return checkErr( MATH_ERR::BOUNDS, "Column or row indices exceed matrix size!" );
+MathematicalObject::MathError matx::swapRows( const size_t r1, const size_t r2 ) {
+	if (r1 >= n || r2 >= n) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
 
 	double tempVal;
 
@@ -92,7 +92,7 @@ mathObj::MATH_ERR matx::swapRows( const size_t r1, const size_t r2 ) {
 		(*this)(r2, curC) = tempVal;
 	}
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
 Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
@@ -101,7 +101,7 @@ Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
 
 
 	if (topCorner.y >= n || topCorner.x >= m || botCorner.y >= n || botCorner.x >= m) {
-		checkErr( MATH_ERR::BOUNDS, "Top of bottom corner of submatrix is outside matrix!" );
+		CheckForAndOutputError( MathError::Bounds, "Top of bottom corner of submatrix is outside matrix!" );
 		return curMaxIndx;
 	}
 
@@ -123,25 +123,25 @@ Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
 	return curMaxIndx;
 }
 
-mathObj::MATH_ERR matx::scaleRow( const size_t r, const double scalar ) {
-	if (r >= n) return checkErr( MATH_ERR::BOUNDS, "Row index exceeds matrix size!" );
+MathematicalObject::MathError matx::scaleRow( const size_t r, const double scalar ) {
+	if (r >= n) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
 	// Iterate all columns
 	for (unsigned int c = 0; c < m; c++) {
 		(*this)(r, c) = (*this)(r, c) * scalar;		// Scale cell
 	}
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
-mathObj::MATH_ERR matx::subRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= n || r2 >= n) return checkErr( MATH_ERR::BOUNDS, "Row index exceeds matrix size!" );
+MathematicalObject::MathError matx::subRows( const size_t r1, const size_t r2 ) {
+	if (r1 >= n || r2 >= n) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
 
 	// Iterate all columns
 	for (size_t c = 0; c < m; c++) {
 		(*this)(r2, c) = (*this)(r2, c) - (*this)(r1, c);		// Substract cell
 	}
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
 
@@ -154,30 +154,30 @@ eqnSys::eqnSys( const size_t varNum_ )
 	: matx ( varNum_, varNum_ + 1 ),
 	varNum( varNum_ ),
 	numPopulatedColumns( 0 ){
-	if( varNum == 0 ) checkErr( MATH_ERR::INPUT, "Number of variables must be greater than 0!" );
+	if( varNum == 0 ) CheckForAndOutputError( MathError::Input, "Number of variables must be greater than 0!" );
 };
 
-std::string eqnSys::toStr( const unsigned int newLineTabulators ) const{
+std::string eqnSys::ToString( const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	std::string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 
 	str += "varNum=" + std::to_string( varNum );
 	str += newLine + "popCols=" + std::to_string( numPopulatedColumns );
 
-	str += newLine + matx::toStr();
+	str += newLine + matx::ToString();
 
 	return str;
 
 }
 
-mathObj::MATH_ERR eqnSys::populateColumn( const Tuple3D v ){
+MathematicalObject::MathError eqnSys::populateColumn( const Tuple3D v ){
 
 	// For now only implemented with three vars
-	if( isPopulated() || varNum != 3 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to three!" );
+	if( isPopulated() || varNum != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
 
 	// Assign vector values to matrix columns
 	( *this )( 0, numPopulatedColumns ) = v.x;
@@ -185,20 +185,20 @@ mathObj::MATH_ERR eqnSys::populateColumn( const Tuple3D v ){
 	( *this )( 2, numPopulatedColumns ) = v.z;
 	numPopulatedColumns++;
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
-mathObj::MATH_ERR eqnSys::populateColumn( const Tuple2D v ){
+MathematicalObject::MathError eqnSys::populateColumn( const Tuple2D v ){
 
 	// For now only implemented with three vars
-	if( isPopulated() || varNum != 2 ) return checkErr( MATH_ERR::INPUT, "System already populated or variables amount not equal to two!" );
+	if( isPopulated() || varNum != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
 
 	// Assign vector values to matrix columns
 	( *this )( 0, numPopulatedColumns ) = v.x;
 	( *this )( 1, numPopulatedColumns ) = v.y;
 	numPopulatedColumns++;
 
-	return MATH_ERR::OK;
+	return MathError::Ok;
 }
 
 eqnSysSolution eqnSys::solve( void ){
@@ -237,7 +237,7 @@ eqnSysSolution eqnSys::solve( void ){
 		maxVal = ( *this )( maxIndx );
 
 		// Return if maximum is zero -> no solution
-		if( iseqErr( maxVal, 0 ) ) return sol;
+		if( IsNearlyEqualDistance( maxVal, 0 ) ) return sol;
 
 
 		// Swap rows and columns to bring the cell with maximum value to (k,k)
@@ -257,7 +257,7 @@ eqnSysSolution eqnSys::solve( void ){
 		for( size_t row = k + 1; row < rows; row++ ){
 
 			// Target cell not zero?
-			if( !iseqErr( ( *this )( row, k ), 0 ) ){
+			if( !IsNearlyEqualDistance( ( *this )( row, k ), 0 ) ){
 				scaleRow( row, 1 / ( *this )( row, k ) );		// Make (row, k) to one by scaling row with reciprocal
 				subRows( k, row );						// Substract k-row from row
 			}
@@ -274,7 +274,7 @@ eqnSysSolution eqnSys::solve( void ){
 		for( size_t r = 0; r < c; r++ ){
 
 			// Current cell not already zero?
-			if( !iseqErr( ( *this )( r, c ), 0 ) ){
+			if( !IsNearlyEqualDistance( ( *this )( r, c ), 0 ) ){
 
 				// Calculate result column cell as if current cell is being eliminated 
 				( *this )( r, cols - 1 ) -= ( ( *this )( c, cols - 1 ) * ( *this )( r, c ) );
@@ -311,11 +311,11 @@ eqnSysSolution::eqnSysSolution( const eqnSys sys )
 	success( false ){};
 
 
-string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
+string eqnSysSolution::ToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
-	for( unsigned int i = 0; i < newLineTabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	str += "varNum=" + varNum;
 	str += newLine + "success=" + std::to_string( success );
@@ -331,12 +331,12 @@ string eqnSysSolution::toStr( const unsigned int newLineTabulators ) const{
 }
 
 void eqnSysSolution::setVar( const size_t idx, const double val ){
-	if( idx >= varNum ) checkErr( MATH_ERR::INPUT, "Index exceeds amount of variables!" );
+	if( idx >= varNum ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
 
 	vars[ idx ] = val;
 }
 
 double eqnSysSolution::getVar( const size_t idx ) const{
-	if( idx >= varNum ) checkErr( MATH_ERR::INPUT, "Index exceeds amount of variables!" );
+	if( idx >= varNum ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
 	return vars[ idx ];
 }

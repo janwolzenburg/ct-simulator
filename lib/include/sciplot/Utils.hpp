@@ -225,16 +225,16 @@ inline auto rgb(std::string color) -> std::string { return "rgb '" + color + "'"
 /// Return the correct gnuplot string command for given rgb color as hex number (e.g., 0xFF00FF)
 inline auto rgb(int hexcolor) -> std::string { return "rgb " + internal::str(hexcolor); }
 
-/// The struct where static angle methods are defined.
+/// The struct where static GetAngle methods are defined.
 struct angle
 {
-    /// Return the angle in degree units.
+    /// Return the GetAngle in degree units.
     static auto deg(long val) -> std::string { return internal::str(val) + "deg"; }
 
-    /// Return the angle in radian units.
+    /// Return the GetAngle in radian units.
     static auto rad(double val) -> std::string { return internal::str(val); }
 
-    /// Return the angle in radian units as a multiple of number pi.
+    /// Return the GetAngle in radian units as a multiple of number pi.
     static auto pi(double val) -> std::string { return internal::str(val) + "pi"; }
 };
 

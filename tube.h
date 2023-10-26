@@ -15,7 +15,7 @@
 #include <map>
 
 #include "generel.h"
-#include "cartesian.h"
+#include "coordinateSystem.h"
 #include "spectrum.h"
 #include "rays.h"
 #include "detectorPixel.h"
@@ -48,7 +48,7 @@ class tubeParameter {
 	};
 
 	/*!
-	 * @brief Material map. Combines enumeration with name and atomic number
+	 * @brief Material map. Combines enumeration with name_ and atomic number
 	*/
 	static const std::map<MATERIAL, std::pair<string, size_t>> material;
 
@@ -112,7 +112,7 @@ class tube{
 	 * @brief Constructor
 	 * @param parameter_ Tube parameters
 	*/
-	tube( cartCSys* const cSys_, const tubeParameter parameter_ );
+	tube( CoordinateSystem* const coordinate_system, const tubeParameter parameter_ );
 
 	/*!
 	 * @brief Get beam created by tube
@@ -128,7 +128,7 @@ class tube{
 	 * @brief Get coordinate system
 	 * @return Pointer to coordinate system
 	*/
-	cartCSys* CSys( void ) const { return cSys; };
+	CoordinateSystem* CSys( void ) const { return cSys; };
 
 	/*!
 	 * @brief Get the range of energies the tube emits
@@ -165,7 +165,7 @@ class tube{
 
 	private:
 
-	cartCSys* cSys;							/*!<Coordinate system of tube*/
+	CoordinateSystem* cSys;							/*!<Coordinate system of tube*/
 
 	size_t numPointsInSpectrum = 30;		/*!<Amount of discrete datapoints in spectrum*/
 

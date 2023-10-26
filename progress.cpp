@@ -11,8 +11,8 @@
 
 
 Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label ) :
-	Fl_Window( charactersPerLine * textSize + 2*padding, static_cast<int>( Fmin( numLines, (unsigned int) 1 ) * textSize ) + 2*padding, label ),
-	numLines( Fmin( numLines, (unsigned int ) 1 ) ),
+	Fl_Window( charactersPerLine * textSize + 2*padding, static_cast<int>( ForceToMin( numLines, (unsigned int) 1 ) * textSize ) + 2*padding, label ),
+	numLines( ForceToMin( numLines, (unsigned int ) 1 ) ),
 	textDisplay( padding, padding, Fl_Window::w() - 2*padding, Fl_Window::h()-2*padding ),
 	lines( numLines ),
 	displayText()

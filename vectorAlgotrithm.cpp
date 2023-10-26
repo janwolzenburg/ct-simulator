@@ -25,7 +25,7 @@
  *********************************************************************/
 
 
-vector<double> linearSpace(const double start, const double end, const size_t numPoints) {
+vector<double> CreateLinearSpace(const double start, const double end, const size_t numPoints) {
 
 	if (start > end || numPoints < 2) return vector<double>{ start };
 
@@ -39,39 +39,39 @@ vector<double> linearSpace(const double start, const double end, const size_t nu
 	return vec;
 }
 
-double sum( const vector<double> vec ) {
+double Sum( const vector<double> vec ) {
 	return std::accumulate( vec.begin(), vec.end(), 0. );
 }
 
-double sumY( const vector<Tuple2D> vec ){
+double SumYValues( const vector<Tuple2D> vec ){
 	return std::accumulate( vec.begin(), vec.end(), 0., [] ( const double& a, const Tuple2D& b ){ return a + b.y; } );
 }
 
-void scale(vector<double>& vec, const double factor) {
+void Scale(vector<double>& vec, const double factor) {
 	std::for_each( vec.begin(), vec.end(), [&]( double& d ) { d *= factor; } );
 }
 
 
-void scaleY( vector<Tuple2D>& vec, const double factor ){
+void ScaleYValues( vector<Tuple2D>& vec, const double factor ){
 	std::for_each( vec.begin(), vec.end(), [&] ( Tuple2D& d ){ d.y *= factor; } );
 }
 
 
-void normaliseThis( vector<Tuple2D>& vec ){
-	scaleY( vec, 1. / sumY( vec ) );
+void Normalise( vector<Tuple2D>& vec ){
+	ScaleYValues( vec, 1. / SumYValues( vec ) );
 }
 
-vector<Tuple2D> normalise( const vector<Tuple2D>& vec ){
+vector<Tuple2D> Normalise( const vector<Tuple2D>& vec ){
 
 	vector<Tuple2D> normalisedVector{ vec };
 
-	normaliseThis( normalisedVector );
+	Normalise( ref( normalisedVector ) );
 
 	return normalisedVector;
 
 }
 
-size_t closest( const vector<double>& vec, const double val ){
+size_t GetClosestElementIndex( const vector<double>& vec, const double val ){
 
 	//!!! vec must be sorted!
 
@@ -90,25 +90,14 @@ size_t closest( const vector<double>& vec, const double val ){
 	return it_geq - vec.cbegin();
 }
 
-
-void sortUnique( vector<double>& v ){
-	// Sort ascending
-	std::sort( v.begin(), v.end() );
-
-	// Remove duplicates
-	vector<double>::const_iterator last = std::unique( v.begin(), v.end(), [] ( const double& d1, const double& d2 ){ return iseqErr( d1, d2 ); } );
-	v.erase( last, v.end() );
-}
-
-
-double Max( const vector<double>& v ){
+double MaxElement( const vector<double>& v ){
 
 	if( v.size() == 0 ) return 0;
 
 	return *std::max_element( v.begin(), v.end() );
 }
 
-double Min( const vector<double>& v ){
+double MinElement( const vector<double>& v ){
 	
 	if( v.size() == 0 ) return 0;
 
@@ -117,7 +106,7 @@ double Min( const vector<double>& v ){
 
 
 
-double Min( const vector<vector<double>>& v ){
+double MinElement( const vector<vector<double>>& v ){
 
 	vector<double> minima( v.size(), 0. );
 
@@ -125,16 +114,16 @@ double Min( const vector<vector<double>>& v ){
 		
 		size_t index = sV - v.cbegin();
 
-		minima.at( index ) = Min( *sV );
+		minima.at( index ) = MinElement( *sV );
 
 	}
 
-	return Min( minima );
+	return MinElement( minima );
 }
 
 
 
-double Max( const vector<vector<double>>& v ){
+double MaxElement( const vector<vector<double>>& v ){
 
 	vector<double> maxima( v.size(), 0. );
 
@@ -142,10 +131,10 @@ double Max( const vector<vector<double>>& v ){
 
 		size_t index = sV - v.cbegin();
 
-		maxima.at( index ) = Max( *sV );
+		maxima.at( index ) = MaxElement( *sV );
 
 	}
 
-	return Max( maxima );
+	return MaxElement( maxima );
 
 }
