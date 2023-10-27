@@ -38,7 +38,7 @@ class Coordinates : protected PrimitiveVector3{
 	 * @brief Constructor
 	 * @param vec3_ Values
 	*/
-	Coordinates( const Tuple3D vec3_, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ vec3_ }, coordinate_system_( coordinate_system ) {};
+	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ components }, coordinate_system_( coordinate_system ) {};
 
 	/*!
 	 * @brief Defaulkt constructor
@@ -53,24 +53,24 @@ class Coordinates : protected PrimitiveVector3{
 
 	/*!
 	 * @brief Comparison operator
-	 * @param coordinates Coordinates to compare with
+	 * @param operand Coordinates to compare with
 	 * @return True when all components are the same in global coordinate system
 	*/
-	bool operator== ( const Coordinates coordinates ) const;
+	bool operator== ( const Coordinates operand ) const;
 
 	/*!
 	 * @brief Addition operator
-	 * @param coordinates Coordinates to add
+	 * @param summand Coordinates to add
 	 * @return Coordinates with sum of components in coordinate system of first operand
 	*/
-	Coordinates operator+ ( const Coordinates coordinates ) const;
+	Coordinates operator+ ( const Coordinates summand ) const;
 
 	/*!
 	 * @brief Substraction operator
-	 * @param coordinates Coordinates to add
+	 * @param subtrahend Coordinates to add
 	 * @return Coordinates with difference of components in coordinate system of first operand
 	*/
-	Coordinates operator- ( const Coordinates coordinates ) const;
+	Coordinates operator- ( const Coordinates subtrahend ) const;
 
 	/*!
 	 * @brief Negation operator
@@ -97,21 +97,21 @@ class Coordinates : protected PrimitiveVector3{
 	 * @param coordinate_system System to check
 	 * @return True when given system is this coordinate's system
 	*/
-	bool IsSameSystem( const CoordinateSystem* const coordinate_system ) const { return this->coordinate_system_ == coordinate_system; };
+	bool HasSameSystem( const CoordinateSystem* const coordinate_system ) const { return this->coordinate_system_ == coordinate_system; };
 
 	/*!
 	 * @brief Check if two Coordinates have the same coordiante system
 	 * @param c Second set of Coordinates
 	 * @return True when both Coordinates have the same coordiante system
 	*/
-	bool IsSameSystem( const Coordinates coordinates ) const { return IsSameSystem( coordinates.coordinate_system_ ); };
+	bool HasSameSystem( const Coordinates coordinates ) const { return HasSameSystem( coordinates.coordinate_system_ ); };
 
 	/*!
 	 * @brief Convert Coordinates to a different coordinate system
 	 * @param target_coordinate_system System to convert to
 	 * @return Coordinates in target system
 	*/
-	Coordinates convertTo( const CoordinateSystem* const target_coordinate_system ) const;
+	Coordinates ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 
 	private:

@@ -73,7 +73,7 @@ class gantry {
 	 * @brief Get center of gantry
 	 * @return Center point
 	*/
-	Point3D Center( void ) const{ return cSys->Origin(); };
+	Point3D Center( void ) const{ return cSys->GetOriginPoint(); };
 
 	/*!
 	 * @brief Rotate gantry counter clockwise around ZAxis

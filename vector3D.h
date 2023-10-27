@@ -35,10 +35,10 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Constructor
-	 * @param xyz_ Components of vector
+	 * @param components Components of vector
 	 * @param coordinate_system Coordinate system of components
 	*/
-	Vector3D( const Tuple3D xyz_, const CoordinateSystem* const coordinate_system );
+	Vector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system );
 
 	/*!
 	 * @brief Default constructor initializing components to zero coordinate system to global
@@ -53,24 +53,24 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Comparison operator
-	 * @param v2 Vector to compare with
+	 * @param operand Vector to compare with
 	 * @return True when all components are equal
 	*/
-	bool operator== ( const Vector3D v2 ) const{ return this->Coordinates::operator==( v2 ); };
+	bool operator== ( const Vector3D operand ) const{ return this->Coordinates::operator==( operand ); };
 
 	/*!
 	 * @brief Addition operator
-	 * @param v2 Vector to add
+	 * @param summand Vector to add
 	 * @return Sum of vectors in unit of this vector
 	*/
-	Vector3D operator+ ( const Vector3D v2 ) const{ return this->Coordinates::operator+( v2 ); };
+	Vector3D operator+ ( const Vector3D summand ) const{ return this->Coordinates::operator+( summand ); };
 
 	/*!
 	 * @brief Substraction operator
-	 * @param v2 Vector to substract
-	 * @return Difference (v1 - v2) of vectors in unit of this vector
+	 * @param subtrahend Vector to substract
+	 * @return GetDifference (v1 - v2) of vectors in unit of this vector
 	*/
-	Vector3D operator- ( const Vector3D v2 ) const{ return this->Coordinates::operator-( v2 ); };
+	Vector3D operator- ( const Vector3D subtrahend ) const{ return this->Coordinates::operator-( subtrahend ); };
 
 	/*!
 	 * @brief Negation operator
@@ -94,17 +94,17 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Calculate dot product between to vectors
-	 * @param v2 Second vector
+	 * @param operand Second vector
 	 * @return Dot product in unit of this vector squared
 	*/
-	double operator* ( const Vector3D v2 ) const;
+	double operator* ( const Vector3D operand ) const;
 
 	/*!
 	 * @brief Calculate cross product
-	 * @param v2 Second vector
-	 * @return Cross product this * v2 in unit of this vector
+	 * @param operand Second vector
+	 * @return Cross product this * operand in unit of this vector
 	*/
-	Vector3D operator^( const Vector3D v2 ) const;
+	Vector3D operator^( const Vector3D operand ) const;
 
 	/*!
 	 * @brief Get x component
@@ -128,7 +128,7 @@ class Vector3D : protected Coordinates{
 	 * @brief Get length_ of vector
 	 * @return Length of vector in local coordinate system
 	*/
-	double Length( void ) const{ return length_; };
+	double length( void ) const{ return length_; };
 
 	/*!
 	 * @brief Get Pointer to coordinate system
@@ -141,7 +141,7 @@ class Vector3D : protected Coordinates{
 	 * @param v Second vector
 	 * @return true when this and vector v are defined in the same coordinate system
 	*/
-	bool IsSameSystem( const Vector3D v ) const;
+	bool HasSameSystem( const Vector3D v ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
@@ -152,69 +152,68 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Convert vector to different coordinate system
-	 * @param v Vector to which system this gets converted
+	 * @param coordinate_system_source Vector to which system this gets converted
 	 * @return Converted vector
 	*/
-	Vector3D ConvertTo( const Vector3D v ) const;
+	Vector3D ConvertTo( const Vector3D coordinate_system_source ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
-	 * @param l Line to which system this gets converted
+	 * @param coordinate_system_source Line to which system this gets converted
 	 * @return Converted vector
 	*/
-	Vector3D ConvertTo( const line l ) const;
+	Vector3D ConvertTo( const line coordinate_system_source ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
-	 * @param s Surface to which system this gets converted
+	 * @param coordinate_system_source Surface to which system this gets converted
 	 * @return Converted vector
 	*/
-	Vector3D ConvertTo( const surf s ) const;
+	Vector3D ConvertTo( const surf coordinate_system_source ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( void ) const{ return static_cast<PrimitiveVector3>( *this ); };
+	PrimitiveVector3 GetComponents( void ) const{ return static_cast<PrimitiveVector3>( *this ); };
 
 	/*!
 	 * @brief Get x,y and z component
-	 * @param target Coordinate system to convert components to
+	 * @param target_coordinate_system Coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( const CoordinateSystem* const target ) const;
+	PrimitiveVector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief Get x,y and z component
-	 * @param targetV Vector with coordinate system to convert components to
+	 * @param coordinate_system_source Vector with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( const Vector3D targetV ) const;
+	PrimitiveVector3 GetComponents( const Vector3D coordinate_system_source ) const;
 
 	/*!
 	 * @brief Get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	PrimitiveVector3 GlobalComponents( void ) const;
+	PrimitiveVector3 GetGlobalComponents( void ) const;
 
 	/*!
 	 * @brief Get global x component
 	 * @return x component in global coordinate system
 	*/
-	double GlobalX( void ) const;
+	double GetGlobalX( void ) const;
 
 	/*!
 	 * @brief Get global y component
 	 * @return y component in global coordinate system
 	*/
-	double GlobalY( void ) const;
+	double GetGlobalY( void ) const;
 
 	/*!
 	 * @brief Get global z component
 	 * @return z component in global coordinate system
 	*/
-	double GlobalZ( void ) const;
-
+	double GetGlobalZ( void ) const;
 
 	/*!
 	 * @brief Scale vector by factor
@@ -291,47 +290,47 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
-	 * @param phi Angle in radians
+	 * @param angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundXAxis( const double phi );
+	MathError RotateAroundXAxis( const double angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
-	 * @param phi Angle in radians
+	 * @param angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundYAxis( const double phi );
+	MathError RotateAroundYAxis( const double angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
-	 * @param phi Angle in radians
+	 * @param angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundZAxis( const double phi );
+	MathError RotateAroundZAxis( const double angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around second vector
 	 * @param n Rotation axis vector
-	 * @param phi Angle in radians
+	 * @param angle Angle in radians
 	 * @return Error code
 	*/
-	MathError Rotate( const Vector3D n, const double phi );
+	MathError Rotate( const Vector3D n, const double angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around second vector
 	 * @param n Rotation axis vector
-	 * @param phi Angle in radians
+	 * @param angle angle in radians
 	 * @return Rotated vector
 	*/
-	Vector3D RotateConstant( const Vector3D n, const double phi ) const;
+	Vector3D RotateConstant( const Vector3D axis, const double angle ) const;
 
 	/*!
 	 * @brief Project vector on XY plane of given coordinate system
-	 * @param coordinate_system_ Coordinate system
+	 * @param coordinate_system Coordinate system
 	 * @return Projected vector
 	*/
-	Vector3D ProjectOnXYPlane( const CoordinateSystem* const cSys ) const;
+	Vector3D ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 
 	/*!
 	 * @brief Flip x-values
@@ -370,10 +369,10 @@ class UnitVector3D : public Vector3D{
 
 	/*!
 	 * @brief Constructor
-	 * @param xyz_ Components
+	 * @param components Components
 	 * @param coordinate_system Coordinate system
 	*/
-	UnitVector3D( const Tuple3D xyz_, const CoordinateSystem* const coordinate_system ) : UnitVector3D{ Vector3D{ xyz_, coordinate_system } } {};
+	UnitVector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : UnitVector3D{ Vector3D{ components, coordinate_system } } {};
 
 	/*!
 	 * @brief Default constructor
@@ -441,59 +440,59 @@ class Point3D : public Vector3D{
 
 	/*!
 	 * @brief Convert point to different coordinate system
-	 * @param targetP Point with target system
+	 * @param coordinate_system_source Point with target system
 	 * @return Converted point
 	*/
-	Point3D ConvertTo( const Point3D targetP ) const;
+	Point3D ConvertTo( const Point3D coordinate_system_source ) const;
 
 	/*!
 	 * @brief Get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( void ) const{ return Vector3D::Components(); };
+	PrimitiveVector3 GetComponents( void ) const{ return Vector3D::GetComponents(); };
 
 	/*!
 	 * @brief Get x,y and z component
-	 * @param target Coordinate system to convert components to
+	 * @param target_coordinate_system Coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( const CoordinateSystem* const target ) const;
+	PrimitiveVector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief Get x,y and z component
-	 * @param targetV Point with coordinate system to convert components to
+	 * @param coordinate_system_source Point with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 Components( const Point3D targetP ) const;
+	PrimitiveVector3 GetComponents( const Point3D coordinate_system_source ) const;
 
 	/*!
 	 * @brief Get global x component
 	 * @return x component in global coordinate system
 	*/
-	double GlobalX( void ) const;
+	double GetGlobalX( void ) const;
 
 	/*!
 	 * @brief Get global y component
 	 * @return y component in global coordinate system
 	*/
-	double GlobalY( void ) const;
+	double GetGlobalY( void ) const;
 
 	/*!
 	 * @brief Get global z component
 	 * @return z component in global coordinate system
 	*/
-	double GlobalZ( void ) const;
+	double GetGlobalZ( void ) const;
 
 	/*!
 	 * @brief Get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	PrimitiveVector3 GlobalComponents( void ) const;
+	PrimitiveVector3 GetGlobalComponents( void ) const;
 
 	/*!
 	 * @brief Project point on XY plane of given coordinate system
-	 * @param coordinate_system_ Coordinate system
+	 * @param coordinate_system Coordinate system
 	 * @return Projected point
 	*/
-	Point3D ProjectOnXYPlane( const CoordinateSystem* const cSys ) const;
+	Point3D ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 };

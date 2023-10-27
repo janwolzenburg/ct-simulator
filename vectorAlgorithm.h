@@ -26,10 +26,10 @@ using std::vector;
  * @brief Create vector with equally spaced elements
  * @param start First element
  * @param end Last element
- * @param numPoints Total amount of points
+ * @param number_of_points Total amount of points
  * @return Vector with elements
 */
-vector<double> CreateLinearSpace(const double start, const double end, const size_t numPoints);
+vector<double> CreateLinearSpace(const double start, const double end, const size_t number_of_points);
 
 /*!
  * @brief Sum of all elements
@@ -75,35 +75,35 @@ vector<Tuple2D> Normalise( const vector<Tuple2D>& vec );
 /*!
  * @brief Search element in vector closest to value
  * @param vec Vector to search. Must be sorted ascending
- * @param val Value to search for
+ * @param value Value to search for
  * @return Index of closest element in vector
 */
-size_t GetClosestElementIndex( const vector<double>& vec, const double val );
+size_t GetClosestElementIndex( const vector<double>& vec, const double value );
 
 /*!
  * @brief Get maximum element of vector
  * @param v Vector to search
  * @return Maximum value
 */
-double MaxElement( const vector<double>& v );
+double GetMaxElement( const vector<double>& vec );
 
 /*!
  * @brief Get minimum element of vector
  * @param v Vector to search
  * @return Minimum value
 */
-double MinElement( const vector<double>& v );
+double GetMinElement( const vector<double>& vec );
 
 /*!
  * @brief Get maximum value in 2D vector
  * @param v Vector
  * @return Maximum value
 */
-double MaxElement( const vector<vector<double>>& v );
+double GetMaxElement( const vector<vector<double>>& vec );
 
 /*! 
  * @brief Get minimum value in 2D vector
  * @param v Vector
  * @return Minimum value
 */
-double MinElement( const vector<vector<double>>& v );
+double GetMinElement( const vector<vector<double>>& vec );

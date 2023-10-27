@@ -40,7 +40,7 @@ template<>
 string getObjectString<Point3D>( const Point3D p ){
 
 	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f)", p.GlobalX(), p.GlobalY(), p.GlobalZ() );
+	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f)", p.GetGlobalX(), p.GetGlobalY(), p.GetGlobalZ() );
 
 	return string{ tempCharArr };
 
@@ -50,7 +50,7 @@ template<>
 string getObjectString<Vector3D, Point3D>( const Vector3D v, const Point3D o ){
 
 	char tempCharArr[256];
-	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GlobalX(), v.GlobalY(), v.GlobalZ(), o.GlobalX(), o.GlobalY(), o.GlobalZ() );
+	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GetGlobalX(), v.GetGlobalY(), v.GetGlobalZ(), o.GetGlobalX(), o.GetGlobalY(), o.GetGlobalZ() );
 
 	return string{ tempCharArr };
 
@@ -67,7 +67,7 @@ template<>
 string getObjectString<line, double>( const line l, const double length ){
 
 	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.O().GlobalX(), l.O().GlobalY(), l.O().GlobalZ(), l.R().GlobalX(), l.R().GlobalY(), l.R().GlobalZ(), length );
+	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.O().GetGlobalX(), l.O().GetGlobalY(), l.O().GetGlobalZ(), l.R().GetGlobalX(), l.R().GetGlobalY(), l.R().GetGlobalZ(), length );
 
 	return string{ tempCharArr };
 
@@ -77,7 +77,7 @@ template<>
 string getObjectString<ray, double>(const ray r, const double length) {
 
 	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.O().GlobalX(), r.O().GlobalY(), r.O().GlobalZ(), r.R().GlobalX(), r.R().GlobalY(), r.R().GlobalZ(), length);
+	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.O().GetGlobalX(), r.O().GetGlobalY(), r.O().GetGlobalZ(), r.R().GetGlobalX(), r.R().GetGlobalY(), r.R().GetGlobalZ(), length);
 
 	return string{ tempCharArr };
 
@@ -87,7 +87,7 @@ template<>
 string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
 
 	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.O().GlobalX(), s.O().GlobalY(), s.O().GlobalZ(), s.R1().GlobalX(), s.R1().GlobalY(), s.R1().GlobalZ(), s.R2().GlobalX(), s.R2().GlobalY(), s.R2().GlobalZ(), s.AMin(), s.AMax(), s.BMin(), s.BMax(), alpha );
+	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.O().GetGlobalX(), s.O().GetGlobalY(), s.O().GetGlobalZ(), s.R1().GetGlobalX(), s.R1().GetGlobalY(), s.R1().GetGlobalZ(), s.R2().GetGlobalX(), s.R2().GetGlobalY(), s.R2().GetGlobalZ(), s.AMin(), s.AMax(), s.BMin(), s.BMax(), alpha );
 
 	return string{ tempCharArr };
 

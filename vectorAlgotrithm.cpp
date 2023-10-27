@@ -90,14 +90,14 @@ size_t GetClosestElementIndex( const vector<double>& vec, const double val ){
 	return it_geq - vec.cbegin();
 }
 
-double MaxElement( const vector<double>& v ){
+double GetMaxElement( const vector<double>& v ){
 
 	if( v.size() == 0 ) return 0;
 
 	return *std::max_element( v.begin(), v.end() );
 }
 
-double MinElement( const vector<double>& v ){
+double GetMinElement( const vector<double>& v ){
 	
 	if( v.size() == 0 ) return 0;
 
@@ -106,7 +106,7 @@ double MinElement( const vector<double>& v ){
 
 
 
-double MinElement( const vector<vector<double>>& v ){
+double GetMinElement( const vector<vector<double>>& v ){
 
 	vector<double> minima( v.size(), 0. );
 
@@ -114,16 +114,16 @@ double MinElement( const vector<vector<double>>& v ){
 		
 		size_t index = sV - v.cbegin();
 
-		minima.at( index ) = MinElement( *sV );
+		minima.at( index ) = GetMinElement( *sV );
 
 	}
 
-	return MinElement( minima );
+	return GetMinElement( minima );
 }
 
 
 
-double MaxElement( const vector<vector<double>>& v ){
+double GetMaxElement( const vector<vector<double>>& v ){
 
 	vector<double> maxima( v.size(), 0. );
 
@@ -131,10 +131,10 @@ double MaxElement( const vector<vector<double>>& v ){
 
 		size_t index = sV - v.cbegin();
 
-		maxima.at( index ) = MaxElement( *sV );
+		maxima.at( index ) = GetMaxElement( *sV );
 
 	}
 
-	return MaxElement( maxima );
+	return GetMaxElement( maxima );
 
 }

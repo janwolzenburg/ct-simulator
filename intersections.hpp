@@ -33,19 +33,19 @@ linSurfIntersection<L, S>::linSurfIntersection( const L l_, const S s_ ) :
 	PrimitiveVector3 surfaceO;
 	PrimitiveVector3 surfaceR1;
 	PrimitiveVector3 surfaceR2;
-	PrimitiveVector3 lineR = l.R().Components();
-	PrimitiveVector3 lineO = l.O().Components();
+	PrimitiveVector3 lineR = l.R().GetComponents();
+	PrimitiveVector3 lineO = l.O().GetComponents();
 
 	// Same system?
 	if( l.R().GetCoordinateSystem() == s.R1().GetCoordinateSystem() ){
-		surfaceO = s.O().Components();
-		surfaceR1 = s.R1().Components();
-		surfaceR2 = s.R2().Components();
+		surfaceO = s.O().GetComponents();
+		surfaceR1 = s.R1().GetComponents();
+		surfaceR2 = s.R2().GetComponents();
 	}
 	else{
-		surfaceO = s.O().Components( l.R() );
-		surfaceR1 = s.R1().Components( l.R() );
-		surfaceR2 = s.R2().Components( l.R() );
+		surfaceO = s.O().GetComponents( l.R() );
+		surfaceR1 = s.R1().GetComponents( l.R() );
+		surfaceR2 = s.R2().GetComponents( l.R() );
 	}
 
 	// Create system of equations with three variables

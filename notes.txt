@@ -3,7 +3,9 @@ TODO: Class and member variable names, includes
 
 Naming convention:
 	- classes and types: CamelCase
-	- functions: CamelCase
+	- functions: CamelCase 
+		- with verb at front
+		- getters and setters named like variable without trailing underscore
 	- enums: CamelCase
 	- variables: snake_case
 		- member: trailing underscore

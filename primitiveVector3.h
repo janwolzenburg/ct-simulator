@@ -51,7 +51,7 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	 * @param binary_data Reference to vector with binary data
 	 * @param it Iterator to start of data in vector
 	*/
-	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& it ) : Tuple3D{ binary_data, it }{};
+	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
 	 * @brief Convert data to string
@@ -62,24 +62,24 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief Comparison operator
-	 * @param v Vector to compare with
+	 * @param operand Vector to compare with
 	 * @return True when all components between this and second vector are almost equal
 	*/
-	bool operator== ( const PrimitiveVector3 v ) const;
+	bool operator== ( const PrimitiveVector3 operand ) const;
 
 	/*!
 	 * @brief Add second vector to this
-	 * @param v Vector to add
-	 * @return Sum of this and v
+	 * @param summand Vector to add
+	 * @return Sum of this and summand
 	*/
-	PrimitiveVector3 operator+ ( const PrimitiveVector3 v ) const{ return PrimitiveVector3{ x + v.x, y + v.y, z + v.z }; };
+	PrimitiveVector3 operator+ ( const PrimitiveVector3 summand ) const{ return PrimitiveVector3{ x + summand.x, y + summand.y, z + summand.z }; };
 
 	/*!
 	 * @brief Substract second vector to this
-	 * @param v Vector to substract
-	 * @return Difference of this and v
+	 * @param subtrahend Vector to substract
+	 * @return GetDifference of this and v
 	*/
-	PrimitiveVector3 operator- ( const PrimitiveVector3 v ) const{ return PrimitiveVector3{ x - v.x, y - v.y, z - v.z }; };
+	PrimitiveVector3 operator- ( const PrimitiveVector3 subtrahend ) const{ return PrimitiveVector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
 
 	/*!
 	 * @brief Negation operator
@@ -99,7 +99,7 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	 * @param v Second vector
 	 * @return Scalar product of vectors
 	*/
-	double operator* ( const PrimitiveVector3 v ) const{ return this->x * v.x + this->y * v.y + this->z * v.z; };
+	double operator* ( const PrimitiveVector3 vec ) const{ return this->x * vec.x + this->y * vec.y + this->z * vec.z; };
 
 	/*!
 	 * @brief Divide this vector
@@ -109,10 +109,10 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	PrimitiveVector3 operator/ ( const double divisor ) const;
 
 	/*!
-	 * @brief Get length_ of primitve vector
+	 * @brief Get length of primitive vector
 	 * @return Length
 	*/
-	double Length( void ) const;
+	double GetLength( void ) const;
 
 	/*!
 	 * @brief Scale this vector

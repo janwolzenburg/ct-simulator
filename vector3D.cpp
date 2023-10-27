@@ -42,7 +42,7 @@ Vector3D::Vector3D( void ) : Vector3D{ Coordinates{} }
 string Vector3D::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	string str;
 	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f) l=%.6f", X(), Y(), Z(), Length() );
+	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f) l=%.6f", X(), Y(), Z(), length() );
 
 	str += tempCharArr;
 	return str;
@@ -60,18 +60,18 @@ Vector3D Vector3D::operator^( const Vector3D v2 ) const{
 	return Vector3D{ Tuple3D{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->coordinate_system_ };
 };
 
-bool Vector3D::IsSameSystem( const Vector3D v ) const{
-	return this->Coordinates::IsSameSystem( v );
+bool Vector3D::HasSameSystem( const Vector3D v ) const{
+	return this->Coordinates::HasSameSystem( v );
 }
 
 Vector3D Vector3D::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 
 	if( this->coordinate_system_ == target_coordinate_system ) return *this;	// Same system return copy of this
 
-	Coordinates tipCoords = this->Coordinates::convertTo( target_coordinate_system );
+	Coordinates tipCoords = this->Coordinates::ConvertTo( target_coordinate_system );
 	Point3D tipPoint{ tipCoords, target_coordinate_system };
 
-	Vector3D convVec = tipPoint - this->coordinate_system_->OriginInParentSystem();
+	Vector3D convVec = tipPoint - this->coordinate_system_->GetOriginInParentSystem();
 
 	return convVec;
 };
@@ -88,28 +88,28 @@ Vector3D Vector3D::ConvertTo( const surf s ) const{
 	return this->ConvertTo( s.R1() );
 };
 
-PrimitiveVector3 Vector3D::Components( const CoordinateSystem* const target ) const{
-	return Vector3D::ConvertTo( target ).Components();
+PrimitiveVector3 Vector3D::GetComponents( const CoordinateSystem* const target ) const{
+	return Vector3D::ConvertTo( target ).GetComponents();
 }
 
-PrimitiveVector3 Vector3D::Components( const Vector3D targetV ) const{
-	return Vector3D::ConvertTo( targetV.coordinate_system_ ).Components();;
+PrimitiveVector3 Vector3D::GetComponents( const Vector3D targetV ) const{
+	return Vector3D::ConvertTo( targetV.coordinate_system_ ).GetComponents();;
 }
 
-PrimitiveVector3 Vector3D::GlobalComponents( void ) const{
-	return this->Components( GlobalSystem() );
+PrimitiveVector3 Vector3D::GetGlobalComponents( void ) const{
+	return this->GetComponents( GlobalSystem() );
 };
 
-double Vector3D::GlobalX( void ) const{
-	return GlobalComponents().x;
+double Vector3D::GetGlobalX( void ) const{
+	return GetGlobalComponents().x;
 }
 
-double Vector3D::GlobalY( void ) const{
-	return GlobalComponents().y; 
+double Vector3D::GetGlobalY( void ) const{
+	return GetGlobalComponents().y; 
 }
 
-double Vector3D::GlobalZ( void ) const{
-	return GlobalComponents().z; 
+double Vector3D::GetGlobalZ( void ) const{
+	return GetGlobalComponents().z; 
 }
 
 MathematicalObject::MathError Vector3D::UpdateLength( void ){
@@ -255,7 +255,7 @@ Point3D Point3D::ConvertTo( const CoordinateSystem* const target_coordinate_syst
 
 	if( this->coordinate_system_ == target_coordinate_system ) return *this;
 
-	Coordinates convCoords = this->Coordinates::convertTo( target_coordinate_system );
+	Coordinates convCoords = this->Coordinates::ConvertTo( target_coordinate_system );
 
 	return Point3D( convCoords, target_coordinate_system );
 
@@ -266,28 +266,28 @@ Point3D Point3D::ConvertTo( const Point3D targetP ) const{
 	return Point3D::ConvertTo( targetP.coordinate_system_ );
 }
 
-PrimitiveVector3 Point3D::Components( const CoordinateSystem* const target ) const{
-	return Point3D::ConvertTo( target ).Components();
+PrimitiveVector3 Point3D::GetComponents( const CoordinateSystem* const target ) const{
+	return Point3D::ConvertTo( target ).GetComponents();
 }
 
-PrimitiveVector3 Point3D::Components( const Point3D targetP ) const{
-	return Point3D::Components( targetP.coordinate_system_ );
+PrimitiveVector3 Point3D::GetComponents( const Point3D targetP ) const{
+	return Point3D::GetComponents( targetP.coordinate_system_ );
 }
 
-PrimitiveVector3 Point3D::GlobalComponents( void ) const{
-	return this->Point3D::ConvertTo( GlobalSystem() ).Components();
+PrimitiveVector3 Point3D::GetGlobalComponents( void ) const{
+	return this->Point3D::ConvertTo( GlobalSystem() ).GetComponents();
 }
 
-double Point3D::GlobalX( void ) const{
-	return this->Point3D::GlobalComponents().x;
+double Point3D::GetGlobalX( void ) const{
+	return this->Point3D::GetGlobalComponents().x;
 }
 
-double Point3D::GlobalY( void ) const{
-	return this->Point3D::GlobalComponents().y;
+double Point3D::GetGlobalY( void ) const{
+	return this->Point3D::GetGlobalComponents().y;
 }
 
-double Point3D::GlobalZ( void ) const{
-	return this->Point3D::GlobalComponents().z;
+double Point3D::GetGlobalZ( void ) const{
+	return this->Point3D::GetGlobalComponents().z;
 }
 
 Point3D Point3D::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{

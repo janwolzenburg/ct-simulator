@@ -74,11 +74,11 @@ class Index3D{
 
 	Index3D( void ) : Index3D{ 0, 0, 0 }{};
 
-	Index3D( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	Index3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	size_t Serialize( vector<char>& binary_data ) const;
 
-	bool operator==( const Index3D& second ) const{ return x == second.x && y == second.y && z == second.y; };
+	bool operator==( const Index3D& operand ) const{ return x == operand.x && y == operand.y && z == operand.y; };
 
 
 	size_t x;
@@ -98,7 +98,7 @@ class Tuple3D{
 
 	Tuple3D( void ) : Tuple3D{ 0., 0., 0. } {};
 
-	Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -120,7 +120,7 @@ class GridIndex{
 
 	GridIndex( void ) : GridIndex{ 0, 0 } {};
 
-	GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -141,7 +141,7 @@ class GridCoordinates {
 
 	GridCoordinates( void ) : GridCoordinates{ 0., 0. } {};
 
-	GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -185,21 +185,26 @@ class NumberRange{
 	
 	NumberRange( const double start, const double end );
 
-	NumberRange( void );
+	NumberRange( void ) : NumberRange{ 0., 1. }{};
 
 	NumberRange( const NaturalNumberRange naturalRange );
 
-	NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	size_t Serialize( vector<char>& binary_data ) const;
-
-	double Diff( void ) const{ return end_ - start_; };
-
-	double Resolution( const size_t number ) const;
-
+	
 	double start( void ) const{ return start_; };
 
 	double end( void ) const{ return end_; };
+
+	double GetDifference( void ) const{ return end_ - start_; };
+
+	/*!
+	 * @brief Get the difference between two elements when range is divided equally spaced
+	 * @param number_of_elements Amount of elements in range
+	 * @return ( end_ - start_ ) / ( number_of_elements - 1 )
+	*/
+	double GetResolution( const size_t number_of_elements ) const;
 
 
 	private:
@@ -236,12 +241,12 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
 /*!
  * @brief Substraction operator for enum classes. Assumes value 1 is greater than value 2
  * @tparam T Type of values
- * @param val1 Value 1
- * @param val2 Value 2
- * @return Difference val1 - val2 cast to its their underlying type
+ * @param left_operand Minuend
+ * @param right_operand Subtrahend
+ * @return GetDifference val1 - val2 cast to its their underlying type
 */
 template <typename T>
-typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 );
+typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand, const T right_operand );
 
 /*!
  * @brief Convert number to string with given precision
@@ -267,11 +272,11 @@ T ToNum( const string str );
  * @tparam T Type of variable
  * @param var Reference to variable
  * @param value Value to write
- * @param m Reference to mutex
+ * @param var_mutex Reference to mutex
  * @return Written value
 */
 template<typename T>
-T WriteThreadVar( T& var, const T& value, mutex& m );
+T WriteThreadVar( T& var, const T& value, mutex& var_mutex );
 
 /*!
  * @brief Set flag to false but return previous state of flag

@@ -144,7 +144,7 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 		const Point3D pMax = currentPixel.getPnt( currentPixel.AMax(), 0 );	// Point on "maximum" edge
 		const line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
-		const double edgeDistance = ( pMax - pMin ).Length();								// Distance between edge points
+		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
 		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of ray origins on pixel
 
 		// Iterate all rays hitting current pixel

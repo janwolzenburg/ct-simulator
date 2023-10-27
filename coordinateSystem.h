@@ -42,10 +42,28 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
+	 * @brief Serialize this object
+	 * @param binary_data Reference to vector where data will be appended
+	*/
+	size_t Serialize( vector<char>& binary_data ) const;
+
+	/*!
 	 * @brief Get pointer to this system's parent_
 	 * @return Pointer to parent_
 	*/
-	const CoordinateSystem* Parent( void ) const{ return parent_; };
+	const CoordinateSystem* parent( void ) const{ return parent_; };
+
+	/*!
+	 * @brief Get the primitve coordinate system of this system
+	 * @return Coordinate system without parent_ context
+	*/
+	PrimitiveCoordinateSystem GetPrimitive( void ) const{ return static_cast<PrimitiveCoordinateSystem>( *this ); };
+
+	/*!
+	 * @brief Set the primitve coordinate system of this system
+	 * @param primitiveCSys primitve system to set
+	*/
+	void SetPrimitive( const PrimitiveCoordinateSystem new_primitive );
 
 	/*!
 	 * @brief Checks if this system is a global system
@@ -68,14 +86,14 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief Add coordinate system to this system's tree
-	 * @param origin_ Origin of coordinate system
-	 * @param ex_ x-axis
-	 * @param ey_ y-axis
-	 * @param ez_ z-axis
+	 * @param origin Origin of coordinate system
+	 * @param ex x-axis
+	 * @param ey y-axis
+	 * @param ez z-axis
 	 * @param name_ Name of the system
 	 * @return Pointer to created system with this system as parent_
 	*/
-	CoordinateSystem* AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const std::string name ) const;
+	CoordinateSystem* AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name ) const;
 
 	/*!
 	 * @brief Get path from global system to this system
@@ -84,70 +102,70 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	vector<const CoordinateSystem *> GetPathFromGlobal( void ) const;
 
 	/*!
-	 * @brief Get origin_ point in this system's context
+	 * @brief Get origin point in this system's context
 	 * @return Point of system's origin_
 	*/
-	Point3D Origin( void ) const;
+	Point3D GetOriginPoint( void ) const;
 
 	/*!
-	 * @brief Get origin_ point in this parent_'s context
+	 * @brief Get origin point in this parent_'s context
 	 * @return Point of system's origin_
 	*/
-	Point3D OriginInParentSystem( void ) const;
+	Point3D GetOriginInParentSystem( void ) const;
 
 	/*!
 	 * @brief Get unit vector of x-axis in this system's context
 	 * @return x-axis unit vector
 	*/
-	UnitVector3D UnitX( void ) const;
+	UnitVector3D GetEx( void ) const;
 
 	/*!
 	 * @brief Get unit vector of y-axis in this system's context
 	 * @return y-axis unit vector
 	*/
-	UnitVector3D UnitY( void ) const;
+	UnitVector3D GetEy( void ) const;
 
 	/*!
 	 * @brief Get unit vector of z-axis in this system's context
 	 * @return z-axis unit vector
 	*/
-	UnitVector3D UnitZ( void ) const;
+	UnitVector3D GetEz( void ) const;
 
 	/*!
 	 * @brief Get x-axis in parent_ coordinate system
 	 * @return The x-axis as a line
 	*/
-	line XAxis( void ) const;
+	line GetXAxis( void ) const;
 
 	/*!
 	 * @brief Get y-axis in parent_ coordinate system
 	 * @return The y-axis as a line
 	*/
-	line YAxis( void ) const;
+	line GetYAxis( void ) const;
 
 	/*!
 	 * @brief Get z-axis in parent_ coordinate system
 	 * @return The z-axis as a line
 	*/
-	line ZAxis( void ) const;
+	line GetZAxis( void ) const;
 
 	/*!
 	 * @brief Get the xy-plane in parent_ coordinate system
 	 * @return xy-plane as surface
 	*/
-	surf XYPlane( void ) const;
+	surf GetXYPlane( void ) const;
 
 	/*!
 	 * @brief Get the yz-plane in parent_ coordinate system
 	 * @return yz-plane as surface
 	*/
-	surf YZPlane( void ) const;
+	surf GetYZPlane( void ) const;
 
 	/*!
 	 * @brief Get the xz-plane in parent_ coordinate system
 	 * @return xz-plane as surface
 	*/
-	surf XZPlane( void ) const;
+	surf GetXZPlane( void ) const;
 
 	/*!
 	 * @brief Translate coordinate system
@@ -171,23 +189,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	*/
 	MathError Rotate( const line axis, const double angle );
 
-	/*!
-	 * @brief Get the primitve coordinate system of this system
-	 * @return Coordinate system without parent_ context
-	*/
-	PrimitiveCoordinateSystem Primitive( void ) const{ return static_cast<PrimitiveCoordinateSystem>( *this ); };
 
-	/*!
-	 * @brief Set the primitve coordinate system of this system
-	 * @param primitiveCSys primitve system to set
-	*/
-	void Primitive( const PrimitiveCoordinateSystem new_primitive );
-
-	/*!
-	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
-	*/
-	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	private:

@@ -30,14 +30,14 @@
 line::line( const UnitVector3D v, const Point3D p ) : 
 	r( v ), o( p )
 {
-	if( !v.IsSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
+	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
 }
 
 line::line( const Vector3D v, const Point3D p ) : 
 	r( UnitVector3D{ v } ), o( p )
 {
-	if( IsNearlyEqualDistance( r.Length(), 0 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vector must have length_!" );
-	if( !v.IsSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
+	if( IsNearlyEqualDistance( r.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vector must have length_!" );
+	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
 }
 
 line::line( void ) : 
@@ -85,7 +85,7 @@ Vector3D line::getLot( const Point3D p ) const{
 
 double line::getDistance( const line l ) const{
 	Vector3D n{ r ^ l.r };
-	return abs( ( l.o - o ) * n ) / n.Length();
+	return abs( ( l.o - o ) * n ) / n.length();
 }
 
 line line::projectOnXYPlane( const CoordinateSystem* const cSys ) const{

@@ -36,17 +36,17 @@ string Coordinates::ToString( const unsigned int newline_tabulators ) const{
 	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
 
 	str += newLine + tempCharArr;
-	str += newLine + "Parent coordinate_system_:" + std::format( "{:#X}", (size_t) coordinate_system_ );
+	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", (size_t) coordinate_system_ );
 
 	return str;
 }
 
 bool Coordinates::operator== ( const Coordinates coords ) const{
-	if( this->IsSameSystem( coords ) ) return this->PrimitiveVector3::operator==( coords );
+	if( this->HasSameSystem( coords ) ) return this->PrimitiveVector3::operator==( coords );
 
 	// Convert both Coordinates to global system
-	Coordinates globalCoords_1 = this->convertTo( GlobalSystem() );
-	Coordinates globalCoords_2 = coords.convertTo( GlobalSystem() );
+	Coordinates globalCoords_1 = this->ConvertTo( GlobalSystem() );
+	Coordinates globalCoords_2 = coords.ConvertTo( GlobalSystem() );
 
 	// Compare components
 	return globalCoords_1.PrimitiveVector3::operator==( globalCoords_2 );
@@ -54,14 +54,14 @@ bool Coordinates::operator== ( const Coordinates coords ) const{
 
 Coordinates Coordinates::operator+ ( const Coordinates coords ) const{
 	// Add converted Coordinates' components to this componentes
-	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator+( coords.convertTo( this->coordinate_system_ ) );
+	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator+( coords.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator- ( const Coordinates coords ) const{
 	// Add converted Coordinates' components to this componentes
-	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator-( coords.convertTo( this->coordinate_system_ ) );
+	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator-( coords.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
 }
@@ -80,11 +80,11 @@ Coordinates Coordinates::operator/ ( const double divisor ) const{
 	return Coordinates{ this->PrimitiveVector3::operator/( divisor ), this->coordinate_system_ };
 }
 
-Coordinates Coordinates::convertTo( const CoordinateSystem* const target_coordinate_system ) const{
+Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 	
 	Coordinates tempC{ Tuple3D{ x, y, z }, this->coordinate_system_ };
 
-	if( this->IsSameSystem( target_coordinate_system ) ) return tempC;
+	if( this->HasSameSystem( target_coordinate_system ) ) return tempC;
 
 	// Loop until Coordinates are in context of global system
 	while( !tempC.coordinate_system_->IsGlobal() ){
@@ -115,24 +115,24 @@ Coordinates Coordinates::ConvertToParentSystem( void ) const{
 	if( this->coordinate_system_->IsGlobal() ) return *this;
 
 	// Values of Coordinates in parent_ coordinate system
-	PrimitiveVector3 coordComps{ coordinate_system_->Primitive().Origin() + coordinate_system_->Primitive().UnitX() * x + coordinate_system_->Primitive().UnitY() * y + coordinate_system_->Primitive().UnitZ() * z };
-	Coordinates parentCoords{ coordComps, coordinate_system_->Parent() };
+	PrimitiveVector3 coordComps{ coordinate_system_->GetPrimitive().origin() + coordinate_system_->GetPrimitive().ex() * x + coordinate_system_->GetPrimitive().ey() * y + coordinate_system_->GetPrimitive().ez() * z };
+	Coordinates parentCoords{ coordComps, coordinate_system_->parent() };
 
 	return parentCoords;
 }
 
 Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const child_coordinate_system ) const{
 	// Error when child's parent_ system is not this system
-	if( !this->IsSameSystem( child_coordinate_system->Parent() ) ) CheckForAndOutputError( MathError::Input, "Parent of child system is not this system!" );
+	if( !this->HasSameSystem( child_coordinate_system->parent() ) ) CheckForAndOutputError( MathError::Input, "parent of child system is not this system!" );
 
 	eqnSys tEqnSys( 3 );		// System of equation to solve for x,y and z in local coordinate system
 
 	// Poulate columns of system of equations
-	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitX() );
-	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitY() );
-	tEqnSys.populateColumn( child_coordinate_system->Primitive().UnitZ() );
+	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ex() );
+	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ey() );
+	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ez() );
 
-	tEqnSys.populateColumn( (PrimitiveVector3) *this - child_coordinate_system->Primitive().Origin() );
+	tEqnSys.populateColumn( (PrimitiveVector3) *this - child_coordinate_system->GetPrimitive().origin() );
 
 	// Solve
 	eqnSysSolution tEqnSysSol = tEqnSys.solve();

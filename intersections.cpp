@@ -41,9 +41,9 @@ lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
 	// Create system of equations with two variables
 	eqnSys sys( 2 );
 
-	Tuple3D column0 = l1.R().Components();
-	Tuple3D column1 = -l2.R().Components( l1.R() );
-	Tuple3D column2 = l2.O().Components( l1.O() ) - l1.O().Components();
+	Tuple3D column0 = l1.R().GetComponents();
+	Tuple3D column1 = -l2.R().GetComponents( l1.R() );
+	Tuple3D column2 = l2.O().GetComponents( l1.O() ) - l1.O().GetComponents();
 
 	sys.populateColumn( Tuple2D{ column0.x, column0.y } );
 	sys.populateColumn( Tuple2D{ column1.x, column1.y } );
@@ -91,7 +91,7 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 {
 
 	// Components of ray trajectory in voxel coordinate system
-	Tuple3D comps = r.R().Components( v.O() );
+	Tuple3D comps = r.R().GetComponents( v.O() );
 	bool facePossible = true;
 
 	// Find Entrance

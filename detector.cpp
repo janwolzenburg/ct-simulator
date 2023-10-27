@@ -39,8 +39,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
-	const UnitVector3D middleNormalVector = cSys->UnitY();					// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotationVector = cSys->UnitZ();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotationVector = cSys->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// Persistent variables
@@ -102,7 +102,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
 			// Pixel size is double the lot length_
-			currentPixelSize = 2 * pixelIntersectionLot.Length();
+			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 
 		// Create current pixel normal pointing to center

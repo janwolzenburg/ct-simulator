@@ -28,7 +28,7 @@ rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energ
 	scatteringNormal( scatteredNormal_ )
 {
 	
-	// Resolution of angles
+	// GetResolution of angles
 	const double angleResolution = ( 2. * PI ) / (double) ( anglesAmount - 1 );
 
 	// Iterate all frequencies

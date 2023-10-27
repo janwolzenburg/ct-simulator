@@ -65,7 +65,7 @@ class detectorRadonParameter{
 
 	double distanceRange;			/*!<Measure field in mm*/
 	GridIndex numberPoints;			/*!<Number of points on the axis*/
-	GridCoordinates resolution;				/*!Resolution of the axis*/
+	GridCoordinates resolution;				/*!GetResolution of the axis*/
 	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
 };
 

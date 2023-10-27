@@ -101,14 +101,8 @@ NumberRange::NumberRange( const double start, const double end ) : start_( start
 	}
 }
 
-
 NumberRange::NumberRange( const NaturalNumberRange naturalRange ) :
-	NumberRange{ (double) naturalRange.start(), (double) naturalRange.end()}
-{}
-
-
-NumberRange::NumberRange( void ) : 
-	NumberRange{ 0., 1. }
+	NumberRange{ (double) naturalRange.start(), (double) naturalRange.end() }
 {}
 
 NumberRange::NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
@@ -116,9 +110,9 @@ NumberRange::NumberRange( const vector<char>& binary_data, vector<char>::const_i
 	end_(	DeSerializeBuildIn<double>( 0., binary_data, it ) )
 {}
 
-double NumberRange::Resolution( const size_t number ) const{
+double NumberRange::GetResolution( const size_t number ) const{
 	if( number < 2 ) return 1;
-	return Diff() / static_cast<double>( number - 1 );
+	return GetDifference() / static_cast<double>( number - 1 );
 }
 
 size_t NumberRange::Serialize( vector<char>& binary_data ) const{
@@ -136,7 +130,7 @@ NaturalNumberRange::NaturalNumberRange( const signed long long start, const sign
 		cerr << "class NaturalNumberRange: Start must be less than end!" << endl;
 		start_ = end_ - 1;
 	}
-};
+}
 
 
 template<>

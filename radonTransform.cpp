@@ -36,27 +36,27 @@ radonCoords::radonCoords( const CoordinateSystem* const cSys, const line l ) :
 	const line projectedLine = l.projectOnXYPlane( cSys );
 
 	// Get perpendicualar to projected ray through coordinate system's origin_
-	Vector3D lot = projectedLine.getLot( cSys->Origin() );
+	Vector3D lot = projectedLine.getLot( cSys->GetOriginPoint() );
 
 
 	// Ray intersects origin_
-	if( IsNearlyEqualDistance( lot.Length(), 0 ) ){
+	if( IsNearlyEqualDistance( lot.length(), 0 ) ){
 		// Lot vector only for GetAngle calculation
-		lot = projectedLine.R() ^ cSys->UnitZ();
+		lot = projectedLine.R() ^ cSys->GetEz();
 	}
 	// No intersection -> distance from perpendicular
 	else{
 		// y component is zero
 		if( IsNearlyEqualDistance( lot.Y(), 0 ) ){
 			// x component is less than zero
-			if( lot.X() < 0 ) distance = -lot.Length();
-			else distance = lot.Length();
+			if( lot.X() < 0 ) distance = -lot.length();
+			else distance = lot.length();
 		}
 		// y component is not zero
 		else{
 			// y component is less than zero
-			if( lot.Y() < 0 ) distance = -lot.Length();
-			else  distance = lot.Length();
+			if( lot.Y() < 0 ) distance = -lot.length();
+			else  distance = lot.length();
 		}
 	}
 
@@ -65,9 +65,9 @@ radonCoords::radonCoords( const CoordinateSystem* const cSys, const line l ) :
 	// y component is zero
 	if( IsNearlyEqualDistance( lot.Y(), 0 ) ) theta = 0;
 	// y component is greater than zero
-	else if( lot.Y() > 0 ) theta = cSys->UnitX().GetAngle( lot );
+	else if( lot.Y() > 0 ) theta = cSys->GetEx().GetAngle( lot );
 	// y component is less than zero
-	else theta = PI - cSys->UnitX().GetAngle( lot );
+	else theta = PI - cSys->GetEx().GetAngle( lot );
 
 }
 

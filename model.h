@@ -226,7 +226,7 @@ class model : public MathematicalObject{
 	/*!
 	 * @brief Get slice through model
 	 * @param sliceLocation Where to slice
-	 * @param resolution Resolution of grid
+	 * @param resolution GetResolution of grid
 	 * @return Grid with slice
 	*/
 	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 

@@ -67,16 +67,28 @@ class CoordinateSystemTree : public MathematicalObject{
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
+	 * @brief Get dummy system
+	 * @return Pointer to dummy
+	*/
+	CoordinateSystem* GetDummy( void ){ return &( *systems_.begin() ); };
+
+	/*!
+	 * @brief Get global system
+	 * @return Pointer to global system
+	*/
+	const CoordinateSystem* GetGlobal( void ){ return &( systems_.at( 1 ) ); };
+
+	/*!
 	 * @brief Add system to tree
-	 * @param origin_ Origin of coordinate system
-	 * @param ex_ x-axis
-	 * @param ey_ y-axis
-	 * @param ez_ z-axis
+	 * @param origin Origin of coordinate system
+	 * @param ex x-axis
+	 * @param ey y-axis
+	 * @param ez z-axis
 	 * @param parent_ Pointer to parent_ system
-	 * @param name_ Name of the system
+	 * @param name Name of the system
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const CoordinateSystem* parent_, const string name_ );
+	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const CoordinateSystem* parent, const string name );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -88,41 +100,29 @@ class CoordinateSystemTree : public MathematicalObject{
 
 	/*!
 	 * @brief Add system to tree with global system as parent_
-	 * @param origin_ Origin of coordinate system
-	 * @param ex_ x-axis
-	 * @param ey_ y-axis
-	 * @param ez_ z-axis
-	 * @param name_ Name of the system
+	 * @param origin Origin of coordinate system
+	 * @param ex x-axis
+	 * @param ey y-axis
+	 * @param ez z-axis
+	 * @param name Name of the system
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const string name_ );
+	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name );
 
 	/*!
 	 * @brief Add system to tree at origin_ of parent_
 	 * @param parent_ Parent system
-	 * @param name_ Name
+	 * @param name Name
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const CoordinateSystem* parent_, const string name_ );
+	CoordinateSystem* AddSystem( const CoordinateSystem* parent, const string name );
 
 	/*!
 	 * @brief Ass system to tree at origin_ of global system
-	 * @param name_ Name
+	 * @param name Name
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const string name_ );
-
-	/*!
-	 * @brief Get dummy system
-	 * @return Pointer to dummy
-	*/
-	CoordinateSystem* GetDummy( void ){ return &( *systems_.begin() ); };
-
-	/*!
-	 * @brief Get global system
-	 * @return Pointer to global system
-	*/
-	const CoordinateSystem* GetGlobal( void ){ return &( systems_.at( 1 ) ); };
+	CoordinateSystem* AddSystem( const string name );
 
 	/*!
 	 * @brief Check if pointed to system is valid
@@ -143,12 +143,12 @@ class CoordinateSystemTree : public MathematicalObject{
 	/*!
 	 * @brief Deleted copy constructor
 	*/
-	CoordinateSystemTree( const CoordinateSystemTree& tree_ ) = delete;
+	CoordinateSystemTree( const CoordinateSystemTree& tree ) = delete;
 
 	/*!
 	 * @brief Deleted assignment operator
 	*/
-	CoordinateSystemTree& operator=( const CoordinateSystemTree& tree_ ) = delete;
+	CoordinateSystemTree& operator=( const CoordinateSystemTree& tree ) = delete;
 
 
 	private:

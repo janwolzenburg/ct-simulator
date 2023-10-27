@@ -53,11 +53,11 @@ model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 				Point3D p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
 
 
-				if( ( sp1_center - p ).Length() <= sp1_radius && ( true || ( sp1_center - p ).Length() >= sp1_radius - 1.1 ) )  mod.setVoxelData( sp1_data, { x, y, z } );
-				else if( ( sp2_center - p ).Length() <= sp2_radius && ( true || ( sp2_center - p ).Length() >= sp2_radius - 1.1 ) ) mod.setVoxelData( sp2_data, { x, y, z } );
+				if( ( sp1_center - p ).length() <= sp1_radius && ( true || ( sp1_center - p ).length() >= sp1_radius - 1.1 ) )  mod.setVoxelData( sp1_data, { x, y, z } );
+				else if( ( sp2_center - p ).length() <= sp2_radius && ( true || ( sp2_center - p ).length() >= sp2_radius - 1.1 ) ) mod.setVoxelData( sp2_data, { x, y, z } );
 				else mod.setVoxelData( bgData, { x, y, z } );
 			
-				if( ( artifact - p ).Length() <= artRadius && ( true || ( artifact - p ).Length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( voxData::METAL, { x, y, z } );
+				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( voxData::METAL, { x, y, z } );
 			
 			}
 		}

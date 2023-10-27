@@ -33,8 +33,8 @@ surf::surf( const UnitVector3D v1, const UnitVector3D v2, const Point3D p )
 	r2( v2 ),
 	o( p ){
 	
-	if( !r1.IsSameSystem( o ) || !r2.IsSameSystem( o ) ||
-		!r1.IsSameSystem( r2 ) ) CheckForAndOutputError( MathError::Input, "Surface origin_ and trajectories must be defined in the same coordinate system!" );
+	if( !r1.HasSameSystem( o ) || !r2.HasSameSystem( o ) ||
+		!r1.HasSameSystem( r2 ) ) CheckForAndOutputError( MathError::Input, "Surface origin_ and trajectories must be defined in the same coordinate system!" );
 
 	if( !r1.IsOrthogonal( r2 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vectors must be orthogonal!" );
 };
@@ -71,9 +71,9 @@ surf surf::convertTo( const CoordinateSystem* const coordinate_system ) const{
 size_t surf::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += r1.Components().Serialize( binary_data );
-	num_bytes += r2.Components().Serialize( binary_data );
-	num_bytes += o.Components().Serialize( binary_data );
+	num_bytes += r1.GetComponents().Serialize( binary_data );
+	num_bytes += r2.GetComponents().Serialize( binary_data );
+	num_bytes += o.GetComponents().Serialize( binary_data );
 
 	return num_bytes;
 

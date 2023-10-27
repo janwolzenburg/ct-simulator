@@ -63,7 +63,7 @@
 	if( p2 != Point3D{ Tuple3D{ -3, 0, 0 }, sys1 } ) return false;
 
 	UnitVector3D uv1{ Tuple3D{ 5, 2, 2}, sys3 };
-	if( !IsNearlyEqualDistance( uv1.Length(), 1 ) ) return false;
+	if( !IsNearlyEqualDistance( uv1.length(), 1 ) ) return false;
 
 	Vector3D rotVec1 = vect6.RotateConstant( Vector3D{ Tuple3D{ 0, 1, 0 }, vect6.GetCoordinateSystem() }, PI/2);
 	if( rotVec1 != Vector3D{ Tuple3D{ 0, 0, -1 }, vect6.GetCoordinateSystem() } ) return false;

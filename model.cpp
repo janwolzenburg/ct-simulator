@@ -118,7 +118,7 @@ bool model::checkIndices( const Index3D indices ) const{
 }
 
 bool model::pntInside( const Point3D p ) const{
-	return validCoords( p.Components( cSys ) );
+	return validCoords( p.GetComponents( cSys ) );
 }
 
 Index3D model::getVoxelIndices( const Tuple3D locCoords ) const{
@@ -150,7 +150,7 @@ Index3D model::getVoxelIndices( const Tuple3D locCoords ) const{
 }
 
 Index3D model::getVoxelIndices( const Point3D voxpnt ) const{
-	return getVoxelIndices( voxpnt.Components( cSys ) );
+	return getVoxelIndices( voxpnt.GetComponents( cSys ) );
 }
 
 bool model::setVoxelData( const voxData newData, const Index3D indices ){
@@ -555,7 +555,7 @@ void model::addSpecialSphere( const voxData::specialProperty property, const Poi
 
 				Point3D p( Tuple3D( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
 
-				if( ( center - p ).Length() <= radius )  (*this).operator()( x, y, z ).addSpecialProperty( property );
+				if( ( center - p ).length() <= radius )  (*this).operator()( x, y, z ).addSpecialProperty( property );
 				
 			}
 		}

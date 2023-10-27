@@ -65,7 +65,7 @@ class rayScattering{
 
 	size_t energiesAmount;			/*!<Amount of frequencies*/
 	NumberRange energyRange;				/*!<Range of frequencies*/
-	double energyResolution;		/*!<Frequency Resolution*/
+	double energyResolution;		/*!<Frequency GetResolution*/
 
 	vector<propabilityDistribution> distributions;	/*!<Vector with propability distributions*/
 	vector<double> energies;						/*!<Vector with frequencies the vector with distribution describes*/

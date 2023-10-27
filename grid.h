@@ -75,7 +75,7 @@ class grid{
 
 	/*!
 	 * @brief Get resolution of axis
-	 * @return Resolution of axis
+	 * @return GetResolution of axis
 	*/
 	GridCoordinates Resolution( void ) const{ return resolution; };
 
@@ -171,7 +171,7 @@ class grid{
 
 	GridIndex size;					/*!<Size of grid*/
 	GridCoordinates start;						/*!<Start of axis*/
-	GridCoordinates resolution;				/*!<Resolution of grid*/
+	GridCoordinates resolution;				/*!<GetResolution of grid*/
 
 	vector<double> columnPoints;	/*!<Vector with values on column axis*/
 	vector<double> rowPoints;		/*!<Vector with values on row axis*/

@@ -42,9 +42,9 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	/*!
 	 * @brief Constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @param current_byte Iterator to start of data in vector
 	*/
-	PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Convert coordinate system's data to string
@@ -53,34 +53,34 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
+	 * @brief Serialize this object
+	 * @param binary_data Reference to vector where data will be appended
+	*/
+	size_t Serialize( vector<char>& binary_data ) const;
+
+	/*!
 	 * @brief Get primitive origin_
 	 * @return Primitive represantation of the origin_
 	*/
-	PrimitiveVector3 Origin( void ) const{ return origin_; };
+	PrimitiveVector3 origin( void ) const{ return origin_; };
 
 	/*!
 	 * @brief Get primitive x Axis
 	 * @return Primitive represantation of the x Axis
 	*/
-	PrimitiveVector3 UnitX( void ) const{ return ex_; };
+	PrimitiveVector3 ex( void ) const{ return ex_; };
 
 	/*!
 	 * @brief Get primitive y Axis
 	 * @return Primitive represantation of the y Axis
 	*/
-	PrimitiveVector3 UnitY( void ) const{ return ey_; };
+	PrimitiveVector3 ey( void ) const{ return ey_; };
 
 	/*!
 	 * @brief Get primitive z Axis
 	 * @return Primitive represantation of the z Axis
 	*/
-	PrimitiveVector3 UnitZ( void ) const{ return ez_; };
-
-	/*!
-	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
-	*/
-	size_t Serialize( vector<char>& binary_data ) const;
+	PrimitiveVector3 ez( void ) const{ return ez_; };
 
 
 	protected:

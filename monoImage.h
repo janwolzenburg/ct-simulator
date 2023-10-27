@@ -133,13 +133,13 @@ class monoImage{
 	 * @brief Get minimum of image data
 	 * @return Minimum value in data
 	*/
-	double minimum( void ) const{ return MinElement( data ); };
+	double minimum( void ) const{ return GetMinElement( data ); };
 
 	/*!
 	 * @brief Get maximum of image data
 	 * @return maximum value in data
 	*/
-	double maximum( void ) const{ return MaxElement( data ); };
+	double maximum( void ) const{ return GetMaxElement( data ); };
 
 	/*!
 	 * @brief Change the images contrast to given range

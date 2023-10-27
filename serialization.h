@@ -58,10 +58,10 @@ size_t SerializeBuildIn<vector<vector<GridCoordinates>>>( const vector<vector<Gr
  * @return Amount of bytes read
 */
 template< typename T >
-size_t DeSerializeBuildIn( T& val, T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& it );
+size_t DeSerializeBuildIn( T& val, T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 template<>
-size_t DeSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& it );
+size_t DeSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 /*!
  * @brief Deserialize build in data type
@@ -72,7 +72,7 @@ size_t DeSerializeBuildIn<string>( string& val, string defaultVal, const vector<
  * @return Deserialized object
 */
 template< typename T>
-T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& it );
+T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 /*!
  * @brief Deserialize and return object
@@ -82,10 +82,10 @@ T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char
  * @return Deserialized object
 */
 template< typename T>
-T DeSerialize( const vector<char>& binary_data, vector<char>::const_iterator& it );
+T DeSerialize( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 template<>
-vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( const vector<char>& binary_data, vector<char>::const_iterator& it );
+vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 
 /*!
@@ -114,6 +114,6 @@ vector<char> ImportSerialized( const path file_path );
 	* @param it Iterator to start of data in vector
 	* @return True when preambles match
 */
-bool ValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& it );
+bool ValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 #include "Serialization.hpp"

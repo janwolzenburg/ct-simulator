@@ -28,7 +28,7 @@ bool test_scattered_angle_propabilities( void ){
 	double angleResolution = 2. / 360 * 2 * PI;
 	NumberRange energyRange = NumberRange{ al_filter_cut_off_energy_eV, 150000. };
 	size_t numEnergies = 20;
-	//double energyResolution = energyRange.Resolution( numEnergies );
+	//double energyResolution = energyRange.GetResolution( numEnergies );
 
 	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
 
@@ -101,7 +101,7 @@ bool test_ray_scattering(void){
 
 			const ray retRay = mod.rayTransmission( r, tomoParameter, testGantry.RayScattering() );
 
-			double plotLength = ( retRay.O() - r.O() ).Length();
+			double plotLength = ( retRay.O() - r.O() ).length();
 
 			if( mod.pntInside( retRay.O() ) ){
 				addSingleObject( ax1, "Ray", r, "m", plotLength );
@@ -126,7 +126,7 @@ bool test_ray_scattering(void){
 	for( ray r : rays ){
 		rayVox_Intersection_Result res = rayVoxelIntersection{ mod.Vox(), r }.exit;
 
-		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.intersectionPoint ).Length() );
+		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.intersectionPoint ).length() );
 	}
 
 	closeAxis( ax1 );

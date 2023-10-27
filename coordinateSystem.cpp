@@ -45,7 +45,7 @@ string CoordinateSystem::ToString( const unsigned int newline_tabulators ) const
 
 	str += newLine + name_;
 	str += newLine + PrimitiveCoordinateSystem::ToString();
-	str += newLine + "Parent coordinate_system_:" + std::format( "{:#X}", (size_t) parent_ );
+	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", (size_t) parent_ );
 	return str;
 }
 
@@ -94,63 +94,63 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 }
 
 
-Point3D CoordinateSystem::Origin( void ) const{
+Point3D CoordinateSystem::GetOriginPoint( void ) const{
 	return Point3D{ Tuple3D{0, 0, 0}, this };
 }
 
-Point3D CoordinateSystem::OriginInParentSystem( void ) const{
+Point3D CoordinateSystem::GetOriginInParentSystem( void ) const{
 	if( this->IsGlobal() ) return Point3D{ origin_, this };
 	return Point3D{ origin_, parent_ };
 }
 
-UnitVector3D CoordinateSystem::UnitX( void ) const{
+UnitVector3D CoordinateSystem::GetEx( void ) const{
 	return UnitVector3D{ Tuple3D{1, 0, 0},  this };
 }
 
-UnitVector3D CoordinateSystem::UnitY( void ) const{
+UnitVector3D CoordinateSystem::GetEy( void ) const{
 	return UnitVector3D{ Tuple3D{0, 1, 0},   this };
 }
 
-UnitVector3D CoordinateSystem::UnitZ( void ) const{
+UnitVector3D CoordinateSystem::GetEz( void ) const{
 	return UnitVector3D{ Tuple3D{0, 0, 1},  this };
 }
 
-line CoordinateSystem::XAxis( void ) const{
+line CoordinateSystem::GetXAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
 	return line{ Vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-line CoordinateSystem::YAxis( void ) const{
+line CoordinateSystem::GetYAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
 	return line{ Vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-line CoordinateSystem::ZAxis( void ) const{
+line CoordinateSystem::GetZAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
 	return line{ Vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-surf CoordinateSystem::XYPlane( void ) const{
+surf CoordinateSystem::GetXYPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
 	return surf{ Vector3D{ex_, parent_ptr}, Vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-surf CoordinateSystem::YZPlane( void ) const{
+surf CoordinateSystem::GetYZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
 	return surf{ Vector3D{ey_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-surf CoordinateSystem::XZPlane( void ) const{
+surf CoordinateSystem::GetXZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
@@ -162,7 +162,7 @@ MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
 		return CheckForAndOutputError( MathError::Operation, "Global coordinate system cannot be translated!" );
 	}
 
-	PrimitiveCoordinateSystem::Translate( dV.Components( parent_ ) );
+	PrimitiveCoordinateSystem::Translate( dV.GetComponents( parent_ ) );
 
 	return MathError::Ok;
 }
@@ -172,7 +172,7 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const UnitVector3D n, co
 		return CheckForAndOutputError( MathError::Operation, "Global coordinate system cannot be rotated!" );
 	}
 
-	return PrimitiveCoordinateSystem::Rotate( n.Components( parent_ ), phi );
+	return PrimitiveCoordinateSystem::Rotate( n.GetComponents( parent_ ), phi );
 }
 
 MathematicalObject::MathError CoordinateSystem::Rotate( const line l, const double phi ){
@@ -186,7 +186,7 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const line l, const doub
 	Translate( -l.O() );
 
 	// Rotate position vector of origin_ around rotation axis
-	if( ( tErr = origin_.Rotate( l.R().Components( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tErr = origin_.Rotate( l.R().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
 
 	// Translate back
 	Translate( l.O() );
@@ -194,12 +194,12 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const line l, const doub
 	return errCode;
 }
 
-void CoordinateSystem::Primitive( const PrimitiveCoordinateSystem primitiveCSys ){
+void CoordinateSystem::SetPrimitive( const PrimitiveCoordinateSystem primitiveCSys ){
 
-	this->origin_ = primitiveCSys.Origin();
-	this->ex_ = primitiveCSys.UnitX();
-	this->ey_ = primitiveCSys.UnitY();
-	this->ez_ = primitiveCSys.UnitZ();
+	this->origin_ = primitiveCSys.origin();
+	this->ex_ = primitiveCSys.ex();
+	this->ey_ = primitiveCSys.ey();
+	this->ez_ = primitiveCSys.ez();
 
 }
 
@@ -207,11 +207,11 @@ size_t CoordinateSystem::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
 
-	num_bytes += Origin().GlobalComponents().Serialize( binary_data );
+	num_bytes += GetOriginPoint().GetGlobalComponents().Serialize( binary_data );
 
-	num_bytes += UnitX().GlobalComponents().Serialize( binary_data );
-	num_bytes += UnitY().GlobalComponents().Serialize( binary_data );
-	num_bytes += UnitZ().GlobalComponents().Serialize( binary_data );
+	num_bytes += GetEx().GetGlobalComponents().Serialize( binary_data );
+	num_bytes += GetEy().GetGlobalComponents().Serialize( binary_data );
+	num_bytes += GetEz().GetGlobalComponents().Serialize( binary_data );
 	
 	num_bytes += SerializeBuildIn( name_, binary_data );
 

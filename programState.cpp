@@ -171,7 +171,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	const slicePlane backupPlane = modelViewPara.plane; 
 	slicePlane& planeInstance =  modelViewPara.plane;
 
-	const PrimitiveCoordinateSystem backupCSys = modelInstance.CSys()->Primitive();
+	const PrimitiveCoordinateSystem backupCSys = modelInstance.CSys()->GetPrimitive();
 
 	if( targetXRot != planeInstance.rotationAngleX ){
 
@@ -206,7 +206,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	
 	// Revert changes
 	planeInstance = backupPlane;
-	modelInstance.CSys()->Primitive( backupCSys );
+	modelInstance.CSys()->SetPrimitive( backupCSys );
 
 	targetXRot = planeInstance.rotationAngleX;
 	targetYRot = planeInstance.rotationAngleY;
@@ -236,7 +236,7 @@ void programState::centerModel( void ){
 	// Center model
 	Tuple3D center = PrimitiveVector3{ modelInstance.ModSize() } / -2.;
 
-	modelInstance.CSys()->Primitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+	modelInstance.CSys()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
 }
 
 void programState::resetModel( void ){

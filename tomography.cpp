@@ -78,7 +78,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 
 	// Translate Gantry
 	if( zPosition != 0. )
-		Gantry.CSys()->Translate( Gantry.CSys()->UnitZ() * zPosition );
+		Gantry.CSys()->Translate( Gantry.CSys()->GetEz() * zPosition );
 
 	// Assign gantry csys-data to radon coordinate system
 	this->radonCSys->CopyPrimitiveFrom( Gantry.CSys() );

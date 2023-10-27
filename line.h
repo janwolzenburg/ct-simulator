@@ -116,7 +116,7 @@ class line : public MathematicalObject{
 	 * @param p Point
 	 * @return Distance in this line's unit
 	*/
-	double getDistance( const Point3D p ) const{ return getLot( p ).Length(); };
+	double getDistance( const Point3D p ) const{ return getLot( p ).length(); };
 
 	/*!
 	 * @brief Get shortest distance between two lines

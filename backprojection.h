@@ -72,7 +72,7 @@ class filteredProjections : private grid<> {
 
 	/*!
 	 * @brief Get resolution of axis
-	 * @return Resolution of axis
+	 * @return GetResolution of axis
 	*/
 	GridCoordinates Resolution( void ) const{ return grid::Resolution(); };
 

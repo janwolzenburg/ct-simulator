@@ -99,8 +99,8 @@ void Fl_GridImage_Adjust::setSliderBounds( const NumberRange newBound ){
 	lowerBound.value( newBound.start() );
 	upperBound.value( newBound.end() );
 
-	lowerBound.step( newBound.Diff() / 100. );
-	upperBound.step( newBound.Diff() / 100. );
+	lowerBound.step( newBound.GetDifference() / 100. );
+	upperBound.step( newBound.GetDifference() / 100. );
 
 	changeContrast( newBound ); 
 

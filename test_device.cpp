@@ -89,8 +89,8 @@ bool test_nonUniformDetector( void ){
 	const double deltaTheta = PI / (double) ( nTheta - 1 );
 	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
 
-	const UnitVector3D middleNormalVec = cSys->UnitY();			// Middle normal is the negative y axis
-	const UnitVector3D rotationAxis = cSys->UnitZ();			//Rotation axis is z axis
+	const UnitVector3D middleNormalVec = cSys->GetEy();			// Middle normal is the negative y axis
+	const UnitVector3D rotationAxis = cSys->GetEz();			//Rotation axis is z axis
 
 
 
@@ -125,8 +125,8 @@ bool test_nonUniformDetector( void ){
 		//addSingleObject( ax1, "NormalPoint", normalPoint, "g" );
 
 		// Get point on pixel which lies on an arc with radius R
-		const PrimitiveVector3 o = normalPoint.Components();
-		const PrimitiveVector3 r = currentNormalVec.Components();
+		const PrimitiveVector3 o = normalPoint.GetComponents();
+		const PrimitiveVector3 r = currentNormalVec.GetComponents();
 		const double R = arcRadius;
 
 
@@ -181,7 +181,7 @@ bool test_nonUniformDetector( void ){
 		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
 		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.result.intersectionPoint;
 
-		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).Length();
+		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->O() ).length();
 
 
 		const line lCurrentToNext{ rotationAxis ^ currentNormalIt->R(), currentNormalIt->O() };
@@ -190,7 +190,7 @@ bool test_nonUniformDetector( void ){
 		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
 		const Point3D currentNextIntersectionPoint = currentNextIntersection.result.intersectionPoint;
 
-		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).Length();
+		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->O() ).length();
 
 
 		if( currentNormalIt == pixelNormals.cbegin() + 1 ){
@@ -199,7 +199,7 @@ bool test_nonUniformDetector( void ){
 											rotationAxis,
 											previousNormalIt->O(),
 											currentPreviousParameter,
-											( currentPreviousIntersectionPoint - previousNormalIt->O() ).Length(),
+											( currentPreviousIntersectionPoint - previousNormalIt->O() ).length(),
 											-rowSize / 2,
 											rowSize / 2 };
 			surfaces.push_back( previousSurface );
@@ -220,7 +220,7 @@ bool test_nonUniformDetector( void ){
 			const surfLim nextSurface{ rotationAxis ^ nextNormalIt->R(),
 											rotationAxis,
 											nextNormalIt->O(),
-											-( currentNextIntersectionPoint - nextNormalIt->O() ).Length(),
+											-( currentNextIntersectionPoint - nextNormalIt->O() ).length(),
 											currentNextParameter,
 											-rowSize / 2,
 											rowSize / 2 };
@@ -248,7 +248,7 @@ bool test_modifiedDetector( void ){
 	CoordinateSystem* cSys = GlobalSystem()->CreateCopy( "Detector system" );
 
 
-	addSingleObject( ax1, "Origin", cSys->Origin(), "c" );
+	addSingleObject( ax1, "origin", cSys->GetOriginPoint(), "c" );
 
 	const size_t nTheta = 700;
 	const size_t nDistance = ForceOdd( 301 );
@@ -260,8 +260,8 @@ bool test_modifiedDetector( void ){
 	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
 
 	// Important vectors
-	const UnitVector3D middleNormalVector = cSys->UnitY();					// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotationVector = cSys->UnitZ();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotationVector = cSys->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// All pixel normals
@@ -325,7 +325,7 @@ bool test_modifiedDetector( void ){
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
 			// Pixel size is double the lot length_
-			currentPixelSize = 2 * pixelIntersectionLot.Length();
+			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 
 		// Create current pixel normal pointing to center

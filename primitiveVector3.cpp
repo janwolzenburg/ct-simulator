@@ -42,7 +42,7 @@ bool PrimitiveVector3::operator== ( const PrimitiveVector3 v ) const{
 
 	const PrimitiveVector3 diffVec = v - *this;
 
-	return IsNearlyEqualDistance( diffVec.Length(), 0 );
+	return IsNearlyEqualDistance( diffVec.GetLength(), 0 );
 }
 
 PrimitiveVector3 PrimitiveVector3::operator/ ( const double divisor ) const{
@@ -50,7 +50,7 @@ PrimitiveVector3 PrimitiveVector3::operator/ ( const double divisor ) const{
 	return PrimitiveVector3{ x / divisor, y / divisor, z / divisor };
 }
 
-double PrimitiveVector3::Length( void ) const{
+double PrimitiveVector3::GetLength( void ) const{
 	return sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 }
 
@@ -63,7 +63,7 @@ void PrimitiveVector3::Scale( const double scalar ){
 MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
 	// New length_
-	double len = this->Length();
+	double len = this->GetLength();
 
 	// Length must not by zero
 	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length_!" );
@@ -115,7 +115,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( IsNearlyEqualDistance( n.Length(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length_!" );
+	if( IsNearlyEqualDistance( n.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length_!" );
 
 	// Create copy and Normalise
 	PrimitiveVector3 nCpy{ n };
