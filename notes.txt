@@ -36,3 +36,5 @@ Physics
 
 		vector3D
 		equationSystem
+		line
+		surface
