@@ -299,7 +299,7 @@ class programState{
 	storedObject<tubeParameter> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
 	detectorRadonParameter radonParameter;								/*!<Parameter in radon space affecting the detector*/
 	storedObject<detectorRadonParameter> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
-	detectorIndipendentParameter detectorParameter;						/*!<Parameter only dependent on the physical properties od detector*/
+	detectorIndipendentParameter detectorParameter;						/*!<Parameter only dependent on the physical properties_ od detector*/
 	storedObject<detectorIndipendentParameter> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 

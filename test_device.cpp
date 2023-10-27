@@ -61,7 +61,7 @@ bool test_tube(void) {
 
 	vector<pixel> allPixel = test_detector.getPixel();
 
-	vector<ray> beam = testTube.getBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
+	vector<Ray> beam = testTube.getBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 

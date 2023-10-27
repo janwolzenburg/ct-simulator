@@ -36,17 +36,17 @@ class pixel : public BoundedSurface{
 	*/
 	pixel( const BoundedSurface surface ) :
 		BoundedSurface{ surface },
-		detectedRayProperties( 0, rayProperties{} )
+		detectedRayProperties( 0, RayProperties{} )
 	{};
 
 	/*!
 	 * @brief Constructor
 	 * @param surface Surface as base object
-	 * @param properties Detected ray's properties
+	 * @param properties_ Detected Ray's properties_
 	*/
-	pixel( const BoundedSurface surface, const vector<rayProperties> properties ) :
+	pixel( const BoundedSurface surface, const vector<RayProperties> properties_ ) :
 		BoundedSurface{ surface },
-		detectedRayProperties( properties )
+		detectedRayProperties( properties_ )
 	{};
 
 	/*!
@@ -55,7 +55,7 @@ class pixel : public BoundedSurface{
 	void reset( void ){ detectedRayProperties.clear(); };
 
 	/*!
-	 * @brief Get the value of radon point from detected ray properties
+	 * @brief Get the value of radon point from detected Ray properties_
 	 * @return Value of radon point
 	*/
 	double getRadonValue( void ) const;
@@ -71,31 +71,31 @@ class pixel : public BoundedSurface{
 	 * @param target_CSys Target system 
 	 * @return This pixel in given coordiante system
 	*/
-	pixel convertTo( const CoordinateSystem* const target_CSys ) const;
+	pixel ConvertTo( const CoordinateSystem* const target_CSys ) const;
 
 	/*!
-	 * @brief Add ray properties
-	 * @param properties Properties to add
+	 * @brief Add Ray properties_
+	 * @param properties_ properties to add
 	*/
-	void  addDetectedProperties( const rayProperties properties ){
-		detectedRayProperties.push_back( properties ); };
+	void  addDetectedProperties( const RayProperties properties_ ){
+		detectedRayProperties.push_back( properties_ ); };
 
 	/*!
-	 * @brief Get the detected ray properties
-	 * @return Vector with properties
+	 * @brief Get the detected Ray properties_
+	 * @return Vector with properties_
 	*/
-	vector<rayProperties> getProperties( void ) const{ return detectedRayProperties; };
+	vector<RayProperties> getProperties( void ) const{ return detectedRayProperties; };
 
 	private:
-	vector<rayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
+	vector<RayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
 
  };
 
 
 /*!
- * @brief Class for the intersection of pixel and ray
+ * @brief Class for the intersection of pixel and Ray
 */
-class RayPixelIntersection : public LineSurfaceIntersection<ray, pixel>{
+class RayPixelIntersection : public LineSurfaceIntersection<Ray, pixel>{
 
 	public:
 
@@ -104,10 +104,10 @@ class RayPixelIntersection : public LineSurfaceIntersection<ray, pixel>{
 	 * @param direction_ Ray
 	 * @param px Pixel
 	*/
-	RayPixelIntersection( const ray r, const pixel px );
+	RayPixelIntersection( const Ray r, const pixel px );
 
 
-	rayProperties rayProps; 
+	RayProperties rayProps; 
 
  };
 

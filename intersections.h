@@ -77,14 +77,14 @@ class RayVoxelIntersection {
 	 * @param v_ Voxel
 	 * @param r_ Ray
 	*/
-	RayVoxelIntersection( const vox voxel, const ray r_ );
+	RayVoxelIntersection( const vox voxel, const Ray r_ );
 
 
 	FACE_ID entrance_face_;										/*!<Entrance face*/
-	LineSurfaceIntersection<ray, BoundedSurface> entrance_;		/*!<Entrance*/
+	LineSurfaceIntersection<Ray, BoundedSurface> entrance_;		/*!<Entrance*/
 
 	FACE_ID exit_face_;										/*!<Exit face*/
-	LineSurfaceIntersection<ray, BoundedSurface> exit_;		/*!Exit*/
+	LineSurfaceIntersection<Ray, BoundedSurface> exit_;		/*!Exit*/
 
 };
 

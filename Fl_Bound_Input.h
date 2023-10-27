@@ -74,7 +74,7 @@ class Fl_Bound_Input : public Fl_Group{
 	T value( void ) const{ return current; }; 
 
 	/*!
-	 * @brief Set properties of input
+	 * @brief Set properties_ of input
 	 * @param min_ Minimum value
 	 * @param max_ Maximum value
 	 * @param precision_ Precision of number to show. Use negative numbers to round to multiples of ten

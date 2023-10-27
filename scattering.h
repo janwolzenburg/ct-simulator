@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   scattering.h
- * @brief  Classes for handling ray scattering
+ * @brief  Classes for handling Ray scattering
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -23,7 +23,7 @@
  *********************************************************************/
 
 /*!
- * @brief Class describing ray scattering inside a model
+ * @brief Class describing Ray scattering inside a model
 */
 class rayScattering{
 	
@@ -39,16 +39,16 @@ class rayScattering{
 	rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energiesAmount_, const UnitVector3D scatteredNormal_ );
 
 	/*!
-	 * @brief Scatter given ray
+	 * @brief Scatter given Ray
 	 * @param direction_ Ray to scatter
 	 * @param newOrigin Point where the scattering happens
-	 * @return Scattered ray
+	 * @return Scattered Ray
 	*/
-	ray scatterRay( const ray r, const Point3D newOrigin ) const;
+	Ray scatterRay( const Ray r, const Point3D newOrigin ) const;
 
 	/*!
 	 * @brief Get a random GetAngle to given frequency
-	 * @param frequency Frequency of ray
+	 * @param frequency Frequency of Ray
 	 * @return Random angöe
 	*/
 	double getRandomAngle( const double frequency ) const;

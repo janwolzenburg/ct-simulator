@@ -156,7 +156,7 @@ void detector::reset( void ){
 }
 
 
-void detector::detectRay( const ray r, mutex& allPixelLock ){
+void detector::detectRay( const Ray r, mutex& allPixelLock ){
 
 
 	// Iterate all pixel indices
@@ -166,7 +166,7 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 		const pixel currentPixel = allPixelConverted.at( pixelIdx );
 
 	
-		// Check for intersection of ray with current pixel
+		// Check for intersection of Ray with current pixel
 		const RayPixelIntersection pixelHit{ r, currentPixel };
 
 		// Do they intersect?
@@ -175,12 +175,12 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 			// If structured and GetAngle allowed by structure
 			if( !physicalParameters.structured || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
 				allPixelLock.lock();
-				allPixel.at( pixelIdx ).addDetectedProperties( r.Properties() );		// Add detected ray properties to pixel
+				allPixel.at( pixelIdx ).addDetectedProperties( r.properties() );		// Add detected Ray properties_ to pixel
 				allPixelLock.unlock();
 			}
 
 
-			// Only one pixel can intersect with ray
+			// Only one pixel can intersect with Ray
 			break;
 		}
 
@@ -195,7 +195,7 @@ void detector::convertPixel( const CoordinateSystem* const targetCSys ){
 	// Iterate all pixel in detector
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
 
-		allPixelConverted.at( pixelIdx ) = allPixel.at( pixelIdx ).convertTo( targetCSys );
+		allPixelConverted.at( pixelIdx ) = allPixel.at( pixelIdx ).ConvertTo( targetCSys );
 
 	}
 

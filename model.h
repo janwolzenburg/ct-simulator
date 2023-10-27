@@ -202,12 +202,12 @@ class model : public MathematicalObject{
 	vox getVoxel( const Point3D point ) const{ return getVoxel( getVoxelIndices( point ) ); };
 
 	/*!
-	 * @brief Calculate ray transmission through model
-	 * @param direction_ Transmitting ray in model's coordiante system
-	 * @param enableScattering Flag indicating if ray can be scattered
-	 * @return Vector of ray exiting model or created in model
+	 * @brief Calculate Ray transmission through model
+	 * @param direction_ Transmitting Ray in model's coordiante system
+	 * @param enableScattering Flag indicating if Ray can be scattered
+	 * @return Vector of Ray exiting model or created in model
 	*/
-	ray rayTransmission( const ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const;
+	Ray rayTransmission( const Ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const;
 
 	/*!
 	 * @brief Crop model

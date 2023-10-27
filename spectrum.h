@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   spectrum.h
- * @brief  Class for x ray spectrum
+ * @brief  Class for x Ray spectrum
  *
  * @author Jan Wolzenburg
  * @date   December 2022

@@ -30,7 +30,7 @@ constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 
 
 /*!
- * @brief Parameter for x-ray tube
+ * @brief Parameter for x-Ray tube
 */
 class tubeParameter {
 	
@@ -122,7 +122,7 @@ class tube{
 	 * @param exposureTime Exposure time in seconds. For energy calculation
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel, const double exposureTime ) const;
+	vector<Ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel, const double exposureTime ) const;
 
 	/*!
 	 * @brief Get coordinate system
@@ -144,7 +144,7 @@ class tube{
 	double getEnergy( const double exposureTime ) const{ return totalPower_W * exposureTime; };
 
 	/*!
-	 * @brief Get ray power
+	 * @brief Get Ray power
 	 * @return Ray power in watt
 	*/
 	double rayPower( void ) const{ return totalPower_W; };

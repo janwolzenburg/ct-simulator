@@ -118,22 +118,22 @@ tube::tube( CoordinateSystem* const coordinate_system, const tubeParameter param
 
 }
 
-vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
+vector<Ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
 	// Force minimum of one
 	raysPerPixel = ForceToMin1( raysPerPixel );
 
 	const size_t numRays = raysPerPixel * detectorPixel.size();
 
-	// Split spectrum into the ray spectra. Multiply by exposure time in seconds to get energy spectra
+	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
 	const spectrum raySpectrum = xRay_spectrum.getScaled( exposureTime / (double) numRays );
 
-	// Properties of created rays
-	const rayProperties beamProperties{ raySpectrum };
+	// properties of created rays
+	const RayProperties beamProperties{ raySpectrum };
 
 
 	// Vector with rays
-	vector<ray> rays;
+	vector<Ray> rays;
 
 	// Iterate all pixel
 	for( const pixel currentPixel : detectorPixel ){
@@ -145,24 +145,24 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 		const Line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
-		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of ray origins on pixel
+		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of Ray origins on pixel
 
 		// Iterate all rays hitting current pixel
 		for( size_t currentRayIndex = 0; currentRayIndex < raysPerPixel; currentRayIndex++ ){
 			
-			// Offset of current ray origin_
+			// Offset of current Ray origin_
 			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
 
-			// Current ray origin_
+			// Current Ray origin_
 			const Point3D currentOrigin = connectionLine.GetPoint( currentOffset );
 
 			// Tempory Line pointing from pixel to tube
 			const Line tempLine{ currentPixel.GetNormal().ConvertTo( cSys ), currentOrigin.ConvertTo( cSys ) };
 
-			// Origin of ray with specific distance to pixel
+			// Origin of Ray with specific distance to pixel
 			const Point3D rayOrigin = tempLine.GetPoint( detectorFocusDistance );
 
-			// Add ray in tube's coordinate system to vector
+			// Add Ray in tube's coordinate system to vector
 			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties);
 
 		}

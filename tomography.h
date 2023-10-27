@@ -43,10 +43,10 @@ class tomographyParameter{
 	/*!
 	 * @brief Constructor
 	 * @param exposureTime_ Exposure time in seconds 
-	 * @param scattering_ Enable ray scattering during transmission
+	 * @param scattering_ Enable Ray scattering during transmission
 	 * @param maxRadiationLoops_ Maximum amount of loops, when rays are scattered
-	 * @param scatterPropability_ Approximate propability that a ray is scattered once when transmitted through whole model
-	 * @param rayStepSize_ Step size used in ray tracing
+	 * @param scatterPropability_ Approximate propability that a Ray is scattered once when transmitted through whole model
+	 * @param rayStepSize_ Step size used in Ray tracing
 	*/
 	tomographyParameter( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ );
 	
@@ -69,8 +69,8 @@ class tomographyParameter{
 	double exposureTime;			/*!<Exposure time in seconds*/
 	bool scattering;				/*!<Enable scattering*/
 	size_t maxRadiationLoops;		/*!<Max. amount rays can be scattered*/
-	double scatterPropability;		/*!<Approximate propability that a ray is scattered once when transmitted through whole model*/
-	double rayStepSize;				/*!<Step size used in ray tracing in mm*/
+	double scatterPropability;		/*!<Approximate propability that a Ray is scattered once when transmitted through whole model*/
+	double rayStepSize;				/*!<Step size used in Ray tracing in mm*/
 
 };
 

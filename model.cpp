@@ -190,15 +190,15 @@ vox model::getVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
+Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
 
-	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
+	Ray modelRay = tRay.ConvertTo( this->cSys );					// Current Ray in model's coordinate system
 
 	// Find entrance_ in model
 	const RayVoxelIntersection modelIsect{ Vox(), modelRay };
 
 	//const rayVox_Intersection_Result rayEntrance = modelIsect.entrance_;
-	if( !modelIsect.entrance_.intersection_exists_ ) return modelRay;			// Return if ray does not intersect model
+	if( !modelIsect.entrance_.intersection_exists_ ) return modelRay;			// Return if Ray does not intersect model
 
 
 	// Iteration through model
@@ -207,16 +207,16 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	double currentRayStep = modelIsect.entrance_.line_parameter_ + tomoParameter.rayStepSize;		// Ray parameter at model entrance_
 	const double lengthInModel = modelIsect.exit_.line_parameter_ - modelIsect.entrance_.line_parameter_;
 
-	// Go a tiny step further down the ray from intersection point with model and test if inside
-	// Return when the point on the ray is not inside the model meaning that the ray just barely hit the model
+	// Go a tiny step further down the Ray from intersection point with model and test if inside
+	// Return when the point on the Ray is not inside the model meaning that the Ray just barely hit the model
 	if( !pntInside( modelRay.GetPoint( currentRayStep ) ) ) return modelRay;
 
 
-	// Current point on the ray
+	// Current point on the Ray
 	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance_
 
 
-	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
+	const double meanFrequencyTube = modelRay.GetMeanFrequencyOfSpectrum();	// Mean frequency of Ray before it enters model
 	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
 	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
 
@@ -228,11 +228,11 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 		const Index3D currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		const vector<FACE_ID> possibleFaces = modelRay.getPossibleVoxelExits();		// The possible exit_ faces
+		const vector<FACE_ID> possibleFaces = modelRay.GetPossibleVoxelExits();		// The possible exit_ faces
 
-		double rayParameter = INFINITY;		// The smallest ray parameter
+		double rayParameter = INFINITY;		// The smallest Ray parameter
 
-		// Iterate all possible faces and get the ray parameter at intersection
+		// Iterate all possible faces and get the Ray parameter at intersection
 		for( const FACE_ID& currentFace : possibleFaces ){
 
 			double currentRayParameter = INFINITY;			// Set to infinity 
@@ -275,7 +275,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 				default: break;
 			}
 
-			// Set smallest ray parameter
+			// Set smallest Ray parameter
 			if( currentRayParameter < rayParameter ) rayParameter = currentRayParameter;
 
 		}
@@ -285,26 +285,26 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 			const double distance = rayParameter;		// The distance is the rayParameter
 
-			// Update ray properties whith distance travelled in current voxel
-			modelRay.updateProperties( this->getVoxelData( currentVoxelIndices ), distance );
-			modelRay.incrementHitCounter();
+			// Update Ray properties_ whith distance travelled in current voxel
+			modelRay.UpdateProperties( this->getVoxelData( currentVoxelIndices ), distance );
+			modelRay.IncrementHitCounter();
 
-			currentRayStep += distance + tomoParameter.rayStepSize;				// New Step on ray
-			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on ray
+			currentRayStep += distance + tomoParameter.rayStepSize;				// New Step on Ray
+			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on Ray
 		
 			// Scattering
 			if( tomoParameter.scattering ){
 			
-				// Mean frequency of ray
-				const double meanFrequency = modelRay.getMeanFrequency();
+				// Mean frequency of Ray
+				const double meanFrequency = modelRay.GetMeanFrequencyOfSpectrum();
 
-				// Calculate propability that the ray is scattered
+				// Calculate propability that the Ray is scattered
 				const double scatterPropability = distance / meanFrequency * scatterConstant;
 
-				// Does the ray scatter?
+				// Does the Ray scatter?
 				if( integerRNG.eventHappend( scatterPropability ) ){
 					
-					// Scatter the ray
+					// Scatter the Ray
 					return scatteringProperties.scatterRay( modelRay, currentPntOnRay );
 				}
 			}

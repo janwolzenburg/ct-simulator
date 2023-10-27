@@ -59,7 +59,7 @@ class tomographyExec : public Fl_Group{
 	Fl_Bound_Input<Fl_Float_Input, double> exposureTimeIn;	/*!<Exposure time in sec*/
 	Fl_Bound_Input<Fl_Float_Input, double> rayStepSizeIn;	/*!<Simulation step size in mm*/
 	
-	Fl_Counter radiationLoopsIn;		/*!<Maximum amount a ray can be scattered*/
+	Fl_Counter radiationLoopsIn;		/*!<Maximum amount a Ray can be scattered*/
 	Fl_Bound_Input<Fl_Float_Input, double> scatterPropabilityIn;	/*!<Scatter propability*/
 	Fl_Toggle_Button scatteringOnOff;	/*!<Toggle scattering*/
 

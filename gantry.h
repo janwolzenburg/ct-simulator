@@ -55,7 +55,7 @@ class gantry {
 	 * @param exposureTime Exposure time
 	 * @return Vector with all rays in beam
 	*/
-	vector<ray> getBeam( const double exposureTime ) const;
+	vector<Ray> getBeam( const double exposureTime ) const;
 
 	/*!
 	 * @brief Get all pixel from detector 
@@ -141,18 +141,18 @@ class gantry {
 	 * @brief Thread function to speed up transmission of multiple rays through model
 	 * @param radModel Reference to model
 	 * @param enableScattering Flag that enables scattering
-	 * @param rayScatterAngles Reference to object with information about ray scattering
+	 * @param rayScatterAngles Reference to object with information about Ray scattering
 	 * @param rays Reference to vector with rays to transmit
-	 * @param sharedCurrentRayIndex Index of the next ray in vector to transmit. Will be changed at each call
-	 * @param currentRayIndexMutex Mutex instance for ray index
+	 * @param sharedCurrentRayIndex Index of the next Ray in vector to transmit. Will be changed at each call
+	 * @param currentRayIndexMutex Mutex instance for Ray index
 	 * @param raysForNextIteration Reference to vector which hold the rays for the next iteration
 	 * @param detectorMutex Mutex for the detector Object
-	 * @param rayDetector Reference to ray detector
+	 * @param rayDetector Reference to Ray detector
 	 * @param iterationMutex Mutex for vector with rays for next iteration
 	*/
 	static void transmitRays( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
-								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-								vector<ray>& raysForNextIteration, mutex& detectorMutex,
+								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+								vector<Ray>& raysForNextIteration, mutex& detectorMutex,
 								detector& rayDetector, mutex& iterationMutex );
 
 };

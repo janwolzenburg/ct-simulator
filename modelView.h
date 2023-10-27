@@ -100,7 +100,7 @@ class modelView : public Fl_Group{
 	Fl_Button loadBtn;	/*!<Button to load model*/
 
 	Fl_Group viewGrp;				/*!<Group to view the model*/
-	Fl_Multiline_Output modelData;	/*!<Model properties*/
+	Fl_Multiline_Output modelData;	/*!<Model properties_*/
 	Fl_Box viewBox;					/*!<Box to show test when no model is loaded*/
 	Fl_GridImage_Adjust viewImg;	/*!<Image with adjustable contrast to show model slice*/
 	
@@ -110,7 +110,7 @@ class modelView : public Fl_Group{
 	Fl_Counter zTrans;	/*!<Input for z-transloation*/
 	Fl_Button resetBtn;	/*!<Button to reset model to default*/
 
-	string modelDataString;	/*!<String with model properties*/
+	string modelDataString;	/*!<String with model properties_*/
 	bool loadBtnPressed;	/*!<Flag for model load*/
 	bool updateModelFlag;	/*!<Flag for model update*/
 	bool resetBtnPressed;	/*!<Flag for model reset*/

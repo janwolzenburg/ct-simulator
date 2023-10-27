@@ -47,7 +47,7 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const tubeParameter t
 }
 
 
-vector<ray> gantry::getBeam( const double exposureTime ) const{
+vector<Ray> gantry::getBeam( const double exposureTime ) const{
 	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
 }
 
@@ -57,18 +57,18 @@ void gantry::rotateCounterClockwise( const double angle ){
 }
 
 void gantry::transmitRays(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
-								const vector<ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-								vector<ray>& raysForNextIteration, mutex& iterationMutex,
+								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								detector& rayDetector, mutex& detectorMutex ){
 
 	size_t currentRayIndex;
-	ray currentRay;
-	ray returnedRay;
+	Ray currentRay;
+	Ray returnedRay;
 
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
 
-		// Get the ray which should be transmitted next and increment index
+		// Get the Ray which should be transmitted next and increment index
 		currentRayIndexMutex.lock();
 		currentRayIndex = sharedCurrentRayIndex++;
 		currentRayIndexMutex.unlock();
@@ -78,20 +78,20 @@ void gantry::transmitRays(	const model& radModel, const tomographyParameter& tom
 		// No more rays left
 		if( currentRayIndex >= rays.size() ) break;
 
-		// Write current ray to local variable
+		// Write current Ray to local variable
 		currentRay = rays.at( currentRayIndex  );
 
-		// Transmit ray through model
+		// Transmit Ray through model
 		returnedRay = radModel.rayTransmission( currentRay, tomoParameter, rayScatterAngles );
-		returnedRay.Properties().EnergySpectrum().Scale( 1. / (double) returnedRay.VoxelHits() );
+		returnedRay.properties().energy_spectrum().Scale( 1. / (double) returnedRay.voxel_hits() );
 
-		// Is the ray outside the model
+		// Is the Ray outside the model
 		if( !radModel.pntInside( returnedRay.origin() ) ){
 			rayDetector.detectRay( returnedRay, detectorMutex );
 		}
 		else{
 			iterationMutex.lock();
-			raysForNextIteration.push_back( returnedRay );									// Add ray for next iteration
+			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
 			iterationMutex.unlock();
 		}
 
@@ -103,11 +103,11 @@ void gantry::transmitRays(	const model& radModel, const tomographyParameter& tom
 
 void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 
-	vector<ray> rays = this->getBeam( parameter.exposureTime );		// Current rays. Start with rays from source
+	vector<Ray> rays = this->getBeam( parameter.exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
-	for( ray& currentRay : rays ){
-		currentRay = currentRay.convertTo( radModel.CSys() );
+	for( Ray& currentRay : rays ){
+		currentRay = currentRay.ConvertTo( radModel.CSys() );
 	}
 	
 	// Convert pixel
@@ -119,8 +119,8 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 	rayDetector.reset();								// Reset all pixel
 
 
-	size_t sharedCurrentRayIndex = 0;		// Index of next ray to iterate
-	mutex rayIndexMutex;				// Mutex for ray index
+	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
+	mutex rayIndexMutex;				// Mutex for Ray index
 	mutex raysForNextIterationMutex;	// Mutex for vector of rays for next iteration
 	mutex detectorMutex;				// Mutex for detector
 
@@ -131,7 +131,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 
 		parameter.scattering = currentLoop < parameter.maxRadiationLoops && parameter.scattering;	// No scattering in last iteration
 		
-		vector<ray> raysForNextIteration;								// Rays to process in the next iteration
+		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 
 
 		// Start threads

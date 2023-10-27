@@ -54,7 +54,7 @@ class voxData{
 	
 	public:
 
-	typedef unsigned char specialEnumType;		/*!<Type to store up tu 8 special properties*/
+	typedef unsigned char specialEnumType;		/*!<Type to store up tu 8 special properties_*/
 
 	/*!
 	 * @brief Special propterties a voxel can have
@@ -155,7 +155,7 @@ class voxData{
 	static constexpr double referenceEnergy_3 = 1.728e+15;		/*!<Cube of reference energy*/
 
 	double attenuation	= -1;									/*!<Absorption coefficient at reference Energy*/
-	specialEnumType specialProperties;							/*!<Special properties in voxel*/
+	specialEnumType specialProperties;							/*!<Special properties_ in voxel*/
 
 
 	/*!

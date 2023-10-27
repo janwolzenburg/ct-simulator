@@ -104,7 +104,7 @@ bool test_modelTransmission( void ){
 
 
 
-	for( const ray r : testGantry.getBeam( 1. ) ){
+	for( const Ray r : testGantry.getBeam( 1. ) ){
 		
 		RayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
 
@@ -125,8 +125,8 @@ bool test_modelTransmission( void ){
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;
-		for( rayProperties currentProperties : detectorPixel.at( i ).getProperties() ){
-			primitiveDetectionResult.at( i ).y += currentProperties.EnergySpectrum().getSum();
+		for( RayProperties currentProperties : detectorPixel.at( i ).getProperties() ){
+			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().getSum();
 		}
 	}	
 

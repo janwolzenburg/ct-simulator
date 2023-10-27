@@ -29,7 +29,7 @@
 
 
 /*!
- * @brief Class for ray detector
+ * @brief Class for Ray detector
 */
 class detector {
 
@@ -55,10 +55,10 @@ class detector {
 	void reset( void );
 
 	/*!
-	 * @brief Detect ray
+	 * @brief Detect Ray
 	 * @param direction_ Ray to detect
 	*/
-	void detectRay( const ray r, mutex& allPixelLock );
+	void detectRay( const Ray r, mutex& allPixelLock );
 
 	/*!
 	 * @brief Get the radon parameters of detector

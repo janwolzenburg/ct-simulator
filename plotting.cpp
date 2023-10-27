@@ -74,7 +74,7 @@ string getObjectString<Line, double>( const Line l, const double length ){
 }
 
 template<>
-string getObjectString<ray, double>(const ray r, const double length) {
+string getObjectString<Ray, double>(const Ray r, const double length) {
 
 	char tempCharArr[256];
 	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.origin().GetGlobalX(), r.origin().GetGlobalY(), r.origin().GetGlobalZ(), r.direction().GetGlobalX(), r.direction().GetGlobalY(), r.direction().GetGlobalZ(), length);
@@ -203,9 +203,9 @@ void addObject<vector<Line>, double>( ofstream& axis, const string name, const v
 }
 
 template<>
-void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
+void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string parameter, const double length) {
 
-	for (const ray r : rays) {
+	for (const Ray r : rays) {
 		addSingleObject(axis, name, Line{ r }, parameter, length);
 	}
 

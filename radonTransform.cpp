@@ -32,10 +32,10 @@
 radonCoords::radonCoords( const CoordinateSystem* const cSys, const Line l ) : 
 	theta( 0 ), distance( 0 )
 {
-	// Project ray on XY plane
+	// Project Ray on XY plane
 	const Line projectedLine = l.ProjectOnXYPlane( cSys );
 
-	// Get perpendicualar to projected ray through coordinate system's origin_
+	// Get perpendicualar to projected Ray through coordinate system's origin_
 	Vector3D lot = projectedLine.GetLot( cSys->GetOriginPoint() );
 
 

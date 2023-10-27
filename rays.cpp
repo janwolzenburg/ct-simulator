@@ -19,12 +19,12 @@
 
 
 /*
-	rayProperties implementation
+	RayProperties implementation
 */
 
-void rayProperties::attenuateSpectrum( const voxData& voxelData, const double distance ){
+void RayProperties::AttenuateSpectrum( const voxData& voxelData, const double distance ){
 
-	energySpectrum.modify(  [ & ] ( Tuple2D& spectrumPoint ) -> void {
+	energy_spectrum_.modify(  [ & ] ( Tuple2D& spectrumPoint ) -> void {
 		
 		const double k = voxelData.attenuationAt( spectrumPoint.x );
 		spectrumPoint.y *= exp( -k * distance );
@@ -34,28 +34,28 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 
 
 /*
-	ray implementation
+	Ray implementation
 */
 
-ray ray::convertTo( const CoordinateSystem* const target ) const{
-	return ray{ this->Line::ConvertTo( target ), properties };
+Ray Ray::ConvertTo( const CoordinateSystem* const target ) const{
+	return Ray{ this->Line::ConvertTo( target ), properties_ };
 };
 
-double ray::getPara( const Point3D p, bool* const solution_found_ ) const{
+double Ray::GetLineParameter( const Point3D p, bool* const solution_found_ ) const{
 	double t = Line::GetLineParameter( p, solution_found_ );
 	*solution_found_ = *solution_found_ && ( t >= 0 );
 	return t;
 }
 
-ray ray::projectOnXYPlane( const CoordinateSystem* const cSys ) const{
-	return ray{ this->Line::ProjectOnXYPlane( cSys ), this->properties };
+Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
+	return Ray{ this->Line::ProjectOnXYPlane( cSys ), this->properties_ };
 }
 
-void ray::updateProperties( const voxData& data, const double distance ){
-	properties.attenuateSpectrum( data, distance );
+void Ray::UpdateProperties( const voxData& data, const double distance ){
+	properties_.AttenuateSpectrum( data, distance );
 }
 
-vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
+vector<FACE_ID> Ray::GetPossibleVoxelExits( void ) const{
 
 	vector<FACE_ID> possibleFaces;
 

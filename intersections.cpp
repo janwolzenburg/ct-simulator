@@ -26,9 +26,9 @@
 	RayVoxelIntersection
 */
 
-RayVoxelIntersection::RayVoxelIntersection( const vox v_, const ray r_ )
+RayVoxelIntersection::RayVoxelIntersection( const vox v_, const Ray r_ )
 {
-	// Components of ray trajectory in voxel coordinate system
+	// Components of Ray trajectory in voxel coordinate system
 	Tuple3D comps = r_.direction().GetComponents( v_.O() );
 	bool facePossible = true;
 
@@ -69,7 +69,7 @@ RayVoxelIntersection::RayVoxelIntersection( const vox v_, const ray r_ )
 
 			if( facePossible ){
 				// Check  if tRay intersects current face
-				entrance_ = LineSurfaceIntersection<ray, BoundedSurface>{ r_, v_.getFace( i ) };
+				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.getFace( i ) };
 				if( entrance_.intersection_exists_ ){
 					entrance_face_ = i; break;
 				}
@@ -105,7 +105,7 @@ RayVoxelIntersection::RayVoxelIntersection( const vox v_, const ray r_ )
 
 		if( facePossible ){
 			// Check  if tRay intersects current face
-			exit_ = LineSurfaceIntersection<ray, BoundedSurface>{ r_, v_.getFace( i ) };
+			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.getFace( i ) };
 			if( exit_.intersection_exists_ ){
 				exit_face_ = i; break;
 			}

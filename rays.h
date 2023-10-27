@@ -24,11 +24,11 @@
  *********************************************************************/
 
 /*!
- * @brief Class for ray properties
+ * @brief Class for Ray properties_
 */
-class rayProperties{
+class RayProperties{
 	
-	friend class ray;
+	friend class Ray;
 	friend class pixel;
 
 	public:
@@ -37,46 +37,41 @@ class rayProperties{
 	 * @brief Constructor
 	 * @param spectrum_ Ray spectrum
 	*/
-	rayProperties( const spectrum spectrum_ ) :
-		energySpectrum( spectrum_ ),
-		voxHits( 0 )
-	{};
+	RayProperties( const spectrum spectrum_ ) :
+		energy_spectrum_( spectrum_ ), voxel_hits_( 0 ) {};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	rayProperties( void ) :
-		energySpectrum( spectrum{} ),
-		voxHits( 0 )
-	{};
+	RayProperties( void ) :
+		energy_spectrum_( spectrum{} ), voxel_hits_( 0 ) {};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
 	 * @return Energy spectrum
 	*/
-	spectrum EnergySpectrum( void ) const{ return energySpectrum; };
+	spectrum energy_spectrum( void ) const{ return energy_spectrum_; };
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
-	 * @param voxelData Data of voxel
-	 * @param distance Distance traversed in Voxel
+	 * @param voxel_data Data of voxel
+	 * @param distance_traveled Distance traversed in Voxel
 	*/
-	void attenuateSpectrum( const voxData& voxelData, const double distance );
+	void AttenuateSpectrum( const voxData& voxel_data, const double distance_traveled );
 
 
 	private:
 
-	spectrum energySpectrum;	/*!<Energy spectrum*/
-	size_t voxHits;				/*!<Counter for voxels hit during transmission*/
+	spectrum energy_spectrum_;		/*!<Energy spectrum*/
+	size_t voxel_hits_;				/*!<Counter for voxels hit during transmission*/
 
 };
-
 
 
 /*!
  * @brief Class for rays
 */
-class ray : public Line{
+class Ray : public Line{
 
 	public:
 
@@ -86,100 +81,100 @@ class ray : public Line{
 	 * @param p_ Origin
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const Vector3D v_, const Point3D p_, const rayProperties properties_ ) : 
-		Line{ v_, p_ }, properties{ properties_ }{};
+	explicit Ray( const Vector3D v_, const Point3D p_, const RayProperties properties_ ) : 
+		Line{ v_, p_ }, properties_{ properties_ }{};
 
 	/*!
 	 * @brief Constructor
 	 * @param line_ Line
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const Line line_, const rayProperties  properties_ ) :
-	Line{ line_ }, properties{ properties_ }{};
+	explicit Ray( const Line line_, const RayProperties  properties_ ) :
+	Line{ line_ }, properties_{ properties_ }{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ray( void ) : ray{ Line{}, rayProperties{} }{};
+	Ray( void ) : Ray{ Line{}, RayProperties{} }{};
 
 	/*!
 	 * @brief Get intensity
 	 * @return Intensity
 	*/
-	rayProperties Properties( void ) const{ return properties; };
+	RayProperties properties( void ) const{ return properties_; };
 
 	/*!
-	 * @brief Convert ray components to different coordinate system
-	 * @param target Target system
-	 * @return Ray in target system
+	 * @brief Get voxel hits
+	 * @return Amount of voxel the Ray has hit
 	*/
-	ray convertTo( const CoordinateSystem* const target ) const;
-
-	/*!
-	 * @brief Get ray parameter corresponding to point
-	 * @param p Point on ray
-	 * @param solution_found_ Is set to true when the given point lies on the ray. False if not
-	 * @return Ray parameter
-	*/
-	double getPara( const Point3D p, bool* const solution_found_ ) const;
-
-	/*!
-	 * @brief Update ray properties passing through voxel for specific distance
-	 * @param data Voxel properties
-	 * @param distance Distance the ray is inside voxel
-	*/
-	void updateProperties( const voxData& data, const double distance );
-
-	/*!
-	 * @brief Project ray on XY plane of coordinate system
-	 * @param coordinate_system_ System to project on
-	 * @return Projected ray
-	*/
-	ray projectOnXYPlane( const CoordinateSystem* const cSys ) const;
-
-	/*!
-	 * @brief Checks if parameter is greater than one
-	 * @param para Parameter
-	 * @return True when parameter is valid
-	*/
-	bool IsParameterInBounds( const double para ) const override{ return para >= 0; };
-
-	/*!
-	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit_
-	 * @return Vector with possible face IDs
-	*/
-	vector<FACE_ID> getPossibleVoxelExits( void ) const;
+	size_t voxel_hits( void ) const { return properties_.voxel_hits_; };
 
 	/*!
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void scaleSpectrum( const double factor ){ properties.energySpectrum.Scale( factor ); };
+	void ScaleSpectrum( const double factor ){ properties_.energy_spectrum_.Scale( factor ); };
 
 	/*!
 	 * @brief Get the mean frequency of spectrum
 	 * @return Mean frequency
 	*/
-	double getMeanFrequency( void ) const{ return properties.energySpectrum.getMean(); };
+	double GetMeanFrequencyOfSpectrum( void ) const{ return properties_.energy_spectrum_.getMean(); };
 
 	/*!
 	 * @brief Increment the voxel hit count
 	*/
-	void incrementHitCounter( void ){ properties.voxHits++; };
+	void IncrementHitCounter( void ){ properties_.voxel_hits_++; };
 
 	/*!
 	 * @brief Reset hit counter 
 	*/
-	void resetHitCounter( void ){ properties.voxHits = 0; };
+	void ResetHitCounter( void ){ properties_.voxel_hits_ = 0; };
+	
+	/*!
+	 * @brief Update Ray properties_ passing through voxel for specific distance
+	 * @param voxel_properties Voxel properties
+	 * @param distance_traveled Distance the Ray is inside voxel
+	*/
+	void UpdateProperties( const voxData& voxel_properties, const double distance_traveled );
 
 	/*!
-	 * @brief Get voxel hits
-	 * @return Amount of voxel the ray has hit
+	 * @brief Convert Ray components to different coordinate system
+	 * @param target_coordinate_system Target system
+	 * @return Ray in target system
 	*/
-	size_t VoxelHits( void ) const { return properties.voxHits; };
+	Ray ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
+
+	/*!
+	 * @brief Get Ray parameter corresponding to point
+	 * @param point_on_ray Point on Ray
+	 * @param solution_found Is set to true when the given point lies on the Ray. False if not
+	 * @return Ray parameter
+	*/
+	double GetLineParameter( const Point3D point_on_ray, bool* const solution_found ) const;
+
+	/*!
+	 * @brief Project Ray on XY plane of coordinate system
+	 * @param coordinate_system System to project on
+	 * @return Projected Ray
+	*/
+	Ray ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
+
+	/*!
+	 * @brief Checks if parameter is greater than one
+	 * @param parameter Parameter
+	 * @return True when parameter is valid
+	*/
+	bool IsParameterInBounds( const double parameter ) const override{ return parameter >= 0; };
+
+	/*!
+	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
+	 * @return Vector with possible face IDs
+	*/
+	vector<FACE_ID> GetPossibleVoxelExits( void ) const;
 
 
 	private:
 
-	rayProperties properties;			/*!<Properties of ray*/
+	RayProperties properties_;			/*!<Properties of Ray*/
 };
