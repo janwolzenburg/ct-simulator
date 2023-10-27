@@ -159,7 +159,7 @@ string programState::modelDescription( void ) const{
 
 	modelDataString.clear();
 	modelDataString += "Name: \t" + modelInstance.Name() + '\n';
-	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.NumVox().x ) + " x " + ToString( modelInstance.NumVox().y ) + " x " + ToString( modelInstance.NumVox().z ) + "\n";
+	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.number_of_voxel_3D().x ) + " x " + ToString( modelInstance.number_of_voxel_3D().y ) + " x " + ToString( modelInstance.number_of_voxel_3D().z ) + "\n";
 	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.VoxSize().x, 2 ) + " x " + ToString( modelInstance.VoxSize().y, 2 ) + " x " + ToString( modelInstance.VoxSize().z, 2 ) + "  mm^3\n";
 	modelDataString += "Model Größe: \t" + ToString( modelInstance.ModSize().x ) + " x " + ToString( modelInstance.ModSize().y ) + " x " + ToString( modelInstance.ModSize().z ) + "  mm^3";
 

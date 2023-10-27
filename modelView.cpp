@@ -115,7 +115,7 @@ modelView::modelView( int x, int y, int w, int h ) :
 	moveGrp.hide();
 
 	if( PROGRAM_STATE().ModelLoaded() ){
-		viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
+		viewImg.setSliderBounds( PROGRAM_STATE().model().attenuationRange() );
 		viewImg.changeContrast( PROGRAM_STATE().modelViewPara.viewContrast );
 	}
 }
@@ -131,7 +131,7 @@ void modelView::loadModel( void ){
 
 	UpdateModel();
 
-	viewImg.setSliderBounds( PROGRAM_STATE().Model().attenuationRange() );
+	viewImg.setSliderBounds( PROGRAM_STATE().model().attenuationRange() );
 	PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();

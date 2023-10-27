@@ -10,7 +10,7 @@
 #include "model.h"
 
 
-model getTestModel( const CoordinateSystem* const parent, const size_t res = 1 );
+Model getTestModel( const CoordinateSystem* const parent, const size_t res = 1 );
 
 bool test_testModel( void );
 

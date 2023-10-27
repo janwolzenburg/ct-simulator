@@ -56,7 +56,7 @@ void gantry::rotateCounterClockwise( const double angle ){
 	this->cSys->Rotate( cSys->GetZAxis(), angle );
 }
 
-void gantry::transmitRays(	const model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
+void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								detector& rayDetector, mutex& detectorMutex ){
@@ -101,9 +101,9 @@ void gantry::transmitRays(	const model& radModel, const tomographyParameter& tom
 }
 
 
-void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
+void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 
-	vector<Ray> rays = this->getBeam( parameter.exposureTime );		// Current rays. Start with rays from source
+	vector<Ray> rays = this->getBeam( voxel_data_.exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
@@ -125,11 +125,11 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < parameter.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop < voxel_data_.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		parameter.scattering = currentLoop < parameter.maxRadiationLoops && parameter.scattering;	// No scattering in last iteration
+		voxel_data_.scattering = currentLoop < voxel_data_.maxRadiationLoops && voxel_data_.scattering;	// No scattering in last iteration
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 
@@ -140,7 +140,7 @@ void gantry::radiate( const model& radModel, tomographyParameter parameter ) {
 
 
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-			threads.emplace_back( transmitRays,	cref( radModel ), cref( parameter ), cref( rayScatterAngles ),
+			threads.emplace_back( transmitRays,	cref( radModel ), cref( voxel_data_ ), cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 													ref( rayDetector ), ref( detectorMutex ) );

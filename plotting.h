@@ -49,13 +49,13 @@ template<class C>
 void addSingleObject( ofstream& axis, const string name, const C object );
 
 template<class C>
-void addSingleObject( ofstream& axis, const string name, const C object, const string parameter );
+void addSingleObject( ofstream& axis, const string name, const C object, const string voxel_data_ );
 
 template<class C, typename T>
-void addSingleObject( ofstream& axis, const string name, const C object, const string parameter, const T additional );
+void addSingleObject( ofstream& axis, const string name, const C object, const string voxel_data_, const T additional );
 
 template<class C, typename T>
-void addObject(ofstream& axis, const string name, const C object, const string parameter, const T additional);
+void addObject(ofstream& axis, const string name, const C object, const string voxel_data_, const T additional);
 
 
 #include "plotting.hpp"

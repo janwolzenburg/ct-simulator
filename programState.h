@@ -129,7 +129,7 @@ class programState{
 	 * @brief Get Reference to model
 	 * @return Constant reference to model
 	*/
-	const model& Model( void ){ return modelInstance; };
+	const Model& model( void ){ return modelInstance; };
 
 	/*!
 	 * @brief Load the model a stored path
@@ -289,8 +289,8 @@ class programState{
 
 	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
 
-	model modelInstance;									/*!<Current model*/
-	storedObject<model> storedModel;						/*!<Persisting storage of current model*/
+	Model modelInstance;									/*!<Current model*/
+	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
 	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
 	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
 	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/

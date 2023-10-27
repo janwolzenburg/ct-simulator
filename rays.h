@@ -165,7 +165,7 @@ class Ray : public Line{
 	 * @param parameter Parameter
 	 * @return True when parameter is valid
 	*/
-	bool IsParameterInBounds( const double parameter ) const override{ return parameter >= 0; };
+	bool IsParameterInBounds( const double voxel_data_ ) const override{ return voxel_data_ >= 0; };
 
 	/*!
 	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_

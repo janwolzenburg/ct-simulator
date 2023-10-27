@@ -194,48 +194,48 @@ string getObjectString<grid<>>( const grid<> data_, const bool image ){
 }
 
 template<>
-void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string parameter, const double length ){
+void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string voxel_data_, const double length ){
 
 	for( const Line l : lines ){
-		addSingleObject( axis, name, l, parameter, length );
+		addSingleObject( axis, name, l, voxel_data_, length );
 	}
 
 }
 
 template<>
-void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string parameter, const double length) {
+void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string voxel_data_, const double length) {
 
 	for (const Ray r : rays) {
-		addSingleObject(axis, name, Line{ r }, parameter, length);
+		addSingleObject(axis, name, Line{ r }, voxel_data_, length);
 	}
 
 }
 
 template<>
-void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string parameter, const double alpha ){
+void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string voxel_data_, const double alpha ){
 	for( const pixel singlePx : allPixels ){
-		addSingleObject( axis, name, BoundedSurface{ singlePx }, parameter, alpha );
+		addSingleObject( axis, name, BoundedSurface{ singlePx }, voxel_data_, alpha );
 	}
 }
 
 template<>
-void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string parameter, const double alpha ){
+void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string voxel_data_, const double alpha ){
 	for( const BoundedSurface surface : surfaces ){
-		addSingleObject( axis, name, surface, parameter, alpha );
+		addSingleObject( axis, name, surface, voxel_data_, alpha );
 	}
 }
 
 template<>
-void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string parameter, const int specifiers ){
+void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string voxel_data_, const int specifiers ){
 
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
-		addSingleObject( axis, name + "Center", gantry.Center(), parameter );
+		addSingleObject( axis, name + "Center", gantry.Center(), voxel_data_ );
 
 	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		addObject( axis, name + "Beams", gantry.getBeam( 1. ), parameter, 2.*gantry.Radius() );
+		addObject( axis, name + "Beams", gantry.getBeam( 1. ), voxel_data_, 2.*gantry.Radius() );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
-		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), parameter, .2 );
+		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), voxel_data_, .2 );
 
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
 		vector<Line> pixelNormals;
@@ -244,25 +244,25 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		addObject( axis, name + "DetectorNormals", pixelNormals, parameter, 2.1 * gantry.Radius() );
+		addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 2.1 * gantry.Radius() );
 	}
 
 }
 
 
 template<>
-void addObject<model, double>( std::ofstream& axis, std::string name, model mod, std::string parameter, double threshold ){
+void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod, std::string voxel_data_, double threshold ){
 	Voxel modVox = mod.Vox();
 	for( Voxel::Face i = Voxel::Face::Begin; i < Voxel::Face::End; ++i ){
 		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.GetFace( i ), "b", 0.2 );
 	}
 
-	for( size_t iX = 0; iX < mod.NumVox().x; iX++ ){
-		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
-			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
+	for( size_t iX = 0; iX < mod.number_of_voxel_3D().x; iX++ ){
+		for( size_t iY = 0; iY < mod.number_of_voxel_3D().y; iY++ ){
+			for( size_t iZ = 0; iZ < mod.number_of_voxel_3D().z; iZ++ ){
 				Voxel voxel = mod.getVoxel( Index3D{ iX, iY, iZ } );
 				if( voxel.data().GetAttenuationAtReferenceEnergy() >= (double) threshold ){
-					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.GetCenter(), parameter );
+					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.GetCenter(), voxel_data_ );
 				}
 			}
 		}

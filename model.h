@@ -32,7 +32,7 @@
 /*!
  * @brief Class for 3D-Models
 */
-class model : public MathematicalObject{
+class Model : public MathematicalObject{
 	
 	public:
 
@@ -48,7 +48,7 @@ class model : public MathematicalObject{
 	 * @param voxSize3D_ Spacial size_ of voxels
 	 * @param name_ Name of model
 	*/
-	model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ = "Default model name_" );
+	Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ = "Default model name_" );
 
 	/*!
 	 * @brief Constructor from serialized data_
@@ -56,12 +56,12 @@ class model : public MathematicalObject{
 	 * @param binary_data Reference to vector with binary data_
 	 * @param it Iterator to start of data_ in vector
 	*/
-	model( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	Model( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	model( void ) : model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
+	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
 
 	/*!
 	 * @brief Convert model's data_ to string
@@ -74,43 +74,47 @@ class model : public MathematicalObject{
 	 * @brief Get number of voxels
 	 * @return Voxel amount
 	*/
-	Index3D NumVox( void ) const{ return numVox3D; };
+	Index3D number_of_voxel_3D( void ) const{ return number_of_voxel_3D_; };
+
+
+	// CONTINUE HERE
+
 
 	/*!
-	 * @brief Get size_ of model
-	 * @return Model size_
+	 * @brief Get size of model
+	 * @return Model size
 	*/
-	Tuple3D ModSize( void ) const{ return size3D; };
+	Tuple3D ModSize( void ) const{ return size_; };
 
 	/*!
-	 * @brief Get size_ of voxel
-	 * @return Voxel size_
+	 * @brief Get size of voxel
+	 * @return Voxel size
 	*/
-	Tuple3D VoxSize( void ) const{ return voxSize3D; };
+	Tuple3D VoxSize( void ) const{ return voxel_size_3D_; };
 
 	/*!
 	 * @brief Get coordinate system of model
 	 * @return coordinate system of base voxel
 	*/
-	CoordinateSystem* CSys( void ) const{ return cSys; };
+	CoordinateSystem* CSys( void ) const{ return coordinate_system_; };
 
 	/*!
 	 * @brief Get range of attenuation_ in model
 	 * @return Range of attenuation_
 	*/
-	NumberRange attenuationRange( void ) const{ return NumberRange{ attenuationMin, attenuationMax }; };
+	NumberRange attenuationRange( void ) const{ return attenuationRange_; };
 
 	/*!
 	 * @brief Get model name_
 	 * @return Name
 	*/
-	string Name( void ) const{ return name; };
+	string Name( void ) const{ return name_; };
 
 	/*!
 	 * @brief Get the longest edge
 	 * @return Length of longest edge
 	*/
-	double LongestSide( void ) const{ return Max( Max( size3D.x, size3D.y ), size3D.z ); };
+	double LongestSide( void ) const{ return Max( Max( size_.x, size_.y ), size_.z ); };
 
 	/*!
 	 * @brief Get voxel describing model boundaries
@@ -132,7 +136,7 @@ class model : public MathematicalObject{
 	*/
 	bool validCoords( const Tuple3D voxCoords ) const{
 		return voxCoords.x >= 0 && voxCoords.y >= 0 && voxCoords.z >= 0 &&
-			voxCoords.x < size3D.x && voxCoords.y < size3D.y && voxCoords.z < size3D.z; };
+			voxCoords.x < size_.x && voxCoords.y < size_.y && voxCoords.z < size_.z; };
 
 	/*!
 	 * @brief Checks if local point is inside model
@@ -242,15 +246,14 @@ class model : public MathematicalObject{
 
 	private:
 
-	Index3D numVox3D;								/*!<Amount of voxels in each dimension*/
-	Tuple3D voxSize3D;								/*!<Voxelsize in each dimension in mm*/
-	Tuple3D size3D;									/*!<Size of complete model in mm*/
-	size_t numVox;								/*!<Absolute amount of voxels in model*/
-	vector<VoxelData> parameter;					/*!<Voxel data_. Access with ROWS*COLS*dep + COLS*row + col*/
-	CoordinateSystem* cSys;								/*!<Coordinate system*/
-	double attenuationMin;						/*!<Minimum attenuation_ in model*/
-	double attenuationMax;						/*!<Maximum attenuation_ in model*/
-	string name;								/*!<Model name_*/
+	Index3D number_of_voxel_3D_;				/*!<Amount of voxels in each dimension*/
+	Tuple3D voxel_size_3D_;						/*!<Voxelsize in each dimension in mm*/
+	Tuple3D size_;								/*!<Size of complete model in mm*/
+	size_t number_of_voxel_;					/*!<Absolute amount of voxels in model*/
+	vector<VoxelData> voxel_data_;				/*!<Voxel data_. Access with ROWS*COLS*dep + COLS*row + col*/
+	CoordinateSystem* coordinate_system_;		/*!<Coordinate system*/
+	NumberRange attenuationRange_;				/*!<Attenuation range in model*/
+	string name_;								/*!<Model name_*/
 
 
 	private:
@@ -262,7 +265,7 @@ class model : public MathematicalObject{
 										GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
 										grid<VoxelData>& slice, mutex& sliceMutex,
 										const Surface& slicePlane,
-										const model& modelRef );
+										const Model& modelRef );
 
 	/*!
 	* @brief Get voxel indices for given Coordinates in local coordinate system

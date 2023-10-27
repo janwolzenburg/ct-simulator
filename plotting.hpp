@@ -29,18 +29,18 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object ){
 }
 
 template<class C>
-void addSingleObject<C>( ofstream& axis, const string name, const C object, const string parameter ){
+void addSingleObject<C>( ofstream& axis, const string name, const C object, const string voxel_data_ ){
 
 	axis << name;
-	axis << ": " << getObjectString( object ) << ' ' << parameter << '\n';
+	axis << ": " << getObjectString( object ) << ' ' << voxel_data_ << '\n';
 
 }
 
 
 template<class C, typename T>
-void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string parameter, const T additional) {
+void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string voxel_data_, const T additional) {
 
 	axis << name;
-	axis << ": " << getObjectString(object, additional) << ' ' << parameter << '\n';
+	axis << ": " << getObjectString(object, additional) << ' ' << voxel_data_ << '\n';
 
 }

@@ -108,7 +108,7 @@ bool test_Tomography( void ){
 	cout << "Time for gantry construction: " << diff << endl;
 
 	start = std::chrono::system_clock::now();
-	model mod = getTestModel( GlobalSystem(), 10 );
+	Model mod = getTestModel( GlobalSystem(), 10 );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test model construction: " << diff << endl;

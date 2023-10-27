@@ -70,7 +70,7 @@ size_t tomographyParameter::Serialize( vector<char>& binary_data ) const{
 
 
 
-radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+radonTransformed tomography::recordSlice( gantry Gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
 	Gantry.reset();
@@ -99,7 +99,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radonParameter.framesToFillSinogram ) );
 
 		// Radiate
-		Gantry.radiate( Model, parameter );
+		Gantry.radiate( Model, voxel_data_ );
 		
 		// Get the detection result
 		const vector<pixel> detectionPixel = Gantry.getPixel();

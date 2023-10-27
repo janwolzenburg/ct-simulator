@@ -135,7 +135,7 @@ class Line : public MathematicalObject{
 	 * @param parameter Parameter
 	 * @return Always true
 	*/
-	virtual bool IsParameterInBounds( [[maybe_unused]] const double parameter ) const { return true; };
+	virtual bool IsParameterInBounds( [[maybe_unused]] const double voxel_data_ ) const { return true; };
 
 
 	protected:

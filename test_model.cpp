@@ -24,11 +24,11 @@
   *********************************************************************/
 
 
-model getTestModel( const CoordinateSystem* const parent, const size_t res ){
+Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	CoordinateSystem* modelSys = parent->AddCoordinateSystem( Tuple3D{ -200, -200, -200 }, Tuple3D{ 1, 0, 0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0, 0, 1 }, "Model system" );
 
-	model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
+	Model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
 
 	//double kWater = 0.01611970000;
 
@@ -47,9 +47,9 @@ model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 	double artRadius = 15;
 
 
-	for( size_t x = 0; x < mod.NumVox().x; x++ ){
-		for( size_t y = 0; y < mod.NumVox().y; y++ ){
-			for( size_t z = 0; z < mod.NumVox().z; z++ ){
+	for( size_t x = 0; x < mod.number_of_voxel_3D().x; x++ ){
+		for( size_t y = 0; y < mod.number_of_voxel_3D().y; y++ ){
+			for( size_t z = 0; z < mod.number_of_voxel_3D().z; z++ ){
 				Point3D p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
 
 
@@ -70,7 +70,7 @@ model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 void save_testModel( void ){
 
-	model mod = getTestModel( GlobalSystem(), 10 );
+	Model mod = getTestModel( GlobalSystem(), 10 );
 	
 	vector<char> binary_data;
 	mod.Serialize( binary_data );
@@ -80,7 +80,7 @@ void save_testModel( void ){
 bool test_testModel( void ){
 
 	
-	model mod = getTestModel( GlobalSystem() );
+	Model mod = getTestModel( GlobalSystem() );
 
 	ofstream ax1 = openAxis( path( "./test_testModel.txt" ), true );
 
@@ -95,7 +95,7 @@ bool test_testModel( void ){
 bool test_modelTransmission( void ){
 
 	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1 );
-	model mod{ getTestModel( GlobalSystem() ) };
+	Model mod{ getTestModel( GlobalSystem() ) };
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
 

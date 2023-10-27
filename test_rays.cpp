@@ -67,7 +67,7 @@ bool test_scattered_angle_propabilities( void ){
 bool test_ray_scattering(void){
 
 	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1000 );
-	model mod = getTestModel( GlobalSystem(), 1 );
+	Model mod = getTestModel( GlobalSystem(), 1 );
 
 	ofstream ax1 = openAxis( path( "./test_ray_scattering.txt" ), true );
 

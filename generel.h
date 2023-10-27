@@ -197,6 +197,10 @@ class NumberRange{
 
 	double end( void ) const{ return end_; };
 
+	void start( const double newStart ){ start_ = ( newStart < end_ ) ? newStart : end_ - 1.; };
+
+	void end( const double newEnd ){ end_ = ( newEnd > start_ ) ? newEnd : start_ + 1.; };
+
 	double GetDifference( void ) const{ return end_ - start_; };
 
 	/*!

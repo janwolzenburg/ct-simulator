@@ -88,26 +88,26 @@ class tomography{
 	 * @param model_ 
 	*/
 	tomography( const tomographyParameter parameter_ ) :
-		parameter( parameter_ ), radonCSys( DummySystem() )
+		voxel_data_( parameter_ ), radonCSys( DummySystem() )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	tomography( void ) :
-		parameter( ), radonCSys( DummySystem() )
+		voxel_data_( ), radonCSys( DummySystem() )
 	{};
 
 	/*!
 	 * @brief Record a slice
 	 * @return Radon transformed of model slice
 	*/
-	radonTransformed recordSlice( gantry gantry_, const model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
+	radonTransformed recordSlice( gantry gantry_, const Model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
 
 
 	private:
 
-	tomographyParameter parameter;	/*!<Parameter used for tomography*/
+	tomographyParameter voxel_data_;	/*!<Parameter used for tomography*/
 	CoordinateSystem* radonCSys;			/*!<Coordinate system to use as reference for radon Coordinates calculation*/
 };
 

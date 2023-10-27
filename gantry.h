@@ -85,7 +85,7 @@ class gantry {
 	 * @brief Radiate model with beam
 	 * @param radModel Model to radiate
 	*/
-	void radiate( const model& radModel, const tomographyParameter parameter ) ;
+	void radiate( const Model& radModel, const tomographyParameter voxel_data_ ) ;
 	
 	/*!
 	 * @brief Reset ganrtry to its initial position
@@ -150,7 +150,7 @@ class gantry {
 	 * @param rayDetector Reference to Ray detector
 	 * @param iterationMutex Mutex for vector with rays for next iteration
 	*/
-	static void transmitRays( const model& radModel, const tomographyParameter& parameter, const rayScattering& rayScatterAngles,
+	static void transmitRays( const Model& radModel, const tomographyParameter& voxel_data_, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& detectorMutex,
 								detector& rayDetector, mutex& iterationMutex );

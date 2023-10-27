@@ -38,134 +38,132 @@ using std::cref;
 */
 
 
-const string model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver2"};
+const string Model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver2"};
 
-model::model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ ) :
-	numVox3D( numVox3D_ ),
-	voxSize3D( voxSize3D_ ),
-	size3D( { (double) numVox3D.x * voxSize3D.x,
-			 (double) numVox3D.y * voxSize3D.y,
-			 (double) numVox3D.z * voxSize3D.z } ),
-	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
-	parameter( numVox, VoxelData{} ),
-	cSys( coordinate_system ),
-	attenuationMin( -1. ),
-	attenuationMax( -1. ),
-	name( name_ )
+Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ ) :
+	number_of_voxel_3D_( numVox3D_ ),
+	voxel_size_3D_( voxSize3D_ ),
+	size_( { (double) number_of_voxel_3D_.x * voxel_size_3D_.x,
+			 (double) number_of_voxel_3D_.y * voxel_size_3D_.y,
+			 (double) number_of_voxel_3D_.z * voxel_size_3D_.z } ),
+	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
+	voxel_data_( number_of_voxel_, VoxelData{} ),
+	coordinate_system_( coordinate_system ),
+	attenuationRange_{ -2., -1. },
+	name_( name_ )
 {
-	if( cSys->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
+	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
 }
 
 
-model::model( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	numVox3D( Index3D( binary_data, it ) ),
-	voxSize3D( Tuple3D( binary_data, it ) ),
-	size3D( Tuple3D( (double) numVox3D.x * voxSize3D.x,
-			 (double) numVox3D.y * voxSize3D.y,
-			 (double) numVox3D.z * voxSize3D.z ) ),
-	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
-	parameter( numVox, VoxelData{} ),
-	cSys( CoordinateSystems().AddSystem( binary_data, it ) ),
-	attenuationMin( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
-	attenuationMax( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
-	name( DeSerializeBuildIn( string{ "Default model name_"}, binary_data, it ) )
+Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	number_of_voxel_3D_( Index3D( binary_data, it ) ),
+	voxel_size_3D_( Tuple3D( binary_data, it ) ),
+	size_( Tuple3D( (double) number_of_voxel_3D_.x * voxel_size_3D_.x,
+			 (double) number_of_voxel_3D_.y * voxel_size_3D_.y,
+			 (double) number_of_voxel_3D_.z * voxel_size_3D_.z ) ),
+	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
+	voxel_data_( number_of_voxel_, VoxelData{} ),
+	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
+	attenuationRange_{ binary_data, it },
+	name_( DeSerializeBuildIn( string{ "Default model name_"}, binary_data, it ) )
 {
 	
-	if( numVox * sizeof( VoxelData ) == (size_t) (binary_data.end() - it) ){
-		memcpy( parameter.data(), &( *it ), numVox * sizeof(VoxelData));
-		it += static_cast<long long int>( numVox * sizeof( VoxelData ) );
+	if( number_of_voxel_ * sizeof( VoxelData ) == (size_t) (binary_data.end() - it) ){
+		memcpy( voxel_data_.data(), &( *it ), number_of_voxel_ * sizeof(VoxelData));
+		it += static_cast<long long int>( number_of_voxel_ * sizeof( VoxelData ) );
 	}
 	else{
 
-		for( size_t i = 0; i < numVox; i++ ){
-			parameter[i] = VoxelData( binary_data, it );
+		for( size_t i = 0; i < number_of_voxel_; i++ ){
+			voxel_data_[i] = VoxelData( binary_data, it );
 		}
 	}
 }
 
 
-string model::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string Model::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	return string( "" );
 }
 
-Voxel model::Vox( void ) const{
-	return  Voxel{ Point3D{Tuple3D { 0, 0, 0 }, cSys}, size3D, VoxelData{} };
+Voxel Model::Vox( void ) const{
+	return  Voxel{ Point3D{Tuple3D { 0, 0, 0 }, coordinate_system_}, size_, VoxelData{} };
 }
 
-const VoxelData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
-	if( x >= numVox3D.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
-	if( y >= numVox3D.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
-	if( z >= numVox3D.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
+const VoxelData& Model::operator() ( const size_t x, const size_t y, const size_t z ) const{
+	if( x >= number_of_voxel_3D_.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return voxel_data_[( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 )]; };
+	if( y >= number_of_voxel_3D_.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return voxel_data_[( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 )]; };
+	if( z >= number_of_voxel_3D_.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return voxel_data_[( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 )]; };
 
-	return parameter.at(( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x);
+	return voxel_data_.at(( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * z ) + (size_t) number_of_voxel_3D_.x * y + x);
 }
 
-VoxelData& model::operator() ( const size_t x, const size_t y, const size_t z ){
-	if( x >= numVox3D.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
-	if( y >= numVox3D.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
-	if( z >= numVox3D.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
+VoxelData& Model::operator() ( const size_t x, const size_t y, const size_t z ){
+	if( x >= number_of_voxel_3D_.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return voxel_data_[ ( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 ) ]; };
+	if( y >= number_of_voxel_3D_.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return voxel_data_[ ( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 ) ]; };
+	if( z >= number_of_voxel_3D_.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return voxel_data_[ ( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * ( number_of_voxel_3D_.z - 1 ) ) + (size_t) number_of_voxel_3D_.x * ( number_of_voxel_3D_.y - 1 ) + ( number_of_voxel_3D_.x - 1 ) ]; };
 
-	return parameter.at( ( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x );
+	return voxel_data_.at( ( (size_t) number_of_voxel_3D_.x * number_of_voxel_3D_.y * z ) + (size_t) number_of_voxel_3D_.x * y + x );
 }
 
-bool model::checkIndices( const Index3D indices ) const{
-	if( indices.x >= numVox3D.x ||
-		indices.y >= numVox3D.y ||
-		indices.z >= numVox3D.z ){
+bool Model::checkIndices( const Index3D indices ) const{
+	if( indices.x >= number_of_voxel_3D_.x ||
+		indices.y >= number_of_voxel_3D_.y ||
+		indices.z >= number_of_voxel_3D_.z ){
 		return false;
 	}
 	return true;
 }
 
-bool model::pntInside( const Point3D p ) const{
-	return validCoords( p.GetComponents( cSys ) );
+bool Model::pntInside( const Point3D p ) const{
+	return validCoords( p.GetComponents( coordinate_system_ ) );
 }
 
-Index3D model::getVoxelIndices( const Tuple3D locCoords ) const{
+Index3D Model::getVoxelIndices( const Tuple3D locCoords ) const{
 	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
 		CheckForAndOutputError( MathError::Input, "Only positive Coordinates allowed in model!" );
 		return Index3D{ 0, 0, 0 };
 	}
 
 	Index3D indices{
-		(size_t) ( locCoords.x / voxSize3D.x ),
-		(size_t) ( locCoords.y / voxSize3D.y ),
-		(size_t) ( locCoords.z / voxSize3D.z )
+		(size_t) ( locCoords.x / voxel_size_3D_.x ),
+		(size_t) ( locCoords.y / voxel_size_3D_.y ),
+		(size_t) ( locCoords.z / voxel_size_3D_.z )
 	};
 
 	// Supress checkErr when index is exactly on the edge
-	if( indices.x == numVox3D.x ) indices.x = numVox3D.x - 1;
-	if( indices.y == numVox3D.y ) indices.y = numVox3D.y - 1;
-	if( indices.z == numVox3D.z ) indices.z = numVox3D.z - 1;
+	if( indices.x == number_of_voxel_3D_.x ) indices.x = number_of_voxel_3D_.x - 1;
+	if( indices.y == number_of_voxel_3D_.y ) indices.y = number_of_voxel_3D_.y - 1;
+	if( indices.z == number_of_voxel_3D_.z ) indices.z = number_of_voxel_3D_.z - 1;
 
 	if( !checkIndices( indices ) ){
 		CheckForAndOutputError( MathError::Input, "Coordinates exceed model size!" );
 	}
 
-	if( indices.x >= numVox3D.x ) indices.x = numVox3D.x - 1;
-	if( indices.y >= numVox3D.y ) indices.y = numVox3D.y - 1;
-	if( indices.z >= numVox3D.z ) indices.z = numVox3D.z - 1;
+	if( indices.x >= number_of_voxel_3D_.x ) indices.x = number_of_voxel_3D_.x - 1;
+	if( indices.y >= number_of_voxel_3D_.y ) indices.y = number_of_voxel_3D_.y - 1;
+	if( indices.z >= number_of_voxel_3D_.z ) indices.z = number_of_voxel_3D_.z - 1;
 
 	return indices;
 }
 
-Index3D model::getVoxelIndices( const Point3D voxpnt ) const{
-	return getVoxelIndices( voxpnt.GetComponents( cSys ) );
+Index3D Model::getVoxelIndices( const Point3D voxpnt ) const{
+	return getVoxelIndices( voxpnt.GetComponents( coordinate_system_ ) );
 }
 
-bool model::setVoxelData( const VoxelData newData, const Index3D indices ){
+bool Model::setVoxelData( const VoxelData newData, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
 	this->operator()( indices ) = newData;
 
-	if( newData.GetAttenuationAtReferenceEnergy() < attenuationMin || attenuationMax < 0 ) attenuationMin = newData.GetAttenuationAtReferenceEnergy();
-	if( newData.GetAttenuationAtReferenceEnergy() > attenuationMax || attenuationMax < 0 ) attenuationMax = newData.GetAttenuationAtReferenceEnergy();
+	if( newData.GetAttenuationAtReferenceEnergy() < attenuationRange_.start()	|| attenuationRange_.start() < 0 ) attenuationRange_.start( newData.GetAttenuationAtReferenceEnergy() );
+	if( newData.GetAttenuationAtReferenceEnergy() > attenuationRange_.end()		|| attenuationRange_.end() < 0 )   attenuationRange_.end( newData.GetAttenuationAtReferenceEnergy() );
 
 	return true;
 }
 
-bool model::setVoxelProperty( const VoxelData::specialProperty property, const Index3D indices ){
+bool Model::setVoxelProperty( const VoxelData::specialProperty property, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
@@ -175,24 +173,24 @@ bool model::setVoxelProperty( const VoxelData::specialProperty property, const I
 
 }
 
-Voxel model::getVoxel( const Index3D indices ) const{
+Voxel Model::getVoxel( const Index3D indices ) const{
 
 	if( !checkIndices( indices ) ){
 		CheckForAndOutputError( MathError::Input, "Indices exceed model!" );
 		return Voxel{};
 	}
 
-	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
+	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxel_size_3D_.x, (double) indices.y * voxel_size_3D_.y, (double) indices.z * voxel_size_3D_.z }, coordinate_system_ };
 
 	// Get voxel data_ and create voxel instance
-	Voxel voxel{ voxOrigin, voxSize3D, getVoxelData( indices ) };
+	Voxel voxel{ voxOrigin, voxel_size_3D_, getVoxelData( indices ) };
 
 	return voxel;
 }
 
-Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
+Ray Model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParameter, const rayScattering& scatteringProperties ) const{
 
-	Ray modelRay = tRay.ConvertTo( this->cSys );					// Current Ray in model's coordinate system
+	Ray modelRay = tRay.ConvertTo( this->coordinate_system_ );					// Current Ray in model's coordinate system
 
 	// Find entrance_ in model
 	const RayVoxelIntersection modelIsect{ Vox(), modelRay };
@@ -217,8 +215,8 @@ Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParam
 
 
 	const double meanFrequencyTube = modelRay.GetMeanFrequencyOfSpectrum();	// Mean frequency of Ray before it enters model
-	const double meanVoxelSideLength = ( voxSize3D.x + voxSize3D.y + voxSize3D.z ) / 3.;
-	const size_t meanVoxelAmount = (size_t) ( (double) ( numVox3D.x + numVox3D.y + numVox3D.z ) / 3. );
+	const double meanVoxelSideLength = ( voxel_size_3D_.x + voxel_size_3D_.y + voxel_size_3D_.z ) / 3.;
+	const size_t meanVoxelAmount = (size_t) ( (double) ( number_of_voxel_3D_.x + number_of_voxel_3D_.y + number_of_voxel_3D_.z ) / 3. );
 
 	const double scatterConstant = tomoParameter.scatterPropability * meanFrequencyTube / ( meanVoxelSideLength * static_cast<double>( meanVoxelAmount ) );
 
@@ -243,32 +241,32 @@ Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParam
 			switch( currentFace ){
 
 				case Voxel::Face::YZ_Xp:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxSize3D.x;		// Position of positive yz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxel_size_3D_.x;		// Position of positive yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
 					break;
 
 				case Voxel::Face::YZ_Xm:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxSize3D.x;		// Position of negative yz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxel_size_3D_.x;		// Position of negative yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
 					break;
 
 				case Voxel::Face::XZ_Yp:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxSize3D.y;		// Position of positive xz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxel_size_3D_.y;		// Position of positive xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XZ_Ym:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxSize3D.y;		// Position of negative xz-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxel_size_3D_.y;		// Position of negative xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XY_Zp:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxSize3D.z;		// Position of positive xy-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxel_size_3D_.z;		// Position of positive xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
 				case Voxel::Face::XY_Zm:
-					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxSize3D.z;		// Position of negative xy-plane
+					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxel_size_3D_.z;		// Position of negative xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
@@ -317,7 +315,7 @@ Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParam
 	return modelRay;
 }
 
-bool model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
+bool Model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	if( !validCoords( minCoords ) || !validCoords( maxCoords ) ) return false;
 
 	Index3D minIdcs = getVoxelIndices( minCoords );			// Minimum boundary indices
@@ -327,7 +325,7 @@ bool model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	Index3D newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
 	// New model
-	model newModel{ cSys, newVoxNum3D, voxSize3D };
+	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_3D_ };
 
 
 	// Copy data_ to new model
@@ -345,30 +343,28 @@ bool model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 }
 
 
-size_t model::Serialize( vector<char>& binary_data ) const{
+size_t Model::Serialize( vector<char>& binary_data ) const{
 
 	size_t expectedSize = FILE_PREAMBLE.size() + 1;
-	expectedSize += sizeof( numVox3D );
-	expectedSize += sizeof( voxSize3D );
+	expectedSize += sizeof( number_of_voxel_3D_ );
+	expectedSize += sizeof( voxel_size_3D_ );
 	expectedSize += sizeof( CoordinateSystem );
-	expectedSize += sizeof( attenuationMin );
-	expectedSize += sizeof( attenuationMax );
-	expectedSize += name.size() + 1;
-	expectedSize += numVox * sizeof( parameter.front() );
+	expectedSize += sizeof( attenuationRange_ );
+	expectedSize += name_.size() + 1;
+	expectedSize += number_of_voxel_ * sizeof( voxel_data_.front() );
 
 	binary_data.reserve( expectedSize );
 
 	size_t num_bytes = 0;
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += numVox3D.Serialize( binary_data );
-	num_bytes += voxSize3D.Serialize( binary_data );
-	num_bytes += cSys->Serialize( binary_data );
-	num_bytes += SerializeBuildIn( attenuationMin, binary_data );
-	num_bytes += SerializeBuildIn( attenuationMax, binary_data );
-	num_bytes += SerializeBuildIn( name, binary_data );
+	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
+	num_bytes += voxel_size_3D_.Serialize( binary_data );
+	num_bytes += coordinate_system_->Serialize( binary_data );
+	num_bytes += attenuationRange_.Serialize( binary_data );
+	num_bytes += SerializeBuildIn( name_, binary_data );
 
 	
-	binary_data.insert( binary_data.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(VoxelData) * numVox);
+	binary_data.insert( binary_data.end(), (char*) voxel_data_.data(), (char*) voxel_data_.data() + sizeof(VoxelData) * number_of_voxel_);
 	//binary_data.insert( binary_data.end(), parameter.cbegin(), parameter.cend() );
 
 	return num_bytes;
@@ -376,11 +372,11 @@ size_t model::Serialize( vector<char>& binary_data ) const{
 }
 
 
-void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
+void Model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 									GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
 									grid<VoxelData>& slice, mutex& sliceMutex,
 									const Surface& slicePlane,
-									const model& modelRef ){
+									const Model& modelRef ){
 
 	// Iterate through all columns
 	while( xIdx < slice.Size().c ){
@@ -454,15 +450,15 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 }
 
-grid<VoxelData> model::getSlice( const Surface sliceLocation, const double resolution ) const{
+grid<VoxelData> Model::getSlice( const Surface sliceLocation, const double resolution ) const{
 
 	// Distance between corners furthest away from each other
-	const double cornerDistance = sqrt( pow( size3D.x, 2. ) + pow( size3D.y, 2. ) + pow( size3D.z, 2. ) );
+	const double cornerDistance = sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
 	// Worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
 
 
 	// Surface in model's system
-	const Surface localSurface = sliceLocation.ConvertTo( cSys );
+	const Surface localSurface = sliceLocation.ConvertTo( coordinate_system_ );
 
 
 	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
@@ -534,7 +530,7 @@ grid<VoxelData> model::getSlice( const Surface sliceLocation, const double resol
 }
 
 
-void model::addSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius ){
+void Model::addSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius ){
 	
 	// Exit when coords invalid
 	if ( !pntInside( center ) ) return;
@@ -544,16 +540,16 @@ void model::addSpecialSphere( const VoxelData::specialProperty property, const P
 
 	// Index distance from center in each dimension
 	Index3D indexDelta{
-		ForceToMax( (size_t) ceil( radius / voxSize3D.x ), Min( centerIdx.x, numVox3D.x - centerIdx.x ) ),
-		ForceToMax( (size_t) ceil( radius / voxSize3D.y ), Min( centerIdx.y, numVox3D.y - centerIdx.y ) ),
-		ForceToMax( (size_t) ceil( radius / voxSize3D.z ), Min( centerIdx.z, numVox3D.z - centerIdx.z ) )
+		ForceToMax( (size_t) ceil( radius / voxel_size_3D_.x ), Min( centerIdx.x, number_of_voxel_3D_.x - centerIdx.x ) ),
+		ForceToMax( (size_t) ceil( radius / voxel_size_3D_.y ), Min( centerIdx.y, number_of_voxel_3D_.y - centerIdx.y ) ),
+		ForceToMax( (size_t) ceil( radius / voxel_size_3D_.z ), Min( centerIdx.z, number_of_voxel_3D_.z - centerIdx.z ) )
 	};
 
 	for( size_t x = centerIdx.x - indexDelta.x; x < centerIdx.x + indexDelta.x; x++ ){
 		for( size_t y = centerIdx.y - indexDelta.y; x < centerIdx.y + indexDelta.y; y++ ){
 			for( size_t z = centerIdx.z - indexDelta.z; x < centerIdx.z + indexDelta.z; z++ ){
 
-				Point3D p( Tuple3D( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
+				Point3D p( Tuple3D( (double) x * voxel_size_3D_.x , (double) y * voxel_size_3D_.y , (double) z * voxel_size_3D_.z ), coordinate_system_ );
 
 				if( ( center - p ).length() <= radius )  (*this).operator()( x, y, z ).AddSpecialProperty( property );
 				
