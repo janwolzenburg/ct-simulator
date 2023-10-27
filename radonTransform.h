@@ -48,7 +48,7 @@ class radonCoords{
 	 * @param coordinate_system_ Reference coordinate system
 	 * @param l Line
 	*/
-	radonCoords( const CoordinateSystem* const cSys, const line l );
+	radonCoords( const CoordinateSystem* const cSys, const Line l );
 
 
 	public:

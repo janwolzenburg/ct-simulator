@@ -64,10 +64,10 @@ string getObjectString<UnitVector3D, Point3D>( const UnitVector3D v, const Point
 }
 
 template<>
-string getObjectString<line, double>( const line l, const double length ){
+string getObjectString<Line, double>( const Line l, const double length ){
 
 	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.O().GetGlobalX(), l.O().GetGlobalY(), l.O().GetGlobalZ(), l.R().GetGlobalX(), l.R().GetGlobalY(), l.R().GetGlobalZ(), length );
+	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.origin().GetGlobalX(), l.origin().GetGlobalY(), l.origin().GetGlobalZ(), l.direction().GetGlobalX(), l.direction().GetGlobalY(), l.direction().GetGlobalZ(), length );
 
 	return string{ tempCharArr };
 
@@ -77,17 +77,17 @@ template<>
 string getObjectString<ray, double>(const ray r, const double length) {
 
 	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.O().GetGlobalX(), r.O().GetGlobalY(), r.O().GetGlobalZ(), r.R().GetGlobalX(), r.R().GetGlobalY(), r.R().GetGlobalZ(), length);
+	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.origin().GetGlobalX(), r.origin().GetGlobalY(), r.origin().GetGlobalZ(), r.direction().GetGlobalX(), r.direction().GetGlobalY(), r.direction().GetGlobalZ(), length);
 
 	return string{ tempCharArr };
 
 }
 
 template<>
-string getObjectString<surfLim, double>(const surfLim s, const double alpha) {
+string getObjectString<BoundedSurface, double>(const BoundedSurface s, const double alpha) {
 
 	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.O().GetGlobalX(), s.O().GetGlobalY(), s.O().GetGlobalZ(), s.R1().GetGlobalX(), s.R1().GetGlobalY(), s.R1().GetGlobalZ(), s.R2().GetGlobalX(), s.R2().GetGlobalY(), s.R2().GetGlobalZ(), s.AMin(), s.AMax(), s.BMin(), s.BMax(), alpha );
+	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.origin().GetGlobalX(), s.origin().GetGlobalY(), s.origin().GetGlobalZ(), s.direction_1().GetGlobalX(), s.direction_1().GetGlobalY(), s.direction_1().GetGlobalZ(), s.direction_2().GetGlobalX(), s.direction_2().GetGlobalY(), s.direction_2().GetGlobalZ(), s.parameter_1_min(), s.parameter_1_max(), s.parameter_2_min(), s.parameter_2_max(), alpha );
 
 	return string{ tempCharArr };
 
@@ -194,9 +194,9 @@ string getObjectString<grid<>>( const grid<> data, const bool image ){
 }
 
 template<>
-void addObject<vector<line>, double>( ofstream& axis, const string name, const vector<line> lines, const string parameter, const double length ){
+void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string parameter, const double length ){
 
-	for( const line l : lines ){
+	for( const Line l : lines ){
 		addSingleObject( axis, name, l, parameter, length );
 	}
 
@@ -206,7 +206,7 @@ template<>
 void addObject<vector<ray>, double>(ofstream& axis, const string name, const vector<ray> rays, const string parameter, const double length) {
 
 	for (const ray r : rays) {
-		addSingleObject(axis, name, line{ r }, parameter, length);
+		addSingleObject(axis, name, Line{ r }, parameter, length);
 	}
 
 }
@@ -214,13 +214,13 @@ void addObject<vector<ray>, double>(ofstream& axis, const string name, const vec
 template<>
 void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string parameter, const double alpha ){
 	for( const pixel singlePx : allPixels ){
-		addSingleObject( axis, name, surfLim{ singlePx }, parameter, alpha );
+		addSingleObject( axis, name, BoundedSurface{ singlePx }, parameter, alpha );
 	}
 }
 
 template<>
-void addObject<vector<surfLim>, double>( ofstream& axis, const string name, const vector<surfLim> surfaces, const string parameter, const double alpha ){
-	for( const surfLim surface : surfaces ){
+void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string parameter, const double alpha ){
+	for( const BoundedSurface surface : surfaces ){
 		addSingleObject( axis, name, surface, parameter, alpha );
 	}
 }
@@ -238,7 +238,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), parameter, .2 );
 
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
-		vector<line> pixelNormals;
+		vector<Line> pixelNormals;
 
 		for( pixel currentPixel : gantry.getPixel() ){
 			pixelNormals.push_back( currentPixel.NormalLine() );

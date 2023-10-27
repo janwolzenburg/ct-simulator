@@ -11,7 +11,7 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
- #include "surf.h"
+ #include "surface.h"
  #include "rays.h"
  #include "intersections.h"
 
@@ -24,9 +24,9 @@
 /*!
  * @brief Class for detector pixel
 */
-class pixel : public surfLim{
+class pixel : public BoundedSurface{
 
-	using surfLim::surfLim;
+	using BoundedSurface::BoundedSurface;
 
 	public:
 
@@ -34,8 +34,8 @@ class pixel : public surfLim{
 	 * @brief Constructor
 	 * @param surface Surface as base object
 	*/
-	pixel( const surfLim surface ) :
-		surfLim{ surface },
+	pixel( const BoundedSurface surface ) :
+		BoundedSurface{ surface },
 		detectedRayProperties( 0, rayProperties{} )
 	{};
 
@@ -44,8 +44,8 @@ class pixel : public surfLim{
 	 * @param surface Surface as base object
 	 * @param properties Detected ray's properties
 	*/
-	pixel( const surfLim surface, const vector<rayProperties> properties ) :
-		surfLim{ surface },
+	pixel( const BoundedSurface surface, const vector<rayProperties> properties ) :
+		BoundedSurface{ surface },
 		detectedRayProperties( properties )
 	{};
 
@@ -64,7 +64,7 @@ class pixel : public surfLim{
 	 * @brief Get the normal of the pixel
 	 * @return Line with pixel's center as origin_ an direction of surface normal
 	*/
-	line NormalLine( void ) const;
+	Line NormalLine( void ) const;
 
 	/*!
 	 * @brief Convert this pixel ot given coordinate system
@@ -123,7 +123,7 @@ class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
 
 	/*!
 	 * @brief Constructor
-	 * @param r Ray
+	 * @param direction_ Ray
 	 * @param px Pixel
 	*/
 	rayPix_Intersection( const ray r, const pixel px );

@@ -140,9 +140,9 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 		
 		// Get points on the edge of pixel
 
-		const Point3D pMin = currentPixel.getPnt( currentPixel.AMin(), 0);		// Point on "minimum" edge
-		const Point3D pMax = currentPixel.getPnt( currentPixel.AMax(), 0 );	// Point on "maximum" edge
-		const line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
+		const Point3D pMin = currentPixel.GetPoint( currentPixel.parameter_1_min(), 0);		// Point on "minimum" edge
+		const Point3D pMax = currentPixel.GetPoint( currentPixel.parameter_1_max(), 0 );	// Point on "maximum" edge
+		const Line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
 		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of ray origins on pixel
@@ -154,16 +154,16 @@ vector<ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
 
 			// Current ray origin_
-			const Point3D currentOrigin = connectionLine.getPnt( currentOffset );
+			const Point3D currentOrigin = connectionLine.GetPoint( currentOffset );
 
-			// Tempory line pointing from pixel to tube
-			const line tempLine{ currentPixel.Normal().ConvertTo( cSys ), currentOrigin.ConvertTo( cSys ) };
+			// Tempory Line pointing from pixel to tube
+			const Line tempLine{ currentPixel.GetNormal().ConvertTo( cSys ), currentOrigin.ConvertTo( cSys ) };
 
 			// Origin of ray with specific distance to pixel
-			const Point3D rayOrigin = tempLine.getPnt( detectorFocusDistance );
+			const Point3D rayOrigin = tempLine.GetPoint( detectorFocusDistance );
 
 			// Add ray in tube's coordinate system to vector
-			rays.emplace_back( -tempLine.R(), rayOrigin, beamProperties);
+			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties);
 
 		}
 

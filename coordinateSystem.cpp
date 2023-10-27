@@ -15,7 +15,7 @@
 #include "coordinateSystemTree.h"
 #include "vector3D.h"
 #include "line.h"
-#include "surf.h"
+#include "surface.h"
 #include "serialization.h"
 
 
@@ -115,46 +115,46 @@ UnitVector3D CoordinateSystem::GetEz( void ) const{
 	return UnitVector3D{ Tuple3D{0, 0, 1},  this };
 }
 
-line CoordinateSystem::GetXAxis( void ) const{
+Line CoordinateSystem::GetXAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return line{ Vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-line CoordinateSystem::GetYAxis( void ) const{
+Line CoordinateSystem::GetYAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return line{ Vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-line CoordinateSystem::GetZAxis( void ) const{
+Line CoordinateSystem::GetZAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return line{ Vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
-surf CoordinateSystem::GetXYPlane( void ) const{
+Surface CoordinateSystem::GetXYPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return surf{ Vector3D{ex_, parent_ptr}, Vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-surf CoordinateSystem::GetYZPlane( void ) const{
+Surface CoordinateSystem::GetYZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return surf{ Vector3D{ey_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ey_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-surf CoordinateSystem::GetXZPlane( void ) const{
+Surface CoordinateSystem::GetXZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return surf{ Vector3D{ex_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
@@ -175,21 +175,21 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const UnitVector3D n, co
 	return PrimitiveCoordinateSystem::Rotate( n.GetComponents( parent_ ), phi );
 }
 
-MathematicalObject::MathError CoordinateSystem::Rotate( const line l, const double phi ){
+MathematicalObject::MathError CoordinateSystem::Rotate( const Line l, const double phi ){
 	MathError tErr = MathError::Ok;
 	MathError errCode = MathError::Ok;
 
 	// Rotate coordinate system's unit vectors
-	if( ( tErr = Rotate( l.R(), phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tErr = Rotate( l.direction(), phi ) ) != MathError::Ok ) errCode = tErr;
 
 	// Move rotation center to origin_ of rotation axis
-	Translate( -l.O() );
+	Translate( -l.origin() );
 
 	// Rotate position vector of origin_ around rotation axis
-	if( ( tErr = origin_.Rotate( l.R().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tErr = origin_.Rotate( l.direction().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
 
 	// Translate back
-	Translate( l.O() );
+	Translate( l.origin() );
 
 	return errCode;
 }

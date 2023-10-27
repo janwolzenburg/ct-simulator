@@ -15,7 +15,7 @@
  #include <cmath>
 
  #include "generelMath.h"
- #include "equationSystem.h"
+ #include "systemOfEquations.h"
 
 
 
@@ -147,17 +147,17 @@ MathematicalObject::MathError Matrix::SubstractRows( const size_t r1, const size
 
 
 /*
-	eqnSys implementation
+	SystemOfEquations implementation
 */
 
-eqnSys::eqnSys( const size_t varNum_ )
+SystemOfEquations::SystemOfEquations( const size_t varNum_ )
 	: Matrix ( varNum_ + 1, varNum_ ),
-	varNum( varNum_ ),
-	numPopulatedColumns( 0 ){
-	if( varNum == 0 ) CheckForAndOutputError( MathError::Input, "Number of variables must be greater than 0!" );
+	number_of_variables_( varNum_ ),
+	currently_populated_columns_( 0 ){
+	if( number_of_variables_ == 0 ) CheckForAndOutputError( MathError::Input, "Number of variables must be greater than 0!" );
 };
 
-std::string eqnSys::ToString( const unsigned int newline_tabulators ) const{
+std::string SystemOfEquations::ToString( const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	std::string newLine = { '\n' };
@@ -165,8 +165,8 @@ std::string eqnSys::ToString( const unsigned int newline_tabulators ) const{
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 
-	str += "varNum=" + std::to_string( varNum );
-	str += newLine + "popCols=" + std::to_string( numPopulatedColumns );
+	str += "varNum=" + std::to_string( number_of_variables_ );
+	str += newLine + "popCols=" + std::to_string( currently_populated_columns_ );
 
 	str += newLine + Matrix::ToString();
 
@@ -174,39 +174,39 @@ std::string eqnSys::ToString( const unsigned int newline_tabulators ) const{
 
 }
 
-MathematicalObject::MathError eqnSys::populateColumn( const Tuple3D v ){
+MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple3D v ){
 
-	// For now only implemented with three vars
-	if( isPopulated() || varNum != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
+	// For now only implemented with three variable_values_
+	if( IsPopulated() || number_of_variables_ != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
 
 	// Assign vector values to matrix columns
-	( *this )( numPopulatedColumns, 0 ) = v.x;
-	( *this )( numPopulatedColumns, 1 ) = v.y;
-	( *this )( numPopulatedColumns, 2 ) = v.z;
-	numPopulatedColumns++;
+	( *this )( currently_populated_columns_, 0 ) = v.x;
+	( *this )( currently_populated_columns_, 1 ) = v.y;
+	( *this )( currently_populated_columns_, 2 ) = v.z;
+	currently_populated_columns_++;
 
 	return MathError::Ok;
 }
 
-MathematicalObject::MathError eqnSys::populateColumn( const Tuple2D v ){
+MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple2D v ){
 
-	// For now only implemented with three vars
-	if( isPopulated() || varNum != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
+	// For now only implemented with three variable_values_
+	if( IsPopulated() || number_of_variables_ != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
 
 	// Assign vector values to matrix columns
-	( *this )( numPopulatedColumns, 0 ) = v.x;
-	( *this )( numPopulatedColumns, 1 ) = v.y;
-	numPopulatedColumns++;
+	( *this )( currently_populated_columns_, 0 ) = v.x;
+	( *this )( currently_populated_columns_, 1 ) = v.y;
+	currently_populated_columns_++;
 
 	return MathError::Ok;
 }
 
-eqnSysSolution eqnSys::solve( void ){
+SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 
-	eqnSysSolution sol( *this );			// Create solution instance
+	SystemOfEquationsSolution sol( number_of_variables_ );			// Create solution instance
 
 	// System filled with coefficients?
-	if( !isPopulated() ) return sol;
+	if( !IsPopulated() ) return sol;
 
 	// Get size of coefficient matrix 
 	size_t rows = number_of_rows(); size_t cols = number_of_columns();
@@ -221,8 +221,8 @@ eqnSysSolution eqnSys::solve( void ){
 
 
 	// Matrix with variable indices
-	vector<unsigned int> varIdx( varNum );
-	for( unsigned int i = 0; i < varNum; i++ ) varIdx.at( i ) = i;
+	vector<unsigned int> varIdx( number_of_variables_ );
+	for( unsigned int i = 0; i < number_of_variables_; i++ ) varIdx.at( i ) = i;
 
 	// Iterate all rows to create echelon form of matrix
 	for( size_t k = 0; k < rows; k++ ){
@@ -290,11 +290,11 @@ eqnSysSolution eqnSys::solve( void ){
 		varsIndx = varIdx.at( i );		// Index for swapped variable
 
 		// Check if index is in allowed range
-		if( varsIndx < sol.getVarNum() ) sol.setVar( varsIndx, ( *this )( cols - 1, i ) );
+		if( varsIndx < sol.number_of_variables() ) sol.SetVariableValue( varsIndx, ( *this )( cols - 1, i ) );
 		else return sol;
 	}
 
-	sol.Success( true );
+	sol.solution_found( true );
 	return sol;
 
 }
@@ -302,41 +302,41 @@ eqnSysSolution eqnSys::solve( void ){
 
 
 /*
-	eqnSysSolution implementation
+	SystemOfEquationsSolution implementation
 */
 
-eqnSysSolution::eqnSysSolution( const eqnSys sys )
-	: varNum( sys.varNum ),
-	vars( varNum, 0. ),
-	success( false ){};
+SystemOfEquationsSolution::SystemOfEquationsSolution( const size_t number_of_variiables )
+	: number_of_variables_( number_of_variiables ),
+	variable_values_( number_of_variables_, 0. ),
+	solution_found_( false ){};
 
 
-string eqnSysSolution::ToString( const unsigned int newline_tabulators ) const{
+string SystemOfEquationsSolution::ToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += "varNum=" + varNum;
-	str += newLine + "success=" + std::to_string( success );
+	str += "varNum=" + number_of_variables_;
+	str += newLine + "success=" + std::to_string( solution_found_ );
 	str += newLine + "vars=";
 
-	for( unsigned int i = 0; i < varNum; i++ ){
-		str += std::to_string( vars[ i ] );
-		if( i < varNum - 1 ) str += ", ";
+	for( unsigned int i = 0; i < number_of_variables_; i++ ){
+		str += std::to_string( variable_values_[ i ] );
+		if( i < number_of_variables_ - 1 ) str += ", ";
 	}
 
 	return str;
 
 }
 
-void eqnSysSolution::setVar( const size_t idx, const double val ){
-	if( idx >= varNum ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
+void SystemOfEquationsSolution::SetVariableValue( const size_t idx, const double val ){
+	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
 
-	vars[ idx ] = val;
+	variable_values_[ idx ] = val;
 }
 
-double eqnSysSolution::getVar( const size_t idx ) const{
-	if( idx >= varNum ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
-	return vars[ idx ];
+double SystemOfEquationsSolution::GetVariableValue( const size_t idx ) const{
+	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
+	return variable_values_[ idx ];
 }

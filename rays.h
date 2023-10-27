@@ -76,7 +76,7 @@ class rayProperties{
 /*!
  * @brief Class for rays
 */
-class ray : public line{
+class ray : public Line{
 
 	public:
 
@@ -87,20 +87,20 @@ class ray : public line{
 	 * @param intensity_ Intensity
 	*/
 	explicit ray( const Vector3D v_, const Point3D p_, const rayProperties properties_ ) : 
-		line{ v_, p_ }, properties{ properties_ }{};
+		Line{ v_, p_ }, properties{ properties_ }{};
 
 	/*!
 	 * @brief Constructor
 	 * @param line_ Line
 	 * @param intensity_ Intensity
 	*/
-	explicit ray( const line line_, const rayProperties  properties_ ) :
-	line{ line_ }, properties{ properties_ }{};
+	explicit ray( const Line line_, const rayProperties  properties_ ) :
+	Line{ line_ }, properties{ properties_ }{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ray( void ) : ray{ line{}, rayProperties{} }{};
+	ray( void ) : ray{ Line{}, rayProperties{} }{};
 
 	/*!
 	 * @brief Get intensity
@@ -118,10 +118,10 @@ class ray : public line{
 	/*!
 	 * @brief Get ray parameter corresponding to point
 	 * @param p Point on ray
-	 * @param success Is set to true when the given point lies on the ray. False if not
+	 * @param solution_found_ Is set to true when the given point lies on the ray. False if not
 	 * @return Ray parameter
 	*/
-	double getPara( const Point3D p, bool* const success ) const;
+	double getPara( const Point3D p, bool* const solution_found_ ) const;
 
 	/*!
 	 * @brief Update ray properties passing through voxel for specific distance
@@ -142,7 +142,7 @@ class ray : public line{
 	 * @param para Parameter
 	 * @return True when parameter is valid
 	*/
-	bool paraInBounds( const double para ) const override{ return para >= 0; };
+	bool IsParameterInBounds( const double para ) const override{ return para >= 0; };
 
 	/*!
 	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit

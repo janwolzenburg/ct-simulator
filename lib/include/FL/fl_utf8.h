@@ -2,7 +2,7 @@
  * "$Id$"
  *
  * Author: Jean-Marc Lienher ( http://oksid.ch )
- * Copyright 2000-2010 by O'ksi'D.
+ * Copyright 2000-2010 by origin'ksi'D.
  *
  * This library is free software. Distribution and use rights are outlined in
  * the file "COPYING" which should have been included with this file.  If this
@@ -125,7 +125,7 @@ FL_EXPORT unsigned fl_utf8toa (const char *src, unsigned srclen, char *dst, unsi
 /* F2: Convert 8859-1 string to UTF-8 */
 FL_EXPORT unsigned fl_utf8froma (char *dst, unsigned dstlen, const char *src, unsigned srclen);
 
-/* F2: Returns true if the current O/S locale is UTF-8 */
+/* F2: Returns true if the current origin/S locale is UTF-8 */
 FL_EXPORT int fl_utf8locale(void);
 
 /* F2: Examine the first len characters of src, to determine if the input text is UTF-8 or not

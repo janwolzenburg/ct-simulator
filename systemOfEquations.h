@@ -37,8 +37,8 @@ class Matrix : public MathematicalObject{
 	
 	/*!
 	 * @brief Convert matrice's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
-	 * @return String with line's data
+	 * @param newline_tabulators Amount of tabulators to insert after each Line break
+	 * @return String with Line's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -116,9 +116,9 @@ class Matrix : public MathematicalObject{
 	MathError ScaleRow( const size_t row, const double scalar );
 
 	/*!
-	 * @brief Substract rows with r2 = r2 - r1
+	 * @brief Substract rows with direction_2_ = direction_2_ - direction_1_
 	 * @param row_1 Row to substract
-	 * @param row_2 Row to substract r1 from
+	 * @param row_2 Row to substract direction_1_ from
 	 * @return Error code
 	*/
 	MathError SubstractRows( const size_t row_1, const size_t row_2 );
@@ -136,19 +136,19 @@ class Matrix : public MathematicalObject{
 
 /*!
  * @brief Class for linear system of equations
- * @details Only systems with one equation per variable solvable. Inherited matrix contains coefficients
+ * @details Only systems with one equation per variable solvable. Inherited matrix contains coefficients. Only implemented for system with two or three variables
 */
-class eqnSys : private Matrix{
+class SystemOfEquations : private Matrix{
 
-	friend class eqnSysSolution;
+	friend class SystemOfEquationsSolution;
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param varNum_ Number of variables
+	 * @param number_of_variables Number of variables
 	*/
-	eqnSys( const size_t varNum_ );
+	SystemOfEquations( const size_t number_of_variables );
 
 	/*!
 	 * @brief Convert system's data to string
@@ -157,41 +157,36 @@ class eqnSys : private Matrix{
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Assignment operator deleted
-	*/
-	eqnSys& operator=( const eqnSys& sys ) = delete;
-
-	/*!
 	 * @brief Populate column of three variable equation system with vector
-	 * @param v Vector to populate column with
+	 * @param coefficients Vector to populate column with
 	 * @return Error code
 	*/
-	MathError populateColumn( const Tuple3D v );
+	MathError PopulateColumn( const Tuple3D coefficients );
 
 	/*!
 	 * @brief Add column to system of equation with two variables
-	 * @param v Column to add
+	 * @param coefficients Column to add
 	 * @return Error code
 	*/
-	MathError populateColumn( const Tuple2D v );
+	MathError PopulateColumn( const Tuple2D coefficients );
 
 	/*!
 	 * @brief Check population status
 	 * @return True when all columns are populated and system is ready to be solved
 	*/
-	bool isPopulated( void ) const{ return numPopulatedColumns == varNum + 1; };
+	bool IsPopulated( void ) const{ return currently_populated_columns_ == number_of_variables_ + 1; };
 
 	/*!
 	 * @brief Solve the system
 	 * @return Solution of linear system of equation
 	*/
-	class eqnSysSolution solve( void );
+	class SystemOfEquationsSolution Solve( void );
 
 
 	private:
 
-	const size_t varNum;			/*!<Number of variables*/
-	size_t numPopulatedColumns;		/*!<Number of populated columns*/
+	const size_t number_of_variables_;			/*!<Number of variables*/
+	size_t currently_populated_columns_;		/*!<Number of populated columns*/
 };
 
 
@@ -199,7 +194,7 @@ class eqnSys : private Matrix{
 /*!
  * @brief Class describing solution of linear system of equations
 */
-class eqnSysSolution : public MathematicalObject{
+class SystemOfEquationsSolution : public MathematicalObject{
 
 	public:
 
@@ -207,12 +202,12 @@ class eqnSysSolution : public MathematicalObject{
 	 * @brief Constructor
 	 * @param sys System of equation for which this instance holds the solution
 	*/
-	eqnSysSolution( const eqnSys sys );
+	SystemOfEquationsSolution( const size_t number_of_variiables );
 
 	/*!
 	 * @brief Deleted default constructor
 	*/
-	eqnSysSolution( void ) = delete;
+	SystemOfEquationsSolution( void ) = delete;
 
 	/*!
 	 * @brief Convert solutions's data to string
@@ -224,39 +219,39 @@ class eqnSysSolution : public MathematicalObject{
 	 * @brief Get amount of variables
 	 * @return Amount of variables
 	*/
-	size_t getVarNum( void ){ return varNum; };
+	size_t number_of_variables( void ){ return number_of_variables_; };
 
 	/*!
-	 * @brief Get value of success variable
-	 * @return Solution success
+	 * @brief Get value of solution_found_ variable
+	 * @return Solution solution_found_
 	*/
-	bool Success( void ){ return success; };
+	bool solution_found( void ){ return solution_found_; };
 
 	/*!
-	 * @brief Set success value
-	 * @param val Value to set to
+	 * @brief Set solution_found_ value
+	 * @param value Value to set to
 	 * @return Set value
 	*/
-	bool Success( const bool val ){ return success = val; };
+	bool solution_found( const bool value ){ return solution_found_ = value; };
 
 	/*!
 	 * @brief Set variable's value
-	 * @param idx Index of variable to set
-	 * @param val Value to set to
+	 * @param index Index of variable to set
+	 * @param value Value to set to
 	*/
-	void setVar( const size_t idx, const double val );
+	void SetVariableValue( const size_t index, const double value );
 
 	/*!
 	 * @brief Get value of variable
-	 * @param idx Index of variable
+	 * @param index Index of variable
 	 * @return Value
 	*/
-	double getVar( const size_t idx ) const;
+	double GetVariableValue( const size_t index ) const;
 
 
 	private:
 
-	size_t varNum;				/*!<Amount of variables*/
-	vector<double> vars;		/*!<Array of variables*/
-	bool success;				/*!<System has solution*/
+	size_t number_of_variables_;				/*!<Amount of variables*/
+	vector<double> variable_values_;		/*!<Array of variables*/
+	bool solution_found_;				/*!<System has solution*/
 };

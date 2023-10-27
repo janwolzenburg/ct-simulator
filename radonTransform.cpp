@@ -29,20 +29,20 @@
  * radonCoords implementation
 */
 
-radonCoords::radonCoords( const CoordinateSystem* const cSys, const line l ) : 
+radonCoords::radonCoords( const CoordinateSystem* const cSys, const Line l ) : 
 	theta( 0 ), distance( 0 )
 {
 	// Project ray on XY plane
-	const line projectedLine = l.projectOnXYPlane( cSys );
+	const Line projectedLine = l.ProjectOnXYPlane( cSys );
 
 	// Get perpendicualar to projected ray through coordinate system's origin_
-	Vector3D lot = projectedLine.getLot( cSys->GetOriginPoint() );
+	Vector3D lot = projectedLine.GetLot( cSys->GetOriginPoint() );
 
 
 	// Ray intersects origin_
 	if( IsNearlyEqualDistance( lot.length(), 0 ) ){
 		// Lot vector only for GetAngle calculation
-		lot = projectedLine.R() ^ cSys->GetEz();
+		lot = projectedLine.direction() ^ cSys->GetEz();
 	}
 	// No intersection -> distance from perpendicular
 	else{

@@ -105,7 +105,7 @@ public:
   void remove(int index);
   void remove(Fl_Widget&);
   /**
-    Removes the widget \p o from the group.
+    Removes the widget \p origin_ from the group.
     \sa void remove(Fl_Widget&)
   */
   void remove(Fl_Widget* o) {remove(*o);}

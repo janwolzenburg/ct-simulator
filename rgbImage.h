@@ -101,7 +101,7 @@ class rgbImage{
 	/*!
 	 * @brief Get the 1D index of grid element
 	 * @param c Column index
-	 * @param r Row index
+	 * @param direction_ Row index
 	 * @return Index of Row|Column element
 	*/
 	size_t pixelIndex( const size_t c, const size_t r ) const;
@@ -109,7 +109,7 @@ class rgbImage{
 	/*!
 	 * @brief Get the image data
 	 * @param c Column
-	 * @param r Row
+	 * @param direction_ Row
 	 * @return Color at row and column
 	*/
 	rgb_Int charData( const size_t c, const size_t r ) const{ return imageData.at( pixelIndex( c, r ) ); };
@@ -149,7 +149,7 @@ class rgbImage{
 	/*!
 	 * @brief Get reference to image data
 	 * @param c Column
-	 * @param r Row
+	 * @param direction_ Row
 	 * @return Reference to color data
 	*/
 	rgb_Int& charData( const size_t c, const size_t r ){ return imageData.at( pixelIndex( c, r ) ); };

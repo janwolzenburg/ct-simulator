@@ -16,7 +16,7 @@
 using std::array;
 #include "generelMath.h"
 #include "vector3D.h"
-#include "surf.h"
+#include "surface.h"
 
 
 
@@ -220,7 +220,7 @@ class vox : public MathematicalObject{
 	 * @param id_ Face ID
 	 * @return Bounded surface which is the face
 	*/
-	surfLim getFace( FACE_ID id_ ) const{ return faces[ ToUnderlying( id_ ) ]; };
+	BoundedSurface getFace( FACE_ID id_ ) const{ return faces[ ToUnderlying( id_ ) ]; };
 
 	/*!
 	 * @brief Get center of voxel
@@ -241,5 +241,5 @@ class vox : public MathematicalObject{
 	Tuple3D size;											/*!<Size in local coordinate system*/
 	voxData data;										/*!<Physical voxel data*/
 	Point3D o;												/*!<Point as origin_ of voxel in coordinate system*/
-	array<surfLim, ToUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
+	array<BoundedSurface, ToUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
 };

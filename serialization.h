@@ -92,7 +92,7 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
  * @brief Export serial data to file
  * @param file_name Filename
  * @param binary_data Vector with binary data
- * @return True at success
+ * @return True at solution_found_
 */
 bool ExportSerialized( const string file_name, const vector<char>& binary_data );
 

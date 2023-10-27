@@ -192,8 +192,8 @@ void gantryEdition::handleEvents( void ){
 
 		for( const auto& pixel : allPixel ){
 
-			const Point3D startP = pixel.getPnt( pixel.AMin(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
-			const Point3D endP = pixel.getPnt( pixel.AMax(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
+			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
+			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
 
 			const Tuple2D start{ startP.X(), startP.Y() };
 			const Tuple2D end{ endP.X(), endP.Y() };

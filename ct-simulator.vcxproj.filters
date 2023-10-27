@@ -126,10 +126,10 @@
     <ClInclude Include="line.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="surf.h">
+    <ClInclude Include="surface.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="equationSystem.h">
+    <ClInclude Include="systemOfEquations.h">
       <Filter>Headerdateien\Physics\Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="tests_linear_algebra.h">
@@ -368,10 +368,10 @@
     <ClCompile Include="line.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
-    <ClCompile Include="surf.cpp">
+    <ClCompile Include="surface.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
-    <ClCompile Include="equationSystem.cpp">
+    <ClCompile Include="systemOfEquations.cpp">
       <Filter>Quelldateien\Physics\Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="tests_linear_algebra.cpp">

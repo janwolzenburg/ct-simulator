@@ -34,13 +34,13 @@ class rayScattering{
 	 * @param anglesAmount How many angles in the interval from -pi to pi should be calculated
 	 * @param energyRange_ How large is the energy range to calculate propabilities for
 	 * @param energiesAmount_ For how many energies should  the probabilities be calculated
-	 * @param scatteredNormal_ Normal around which rays shoul´d be rpteated wehen scattered
+	 * @param scatteredNormal_ GetCenterNormal around which rays shoul´d be rpteated wehen scattered
 	*/
 	rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energiesAmount_, const UnitVector3D scatteredNormal_ );
 
 	/*!
 	 * @brief Scatter given ray
-	 * @param r Ray to scatter
+	 * @param direction_ Ray to scatter
 	 * @param newOrigin Point where the scattering happens
 	 * @return Scattered ray
 	*/

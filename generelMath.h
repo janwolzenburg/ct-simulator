@@ -206,7 +206,7 @@ class MathematicalObject{
 
 	/*!
 	 * @brief Convert object's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return String with object's data
 	 * @details Virtual for object specific implementation
 	*/

@@ -862,7 +862,7 @@ public:
 
   /** Calls the widget callback.
       Causes a widget to invoke its callback function with arbitrary arguments.
-      \param[in] o call the callback with \p o as the widget argument
+      \param[in] origin_ call the callback with \p origin_ as the widget argument
       \param[in] arg call the callback with \p arg as the user data argument
       \see callback()
    */

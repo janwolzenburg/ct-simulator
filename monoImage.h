@@ -93,7 +93,7 @@ class monoImage{
 	/*!
 	 * @brief Get the 1D index of grid element
 	 * @param c Column index
-	 * @param r Row index
+	 * @param direction_ Row index
 	 * @return Index of Row|Column element
 	*/
 	size_t index( const size_t c, const size_t r ) const;
@@ -101,23 +101,23 @@ class monoImage{
 	/*!
 	 * @brief Acces operator
 	 * @param c Column
-	 * @param r Row
-	 * @return Value at ( c, r )
+	 * @param direction_ Row
+	 * @return Value at ( c, direction_ )
 	*/
 	double operator()( const size_t c, const size_t r ) const{ return data.at( index( c, r ) ); };
 
 	/*!
 	 * @brief Acces operator
 	 * @param c Column
-	 * @param r Row
-	 * @return Reference to value at ( c, r )
+	 * @param direction_ Row
+	 * @return Reference to value at ( c, direction_ )
 	*/
 	double& operator()( const size_t c, const size_t r ){ return data.at( index( c, r ) ); };
 
 	/*!
 	 * @brief Get character data for image drawing
 	 * @param c Column
-	 * @param r Row
+	 * @param direction_ Row
 	 * @return Grayscale value
 	*/
 	unsigned char charData( const size_t c, const size_t r ) const{ return imData.at( index( c, r ) ); };
@@ -175,7 +175,7 @@ class monoImage{
 	/*!
 	 * @brief Get reference to image date
 	 * @param c Column
-	 * @param r Row
+	 * @param direction_ Row
 	 * @return Reference to pixel value
 	*/
 	unsigned char& charData( const size_t c, const size_t r ){ return imData.at( index( c, r ) ); };

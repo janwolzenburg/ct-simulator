@@ -101,11 +101,11 @@ bool test_ray_scattering(void){
 
 			const ray retRay = mod.rayTransmission( r, tomoParameter, testGantry.RayScattering() );
 
-			double plotLength = ( retRay.O() - r.O() ).length();
+			double plotLength = ( retRay.origin() - r.origin() ).length();
 
-			if( mod.pntInside( retRay.O() ) ){
+			if( mod.pntInside( retRay.origin() ) ){
 				addSingleObject( ax1, "Ray", r, "m", plotLength );
-				angles.push_back( r.R().GetAngle( retRay.R() ) );
+				angles.push_back( r.direction().GetAngle( retRay.direction() ) );
 				raysForNextIteration.push_back( retRay );
 
 			} 
@@ -126,7 +126,7 @@ bool test_ray_scattering(void){
 	for( ray r : rays ){
 		rayVox_Intersection_Result res = rayVoxelIntersection{ mod.Vox(), r }.exit;
 
-		addSingleObject( ax1, "Ray", r, "m", ( r.O() - res.intersectionPoint ).length() );
+		addSingleObject( ax1, "Ray", r, "m", ( r.origin() - res.intersectionPoint ).length() );
 	}
 
 	closeAxis( ax1 );

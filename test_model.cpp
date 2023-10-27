@@ -121,7 +121,7 @@ bool test_modelTransmission( void ){
 	testGantry.radiate( mod, tomographyParameter{ 1., false, 16, .05, 5e-2 } );
 	vector<pixel> detectorPixel = testGantry.getPixel();
 
-	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.O().Y() < p2.O().Y(); });
+	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
 
 	vector<Tuple2D> primitiveDetectionResult( detectorPixel.size(), Tuple2D{0, 0});
 

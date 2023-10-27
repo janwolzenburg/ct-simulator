@@ -61,7 +61,7 @@
   visible_focus() is enabled. If disabled, the widget rejects keyboard focus;
   Tab and Shift-Tab focus navigation will skip the widget.
 
-  In 'Select' and 'Normal' mode, the widget rejects keyboard focus;
+  In 'Select' and 'GetCenterNormal' mode, the widget rejects keyboard focus;
   no navigation keys are supported (other than scrollbar positioning).
 
   In 'Hold' mode, the widget accepts keyboard focus, and Up/Down arrow

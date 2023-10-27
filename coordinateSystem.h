@@ -133,39 +133,39 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief Get x-axis in parent_ coordinate system
-	 * @return The x-axis as a line
+	 * @return The x-axis as a Line
 	*/
-	line GetXAxis( void ) const;
+	Line GetXAxis( void ) const;
 
 	/*!
 	 * @brief Get y-axis in parent_ coordinate system
-	 * @return The y-axis as a line
+	 * @return The y-axis as a Line
 	*/
-	line GetYAxis( void ) const;
+	Line GetYAxis( void ) const;
 
 	/*!
 	 * @brief Get z-axis in parent_ coordinate system
-	 * @return The z-axis as a line
+	 * @return The z-axis as a Line
 	*/
-	line GetZAxis( void ) const;
+	Line GetZAxis( void ) const;
 
 	/*!
 	 * @brief Get the xy-plane in parent_ coordinate system
 	 * @return xy-plane as surface
 	*/
-	surf GetXYPlane( void ) const;
+	Surface GetXYPlane( void ) const;
 
 	/*!
 	 * @brief Get the yz-plane in parent_ coordinate system
 	 * @return yz-plane as surface
 	*/
-	surf GetYZPlane( void ) const;
+	Surface GetYZPlane( void ) const;
 
 	/*!
 	 * @brief Get the xz-plane in parent_ coordinate system
 	 * @return xz-plane as surface
 	*/
-	surf GetXZPlane( void ) const;
+	Surface GetXZPlane( void ) const;
 
 	/*!
 	 * @brief Translate coordinate system
@@ -187,7 +187,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param phi Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const line axis, const double angle );
+	MathError Rotate( const Line axis, const double angle );
 
 
 

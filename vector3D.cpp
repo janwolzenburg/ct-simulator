@@ -13,7 +13,7 @@
 
 #include "vector3D.h"
 #include "line.h"
-#include "surf.h"
+#include "surface.h"
 
 
 
@@ -80,12 +80,12 @@ Vector3D Vector3D::ConvertTo( const Vector3D v ) const{
 	return this->ConvertTo( v.coordinate_system_ );
 };
 
-Vector3D Vector3D::ConvertTo( const line l ) const{
-	return this->ConvertTo( l.R() );
+Vector3D Vector3D::ConvertTo( const Line l ) const{
+	return this->ConvertTo( l.direction() );
 };
 
-Vector3D Vector3D::ConvertTo( const surf s ) const{
-	return this->ConvertTo( s.R1() );
+Vector3D Vector3D::ConvertTo( const Surface s ) const{
+	return this->ConvertTo( s.direction_1() );
 };
 
 PrimitiveVector3 Vector3D::GetComponents( const CoordinateSystem* const target ) const{

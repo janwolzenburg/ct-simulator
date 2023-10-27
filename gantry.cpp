@@ -86,7 +86,7 @@ void gantry::transmitRays(	const model& radModel, const tomographyParameter& tom
 		returnedRay.Properties().EnergySpectrum().Scale( 1. / (double) returnedRay.VoxelHits() );
 
 		// Is the ray outside the model
-		if( !radModel.pntInside( returnedRay.O() ) ){
+		if( !radModel.pntInside( returnedRay.origin() ) ){
 			rayDetector.detectRay( returnedRay, detectorMutex );
 		}
 		else{

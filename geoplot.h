@@ -41,9 +41,9 @@ class geoplot : public plot{
 	geoplot( void ) : plot{}{};
 
 	/*!
-	 * @brief Add a line to plot
-	 * @param start Start of line
-	 * @param end End of line
+	 * @brief Add a Line to plot
+	 * @param start Start of Line
+	 * @param end End of Line
 	*/
 	void addLine( const Tuple2D start, const Tuple2D end ){
 		lines.emplace_back( Tuple2D{ limits.xFactor * start.x, limits.yFactor * start.y }, Tuple2D{ limits.xFactor * end.x, limits.yFactor * end.y } ); };

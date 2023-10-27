@@ -35,9 +35,9 @@ template<>
 size_t SerializeBuildIn<string>( const string& val, vector<char>& binary_data ){
 
 	size_t i = 0;
-	const size_t padding = 24;	// Amount of character in each "line" of hex-editor
+	const size_t padding = 24;	// Amount of character in each "Line" of hex-editor
 
-	// Insert padding so string start at "new line" when each line has 24 Bytes
+	// Insert padding so string start at "new Line" when each Line has 24 Bytes
 	binary_data.insert( binary_data.end(), ( padding - ( binary_data.size() ) % padding ) % padding, string_padding );
 
 	// Iterate all characters in string
@@ -47,7 +47,7 @@ size_t SerializeBuildIn<string>( const string& val, vector<char>& binary_data ){
 	}
 
 
-	// Add padding at the end so data start at a new line
+	// Add padding at the end so data start at a new Line
 	binary_data.insert( binary_data.end(), ( padding - ( binary_data.size() + 1 ) % padding ) % padding, string_padding );
 
 	// Termination

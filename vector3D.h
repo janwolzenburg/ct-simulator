@@ -162,14 +162,14 @@ class Vector3D : protected Coordinates{
 	 * @param coordinate_system_source Line to which system this gets converted
 	 * @return Converted vector
 	*/
-	Vector3D ConvertTo( const line coordinate_system_source ) const;
+	Vector3D ConvertTo( const Line coordinate_system_source ) const;
 
 	/*!
 	 * @brief Convert vector to different coordinate system
 	 * @param coordinate_system_source Surface to which system this gets converted
 	 * @return Converted vector
 	*/
-	Vector3D ConvertTo( const surf coordinate_system_source ) const;
+	Vector3D ConvertTo( const Surface coordinate_system_source ) const;
 
 	/*!
 	 * @brief Get x,y and z component

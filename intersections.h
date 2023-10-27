@@ -16,7 +16,7 @@
 #include "generelMath.h"
 #include "vector3D.h"
 #include "line.h"
-#include "surf.h"
+#include "surface.h"
 #include "rays.h"
 #include "voxel.h"
 
@@ -52,8 +52,8 @@
 
 	 Point3D intersectionPoint;		/*!<Point of intersection*/
 	 bool hasSolution;			/*!Flag whether the lines intersect*/
-	 double lineParameter1;		/*!Parameter of first line at intersection*/
-	 double lineParameter2;		/*!Parameter of second line at intersection*/
+	 double lineParameter1;		/*!Parameter of first Line at intersection*/
+	 double lineParameter2;		/*!Parameter of second Line at intersection*/
 
 
  };
@@ -65,16 +65,16 @@
 
 	 /*!
 	  * @brief Constructor
-	  * @param l1_ Object derived from class line
-	  * @param l2_ Object derived from class surf
+	  * @param l1_ Object derived from class Line
+	  * @param l2_ Object derived from class Surface
 	 */
-	 lineLine_Intersection( const line l1_, const line l2_ );
+	 lineLine_Intersection( const Line l1_, const Line l2_ );
 
 
 	 public:
 
-	 line l1;									/*!<First Line*/
-	 line l2;									/*!<Second Line*/
+	 Line l1;									/*!<First Line*/
+	 Line l2;									/*!<Second Line*/
 	 lineLine_Intersection_Result result;		/*!<Calculated result*/
 
  };
@@ -82,7 +82,7 @@
 
 
 /*!
- * @brief Class describing the intersection result of a line and surface
+ * @brief Class describing the intersection result of a Line and surface
 */
 class linSurf_Intersection_Result : virtual public MathematicalObject{
 
@@ -117,22 +117,22 @@ class linSurf_Intersection_Result : virtual public MathematicalObject{
 
 
 /*!
- * @brief Class for calculation the intersection of a line and a surface
+ * @brief Class for calculation the intersection of a Line and a surface
 */
 template<class L, class S>
 class linSurfIntersection {
 
 	// Assert base classes
-	static_assert( std::is_base_of_v< surf, S > );
-	static_assert( std::is_base_of_v< line, L > );
+	static_assert( std::is_base_of_v< Surface, S > );
+	static_assert( std::is_base_of_v< Line, L > );
 
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param l_ Object derived from class line
-	 * @param s_ Object derived from class surf
+	 * @param l_ Object derived from class Line
+	 * @param s_ Object derived from class Surface
 	*/
 	linSurfIntersection( const L l_, const S s_ );
 
@@ -177,7 +177,7 @@ class rayVox_Intersection_Result : public linSurf_Intersection_Result{
 
 
 /*!
- * @brief Class for calculation the intersection of a line and a surface
+ * @brief Class for calculation the intersection of a Line and a surface
 */
 class rayVoxelIntersection {
 

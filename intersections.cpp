@@ -11,7 +11,7 @@
 	Includes
  *********************************************************************/
 
- #include "equationSystem.h"
+ #include "systemOfEquations.h"
  #include "intersections.h"
 
 
@@ -32,39 +32,39 @@ string lineLine_Intersection_Result::ToString( unsigned int newline_tabulators )
 }
 
 
-lineLine_Intersection::lineLine_Intersection( const line l1_, const line l2_ ) :
+lineLine_Intersection::lineLine_Intersection( const Line l1_, const Line l2_ ) :
 	l1( l1_ ),
 	l2( l2_ )
 {
 
 
 	// Create system of equations with two variables
-	eqnSys sys( 2 );
+	SystemOfEquations sys( 2 );
 
-	Tuple3D column0 = l1.R().GetComponents();
-	Tuple3D column1 = -l2.R().GetComponents( l1.R() );
-	Tuple3D column2 = l2.O().GetComponents( l1.O() ) - l1.O().GetComponents();
+	Tuple3D column0 = l1.direction().GetComponents();
+	Tuple3D column1 = -l2.direction().GetComponents( l1.direction() );
+	Tuple3D column2 = l2.origin().GetComponents( l1.origin() ) - l1.origin().GetComponents();
 
-	sys.populateColumn( Tuple2D{ column0.x, column0.y } );
-	sys.populateColumn( Tuple2D{ column1.x, column1.y } );
-	sys.populateColumn( Tuple2D{ column2.x, column2.y } );
+	sys.PopulateColumn( Tuple2D{ column0.x, column0.y } );
+	sys.PopulateColumn( Tuple2D{ column1.x, column1.y } );
+	sys.PopulateColumn( Tuple2D{ column2.x, column2.y } );
 
 	// Solve system
-	eqnSysSolution sysSol = sys.solve();
+	SystemOfEquationsSolution sysSol = sys.Solve();
 
 	// No solution found
-	if( !sysSol.Success() || 
-		!IsNearlyEqualDistance( sysSol.getVar( 0 ) * column0.z + sysSol.getVar( 1 ) * column1.z, column0.z ) ){
+	if( !sysSol.solution_found() || 
+		!IsNearlyEqualDistance( sysSol.GetVariableValue( 0 ) * column0.z + sysSol.GetVariableValue( 1 ) * column1.z, column0.z ) ){
 		return;
 	}
 
 
 	// Copy result
 	result.hasSolution = true;						// Solution found
-	result.lineParameter1 = sysSol.getVar( 0 );			// Surface parameter A
-	result.lineParameter2 = sysSol.getVar( 1 );			// Surface parameter B
+	result.lineParameter1 = sysSol.GetVariableValue( 0 );			// Surface parameter A
+	result.lineParameter2 = sysSol.GetVariableValue( 1 );			// Surface parameter B
 
-	result.intersectionPoint = l1.getPnt( result.lineParameter1 );	// Point of intersection
+	result.intersectionPoint = l1.GetPoint( result.lineParameter1 );	// Point of intersection
 
 };
 
@@ -91,16 +91,16 @@ rayVoxelIntersection::rayVoxelIntersection( const vox v_, const ray r_ ) :
 {
 
 	// Components of ray trajectory in voxel coordinate system
-	Tuple3D comps = r.R().GetComponents( v.O() );
+	Tuple3D comps = r.direction().GetComponents( v.O() );
 	bool facePossible = true;
 
 	// Find Entrance
 
 	// Ray origin_ inside voxel
-	if(  v.contains( r.O() ) ){
+	if(  v.contains( r.origin() ) ){
 		entrance.hasSolution = true;
 		entrance.linePara = 0;
-		entrance.intersectionPoint = r.O();
+		entrance.intersectionPoint = r.origin();
 		entrance.face = FACE_ID::INVALID;
 	}
 	else{

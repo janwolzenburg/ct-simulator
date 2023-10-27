@@ -90,12 +90,12 @@ vox::vox( const Point3D o_, const Tuple3D size_, const voxData data_ ) :
 	data( data_ ),
 	o( o_ ),
 	faces{
-				surfLim{ o.GetCoordinateSystem()->GetEy(), o.GetCoordinateSystem()->GetEz(), o + o.GetCoordinateSystem()->GetEx() * size.x, 0, size.y, 0, size.z },
-				surfLim{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEz(), o + o.GetCoordinateSystem()->GetEy() * size.y, 0, size.x, 0, size.z },
-				surfLim{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEy(), o + o.GetCoordinateSystem()->GetEz() * size.z, 0, size.x, 0, size.y },
-				surfLim{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEy(), o, 0, size.x, 0, size.y },
-				surfLim{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEz(), o, 0, size.x, 0, size.z },
-				surfLim{ o.GetCoordinateSystem()->GetEy(), o.GetCoordinateSystem()->GetEz(), o, 0, size.y, 0, size.z }
+				BoundedSurface{ o.GetCoordinateSystem()->GetEy(), o.GetCoordinateSystem()->GetEz(), o + o.GetCoordinateSystem()->GetEx() * size.x, 0, size.y, 0, size.z },
+				BoundedSurface{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEz(), o + o.GetCoordinateSystem()->GetEy() * size.y, 0, size.x, 0, size.z },
+				BoundedSurface{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEy(), o + o.GetCoordinateSystem()->GetEz() * size.z, 0, size.x, 0, size.y },
+				BoundedSurface{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEy(), o, 0, size.x, 0, size.y },
+				BoundedSurface{ o.GetCoordinateSystem()->GetEx(), o.GetCoordinateSystem()->GetEz(), o, 0, size.x, 0, size.z },
+				BoundedSurface{ o.GetCoordinateSystem()->GetEy(), o.GetCoordinateSystem()->GetEz(), o, 0, size.y, 0, size.z }
 }
 {
 	if( size.x <= 0 || size.y <= 0 || size.z <= 0 ) CheckForAndOutputError( MathError::Input, "Size of voxel in each dimension must be greater than zero!" );

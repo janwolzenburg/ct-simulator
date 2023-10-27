@@ -168,7 +168,7 @@
     <ClInclude Include="detector.h" />
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
-    <ClInclude Include="equationSystem.h" />
+    <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
     <ClInclude Include="Fl_Bound_Input.h" />
@@ -227,7 +227,7 @@
     <ClInclude Include="rays.h" />
     <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
-    <ClInclude Include="surf.h" />
+    <ClInclude Include="surface.h" />
     <ClInclude Include="tests_linear_algebra.h" />
     <ClInclude Include="test_all.h" />
     <ClInclude Include="test_device.h" />
@@ -249,7 +249,7 @@
     <ClCompile Include="detector.cpp" />
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
-    <ClCompile Include="equationSystem.cpp" />
+    <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />
     <ClCompile Include="Fl_GridImage.cpp" />
@@ -290,7 +290,7 @@
     <ClCompile Include="radonTransform.cpp" />
     <ClCompile Include="rays.cpp" />
     <ClCompile Include="spectrum.cpp" />
-    <ClCompile Include="surf.cpp" />
+    <ClCompile Include="surface.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />
     <ClCompile Include="test_model.cpp" />

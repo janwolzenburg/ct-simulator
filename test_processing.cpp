@@ -121,7 +121,7 @@ bool test_Tomography( void ){
 
 	//ofstream ax2 = openAxis( path( "./test_Tomography_gantry_300x100_1_4xModelRes.txt" ), true );
 
-	//addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
+	//addObject( ax2, "Gantry", testGantry, "direction_", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	//addObject( ax2, "TestModel", mod, "g", 0.015 );
 
 	//closeAxis( ax2 );

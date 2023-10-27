@@ -1,10 +1,10 @@
 /*********************************************************************
- * @file   line.fwd.h
+ * @file   Line.fwd.h
  * @brief  Forward decleration for lines
  *
  * @author Jan Wolzenburg
  * @date   December 2022
  *********************************************************************/
 
-class line;
+class Line;
 class ray;

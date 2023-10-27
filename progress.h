@@ -41,9 +41,9 @@ class Fl_Progress_Window : public Fl_Window{
 	Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label );
 
 	/*!
-	 * @brief Change text in a line
+	 * @brief Change text in a Line
 	 * @param lineNumber Linenumber to change. Starting at 0
-	 * @param newText New line text
+	 * @param newText New Line text
 	*/
 	void changeLineText( const unsigned int lineNumber, const string newText);
 
@@ -68,5 +68,5 @@ class Fl_Progress_Window : public Fl_Window{
 	string displayText;					/*!<String to pass to widget*/
 
 	constexpr static int padding = 20;				/*!<Padding of text to window borders*/
-	constexpr static int charactersPerLine = 30;	/*!<Approximate amount of characters per line*/
+	constexpr static int charactersPerLine = 30;	/*!<Approximate amount of characters per Line*/
  };

@@ -14,7 +14,7 @@
  #include <format>
 
 #include "coordinates.h"
-#include "equationSystem.h"
+#include "systemOfEquations.h"
 
 
  /*********************************************************************
@@ -125,18 +125,18 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 	// Error when child's parent_ system is not this system
 	if( !this->HasSameSystem( child_coordinate_system->parent() ) ) CheckForAndOutputError( MathError::Input, "parent of child system is not this system!" );
 
-	eqnSys tEqnSys( 3 );		// System of equation to solve for x,y and z in local coordinate system
+	SystemOfEquations tEqnSys( 3 );		// System of equation to Solve for x,y and z in local coordinate system
 
 	// Poulate columns of system of equations
-	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ex() );
-	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ey() );
-	tEqnSys.populateColumn( child_coordinate_system->GetPrimitive().ez() );
+	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ex() );
+	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ey() );
+	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ez() );
 
-	tEqnSys.populateColumn( (PrimitiveVector3) *this - child_coordinate_system->GetPrimitive().origin() );
+	tEqnSys.PopulateColumn( (PrimitiveVector3) *this - child_coordinate_system->GetPrimitive().origin() );
 
 	// Solve
-	eqnSysSolution tEqnSysSol = tEqnSys.solve();
+	SystemOfEquationsSolution tEqnSysSol = tEqnSys.Solve();
 
 	// System solution are new Coordinates
-	return Coordinates{ Tuple3D{ tEqnSysSol.getVar( 0 ), tEqnSysSol.getVar( 1 ), tEqnSysSol.getVar( 2 ) }, child_coordinate_system };
+	return Coordinates{ Tuple3D{ tEqnSysSol.GetVariableValue( 0 ), tEqnSysSol.GetVariableValue( 1 ), tEqnSysSol.GetVariableValue( 2 ) }, child_coordinate_system };
 }

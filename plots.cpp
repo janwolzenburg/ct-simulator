@@ -161,10 +161,10 @@ void geoplot::create( void ){
 
 	plot::reset();
 
-	for( const auto& line : lines ){
+	for( const auto& Line : lines ){
 
-		vector<double> X{ line.first.x, line.second.x };
-		vector<double> Y{ line.first.y, line.second.y };
+		vector<double> X{ Line.first.x, Line.second.x };
+		vector<double> Y{ Line.first.y, Line.second.y };
 
 		plot::plot2D.drawCurve( X, Y );
 	}

@@ -209,11 +209,11 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 	// Go a tiny step further down the ray from intersection point with model and test if inside
 	// Return when the point on the ray is not inside the model meaning that the ray just barely hit the model
-	if( !pntInside( modelRay.getPnt( currentRayStep ) ) ) return modelRay;
+	if( !pntInside( modelRay.GetPoint( currentRayStep ) ) ) return modelRay;
 
 
 	// Current point on the ray
-	Point3D currentPntOnRay = modelRay.getPnt( currentRayStep );		// Point of model entrance
+	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance
 
 
 	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
@@ -244,32 +244,32 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 				case FACE_ID::YZ_Xp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxSize3D.x;		// Position of positive yz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();		// Ray parameter at intersection
+					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
 					break;
 
 				case FACE_ID::YZ_Xm:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxSize3D.x;		// Position of negative yz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.R().X();
+					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
 					break;
 
 				case FACE_ID::XZ_Yp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxSize3D.y;		// Position of positive xz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case FACE_ID::XZ_Ym:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxSize3D.y;		// Position of negative xz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.R().Y();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case FACE_ID::XY_Zp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxSize3D.z;		// Position of positive xy-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
 				case FACE_ID::XY_Zm:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxSize3D.z;		// Position of negative xy-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.R().Z();
+					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
 				default: break;
@@ -290,7 +290,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 			modelRay.incrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.rayStepSize;				// New Step on ray
-			currentPntOnRay = modelRay.getPnt( currentRayStep );	// New point on ray
+			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on ray
 		
 			// Scattering
 			if( tomoParameter.scattering ){
@@ -312,7 +312,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 	}
 
 	// New origin_ "outside" the model to return
-	modelRay.setOrigin( currentPntOnRay );
+	modelRay.origin( currentPntOnRay );
 
 	return modelRay;
 }
@@ -379,7 +379,7 @@ size_t model::Serialize( vector<char>& binary_data ) const{
 void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 									GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
 									grid<voxData>& slice, mutex& sliceMutex,
-									const surf& slicePlane,
+									const Surface& slicePlane,
 									const model& modelRef ){
 
 	// Iterate through all columns
@@ -413,7 +413,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 		// Get point on surface for current grid indices
 		const GridCoordinates surfaceCoordinate = slice.getCoordinates( gridIndices );
-		const Point3D currentPoint = slicePlane.getPnt( surfaceCoordinate.c, surfaceCoordinate.r );
+		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c, surfaceCoordinate.r );
 
 
 		// Are cooradinates defined in model?
@@ -454,7 +454,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 }
 
-grid<voxData> model::getSlice( const surf sliceLocation, const double resolution ) const{
+grid<voxData> model::getSlice( const Surface sliceLocation, const double resolution ) const{
 
 	// Distance between corners furthest away from each other
 	const double cornerDistance = sqrt( pow( size3D.x, 2. ) + pow( size3D.y, 2. ) + pow( size3D.z, 2. ) );
@@ -462,7 +462,7 @@ grid<voxData> model::getSlice( const surf sliceLocation, const double resolution
 
 
 	// Surface in model's system
-	const surf localSurface = sliceLocation.convertTo( cSys );
+	const Surface localSurface = sliceLocation.ConvertTo( cSys );
 
 
 	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );

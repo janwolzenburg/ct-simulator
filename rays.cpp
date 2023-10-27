@@ -38,17 +38,17 @@ void rayProperties::attenuateSpectrum( const voxData& voxelData, const double di
 */
 
 ray ray::convertTo( const CoordinateSystem* const target ) const{
-	return ray{ this->line::convertTo( target ), properties };
+	return ray{ this->Line::ConvertTo( target ), properties };
 };
 
-double ray::getPara( const Point3D p, bool* const success ) const{
-	double t = line::getPara( p, success );
-	*success = *success && ( t >= 0 );
+double ray::getPara( const Point3D p, bool* const solution_found_ ) const{
+	double t = Line::GetLineParameter( p, solution_found_ );
+	*solution_found_ = *solution_found_ && ( t >= 0 );
 	return t;
 }
 
 ray ray::projectOnXYPlane( const CoordinateSystem* const cSys ) const{
-	return ray{ this->line::projectOnXYPlane( cSys ), this->properties };
+	return ray{ this->Line::ProjectOnXYPlane( cSys ), this->properties };
 }
 
 void ray::updateProperties( const voxData& data, const double distance ){
@@ -65,19 +65,19 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 		// Check if face can be an exit face of the tRay
 		switch( currentFace ){
 			case FACE_ID::YZ_Xp:
-				if( r.X() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() > 0 ) possibleFaces.push_back( currentFace ); break;
 			case FACE_ID::YZ_Xm:
-				if( r.X() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() < 0 ) possibleFaces.push_back( currentFace ); break;
 
 			case FACE_ID::XZ_Yp:
-				if( r.Y() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() > 0 ) possibleFaces.push_back( currentFace ); break;
 			case FACE_ID::XZ_Ym:
-				if( r.Y() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() < 0 ) possibleFaces.push_back( currentFace ); break;
 
 			case FACE_ID::XY_Zp:
-				if( r.Z() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() > 0 ) possibleFaces.push_back( currentFace ); break;
 			case FACE_ID::XY_Zm:
-				if( r.Z() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() < 0 ) possibleFaces.push_back( currentFace ); break;
 
 			default: break;
 		}

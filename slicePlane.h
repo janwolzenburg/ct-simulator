@@ -8,7 +8,7 @@
  *********************************************************************/
 
 #include "coordinateSystemTree.h"
-#include "surf.h"
+#include "surface.h"
 
 /*!
  * @brief Class for slicing a model
@@ -39,7 +39,7 @@ class slicePlane{
 	public:
 
 	CoordinateSystem* cSys;			/*!<Coordinate system of slice plane*/
-	surf surface;			/*!<Surface for slicing*/
+	Surface surface;			/*!<Surface for slicing*/
 	double rotationAngleX;	/*!<Current x-rotation GetAngle*/
 	double rotationAngleY;	/*!<Current y-rotation GetAngle*/
 	double positionZ;		/*!<Current z-position*/

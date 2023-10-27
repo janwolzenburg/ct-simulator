@@ -56,7 +56,7 @@ class detector {
 
 	/*!
 	 * @brief Detect ray
-	 * @param r Ray to detect
+	 * @param direction_ Ray to detect
 	*/
 	void detectRay( const ray r, mutex& allPixelLock );
 

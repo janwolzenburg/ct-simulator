@@ -178,7 +178,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		const double rotationAngle = targetXRot - planeInstance.rotationAngleX;
 		planeInstance.rotationAngleX = targetXRot;
 
-		const line axis{ planeInstance.surface.R1(), planeInstance.surface.O() };
+		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
 
 		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
@@ -188,7 +188,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		const double rotationAngle = targetYRot - planeInstance.rotationAngleY;
 		planeInstance.rotationAngleY = targetYRot;
 
-		const line axis{ planeInstance.surface.R2(), planeInstance.surface.O() };
+		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
 
 		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
@@ -198,7 +198,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		const double translation = targetZTrans - planeInstance.positionZ;
 		planeInstance.positionZ = targetZTrans;
 
-		modelInstance.CSys()->Translate( ( (Vector3D) planeInstance.surface.Normal() ) * translation );
+		modelInstance.CSys()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
 
 	// Return if succeeded

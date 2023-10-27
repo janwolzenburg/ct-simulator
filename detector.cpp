@@ -44,7 +44,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 
 
 	// Persistent variables
-	line previousNormal;			// Normal of previous pixel
+	Line previousNormal;			// GetCenterNormal of previous pixel
 	double previousPixelSize;		// Size of previous pixel
 
 
@@ -72,7 +72,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 		const Point3D normalPoint = Vector3D{ normalLot } *currentDistance;
 
 		// The current normal 
-		const line currentNormal{ currentNormalVector, normalPoint };
+		const Line currentNormal{ currentNormalVector, normalPoint };
 
 		// Index of normal in vector
 		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
@@ -85,7 +85,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 		// "Middle" normal
 		if( currentIndex == 0 ){
 			// This is the starting point
-			currentPixelOrigin = currentNormal.getPnt( detectorCenterDistance );
+			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 
 			// First pixel size so that the neighbooring pixel intersects at half GetAngle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
@@ -93,12 +93,12 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 		}
 		else{
 			// Intersection point of pixel
-			const Point3D pixelIntersection = previousNormal.O() + ( previousNormal.R() ^ rotationVector ) * previousPixelSize / 2.;
+			const Point3D pixelIntersection = previousNormal.origin() + ( previousNormal.direction() ^ rotationVector ) * previousPixelSize / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
-			const Vector3D pixelIntersectionLot = currentNormal.getLot( pixelIntersection );
+			const Vector3D pixelIntersectionLot = currentNormal.GetLot( pixelIntersection );
 
-			// Get the pixel normal's origin_ which lies on the shortest line connection the intersection with current normal
+			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
 			// Pixel size is double the lot length_
@@ -106,19 +106,19 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 		}
 
 		// Create current pixel normal pointing to center
-		const line pixelNormal{ -currentNormalVector, currentPixelOrigin };
+		const Line pixelNormal{ -currentNormalVector, currentPixelOrigin };
 
 		// Store for next pixel
 		previousNormal = pixelNormal;
 		previousPixelSize = currentPixelSize;
 
 		// Vector perpendicualr to the normal pointing to the next pixel
-		const UnitVector3D currentSurfaceVector = -pixelNormal.R() ^ rotationVector;
+		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
 		allPixel.emplace_back( currentSurfaceVector,
 							   rotationVector,
-							   pixelNormal.O(),
+							   pixelNormal.origin(),
 							   -currentPixelSize / 2,
 							   currentPixelSize / 2,
 							   -indipendentParameter.columnSize / 2.,
@@ -128,16 +128,16 @@ detector::detector( CoordinateSystem* const coordinate_system, const detectorRad
 		if( currentIndex > 0 ){
 
 			// Mirror current normal around y-axis
-			const line mirroredPixelNormal{
-				pixelNormal.R().NegateXComponent(),
-				pixelNormal.O().NegateXComponent()
+			const Line mirroredPixelNormal{
+				pixelNormal.direction().NegateXComponent(),
+				pixelNormal.origin().NegateXComponent()
 			};
 
 			// Add mirrored pixel
-			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.R() ^ rotationVector;
+			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
 			allPixel.emplace_back( mirroredSurfaceVector,
 								   rotationVector,
-								   mirroredPixelNormal.O(),
+								   mirroredPixelNormal.origin(),
 								   -currentPixelSize / 2,
 								   currentPixelSize / 2,
 								   -indipendentParameter.columnSize / 2.,
@@ -173,7 +173,7 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 		if( pixelHit.Result().hasSolution ){
 			
 			// If structured and GetAngle allowed by structure
-			if( !physicalParameters.structured || ( PI / 2. - r.getAngle( (surf) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
+			if( !physicalParameters.structured || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
 				allPixelLock.lock();
 				allPixel.at( pixelIdx ).addDetectedProperties( r.Properties() );		// Add detected ray properties to pixel
 				allPixelLock.unlock();

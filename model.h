@@ -65,7 +65,7 @@ class model : public MathematicalObject{
 
 	/*!
 	 * @brief Convert model's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return String with model's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
@@ -203,7 +203,7 @@ class model : public MathematicalObject{
 
 	/*!
 	 * @brief Calculate ray transmission through model
-	 * @param r Transmitting ray in model's coordiante system
+	 * @param direction_ Transmitting ray in model's coordiante system
 	 * @param enableScattering Flag indicating if ray can be scattered
 	 * @return Vector of ray exiting model or created in model
 	*/
@@ -229,7 +229,7 @@ class model : public MathematicalObject{
 	 * @param resolution GetResolution of grid
 	 * @return Grid with slice
 	*/
-	grid<voxData> getSlice( const surf sliceLocation, const double resolution ) const; 
+	grid<voxData> getSlice( const Surface sliceLocation, const double resolution ) const; 
 
 	/*!
 	 * @brief Alter special properties in the specified sphere
@@ -261,7 +261,7 @@ class model : public MathematicalObject{
 	static void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 										GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
 										grid<voxData>& slice, mutex& sliceMutex,
-										const surf& slicePlane,
+										const Surface& slicePlane,
 										const model& modelRef );
 
 	/*!

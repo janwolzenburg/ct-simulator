@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   line.h
+ * @file   Line.h
  * @brief  Classes for lines
  *
  * @author Jan Wolzenburg
@@ -23,125 +23,123 @@
 
 
 /*!
- * @brief Class for a line
+ * @brief Class for a Line
 */
-class line : public MathematicalObject{
+class Line : public MathematicalObject{
 
 	public:
 
 	/*!
 	 * @brief Cosntructor
-	 * @param v Unit vector
-	 * @param p Origin
+	 * @param direction Unit vector
+	 * @param origin Origin
 	*/
-	explicit line( const UnitVector3D v, const Point3D p );
+	explicit Line( const UnitVector3D direction, const Point3D origin );
 
 	/*!
 	 * @brief Constructor
-	 * @param v Line direction
-	 * @param p Origin
+	 * @param direction Line direction
+	 * @param origin Origin
 	*/
-	explicit line( const Vector3D v, const Point3D p );
-
+	explicit Line( const Vector3D direction, const Point3D origin );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	line( void );
+	Line( void );
 
 	/*!
-	 * @brief Convert line's data to string
-	 * @return String with line's data
+	 * @brief Convert Line's data to string
+	 * @return String with Line's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get origin_ of line
+	 * @brief Get origin_ of Line
 	 * @return Origin
 	*/
-	Point3D O( void ) const { return o; };
+	Point3D origin( void ) const { return origin_; };
 
 	/*!
 	 * @brief Set origin_
-	 * @param newO New origin_
-	 * @return Set origin_
+	 * @param new_origin New origin
+	 * @return Set origin
 	*/
-	Point3D setOrigin( const Point3D newO ){ return o = newO.ConvertTo( r ); };
+	Point3D origin( const Point3D new_origin ){ return origin_ = new_origin.ConvertTo( direction_ ); };
 
 	/*!
-	 * @brief Get line trajectory
+	 * @brief Get Line trajectory
 	 * @return Trajectory
 	*/
-	UnitVector3D R( void ) const { return r; };
+	UnitVector3D direction( void ) const { return direction_; };
 
 	/*!
-	 * @brief Convert line components to different coordinate system
-	 * @param target Target system
+	 * @brief Convert Line components to different coordinate system
+	 * @param target_coordinate_system Target system
 	 * @return Line in target system
 	*/
-	line convertTo( const CoordinateSystem* const target ) const{ return line{ r.ConvertTo( target ), o.ConvertTo( target ) }; };
+	Line ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{ return Line{ direction_.ConvertTo( target_coordinate_system ), origin_.ConvertTo( target_coordinate_system ) }; };
 
 	/*!
-	 * @brief Get point on the line based on parameter
-	 * @param linPara Line parameter t
-	 * @return Point p = o + r*t
+	 * @brief Get point on the Line based on parameter
+	 * @param line_parameter Line parameter t
+	 * @return Point point = origin_ + direction_*t
 	*/
-	Point3D getPnt( const double linPara ) const{ return o + ( r * linPara ); };
+	Point3D GetPoint( const double line_parameter ) const{ return origin_ + ( direction_ * line_parameter ); };
 	
-
 	/*!
-	 * @brief Get line parameter corresponding to point
-	 * @param p Point on line
-	 * @param success Is set to true when the given point lies on the line. False if not
+	 * @brief Get Line parameter corresponding to point
+	 * @param point_on_line Point on Line
+	 * @param solution_found Is set to true when the given point lies on the Line. False if not
 	 * @return Line parameter
 	*/
-	double getPara( const Point3D p, bool* const success ) const;
+	double GetLineParameter( const Point3D point_on_line, bool* const solution_found ) const;
 
 	/*!
-	 * @brief Get GetAngle between line and surface
-	 * @param s Surface
+	 * @brief Get GetAngle between Line and surface
+	 * @param suface Surface
 	 * @return Angle in radians
 	*/
-	double getAngle( surf s ) const;
+	double GetAngle( Surface suface ) const;
 
 	/*!
-	 * @brief Get perpendicular vector from this line to point p
-	 * @param p Point to get the lot to
-	 * @return To this line perpendicular vector connecting this line and point p
+	 * @brief Get perpendicular vector from this Line to point point
+	 * @param point Point to get the lot to
+	 * @return To this Line perpendicular vector connecting this Line and point point
 	*/
-	Vector3D getLot( const Point3D p ) const;
+	Vector3D GetLot( const Point3D point ) const;
 
 	/*!
-	 * @brief Get shortest distance between line and point
-	 * @param p Point
-	 * @return Distance in this line's unit
+	 * @brief Get shortest distance between Line and point
+	 * @param point Point
+	 * @return Distance in this Line's unit
 	*/
-	double getDistance( const Point3D p ) const{ return getLot( p ).length(); };
+	double GetDistance( const Point3D point ) const{ return GetLot( point ).length(); };
 
 	/*!
 	 * @brief Get shortest distance between two lines
-	 * @param l Line
-	 * @return Distance in this line's unit
+	 * @param line Line
+	 * @return Distance in this Line's unit
 	*/
-	double getDistance( const line l ) const;
+	double GetDistance( const Line line ) const;
 
 	/*!
-	 * @brief Project line on XY plane of coordinate system
-	 * @param coordinate_system_ System to project on
-	 * @return Projected line
+	 * @brief Project Line on XY plane of coordinate system
+	 * @param coordinate_system System to project on
+	 * @return Projected Line
 	*/
-	line projectOnXYPlane( const CoordinateSystem* const cSys ) const;
+	Line ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 
 	/*!
 	 * @brief Check if parameters are in bound
-	 * @param para Parameter
+	 * @param parameter Parameter
 	 * @return Always true
 	*/
-	virtual bool paraInBounds( [[maybe_unused]] const double para ) const { return true; };
+	virtual bool IsParameterInBounds( [[maybe_unused]] const double parameter ) const { return true; };
 
 
 	protected:
 
-	UnitVector3D r;			/*!< Line trajectory */
-	Point3D o;		 		/*!< Line origin_ */
+	UnitVector3D direction_;			/*!< Line trajectory */
+	Point3D origin_;		 		/*!< Line origin_ */
 };
