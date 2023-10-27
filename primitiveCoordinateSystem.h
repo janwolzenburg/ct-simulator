@@ -40,21 +40,21 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez );
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param current_byte Iterator to start of data_ in vector
 	*/
 	PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	 * @brief Convert coordinate system's data to string
-	 * @return String with coordinate system's data
+	 * @brief Convert coordinate system's data_ to string
+	 * @return String with coordinate system's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

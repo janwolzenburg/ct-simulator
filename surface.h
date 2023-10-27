@@ -38,7 +38,7 @@ class Surface : public MathematicalObject{
 	explicit Surface( const UnitVector3D direction_1, const UnitVector3D  direction_2, const Point3D  origin );
 
 	/*!
-	 * @brief Construct from binary data
+	 * @brief Construct from binary data_
 	 * @param binary_data Data vector
 	 * @param current_byte Iterator
 	 * @param coordinate_system System to assign surface to
@@ -51,15 +51,15 @@ class Surface : public MathematicalObject{
 	Surface( void );
 
 	/*!
-	 * @brief Convert surface's data to string
+	 * @brief Convert surface's data_ to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with surface's data
+	 * @return String with surface's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -178,7 +178,7 @@ class BoundedSurface : public Surface{
 	BoundedSurface( void ) : BoundedSurface( Surface{}, NumberRange{ 0., 1. }, NumberRange{ 0., 1. } ){};
 
 	/*!
-	 * @brief Construct from binary data
+	 * @brief Construct from binary data_
 	 * @param binary_data Data vector
 	 * @param current_byte Iterator
 	 * @param coordinate_system System to assign surface to
@@ -186,15 +186,15 @@ class BoundedSurface : public Surface{
 	BoundedSurface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );
 
 	/*!
-	 * @brief Convert surface's data to string
+	 * @brief Convert surface's data_ to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with surface's data
+	 * @return String with surface's data_
 	*/
 	std::string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

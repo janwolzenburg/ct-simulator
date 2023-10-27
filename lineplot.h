@@ -27,7 +27,7 @@ class lineplot : public plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired image size
+	 * @param imgSize_ Desired image size_
 	 * @param grid_ Flag to show grid
 	*/
 	lineplot( const string name_, const string xlabel_, const string ylabel_,
@@ -39,15 +39,15 @@ class lineplot : public plot{
 	lineplot( void );
 
 	/*!
-	 * @brief Assign data to plot
+	 * @brief Assign data_ to plot
 	 * @param X_ Vector of x values
 	 * @param Y_ Vector of y values
 	*/
 	void assignData( const vector<double> X_, const vector<double> Y_ );
 
 	/*!
-	 * @brief Assign data to plot
-	 * @param XY Pair of vectors with data
+	 * @brief Assign data_ to plot
+	 * @param XY Pair of vectors with data_
 	*/
 	void assignData( const VectorPair XY ){ assignData( XY.first, XY.second ); };
 

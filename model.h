@@ -45,16 +45,16 @@ class model : public MathematicalObject{
 	 * @brief Constructor
 	 * @param coordinate_system Position and orientation of model in global system
 	 * @param numVox3D_	Amount of voxels in each spacial dimension
-	 * @param voxSize3D_ Spacial size of voxels
+	 * @param voxSize3D_ Spacial size_ of voxels
 	 * @param name_ Name of model
 	*/
 	model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ = "Default model name_" );
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data_ is from model file
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	model( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
@@ -64,9 +64,9 @@ class model : public MathematicalObject{
 	model( void ) : model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
 
 	/*!
-	 * @brief Convert model's data to string
+	 * @brief Convert model's data_ to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with model's data
+	 * @return String with model's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -77,14 +77,14 @@ class model : public MathematicalObject{
 	Index3D NumVox( void ) const{ return numVox3D; };
 
 	/*!
-	 * @brief Get size of model
-	 * @return Model size
+	 * @brief Get size_ of model
+	 * @return Model size_
 	*/
 	Tuple3D ModSize( void ) const{ return size3D; };
 
 	/*!
-	 * @brief Get size of voxel
-	 * @return Voxel size
+	 * @brief Get size_ of voxel
+	 * @return Voxel size_
 	*/
 	Tuple3D VoxSize( void ) const{ return voxSize3D; };
 
@@ -95,8 +95,8 @@ class model : public MathematicalObject{
 	CoordinateSystem* CSys( void ) const{ return cSys; };
 
 	/*!
-	 * @brief Get range of attenuation in model
-	 * @return Range of attenuation
+	 * @brief Get range of attenuation_ in model
+	 * @return Range of attenuation_
 	*/
 	NumberRange attenuationRange( void ) const{ return NumberRange{ attenuationMin, attenuationMax }; };
 
@@ -116,7 +116,7 @@ class model : public MathematicalObject{
 	 * @brief Get voxel describing model boundaries
 	 * @return Voxel as complete model
 	*/
-	vox Vox( void ) const;
+	Voxel Vox( void ) const;
 
 	/*!
 	 * @brief Check whether indices are defined in model
@@ -149,12 +149,12 @@ class model : public MathematicalObject{
 	Index3D getVoxelIndices( const Point3D voxpnt ) const;
 
 	/*!
-	 * @brief Set voxel data
+	 * @brief Set voxel data_
 	 * @param newData Data to set
 	 * @param indices Indices of target voxel
 	 * @return True when indices are valid
 	*/
-	bool setVoxelData( const voxData newData, const Index3D indices );
+	bool setVoxelData( const VoxelData newData, const Index3D indices );
 
 	/*!
 	 * @brief Set voxel's special properties
@@ -162,44 +162,44 @@ class model : public MathematicalObject{
 	 * @param indices Indices of target voxel
 	 * @return True when indices are valid
 	*/
-	bool setVoxelProperty( const voxData::specialProperty property, const Index3D indices );
+	bool setVoxelProperty( const VoxelData::specialProperty property, const Index3D indices );
 
 	/*!
-	 * @brief Access voxel data
+	 * @brief Access voxel data_
 	 * @param x x-index of voxel
 	 * @param y y-index of voxel
 	 * @param z z-index of voxel
-	 * @return Const reference to voxel data
+	 * @return Const reference to voxel data_
 	*/
-	const voxData& getVoxelData( const size_t x, const size_t y, const size_t z ) const{ return this->operator()( x, y, z); };
+	const VoxelData& getVoxelData( const size_t x, const size_t y, const size_t z ) const{ return this->operator()( x, y, z); };
 
 	/*!
-	 * @brief Access voxel data
+	 * @brief Access voxel data_
 	 * @param indices inidices of voxel
-	 * @return Const reference to voxel data
+	 * @return Const reference to voxel data_
 	*/
-	const voxData& getVoxelData( const Index3D indices ) const{ return getVoxelData( indices.x, indices.y, indices.z ); };
+	const VoxelData& getVoxelData( const Index3D indices ) const{ return getVoxelData( indices.x, indices.y, indices.z ); };
 
 	/*!
-	 * @brief Access voxel data
+	 * @brief Access voxel data_
 	 * @param p Point in model
-	 * @return Const reference to voxel data
+	 * @return Const reference to voxel data_
 	*/
-	const voxData& getVoxelData( const Point3D p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
+	const VoxelData& getVoxelData( const Point3D p ) const{ return getVoxelData( getVoxelIndices( p ) ); };
 
 	/*!
 	 * @brief Get voxel instance for given indices
 	 * @param indices Indices of voxel
 	 * @return Instance of voxel
 	*/
-	vox getVoxel( const Index3D indices ) const;
+	Voxel getVoxel( const Index3D indices ) const;
 
 	/*!
 	 * @brief Get voxel in model
 	 * @param point Point in model
 	 * @return Voxel at point
 	*/
-	vox getVoxel( const Point3D point ) const{ return getVoxel( getVoxelIndices( point ) ); };
+	Voxel getVoxel( const Point3D point ) const{ return getVoxel( getVoxelIndices( point ) ); };
 
 	/*!
 	 * @brief Calculate Ray transmission through model
@@ -219,7 +219,7 @@ class model : public MathematicalObject{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -229,7 +229,7 @@ class model : public MathematicalObject{
 	 * @param resolution GetResolution of grid
 	 * @return Grid with slice
 	*/
-	grid<voxData> getSlice( const Surface sliceLocation, const double resolution ) const; 
+	grid<VoxelData> getSlice( const Surface sliceLocation, const double resolution ) const; 
 
 	/*!
 	 * @brief Alter special properties in the specified sphere
@@ -237,7 +237,7 @@ class model : public MathematicalObject{
 	 * @param center Center of sphere
 	 * @param radius Radius of sphere
 	*/
-	void addSpecialSphere( const voxData::specialProperty property, const Point3D center, const double radius );
+	void addSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius );
 
 
 	private:
@@ -246,10 +246,10 @@ class model : public MathematicalObject{
 	Tuple3D voxSize3D;								/*!<Voxelsize in each dimension in mm*/
 	Tuple3D size3D;									/*!<Size of complete model in mm*/
 	size_t numVox;								/*!<Absolute amount of voxels in model*/
-	vector<voxData> parameter;					/*!<Voxel data. Access with ROWS*COLS*dep + COLS*row + col*/
+	vector<VoxelData> parameter;					/*!<Voxel data_. Access with ROWS*COLS*dep + COLS*row + col*/
 	CoordinateSystem* cSys;								/*!<Coordinate system*/
-	double attenuationMin;						/*!<Minimum attenuation in model*/
-	double attenuationMax;						/*!<Maximum attenuation in model*/
+	double attenuationMin;						/*!<Minimum attenuation_ in model*/
+	double attenuationMax;						/*!<Maximum attenuation_ in model*/
 	string name;								/*!<Model name_*/
 
 
@@ -260,7 +260,7 @@ class model : public MathematicalObject{
 	*/
 	static void sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 										GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
-										grid<voxData>& slice, mutex& sliceMutex,
+										grid<VoxelData>& slice, mutex& sliceMutex,
 										const Surface& slicePlane,
 										const model& modelRef );
 
@@ -278,23 +278,23 @@ class model : public MathematicalObject{
 	 * @param x x-index of voxel
 	 * @param y y-index of voxel
 	 * @param z z-index of voxel
-	 * @return Const reference to voxel data
+	 * @return Const reference to voxel data_
 	*/
-	const voxData& operator()( const size_t x, const size_t y, const size_t z ) const;
+	const VoxelData& operator()( const size_t x, const size_t y, const size_t z ) const;
 
 	/*!
 	 * @brief Element access
 	 * @param x x-index of voxel
 	 * @param y y-index of voxel
 	 * @param z z-index of voxel
-	 * @return Reference to voxel data
+	 * @return Reference to voxel data_
 	*/
-	voxData& operator() ( const size_t x, const size_t y, const size_t z );
+	VoxelData& operator() ( const size_t x, const size_t y, const size_t z );
 
 	/*!
 	 * @brief Element access
 	 * @param indices Indices of voxel
-	 * @return Reference to voxel data
+	 * @return Reference to voxel data_
 	*/
-	voxData& operator() ( const Index3D indices ){ return ( *this )( indices.x, indices.y, indices.z ); };
+	VoxelData& operator() ( const Index3D indices ){ return ( *this )( indices.x, indices.y, indices.z ); };
 };

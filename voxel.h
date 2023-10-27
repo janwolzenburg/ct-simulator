@@ -25,20 +25,6 @@ using std::array;
  *********************************************************************/
 
 
- /*!
-  * @brief Face identifiers of voxel
- */
-enum class FACE_ID : unsigned char{
-	BEGIN,
-	YZ_Xp = BEGIN,		/*!<Y-Z plane at positive x*/
-	XZ_Yp,				/*!<X-Z plane at positive y*/
-	XY_Zp,				/*!<X-Y plane at positive z*/
-	XY_Zm,				/*!<X-Y plane at negative x*/
-	XZ_Ym,				/*!<X-Z plane at negative y*/
-	YZ_Xm,				/*!<Y-Z plane at negative z*/
-	END,
-	INVALID = END		/*!<Invalid face x*/
-};
 
 
 
@@ -47,19 +33,19 @@ enum class FACE_ID : unsigned char{
 */
 
 /*!
- * @brief Physical voxel data
+ * @brief Physical voxel data_
 */
-#pragma pack(push, 1)	// Memory alignment for serializing model data without serializing single voxel data 
-class voxData{
+#pragma pack(push, 1)	// Memory alignment for serializing model data_ without serializing single voxel data_ 
+class VoxelData{
 	
 	public:
 
-	typedef unsigned char specialEnumType;		/*!<Type to store up tu 8 special properties_*/
+	typedef unsigned char specialPropertyEnumType;		/*!<Type to store up tu 8 special properties_*/
 
 	/*!
 	 * @brief Special propterties a voxel can have
 	*/
-	enum specialProperty : specialEnumType{
+	enum specialProperty : specialPropertyEnumType{
 		NONE =			0b00000000,
 		METAL =			0b00000001,
 		UNDEFINED =		0b00000010
@@ -69,93 +55,93 @@ class voxData{
 	 * @brief Return the reference energy globally used
 	 * @return Reference energy in eV
 	*/
-	static double ReferencyEnergy( void ) { return referenceEnergy; };
+	static double reference_energy_eV( void ) { return reference_energy_eV_; };
 
 	/*!
 	 * @brief Constructor
-	 * @param attenuationAtFrequency Attenuation coefficient at given frequency
-	 * @param frequency Frequency
+	 * @param attenuation_at_energy Attenuation coefficient at given energy
+	 * @param energy_eV Energy in eV
 	*/
-	voxData( const double attenuationAtEnergy, const double energy, const specialProperty = UNDEFINED );
+	VoxelData( const double attenuation_at_energy, const double energy_eV, const specialProperty = UNDEFINED );
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Vector with serialized data
-	 * @param it Start of data for this object
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Vector with serialized data_
+	 * @param current_byte Start of data_ for this object
 	*/
-	voxData( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	voxData( void ) : attenuation( -1 ), specialProperties( UNDEFINED ){};
+	VoxelData( void ) : attenuation_( -1 ), specialProperties_( UNDEFINED ){};
+
+	/*!
+	 * @brief Serialize this object
+	 * @param binary_data Reference to vector where data_ will be appended
+	*/
+	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
 	 * @brief Comparison
-	 * @param d2 Second voxel data
-	 * @return True when attenuation of left operand is smaller than right's
+	 * @param d2 Second voxel data_
+	 * @return True when attenuation_ of left operand is smaller than right's
 	*/
-	bool operator<( const voxData& d2 ) const{ return this->attenuation < d2.attenuation; };
+	bool operator<( const VoxelData& d2 ) const{ return this->attenuation_ < d2.attenuation_; };
 
 	/*!
 	 * @brief Comparison
-	 * @param d2 Second voxel data
-	 * @return True when attenuation of left operand is greater than right's
+	 * @param d2 Second voxel data_
+	 * @return True when attenuation_ of left operand is greater than right's
 	*/
-	bool operator>( const voxData& d2 ) const{ return !operator<( d2 ); };
-
-	/*!
-	 * @brief Get the attenuation at given energy
-	 * @param frequency Frequency
-	 * @return Attenuation 
-	*/
-	double attenuationAt( const double energy ) const;
-
-	/*!
-	 * @brief Get attenuation at reference energy
-	 * @return Attenuation at reference energy 
-	*/
-	double attenuationAtRefE( void ) const{ return attenuation; };
+	bool operator>( const VoxelData& d2 ) const{ return !operator<( d2 ); };
 
 	/*!
 	 * @brief Add special property
 	 * @param property Property to add
 	*/
-	void addSpecialProperty( const specialProperty property ){ specialProperties |= ToUnderlying( property ); };
+	void AddSpecialProperty( const specialProperty property ){ specialProperties_ |= ToUnderlying( property ); };
 
 	/*!
 	 * @brief Remove special property
 	 * @param property Property to remove
 	*/
-	void removeSpecialProperty( const specialProperty property ){ specialProperties &= ~ToUnderlying( property ); };
+	void RemoveSpecialProperty( const specialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
+
+	/*!
+	 * @brief Get the attenuation_ at given energy
+	 * @param energy_eV Energy in eV
+	 * @return Attenuation at given energy
+	*/
+	double GetAttenuationAtEnergy( const double energy_eV ) const;
+
+	/*!
+	 * @brief Get attenuation_ at reference energy
+	 * @return Attenuation at reference energy 
+	*/
+	double GetAttenuationAtReferenceEnergy( void ) const{ return attenuation_; };
 
 	/*!
 	 * @brief Check if there is a special property
 	 * @return True when is has at least one property
 	*/
-	bool hasSpecialProperty( void ) const{ return specialProperties != NONE; };
+	bool HasSpecialProperty( void ) const{ return specialProperties_ != NONE; };
 	
 	/*!
 	 * @brief Check for specific property
 	 * @param property Property to check
 	 * @return True when voxel has specific property
 	*/
-	bool hasSpecificProperty( const specialProperty property ) const;
+	bool HasSpecificProperty( const specialProperty property ) const;
 
-	/*!
-	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
-	*/
-	size_t Serialize( vector<char>& binary_data ) const;
 
-		
 	private:
 
-	static constexpr double referenceEnergy = 120000.;			/*!<Reference Energy for attenuation coefficients in eV*/
-	static constexpr double referenceEnergy_3 = 1.728e+15;		/*!<Cube of reference energy*/
+	static constexpr double reference_energy_eV_ = 120000.;			/*!<Reference Energy for attenuation_ coefficients in eV*/
+	static constexpr double referenceEnergy_3_eV3_ = 1.728e+15;		/*!<Cube of reference energy*/
 
-	double attenuation	= -1;									/*!<Absorption coefficient at reference Energy*/
-	specialEnumType specialProperties;							/*!<Special properties_ in voxel*/
+	double attenuation_	= -1;										/*!<Absorption coefficient at reference Energy*/
+	specialPropertyEnumType specialProperties_;						/*!<Special properties_ in voxel*/
 
 
 	/*!
@@ -164,7 +150,7 @@ class voxData{
 	 * @param frequency 
 	 * @return 
 	*/
-	double attenuationAtRefE( const double attenuationAtEnergy, const double energy ) const;
+	double GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const;
 
 };
 #pragma pack(pop)
@@ -174,72 +160,87 @@ class voxData{
 /*!
  * @brief Class for voxels
 */
-class vox : public MathematicalObject{
+class Voxel : public MathematicalObject{
 
 	public:
+	
+	 /*!
+	  * @brief Face identifiers of voxel
+	 */
+	enum class Face : unsigned char{
+		Begin,
+		YZ_Xp = Begin,		/*!<Y-Z plane at positive x*/
+		XZ_Yp,				/*!<X-Z plane at positive y*/
+		XY_Zp,				/*!<X-Y plane at positive z*/
+		XY_Zm,				/*!<X-Y plane at negative x*/
+		XZ_Ym,				/*!<X-Z plane at negative y*/
+		YZ_Xm,				/*!<Y-Z plane at negative z*/
+		End,
+		Invalid = End		/*!<Invalid face x*/
+	};
 
 	/*!
 	 * @brief Constructor
-	 * @param o_ Origin point of voxel
-	 * @param size_	Size of voxel in unit of coordinate system's axes
-	 * @param data_	Physical data of voxel
+	 * @param origin Origin point of voxel
+	 * @param size	Size of voxel in unit of coordinate system's axes
+	 * @param data	Physical data_ of voxel
 	*/
-	vox( const Point3D o_, const Tuple3D size_, const voxData data_ );
+	Voxel( const Point3D origin, const Tuple3D size, const VoxelData data );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	vox( void ) : vox{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{1, 1, 1}, voxData{} }{};
+	Voxel( void ) : Voxel{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{ 1, 1, 1 }, VoxelData{} }{};
 
 	/*!
-	 * @brief Convert result's data to string
-	 * @return String with result's data
+	 * @brief Convert result's data_ to string
+	 * @return String with result's data_
 	*/
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get origin_ point of voxel
+	 * @brief Get origin point of voxel
 	 * @return Origin point
 	*/
-	Point3D O( void ) const{ return o; };
+	Point3D origin_corner( void ) const{ return origin_corner_; };
 
 	/*!
 	 * @brief Get size of voxel
 	 * @return Size of voxel
 	*/
-	Tuple3D Size( void ) const{ return size; };
+	Tuple3D size( void ) const{ return size_; };
 
 	/*!
-	 * @brief Get data of voxel
+	 * @brief Get data_ of voxel
 	 * @return Voxel data
 	*/
-	voxData Data( void ) const{ return data; };
+	VoxelData data( void ) const{ return data_; };
 
 	/*!
 	 * @brief Get face of voxel
-	 * @param id_ Face ID
+	 * @param face Face ID
 	 * @return Bounded surface which is the face
 	*/
-	BoundedSurface getFace( FACE_ID id_ ) const{ return faces[ ToUnderlying( id_ ) ]; };
+	BoundedSurface GetFace( Face face ) const{ return faces[ ToUnderlying( face ) ]; };
 
 	/*!
 	 * @brief Get center of voxel
 	 * @return Point at center of voxel
 	*/
-	Point3D getCenter( void ) const{ return o + Vector3D{ Tuple3D{ size.x / 2, size.y / 2, size.z / 2 } , o.GetCoordinateSystem() }; };
+	Point3D GetCenter( void ) const{ return origin_corner_ + Vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
 
 	/*!
 	 * @brief Check if voxel contains point
-	 * @param p Point to check
+	 * @param point Point to check
 	 * @return True when p is inside the voxel
 	*/
-	bool contains( const Point3D p ) const;
+	bool Contains( const Point3D point ) const;
 
 
 	private:
 
-	Tuple3D size;											/*!<Size in local coordinate system*/
-	voxData data;										/*!<Physical voxel data*/
-	Point3D o;												/*!<Point as origin_ of voxel in coordinate system*/
-	array<BoundedSurface, ToUnderlying( FACE_ID::END )> faces;	/*!<Faces in global context*/
+	Tuple3D size_;				/*!<Size in local coordinate system*/
+	VoxelData data_;			/*!<Physical voxel data_*/
+	Point3D origin_corner_;		/*!<Point as origin_ of voxel in coordinate system*/
+	array<BoundedSurface, ToUnderlying( Face::End )> faces;	/*!<Faces in global context*/
 };

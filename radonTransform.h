@@ -104,33 +104,33 @@ class radonTransformed : private grid<> {
 	radonTransformed( const detectorRadonParameter detectorParameter );
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	radonTransformed( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Get grid data
-	 * @return Grid data
+	 * @brief Get grid data_
+	 * @return Grid data_
 	*/
 	grid<> Data( void ) const{ return ( grid<> ) * this; };
 	
 	/*!
-	 * @brief Assign data at index 
-	 * @param data Data to assign
+	 * @brief Assign data_ at index 
+	 * @param data_ Data to assign
 	*/
 	void assignData( const GridIndex index, const double value ){ this->setData( index, value ); };
 
 	/*!
-	 * @brief Assign data to grid
-	 * @param data Data point
+	 * @brief Assign data_ to grid
+	 * @param data_ Data point
 	*/
-	void assignData( const radonPoint data );
+	void assignData( const radonPoint data_ );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

@@ -27,7 +27,7 @@ class geoplot : public plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired image size
+	 * @param imgSize_ Desired image size_
 	 * @param grid_ Flag to show grid
 	*/
 	geoplot( const string name_, const string xlabel_, const string ylabel_,

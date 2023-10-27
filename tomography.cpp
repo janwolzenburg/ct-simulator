@@ -80,7 +80,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 	if( zPosition != 0. )
 		Gantry.CSys()->Translate( Gantry.CSys()->GetEz() * zPosition );
 
-	// Assign gantry csys-data to radon coordinate system
+	// Assign gantry csys-data_ to radon coordinate system
 	this->radonCSys->CopyPrimitiveFrom( Gantry.CSys() );
 
 
@@ -114,7 +114,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const model& Model, con
 			// Get the radon point
 			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
 			
-			// Assign the data to sinogram
+			// Assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
 		

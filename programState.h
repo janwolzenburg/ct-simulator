@@ -58,7 +58,7 @@ class programState{
 	*/
 	static programState& getInstance();
 	
-	grid<voxData> modelSliceInstance;	/*!<Slice through model as gridded data*/
+	grid<VoxelData> modelSliceInstance;	/*!<Slice through model as gridded data_*/
 	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
 	tomography tomographyInstance;				/*!<Instance of the tomography*/

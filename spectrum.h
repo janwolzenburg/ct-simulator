@@ -72,13 +72,13 @@ class spectrum {
 	 * @brief Get minimum x value
 	 * @return Minimum x value
 	*/
-	double getMin( void ) const{ return data.front().x; };
+	double getMin( void ) const{ return data_.front().x; };
 
 	/*!
 	 * @brief Get maximum x value
 	 * @return Maximum x value
 	*/
-	double getMax( void ) const{ return data.back().x; };
+	double getMax( void ) const{ return data_.back().x; };
 
 	/*!
 	 * @brief Modify spectrum
@@ -87,10 +87,10 @@ class spectrum {
 	void modify( std::function<void( Tuple2D& )> modFunction );
 
 	/*!
-	 * @brief Get raw data
+	 * @brief Get raw data_
 	 * @return Vector of points
 	*/
-	vector<Tuple2D> rawData( void ) const { return data; };
+	vector<Tuple2D> rawData( void ) const { return data_; };
 
 	/*!
 	 * @brief Get the energy resolution
@@ -106,7 +106,7 @@ class spectrum {
 	*/
 	void updateMean( void );
 
-	vector<Tuple2D> data;			/*!<2D point data sorted by x value*/
+	vector<Tuple2D> data_;			/*!<2D point data_ sorted by x value*/
 	double energyResolution;	/*!<Reolution of energies in spectrum*/
 	double mean;				/*!<Mean Frequency of spectrum*/
 

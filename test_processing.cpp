@@ -73,7 +73,7 @@ bool test_detector_to_sinogram( void ){
 			radonCoords newRadonCoordinates{ radonCSys, currentPixel.NormalLine() };
 			// Get the radon point
 			radonPoint newRadonPoint{ newRadonCoordinates, 1. };
-			// Assign the data to sinogram
+			// Assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
 

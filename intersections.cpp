@@ -26,42 +26,44 @@
 	RayVoxelIntersection
 */
 
-RayVoxelIntersection::RayVoxelIntersection( const vox v_, const Ray r_ )
+RayVoxelIntersection::RayVoxelIntersection( const Voxel v_, const Ray r_ )
 {
 	// Components of Ray trajectory in voxel coordinate system
-	Tuple3D comps = r_.direction().GetComponents( v_.O() );
+	Tuple3D comps = r_.direction().GetComponents( v_.origin_corner() );
 	bool facePossible = true;
 
 	// Find Entrance
 
+	using Face = Voxel::Face;
+
 	// Ray origin_ inside voxel
-	if(  v_.contains( r_.origin() ) ){
+	if(  v_.Contains( r_.origin() ) ){
 		entrance_.intersection_exists_ = true;
 		entrance_.line_parameter_ = 0;
 		entrance_.intersection_point_ = r_.origin();
-		entrance_face_ = FACE_ID::INVALID;
+		entrance_face_ = Face::Invalid;
 	}
 	else{
 
 		// Iterate all faces
-		for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
+		for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
 			facePossible = true;
 
 			// Check if face can be an entrance_ face of the tRay
 			switch( i ){
-				case FACE_ID::YZ_Xp:
+				case Face::YZ_Xp:
 				if( comps.x >= 0 ) facePossible = false; break;
-				case FACE_ID::YZ_Xm:
+				case Face::YZ_Xm:
 				if( comps.x <= 0 ) facePossible = false; break;
 
-				case FACE_ID::XZ_Yp:
+				case Face::XZ_Yp:
 				if( comps.y >= 0 ) facePossible = false; break;
-				case FACE_ID::XZ_Ym:
+				case Face::XZ_Ym:
 				if( comps.y <= 0 ) facePossible = false; break;
 
-				case FACE_ID::XY_Zp:
+				case Face::XY_Zp:
 				if( comps.z >= 0 ) facePossible = false; break;
-				case FACE_ID::XY_Zm:
+				case Face::XY_Zm:
 				if( comps.z <= 0 ) facePossible = false; break;
 
 				default: break;
@@ -69,7 +71,7 @@ RayVoxelIntersection::RayVoxelIntersection( const vox v_, const Ray r_ )
 
 			if( facePossible ){
 				// Check  if tRay intersects current face
-				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.getFace( i ) };
+				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.GetFace( i ) };
 				if( entrance_.intersection_exists_ ){
 					entrance_face_ = i; break;
 				}
@@ -80,24 +82,24 @@ RayVoxelIntersection::RayVoxelIntersection( const vox v_, const Ray r_ )
 
 	// Find exit_
 
-	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
+	for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
 		facePossible = true;
 
 		// Check if face can be an exit_ face of the tRay
 		switch( i ){
-			case FACE_ID::YZ_Xp:
+			case Face::YZ_Xp:
 			if( comps.x <= 0 ) facePossible = false; break;
-			case FACE_ID::YZ_Xm:
+			case Face::YZ_Xm:
 			if( comps.x >= 0 ) facePossible = false; break;
 
-			case FACE_ID::XZ_Yp:
+			case Face::XZ_Yp:
 			if( comps.y <= 0 ) facePossible = false; break;
-			case FACE_ID::XZ_Ym:
+			case Face::XZ_Ym:
 			if( comps.y >= 0 ) facePossible = false; break;
 
-			case FACE_ID::XY_Zp:
+			case Face::XY_Zp:
 			if( comps.z <= 0 ) facePossible = false; break;
-			case FACE_ID::XY_Zm:
+			case Face::XY_Zm:
 			if( comps.z >= 0 ) facePossible = false; break;
 
 			default: break;
@@ -105,7 +107,7 @@ RayVoxelIntersection::RayVoxelIntersection( const vox v_, const Ray r_ )
 
 		if( facePossible ){
 			// Check  if tRay intersects current face
-			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.getFace( i ) };
+			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.GetFace( i ) };
 			if( exit_.intersection_exists_ ){
 				exit_face_ = i; break;
 			}

@@ -49,8 +49,8 @@ class Line : public MathematicalObject{
 	Line( void );
 
 	/*!
-	 * @brief Convert Line's data to string
-	 * @return String with Line's data
+	 * @brief Convert Line's data_ to string
+	 * @return String with Line's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 

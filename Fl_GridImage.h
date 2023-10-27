@@ -56,25 +56,25 @@ class Fl_GridImage : public Fl_Widget{
 	void resize( int x, int y, int w, int h ) override;
 
 	/*!
-	 * @brief Assign grayscale image as new image data
+	 * @brief Assign grayscale image as new image data_
 	 * @param img Grayscale image
 	*/
 	void assignImage( const monoImage& img );
 
 	/*!
-	 * @brief Assign gridded voxel data 
+	 * @brief Assign gridded voxel data_ 
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void assignImage( const grid<voxData>& modGrid, const bool normalise = false );
+	void assignImage( const grid<VoxelData>& modGrid, const bool normalise = false );
 
 	/*!
-	 * @brief Calculate new image when size changed
+	 * @brief Calculate new image when size_ changed
 	*/
 	void calculateScaled( void );
 
 	/*!
-	 * @brief Update and redraw image when size changed
+	 * @brief Update and redraw image when size_ changed
 	*/
 	void updateScaled( void );
 
@@ -94,8 +94,8 @@ class Fl_GridImage : public Fl_Widget{
 	bool hasOverlay;						/*!<Flag indicating existing overlay*/
 	vector<pair<bool, rgb_Int>> overlay;	/*!<Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
 
-	rgbImage colorImage;		/*!<Colored image resulting from grayscale image with overlayed color data*/
+	rgbImage colorImage;		/*!<Colored image resulting from grayscale image with overlayed color data_*/
 
-	static rgb_Int bgColor;		/*!<Background color for pixel without data*/
+	static rgb_Int bgColor;		/*!<Background color for pixel without data_*/
 
 };

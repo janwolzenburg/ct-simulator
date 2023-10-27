@@ -61,8 +61,8 @@ class CoordinateSystemTree : public MathematicalObject{
 	static CoordinateSystemTree& GetInstance();
 
 	/*!
-	 * @brief Convert coordinate tree's data
-	 * @return String with tree's data
+	 * @brief Convert coordinate tree's data_
+	 * @return String with tree's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -91,10 +91,10 @@ class CoordinateSystemTree : public MathematicalObject{
 	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const CoordinateSystem* parent, const string name );
 	
 	/*!
-	 * @brief Constructor from serialized data
-	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data_ is from model file
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	CoordinateSystem* AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& it );
 

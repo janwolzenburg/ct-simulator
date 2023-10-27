@@ -36,14 +36,14 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	public:
 
 	/*!
-	 * @brief Convert coordinate system's data to string
-	 * @return String with coordinate system's data
+	 * @brief Convert coordinate system's data_ to string
+	 * @return String with coordinate system's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -79,7 +79,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	CoordinateSystem* CreateCopy( const string new_name ) const;
 	
 	/*!
-	 * @brief Copy data from source to this
+	 * @brief Copy data_ from source to this
 	 * @param sourceCSys Source system
 	*/
 	void CopyPrimitiveFrom( const CoordinateSystem* const source_system );

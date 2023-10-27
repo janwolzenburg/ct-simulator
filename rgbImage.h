@@ -50,7 +50,7 @@ class rgbImage{
 	public:
 
 	/*!
-	 * @brief Construct empty image with given size
+	 * @brief Construct empty image with given size_
 	 * @param width_ Width
 	 * @param height_ Height
 	*/
@@ -62,7 +62,7 @@ class rgbImage{
 	rgbImage( void ) : rgbImage{ 0, 0 }{};
 
 	/*!
-	 * @brief Construct image from other image but different size
+	 * @brief Construct image from other image but different size_
 	 * @details Constructed image will be scaled in each direction individually
 	 * @param srcImg Source image
 	 * @param newWidth Width of constructed image
@@ -80,8 +80,8 @@ class rgbImage{
 	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay = vector<pair<bool, rgb_Int>>( 0 ) );
 
 	/*!
-	 * @brief Construct image from binary data
-	 * @param binary_data Binary data
+	 * @brief Construct image from binary data_
+	 * @param binary_data Binary data_
 	 * @param it Iterator to start reading from
 	*/
 	rgbImage( const vector<char>& binary_data, vector<char>::const_iterator& it );
@@ -107,7 +107,7 @@ class rgbImage{
 	size_t pixelIndex( const size_t c, const size_t r ) const;
 
 	/*!
-	 * @brief Get the image data
+	 * @brief Get the image data_
 	 * @param c Column
 	 * @param direction_ Row
 	 * @return Color at row and column
@@ -115,9 +115,9 @@ class rgbImage{
 	rgb_Int charData( const size_t c, const size_t r ) const{ return imageData.at( pixelIndex( c, r ) ); };
 
 	/*!
-	 * @brief Get pointer raw image data
-	 * @details Be careful when data vector changes! The returned pointer may then point to false address
-	 * @return Pointer to data start in
+	 * @brief Get pointer raw image data_
+	 * @details Be careful when data_ vector changes! The returned pointer may then point to false address
+	 * @return Pointer to data_ start in
 	*/
 	const rgb_Int* getDataPtr( void ){ return imageData.data(); };
 
@@ -130,7 +130,7 @@ class rgbImage{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -147,10 +147,10 @@ class rgbImage{
 	private:
 
 	/*!
-	 * @brief Get reference to image data
+	 * @brief Get reference to image data_
 	 * @param c Column
 	 * @param direction_ Row
-	 * @return Reference to color data
+	 * @return Reference to color data_
 	*/
 	rgb_Int& charData( const size_t c, const size_t r ){ return imageData.at( pixelIndex( c, r ) ); };
 

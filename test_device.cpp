@@ -310,7 +310,7 @@ bool test_modifiedDetector( void ){
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 			
-			// First pixel size so that the neighbooring pixel intersects at half GetAngle
+			// First pixel size_ so that the neighbooring pixel intersects at half GetAngle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -324,7 +324,7 @@ bool test_modifiedDetector( void ){
 			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size is double the lot length_
+			// Pixel size_ is double the lot length_
 			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 

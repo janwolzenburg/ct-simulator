@@ -28,21 +28,21 @@ using std::for_each;
 spectrum::spectrum(const vector<double> X, const vector<double> Y)
 {
 	if (X.size() != Y.size() || X.size() < 2) {
-		data = vector<Tuple2D>{ Tuple2D{0, 0}, Tuple2D{1, 0} };
+		data_ = vector<Tuple2D>{ Tuple2D{0, 0}, Tuple2D{1, 0} };
 		return;
 	}
 
 	for (size_t i = 0; i < X.size(); i++) {
-		data.push_back(Tuple2D{ X.at(i), Y.at(i) });
+		data_.push_back(Tuple2D{ X.at(i), Y.at(i) });
 	}
 
-	// Sort data by x value
-	sort( data.begin(), data.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
+	// Sort data_ by x value
+	sort( data_.begin(), data_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
-	energyResolution = data.at( 1 ).x - data.at( 0 ).x;
+	energyResolution = data_.at( 1 ).x - data_.at( 0 ).x;
 
 	// Check consistency
-	for( auto dataIt = data.cbegin() + 1; dataIt < data.cend(); dataIt++ ){
+	for( auto dataIt = data_.cbegin() + 1; dataIt < data_.cend(); dataIt++ ){
 
 		double diff = ( dataIt )->x - ( dataIt - 1 )->x;
 
@@ -58,7 +58,7 @@ spectrum::spectrum(const vector<double> X, const vector<double> Y)
 
 void spectrum::Scale( const double factor ){
 
-	for_each( data.begin(), data.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
+	for_each( data_.begin(), data_.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
 	updateMean();
 }
 
@@ -72,19 +72,19 @@ spectrum spectrum::getScaled( const double factor ) const {
 }
 
 double spectrum::getSum( void ) const{
-	return std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
+	return std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
 }
 
 void spectrum::updateMean( void ){
 
 	// Get the sum of products. In principle an "expected value"
-	const double expectedValue = std::accumulate( data.cbegin(), data.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
+	const double expectedValue = std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
 
 	mean = expectedValue / getSum();	
 }
 
 void spectrum::modify( std::function<void( Tuple2D& )> modFunction ){
-	for( Tuple2D& v : data ){
+	for( Tuple2D& v : data_ ){
 		modFunction( v );
 	}
 

@@ -66,7 +66,7 @@ modelView::modelView( int x, int y, int w, int h ) :
 	viewGrp.add( viewImg );
 
 
-	// Model data
+	// Model data_
 	modelData.hide();
 
 	// Labelsize and box

@@ -46,8 +46,8 @@ class Vector3D : protected Coordinates{
 	Vector3D( void );
 
 	/*!
-	 * @brief Convert vector's data to string
-	 * @return String with vector's data
+	 * @brief Convert vector's data_ to string
+	 * @return String with vector's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -426,8 +426,8 @@ class Point3D : public Vector3D{
 	Point3D( const Vector3D v ) : Vector3D( v ){};
 
 	/*!
-	 * @brief Convert point's data to string
-	 * @return String with point's data
+	 * @brief Convert point's data_ to string
+	 * @return String with point's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 

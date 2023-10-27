@@ -46,17 +46,17 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	void changeContrast( const NumberRange bounds );
 
 	/*!
-	 * @brief Assign grayscale image as new image data
+	 * @brief Assign grayscale image as new image data_
 	 * @param img Grayscale image
 	*/
 	void assignImage( const monoImage& img );
 
 	/*!
-	 * @brief Assign gridded voxel data 
+	 * @brief Assign gridded voxel data_ 
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void assignImage( const grid<voxData>& modGrid, const bool normalise = false );
+	void assignImage( const grid<VoxelData>& modGrid, const bool normalise = false );
 
 	/*!
 	 * @brief Set the slider range
@@ -71,7 +71,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	bool handleEvents( void );
 
 	/*!
-	 * @brief Set the contrast adjustment slider range by data values in image
+	 * @brief Set the contrast adjustment slider range by data_ values in image
 	*/
 	void setSliderBoundsFromImage( void );
 

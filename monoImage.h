@@ -31,7 +31,7 @@ class monoImage{
 
 
 	/*!
-	 * @brief Construct empty image with given size
+	 * @brief Construct empty image with given size_
 	 * @param width_ Width
 	 * @param height_ Height
 	*/
@@ -50,14 +50,14 @@ class monoImage{
 	monoImage( const grid<>& source, const bool normalise = false );
 
 	/*!
-	 * @brief Construct image from voxel-data grid
-	 * @param source Source grid with voxel data
+	 * @brief Construct image from voxel-data_ grid
+	 * @param source Source grid with voxel data_
 	 * @param Normalise Flag for normalisation
 	*/
-	monoImage( const grid<voxData>& source, const bool normalise = false );
+	monoImage( const grid<VoxelData>& source, const bool normalise = false );
 
 	/*!
-	 * @brief Construct image from other image but different size
+	 * @brief Construct image from other image but different size_
 	 * @details Constructed image will be scaled in each direction individually
 	 * @param srcImg Source image
 	 * @param newWidth Width of constructed image
@@ -66,8 +66,8 @@ class monoImage{
 	monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight );
 
 	/*!
-	 * @brief Construct image from binary data
-	 * @param binary_data Binary data
+	 * @brief Construct image from binary data_
+	 * @param binary_data Binary data_
 	 * @param it Iterator to start reading from
 	*/
 	monoImage( const vector<char>& binary_data, vector<char>::const_iterator& it );
@@ -104,7 +104,7 @@ class monoImage{
 	 * @param direction_ Row
 	 * @return Value at ( c, direction_ )
 	*/
-	double operator()( const size_t c, const size_t r ) const{ return data.at( index( c, r ) ); };
+	double operator()( const size_t c, const size_t r ) const{ return data_.at( index( c, r ) ); };
 
 	/*!
 	 * @brief Acces operator
@@ -112,10 +112,10 @@ class monoImage{
 	 * @param direction_ Row
 	 * @return Reference to value at ( c, direction_ )
 	*/
-	double& operator()( const size_t c, const size_t r ){ return data.at( index( c, r ) ); };
+	double& operator()( const size_t c, const size_t r ){ return data_.at( index( c, r ) ); };
 
 	/*!
-	 * @brief Get character data for image drawing
+	 * @brief Get character data_ for image drawing
 	 * @param c Column
 	 * @param direction_ Row
 	 * @return Grayscale value
@@ -123,23 +123,23 @@ class monoImage{
 	unsigned char charData( const size_t c, const size_t r ) const{ return imData.at( index( c, r ) ); };
 
 	/*!
-	 * @brief Get pointer raw image data
-	 * @details Be careful when data vector changes! The returned pointer may then point to false address
-	 * @return Pointer to data start in
+	 * @brief Get pointer raw image data_
+	 * @details Be careful when data_ vector changes! The returned pointer may then point to false address
+	 * @return Pointer to data_ start in
 	*/
 	const unsigned char* getDataPtr( void ){ return imData.data(); };
 
 	/*!
-	 * @brief Get minimum of image data
-	 * @return Minimum value in data
+	 * @brief Get minimum of image data_
+	 * @return Minimum value in data_
 	*/
-	double minimum( void ) const{ return GetMinElement( data ); };
+	double minimum( void ) const{ return GetMinElement( data_ ); };
 
 	/*!
-	 * @brief Get maximum of image data
-	 * @return maximum value in data
+	 * @brief Get maximum of image data_
+	 * @return maximum value in data_
 	*/
-	double maximum( void ) const{ return GetMaxElement( data ); };
+	double maximum( void ) const{ return GetMaxElement( data_ ); };
 
 	/*!
 	 * @brief Change the images contrast to given range
@@ -148,14 +148,14 @@ class monoImage{
 	void adjustContrast( const NumberRange dataRange );
 
 	/*!
-	* @brief Normalise unsigned char data
-	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
+	* @brief Normalise unsigned char data_
+	* @details Converts double data_ to unsigned char. 0 will correspond to min( data_ ) and 255 to max( data_ )
 	*/
 	void normalise( void );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -166,7 +166,7 @@ class monoImage{
 	size_t height;					/*!<Image height*/
 	size_t numPixel;				/*!<Amount of pixel in image*/
 
-	vector<double> data;			/*!<Double data*/
+	vector<double> data_;			/*!<Double data_*/
 	vector<unsigned char> imData;	/*!<Data as unsigned char values*/
 
 

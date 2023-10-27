@@ -46,20 +46,20 @@ class tomographyParameter{
 	 * @param scattering_ Enable Ray scattering during transmission
 	 * @param maxRadiationLoops_ Maximum amount of loops, when rays are scattered
 	 * @param scatterPropability_ Approximate propability that a Ray is scattered once when transmitted through whole model
-	 * @param rayStepSize_ Step size used in Ray tracing
+	 * @param rayStepSize_ Step size_ used in Ray tracing
 	*/
 	tomographyParameter( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ );
 	
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	tomographyParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -70,7 +70,7 @@ class tomographyParameter{
 	bool scattering;				/*!<Enable scattering*/
 	size_t maxRadiationLoops;		/*!<Max. amount rays can be scattered*/
 	double scatterPropability;		/*!<Approximate propability that a Ray is scattered once when transmitted through whole model*/
-	double rayStepSize;				/*!<Step size used in Ray tracing in mm*/
+	double rayStepSize;				/*!<Step size_ used in Ray tracing in mm*/
 
 };
 

@@ -50,8 +50,8 @@ class LineSurfaceIntersection : public MathematicalObject{
 	LineSurfaceIntersection( void );
 
 	/*!
-	 * @brief Convert result's data to string
-	 * @return String with result's data
+	 * @brief Convert result's data_ to string
+	 * @return String with result's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -77,13 +77,13 @@ class RayVoxelIntersection {
 	 * @param v_ Voxel
 	 * @param r_ Ray
 	*/
-	RayVoxelIntersection( const vox voxel, const Ray r_ );
+	RayVoxelIntersection( const Voxel voxel, const Ray r_ );
 
 
-	FACE_ID entrance_face_;										/*!<Entrance face*/
+	Voxel::Face entrance_face_;										/*!<Entrance face*/
 	LineSurfaceIntersection<Ray, BoundedSurface> entrance_;		/*!<Entrance*/
 
-	FACE_ID exit_face_;										/*!<Exit face*/
+	Voxel::Face exit_face_;										/*!<Exit face*/
 	LineSurfaceIntersection<Ray, BoundedSurface> exit_;		/*!Exit*/
 
 };

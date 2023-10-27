@@ -188,7 +188,7 @@ ForceRange( const T value, const T minimum, const T maximum );
 
 /*!
  * @brief Abstract class for mathematical objects
- * @details Class with function prototypes to convert object's data to strings, dumping the data and outputting error messages
+ * @details Class with function prototypes to convert object's data_ to strings, dumping the data_ and outputting error messages
 */
 class MathematicalObject{
 	public:
@@ -205,15 +205,15 @@ class MathematicalObject{
 	};
 
 	/*!
-	 * @brief Convert object's data to string
+	 * @brief Convert object's data_ to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with object's data
+	 * @return String with object's data_
 	 * @details Virtual for object specific implementation
 	*/
 	virtual string ToString( [[maybe_unused]] const unsigned int newline_tabulators = 0 ) const = 0;
 
 	/*!
-	 * @brief Dump object's type and data to output stream
+	 * @brief Dump object's type and data_ to output stream
 	 * @param output Output stream to dump to
 	 * @param objName Name of the object to include in the dump
 	*/

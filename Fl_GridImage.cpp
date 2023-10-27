@@ -50,7 +50,7 @@ void Fl_GridImage::assignImage( const monoImage& img )
 	updateScaled();
 }
 
-void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normalise ){
+void Fl_GridImage::assignImage( const grid<VoxelData>& modGrid, const bool normalise ){
 
 	originalImage = monoImage{ modGrid.Size().c, modGrid.Size().r };
 	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
@@ -64,19 +64,19 @@ void Fl_GridImage::assignImage( const grid<voxData>& modGrid, const bool normali
 		for( size_t r = 0; r < height; r++ ){
 			
 			const GridIndex pixel( c, r );
-			const voxData& data = modGrid.operator()( pixel );
+			const VoxelData& data_ = modGrid.operator()( pixel );
 
-			originalImage.operator()( c, r ) = data.attenuationAtRefE();
+			originalImage.operator()( c, r ) = data_.GetAttenuationAtReferenceEnergy();
 			
 
-			if( data.hasSpecialProperty() ){
+			if( data_.HasSpecialProperty() ){
 				
 				hasOverlay = true;
 
-				if( data.hasSpecificProperty( voxData::METAL ) )
+				if( data_.HasSpecificProperty( VoxelData::METAL ) )
 					overlay.at( originalImage.index( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
 
-				if( data.hasSpecificProperty( voxData::UNDEFINED ) )
+				if( data_.HasSpecificProperty( VoxelData::UNDEFINED ) )
 					overlay.at( originalImage.index( c, r ) ) = { true, bgColor };
 			}
 

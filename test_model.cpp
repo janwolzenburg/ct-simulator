@@ -32,15 +32,15 @@ model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	//double kWater = 0.01611970000;
 
-	voxData bgData = { 0.01, 120000. };
+	VoxelData bgData = { 0.01, 120000. };
 
 	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.CSys() };
 	double sp1_radius = 60;
-	voxData sp1_data = { 0.3, 120000. };
+	VoxelData sp1_data = { 0.3, 120000. };
 
 	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.CSys() };
 	double sp2_radius = 70;
-	voxData sp2_data = { 0.5, 120000. };
+	VoxelData sp2_data = { 0.5, 120000. };
 
 
 	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.CSys() };
@@ -57,7 +57,7 @@ model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 				else if( ( sp2_center - p ).length() <= sp2_radius && ( true || ( sp2_center - p ).length() >= sp2_radius - 1.1 ) ) mod.setVoxelData( sp2_data, { x, y, z } );
 				else mod.setVoxelData( bgData, { x, y, z } );
 			
-				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( voxData::METAL, { x, y, z } );
+				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( VoxelData::METAL, { x, y, z } );
 			
 			}
 		}

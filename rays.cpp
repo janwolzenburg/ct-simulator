@@ -22,11 +22,11 @@
 	RayProperties implementation
 */
 
-void RayProperties::AttenuateSpectrum( const voxData& voxelData, const double distance ){
+void RayProperties::AttenuateSpectrum( const VoxelData& voxelData, const double distance ){
 
 	energy_spectrum_.modify(  [ & ] ( Tuple2D& spectrumPoint ) -> void {
 		
-		const double k = voxelData.attenuationAt( spectrumPoint.x );
+		const double k = voxelData.GetAttenuationAtEnergy( spectrumPoint.x );
 		spectrumPoint.y *= exp( -k * distance );
 
 	} );
@@ -51,32 +51,32 @@ Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
 	return Ray{ this->Line::ProjectOnXYPlane( cSys ), this->properties_ };
 }
 
-void Ray::UpdateProperties( const voxData& data, const double distance ){
-	properties_.AttenuateSpectrum( data, distance );
+void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
+	properties_.AttenuateSpectrum( data_, distance );
 }
 
-vector<FACE_ID> Ray::GetPossibleVoxelExits( void ) const{
+vector<Voxel::Face> Ray::GetPossibleVoxelExits( void ) const{
 
-	vector<FACE_ID> possibleFaces;
+	vector<Voxel::Face> possibleFaces;
 
 	// Iterate all faces of voxel
-	for( FACE_ID currentFace = FACE_ID::BEGIN; currentFace < FACE_ID::END; ++currentFace ){
+	for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
 
 		// Check if face can be an exit_ face of the tRay
 		switch( currentFace ){
-			case FACE_ID::YZ_Xp:
+			case Voxel::Face::YZ_Xp:
 				if( direction_.X() > 0 ) possibleFaces.push_back( currentFace ); break;
-			case FACE_ID::YZ_Xm:
+			case Voxel::Face::YZ_Xm:
 				if( direction_.X() < 0 ) possibleFaces.push_back( currentFace ); break;
 
-			case FACE_ID::XZ_Yp:
+			case Voxel::Face::XZ_Yp:
 				if( direction_.Y() > 0 ) possibleFaces.push_back( currentFace ); break;
-			case FACE_ID::XZ_Ym:
+			case Voxel::Face::XZ_Ym:
 				if( direction_.Y() < 0 ) possibleFaces.push_back( currentFace ); break;
 
-			case FACE_ID::XY_Zp:
+			case Voxel::Face::XY_Zp:
 				if( direction_.Z() > 0 ) possibleFaces.push_back( currentFace ); break;
-			case FACE_ID::XY_Zm:
+			case Voxel::Face::XY_Zm:
 				if( direction_.Z() < 0 ) possibleFaces.push_back( currentFace ); break;
 
 			default: break;

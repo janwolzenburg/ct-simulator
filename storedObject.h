@@ -38,7 +38,7 @@ class storedObject{
 	/*!
 	 * @brief Load object from specific file
 	 * @param file_path Path to serialized file
-	 * @return True if file exists and contains valid data
+	 * @return True if file exists and contains valid data_
 	*/
 	bool load( const path file_path );
 

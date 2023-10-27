@@ -36,9 +36,9 @@ class Matrix : public MathematicalObject{
 	Matrix(  const size_t number_of_columns, const size_t number_of_rows );
 	
 	/*!
-	 * @brief Convert matrice's data to string
+	 * @brief Convert matrice's data_ to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with Line's data
+	 * @return String with Line's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -151,8 +151,8 @@ class SystemOfEquations : private Matrix{
 	SystemOfEquations( const size_t number_of_variables );
 
 	/*!
-	 * @brief Convert system's data to string
-	 * @return String with system's data
+	 * @brief Convert system's data_ to string
+	 * @return String with system's data_
 	*/
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
@@ -210,8 +210,8 @@ class SystemOfEquationsSolution : public MathematicalObject{
 	SystemOfEquationsSolution( void ) = delete;
 
 	/*!
-	 * @brief Convert solutions's data to string
-	 * @return String with solutions's data
+	 * @brief Convert solutions's data_ to string
+	 * @return String with solutions's data_
 	*/
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 

@@ -48,17 +48,17 @@ class grid{
 	grid( const NumberRange columnRange, const NumberRange rowRange, const GridCoordinates resolution_, D defaultValue = D() );
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	grid( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
-	 * @brief Get size of grid
+	 * @brief Get size_ of grid
 	 * @return Size of grid
 	*/
-	GridIndex Size( void ) const{ return size; };
+	GridIndex Size( void ) const{ return size_; };
 
 	/*!
 	 * @brief Get starts of axis
@@ -71,7 +71,7 @@ class grid{
 	 * @return Ens of axis
 	*/
 	GridCoordinates End( void ) const{
-		return getCoordinates( GridIndex{ size.c - 1, size.r - 1 } ); }
+		return getCoordinates( GridIndex{ size_.c - 1, size_.r - 1 } ); }
 
 	/*!
 	 * @brief Get resolution of axis
@@ -134,7 +134,7 @@ class grid{
 	D getData( const GridCoordinates coordinates ) const{ return this->getData( getIndex( coordinates ) ); };
 
 	/*!
-	 * @brief Set Element data
+	 * @brief Set Element data_
 	 * @param index Index of element
 	 * @param newValue New value
 	 * @return True when index is valid
@@ -143,7 +143,7 @@ class grid{
 	bool setData( const GridIndex index, const D newValue );
 
 	/*!
-	 * @brief Set Element data
+	 * @brief Set Element data_
 	 * @param Coordinates Coordinates of element
 	 * @param newValue New value
 	 * @return True when Coordinates are valid
@@ -153,7 +153,7 @@ class grid{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -161,7 +161,7 @@ class grid{
 	private:
 	
 	/*!
-	 * @brief Fill the points and data vectors with value
+	 * @brief Fill the points and data_ vectors with value
 	 * @param defaultValue Value to fill
 	*/
 	void fillVectors( const D defaultValue );
@@ -169,13 +169,13 @@ class grid{
 
 	private:
 
-	GridIndex size;					/*!<Size of grid*/
+	GridIndex size_;					/*!<Size of grid*/
 	GridCoordinates start;						/*!<Start of axis*/
 	GridCoordinates resolution;				/*!<GetResolution of grid*/
 
 	vector<double> columnPoints;	/*!<Vector with values on column axis*/
 	vector<double> rowPoints;		/*!<Vector with values on row axis*/
-	vector<vector<D>> data;			/*!<2D Vector with data points*/
+	vector<vector<D>> data_;			/*!<2D Vector with data_ points*/
 
 	D maxValue;						/*!<Maximum value in grid*/
 	D minValue;						/*!<Minimum value in grid*/

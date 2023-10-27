@@ -94,22 +94,22 @@ string getObjectString<BoundedSurface, double>(const BoundedSurface s, const dou
 }
 
 template<>
-string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data ){
+string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data_ ){
 
 	string str = "plot ";
 
-	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
+	for( auto valIt = data_.cbegin(); valIt < data_.cend(); valIt++ ){
 		str += to_string( valIt->x );
 
-		if( valIt < data.cend() - 1 ) str += ',';
+		if( valIt < data_.cend() - 1 ) str += ',';
 	}
 
 	str += ";";
 
-	for( auto valIt = data.cbegin(); valIt < data.cend(); valIt++ ){
+	for( auto valIt = data_.cbegin(); valIt < data_.cend(); valIt++ ){
 		str += to_string( valIt->y );
 
-		if( valIt < data.cend() - 1 ) str += ',';
+		if( valIt < data_.cend() - 1 ) str += ',';
 	}
 
 	
@@ -118,13 +118,13 @@ string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data ){
 }
 
 template<>
-string getObjectString<vector<radonPoint>>( const vector<radonPoint> data ){
+string getObjectString<vector<radonPoint>>( const vector<radonPoint> data_ ){
 
 	string str = "plotS ";
 
 	vector<double> XValues, YValues, DataValues;
 
-	for( const radonPoint& p : data ){
+	for( const radonPoint& p : data_ ){
 
 		XValues.push_back( p.coordinates.theta );
 		YValues.push_back( p.coordinates.distance );
@@ -147,17 +147,17 @@ string getObjectString<vector<radonPoint>>( const vector<radonPoint> data ){
 }
 
 template<>
-string getObjectString<grid<>>( const grid<> data, const bool image ){
+string getObjectString<grid<>>( const grid<> data_, const bool image ){
 
 	if( image ){
 
 		string str = "image ";
-		str += to_string( data.Size().c ) + "," + to_string( data.Start().c ) + "," + to_string( data.Resolution().c ) + ";";
-		str += to_string( data.Size().r ) + "," + to_string( data.Start().r ) + "," + to_string( data.Resolution().r ) + ";";
+		str += to_string( data_.Size().c ) + "," + to_string( data_.Start().c ) + "," + to_string( data_.Resolution().c ) + ";";
+		str += to_string( data_.Size().r ) + "," + to_string( data_.Start().r ) + "," + to_string( data_.Resolution().r ) + ";";
 
-		for( size_t row = 0; row < data.Size().r; row++ ){
-			for( size_t column = 0; column < data.Size().c; column++ ){
-				str += to_string( data( GridIndex{ column, row } ) ) + ",";
+		for( size_t row = 0; row < data_.Size().r; row++ ){
+			for( size_t column = 0; column < data_.Size().c; column++ ){
+				str += to_string( data_( GridIndex{ column, row } ) ) + ",";
 			}
 		}
 		str.pop_back();
@@ -168,14 +168,14 @@ string getObjectString<grid<>>( const grid<> data, const bool image ){
 
 		vector<double> XValues, YValues, DataValues;
 
-		for( size_t row = 0; row < data.Size().r; row++ ){
-			for( size_t column = 0; column < data.Size().c; column++ ){
+		for( size_t row = 0; row < data_.Size().r; row++ ){
+			for( size_t column = 0; column < data_.Size().c; column++ ){
 
-				GridCoordinates coordinates = data.getCoordinates( GridIndex{ column, row });
+				GridCoordinates coordinates = data_.getCoordinates( GridIndex{ column, row });
 
 				XValues.push_back( coordinates.c );
 				YValues.push_back( coordinates.r );
-				DataValues.push_back( data( GridIndex{ column, row } ) );
+				DataValues.push_back( data_( GridIndex{ column, row } ) );
 
 			}
 		}
@@ -252,17 +252,17 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 
 template<>
 void addObject<model, double>( std::ofstream& axis, std::string name, model mod, std::string parameter, double threshold ){
-	vox modVox = mod.Vox();
-	for( FACE_ID i = FACE_ID::BEGIN; i < FACE_ID::END; ++i ){
-		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.getFace( i ), "b", 0.2 );
+	Voxel modVox = mod.Vox();
+	for( Voxel::Face i = Voxel::Face::Begin; i < Voxel::Face::End; ++i ){
+		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.GetFace( i ), "b", 0.2 );
 	}
 
 	for( size_t iX = 0; iX < mod.NumVox().x; iX++ ){
 		for( size_t iY = 0; iY < mod.NumVox().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.NumVox().z; iZ++ ){
-				vox voxel = mod.getVoxel( Index3D{ iX, iY, iZ } );
-				if( voxel.Data().attenuationAtRefE() >= (double) threshold ){
-					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.getCenter(), parameter );
+				Voxel voxel = mod.getVoxel( Index3D{ iX, iY, iZ } );
+				if( voxel.data().GetAttenuationAtReferenceEnergy() >= (double) threshold ){
+					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.GetCenter(), parameter );
 				}
 			}
 		}

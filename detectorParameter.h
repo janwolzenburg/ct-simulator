@@ -48,15 +48,15 @@ class detectorRadonParameter{
 	detectorRadonParameter( void ): detectorRadonParameter{ GridIndex{ 32, 16 }, 500. } {};
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	detectorRadonParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 		* @brief Serialize this object
-		* @param binary_data Reference to vector where data will be appended
+		* @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -87,7 +87,7 @@ class detectorIndipendentParameter{
 	 * @brief Constructor
 	 * @param raysPerPixel_ Amount of rays per pixel to simulate
 	 * @param arcRadius_ Radius of the detector arc
-	 * @param columnSize_ Pixel size in z-Direction
+	 * @param columnSize_ Pixel size_ in z-Direction
 	 * @param structured_ Flag for anti scattering structure
 	 * @param maxRayAngleDetectable_ maximum GetAngle between pixel normal and incident Ray allowed by anti-scattering structure
 	*/
@@ -100,15 +100,15 @@ class detectorIndipendentParameter{
 		detectorIndipendentParameter{ 1, 1000., 5., true, 5. / 360. * 2. * PI }{};
 
 	/*!
-	 * @brief Constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data_
+	 * @param binary_data Reference to vector with binary data_
+	 * @param it Iterator to start of data_ in vector
 	*/
 	detectorIndipendentParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 		* @brief Serialize this object
-		* @param binary_data Reference to vector where data will be appended
+		* @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

@@ -52,7 +52,7 @@ class plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired size of image
+	 * @param imgSize_ Desired size_ of image
 	 * @param xFormat_ x-ticks format string
 	 * @param yFormat_ y-ticks format string
 	 * @param axisEqual_ Flag to make axis equally scaled
@@ -68,14 +68,14 @@ class plot{
 	void setLimits( const plotLimits newLimits ){ limits = newLimits; };
 
 	/*!
-	 * @brief Set image size
-	 * @param size New size of image
+	 * @brief Set image size_
+	 * @param size_ New size_ of image
 	*/
-	void setSize( const GridIndex size ){ imgSize = size; };
+	void setSize( const GridIndex size_ ){ imgSize = size_; };
 
 	/*!
-	 * @brief Get the image size
-	 * @return Current image size
+	 * @brief Get the image size_
+	 * @return Current image size_
 	*/
 	GridIndex getSize( void ) const{ return imgSize; };
 
@@ -93,7 +93,7 @@ class plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired image size
+	 * @param imgSize_ Desired image size_
 	 * @param grid_ Flag to show grid
 	*/
 	plot( const path imgPath_, const string xlabel_, const string ylabel_,

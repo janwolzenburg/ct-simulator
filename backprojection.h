@@ -59,7 +59,7 @@ class filteredProjections : private grid<> {
 	grid<> getGrid( void ) const{ return ( grid<> ) *this; };
 
 	/*!
-	 * @brief Get size of projections
+	 * @brief Get size_ of projections
 	 * @return Size of projections
 	*/
 	GridIndex Size( void ) const{ return grid::Size(); };

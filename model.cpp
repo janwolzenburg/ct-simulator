@@ -47,7 +47,7 @@ model::model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z } ),
 	numVox( numVox3D.x * numVox3D.y * numVox3D.z ),
-	parameter( numVox, voxData{} ),
+	parameter( numVox, VoxelData{} ),
 	cSys( coordinate_system ),
 	attenuationMin( -1. ),
 	attenuationMax( -1. ),
@@ -64,21 +64,21 @@ model::model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 			 (double) numVox3D.y * voxSize3D.y,
 			 (double) numVox3D.z * voxSize3D.z ) ),
 	numVox( numVox3D.x* numVox3D.y* numVox3D.z ),
-	parameter( numVox, voxData{} ),
+	parameter( numVox, VoxelData{} ),
 	cSys( CoordinateSystems().AddSystem( binary_data, it ) ),
 	attenuationMin( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
 	attenuationMax( DeSerializeBuildIn<double>( -1., binary_data, it ) ),
 	name( DeSerializeBuildIn( string{ "Default model name_"}, binary_data, it ) )
 {
 	
-	if( numVox * sizeof( voxData ) == (size_t) (binary_data.end() - it) ){
-		memcpy( parameter.data(), &( *it ), numVox * sizeof(voxData));
-		it += static_cast<long long int>( numVox * sizeof( voxData ) );
+	if( numVox * sizeof( VoxelData ) == (size_t) (binary_data.end() - it) ){
+		memcpy( parameter.data(), &( *it ), numVox * sizeof(VoxelData));
+		it += static_cast<long long int>( numVox * sizeof( VoxelData ) );
 	}
 	else{
 
 		for( size_t i = 0; i < numVox; i++ ){
-			parameter[i] = voxData( binary_data, it );
+			parameter[i] = VoxelData( binary_data, it );
 		}
 	}
 }
@@ -88,11 +88,11 @@ string model::ToString( [[maybe_unused]] const unsigned int newline_tabulators )
 	return string( "" );
 }
 
-vox model::Vox( void ) const{
-	return  vox{ Point3D{Tuple3D { 0, 0, 0 }, cSys}, size3D, voxData{} };
+Voxel model::Vox( void ) const{
+	return  Voxel{ Point3D{Tuple3D { 0, 0, 0 }, cSys}, size3D, VoxelData{} };
 }
 
-const voxData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
+const VoxelData& model::operator() ( const size_t x, const size_t y, const size_t z ) const{
 	if( x >= numVox3D.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
 	if( y >= numVox3D.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
 	if( z >= numVox3D.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return parameter[( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 )]; };
@@ -100,7 +100,7 @@ const voxData& model::operator() ( const size_t x, const size_t y, const size_t 
 	return parameter.at(( (size_t) numVox3D.x * numVox3D.y * z ) + (size_t) numVox3D.x * y + x);
 }
 
-voxData& model::operator() ( const size_t x, const size_t y, const size_t z ){
+VoxelData& model::operator() ( const size_t x, const size_t y, const size_t z ){
 	if( x >= numVox3D.x ){ CheckForAndOutputError( MathError::Input, "x index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( y >= numVox3D.y ){ CheckForAndOutputError( MathError::Input, "y index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
 	if( z >= numVox3D.z ){ CheckForAndOutputError( MathError::Input, "z index exceeds model size!" ); return parameter[ ( (size_t) numVox3D.x * numVox3D.y * ( numVox3D.z - 1 ) ) + (size_t) numVox3D.x * ( numVox3D.y - 1 ) + ( numVox3D.x - 1 ) ]; };
@@ -153,39 +153,39 @@ Index3D model::getVoxelIndices( const Point3D voxpnt ) const{
 	return getVoxelIndices( voxpnt.GetComponents( cSys ) );
 }
 
-bool model::setVoxelData( const voxData newData, const Index3D indices ){
+bool model::setVoxelData( const VoxelData newData, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
 	this->operator()( indices ) = newData;
 
-	if( newData.attenuationAtRefE() < attenuationMin || attenuationMax < 0 ) attenuationMin = newData.attenuationAtRefE();
-	if( newData.attenuationAtRefE() > attenuationMax || attenuationMax < 0 ) attenuationMax = newData.attenuationAtRefE();
+	if( newData.GetAttenuationAtReferenceEnergy() < attenuationMin || attenuationMax < 0 ) attenuationMin = newData.GetAttenuationAtReferenceEnergy();
+	if( newData.GetAttenuationAtReferenceEnergy() > attenuationMax || attenuationMax < 0 ) attenuationMax = newData.GetAttenuationAtReferenceEnergy();
 
 	return true;
 }
 
-bool model::setVoxelProperty( const voxData::specialProperty property, const Index3D indices ){
+bool model::setVoxelProperty( const VoxelData::specialProperty property, const Index3D indices ){
 
 	if( !checkIndices( indices ) ) return false;
 
-	this->operator()( indices ).addSpecialProperty( property );
+	this->operator()( indices ).AddSpecialProperty( property );
 
 	return true;
 
 }
 
-vox model::getVoxel( const Index3D indices ) const{
+Voxel model::getVoxel( const Index3D indices ) const{
 
 	if( !checkIndices( indices ) ){
 		CheckForAndOutputError( MathError::Input, "Indices exceed model!" );
-		return vox{};
+		return Voxel{};
 	}
 
 	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxSize3D.x, (double) indices.y * voxSize3D.y, (double) indices.z * voxSize3D.z }, cSys };
 
-	// Get voxel data and create voxel instance
-	vox voxel{ voxOrigin, voxSize3D, getVoxelData( indices ) };
+	// Get voxel data_ and create voxel instance
+	Voxel voxel{ voxOrigin, voxSize3D, getVoxelData( indices ) };
 
 	return voxel;
 }
@@ -228,12 +228,12 @@ Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParam
 
 		const Index3D currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		const vector<FACE_ID> possibleFaces = modelRay.GetPossibleVoxelExits();		// The possible exit_ faces
+		const vector<Voxel::Face> possibleFaces = modelRay.GetPossibleVoxelExits();		// The possible exit_ faces
 
 		double rayParameter = INFINITY;		// The smallest Ray parameter
 
 		// Iterate all possible faces and get the Ray parameter at intersection
-		for( const FACE_ID& currentFace : possibleFaces ){
+		for( const Voxel::Face& currentFace : possibleFaces ){
 
 			double currentRayParameter = INFINITY;			// Set to infinity 
 			double planePosistion;							// Position of current face
@@ -242,32 +242,32 @@ Ray model::rayTransmission( const Ray tRay, const tomographyParameter& tomoParam
 			// Switch faces
 			switch( currentFace ){
 
-				case FACE_ID::YZ_Xp:
+				case Voxel::Face::YZ_Xp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxSize3D.x;		// Position of positive yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
 					break;
 
-				case FACE_ID::YZ_Xm:
+				case Voxel::Face::YZ_Xm:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxSize3D.x;		// Position of negative yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
 					break;
 
-				case FACE_ID::XZ_Yp:
+				case Voxel::Face::XZ_Yp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxSize3D.y;		// Position of positive xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
-				case FACE_ID::XZ_Ym:
+				case Voxel::Face::XZ_Ym:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxSize3D.y;		// Position of negative xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
-				case FACE_ID::XY_Zp:
+				case Voxel::Face::XY_Zp:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxSize3D.z;		// Position of positive xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
-				case FACE_ID::XY_Zm:
+				case Voxel::Face::XY_Zm:
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxSize3D.z;		// Position of negative xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
@@ -330,7 +330,7 @@ bool model::crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	model newModel{ cSys, newVoxNum3D, voxSize3D };
 
 
-	// Copy data to new model
+	// Copy data_ to new model
 	for( size_t z = 0; z < newVoxNum3D.z; z++ ){
 		for( size_t y = 0; y < newVoxNum3D.y; y++ ){
 			for( size_t x = 0; x < newVoxNum3D.x; x++ ){
@@ -368,7 +368,7 @@ size_t model::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn( name, binary_data );
 
 	
-	binary_data.insert( binary_data.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(voxData) * numVox);
+	binary_data.insert( binary_data.end(), (char*) parameter.data(), (char*) parameter.data() + sizeof(VoxelData) * numVox);
 	//binary_data.insert( binary_data.end(), parameter.cbegin(), parameter.cend() );
 
 	return num_bytes;
@@ -378,7 +378,7 @@ size_t model::Serialize( vector<char>& binary_data ) const{
 
 void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 									GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
-									grid<voxData>& slice, mutex& sliceMutex,
+									grid<VoxelData>& slice, mutex& sliceMutex,
 									const Surface& slicePlane,
 									const model& modelRef ){
 
@@ -418,7 +418,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 		// Are cooradinates defined in model?
 		if( !modelRef.pntInside( currentPoint ) ){
-			slice.setData( gridIndices, voxData( 0., 1., voxData::UNDEFINED ) );
+			slice.setData( gridIndices, VoxelData( 0., 1., VoxelData::UNDEFINED ) );
 			continue;	// Goto next iteration
 		}
 
@@ -442,7 +442,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 		}
 
 		// Current voxel value
-		const voxData currentValue = modelRef.getVoxelData( currentPoint );
+		const VoxelData currentValue = modelRef.getVoxelData( currentPoint );
 
 		// Add pixel Coordinates and pixel value to slice
 		sliceMutex.lock();
@@ -454,7 +454,7 @@ void model::sliceThreadFunction(	size_t& xIdx, mutex& currentXMutex, size_t& yId
 
 }
 
-grid<voxData> model::getSlice( const Surface sliceLocation, const double resolution ) const{
+grid<VoxelData> model::getSlice( const Surface sliceLocation, const double resolution ) const{
 
 	// Distance between corners furthest away from each other
 	const double cornerDistance = sqrt( pow( size3D.x, 2. ) + pow( size3D.y, 2. ) + pow( size3D.z, 2. ) );
@@ -469,7 +469,7 @@ grid<voxData> model::getSlice( const Surface sliceLocation, const double resolut
 	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
 	GridCoordinates sliceResolution( resolution, resolution );
 
-	grid<voxData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, voxData() );
+	grid<VoxelData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() );
 
 	// Update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
 	sliceStart = largeSlice.Start();
@@ -503,17 +503,17 @@ grid<voxData> model::getSlice( const Surface sliceLocation, const double resolut
 	// Check if restart and end have infinity in them
 	if( realStart.c == INFINITY || realStart.r == INFINITY || realEnd.c == -INFINITY || realEnd.r == -INFINITY ){
 		// This means that no model voxel is in slice
-		return grid<voxData>( GridIndex( 0, 0 ), GridCoordinates( 0., 0. ), GridCoordinates( 1., 1. ) );
+		return grid<VoxelData>( GridIndex( 0, 0 ), GridCoordinates( 0., 0. ), GridCoordinates( 1., 1. ) );
 
 	}
 
-	// Write data to smaller grid
-	grid<voxData> slice( NumberRange( realStart.c, realEnd.c ), NumberRange( realStart.r, realEnd.r ), sliceResolution, voxData() );
+	// Write data_ to smaller grid
+	grid<VoxelData> slice( NumberRange( realStart.c, realEnd.c ), NumberRange( realStart.r, realEnd.r ), sliceResolution, VoxelData() );
 
 
 	// Iterate grid
 	GridCoordinates coords;
-	voxData currentData;
+	VoxelData currentData;
 
 	for( size_t colIdx = 0; colIdx < slice.Size().c; colIdx++ ){
 
@@ -522,8 +522,8 @@ grid<voxData> model::getSlice( const Surface sliceLocation, const double resolut
 			coords = slice.getCoordinates( GridIndex( colIdx, rowIdx ) );
 			currentData = largeSlice.getData( coords );
 
-			if( currentData.hasSpecificProperty( voxData::UNDEFINED ) )
-				slice.setData( coords, voxData( largeSlice.MaxValue().attenuationAtRefE(), voxData::ReferencyEnergy()));
+			if( currentData.HasSpecificProperty( VoxelData::UNDEFINED ) )
+				slice.setData( coords, VoxelData( largeSlice.MaxValue().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV()));
 			else
 				slice.setData( coords, currentData );
 		}
@@ -534,7 +534,7 @@ grid<voxData> model::getSlice( const Surface sliceLocation, const double resolut
 }
 
 
-void model::addSpecialSphere( const voxData::specialProperty property, const Point3D center, const double radius ){
+void model::addSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius ){
 	
 	// Exit when coords invalid
 	if ( !pntInside( center ) ) return;
@@ -555,7 +555,7 @@ void model::addSpecialSphere( const voxData::specialProperty property, const Poi
 
 				Point3D p( Tuple3D( (double) x * voxSize3D.x , (double) y * voxSize3D.y , (double) z * voxSize3D.z ), cSys );
 
-				if( ( center - p ).length() <= radius )  (*this).operator()( x, y, z ).addSpecialProperty( property );
+				if( ( center - p ).length() <= radius )  (*this).operator()( x, y, z ).AddSpecialProperty( property );
 				
 			}
 		}

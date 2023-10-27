@@ -57,7 +57,7 @@ class RayProperties{
 	 * @param voxel_data Data of voxel
 	 * @param distance_traveled Distance traversed in Voxel
 	*/
-	void AttenuateSpectrum( const voxData& voxel_data, const double distance_traveled );
+	void AttenuateSpectrum( const VoxelData& voxel_data, const double distance_traveled );
 
 
 	private:
@@ -136,7 +136,7 @@ class Ray : public Line{
 	 * @param voxel_properties Voxel properties
 	 * @param distance_traveled Distance the Ray is inside voxel
 	*/
-	void UpdateProperties( const voxData& voxel_properties, const double distance_traveled );
+	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
 
 	/*!
 	 * @brief Convert Ray components to different coordinate system
@@ -171,7 +171,7 @@ class Ray : public Line{
 	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
 	 * @return Vector with possible face IDs
 	*/
-	vector<FACE_ID> GetPossibleVoxelExits( void ) const;
+	vector<Voxel::Face> GetPossibleVoxelExits( void ) const;
 
 
 	private:
