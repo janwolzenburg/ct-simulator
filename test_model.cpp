@@ -106,12 +106,10 @@ bool test_modelTransmission( void ){
 
 	for( const ray r : testGantry.getBeam( 1. ) ){
 		
-		rayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
-		rayVox_Intersection_Result entrance = rayVoxIsect.entrance;
-		rayVox_Intersection_Result exit = rayVoxIsect.exit;
+		RayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
 
-		addSingleObject( ax1, "Entrance", entrance.intersectionPoint, string{ "g" } );
-		addSingleObject( ax1, "Exit", exit.intersectionPoint, string{ "r" } );
+		addSingleObject( ax1, "Entrance", rayVoxIsect.entrance_.intersection_point_, string{ "g" } );
+		addSingleObject( ax1, "Exit", rayVoxIsect.exit_.intersection_point_, string{ "r" } );
 	}
 
 

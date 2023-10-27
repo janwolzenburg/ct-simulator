@@ -62,7 +62,7 @@ vector<FACE_ID> ray::getPossibleVoxelExits( void ) const{
 	// Iterate all faces of voxel
 	for( FACE_ID currentFace = FACE_ID::BEGIN; currentFace < FACE_ID::END; ++currentFace ){
 
-		// Check if face can be an exit face of the tRay
+		// Check if face can be an exit_ face of the tRay
 		switch( currentFace ){
 			case FACE_ID::YZ_Xp:
 				if( direction_.X() > 0 ) possibleFaces.push_back( currentFace ); break;

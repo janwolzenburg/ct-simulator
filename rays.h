@@ -145,7 +145,7 @@ class ray : public Line{
 	bool IsParameterInBounds( const double para ) const override{ return para >= 0; };
 
 	/*!
-	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit
+	 * @brief Get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit_
 	 * @return Vector with possible face IDs
 	*/
 	vector<FACE_ID> getPossibleVoxelExits( void ) const;

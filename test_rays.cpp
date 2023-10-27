@@ -124,9 +124,9 @@ bool test_ray_scattering(void){
 
 
 	for( ray r : rays ){
-		rayVox_Intersection_Result res = rayVoxelIntersection{ mod.Vox(), r }.exit;
+		RayVoxelIntersection res{ mod.Vox(), r };
 
-		addSingleObject( ax1, "Ray", r, "m", ( r.origin() - res.intersectionPoint ).length() );
+		addSingleObject( ax1, "Ray", r, "m", ( r.origin() - res.exit_.intersection_point_ ).length() );
 	}
 
 	closeAxis( ax1 );

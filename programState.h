@@ -84,7 +84,7 @@ class programState{
 	/***********************************************************************************************/
 
 	/*!
-	 * @brief Set flag to reset program state at program exit
+	 * @brief Set flag to reset program state at program exit_
 	*/
 	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
 	
@@ -287,7 +287,7 @@ class programState{
 	void deleteStorageDir( void );
 
 
-	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit*/
+	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
 
 	model modelInstance;									/*!<Current model*/
 	storedObject<model> storedModel;						/*!<Persisting storage of current model*/

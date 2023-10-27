@@ -167,10 +167,10 @@ void detector::detectRay( const ray r, mutex& allPixelLock ){
 
 	
 		// Check for intersection of ray with current pixel
-		const rayPix_Intersection pixelHit{ r, currentPixel };
+		const RayPixelIntersection pixelHit{ r, currentPixel };
 
 		// Do they intersect?
-		if( pixelHit.Result().hasSolution ){
+		if( pixelHit.intersection_exists_ ){
 			
 			// If structured and GetAngle allowed by structure
 			if( !physicalParameters.structured || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){

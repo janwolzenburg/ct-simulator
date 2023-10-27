@@ -45,12 +45,10 @@ pixel pixel::convertTo( const CoordinateSystem* const target_CSys ) const{
 
 
 /*
-	rayPix_Intersection implementation
+	RayPixelIntersection implementation
 */
 
-rayPix_Intersection::rayPix_Intersection( const ray r, const pixel px ) :
-	linSurfIntersection<ray, pixel>( r, px )
-{
-	result = linSurfIntersection<ray, pixel>::result;
-	result.rayProps = r.Properties();
-}
+RayPixelIntersection::RayPixelIntersection( const ray r, const pixel px ) :
+	LineSurfaceIntersection<ray, pixel>{ r, px },
+	rayProps(r.Properties() )
+{}

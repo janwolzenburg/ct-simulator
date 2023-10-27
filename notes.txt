@@ -38,3 +38,4 @@ Physics
 		equationSystem
 		line
 		surface
+		intersections

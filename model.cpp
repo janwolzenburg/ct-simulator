@@ -194,18 +194,18 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 	ray modelRay = tRay.convertTo( this->cSys );					// Current ray in model's coordinate system
 
-	// Find entrance in model
-	const rayVoxelIntersection modelIsect{ Vox(), modelRay };
+	// Find entrance_ in model
+	const RayVoxelIntersection modelIsect{ Vox(), modelRay };
 
-	const rayVox_Intersection_Result rayEntrance = modelIsect.entrance;
-	if( !rayEntrance.hasSolution ) return modelRay;			// Return if ray does not intersect model
+	//const rayVox_Intersection_Result rayEntrance = modelIsect.entrance_;
+	if( !modelIsect.entrance_.intersection_exists_ ) return modelRay;			// Return if ray does not intersect model
 
 
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	double currentRayStep = rayEntrance.linePara + tomoParameter.rayStepSize;		// Ray parameter at model entrance
-	const double lengthInModel = modelIsect.exit.linePara - modelIsect.entrance.linePara;
+	double currentRayStep = modelIsect.entrance_.line_parameter_ + tomoParameter.rayStepSize;		// Ray parameter at model entrance_
+	const double lengthInModel = modelIsect.exit_.line_parameter_ - modelIsect.entrance_.line_parameter_;
 
 	// Go a tiny step further down the ray from intersection point with model and test if inside
 	// Return when the point on the ray is not inside the model meaning that the ray just barely hit the model
@@ -213,7 +213,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 
 	// Current point on the ray
-	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance
+	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance_
 
 
 	const double meanFrequencyTube = modelRay.getMeanFrequency();	// Mean frequency of ray before it enters model
@@ -228,7 +228,7 @@ ray model::rayTransmission( const ray tRay, const tomographyParameter& tomoParam
 
 		const Index3D currentVoxelIndices = getVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		const vector<FACE_ID> possibleFaces = modelRay.getPossibleVoxelExits();		// The possible exit faces
+		const vector<FACE_ID> possibleFaces = modelRay.getPossibleVoxelExits();		// The possible exit_ faces
 
 		double rayParameter = INFINITY;		// The smallest ray parameter
 

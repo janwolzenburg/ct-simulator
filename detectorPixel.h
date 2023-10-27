@@ -93,31 +93,9 @@ class pixel : public BoundedSurface{
 
 
 /*!
- * @brief Class for the intersection result of a pixel and a ray
-*/
-class rayPix_Intersection_Result : public linSurf_Intersection_Result{
-
-	using linSurf_Intersection_Result::linSurf_Intersection_Result;
-
-	public:
-	/*!
-	 * @brief Constructor
-	 * @param linSurfResult Line surface intersection result
-	*/
-	rayPix_Intersection_Result( const linSurf_Intersection_Result linSurfResult ) :
-		linSurf_Intersection_Result( linSurfResult )
-	{};
-
-	public:
-	rayProperties rayProps;  /*!< Properties of rays that hit the pixel*/
-	
-};
-
-
-/*!
  * @brief Class for the intersection of pixel and ray
 */
-class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
+class RayPixelIntersection : public LineSurfaceIntersection<ray, pixel>{
 
 	public:
 
@@ -126,18 +104,10 @@ class rayPix_Intersection : private linSurfIntersection<ray, pixel>{
 	 * @param direction_ Ray
 	 * @param px Pixel
 	*/
-	rayPix_Intersection( const ray r, const pixel px );
-
-	/*!
-	 * @brief Get the result
-	 * @return Result
-	*/
-	rayPix_Intersection_Result Result( void ) const{ return result; };
+	RayPixelIntersection( const ray r, const pixel px );
 
 
-	public:
-	rayPix_Intersection_Result result;			/*!<Result of intersection*/
-
+	rayProperties rayProps; 
 
  };
 

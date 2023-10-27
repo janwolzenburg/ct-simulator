@@ -29,43 +29,8 @@
 /*!
  * @brief Class describing the intersection result of a Line and surface
 */
-class linSurf_Intersection_Result : virtual public MathematicalObject{
-
-	public:
-
-	/*!
-	 * @brief Default constructor
-	*/
-	linSurf_Intersection_Result( void ) :
-		intersectionPoint( Point3D{} ),
-		hasSolution( false ),
-		linePara( 0 ), surfParaA( 0 ), surfParaB( 0 )
-	{};
-
-	/*!
-	 * @brief Convert result's data to string
-	 * @return String with result's data
-	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
-
-
-	public:
-
-	Point3D intersectionPoint;					/*!< Point of intersection */
-	bool hasSolution;						/*!< Line intersects surface */
-	double linePara;						/*!< Line parameter where intersection occurs */
-	double surfParaA;						/*!< Surface parameter a where intersection occurs */
-	double surfParaB;						/*!< Surface parameter b where intersection occurs */
-
-};
-
-
-
-/*!
- * @brief Class for calculation the intersection of a Line and a surface
-*/
 template<class L, class S>
-class linSurfIntersection {
+class LineSurfaceIntersection : public MathematicalObject{
 
 	// Assert base classes
 	static_assert( std::is_base_of_v< Surface, S > );
@@ -75,56 +40,35 @@ class linSurfIntersection {
 	public:
 
 	/*!
-	 * @brief Constructor
-	 * @param l_ Object derived from class Line
-	 * @param s_ Object derived from class Surface
+	 * @brief Default constructor
 	*/
-	linSurfIntersection( const L l_, const S s_ );
-
-
-	public:
-	L l;									/*!<Line*/
-	S s;									/*!<Surface*/
-	linSurf_Intersection_Result result;		/*!<Calculated result*/
-	
-
-};
-
-
-
-/*!
- * @brief Class describing iuntersection of one voxel face with ray
-*/
-class rayVox_Intersection_Result : public linSurf_Intersection_Result{
-
-	public:
-
-	/*!
-	 * @brief Constructor
-	 * @param res_ Instance of parent_ class
-	*/
-	rayVox_Intersection_Result( const linSurf_Intersection_Result res_ ) :
-		linSurf_Intersection_Result( res_ ),
-		face( FACE_ID::INVALID )
-	{};
+	LineSurfaceIntersection( const L line, const S surface );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	rayVox_Intersection_Result( void ) : face( FACE_ID::INVALID ) {};
+	LineSurfaceIntersection( void );
+
+	/*!
+	 * @brief Convert result's data to string
+	 * @return String with result's data
+	*/
+	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 
-	public:
+	Point3D intersection_point_;				/*!< Point of intersection */
+	bool intersection_exists_;					/*!< Line intersects surface */
+	double line_parameter_;						/*!< Line parameter where intersection occurs */
+	double surface_parameter_1_;				/*!< Surface parameter a where intersection occurs */
+	double surface_parameter_2_;				/*!< Surface parameter b where intersection occurs */
 
-	FACE_ID face;	/*!<ID of face for which the result is valid*/
 };
-
 
 
 /*!
  * @brief Class for calculation the intersection of a Line and a surface
 */
-class rayVoxelIntersection {
+class RayVoxelIntersection {
 
 	public:
 
@@ -133,15 +77,14 @@ class rayVoxelIntersection {
 	 * @param v_ Voxel
 	 * @param r_ Ray
 	*/
-	rayVoxelIntersection( const vox v_, const ray r_ );
+	RayVoxelIntersection( const vox voxel, const ray r_ );
 
 
-	public:
+	FACE_ID entrance_face_;										/*!<Entrance face*/
+	LineSurfaceIntersection<ray, BoundedSurface> entrance_;		/*!<Entrance*/
 
-	vox v;										/*!<Voxel*/
-	ray r;										/*!<Ray*/
-	rayVox_Intersection_Result entrance;		/*!<Entrance*/
-	rayVox_Intersection_Result exit;			/*!Exit*/
+	FACE_ID exit_face_;										/*!<Exit face*/
+	LineSurfaceIntersection<ray, BoundedSurface> exit_;		/*!Exit*/
 
 };
 

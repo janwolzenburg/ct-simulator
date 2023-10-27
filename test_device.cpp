@@ -179,7 +179,7 @@ bool test_nonUniformDetector( void ){
 		const Line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->direction(), previousNormalIt->origin() };
 
 		LineLineIntersection currentPreviousIntersection = IntersectLines( lCurrentToPrevious, lPreviousToCurrent );
-		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.intersectionPoint;
+		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.intersection_point_;
 
 		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->origin() ).length();
 
@@ -188,7 +188,7 @@ bool test_nonUniformDetector( void ){
 		const Line lNextToCurrent{ -rotationAxis ^ nextNormalIt->direction(), nextNormalIt->origin() };
 
 		LineLineIntersection currentNextIntersection = IntersectLines( lCurrentToNext, lNextToCurrent );
-		const Point3D currentNextIntersectionPoint = currentNextIntersection.intersectionPoint;
+		const Point3D currentNextIntersectionPoint = currentNextIntersection.intersection_point_;
 
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->origin() ).length();
 
