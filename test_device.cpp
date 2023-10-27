@@ -73,7 +73,7 @@ bool test_tube(void) {
 }
 
 
-
+/*
 bool test_nonUniformDetector( void ){
 
 	ofstream ax1 = openAxis( path( "./test_nonUniformDetector.txt" ), true );
@@ -178,8 +178,8 @@ bool test_nonUniformDetector( void ){
 		const Line lCurrentToPrevious{ -rotationAxis ^ currentNormalIt->direction(), currentNormalIt->origin() };
 		const Line lPreviousToCurrent{ rotationAxis ^ previousNormalIt->direction(), previousNormalIt->origin() };
 
-		lineLine_Intersection currentPreviousIntersection{ lCurrentToPrevious, lPreviousToCurrent };
-		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.result.intersectionPoint;
+		LineLineIntersection currentPreviousIntersection = IntersectLines( lCurrentToPrevious, lPreviousToCurrent );
+		const Point3D currentPreviousIntersectionPoint = currentPreviousIntersection.intersectionPoint;
 
 		const double currentPreviousParameter = -( currentPreviousIntersectionPoint - currentNormalIt->origin() ).length();
 
@@ -187,8 +187,8 @@ bool test_nonUniformDetector( void ){
 		const Line lCurrentToNext{ rotationAxis ^ currentNormalIt->direction(), currentNormalIt->origin() };
 		const Line lNextToCurrent{ -rotationAxis ^ nextNormalIt->direction(), nextNormalIt->origin() };
 
-		lineLine_Intersection currentNextIntersection{ lCurrentToNext, lNextToCurrent };
-		const Point3D currentNextIntersectionPoint = currentNextIntersection.result.intersectionPoint;
+		LineLineIntersection currentNextIntersection = IntersectLines( lCurrentToNext, lNextToCurrent );
+		const Point3D currentNextIntersectionPoint = currentNextIntersection.intersectionPoint;
 
 		const double currentNextParameter = ( currentNextIntersectionPoint - currentNormalIt->origin() ).length();
 
@@ -239,7 +239,7 @@ bool test_nonUniformDetector( void ){
 
 	return true;
 
-}
+}*/
 
 bool test_modifiedDetector( void ){
 

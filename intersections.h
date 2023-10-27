@@ -25,61 +25,6 @@
 	Definitions
  *********************************************************************/
 
- /*!
-  * @brief Class for an intersection result of two lines
- */
- class lineLine_Intersection_Result : public MathematicalObject{
- 
-	 public:
-
-	 /*!
-	  * @brief Default constructor
-	 */
-	 lineLine_Intersection_Result( void ) : 
-		intersectionPoint( Point3D{} ),
-		hasSolution( false ),
-		lineParameter1( 0 ), lineParameter2( 0 )
-	{};
-
-	 /*!
-	  * @brief Convert result's data to string
-	  * @return String with result's data
-	 */
-	 string ToString( const unsigned int newline_tabulators = 0 ) const override;
-
-
-	 public:
-
-	 Point3D intersectionPoint;		/*!<Point of intersection*/
-	 bool hasSolution;			/*!Flag whether the lines intersect*/
-	 double lineParameter1;		/*!Parameter of first Line at intersection*/
-	 double lineParameter2;		/*!Parameter of second Line at intersection*/
-
-
- };
-
-
- class lineLine_Intersection{
-
-	 public:
-
-	 /*!
-	  * @brief Constructor
-	  * @param l1_ Object derived from class Line
-	  * @param l2_ Object derived from class Surface
-	 */
-	 lineLine_Intersection( const Line l1_, const Line l2_ );
-
-
-	 public:
-
-	 Line l1;									/*!<First Line*/
-	 Line l2;									/*!<Second Line*/
-	 lineLine_Intersection_Result result;		/*!<Calculated result*/
-
- };
-
-
 
 /*!
  * @brief Class describing the intersection result of a Line and surface

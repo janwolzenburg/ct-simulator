@@ -20,55 +20,6 @@
    Implementations
 *********************************************************************/
 
-string lineLine_Intersection_Result::ToString( unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
-
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
-
-	str += "solution=" + hasSolution;
-	str += newLine + intersectionPoint.ToString();
-	return str;
-}
-
-
-lineLine_Intersection::lineLine_Intersection( const Line l1_, const Line l2_ ) :
-	l1( l1_ ),
-	l2( l2_ )
-{
-
-
-	// Create system of equations with two variables
-	SystemOfEquations sys( 2 );
-
-	Tuple3D column0 = l1.direction().GetComponents();
-	Tuple3D column1 = -l2.direction().GetComponents( l1.direction() );
-	Tuple3D column2 = l2.origin().GetComponents( l1.origin() ) - l1.origin().GetComponents();
-
-	sys.PopulateColumn( Tuple2D{ column0.x, column0.y } );
-	sys.PopulateColumn( Tuple2D{ column1.x, column1.y } );
-	sys.PopulateColumn( Tuple2D{ column2.x, column2.y } );
-
-	// Solve system
-	SystemOfEquationsSolution sysSol = sys.Solve();
-
-	// No solution found
-	if( !sysSol.solution_found() || 
-		!IsNearlyEqualDistance( sysSol.GetVariableValue( 0 ) * column0.z + sysSol.GetVariableValue( 1 ) * column1.z, column0.z ) ){
-		return;
-	}
-
-
-	// Copy result
-	result.hasSolution = true;						// Solution found
-	result.lineParameter1 = sysSol.GetVariableValue( 0 );			// Surface parameter A
-	result.lineParameter2 = sysSol.GetVariableValue( 1 );			// Surface parameter B
-
-	result.intersectionPoint = l1.GetPoint( result.lineParameter1 );	// Point of intersection
-
-};
-
-
 string linSurf_Intersection_Result::ToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
