@@ -24,46 +24,17 @@
 /*!
  * @brief Class for a matrix
 */
-class matx : public MathematicalObject{
+class Matrix : public MathematicalObject{
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param n_ Amount of rows
-	 * @param m_ Amount of columns
+	 * @param number_of_columns Amount of columns
+	 * @param number_of_rows Amount of rows
 	*/
-	matx( const size_t n_, const size_t m_ );
-
-	/*!
-	 * @brief Element assignment
-	 * @param row Row index
-	 * @param col Column index
-	 * @return Reference to matrix element
-	*/
-	double& operator() ( const size_t row, const size_t col );
-
-	/*!
-	 * @brief Element assignment
-	 * @param idx Cell indices
-	 * @return Reference to matrix element
-	*/
-	double& operator() ( const Index2D idx ){ return (*this)(idx.y, idx.x); };
-
-	/*!
-	 * @brief Element read
-	 * @param row Row index
-	 * @param col Column index
-	 * @return Value of matrix element
-	*/
-	double operator() ( const size_t row, const size_t col ) const;
-	/*!
-	 * @brief Element read
-	 * @param idx Cell indices
-	 * @return Value of matrix element
-	*/
-	double operator() ( const Index2D idx ) const{ return (*this)(idx.y, idx.x); };
-
+	Matrix(  const size_t number_of_columns, const size_t number_of_rows );
+	
 	/*!
 	 * @brief Convert matrice's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each line break
@@ -72,32 +43,61 @@ class matx : public MathematicalObject{
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
+	 * @brief Element assignment
+	 * @param column Column index
+	 * @param row Row index
+	 * @return Reference to matrix element
+	*/
+	double& operator() ( const size_t column, const size_t row );
+
+	/*!
+	 * @brief Element assignment
+	 * @param index Cell indices
+	 * @return Reference to matrix element
+	*/
+	double& operator() ( const GridIndex index ){ return (*this)( index.c, index.r ); };
+
+	/*!
+	 * @brief Element read
+	 * @param column Column index
+	 * @param row Row index
+	 * @return Value of matrix element
+	*/
+	double operator() ( const size_t column, const size_t row ) const;
+	/*!
+	 * @brief Element read
+	 * @param index Cell indices
+	 * @return Value of matrix element
+	*/
+	double operator() ( const GridIndex index ) const{ return (*this)( index.c, index.r ); };
+
+	/*!
 	 * @brief Get amount of rows
 	 * @return Amount of rows in matrix
 	*/
-	size_t getRows( void ) const{ return n; };
+	size_t number_of_rows( void ) const{ return number_of_rows_; };
 
 	/*!
 	 * @brief Get amount of columns
 	 * @return Amount of columns in matrix
 	*/
-	size_t getCols( void ) const{ return m; };
+	size_t number_of_columns( void ) const{ return number_of_columns_; };
 
 	/*!
 	 * @brief Swap two columns
-	 * @param c1 Column 1
-	 * @param c2 Column 2
+	 * @param column_1 Column 1
+	 * @param column_2 Column 2
 	 * @return Error code
 	*/
-	MathError swapCols( const size_t c1, const size_t c2 );
+	MathError SwapColumns( const size_t column_1, const size_t column_2 );
 
 	/*!
 	 * @brief Swap two rows
-	 * @param r1 Row 1
-	 * @param r2 Row 2
+	 * @param row_1 Row 1
+	 * @param row_2 Row 2
 	 * @return Error code
 	*/
-	MathError swapRows( const size_t r1, const size_t r2 );
+	MathError SwapRows( const size_t row_1, const size_t row_2 );
 
 	/*!
 	 * @brief Find indices of maximum absolute value in submatrix
@@ -105,31 +105,31 @@ class matx : public MathematicalObject{
 	 * @param botCorner Bottom-right corner of submatrix
 	 * @return Cell indices of maximum
 	*/
-	Index2D findMax( const Index2D topCorner, const Index2D botCorner );
+	GridIndex FindMaximum( const GridIndex top_corner, const GridIndex bottom_corner );
 
 	/*!
 	 * @brief Scale row by factor
-	 * @param r Row to scale
+	 * @param row Row to scale
 	 * @param scalar Factor to scale by
 	 * @return Error code
 	*/
-	MathError scaleRow( const size_t r, const double scalar );
+	MathError ScaleRow( const size_t row, const double scalar );
 
 	/*!
 	 * @brief Substract rows with r2 = r2 - r1
-	 * @param r1 Row to substract
-	 * @param r2 Row to substract r1 from
+	 * @param row_1 Row to substract
+	 * @param row_2 Row to substract r1 from
 	 * @return Error code
 	*/
-	MathError subRows( const size_t r1, const size_t r2 );
-
+	MathError SubstractRows( const size_t row_1, const size_t row_2 );
 
 	
 	private:
 
-	size_t n;				/*!<Rows*/
-	size_t m;				/*!<Columns*/
-	vector<double> A;		/*!<Data-> Access with [m  * row + col] left to right - top to bottom*/
+	
+	size_t number_of_columns_;	/*!<Columns*/
+	size_t number_of_rows_;		/*!<Rows*/
+	vector<double> data_;		/*!<Data-> Access with [index  * row + col] left to right - top to bottom*/
 };
 
 
@@ -138,7 +138,7 @@ class matx : public MathematicalObject{
  * @brief Class for linear system of equations
  * @details Only systems with one equation per variable solvable. Inherited matrix contains coefficients
 */
-class eqnSys : private matx{
+class eqnSys : private Matrix{
 
 	friend class eqnSysSolution;
 

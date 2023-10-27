@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   equationSystem.xpp
+ * @file   equationSystem.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -28,94 +28,94 @@
 	matx implementation
 */
 
-matx::matx( const size_t n_, const size_t m_ )
-	: n( n_ ),
-	m( m_ ),
-	A( n * m, 0. ) {
-	if (n == 0) { CheckForAndOutputError( MathError::Input, "Matrix rows amount must be greater than zero!" ); n = 1; }
-	if (m == 0) { CheckForAndOutputError( MathError::Input, "Matrix columns amount must be greater than zero!" ); m = 1; }
+Matrix::Matrix( const size_t n_, const size_t m_ ) :
+	number_of_columns_( n_ ),
+	number_of_rows_( m_ ),
+	data_( number_of_rows_ * number_of_columns_, 0. ) {
+	if (number_of_rows_ == 0) { CheckForAndOutputError( MathError::Input, "Matrix rows amount must be greater than zero!" ); number_of_rows_ = 1; }
+	if (number_of_columns_ == 0) { CheckForAndOutputError( MathError::Input, "Matrix columns amount must be greater than zero!" ); number_of_columns_ = 1; }
 }
 
-string matx::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string Matrix::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	char tempCharArr[ 256 ];
 
-	for( unsigned int r = 0; r < n; r++ ){
-		for( unsigned int c = 0; c < m; c++ ){
+	for( unsigned int r = 0; r < number_of_rows_; r++ ){
+		for( unsigned int c = 0; c < number_of_columns_; c++ ){
 			snprintf( tempCharArr, 256, "%.6f,", ( *this )( r, c ) );
 			str += tempCharArr;
-			if( c == m - 1 ) str += ";";
+			if( c == number_of_columns_ - 1 ) str += ";";
 		}
 	}
 
 	return str;
 }
 
-double& matx::operator() ( const size_t row, const size_t col ) {
-	if (row >= n) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	if (col >= m) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
+double& Matrix::operator() ( const size_t col, const size_t row ) {
+	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
 
-	return A.at(m * row + col);;
+	return data_.at(number_of_columns_ * row + col);
 }
 
-double matx::operator() ( const size_t row, const size_t col ) const {
-	if (row >= n) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	if (col >= m) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return A[m * (n - 1) + (m - 1)]; }
-	return A.at(m * row + col);
+double Matrix::operator() ( const size_t col, const size_t row ) const {
+	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	return data_.at(number_of_columns_ * row + col);
 }
 
-MathematicalObject::MathError matx::swapCols( const size_t c1, const size_t c2 ) {
-	if (c1 >= m || c2 >= m) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
+MathematicalObject::MathError Matrix::SwapColumns( const size_t c1, const size_t c2 ) {
+	if (c1 >= number_of_columns_ || c2 >= number_of_columns_) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
 
 	double tempVal;
 
 	// Iterate each row
-	for (size_t curR = 0; curR < n; curR++) {
-		tempVal = (*this)(curR, c1);				// Temporary storage
-		(*this)(curR, c1) = (*this)(curR, c2);		// Swap values
-		(*this)(curR, c2) = tempVal;
+	for (size_t curR = 0; curR < number_of_rows_; curR++) {
+		tempVal = (*this)(c1, curR);				// Temporary storage
+		(*this)(c1, curR) = (*this)(c2, curR);		// Swap values
+		(*this)(c2, curR) = tempVal;
 	}
 
 	return MathError::Ok;
 }
 
-MathematicalObject::MathError matx::swapRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= n || r2 >= n) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
+MathematicalObject::MathError Matrix::SwapRows( const size_t r1, const size_t r2 ) {
+	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
 
 	double tempVal;
 
 	// Iterate each column
-	for (size_t curC = 0; curC < m; curC++) {
-		tempVal = (*this)(r1, curC);					// Temporary storage
-		(*this)(r1, curC) = (*this)(r2, curC);		// Swap values
-		(*this)(r2, curC) = tempVal;
+	for (size_t curC = 0; curC < number_of_columns_; curC++) {
+		tempVal = (*this)(curC, r1);					// Temporary storage
+		(*this)(curC, r1) = (*this)(curC, r2);		// Swap values
+		(*this)(curC, r2) = tempVal;
 	}
 
 	return MathError::Ok;
 }
 
-Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
+GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCorner ) {
 	double curMax = 0, curVal;
-	Index2D curMaxIndx = topCorner;
+	GridIndex curMaxIndx = topCorner;
 
 
-	if (topCorner.y >= n || topCorner.x >= m || botCorner.y >= n || botCorner.x >= m) {
+	if (topCorner.r >= number_of_rows_ || topCorner.c >= number_of_columns_ || botCorner.r >= number_of_rows_ || botCorner.c >= number_of_columns_) {
 		CheckForAndOutputError( MathError::Bounds, "Top of bottom corner of submatrix is outside matrix!" );
 		return curMaxIndx;
 	}
 
 	// Iterate elements in submatrix
-	for (size_t curR = topCorner.y; curR <= botCorner.y; curR++) {
-		for (size_t curC = topCorner.x; curC <= botCorner.x; curC++) {
+	for (size_t curR = topCorner.r; curR <= botCorner.r; curR++) {
+		for (size_t curC = topCorner.c; curC <= botCorner.c; curC++) {
 			// Read cell
-			curVal = abs( (*this)(curR, curC) );
+			curVal = abs( (*this)(curC, curR) );
 
 			// Absolute value in cell greater?
 			if (curVal > curMax) {
 				curMax = curVal;
-				curMaxIndx.y = curR;	// Store indices
-				curMaxIndx.x = curC;
+				curMaxIndx.r = curR;	// Store indices
+				curMaxIndx.c = curC;
 			}
 		}
 	}
@@ -123,22 +123,22 @@ Index2D matx::findMax( const Index2D topCorner, const Index2D botCorner ) {
 	return curMaxIndx;
 }
 
-MathematicalObject::MathError matx::scaleRow( const size_t r, const double scalar ) {
-	if (r >= n) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
+MathematicalObject::MathError Matrix::ScaleRow( const size_t r, const double scalar ) {
+	if (r >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
 	// Iterate all columns
-	for (unsigned int c = 0; c < m; c++) {
-		(*this)(r, c) = (*this)(r, c) * scalar;		// Scale cell
+	for (unsigned int c = 0; c < number_of_columns_; c++) {
+		(*this)(c, r) = (*this)(c, r) * scalar;		// Scale cell
 	}
 
 	return MathError::Ok;
 }
 
-MathematicalObject::MathError matx::subRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= n || r2 >= n) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
+MathematicalObject::MathError Matrix::SubstractRows( const size_t r1, const size_t r2 ) {
+	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
 
 	// Iterate all columns
-	for (size_t c = 0; c < m; c++) {
-		(*this)(r2, c) = (*this)(r2, c) - (*this)(r1, c);		// Substract cell
+	for (size_t c = 0; c < number_of_columns_; c++) {
+		(*this)(c, r2) = (*this)(c, r2) - (*this)(c, r1);		// Substract cell
 	}
 
 	return MathError::Ok;
@@ -151,7 +151,7 @@ MathematicalObject::MathError matx::subRows( const size_t r1, const size_t r2 ) 
 */
 
 eqnSys::eqnSys( const size_t varNum_ )
-	: matx ( varNum_, varNum_ + 1 ),
+	: Matrix ( varNum_ + 1, varNum_ ),
 	varNum( varNum_ ),
 	numPopulatedColumns( 0 ){
 	if( varNum == 0 ) CheckForAndOutputError( MathError::Input, "Number of variables must be greater than 0!" );
@@ -168,7 +168,7 @@ std::string eqnSys::ToString( const unsigned int newline_tabulators ) const{
 	str += "varNum=" + std::to_string( varNum );
 	str += newLine + "popCols=" + std::to_string( numPopulatedColumns );
 
-	str += newLine + matx::ToString();
+	str += newLine + Matrix::ToString();
 
 	return str;
 
@@ -180,9 +180,9 @@ MathematicalObject::MathError eqnSys::populateColumn( const Tuple3D v ){
 	if( isPopulated() || varNum != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
 
 	// Assign vector values to matrix columns
-	( *this )( 0, numPopulatedColumns ) = v.x;
-	( *this )( 1, numPopulatedColumns ) = v.y;
-	( *this )( 2, numPopulatedColumns ) = v.z;
+	( *this )( numPopulatedColumns, 0 ) = v.x;
+	( *this )( numPopulatedColumns, 1 ) = v.y;
+	( *this )( numPopulatedColumns, 2 ) = v.z;
 	numPopulatedColumns++;
 
 	return MathError::Ok;
@@ -194,8 +194,8 @@ MathematicalObject::MathError eqnSys::populateColumn( const Tuple2D v ){
 	if( isPopulated() || varNum != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
 
 	// Assign vector values to matrix columns
-	( *this )( 0, numPopulatedColumns ) = v.x;
-	( *this )( 1, numPopulatedColumns ) = v.y;
+	( *this )( numPopulatedColumns, 0 ) = v.x;
+	( *this )( numPopulatedColumns, 1 ) = v.y;
 	numPopulatedColumns++;
 
 	return MathError::Ok;
@@ -209,13 +209,13 @@ eqnSysSolution eqnSys::solve( void ){
 	if( !isPopulated() ) return sol;
 
 	// Get size of coefficient matrix 
-	size_t rows = getRows(); size_t cols = getCols();
+	size_t rows = number_of_rows(); size_t cols = number_of_columns();
 
 
-	Index2D topC{};										// Top-left corner of submatrix						
-	Index2D botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
+	GridIndex topC{};									// Top-left corner of submatrix						
+	GridIndex botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
 
-	Index2D maxIndx;							// Indices of maximum in submatrix
+	GridIndex maxIndx;							// Indices of maximum in submatrix
 	double maxVal;							// Value of maximum in submatrix
 
 
@@ -228,38 +228,38 @@ eqnSysSolution eqnSys::solve( void ){
 	for( size_t k = 0; k < rows; k++ ){
 
 		// Top-left corner changes each iteration
-		topC.y = k; topC.x = k;
+		topC.r = k; topC.c = k;
 
 		// Search maximum absolute value in quadratic submatrix from (k, k) to (rows - 1, rows - 1)
-		maxIndx = findMax( topC, botC );
+		maxIndx = FindMaximum( topC, botC );
 
 		// Get value
 		maxVal = ( *this )( maxIndx );
 
 		// Return if maximum is zero -> no solution
-		if( IsNearlyEqualDistance( maxVal, 0 ) ) return sol;
+		if( IsNearlyEqualDistance( maxVal, 0. ) ) return sol;
 
 
 		// Swap rows and columns to bring the cell with maximum value to (k,k)
-		if( maxIndx.y != k ) swapRows( maxIndx.y, k );
-		if( maxIndx.x != k ){
-			swapCols( maxIndx.x, k );
+		if( maxIndx.r != k ) SwapRows( maxIndx.r, k );
+		if( maxIndx.c != k ){
+			SwapColumns( maxIndx.c, k );
 
 			// Variable in columns swapped
 			unsigned int temp = varIdx.at( k );
-			varIdx.at( k ) = varIdx.at( maxIndx.x );
-			varIdx.at( maxIndx.x ) = temp;
+			varIdx.at( k ) = varIdx.at( maxIndx.c );
+			varIdx.at( maxIndx.c ) = temp;
 		}
 
-		scaleRow( k, 1 / maxVal );			// Scale k-row by reciprocal of (k, k) value
+		ScaleRow( k, 1 / maxVal );			// Scale k-row by reciprocal of (k, k) value
 
 		// Substract k-row from k+1 to n-row to eliminate cells
 		for( size_t row = k + 1; row < rows; row++ ){
 
 			// Target cell not zero?
-			if( !IsNearlyEqualDistance( ( *this )( row, k ), 0 ) ){
-				scaleRow( row, 1 / ( *this )( row, k ) );		// Make (row, k) to one by scaling row with reciprocal
-				subRows( k, row );						// Substract k-row from row
+			if( !IsNearlyEqualDistance( ( *this )( k, row ), 0. ) ){
+				ScaleRow( row, 1 / ( *this )( k, row ) );		// Make (row, k) to one by scaling row with reciprocal
+				SubstractRows( k, row );						// Substract k-row from row
 			}
 		}
 	}
@@ -274,10 +274,10 @@ eqnSysSolution eqnSys::solve( void ){
 		for( size_t r = 0; r < c; r++ ){
 
 			// Current cell not already zero?
-			if( !IsNearlyEqualDistance( ( *this )( r, c ), 0 ) ){
+			if( !IsNearlyEqualDistance( ( *this )( c, r ), 0 ) ){
 
 				// Calculate result column cell as if current cell is being eliminated 
-				( *this )( r, cols - 1 ) -= ( ( *this )( c, cols - 1 ) * ( *this )( r, c ) );
+				( *this )( cols - 1, r ) -= ( ( *this )( cols - 1, c ) * ( *this )( c, r ) );
 			}
 		}
 	}
@@ -290,7 +290,7 @@ eqnSysSolution eqnSys::solve( void ){
 		varsIndx = varIdx.at( i );		// Index for swapped variable
 
 		// Check if index is in allowed range
-		if( varsIndx < sol.getVarNum() ) sol.setVar( varsIndx, ( *this )( i, cols - 1 ) );
+		if( varsIndx < sol.getVarNum() ) sol.setVar( varsIndx, ( *this )( cols - 1, i ) );
 		else return sol;
 	}
 
