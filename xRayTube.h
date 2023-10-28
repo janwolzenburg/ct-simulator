@@ -26,7 +26,7 @@
 *********************************************************************/
 
 
-constexpr double efficiancy_constant_PerV = 1.1E-9;									// k constant for roentgen power
+constexpr double efficiancy_constant_PerV = 1.1E-9;			// efficiancy constant for roentgen power
 
 
 /*!
@@ -52,6 +52,12 @@ class XRayTubeProperties {
 	*/
 	static const std::map<Material, pair<string, size_t>> materials;
 
+	/*!
+	 * @brief Get enumeration from string
+	 * @param material_string String to find material for
+	 * @return Material enumeration
+	*/
+	static Material GetMaterialEnum( const string material_string );
 
 	/*!
 	 * @brief Constructor
@@ -67,7 +73,6 @@ class XRayTubeProperties {
 
 	/*!
 	 * @brief Default constructor
-	 * @param  
 	*/
 	XRayTubeProperties( void ) : XRayTubeProperties{ 53000., .2, Thungsten }
 	{};
@@ -84,13 +89,6 @@ class XRayTubeProperties {
 	* @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
-
-	/*!
-	 * @brief Get enumeration from string
-	 * @param material_string String to find material for
-	 * @return Material enumeration
-	*/
-	static Material GetMaterialEnum( const string material_string );
 
 
 	double anode_voltage_V;		/*!<Anode Voltage in volts*/
