@@ -26,7 +26,7 @@ using std::cref;
 *********************************************************************/
 
 
-gantry::gantry( CoordinateSystem* const coordinate_system, const tubeParameter tubeParameter_, 
+gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
 				const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( coordinate_system ),
 	resetPostition( cSys->GetPrimitive() ),
@@ -35,20 +35,20 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const tubeParameter t
 	raySource{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ },
 	raysPerPixel( ForcePositive( indipendentParameter.raysPerPixel )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
-	rayScatterAngles{ 127, raySource.getEnergyRange(), 64, cSys->GetEz() }
+	rayScatterAngles{ 127, raySource.GetEmittedEnergyRange(), 64, cSys->GetEz() }
 
 {
 	// Align detector - tube axis with x axis
 	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
 	cSys->SetPrimitive( xAxisAligned );
 
-	raySource.CSys()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	raySource.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
 	
 }
 
 
 vector<Ray> gantry::getBeam( const double exposureTime ) const{
-	return raySource.getBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
+	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
 }
 
 

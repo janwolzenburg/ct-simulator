@@ -28,39 +28,39 @@
 	tubeParameter
 */
 
-const string tubeParameter::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
+const string XRayTubeProperties::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
 
 
-const std::map < tubeParameter::MATERIAL, std::pair<string, size_t>> tubeParameter::material{
-		{ COPPER,		std::make_pair( "COPPER", 29 ) },
-		{ MOLYBDENUM,	std::make_pair( "MOLYBDENUM", 42 ) },
-		{ THUNGSTEN,	std::make_pair( "THUNGSTEN", 74 ) }
+const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTubeProperties::materials{
+		{ Copper,		std::make_pair( "Copper", 29 ) },
+		{ Molybdenum,	std::make_pair( "Molybdenum", 42 ) },
+		{ Thungsten,	std::make_pair( "Thungsten", 74 ) }
 };
 
-tubeParameter::tubeParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	anodeVoltage_V( DeSerializeBuildIn( 53000., binary_data, it ) ),
-	anodeCurrent_A( DeSerializeBuildIn( .2, binary_data, it ) ),
-	anodeMaterial( (MATERIAL) DeSerializeBuildIn( ToUnderlying( MATERIAL::THUNGSTEN ), binary_data, it ) )
+XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	anode_voltage_V( DeSerializeBuildIn( 53000., binary_data, it ) ),
+	anode_current_A( DeSerializeBuildIn( .2, binary_data, it ) ),
+	anode_material( (Material) DeSerializeBuildIn( ToUnderlying( Material::Thungsten ), binary_data, it ) )
 {}
 
 
-tubeParameter::MATERIAL tubeParameter::getEnum( const string materialString ){
-	for( auto& [matEnum, value] : tubeParameter::material ){
+XRayTubeProperties::Material XRayTubeProperties::GetMaterialEnum( const string materialString ){
+	for( auto& [matEnum, value] : XRayTubeProperties::materials ){
 		if( materialString == value.first )
 			return matEnum;
 	}
 
-	return THUNGSTEN;
+	return Thungsten;
 }
 
-size_t tubeParameter::Serialize( vector<char>& binary_data ) const{
+size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( anodeVoltage_V, binary_data );
-	num_bytes += SerializeBuildIn( anodeCurrent_A, binary_data );
-	num_bytes += SerializeBuildIn( ToUnderlying( anodeMaterial ), binary_data );
+	num_bytes += SerializeBuildIn( anode_voltage_V, binary_data );
+	num_bytes += SerializeBuildIn( anode_current_A, binary_data );
+	num_bytes += SerializeBuildIn( ToUnderlying( anode_material ), binary_data );
 
 	return num_bytes;
 }
@@ -70,17 +70,17 @@ size_t tubeParameter::Serialize( vector<char>& binary_data ) const{
 	tube implementation
 */
 
-tube::tube( CoordinateSystem* const coordinate_system, const tubeParameter parameter_ ) :
-	cSys( coordinate_system ),
-	anodeVoltage_V( ForcePositive( parameter_.anodeVoltage_V )),
-	anodeCurrent_A( ForcePositive( parameter_.anodeCurrent_A )),
-	anodeAtomicNumber( ForcePositive( tubeParameter::material.at( parameter_.anodeMaterial ).second ) ),
-	totalPower_W( k_1PerV * static_cast<double>( anodeAtomicNumber ) * anodeCurrent_A * pow( anodeVoltage_V, 2 ) ),
-	maxRadiationEnergy_eV( anodeVoltage_V )
+XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties parameter_ ) :
+	coordinate_system_( coordinate_system ),
+	anode_voltage_V_( ForcePositive( parameter_.anode_voltage_V )),
+	anode_current_A_( ForcePositive( parameter_.anode_current_A )),
+	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( parameter_.anode_material ).second ) ),
+	radiation_power_W_( k_1PerV * static_cast<double>( anode_material_atomic_number_ ) * anode_current_A_ * pow( anode_voltage_V_, 2 ) ),
+	max_photon_energy_eV_( anode_voltage_V_ )
 {
 
 	// Frequencies
-	vector<double> energies = CreateLinearSpace( al_filter_cut_off_energy_eV, maxRadiationEnergy_eV, numPointsInSpectrum);
+	vector<double> energies = CreateLinearSpace( al_filter_cut_off_energy_eV, max_photon_energy_eV_, number_of_points_in_spectrum_);
 
 	// Values
 	vector<double> spectralPower( energies.size(), 0.);
@@ -108,17 +108,17 @@ tube::tube( CoordinateSystem* const coordinate_system, const tubeParameter param
 
 	// Calculate correction factor for spectrum for its values to sum up to totalPower
 	double currentSum = Sum(spectralPower);
-	double correctionFactor = totalPower_W / currentSum;
+	double correctionFactor = radiation_power_W_ / currentSum;
 
 	// Correct values for sums to match
 	Scale(spectralPower, correctionFactor);
 
 	// Write frequency and power values to spectrum
-	xRay_spectrum = spectrum( energies, spectralPower );
+	emitted_spectrum_ = spectrum( energies, spectralPower );
 
 }
 
-vector<Ray> tube::getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
 
 	// Force minimum of one
 	raysPerPixel = ForceToMin1( raysPerPixel );
@@ -126,7 +126,7 @@ vector<Ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 	const size_t numRays = raysPerPixel * detectorPixel.size();
 
 	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
-	const spectrum raySpectrum = xRay_spectrum.getScaled( exposureTime / (double) numRays );
+	const spectrum raySpectrum = emitted_spectrum_.getScaled( exposureTime / (double) numRays );
 
 	// properties of created rays
 	const RayProperties beamProperties{ raySpectrum };
@@ -157,7 +157,7 @@ vector<Ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 			const Point3D currentOrigin = connectionLine.GetPoint( currentOffset );
 
 			// Tempory Line pointing from pixel to tube
-			const Line tempLine{ currentPixel.GetNormal().ConvertTo( cSys ), currentOrigin.ConvertTo( cSys ) };
+			const Line tempLine{ currentPixel.GetNormal().ConvertTo( coordinate_system_ ), currentOrigin.ConvertTo( coordinate_system_ ) };
 
 			// Origin of Ray with specific distance to pixel
 			const Point3D rayOrigin = tempLine.GetPoint( detectorFocusDistance );
@@ -172,29 +172,14 @@ vector<Ray> tube::getBeam( const vector<pixel> detectorPixel, const double detec
 	return rays;
 }
 
-VectorPair tube::spectrumPoints( const bool integral ) const{
+VectorPair XRayTube::GetEnergySpectrumPoints( void ) const{
 
 	VectorPair points;
-	const vector<Tuple2D> spectrumPoints = xRay_spectrum.rawData();
-
-	double yCorrection = 1.;
-
-	if( integral ){
-		yCorrection *= 1 / xRay_spectrum.EnergyResolution();
-	}
-
+	const vector<Tuple2D> spectrumPoints = emitted_spectrum_.rawData();
 
 	for( auto& point : spectrumPoints ){
-
 		points.first.push_back( point.x );
-
-
-		if( integral ){
-			points.second.push_back( point.y * yCorrection );
-		}
-		else{
-			points.second.push_back( point.y );
-		}
+		points.second.push_back( point.y );
 	}
 
 	return points;

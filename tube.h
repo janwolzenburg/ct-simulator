@@ -32,7 +32,7 @@ constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
 /*!
  * @brief Parameter for x-Ray tube
 */
-class tubeParameter {
+class XRayTubeProperties {
 	
 	public:
 
@@ -41,142 +41,143 @@ class tubeParameter {
 	/*!
 	 * @brief Enumeration for anode materials
 	*/
-	enum MATERIAL{
-		COPPER,
-		MOLYBDENUM,
-		THUNGSTEN
+	enum Material{
+		Copper,
+		Molybdenum,
+		Thungsten
 	};
 
 	/*!
 	 * @brief Material map. Combines enumeration with name_ and atomic number
 	*/
-	static const std::map<MATERIAL, std::pair<string, size_t>> material;
+	static const std::map<Material, pair<string, size_t>> materials;
 
-	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param anodeVoltage_V_ Anode voltage in V 
-	 * @param anodeCurrent_A_ Anode Current in A
-	 * @param anodeMaterial_ Anode material
+	 * @param anode_Voltage_V Anode voltage in V 
+	 * @param anodeCurrent_A Anode Current in A
+	 * @param anode_material Anode material
 	*/
-	tubeParameter( const double anodeVoltage_V_, const double anodeCurrent_A_, const MATERIAL anodeMaterial_ ) :
-		anodeVoltage_V( anodeVoltage_V_ ),
-		anodeCurrent_A( anodeCurrent_A_ ),
-		anodeMaterial( anodeMaterial_ )
+	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material ) :
+		anode_voltage_V( anode_Voltage_V ),
+		anode_current_A( anodeCurrent_A ),
+		anode_material( anode_material )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	 * @param  
 	*/
-	tubeParameter( void ) : tubeParameter{ 53000., .2, THUNGSTEN }
+	XRayTubeProperties( void ) : XRayTubeProperties{ 53000., .2, Thungsten }
 	{};
 
 	/*!
 	 * @brief Constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
+	 * @param current_byte Iterator to start of data_ in vector
 	*/
-	tubeParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	 * @brief Get enumeration from string
-	 * @param materialString String to find material for
-	 * @return Material
-	*/
-	static MATERIAL getEnum( const string materialString );
-
-	/*!
-		* @brief Serialize this object
-		* @param binary_data Reference to vector where data_ will be appended
+	* @brief Serialize this object
+	* @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
+	/*!
+	 * @brief Get enumeration from string
+	 * @param material_string String to find material for
+	 * @return Material enumeration
+	*/
+	static Material GetMaterialEnum( const string material_string );
 
-	public:
 
-	double anodeVoltage_V;		/*!<Anode Voltage in volts*/
-	double anodeCurrent_A;		/*!<Current in ampere*/
-	MATERIAL anodeMaterial;		/*!<Atomic Number of anode material*/
+	double anode_voltage_V;		/*!<Anode Voltage in volts*/
+	double anode_current_A;		/*!<Current in ampere*/
+	Material anode_material;		/*!<Atomic Number of anode material*/
 
 };
 
 
-class tube{
+class XRayTube{
 
 	public:
-
 
 	/*!
 	 * @brief Constructor
 	 * @param parameter_ Tube parameters
 	*/
-	tube( CoordinateSystem* const coordinate_system, const tubeParameter parameter_ );
+	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties parameter_ );
 
 	/*!
 	 * @brief Get beam created by tube
-	 * @param detectorPixel Vector with all pixel
-	 * @param detectorFocusDistance Distance from pixel to focus (this tube)
-	 * @param raysPerPixel Amount of rays per pixel
-	 * @param exposureTime Exposure time in seconds. For energy calculation
+	 * @param detector_pixel Vector with all pixel
+	 * @param detector_focus_distance Distance from pixel to focus (this tube)
+	 * @param number_of_rays_per_pixel Amount of rays per pixel
+	 * @param exposure_time Exposure time in seconds. For energy calculation
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<Ray> getBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const size_t raysPerPixel, const double exposureTime ) const;
+	vector<Ray> GetEmittedBeam( const vector<pixel> detector_pixel, const double detector_focus_distance, const size_t number_of_rays_per_pixel, const double exposure_time ) const;
 
 	/*!
 	 * @brief Get coordinate system
 	 * @return Pointer to coordinate system
 	*/
-	CoordinateSystem* CSys( void ) const { return cSys; };
+	CoordinateSystem* coordinate_system( void ) const { return coordinate_system_; };
 
 	/*!
 	 * @brief Get the range of energies the tube emits
 	 * @return Energy Range
 	*/
-	NumberRange getEnergyRange( void ) const{ return NumberRange{ xRay_spectrum.getMin(), xRay_spectrum.getMax() }; };
+	NumberRange GetEmittedEnergyRange( void ) const{ return NumberRange{ emitted_spectrum_.getMin(), emitted_spectrum_.getMax() }; };
 
 	/*!
 	 * @brief Get energy of beam when switched on for exposure time
 	 * @param exposureTime Time in seconds
 	 * @return Energy in joule
 	*/
-	double getEnergy( const double exposureTime ) const{ return totalPower_W * exposureTime; };
+	double GetEmittedEnergy( const double exposureTime ) const{ return radiation_power_W_ * exposureTime; };
 
 	/*!
 	 * @brief Get Ray power
 	 * @return Ray power in watt
 	*/
-	double rayPower( void ) const{ return totalPower_W; };
+	double GetEmittedBeamPower( void ) const{ return radiation_power_W_; };
 
 	/*!
 	 * @brief Get the electrical power
 	 * @return Power in watt
 	*/
-	double electricalPower( void ) const{ return anodeVoltage_V * anodeCurrent_A; };
+	double GetElectricalPower( void ) const{ return anode_voltage_V_ * anode_current_A_; };
+
+	/*!
+	 * @brief Get the energy resolution of spectrum
+	 * @return Energy resolution of spectrum
+	*/
+	double GetSpectralEnergyResolution( void ) const{ return emitted_spectrum_.EnergyResolution(); };
 
 	/*!
 	 * @brief Get the spectrum points
-	 * @param integral Flag whether the sum or the integral should be equal to the tube power. 
-	 * @return 
+	 * @return The spectrum points
 	*/
-	VectorPair spectrumPoints( const bool integral = false ) const;
+	VectorPair GetEnergySpectrumPoints( void ) const;
 
 
 	private:
+	
+	static constexpr size_t number_of_points_in_spectrum_ = 30;		/*!<Amount of discrete datapoints in spectrum*/
 
-	CoordinateSystem* cSys;							/*!<Coordinate system of tube*/
+	CoordinateSystem* coordinate_system_;	/*!<Coordinate system of tube*/
 
-	size_t numPointsInSpectrum = 30;		/*!<Amount of discrete datapoints in spectrum*/
+	double anode_voltage_V_;				/*!<Anode voltage in volts*/
+	double anode_current_A_;				/*!<Anode current in volts*/
+	size_t anode_material_atomic_number_;	/*!<Atomic number of anode material*/
 
-	double anodeVoltage_V;					/*!<Anode voltage in volts*/
-	double anodeCurrent_A;					/*!<Anode current in volts*/
-	size_t anodeAtomicNumber;				/*!<Atomic number of anode material*/
+	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
+	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
 
-	double totalPower_W;					/*!<Total radiation power of tube in watts*/
-	double maxRadiationEnergy_eV;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
-
-	spectrum xRay_spectrum;					/*!<Output spectrum of tube*/
+	spectrum emitted_spectrum_;				/*!<Output spectrum of tube*/
 
 
  };

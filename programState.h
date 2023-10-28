@@ -182,13 +182,13 @@ class programState{
 	 * @brief Get reference to tube instance
 	 * @return Constant reference to tube instance
 	*/
-	const tube& Tube( void ) const{ return gantryInstance.Tube(); };
+	const XRayTube& Tube( void ) const{ return gantryInstance.Tube(); };
 
 	/*!
 	 * @brief Get reference to tube parameter
 	 * @return Constant reference to tube parameter
 	*/
-	const tubeParameter& TubeParameter( void ) const{ return xRayTubeParameter; };
+	const XRayTubeProperties& TubeParameter( void ) const{ return xRayTubeParameter; };
 
 	/*!
 	 * @brief Get reference to radon parameter
@@ -220,7 +220,7 @@ class programState{
 	 * @param radonParameter Radon parameter for detector
 	 * @param indipendentParameter Detector parameter
 	*/
-	void buildGantry( const tubeParameter tubeParameter_,
+	void buildGantry( const XRayTubeProperties tubeParameter_,
 					  const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 
@@ -295,8 +295,8 @@ class programState{
 	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
 	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/
 
-	tubeParameter xRayTubeParameter;									/*!<xRay tube attributes*/
-	storedObject<tubeParameter> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
+	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
+	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
 	detectorRadonParameter radonParameter;								/*!<Parameter in radon space affecting the detector*/
 	storedObject<detectorRadonParameter> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
 	detectorIndipendentParameter detectorParameter;						/*!<Parameter only dependent on the physical properties_ od detector*/

@@ -50,18 +50,18 @@ detector getTestDetector( void ){
 
 bool test_tube(void) {
 
-	tubeParameter tubeParas{	53000,
+	XRayTubeProperties tubeParas{	53000,
 								0.2,
-								tubeParameter::THUNGSTEN };
+								XRayTubeProperties::Thungsten };
 
-	tube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
+	XRayTube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
 
 	detector test_detector = getTestDetector();
 
 	vector<pixel> allPixel = test_detector.getPixel();
 
-	vector<Ray> beam = testTube.getBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
+	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 
@@ -409,9 +409,9 @@ bool test_detector(void) {
 
 gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
-	tubeParameter tubeParas{ 100000,
+	XRayTubeProperties tubeParas{ 100000,
 								0.2,
-								tubeParameter::THUNGSTEN };
+								XRayTubeProperties::Thungsten };
 
 
 	detectorRadonParameter radonParameter{

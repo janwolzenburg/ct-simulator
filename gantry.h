@@ -47,7 +47,7 @@ class gantry {
 	 * @param radonParameters Radon parameter of xRay detector
 	 * @param indipendentParameter Other parameter
 	*/
-	gantry( CoordinateSystem* const coordinate_system,  const tubeParameter tubeParameter_, const detectorRadonParameter radonParameter,
+	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const detectorRadonParameter radonParameter,
 			const detectorIndipendentParameter indipendentParameter );
 
 	/*!
@@ -121,7 +121,7 @@ class gantry {
 	 * @brief Get reference to tube instance
 	 * @return Reference to tube instance
 	*/
-	const tube& Tube( void ) const{ return raySource; };
+	const XRayTube& Tube( void ) const{ return raySource; };
 
 
 	private:
@@ -130,7 +130,7 @@ class gantry {
 	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
 
 	detector rayDetector;				/*!<Ray detector*/
-	tube raySource;						/*!<xRay source*/
+	XRayTube raySource;						/*!<xRay source*/
 	
 	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/

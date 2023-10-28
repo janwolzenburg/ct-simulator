@@ -137,7 +137,7 @@ void programState::deactivateAll( void ){
 		processingWindow_->deactivate();
 }
 
-void programState::buildGantry( const tubeParameter tubeParameter_,
+void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 				  const detectorRadonParameter radonParameter_, const detectorIndipendentParameter indipendentParameter ){
 
 	xRayTubeParameter = tubeParameter_;

@@ -169,10 +169,10 @@ void tomographyExec::handleEvents( void ){
 		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
-		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().electricalPower() ) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ToString( state.Tube().rayPower() ) + "W" + '\n';
-		informationString += "Strahlenergie:	  " + ToString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
-		informationString += "Strahlenergie gesamt:	  " + ToString( state.Tube().getEnergy( state.tomographyParamerters.exposureTime ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
+		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().GetElectricalPower() ) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ToString( state.Tube().GetEmittedBeamPower() ) + "W" + '\n';
+		informationString += "Strahlenergie:	  " + ToString( state.Tube().GetEmittedEnergy( state.tomographyParamerters.exposureTime ) ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + ToString( state.Tube().GetEmittedEnergy( state.tomographyParamerters.exposureTime ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
 		information.value( informationString.c_str() );
 
 	}

@@ -72,19 +72,19 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		tubeVoltageIn.setProperties( 1., 200000., 0 );
 		tubeCurrentIn.setProperties( .001, 10., 3 );
 
-		tubeVoltageIn.value( PROGRAM_STATE().TubeParameter().anodeVoltage_V );
-		tubeCurrentIn.value( PROGRAM_STATE().TubeParameter().anodeCurrent_A );
+		tubeVoltageIn.value( PROGRAM_STATE().TubeParameter().anode_voltage_V );
+		tubeCurrentIn.value( PROGRAM_STATE().TubeParameter().anode_current_A );
 
 		tubeVoltageIn.callback( button_cb, &updateGantry );
 		tubeCurrentIn.callback( button_cb, &updateGantry );
 		materialIn.callback( button_cb, &updateGantry );
 
 		vector<string> materialNames;
-		for( auto& el : tubeParameter::material ) materialNames.push_back( el.second.first );
+		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
 
 		materialIn.setElements( materialNames );
-		tubeParameter::MATERIAL anodeMaterial = PROGRAM_STATE().TubeParameter().anodeMaterial;
-		string materialName = tubeParameter::material.at( anodeMaterial ).first;
+		XRayTubeProperties::Material anode_material = PROGRAM_STATE().TubeParameter().anode_material;
+		string materialName = XRayTubeProperties::materials.at( anode_material ).first;
 		materialIn.value( materialName );
 
 		tubeVoltageIn.tooltip( "Voltage in Volts." );
@@ -167,7 +167,7 @@ void gantryEdition::handleEvents( void ){
 
 		Fl_Group::window()->deactivate();
 
-		tubeParameter newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), tubeParameter::getEnum(materialIn.value())};
+		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum(materialIn.value())};
 		detectorRadonParameter newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
@@ -178,10 +178,15 @@ void gantryEdition::handleEvents( void ){
 
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
 
-		const tube& tubeRef = PROGRAM_STATE().Gantry().Tube();
+		const XRayTube& tubeRef = PROGRAM_STATE().Gantry().Tube();
 		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
-		spectrumPlot.plotRef().assignData( tubeRef.spectrumPoints( true ) );
+		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
+		for( auto& spectrum_value : spectrum_points.second ){
+			spectrum_value /= tubeRef.GetSpectralEnergyResolution();		// "Convert" to integral to match power
+		}
+
+		spectrumPlot.plotRef().assignData( spectrum_points );
 		spectrumPlot.assignData();
 
 		PROGRAM_STATE().setUpdateInformationFlag();
