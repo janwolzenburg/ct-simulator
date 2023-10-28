@@ -82,11 +82,11 @@ void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tom
 		currentRay = rays.at( currentRayIndex  );
 
 		// Transmit Ray through model
-		returnedRay = radModel.rayTransmission( currentRay, tomoParameter, rayScatterAngles );
+		returnedRay = radModel.TransmitRay( currentRay, tomoParameter, rayScatterAngles );
 		returnedRay.properties().energy_spectrum().Scale( 1. / (double) returnedRay.voxel_hits() );
 
 		// Is the Ray outside the model
-		if( !radModel.pntInside( returnedRay.origin() ) ){
+		if( !radModel.IsPointInside( returnedRay.origin() ) ){
 			rayDetector.detectRay( returnedRay, detectorMutex );
 		}
 		else{
@@ -107,14 +107,14 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
-		currentRay = currentRay.ConvertTo( radModel.CSys() );
+		currentRay = currentRay.ConvertTo( radModel.coordinate_system() );
 	}
 	
 	// Convert pixel
-	rayDetector.convertPixel( radModel.CSys() );
+	rayDetector.convertPixel( radModel.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
-	const UnitVector3D scatteringRotationNormal = this->cSys->GetEz().ConvertTo( radModel.CSys() );
+	const UnitVector3D scatteringRotationNormal = this->cSys->GetEz().ConvertTo( radModel.coordinate_system() );
 
 	rayDetector.reset();								// Reset all pixel
 

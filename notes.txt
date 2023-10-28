@@ -42,6 +42,7 @@ Physics
 
 Model
 	voxel
+	model
 
 Rays
 	rays

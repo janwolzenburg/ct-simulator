@@ -34,30 +34,30 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	VoxelData bgData = { 0.01, 120000. };
 
-	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.CSys() };
+	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.coordinate_system() };
 	double sp1_radius = 60;
 	VoxelData sp1_data = { 0.3, 120000. };
 
-	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.CSys() };
+	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.coordinate_system() };
 	double sp2_radius = 70;
 	VoxelData sp2_data = { 0.5, 120000. };
 
 
-	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.CSys() };
+	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.coordinate_system() };
 	double artRadius = 15;
 
 
 	for( size_t x = 0; x < mod.number_of_voxel_3D().x; x++ ){
 		for( size_t y = 0; y < mod.number_of_voxel_3D().y; y++ ){
 			for( size_t z = 0; z < mod.number_of_voxel_3D().z; z++ ){
-				Point3D p{ { (double) x * mod.VoxSize().x , (double) y * mod.VoxSize().y , (double) z * mod.VoxSize().z }, modelSys };
+				Point3D p{ { (double) x * mod.voxel_size().x , (double) y * mod.voxel_size().y , (double) z * mod.voxel_size().z }, modelSys };
 
 
-				if( ( sp1_center - p ).length() <= sp1_radius && ( true || ( sp1_center - p ).length() >= sp1_radius - 1.1 ) )  mod.setVoxelData( sp1_data, { x, y, z } );
-				else if( ( sp2_center - p ).length() <= sp2_radius && ( true || ( sp2_center - p ).length() >= sp2_radius - 1.1 ) ) mod.setVoxelData( sp2_data, { x, y, z } );
-				else mod.setVoxelData( bgData, { x, y, z } );
+				if( ( sp1_center - p ).length() <= sp1_radius && ( true || ( sp1_center - p ).length() >= sp1_radius - 1.1 ) )  mod.SetVoxelData( sp1_data, { x, y, z } );
+				else if( ( sp2_center - p ).length() <= sp2_radius && ( true || ( sp2_center - p ).length() >= sp2_radius - 1.1 ) ) mod.SetVoxelData( sp2_data, { x, y, z } );
+				else mod.SetVoxelData( bgData, { x, y, z } );
 			
-				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.setVoxelProperty( VoxelData::METAL, { x, y, z } );
+				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.SetVoxelProperties( VoxelData::METAL, { x, y, z } );
 			
 			}
 		}
@@ -106,7 +106,7 @@ bool test_modelTransmission( void ){
 
 	for( const Ray r : testGantry.getBeam( 1. ) ){
 		
-		RayVoxelIntersection rayVoxIsect{ mod.Vox(), r };
+		RayVoxelIntersection rayVoxIsect{ mod.GetModelVoxel(), r };
 
 		addSingleObject( ax1, "Entrance", rayVoxIsect.entrance_.intersection_point_, string{ "g" } );
 		addSingleObject( ax1, "Exit", rayVoxIsect.exit_.intersection_point_, string{ "r" } );

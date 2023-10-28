@@ -158,10 +158,10 @@ string programState::modelDescription( void ) const{
 	string modelDataString;
 
 	modelDataString.clear();
-	modelDataString += "Name: \t" + modelInstance.Name() + '\n';
+	modelDataString += "Name: \t" + modelInstance.name() + '\n';
 	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.number_of_voxel_3D().x ) + " x " + ToString( modelInstance.number_of_voxel_3D().y ) + " x " + ToString( modelInstance.number_of_voxel_3D().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.VoxSize().x, 2 ) + " x " + ToString( modelInstance.VoxSize().y, 2 ) + " x " + ToString( modelInstance.VoxSize().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + ToString( modelInstance.ModSize().x ) + " x " + ToString( modelInstance.ModSize().y ) + " x " + ToString( modelInstance.ModSize().z ) + "  mm^3";
+	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.voxel_size().x, 2 ) + " x " + ToString( modelInstance.voxel_size().y, 2 ) + " x " + ToString( modelInstance.voxel_size().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model Größe: \t" + ToString( modelInstance.size().x ) + " x " + ToString( modelInstance.size().y ) + " x " + ToString( modelInstance.size().z ) + "  mm^3";
 
 	return modelDataString;
 }
@@ -171,7 +171,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	const slicePlane backupPlane = modelViewPara.plane; 
 	slicePlane& planeInstance =  modelViewPara.plane;
 
-	const PrimitiveCoordinateSystem backupCSys = modelInstance.CSys()->GetPrimitive();
+	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
 
 	if( targetXRot != planeInstance.rotationAngleX ){
 
@@ -180,7 +180,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
 
-		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetYRot != planeInstance.rotationAngleY ){
@@ -190,7 +190,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 
 		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
 
-		modelInstance.CSys()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetZTrans != planeInstance.positionZ ){
@@ -198,7 +198,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 		const double translation = targetZTrans - planeInstance.positionZ;
 		planeInstance.positionZ = targetZTrans;
 
-		modelInstance.CSys()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
+		modelInstance.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
 
 	// Return if succeeded
@@ -206,7 +206,7 @@ bool programState::moveModel( double& targetXRot, double& targetYRot, double& ta
 	
 	// Revert changes
 	planeInstance = backupPlane;
-	modelInstance.CSys()->SetPrimitive( backupCSys );
+	modelInstance.coordinate_system()->SetPrimitive( backupCSys );
 
 	targetXRot = planeInstance.rotationAngleX;
 	targetYRot = planeInstance.rotationAngleY;
@@ -221,7 +221,7 @@ bool programState::sliceModel( void ){
 	storedViewParameter.setLoaded();
 	storedTomographyParamerter.setLoaded();
 
-	grid<VoxelData> tempSlice = modelInstance.getSlice(  modelViewPara.plane.surface, 1. );
+	grid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
 	
 	if( tempSlice.Size().c == 0 || tempSlice.Size().r == 0 )
 		return false;
@@ -234,9 +234,9 @@ bool programState::sliceModel( void ){
 void programState::centerModel( void ){
 
 	// Center model
-	Tuple3D center = PrimitiveVector3{ modelInstance.ModSize() } / -2.;
+	Tuple3D center = PrimitiveVector3{ modelInstance.size() } / -2.;
 
-	modelInstance.CSys()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+	modelInstance.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
 }
 
 void programState::resetModel( void ){

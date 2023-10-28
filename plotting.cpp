@@ -252,7 +252,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 
 template<>
 void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod, std::string voxel_data_, double threshold ){
-	Voxel modVox = mod.Vox();
+	Voxel modVox = mod.GetModelVoxel();
 	for( Voxel::Face i = Voxel::Face::Begin; i < Voxel::Face::End; ++i ){
 		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.GetFace( i ), "b", 0.2 );
 	}
@@ -260,7 +260,7 @@ void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod,
 	for( size_t iX = 0; iX < mod.number_of_voxel_3D().x; iX++ ){
 		for( size_t iY = 0; iY < mod.number_of_voxel_3D().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.number_of_voxel_3D().z; iZ++ ){
-				Voxel voxel = mod.getVoxel( Index3D{ iX, iY, iZ } );
+				Voxel voxel = mod.GetVoxel( Index3D{ iX, iY, iZ } );
 				if( voxel.data().GetAttenuationAtReferenceEnergy() >= (double) threshold ){
 					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.GetCenter(), voxel_data_ );
 				}

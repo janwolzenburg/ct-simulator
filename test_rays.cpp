@@ -75,7 +75,7 @@ bool test_ray_scattering(void){
 	//addObject( ax1, "TestModel", mod, "g", 0.015 );
 
 	vector<Ray> rays = testGantry.getBeam( 1. );
-	for( Ray &r : rays ) r = r.ConvertTo( mod.CSys()); 
+	for( Ray &r : rays ) r = r.ConvertTo( mod.coordinate_system()); 
 
 
 	size_t maxRadiationLoopsTest = 10;
@@ -99,11 +99,11 @@ bool test_ray_scattering(void){
 
 		for( const Ray r : rays ){
 
-			const Ray retRay = mod.rayTransmission( r, tomoParameter, testGantry.RayScattering() );
+			const Ray retRay = mod.TransmitRay( r, tomoParameter, testGantry.RayScattering() );
 
 			double plotLength = ( retRay.origin() - r.origin() ).length();
 
-			if( mod.pntInside( retRay.origin() ) ){
+			if( mod.IsPointInside( retRay.origin() ) ){
 				addSingleObject( ax1, "Ray", r, "m", plotLength );
 				angles.push_back( r.direction().GetAngle( retRay.direction() ) );
 				raysForNextIteration.push_back( retRay );
@@ -124,7 +124,7 @@ bool test_ray_scattering(void){
 
 
 	for( Ray r : rays ){
-		RayVoxelIntersection res{ mod.Vox(), r };
+		RayVoxelIntersection res{ mod.GetModelVoxel(), r };
 
 		addSingleObject( ax1, "Ray", r, "m", ( r.origin() - res.exit_.intersection_point_ ).length() );
 	}
