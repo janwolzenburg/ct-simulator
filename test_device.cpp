@@ -20,7 +20,7 @@ using std::vector;
 #include "generelMath.h"
 #include "coordinateSystemTree.h"
 #include "test_device.h"
-#include "tube.h"
+#include "xRayTube.h"
 #include "detector.h"
 #include "plotting.h"
 #include "gantry.h"

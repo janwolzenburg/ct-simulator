@@ -19,8 +19,8 @@ using std::vector;
 using std::mutex;
 
 #include "generelMath.h"
-#include "rays.h"
-#include "tube.h"
+#include "ray.h"
+#include "xRayTube.h"
 #include "detector.h"
 #include "model.h"
 #include "scattering.h"

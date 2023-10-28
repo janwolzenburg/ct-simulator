@@ -17,7 +17,7 @@
 #include "generelMath.h"
 #include "coordinateSystem.h"
 #include "voxel.h"
-#include "rays.h"
+#include "ray.h"
 #include "scattering.h"
 #include "grid.h"
 #include "tomography.fwd.h"

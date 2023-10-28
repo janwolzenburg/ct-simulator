@@ -32,7 +32,7 @@
  #include "model.h"
  #include "storedObject.h"
  #include "fileChooser.h"
- #include "tube.h"
+ #include "xRayTube.h"
  #include "detectorParameter.h"
  #include "gantry.h"
 

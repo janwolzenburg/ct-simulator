@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "vectorAlgorithm.h"
-#include "tube.h"
+#include "xRayTube.h"
 #include "simulation.h"
 #include "serialization.h"
 
@@ -75,7 +75,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 	anode_voltage_V_( ForcePositive( parameter_.anode_voltage_V )),
 	anode_current_A_( ForcePositive( parameter_.anode_current_A )),
 	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( parameter_.anode_material ).second ) ),
-	radiation_power_W_( k_1PerV * static_cast<double>( anode_material_atomic_number_ ) * anode_current_A_ * pow( anode_voltage_V_, 2 ) ),
+	radiation_power_W_( efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * anode_current_A_ * pow( anode_voltage_V_, 2 ) ),
 	max_photon_energy_eV_( anode_voltage_V_ )
 {
 

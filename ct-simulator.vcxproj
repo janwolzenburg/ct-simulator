@@ -224,7 +224,7 @@
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
     <ClInclude Include="radonTransform.h" />
-    <ClInclude Include="rays.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surface.h" />
@@ -233,7 +233,7 @@
     <ClInclude Include="test_device.h" />
     <ClInclude Include="test_model.h" />
     <ClInclude Include="tomographyExecution.h" />
-    <ClInclude Include="tube.h" />
+    <ClInclude Include="xRayTube.h" />
     <ClInclude Include="vector3D.fwd.h" />
     <ClInclude Include="vector3D.h" />
     <ClInclude Include="vectorAlgorithm.h" />
@@ -288,7 +288,7 @@
     <ClInclude Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="radonTransform.cpp" />
-    <ClCompile Include="rays.cpp" />
+    <ClCompile Include="ray.cpp" />
     <ClCompile Include="spectrum.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
@@ -297,7 +297,7 @@
     <ClCompile Include="test_rays.cpp" />
     <ClCompile Include="tomography.cpp" />
     <ClCompile Include="tomographyExecution.cpp" />
-    <ClCompile Include="tube.cpp" />
+    <ClCompile Include="xRayTube.cpp" />
     <ClCompile Include="vector3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />

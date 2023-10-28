@@ -165,7 +165,7 @@
     <ClInclude Include="detectorPixel.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
-    <ClInclude Include="tube.h">
+    <ClInclude Include="xRayTube.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
     <ClInclude Include="test_device.h">
@@ -216,7 +216,7 @@
     <ClInclude Include="propability.h">
       <Filter>Headerdateien\Physics\Rays</Filter>
     </ClInclude>
-    <ClInclude Include="rays.h">
+    <ClInclude Include="ray.h">
       <Filter>Headerdateien\Physics\Rays</Filter>
     </ClInclude>
     <ClInclude Include="scattering.h">
@@ -404,7 +404,7 @@
     <ClCompile Include="test_device.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
-    <ClCompile Include="tube.cpp">
+    <ClCompile Include="xRayTube.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="plotting.cpp">
@@ -440,7 +440,7 @@
     <ClCompile Include="propability.cpp">
       <Filter>Quelldateien\Physics\Rays</Filter>
     </ClCompile>
-    <ClCompile Include="rays.cpp">
+    <ClCompile Include="ray.cpp">
       <Filter>Quelldateien\Physics\Rays</Filter>
     </ClCompile>
     <ClCompile Include="scattering.cpp">

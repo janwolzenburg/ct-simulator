@@ -17,7 +17,7 @@
 #include "vector3D.h"
 #include "line.h"
 #include "surface.h"
-#include "rays.h"
+#include "ray.h"
 #include "voxel.h"
 
 

@@ -14,7 +14,7 @@
 
 #include "generel.h"
 #include "propability.h"
-#include "rays.h"
+#include "ray.h"
 
 
 

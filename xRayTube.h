@@ -17,7 +17,7 @@
 #include "generel.h"
 #include "coordinateSystem.h"
 #include "spectrum.h"
-#include "rays.h"
+#include "ray.h"
 #include "detectorPixel.h"
 
 
@@ -26,7 +26,7 @@
 *********************************************************************/
 
 
-constexpr double k_1PerV = 1.1E-9;									// k constant for roentgen power
+constexpr double efficiancy_constant_PerV = 1.1E-9;									// k constant for roentgen power
 
 
 /*!

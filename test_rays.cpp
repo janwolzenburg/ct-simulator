@@ -20,7 +20,7 @@
   #include "test_device.h"
   #include "test_model.h"
   #include "tomography.h"
-  #include "tube.h"
+  #include "xRayTube.h"
 #include "simulation.h"
 
 bool test_scattered_angle_propabilities( void ){

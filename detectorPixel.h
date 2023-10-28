@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
  #include "surface.h"
- #include "rays.h"
+ #include "ray.h"
  #include "intersections.h"
 
 
