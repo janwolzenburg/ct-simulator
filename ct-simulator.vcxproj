@@ -168,6 +168,8 @@
     <ClInclude Include="detector.h" />
     <ClInclude Include="detectorParameter.h" />
     <ClInclude Include="detectorPixel.h" />
+    <ClInclude Include="radonCoordinates.h" />
+    <ClInclude Include="radonProperties.h" />
     <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="filter.h" />
@@ -249,6 +251,7 @@
     <ClCompile Include="detector.cpp" />
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
+    <ClCompile Include="radonCoordinates.cpp" />
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />

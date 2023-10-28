@@ -14,61 +14,13 @@
 
  #include "generel.h"
  #include "generelMath.h"
- 
+ #include "radonProperties.h"
 
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
-
-
-
-/*!
- * @brief Class for detector parameters
-*/
-class detectorRadonParameter{
-
-	public:
-
-	static const string FILE_PREAMBLE;
-
-
-	public:
-	/*!
-	 * @brief Constructor
-	 * @param numberPoints_ Amount of point in radon transformed
-	 * @param distanceRange Distance range
-	*/
-	detectorRadonParameter( const GridIndex numberPoints_, const double distanceRange_ );
-
-	/*!
-	 * @brief Default constructor
-	*/
-	detectorRadonParameter( void ): detectorRadonParameter{ GridIndex{ 32, 16 }, 500. } {};
-
-	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
-	*/
-	detectorRadonParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
-
-	/*!
-		* @brief Serialize this object
-		* @param binary_data Reference to vector where data_ will be appended
-	*/
-	size_t Serialize( vector<char>& binary_data ) const;
-
-
-	public:
-
-	double distanceRange;			/*!<Measure field in mm*/
-	GridIndex numberPoints;			/*!<Number of points on the axis*/
-	GridCoordinates resolution;				/*!GetResolution of the axis*/
-	size_t framesToFillSinogram;	/*!<Amount of frames to fill sinogram*/
-};
-
 
 
 /*!
@@ -79,9 +31,6 @@ class detectorIndipendentParameter{
 	public:
 
 	static const string FILE_PREAMBLE;
-
-
-	public:
 
 	/*!
 	 * @brief Constructor
@@ -136,7 +85,7 @@ class detectorPhysicalParameter{
 	 * @param radonParameter Radon parameters
 	 * @param indipendentParameter Other detector parameters
 	*/
-	detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter );
+	detectorPhysicalParameter( const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter );
 
 
 	public:

@@ -85,7 +85,7 @@ radonTransformed tomography::recordSlice( gantry Gantry, const Model& Model, con
 
 
 	// Get the radon paramters for the detector
-	const detectorRadonParameter radonParameter = Gantry.getDetectorParameter( );
+	const radonProperties radonParameter = Gantry.getDetectorParameter( );
 
 	// Create sinogram 
 	radonTransformed sinogram{ radonParameter };

@@ -23,7 +23,7 @@
 *********************************************************************/
 
 
-detector::detector( CoordinateSystem* const coordinate_system, const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	cSys( coordinate_system ),
 	physicalParameters{ radonParameter, indipendentParameter },
 	radonParameters( radonParameter )

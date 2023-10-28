@@ -33,7 +33,7 @@
 bool test_radonTransform( void ){
 
 
-	detectorRadonParameter radonParameter{
+	radonProperties radonParameter{
 											GridIndex{ 125, 41 },
 											500
 	};
@@ -57,7 +57,7 @@ bool test_detector_to_sinogram( void ){
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
 	closeAxis( ax2 );
 
-	detectorRadonParameter radonParameter = testGantry.getDetectorParameter();
+	radonProperties radonParameter = testGantry.getDetectorParameter();
 	CoordinateSystem* radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
 
 	// Create sinogram 
@@ -181,7 +181,7 @@ void serialisedToImage( void ){
 
 bool test_serialisation( void ){
 
-	detectorRadonParameter radonParameter{
+	radonProperties radonParameter{
 											GridIndex{ 8, 8 },
 											500
 	};

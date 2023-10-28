@@ -47,7 +47,7 @@ class gantry {
 	 * @param radonParameters Radon parameter of xRay detector
 	 * @param indipendentParameter Other parameter
 	*/
-	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const detectorRadonParameter radonParameter,
+	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const radonProperties radonParameter,
 			const detectorIndipendentParameter indipendentParameter );
 
 	/*!
@@ -103,7 +103,7 @@ class gantry {
 	 * @param coordinate_system_ Reference coordinate system for radon transform
 	 * @return 
 	*/
-	detectorRadonParameter getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
+	radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
 
 	/*!
 	 * @brief Get reference to scattering member object

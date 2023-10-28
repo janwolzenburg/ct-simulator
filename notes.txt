@@ -25,6 +25,9 @@ Generel
 	simulation
 	vectorAlgorithm
 
+Device
+	xRayTube
+
 Physics
 	Linear Algebra
 		Cartesian
@@ -46,3 +49,4 @@ Model
 
 Rays
 	rays
+

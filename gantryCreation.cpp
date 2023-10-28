@@ -168,7 +168,7 @@ void gantryEdition::handleEvents( void ){
 		Fl_Group::window()->deactivate();
 
 		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum(materialIn.value())};
-		detectorRadonParameter newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
+		radonProperties newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
 		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 

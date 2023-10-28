@@ -22,14 +22,14 @@
   Implementations
 *********************************************************************/
 
-const string detectorRadonParameter::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
+const string radonProperties::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
 
 
 /*!
- * detectorRadonParameter implementation
+ * radonProperties implementation
 */
 
-detectorRadonParameter::detectorRadonParameter( const GridIndex numberPoints_, const double distanceRange_ ) :
+radonProperties::radonProperties( const GridIndex numberPoints_, const double distanceRange_ ) :
 	distanceRange( ForcePositive( distanceRange_ ) ),
 	numberPoints{	ForceToMin( numberPoints_.c, (size_t) 2 ),
 					ForceToMin( ForceOdd ( numberPoints_.r ), (size_t) 3 ) },
@@ -57,7 +57,7 @@ detectorRadonParameter::detectorRadonParameter( const GridIndex numberPoints_, c
 }
 
 
-detectorRadonParameter::detectorRadonParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+radonProperties::radonProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	distanceRange( DeSerializeBuildIn( 400., binary_data, it ) ),
 	numberPoints( DeSerialize<GridIndex>( binary_data, it ) ),
 	resolution( DeSerialize<GridCoordinates>( binary_data, it ) ),
@@ -65,7 +65,7 @@ detectorRadonParameter::detectorRadonParameter( const vector<char>& binary_data,
 }
 
 
-size_t detectorRadonParameter::Serialize( vector<char>& binary_data ) const{
+size_t radonProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 
@@ -122,7 +122,7 @@ size_t detectorIndipendentParameter::Serialize( vector<char>& binary_data ) cons
  * detectorPhysicalParameter implementation
 */
 
-detectorPhysicalParameter::detectorPhysicalParameter( const detectorRadonParameter radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+detectorPhysicalParameter::detectorPhysicalParameter( const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
 	number{ radonParameter.numberPoints.r, 1 },
 	angle( (double) ( radonParameter.numberPoints.r - 1 ) * radonParameter.resolution.c ),
 	detectorFocusDistance( indipendentParameter.arcRadius ),

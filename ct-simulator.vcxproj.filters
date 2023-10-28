@@ -97,6 +97,12 @@
     <Filter Include="Quelldateien\Program\GUI\Windows">
       <UniqueIdentifier>{ad30713f-cee7-4a15-be81-7fed7719950e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Processing\Radon">
+      <UniqueIdentifier>{ed094920-15ad-4719-9a57-5f4614049db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Processing\Radon">
+      <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -188,9 +194,6 @@
     </ClInclude>
     <ClInclude Include="test_model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="radonTransform.h">
-      <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
     <ClInclude Include="test_processing.h">
       <Filter>Headerdateien\Processing</Filter>
@@ -351,6 +354,15 @@
     <ClInclude Include="serialization.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
+    <ClInclude Include="radonProperties.h">
+      <Filter>Headerdateien\Processing\Radon</Filter>
+    </ClInclude>
+    <ClInclude Include="radonTransform.h">
+      <Filter>Headerdateien\Processing\Radon</Filter>
+    </ClInclude>
+    <ClInclude Include="radonCoordinates.h">
+      <Filter>Headerdateien\Processing\Radon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -418,9 +430,6 @@
     </ClCompile>
     <ClCompile Include="test_model.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="radonTransform.cpp">
-      <Filter>Quelldateien\Processing</Filter>
     </ClCompile>
     <ClCompile Include="test_processing.cpp">
       <Filter>Quelldateien\Processing</Filter>
@@ -511,6 +520,12 @@
     </ClCompile>
     <ClCompile Include="serialization.cpp">
       <Filter>Quelldateien\Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="radonCoordinates.cpp">
+      <Filter>Quelldateien\Processing\Radon</Filter>
+    </ClCompile>
+    <ClCompile Include="radonTransform.cpp">
+      <Filter>Quelldateien\Processing\Radon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
