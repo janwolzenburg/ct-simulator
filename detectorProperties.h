@@ -59,10 +59,10 @@ struct PhysicalDetectorProperties{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double row_width;
-	double detector_focus_distance;
-	bool has_anti_scattering_structure;
-	double max_ray_angle_allowed_by_structure;
+	double row_width;								/*!<Row width. The length of one the pixel side which is connected to the next pixel inside one row*/
+	double detector_focus_distance;					/*!<Distance from the detector array to the focus*/
+	bool has_anti_scattering_structure;				/*!<Flag for anti scatter structure*/
+	double max_ray_angle_allowed_by_structure;		/*!<Maximum angle between pixel normal and Ray if structure is enabled*/
 };
 
 
