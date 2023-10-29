@@ -33,6 +33,7 @@ Device
 	xRayTube
 	detectorProperties
 	detectorPixel
+	xRayDetector
 
 Physics
 	Linear Algebra

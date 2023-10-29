@@ -103,6 +103,12 @@
     <Filter Include="Quelldateien\Processing\Radon">
       <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Device\Classes">
+      <UniqueIdentifier>{3f864968-709a-45d1-85e7-ec7afc630205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Device\Class implementation">
+      <UniqueIdentifier>{5fdb795d-86c5-493a-bf25-9c57ad81c161}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -168,12 +174,6 @@
     <ClInclude Include="coordinates.h">
       <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
     </ClInclude>
-    <ClInclude Include="detectorPixel.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="xRayTube.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
     <ClInclude Include="test_device.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
@@ -186,26 +186,14 @@
     <ClInclude Include="plotting.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
-    <ClInclude Include="xRayDetector.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="gantry.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
     <ClInclude Include="test_model.h">
       <Filter>Headerdateien\Physics\Model</Filter>
     </ClInclude>
     <ClInclude Include="test_processing.h">
       <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="tomography.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
     <ClInclude Include="grid.h">
       <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="detectorProperties.h">
-      <Filter>Headerdateien\Device</Filter>
     </ClInclude>
     <ClInclude Include="filter.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
@@ -363,6 +351,24 @@
     <ClInclude Include="radonCoordinates.h">
       <Filter>Headerdateien\Processing\Radon</Filter>
     </ClInclude>
+    <ClInclude Include="tomography.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayTube.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayDetector.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorProperties.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorPixel.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="gantry.h">
+      <Filter>Headerdateien\Device\Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -410,35 +416,17 @@
     <ClCompile Include="coordinates.cpp">
       <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
     </ClCompile>
-    <ClCompile Include="detectorPixel.cpp">
-      <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
     <ClCompile Include="test_device.cpp">
-      <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="xRayTube.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="plotting.cpp">
       <Filter>Quelldateien\Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="xRayDetector.cpp">
-      <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="gantry.cpp">
-      <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="test_model.cpp">
       <Filter>Quelldateien\Physics\Model</Filter>
     </ClCompile>
     <ClCompile Include="test_processing.cpp">
       <Filter>Quelldateien\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="tomography.cpp">
-      <Filter>Quelldateien\Device</Filter>
-    </ClCompile>
-    <ClCompile Include="detectorProperties.cpp">
-      <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="filter.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
@@ -529,6 +517,24 @@
     </ClCompile>
     <ClCompile Include="radonProperties.cpp">
       <Filter>Quelldateien\Processing\Radon</Filter>
+    </ClCompile>
+    <ClCompile Include="xRayDetector.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="detectorProperties.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="detectorPixel.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="gantry.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="xRayTube.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="tomography.cpp">
+      <Filter>Quelldateien\Device\Class implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
