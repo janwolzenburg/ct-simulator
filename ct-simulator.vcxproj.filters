@@ -201,12 +201,6 @@
     <ClInclude Include="backprojection.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
-    <ClInclude Include="propability.fwd.h">
-      <Filter>Headerdateien\Physics\Rays</Filter>
-    </ClInclude>
-    <ClInclude Include="propability.h">
-      <Filter>Headerdateien\Physics\Rays</Filter>
-    </ClInclude>
     <ClInclude Include="ray.h">
       <Filter>Headerdateien\Physics\Rays</Filter>
     </ClInclude>
@@ -369,6 +363,12 @@
     <ClInclude Include="gantry.h">
       <Filter>Headerdateien\Device\Classes</Filter>
     </ClInclude>
+    <ClInclude Include="propabilityDistribution.h">
+      <Filter>Headerdateien\Physics\Rays</Filter>
+    </ClInclude>
+    <ClInclude Include="propabilityDistribution.fwd.h">
+      <Filter>Headerdateien\Physics\Rays</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -433,9 +433,6 @@
     </ClCompile>
     <ClCompile Include="backprojection.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
-    </ClCompile>
-    <ClCompile Include="propability.cpp">
-      <Filter>Quelldateien\Physics\Rays</Filter>
     </ClCompile>
     <ClCompile Include="ray.cpp">
       <Filter>Quelldateien\Physics\Rays</Filter>
@@ -535,6 +532,9 @@
     </ClCompile>
     <ClCompile Include="tomography.cpp">
       <Filter>Quelldateien\Device\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="propabilityDistribution.cpp">
+      <Filter>Quelldateien\Physics\Rays</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

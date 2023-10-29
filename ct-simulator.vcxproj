@@ -165,6 +165,7 @@
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="coordinateSystemTree.fwd.h" />
     <ClInclude Include="coordinateSystemTree.h" />
+    <ClInclude Include="propabilityDistribution.fwd.h" />
     <ClInclude Include="xRayDetector.h" />
     <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
