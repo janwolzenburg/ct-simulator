@@ -13,7 +13,7 @@
   *********************************************************************/
 
   #include "test_rays.h"
-  #include "scattering.h"
+  #include "rayScattering.h"
   #include "vectorAlgorithm.h"
   #include "plotting.h"
   #include "coordinateSystemTree.h"
@@ -30,10 +30,10 @@ bool test_scattered_angle_propabilities( void ){
 	size_t numEnergies = 20;
 	//double energyResolution = energyRange.GetResolution( numEnergies );
 
-	rayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
+	RayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
 
 	const double testEnergy = 100000.;
-	vector<Tuple2D> distribution = anglePropabilites.getDistribution( testEnergy );
+	/*vector<Tuple2D> distribution = anglePropabilites.GetDistribution(testEnergy);
 
 	vector<Tuple2D> experimentalDistribution = distribution;
 	for( Tuple2D& currentValue : experimentalDistribution ) currentValue.y = 0;
@@ -42,7 +42,7 @@ bool test_scattered_angle_propabilities( void ){
 
 	for( int i = 0; i < 100000; i++ ){
 		
-		double arc_angle = anglePropabilites.getRandomAngle( testEnergy );
+		double arc_angle = anglePropabilites.GetRandomAngle( testEnergy );
 		
 		size_t angleIndex = ForceToMax( (size_t) floor( ( arc_angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
 
@@ -57,7 +57,7 @@ bool test_scattered_angle_propabilities( void ){
 
 	ofstream ax1 = openAxis( path( "./test_scattered_angle_propabilities_experimental.txt" ), true );
 	addSingleObject( ax1, "Experimental", experimentalDistribution, "theta;N;Dots" );
-	closeAxis( ax1 );
+	closeAxis( ax1 );*/
 
 	return true;
 

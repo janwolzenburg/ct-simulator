@@ -63,7 +63,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
 }
 
-void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties tomoParameter, const rayScattering rayScatterAngles,
+void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties tomoParameter, const RayScattering rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								XRayDetector& rayDetector, mutex& detectorMutex ){
@@ -122,7 +122,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	// Scattered rays should lie in the same plane as the detector 
 	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
-	rayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
+	RayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
