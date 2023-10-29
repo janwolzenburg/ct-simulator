@@ -63,29 +63,29 @@ class RandomNumberGenerator{
 
 /*!
  * @brief Class to store a custom propability distribution
- * @details The distribution
+ * @details The distribution is described by a vector of 2D-Tuples. The x-value is the variate and the y-value is the propability corrensponding to that variate.
+ * From the distribution a vector is created. The vector contains repeatitions of the variates. The amount repeatitions ist proportional to the propability of the variate.
 */
 class PropabilityDistribution{
-
 
 	public:
 
 	/*!
 	 * @brief Constructor
 	 * @param distribution Pseudo distribution. Sum of y values may not be equal to one
-	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
+	 * @param max_number_of_bins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
 	*/
-	PropabilityDistribution( const vector<Tuple2D> distribution, const size_t maxNumberOfBins );
+	PropabilityDistribution( const vector<Tuple2D> distribution, const size_t max_number_of_bins );
 
 	/*!
 	 * @brief Get a random value according to distribution
 	*/
-	double getRandom( void ) const;
+	double GetRandomNumber( void ) const;
 
 	/*!
 	 * @brief Get the complete distribution
 	*/
-	vector<Tuple2D> getDistribution( void ) const{ return distribution_; };
+	vector<Tuple2D> distribution( void ) const{ return distribution_; };
 
 
 	private:

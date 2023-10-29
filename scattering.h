@@ -13,7 +13,7 @@
  *********************************************************************/
 
 #include "generel.h"
-#include "propability.h"
+#include "propabilityDistribution.h"
 #include "ray.h"
 
 
@@ -67,8 +67,8 @@ class rayScattering{
 	NumberRange energyRange;				/*!<Range of frequencies*/
 	double energyResolution;		/*!<Frequency GetResolution*/
 
-	vector<PropabilityDistribution> distributions;	/*!<Vector with propability distributions*/
-	vector<double> energies;						/*!<Vector with frequencies the vector with distribution describes*/
+	vector<PropabilityDistribution> distributions;	/*!<Vector with a propability distribution for each discrete energy*/
+	vector<double> energies;						/*!<Vector with energy the vector with distribution describes*/
 
 	UnitVector3D scatteringNormal;							/*!<Rotation normal for scattered rays*/
  };

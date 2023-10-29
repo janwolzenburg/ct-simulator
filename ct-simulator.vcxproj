@@ -212,8 +212,7 @@
     <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="progress.h" />
-    <ClInclude Include="propability.fwd.h" />
-    <ClInclude Include="propability.h" />
+    <ClInclude Include="propabilityDistribution.h" />
     <ClInclude Include="rgbImage.h" />
     <ClInclude Include="scattering.h" />
     <ClInclude Include="serialization.h" />
@@ -284,7 +283,7 @@
     <ClCompile Include="processingWindow.cpp" />
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="progress.cpp" />
-    <ClCompile Include="propability.cpp" />
+    <ClCompile Include="propabilityDistribution.cpp" />
     <ClCompile Include="rgbImage.cpp" />
     <ClCompile Include="scattering.cpp" />
     <ClCompile Include="serialization.cpp" />

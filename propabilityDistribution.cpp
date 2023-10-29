@@ -14,7 +14,7 @@
 
 #include <chrono>
 
-#include "propability.h"
+#include "propabilityDistribution.h"
 #include "vectorAlgorithm.h"
 
 
@@ -69,12 +69,12 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double eventPropability
 	propabilityDistribution implementation
 */
 
-PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins )
+PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution, const size_t max_number_of_bins ) :
+	distribution_( Normalise( distribution ) )
 {
-	// Normalise 
-	distribution_ = Normalise( distribution_ );
+	const double bin_amount_scaling = 4.;		// Factor for the number of bins. When it is greater, smaller properties can appearin the uniform propability
 
-	// Sort by angle
+	// Sort distribution by x value ( variate of distribution )
 	std::sort( distribution_.begin(), distribution_.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 
@@ -86,15 +86,15 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	double smallestPropability = sortedDistribution.front().y;
 
 	// Check against maximum number_of_pixel of bins
-	if( 1. / smallestPropability > static_cast<double>( maxNumberOfBins ) ) smallestPropability = 1. / static_cast<double>( maxNumberOfBins );
+	if( 1. / smallestPropability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) smallestPropability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
 
 	// Insert amount corrensponding to probability into uniform distribution
 	for( const Tuple2D& currentValue : distribution_ ){
 
 		const double currentProbabilty = currentValue.y;
 
-		// How many elements of current value to add to vector
-		const size_t currentBinAmount = (size_t) floor( 4. * currentProbabilty / smallestPropability + 0.5 );
+		// How many elements of current value to add to vector. The factor 4 is used
+		const size_t currentBinAmount = (size_t) floor( bin_amount_scaling * currentProbabilty / smallestPropability + 0.5 );
 
 		// Insert into vector
 		uniform_propabilities_.insert( uniform_propabilities_.end(), currentBinAmount, currentValue.x );
@@ -102,7 +102,7 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	}
 }
 
-double PropabilityDistribution::getRandom( void ) const{
+double PropabilityDistribution::GetRandomNumber( void ) const{
 	
 	size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
 	if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;

@@ -73,7 +73,7 @@ double rayScattering::getRandomAngle( const double energy ) const{
 
 	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 	
-	return distributions.at( distributionIndex ).getRandom();
+	return distributions.at( distributionIndex ).GetRandomNumber();
 
 }
 
@@ -81,6 +81,6 @@ vector<Tuple2D> rayScattering::getDistribution( const double energy ) const{
 
 	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
 
-	return distributions.at( distributionIndex ).getDistribution();
+	return distributions.at( distributionIndex ).distribution();
 
 }

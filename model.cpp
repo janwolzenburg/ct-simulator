@@ -22,7 +22,7 @@ using std::cref;
 #include "model.h"
 #include "coordinateSystemTree.h"
 #include "intersections.h"
-#include "propability.h"
+#include "propabilityDistribution.h"
 #include "tomography.h"
 #include "serialization.h"
 
