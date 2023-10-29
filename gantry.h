@@ -107,7 +107,7 @@ class Gantry{
 	void RadiateModel( const Model& radModel, const tomographyParameter tomography_properties ) ;
 	
 	/*!
-	 * @brief Reset gantry to its initial position and detected rays
+	 * @brief Reset gantry to its initial position and reset detector
 	*/
 	void ResetGantry( void );
 
