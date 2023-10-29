@@ -21,26 +21,22 @@
 
 
 /*
-	pixel implementation
+	DetectorPixel implementation
 */
 
-double pixel::getRadonValue( void ) const{
+double DetectorPixel::GetRadonValue( void ) const{
 
 	double intensitySum = 0;
 
 	// Iterate all detected Ray properties_
-	for( const RayProperties& currentRay : detectedRayProperties ){
+	for( const RayProperties& currentRay : detected_ray_properties_ ){
 		intensitySum += currentRay.energy_spectrum_.getSum();
 	}
 	return intensitySum;
 }
 
-Line pixel::NormalLine( void ) const{
-	return Line{ Surface::GetNormal(), this->origin_ };		// Line origin_ is surface origin_ for pixel and not the middle center!
-}
-
-pixel pixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{
-	return pixel{ this->BoundedSurface::ConvertTo( target_CSys ), this->detectedRayProperties };
+DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{
+	return DetectorPixel{ this->BoundedSurface::ConvertTo( target_CSys ), this->detected_ray_properties_ };
 }
 
 
@@ -48,7 +44,7 @@ pixel pixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{
 	RayPixelIntersection implementation
 */
 
-RayPixelIntersection::RayPixelIntersection( const Ray r, const pixel px ) :
-	LineSurfaceIntersection<Ray, pixel>{ r, px },
-	rayProps(r.properties() )
+RayPixelIntersection::RayPixelIntersection( const Ray r, const DetectorPixel px ) :
+	LineSurfaceIntersection<Ray, DetectorPixel>{ r, px },
+	ray_properties( r.properties() )
 {}

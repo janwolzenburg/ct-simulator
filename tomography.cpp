@@ -73,7 +73,7 @@ size_t tomographyParameter::Serialize( vector<char>& binary_data ) const{
 radonTransformed tomography::recordSlice( const radonProperties radon_properties, gantry Gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
-	Gantry.reset();
+	Gantry.ResetDetected();
 	
 
 	// Translate Gantry
@@ -99,17 +99,17 @@ radonTransformed tomography::recordSlice( const radonProperties radon_properties
 		Gantry.radiate( Model, voxel_data_ );
 		
 		// Get the detection result
-		const vector<pixel> detectionPixel = Gantry.getPixel();
+		const vector<DetectorPixel> detectionPixel = Gantry.getPixel();
 
 
 		// Iterate all pixel
-		for( const pixel& currentPixel : detectionPixel ){
+		for( const DetectorPixel& currentPixel : detectionPixel ){
 
 			// Get Coordinates for pixel
 			const radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
 
 			// Get the radon point
-			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
+			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );

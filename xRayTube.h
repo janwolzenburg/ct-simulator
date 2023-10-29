@@ -116,7 +116,7 @@ class XRayTube{
 	 * @param exposure_time Exposure time in seconds. For energy calculation
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<Ray> GetEmittedBeam( const vector<pixel> detector_pixel, const double detector_focus_distance, const double exposure_time ) const;
+	vector<Ray> GetEmittedBeam( const vector<DetectorPixel> detector_pixel, const double detector_focus_distance, const double exposure_time ) const;
 
 	/*!
 	 * @brief Get coordinate system

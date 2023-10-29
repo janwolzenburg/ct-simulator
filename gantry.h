@@ -61,7 +61,7 @@ class gantry {
 	 * @brief Get all pixel from detector 
 	 * @return Vector with pixel
 	*/
-	vector<pixel> getPixel( void ) const{ return rayDetector.getPixel();  };
+	vector<DetectorPixel> getPixel( void ) const{ return rayDetector.getPixel();  };
 
 	/*!
 	 * @brief Get radius of gantry
@@ -90,7 +90,7 @@ class gantry {
 	/*!
 	 * @brief Reset ganrtry to its initial position
 	*/
-	void reset( void );
+	void ResetDetected( void );
 
 	/*!
 	 * @brief Get the coordinate system of gantry

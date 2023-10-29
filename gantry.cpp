@@ -115,7 +115,7 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 	// Scattered rays should lie in the same plane as the detector 
 	const UnitVector3D scatteringRotationNormal = this->cSys->GetEz().ConvertTo( radModel.coordinate_system() );
 
-	rayDetector.reset();								// Reset all pixel
+	rayDetector.ResetDetected();								// Reset all pixel
 
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
@@ -155,12 +155,12 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 }
 
 
-void gantry::reset( void ){
+void gantry::ResetDetected( void ){
 	
 	// Set to initial position
 	cSys->SetPrimitive( resetPostition );
 
 	// Reset detector
-	rayDetector.reset();
+	rayDetector.ResetDetected();
 }
 

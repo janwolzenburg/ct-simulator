@@ -116,13 +116,14 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
-		allPixel.emplace_back( currentSurfaceVector,
-							   rotationVector,
-							   pixelNormal.origin(),
-							   -currentPixelSize / 2,
-							   currentPixelSize / 2,
-							   -properties_.row_width / 2.,
-							   properties_.row_width / 2. );
+		allPixel.emplace_back(  BoundedSurface{ 
+								currentSurfaceVector,
+								rotationVector,
+								pixelNormal.origin(),
+								-currentPixelSize / 2,
+								currentPixelSize / 2,
+								-properties_.row_width / 2.,
+								properties_.row_width / 2. } );
 
 		// Add mirrored when not middle pixel
 		if( currentIndex > 0 ){
@@ -135,13 +136,14 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 
 			// Add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			allPixel.emplace_back( mirroredSurfaceVector,
-								   rotationVector,
-								   mirroredPixelNormal.origin(),
-								   -currentPixelSize / 2,
-								   currentPixelSize / 2,
-								   -properties_.row_width / 2.,
-								   properties_.row_width / 2. );
+			allPixel.emplace_back(	BoundedSurface{ 
+									mirroredSurfaceVector,
+									rotationVector,
+									mirroredPixelNormal.origin(),
+									-currentPixelSize / 2,
+									currentPixelSize / 2,
+									-properties_.row_width / 2.,
+									properties_.row_width / 2. } );
 		}
 
 	}
@@ -151,8 +153,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 }
 
 
-void detector::reset( void ){
-	for( pixel& currentPixel : allPixel ) currentPixel.reset();
+void detector::ResetDetected( void ){
+	for( DetectorPixel& currentPixel : allPixel ) currentPixel.ResetDetected();
 }
 
 
@@ -163,7 +165,7 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
 	
 		// Converted pixel
-		const pixel currentPixel = allPixelConverted.at( pixelIdx );
+		const DetectorPixel currentPixel = allPixelConverted.at( pixelIdx );
 
 	
 		// Check for intersection of Ray with current pixel
@@ -173,9 +175,9 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 		if( pixelHit.intersection_exists_ ){
 			
 			// If has_anti_scattering_structure and angle allowed by structure
-			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
+			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
-				allPixel.at( pixelIdx ).addDetectedProperties( r.properties() );		// Add detected Ray properties_ to pixel
+				allPixel.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
 				allPixelLock.unlock();
 			}
 

@@ -58,7 +58,7 @@ bool test_tube(void) {
 
 	detector test_detector = getTestDetector();
 
-	vector<pixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.getPixel();
 
 	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance, 1. );
 
@@ -265,7 +265,7 @@ bool test_modifiedDetector( void ){
 
 	// All pixel normals
 
-	vector<pixel> allPixel;
+	vector<DetectorPixel> allPixel;
 
 	Line previousNormal;			// GetCenterNormal of previous pixel
 	double previousPixelSize;		// Size of previous pixel
@@ -338,13 +338,14 @@ bool test_modifiedDetector( void ){
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
-		allPixel.emplace_back( currentSurfaceVector,
+		allPixel.emplace_back( BoundedSurface{ 
+								currentSurfaceVector,
 							   rotationVector,
 							   pixelNormal.origin(),
 							   -currentPixelSize / 2,
 							   currentPixelSize / 2,
 							   -10,
-							   10 );
+							   10 } );
 
 		// Add mirrored when not middle pixel
 		if( currentIndex > 0 ){
@@ -357,13 +358,13 @@ bool test_modifiedDetector( void ){
 
 			// Add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			allPixel.emplace_back( mirroredSurfaceVector,
+			allPixel.emplace_back( BoundedSurface{ mirroredSurfaceVector,
 								   rotationVector,
 								   mirroredPixelNormal.origin(),
 								   -currentPixelSize / 2,
 								   currentPixelSize / 2,
 								   -10,
-								   10 );
+								   10 } );
 		}
 
 	}
@@ -386,7 +387,7 @@ bool test_detector(void) {
 
 	detector test_detector = getTestDetector();
 
-	vector<pixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.getPixel();
 
 	ofstream ax1 = openAxis(path("./test_detector.txt"), true);
 
@@ -394,7 +395,7 @@ bool test_detector(void) {
 	
 	vector<Line> pixelNormals;
 
-	for( pixel currentPixel : allPixel ){
+	for( DetectorPixel currentPixel : allPixel ){
 		pixelNormals.push_back( currentPixel.NormalLine() );
 	}
 

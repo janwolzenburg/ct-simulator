@@ -29,7 +29,7 @@
 class RayProperties{
 	
 	friend class Ray;
-	friend class pixel;
+	friend class DetectorPixel;
 
 	public:
 

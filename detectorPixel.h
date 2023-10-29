@@ -24,9 +24,7 @@
 /*!
  * @brief Class for detector pixel
 */
-class pixel : public BoundedSurface{
-
-	using BoundedSurface::BoundedSurface;
+class DetectorPixel : public BoundedSurface{
 
 	public:
 
@@ -34,80 +32,80 @@ class pixel : public BoundedSurface{
 	 * @brief Constructor
 	 * @param surface Surface as base object
 	*/
-	pixel( const BoundedSurface surface ) :
-		BoundedSurface{ surface },
-		detectedRayProperties( 0, RayProperties{} )
+	DetectorPixel( const BoundedSurface surface ) :
+		BoundedSurface( surface ), detected_ray_properties_( 0, RayProperties{} )
 	{};
 
 	/*!
 	 * @brief Constructor
 	 * @param surface Surface as base object
-	 * @param properties_ Detected Ray's properties_
+	 * @param properties Detected Ray's properties
 	*/
-	pixel( const BoundedSurface surface, const vector<RayProperties> properties_ ) :
-		BoundedSurface{ surface },
-		detectedRayProperties( properties_ )
+	DetectorPixel( const BoundedSurface surface, const vector<RayProperties> properties ) :
+		BoundedSurface{ surface }, detected_ray_properties_( properties )
 	{};
+
+	/*!
+	 * @brief Get the detected Ray properties
+	 * @return Vector with properties
+	*/
+	vector<RayProperties> detected_ray_properties( void ) const{ return detected_ray_properties_; };
 
 	/*!
 	 * @brief Reset detected rays
 	*/
-	void reset( void ){ detectedRayProperties.clear(); };
-
-	/*!
-	 * @brief Get the value of radon point from detected Ray properties_
-	 * @return Value of radon point
-	*/
-	double getRadonValue( void ) const;
+	void ResetDetected( void ){ detected_ray_properties_.clear(); };
 
 	/*!
 	 * @brief Get the normal of the pixel
-	 * @return Line with pixel's center as origin_ an direction of surface normal
+	 * @return Line with pixel's center as origin and direction of surface normal
 	*/
-	Line NormalLine( void ) const;
+	Line NormalLine( void ) const{ return Line{ Surface::GetNormal(), this->origin_ }; };
+
+	/*!
+	 * @brief Get the value of radon point for the detected Ray properties
+	 * @return Value of radon point
+	*/
+	double GetRadonValue( void ) const;
 
 	/*!
 	 * @brief Convert this pixel ot given coordinate system
-	 * @param target_CSys Target system 
+	 * @param target_coordinate_system Target system 
 	 * @return This pixel in given coordiante system
 	*/
-	pixel ConvertTo( const CoordinateSystem* const target_CSys ) const;
+	DetectorPixel ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
-	 * @brief Add Ray properties_
+	 * @brief Add Ray properties
 	 * @param properties_ properties to add
 	*/
-	void  addDetectedProperties( const RayProperties properties_ ){
-		detectedRayProperties.push_back( properties_ ); };
+	void  AddDetectedRayProperties( const RayProperties properties ){
+		detected_ray_properties_.push_back( properties ); };
 
-	/*!
-	 * @brief Get the detected Ray properties_
-	 * @return Vector with properties_
-	*/
-	vector<RayProperties> getProperties( void ) const{ return detectedRayProperties; };
 
 	private:
-	vector<RayProperties> detectedRayProperties;		/*!<Rays detected with this pixel*/
+
+	vector<RayProperties> detected_ray_properties_;		/*!<Ray properties of rays detected with this pixel*/
 
  };
 
 
 /*!
- * @brief Class for the intersection of pixel and Ray
+ * @brief Class for the intersection of pixel and ray
 */
-class RayPixelIntersection : public LineSurfaceIntersection<Ray, pixel>{
+class RayPixelIntersection : public LineSurfaceIntersection<Ray, DetectorPixel>{
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param direction_ Ray
-	 * @param px Pixel
+	 * @param ray Ray
+	 * @param pixel Pixel
 	*/
-	RayPixelIntersection( const Ray r, const pixel px );
+	RayPixelIntersection( const Ray ray, const DetectorPixel pixel );
 
 
-	RayProperties rayProps; 
+	RayProperties ray_properties;	/*!<Properties of detected ray*/
 
  };
 

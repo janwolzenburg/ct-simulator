@@ -119,7 +119,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
 
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
@@ -134,7 +134,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const d
 	vector<Ray> rays;
 
 	// Iterate all pixel
-	for( const pixel currentPixel : detectorPixel ){
+	for( const DetectorPixel currentPixel : detectorPixel ){
 		
 		// Get points on the edge of pixel
 
