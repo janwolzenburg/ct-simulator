@@ -61,8 +61,8 @@ class programState{
 	grid<VoxelData> modelSliceInstance;	/*!<Slice through model as gridded data_*/
 	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
-	tomography tomographyInstance;				/*!<Instance of the tomography*/
-	tomographyParameter tomographyParamerters;	/*!<Parameter of tomography*/
+	Tomography tomographyInstance;				/*!<Instance of the tomography*/
+	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
 	radonTransformed currentProjections;		/*!<The current projections from last tomography*/
 
 	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
@@ -303,7 +303,7 @@ class programState{
 	storedObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
-	storedObject<tomographyParameter> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
+	storedObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
 	storedObject<radonTransformed> storedProjections;				/*!<Persisting storage of projections*/
 	storedObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 

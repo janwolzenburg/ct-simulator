@@ -63,7 +63,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
 }
 
-void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParameter tomoParameter, const rayScattering rayScatterAngles,
+void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties tomoParameter, const rayScattering rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								XRayDetector& rayDetector, mutex& detectorMutex ){
@@ -107,9 +107,9 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParame
 	return;
 }
 
-void Gantry::RadiateModel( const Model& model, tomographyParameter tomography_properties ) {
+void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
-	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposureTime );		// Current rays. Start with rays from source
+	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
@@ -133,11 +133,11 @@ void Gantry::RadiateModel( const Model& model, tomographyParameter tomography_pr
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < tomography_properties.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop < tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		tomography_properties.scattering = currentLoop < tomography_properties.maxRadiationLoops && tomography_properties.scattering;	// No scattering in last iteration
+		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	// No scattering in last iteration
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 

@@ -89,7 +89,7 @@ bool test_ray_scattering(void){
 		anglesHistogram.emplace_back( a, 0.);
 	}
 
-	tomographyParameter tomoParameter{1., true, 16, .05, 5e-2};
+	TomographyProperties tomoParameter{1., true, 16, .05, 5e-2};
 
 	for( size_t currentLoop = 0; currentLoop < maxRadiationLoopsTest && rays.size() > 0; currentLoop++ ){
 
