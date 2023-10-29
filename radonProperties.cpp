@@ -41,13 +41,13 @@ radonProperties::radonProperties( const GridIndex numberPoints_, const double di
 	framesToFillSinogram( numberPoints.c - 1 + numberPoints.r - 1)
 {
 
-	// Check GetAngle
+	// Check angle
 	double currentAngle = (double) ( numberPoints.r - 1 ) * resolution.c;
 
 	// Store current number_of_pixel of distances 
 	size_t newNumberPointsRow = numberPoints.r;
 
-	// Detector GetAngle exceeds maximum or minimum
+	// Detector angle exceeds maximum or minimum
 	if( currentAngle > max_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) floor( max_detetector_arc_angle_rad / resolution.c ) + 1;
 	if( currentAngle < min_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) ceil( min_detetector_arc_angle_rad / resolution.c ) + 1;
 

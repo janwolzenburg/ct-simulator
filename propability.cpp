@@ -74,7 +74,7 @@ propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribu
 	// Normalise 
 	distribution = Normalise( distribution_ );
 
-	// Sort by GetAngle
+	// Sort by angle
 	std::sort( distribution.begin(), distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 

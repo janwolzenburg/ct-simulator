@@ -77,9 +77,9 @@ class gantry {
 
 	/*!
 	 * @brief Rotate gantry counter clockwise around ZAxis
-	 * @param GetAngle Rotation GetAngle
+	 * @param angle Rotation angle
 	*/
-	void rotateCounterClockwise( const double arc_angle );
+	void rotateCounterClockwise( const double angle );
 
 	/*!
 	 * @brief Radiate model with beam
@@ -134,7 +134,7 @@ class gantry {
 	
 	double radius;						/*!<Radius of gantry*/
 
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and GetAngle propabilities*/
+	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
 
 	/*!
 	 * @brief Thread function to speed up transmission of multiple rays through model

@@ -146,31 +146,31 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief Rotate the point of all three components around x-axis of coordinate system
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundXAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Rotate the point of all three components around y-axis of coordinate system
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundYAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Rotate the point of all three components around z-axis of coordinate system
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundZAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Rotate point that these three components form around a vector the components of n form
 	 * @param axis Rotation axis
-	 * @param GetAngle Angle
+	 * @param angle Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const PrimitiveVector3 axis, const double arc_angle );
+	MathError Rotate( const PrimitiveVector3 axis, const double angle );
 
 };

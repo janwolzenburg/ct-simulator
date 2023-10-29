@@ -40,7 +40,7 @@ detector getTestDetector( void ){
 		10
 	};
 
-	// 50 degree GetAngle
+	// 50 degree angle
 	detector testDetector{ GlobalSystem()->CreateCopy( "Detector system" ), radonParameter, indipendentParameter };
 
 	return testDetector;
@@ -278,7 +278,7 @@ bool test_modifiedDetector( void ){
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
@@ -309,7 +309,7 @@ bool test_modifiedDetector( void ){
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 			
-			// First pixel size_ so that the neighbooring pixel intersects at half GetAngle
+			// First pixel size_ so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}

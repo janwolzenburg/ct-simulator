@@ -47,7 +47,7 @@ class rayScattering{
 	Ray scatterRay( const Ray r, const Point3D newOrigin ) const;
 
 	/*!
-	 * @brief Get a random GetAngle to given frequency
+	 * @brief Get a random angle to given frequency
 	 * @param frequency Frequency of Ray
 	 * @return Random angöe
 	*/

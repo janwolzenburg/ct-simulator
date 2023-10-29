@@ -78,11 +78,11 @@ class DetectorProperties{
 
 	public:
 
-	GridIndex number_of_pixel;				/*!<Amount of pixel in each dimension*/
-	double row_width;				/*!<Size of one pixel in column direction*/
-	double arc_angle;					/*!<Angle between outer normals*/
-	double detector_focus_distance;	/*!<Distance of focus and detector pixel*/
+	GridIndex number_of_pixel;					/*!<Amount of pixel in each dimension*/
+	double row_width;							/*!<Size of one pixel in column direction*/
+	double arc_angle;							/*!<Angle between outer normals*/
+	double detector_focus_distance;				/*!<Distance of focus and detector pixel*/
 
-	bool has_anti_scattering_structure;				/*!<Flag for anti scatter structure*/
-	double max_ray_angle_allowed_by_structure;	/*!<Maximum GetAngle between pixel normal and Ray*/
+	bool has_anti_scattering_structure;			/*!<Flag for anti scatter structure*/
+	double max_ray_angle_allowed_by_structure;	/*!<Maximum angle between pixel normal and Ray*/
 };

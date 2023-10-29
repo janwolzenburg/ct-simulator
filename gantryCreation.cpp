@@ -150,7 +150,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
 		detector_focus_distance_input.tooltip( "Radius of the arc where the pixel lie." );
-		maxRayAngleIn.tooltip( "Maximum detecable GetAngle in degree between pixel and ray. Only valid when anti scattering is activated." );
+		maxRayAngleIn.tooltip( "Maximum detecable angle in degree between pixel and ray. Only valid when anti scattering is activated." );
 		structureIn.tooltip( "Activate anti scattering structure." );
 
 

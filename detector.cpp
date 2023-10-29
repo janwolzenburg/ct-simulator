@@ -55,7 +55,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
@@ -87,7 +87,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 
-			// First pixel size_ so that the neighbooring pixel intersects at half GetAngle
+			// First pixel size_ so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -172,7 +172,7 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 		// Do they intersect?
 		if( pixelHit.intersection_exists_ ){
 			
-			// If has_anti_scattering_structure and GetAngle allowed by structure
+			// If has_anti_scattering_structure and angle allowed by structure
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
 				allPixel.at( pixelIdx ).addDetectedProperties( r.properties() );		// Add detected Ray properties_ to pixel

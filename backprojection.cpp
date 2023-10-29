@@ -43,7 +43,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 	for( size_t t = 0; t < nT; t++ ){
 
 		if( progress != nullptr )
-			progress->changeLineText(0,"Filtering GetAngle " + ToString( t + 1 ) + " of " + ToString( nT ) );
+			progress->changeLineText(0,"Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
@@ -139,7 +139,7 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 			// Iterate and sum filtered projections over all angles
 			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
 
-				const double arc_angle = (double) angleIdx * dT;			// Current GetAngle value
+				const double arc_angle = (double) angleIdx * dT;			// Current angle value
 				const double t = x * cos( arc_angle ) + y * sin( arc_angle );	// Current "distance" or magnitude in polar Coordinates
 
 				// Get the projection value and add to current value

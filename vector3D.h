@@ -251,7 +251,7 @@ class Vector3D : protected Coordinates{
 	MathError AddToZ( const double z_ );
 
 	/*!
-	 * @brief Calculate GetAngle between this and another vector
+	 * @brief Calculate angle between this and another vector
 	 * @param v2 Second vector
 	 * @return Angle in radians
 	*/
@@ -266,24 +266,24 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundXAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundYAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundZAxis( const double sinPhi, const double cosPhi );
