@@ -18,7 +18,7 @@
 
 #include "generelMath.h"
 #include "detectorPixel.h"
-#include "detectorParameter.h"
+#include "detectorProperties.h"
 
 
 

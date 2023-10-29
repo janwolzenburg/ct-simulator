@@ -33,7 +33,7 @@
  #include "storedObject.h"
  #include "fileChooser.h"
  #include "xRayTube.h"
- #include "detectorParameter.h"
+ #include "detectorProperties.h"
  #include "gantry.h"
 
 

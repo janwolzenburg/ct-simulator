@@ -204,7 +204,7 @@
     <ClInclude Include="grid.h">
       <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="detectorParameter.h">
+    <ClInclude Include="detectorProperties.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
     <ClInclude Include="filter.h">
@@ -437,7 +437,7 @@
     <ClCompile Include="tomography.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
-    <ClCompile Include="detectorParameter.cpp">
+    <ClCompile Include="detectorProperties.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="filter.cpp">

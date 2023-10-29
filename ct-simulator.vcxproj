@@ -166,7 +166,7 @@
     <ClInclude Include="coordinateSystemTree.fwd.h" />
     <ClInclude Include="coordinateSystemTree.h" />
     <ClInclude Include="detector.h" />
-    <ClInclude Include="detectorParameter.h" />
+    <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="radonCoordinates.h" />
     <ClInclude Include="radonProperties.h" />
@@ -249,7 +249,7 @@
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
     <ClCompile Include="detector.cpp" />
-    <ClCompile Include="detectorParameter.cpp" />
+    <ClCompile Include="detectorProperties.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="radonCoordinates.cpp" />
     <ClCompile Include="radonProperties.cpp" />
