@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 
- #include "generel.h"
+#include "generel.h"
 #include "generelMath.h"
 #include "radonProperties.h"
 #include "serialization.h"
@@ -23,6 +23,9 @@
    Definitions
 *********************************************************************/
 
+/*!
+ * @brief Class for physical detector properties
+*/
 struct PhysicalDetectorProperties{
 
 	static const string FILE_PREAMBLE;
@@ -43,17 +46,18 @@ struct PhysicalDetectorProperties{
 								const double max_ray_angle_allowed_by_structure = default_max_ray_angle_allowed_by_structure );
 
 	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param current_byte Iterator to start of data_ in vector
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param current_byte Iterator to start of data in vector
 	*/
 	PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	* @brief Serialize this object
-	* @param binary_data Reference to vector where data_ will be appended
+	* @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
+
 
 	double row_width;
 	double detector_focus_distance;
@@ -61,8 +65,9 @@ struct PhysicalDetectorProperties{
 	double max_ray_angle_allowed_by_structure;
 };
 
+
 /*!
- * @brief Struct for detector parameters
+ * @brief Class for detector properties derived from radon and physical properties
 */
 class DetectorProperties{
 
@@ -70,13 +75,11 @@ class DetectorProperties{
 
 	/*!
 	 * @brief Constructor
-	 * @param radonParameter Radon parameters
-	 * @param indipendentParameter Other detector parameters
+	 * @param radon_properties Radon properties
+	 * @param physical_properties Physical detector properties
 	*/
 	DetectorProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
-
-	public:
 
 	GridIndex number_of_pixel;					/*!<Amount of pixel in each dimension*/
 	double row_width;							/*!<Size of one pixel in column direction*/
