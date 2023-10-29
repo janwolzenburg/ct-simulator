@@ -43,7 +43,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	distRange{		X( detectorGrp, .6 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Range" },
 
 	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Rays / Pix" },
-	detector_focus_distance_input{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Arc Radius" },
+	detector_focus_distance_input{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Focus Dist." },
 	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Anti scat." },
 	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Max angle" },
 
@@ -134,7 +134,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		raysPerPixelIn.setProperties( 1, 1000, 0 );
 		raysPerPixelIn.value( (int) PROGRAM_STATE().Tube().number_of_rays_per_pixel() );
 
-		detector_focus_distance_input.setProperties( 100., 100000., 0 );
+		detector_focus_distance_input.setProperties( distRange.value(), 100000., 0);
 		detector_focus_distance_input.value( PROGRAM_STATE().DetectorParameter().detector_focus_distance );
 
 		maxRayAngleIn.setProperties( .1, 60., 2 );
@@ -149,7 +149,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		structureIn.callback( button_cb, &updateGantry );
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
-		detector_focus_distance_input.tooltip( "Radius of the arc where the pixel lie." );
+		detector_focus_distance_input.tooltip( "Detector focus distance." );
 		maxRayAngleIn.tooltip( "Maximum detecable angle in degree between pixel and ray. Only valid when anti scattering is activated." );
 		structureIn.tooltip( "Activate anti scattering structure." );
 
@@ -166,6 +166,9 @@ void gantryEdition::handleEvents( void ){
 
 
 		Fl_Group::window()->deactivate();
+
+		
+		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
 
 		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
 		radonProperties newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };

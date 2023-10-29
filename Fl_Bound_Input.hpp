@@ -52,6 +52,7 @@ void Fl_Bound_Input<C, T>::setProperties( const T min_, const T max_, const int 
 	maxVal = max_;
 	precision = precision_;
 	constraint = constraint_;
+	checkBounds();
 }
 
 template< class C, typename T>
