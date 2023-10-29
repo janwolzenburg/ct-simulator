@@ -83,10 +83,9 @@ size_t radonProperties::Serialize( vector<char>& binary_data ) const{
 */
 
 
-const string detectorIndipendentParameter::FILE_PREAMBLE{ "DETECTORPARAMETER_FILE_PREAMBLE" };
+const string detectorIndipendentParameter::FILE_PREAMBLE{ "Ver01DETECTORPARAMETER_FILE_PREAMBLE" };
 
-detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
-	raysPerPixel( raysPerPixel_ ),
+detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
 	arcRadius( arcRadius_ ),
 	columnSize( ForcePositive( columnSize_ ) ),
 	structured( structured_ ),
@@ -94,8 +93,6 @@ detectorIndipendentParameter::detectorIndipendentParameter( const size_t raysPer
 {}
 
 detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-
-	raysPerPixel( DeSerializeBuildIn( (size_t) 1, binary_data, it ) ),
 	arcRadius( DeSerializeBuildIn( 1000., binary_data, it ) ),
 	columnSize( DeSerializeBuildIn( 50., binary_data, it ) ),
 	structured( DeSerializeBuildIn( true, binary_data, it ) ),
@@ -108,7 +105,6 @@ size_t detectorIndipendentParameter::Serialize( vector<char>& binary_data ) cons
 
 
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( raysPerPixel, binary_data );
 	num_bytes += SerializeBuildIn( arcRadius, binary_data );
 	num_bytes += SerializeBuildIn( columnSize, binary_data );
 	num_bytes += SerializeBuildIn( structured, binary_data );

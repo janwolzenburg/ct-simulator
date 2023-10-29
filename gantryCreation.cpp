@@ -132,7 +132,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		raysPerPixelIn.align( FL_ALIGN_TOP ); arcRadiusIn.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
 		raysPerPixelIn.setProperties( 1, 1000, 0 );
-		raysPerPixelIn.value( (int) PROGRAM_STATE().DetectorParameter().raysPerPixel );
+		raysPerPixelIn.value( (int) PROGRAM_STATE().Tube().number_of_rays_per_pixel() );
 
 		arcRadiusIn.setProperties( 100., 100000., 0 );
 		arcRadiusIn.value( PROGRAM_STATE().DetectorParameter().arcRadius );
@@ -167,9 +167,9 @@ void gantryEdition::handleEvents( void ){
 
 		Fl_Group::window()->deactivate();
 
-		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum(materialIn.value())};
+		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
 		radonProperties newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
-		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
+		detectorIndipendentParameter newDetectorParameter{ arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 
 		rowPnts.value( newRadonParameter.numberPoints.r );

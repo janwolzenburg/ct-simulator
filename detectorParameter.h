@@ -34,19 +34,18 @@ class detectorIndipendentParameter{
 
 	/*!
 	 * @brief Constructor
-	 * @param raysPerPixel_ Amount of rays per pixel to simulate
 	 * @param arcRadius_ Radius of the detector arc
 	 * @param columnSize_ Pixel size_ in z-Direction
 	 * @param structured_ Flag for anti scattering structure
 	 * @param maxRayAngleDetectable_ maximum GetAngle between pixel normal and incident Ray allowed by anti-scattering structure
 	*/
-	detectorIndipendentParameter( const size_t raysPerPixel_, const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  5. / 360. * 2. * PI );
+	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  5. / 360. * 2. * PI );
 	
 	/*!
 	 * @brief Default constructor
 	*/
 	detectorIndipendentParameter( void ) :
-		detectorIndipendentParameter{ 1, 1000., 5., true, 5. / 360. * 2. * PI }{};
+		detectorIndipendentParameter{ 1000., 5., true, 5. / 360. * 2. * PI }{};
 
 	/*!
 	 * @brief Constructor from serialized data_
@@ -64,7 +63,6 @@ class detectorIndipendentParameter{
 
 	public:
 
-	size_t raysPerPixel;			/*!<Amount of rays per pixel*/
 	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
 	double columnSize;				/*!<Size of one pixel in column direction*/
 	bool structured;				/*!<Flag for anti scatter structure*/

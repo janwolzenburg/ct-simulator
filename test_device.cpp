@@ -36,7 +36,6 @@ detector getTestDetector( void ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		1,
 		1000.,
 		10,
 		false
@@ -51,8 +50,9 @@ detector getTestDetector( void ){
 bool test_tube(void) {
 
 	XRayTubeProperties tubeParas{	53000,
-								0.2,
-								XRayTubeProperties::Thungsten };
+									0.2,
+									XRayTubeProperties::Thungsten,
+									1 };
 
 	XRayTube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
@@ -61,7 +61,7 @@ bool test_tube(void) {
 
 	vector<pixel> allPixel = test_detector.getPixel();
 
-	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
+	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 1. );
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 
@@ -409,9 +409,11 @@ bool test_detector(void) {
 
 gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
-	XRayTubeProperties tubeParas{ 100000,
+	XRayTubeProperties tubeParas{
+								100000,
 								0.2,
-								XRayTubeProperties::Thungsten };
+								XRayTubeProperties::Thungsten, 
+								raysPerPixel };
 
 
 	radonProperties radonParameter{
@@ -420,7 +422,6 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 	};
 
 	detectorIndipendentParameter indipendentParameter{
-		raysPerPixel,
 		1000.,
 		50,
 		false

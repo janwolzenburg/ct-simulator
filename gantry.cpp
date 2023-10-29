@@ -33,7 +33,6 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 	rayDetector{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	raySource{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	raysPerPixel( ForcePositive( indipendentParameter.raysPerPixel )),
 	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
 	rayScatterAngles{ 127, raySource.GetEmittedEnergyRange(), 64, cSys->GetEz() }
 
@@ -48,7 +47,7 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 
 
 vector<Ray> gantry::getBeam( const double exposureTime ) const{
-	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, raysPerPixel, exposureTime );
+	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, exposureTime );
 }
 
 

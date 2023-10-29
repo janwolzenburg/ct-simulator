@@ -130,9 +130,8 @@ class gantry {
 	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
 
 	detector rayDetector;				/*!<Ray detector*/
-	XRayTube raySource;						/*!<xRay source*/
+	XRayTube raySource;					/*!<xRay source*/
 	
-	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
 	rayScattering rayScatterAngles;		/*!<Object with information about scattering and GetAngle propabilities*/
