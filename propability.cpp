@@ -29,35 +29,35 @@
 	randomNumberGenerator implementation
 */
 
-randomNumberGenerator integerRNG{ 0, UINT32_MAX };
+RandomNumberGenerator integer_random_number_generator{ 0, UINT32_MAX };
 
-randomNumberGenerator::randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue ) :
-	generator{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() },
-	distribution{ minValue, maxValue }
+RandomNumberGenerator::RandomNumberGenerator( const unsigned int minValue, const unsigned int maxValue ) :
+	generator_{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() },
+	distribution_{ minValue, maxValue }
 {}
 
 
-unsigned int randomNumberGenerator::getRandom( void ){
+unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 
-	mu.lock();
-	const unsigned int randomNumber = distribution( generator );
-	mu.unlock();
+	mutex_.lock();
+	const unsigned int randomNumber = distribution_( generator_ );
+	mutex_.unlock();
 
 	return randomNumber;
 }
 
-bool randomNumberGenerator::eventHappend( const double eventPropability ){
+bool RandomNumberGenerator::DidARandomEventHappen( const double eventPropability ){
 
-	const unsigned int numberInterval = distribution.max() - distribution.min();
+	const unsigned int numberInterval = distribution_.max() - distribution_.min();
 	
 	const double singleValuePropability = 1. /  ( (double) numberInterval + 1. );
 
 	const unsigned int eventIntervalSize = (unsigned int) (eventPropability / singleValuePropability);
 
-	const unsigned int randomInteger = getRandom();
+	const unsigned int randomInteger = GetRandomNumber();
 
 
-	if( randomInteger >= distribution.min() && randomInteger <= distribution.min() + eventIntervalSize ) return true;
+	if( randomInteger >= distribution_.min() && randomInteger <= distribution_.min() + eventIntervalSize ) return true;
 
 	return false;
 
@@ -69,17 +69,17 @@ bool randomNumberGenerator::eventHappend( const double eventPropability ){
 	propabilityDistribution implementation
 */
 
-propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins )
+PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins )
 {
 	// Normalise 
-	distribution = Normalise( distribution_ );
+	distribution_ = Normalise( distribution_ );
 
 	// Sort by angle
-	std::sort( distribution.begin(), distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
+	std::sort( distribution_.begin(), distribution_.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 
 	// Sorted distribution by propability
-	vector<Tuple2D> sortedDistribution = distribution;
+	vector<Tuple2D> sortedDistribution = distribution_;
 
 	// Get the smallest probability
 	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
@@ -89,7 +89,7 @@ propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribu
 	if( 1. / smallestPropability > static_cast<double>( maxNumberOfBins ) ) smallestPropability = 1. / static_cast<double>( maxNumberOfBins );
 
 	// Insert amount corrensponding to probability into uniform distribution
-	for( const Tuple2D& currentValue : distribution ){
+	for( const Tuple2D& currentValue : distribution_ ){
 
 		const double currentProbabilty = currentValue.y;
 
@@ -97,14 +97,14 @@ propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribu
 		const size_t currentBinAmount = (size_t) floor( 4. * currentProbabilty / smallestPropability + 0.5 );
 
 		// Insert into vector
-		uniformPropabilities.insert( uniformPropabilities.end(), currentBinAmount, currentValue.x );
+		uniform_propabilities_.insert( uniform_propabilities_.end(), currentBinAmount, currentValue.x );
 
 	}
 }
 
-double propabilityDistribution::getRandom( void ) const{
+double PropabilityDistribution::getRandom( void ) const{
 	
-	size_t randomIndex = integerRNG.getRandom() % uniformPropabilities.size();
-	if( randomIndex >= uniformPropabilities.size() ) randomIndex = uniformPropabilities.size() - 1;
-	return uniformPropabilities.at( randomIndex );
+	size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
+	if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
+	return uniform_propabilities_.at( randomIndex );
 }

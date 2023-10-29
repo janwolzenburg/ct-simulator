@@ -21,59 +21,61 @@
    Definitions
 *********************************************************************/
 
+
+extern class RandomNumberGenerator integer_random_number_generator;		/*!<One instance of integer random number generator*/
+
 /*!
- * @brief Class for a generic random number_of_pixel generator with a uniform distribution between 0 and 2^32 - 1
+ * @brief Class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
 */
-class randomNumberGenerator{
+class RandomNumberGenerator{
 
 	public:
 	
 	/*!
 	 * @brief Constructor
-	 * @param minValue Minimum value
-	 * @param maxValue Maximum value
+	 * @param min_value Minimum value
+	 * @param max_value Maximum value
 	*/
-	randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue );
+	RandomNumberGenerator( const unsigned int min_value, const unsigned int max_value );
 
 	/*!
 	 * @brief Get a random number_of_pixel
 	 * @return Random integer
 	*/
-	unsigned int getRandom( void );
+	unsigned int GetRandomNumber( void );
 
 	/*!
 	 * @brief Check if an event with given propability "happened"
-	 * @param eventPropability Event propabilitx 
+	 * @param event_propability Event propabilitx 
 	 * @return True when event "happened"
 	*/
-	bool eventHappend( const double eventPropability );
+	bool DidARandomEventHappen( const double event_propability );
 
 
 	private:
 
-	std::default_random_engine generator;						/*!<Generator*/
-	std::uniform_int_distribution<unsigned int> distribution;	/*!<Uniform distribution*/
-	mutex mu;													/*!<Mutex for thread safety*/
+	std::default_random_engine generator_;							/*!<Generator*/
+	std::uniform_int_distribution<unsigned int> distribution_;		/*!<Uniform distribution*/
+	mutex mutex_;													/*!<Mutex for thread safety*/
 
 };
-
-extern randomNumberGenerator integerRNG;						/*!<One instance of integer random number_of_pixel generator*/
 
 
 /*!
  * @brief Class to store a custom propability distribution
+ * @details The distribution
 */
-class propabilityDistribution{
+class PropabilityDistribution{
 
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param distribution_ Pseudo distribution. Sum of y values can be not equal to one
-	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number_of_pixel may exclude low propabilites
+	 * @param distribution Pseudo distribution. Sum of y values may not be equal to one
+	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
 	*/
-	propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins );
+	PropabilityDistribution( const vector<Tuple2D> distribution, const size_t maxNumberOfBins );
 
 	/*!
 	 * @brief Get a random value according to distribution
@@ -83,12 +85,12 @@ class propabilityDistribution{
 	/*!
 	 * @brief Get the complete distribution
 	*/
-	vector<Tuple2D> getDistribution( void ) const{ return distribution; };
+	vector<Tuple2D> getDistribution( void ) const{ return distribution_; };
 
 
 	private:
 
-	vector<Tuple2D> distribution;				/*!<Distribution*/
-	vector<double> uniformPropabilities;	/*!<Vector with values from distribution reated according to their propability*/
+	vector<Tuple2D> distribution_;				/*!<Distribution*/
+	vector<double> uniform_propabilities_;		/*!<Vector with values from distribution reated according to their propability*/
 
 };

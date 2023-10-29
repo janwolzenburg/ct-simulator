@@ -304,7 +304,7 @@ Ray Model::TransmitRay( const Ray tRay, const tomographyParameter tomoParameter,
 				const double scatterPropability = distance / meanFrequency * scatterConstant;
 
 				// Does the Ray scatter?
-				if( integerRNG.eventHappend( scatterPropability ) ){
+				if( integer_random_number_generator.DidARandomEventHappen( scatterPropability ) ){
 					
 					// Scatter the Ray
 					return scatteringProperties.scatterRay( modelRay, currentPntOnRay );
