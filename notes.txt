@@ -1,5 +1,6 @@
 
 TODO: Class and member variable names, includes
+TODO: Sorted files filter
 TODO: Check file Heads
 TODO: check comments
 TODO: check cpp files
