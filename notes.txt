@@ -27,6 +27,7 @@ Generel
 
 Device
 	xRayTube
+	detectorParameter
 
 Physics
 	Linear Algebra
