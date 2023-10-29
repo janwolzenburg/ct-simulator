@@ -51,7 +51,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( GridIndex{ 21, 7 }, 1 );
+	Gantry testGantry = getTestGantry( GridIndex{ 21, 7 }, 1 );
 
 	ofstream ax2 = openAxis( path( "test_detector_to_sinogram_gantry.txt" ), true );
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
@@ -117,7 +117,7 @@ bool test_Tomography( void ){
 	cout << "Time for test model construction: " << diff << endl;
 
 	start = std::chrono::system_clock::now();
-	tomography testTomography( tomographyParameter{ 1., true, 16, 0.05, 5e-2 } );
+	tomography testTomography( TomographyProperties{ 1., true, 16, 0.05, 5e-2 } );
 	end = std::chrono::system_clock::now();
 	diff = end - start;
 	cout << "Time for test tomography construction: " << diff << endl;

@@ -144,13 +144,11 @@ void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 	radonParameter = radonParameter_;
 	physical_detector_properties_ = indipendentParameter;
 
-	gantryInstance.ResetDetected();
-	gantry newGantry{ gantryInstance.CSys(), tubeParameter_, radonParameter, indipendentParameter };
+	gantryInstance.UpdateTubeAndDetectorProperties( xRayTubeParameter, radonParameter, physical_detector_properties_ );
 
 	storedXRayTubeParameter.setLoaded();
 	storedRadonParameter.setLoaded();
 	storedDetectorParameter.setLoaded();
-	gantryInstance = newGantry;
 }
 
 string programState::modelDescription( void ) const{

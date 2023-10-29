@@ -197,7 +197,7 @@ class Model : public MathematicalObject{
 	 * @param scattering_properties Information for ray scattering
 	 * @return Ray that has been scattered or left the model
 	*/
-	Ray TransmitRay( const Ray ray_to_transmit, const tomographyParameter tomography_parameter, const rayScattering scattering_properties ) const;
+	Ray TransmitRay( const Ray ray_to_transmit, const TomographyProperties tomography_parameter, const rayScattering scattering_properties ) const;
 
 	/*!
 	 * @brief Crop model

@@ -119,6 +119,10 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 }
 
+void XRayTube::UpdateProperties( const XRayTubeProperties tube_properties ){
+	*this = XRayTube{ coordinate_system_, tube_properties };
+}
+
 vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
 
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
