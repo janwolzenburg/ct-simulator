@@ -56,6 +56,13 @@ class XRayDetector{
 	DetectorProperties properties( void ) const{ return properties_; };
 
 	/*!
+	 * @brief Update detector properties
+	 * @param radon_properties New radon properties
+	 * @param physical_properties New physical properties
+	*/
+	void UpdateProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+
+	/*!
 	 * @brief Convert all comnverted pixel to this system
 	 * @param target_coordinate_system Target
 	*/

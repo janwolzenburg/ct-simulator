@@ -407,7 +407,7 @@ bool test_detector(void) {
 
 }
 
-gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
+Gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
 	XRayTubeProperties tubeParas{
 								100000,
@@ -426,7 +426,7 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 		50
 	};
 
-	gantry testGantry{ GlobalSystem()->CreateCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
+	Gantry testGantry{ GlobalSystem()->CreateCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
 
 	return testGantry;
 }
@@ -435,8 +435,8 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 bool test_gantry( void ){
 
 
-	gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
-	const CoordinateSystem* const radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
+	Gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
+	const CoordinateSystem* const radonCSys = testGantry.coordinate_system()->CreateCopy( "Radon System" );
 
 	ofstream ax1 = openAxis( path( "./test_gantry.txt" ), true );
 	ofstream ax2 = openAxis( path( "./test_gantry_sinogram.txt" ), true );
@@ -445,7 +445,7 @@ bool test_gantry( void ){
 	
 
 	vector<radonPoint> points;
-	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
+	for( auto& px : testGantry.pixel_array() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
 	//testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );

@@ -34,107 +34,92 @@ using std::mutex;
 /*!
  * @brief Class for a gantry with xRay source and detector
 */
-class gantry {
+class Gantry{
 	
-
 	public:
 	
 	/*!
 	 * @brief Constructor
 	 * @param coordinate_system Coordinate system
-	 * @param raysPerPixel_ Amount of rays per pixel in beam
-	 * @param tubeParameters Parameter of xRay tube
-	 * @param radonParameters Radon parameter of xRay detector
+	 * @param tube_properties Parameter of xRay tube
+	 * @param radon_properties Radon parameter of xRay detector
 	 * @param physical_detector_properties Other parameter
 	*/
-	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const radonProperties radonParameter,
+	Gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tube_properties, const radonProperties radon_properties,
 			const PhysicalDetectorProperties physical_detector_properties );
-
-	/*!
-	 * @brief Get all rays from tube
-	 * @param exposureTime Exposure time
-	 * @return Vector with all rays in beam
-	*/
-	vector<Ray> getBeam( const double exposureTime ) const;
-
-	/*!
-	 * @brief Get all pixel from detector 
-	 * @return Vector with pixel
-	*/
-	vector<DetectorPixel> getPixel( void ) const{ return rayDetector.pixel_array();  };
-
-	/*!
-	 * @brief Get radius of gantry
-	 * @return Radius
-	*/
-	double Radius( void ) const{ return radius; };
-
-	/*!
-	 * @brief Get center of gantry
-	 * @return Center point
-	*/
-	Point3D Center( void ) const{ return cSys->GetOriginPoint(); };
-
-	/*!
-	 * @brief Rotate gantry counter clockwise around ZAxis
-	 * @param angle Rotation angle
-	*/
-	void rotateCounterClockwise( const double angle );
-
-	/*!
-	 * @brief Radiate model with beam
-	 * @param radModel Model to radiate
-	*/
-	void radiate( const Model& radModel, const tomographyParameter voxel_data_ ) ;
-	
-	/*!
-	 * @brief Reset ganrtry to its initial position
-	*/
-	void ResetDetected( void );
 
 	/*!
 	 * @brief Get the coordinate system of gantry
 	 * @return Coordinate system of this gantry
 	*/
-	CoordinateSystem* CSys( void ) const{ return cSys; };
-
-	/*!
-	 * @brief Get the detector radon parameters
-	 * @param coordinate_system_ Reference coordinate system for radon transform
-	 * @return 
-	*/
-	//radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
-
-	/*!
-	 * @brief Get reference to scattering member object
-	 * @return Reference to member 
-	*/
-	rayScattering& RayScattering( void ){ return rayScatterAngles; };
+	const CoordinateSystem* coordinate_system( void ) const{ return coordinate_system_; };
 
 	/*!
 	 * @brief Get reference to detector instance
 	 * @return Reference to detector instance
 	*/
-	const XRayDetector& Detector( void ) const{ return rayDetector; };
+	XRayDetector detector( void ) const{ return detector_; };
 
 	/*!
 	 * @brief Get reference to tube instance
 	 * @return Reference to tube instance
 	*/
-	const XRayTube& Tube( void ) const{ return raySource; };
+	XRayTube tube( void ) const{ return tube_; };
+
+	/*!
+	 * @brief Get all pixel from detector 
+	 * @return Vector with pixel
+	*/
+	vector<DetectorPixel> pixel_array( void ) const{ return detector_.pixel_array();  };
+
+	/*!
+	 * @brief Get center of gantry
+	 * @return Center point
+	*/
+	Point3D GetCenter( void ) const{ return coordinate_system_->GetOriginPoint(); };
+
+	/*!
+	 * @brief Update tube and detector properties
+	 * @param tube_properties New tube proerties
+	 * @param radon_properties New radon properties
+	 * @param physical_detector_properties New detector properties
+	*/
+	void UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const radonProperties radon_properties,
+								const PhysicalDetectorProperties physical_detector_properties );
+
+	/*!
+	 * @brief Rotate gantry counter clockwise around ZAxis
+	 * @param angle Rotation angle
+	*/
+	void RotateCounterClockwise( const double angle );
+
+	/*!
+	 * @brief Translate gantry in z-direction
+	 * @param distance Distance to translate
+	*/
+	void TranslateInZDirection( const double distance );
+
+	/*!
+	 * @brief Radiate model with beam
+	 * @param radModel Model to radiate
+	 * @param tomography_properties tomogrpahy properties
+	*/
+	void RadiateModel( const Model& radModel, const tomographyParameter tomography_properties ) ;
+	
+	/*!
+	 * @brief Reset gantry to its initial position and detected rays
+	*/
+	void ResetGantry( void );
 
 
 	private:
 	
-	CoordinateSystem* cSys;						/*!<Coordinate system*/
-	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
+	CoordinateSystem* coordinate_system_;			/*!<Coordinate system*/
+	PrimitiveCoordinateSystem initial_position_;	/*!<Initial position of coordinate system*/
 
-	XRayDetector rayDetector;				/*!<Ray detector*/
-	XRayTube raySource;					/*!<xRay source*/
+	XRayDetector detector_;							/*!<Ray detector*/
+	XRayTube tube_;									/*!<xRay source*/
 	
-	double radius;						/*!<Radius of gantry*/
-
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
 
 	/*!
 	 * @brief Thread function to speed up transmission of multiple rays through model
@@ -149,7 +134,7 @@ class gantry {
 	 * @param rayDetector Reference to Ray detector
 	 * @param iterationMutex Mutex for vector with rays for next iteration
 	*/
-	static void transmitRays( const Model& radModel, const tomographyParameter& voxel_data_, const rayScattering& rayScatterAngles,
+	static void TransmitRaysThreaded( const Model& radModel, const tomographyParameter& voxel_data_, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& detectorMutex,
 								XRayDetector& rayDetector, mutex& iterationMutex );

@@ -10,7 +10,7 @@
 
  #include "generelMath.h"
 
-constexpr double max_distance_error_for_equality_mm = 1E-9;							/*!< Error for equality determination of floating point numbers in mm */
+constexpr double max_distance_error_for_equality_mm = 1E-9;					/*!< Error for equality determination of floating point numbers in mm */
 
 constexpr double al_filter_cut_off_energy_eV = 16000.;						/*!< Cut of energy in roentgen spectrum by 2mm aluminium filter */
 constexpr double al_filter_gradiant_factor = -3.5;							/*!< Quotient of filter gradient to bremsstrahlung gradient */
@@ -24,3 +24,6 @@ constexpr double default_complete_model_scatter_propability = 0.05;			/*!<Propab
 constexpr size_t default_max_radiation_loops = 16;							/*!<How often can a Ray be scattered*/
 
 constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!<Default maximum arc_angle between ray and pixel normal allowed by anti scattering structure*/
+
+constexpr size_t number_of_scatter_angles = 127;							/*!<Amount of discrete angles available for scattering*/
+constexpr size_t number_of_energies_for_scattering = 64;					/*!<Amount of energies used */

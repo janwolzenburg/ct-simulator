@@ -94,7 +94,7 @@ bool test_testModel( void ){
 
 bool test_modelTransmission( void ){
 
-	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1 );
+	Gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1 );
 	Model mod{ getTestModel( GlobalSystem() ) };
 
 	ofstream ax1 = openAxis( path( "./test_modelTransmission.txt" ), true );
@@ -103,21 +103,21 @@ bool test_modelTransmission( void ){
 	addObject( ax1, "TestModel", mod, "g", 0.015 );
 
 
-
-	for( const Ray r : testGantry.getBeam( 1. ) ){
+	/*
+	for( const Ray r : testGantry.GetEmittedBeam( 1. ) ){
 		
 		RayVoxelIntersection rayVoxIsect{ mod.GetModelVoxel(), r };
 
 		addSingleObject( ax1, "Entrance", rayVoxIsect.entrance_.intersection_point_, string{ "g" } );
 		addSingleObject( ax1, "Exit", rayVoxIsect.exit_.intersection_point_, string{ "r" } );
-	}
+	}*/
 
 
 	closeAxis( ax1 );
 
 
-	testGantry.radiate( mod, tomographyParameter{ 1., false, 16, .05, 5e-2 } );
-	vector<DetectorPixel> detectorPixel = testGantry.getPixel();
+	testGantry.RadiateModel( mod, tomographyParameter{ 1., false, 16, .05, 5e-2 } );
+	vector<DetectorPixel> detectorPixel = testGantry.pixel_array();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
 

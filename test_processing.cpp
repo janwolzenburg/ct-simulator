@@ -51,7 +51,7 @@ bool test_radonTransform( void ){
 
 bool test_detector_to_sinogram( void ){
 
-	gantry testGantry = getTestGantry( GridIndex{ 21, 7 }, 1 );
+	Gantry testGantry = getTestGantry( GridIndex{ 21, 7 }, 1 );
 
 	ofstream ax2 = openAxis( path( "test_detector_to_sinogram_gantry.txt" ), true );
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );

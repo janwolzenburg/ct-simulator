@@ -26,36 +26,44 @@ using std::cref;
 *********************************************************************/
 
 
-gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
+Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
 				const radonProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
-	cSys( coordinate_system ),
-	resetPostition( cSys->GetPrimitive() ),
-	rayDetector{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
+	coordinate_system_( coordinate_system ),
+	initial_position_( coordinate_system_->GetPrimitive() ),
+	detector_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
-	raySource{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	radius( rayDetector.properties().detector_focus_distance / 2 ),
-	rayScatterAngles{ 127, raySource.GetEmittedEnergyRange(), 64, cSys->GetEz() }
+	tube_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ }//,
+	//rayScatterAngles{ 127, tube_.GetEmittedEnergyRange(), 64, coordinate_system_->GetEz() }
 
 {
 	// Align detector - tube axis with x axis
 	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
-	cSys->SetPrimitive( xAxisAligned );
+	coordinate_system_->SetPrimitive( xAxisAligned );
 
-	raySource.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.properties().detector_focus_distance / 2, 0 }, cSys } );
+	tube_.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
 	
 }
 
 
-vector<Ray> gantry::getBeam( const double exposureTime ) const{
-	return raySource.GetEmittedBeam( rayDetector.pixel_array(), rayDetector.properties().detector_focus_distance, exposureTime );
+void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const radonProperties radon_properties,
+									const PhysicalDetectorProperties physical_detector_properties ){
+									
+	tube_.UpdateProperties( tube_properties );
+	detector_.UpdateProperties( radon_properties, physical_detector_properties );
+
+	ResetGantry();
+
 }
 
-
-void gantry::rotateCounterClockwise( const double arc_angle ){
-	this->cSys->Rotate( cSys->GetZAxis(), arc_angle );
+void Gantry::RotateCounterClockwise( const double arc_angle ){
+	this->coordinate_system_->Rotate( coordinate_system_->GetZAxis(), arc_angle );
 }
 
-void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
+void Gantry::TranslateInZDirection( const double distance ){
+	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
+}
+
+void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								XRayDetector& rayDetector, mutex& detectorMutex ){
@@ -99,10 +107,9 @@ void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tom
 	return;
 }
 
+void Gantry::RadiateModel( const Model& radModel, tomographyParameter voxel_data_ ) {
 
-void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
-
-	vector<Ray> rays = this->getBeam( voxel_data_.exposureTime );		// Current rays. Start with rays from source
+	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, voxel_data_.exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
@@ -110,12 +117,14 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 	}
 	
 	// Convert pixel
-	rayDetector.ConvertPixelArray( radModel.coordinate_system() );
+	detector_.ConvertPixelArray( radModel.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
-	const UnitVector3D scatteringRotationNormal = this->cSys->GetEz().ConvertTo( radModel.coordinate_system() );
+	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( radModel.coordinate_system() );
 
-	rayDetector.ResetDetectedRayPorperties();								// Reset all pixel
+	rayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
+
+	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
@@ -139,10 +148,10 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 
 
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-			threads.emplace_back( transmitRays,	cref( radModel ), cref( voxel_data_ ), cref( rayScatterAngles ),
+			threads.emplace_back( TransmitRaysThreaded,	cref( radModel ), cref( voxel_data_ ), cref( rayScatterAngles ),
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
-													ref( rayDetector ), ref( detectorMutex ) );
+													ref( detector_ ), ref( detectorMutex ) );
 		}
 
 		// Wait for threads to finish
@@ -154,13 +163,12 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 	}
 }
 
-
-void gantry::ResetDetected( void ){
+void Gantry::ResetGantry( void ){
 	
 	// Set to initial position
-	cSys->SetPrimitive( resetPostition );
+	coordinate_system_->SetPrimitive( initial_position_ );
 
 	// Reset detector
-	rayDetector.ResetDetectedRayPorperties();
+	detector_.ResetDetectedRayPorperties();
 }
 

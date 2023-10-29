@@ -140,7 +140,7 @@ void tomographyExec::handleEvents( void ){
 		state.tomographyInstance = tomography{ state.tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.RadonParameter(), state.Gantry(), state.model(), 0, radiationProgressWindow ) );
+			state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.RadonParameter(), state.gantry(), state.model(), 0, radiationProgressWindow ) );
 			delete radiationProgressWindow;
 		}
 

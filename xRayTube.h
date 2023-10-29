@@ -105,9 +105,9 @@ class XRayTube{
 
 	/*!
 	 * @brief Constructor
-	 * @param parameter_ Tube parameters
+	 * @param properties Tube properties
 	*/
-	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties parameter_ );
+	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties properties );
 
 	/*!
 	 * @brief Get beam created by tube
@@ -166,6 +166,12 @@ class XRayTube{
 	 * @return The spectrum points
 	*/
 	VectorPair GetEnergySpectrumPoints( void ) const;
+
+	/*!
+	 * @brief Update tube properties
+	 * @param tube_properties New properties
+	*/
+	void UpdateProperties( const XRayTubeProperties tube_properties );
 
 
 	private:

@@ -70,18 +70,18 @@ size_t tomographyParameter::Serialize( vector<char>& binary_data ) const{
 
 
 
-radonTransformed tomography::recordSlice( const radonProperties radon_properties, gantry Gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+radonTransformed tomography::recordSlice( const radonProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
-	Gantry.ResetDetected();
+	gantry.ResetGantry();
 	
 
 	// Translate Gantry
 	if( zPosition != 0. )
-		Gantry.CSys()->Translate( Gantry.CSys()->GetEz() * zPosition );
+		gantry.TranslateInZDirection( zPosition );
 
 	// Assign gantry csys-data_ to radon coordinate system
-	this->radonCSys->CopyPrimitiveFrom( Gantry.CSys() );
+	this->radonCSys->CopyPrimitiveFrom( gantry.coordinate_system() );
 
 
 	// Create sinogram 
@@ -96,10 +96,10 @@ radonTransformed tomography::recordSlice( const radonProperties radon_properties
 			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.framesToFillSinogram ) );
 
 		// Radiate
-		Gantry.radiate( Model, voxel_data_ );
+		gantry.RadiateModel( Model, voxel_data_ );
 		
 		// Get the detection result
-		const vector<DetectorPixel> detectionPixel = Gantry.getPixel();
+		const vector<DetectorPixel> detectionPixel = gantry.pixel_array();
 
 
 		// Iterate all pixel
@@ -116,7 +116,7 @@ radonTransformed tomography::recordSlice( const radonProperties radon_properties
 		}
 		
 		// Rotate gantry
-		Gantry.rotateCounterClockwise( radon_properties.resolution.c );
+		gantry.RotateCounterClockwise( radon_properties.resolution.c );
 
 		Fl::check();
 

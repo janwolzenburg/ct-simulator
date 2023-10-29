@@ -226,25 +226,25 @@ void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string nam
 }
 
 template<>
-void addObject<gantry, int>( ofstream& axis, const string name, const gantry gantry, const string voxel_data_, const int specifiers ){
+void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gantry, const string voxel_data_, const int specifiers ){
 
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
-		addSingleObject( axis, name + "Center", gantry.Center(), voxel_data_ );
+		addSingleObject( axis, name + "Center", gantry.GetCenter(), voxel_data_ );
 
-	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		addObject( axis, name + "Beams", gantry.getBeam( 1. ), voxel_data_, 2.*gantry.Radius() );
+	//if( specifiers & GANTRY_SPECIFIERS::BEAMS )
+		//addObject( axis, name + "Beams", gantry.getBeam( 1. ), voxel_data_, 2.*gantry.Radius() );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
-		addObject( axis, name + "DetectorSurfaces", gantry.getPixel(), voxel_data_, .2 );
+		addObject( axis, name + "DetectorSurfaces", gantry.pixel_array(), voxel_data_, .2 );
 
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
 		vector<Line> pixelNormals;
 
-		for( DetectorPixel currentPixel : gantry.getPixel() ){
+		for( DetectorPixel currentPixel : gantry.pixel_array() ){
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 2.1 * gantry.Radius() );
+		//addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 2.1 * gantry.Radius() );
 	}
 
 }

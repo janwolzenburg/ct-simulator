@@ -66,15 +66,15 @@ bool test_scattered_angle_propabilities( void ){
 
 bool test_ray_scattering(void){
 
-	gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1000 );
+	Gantry testGantry = getTestGantry( GridIndex{ 70, 20 }, 1000 );
 	Model mod = getTestModel( GlobalSystem(), 1 );
 
 	ofstream ax1 = openAxis( path( "./test_ray_scattering.txt" ), true );
 
 	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	//addObject( ax1, "TestModel", mod, "g", 0.015 );
-
-	vector<Ray> rays = testGantry.getBeam( 1. );
+	/*
+	vector<Ray> rays = testGantry.GetEmittedBeam( 1. );
 	for( Ray &r : rays ) r = r.ConvertTo( mod.coordinate_system()); 
 
 
@@ -128,7 +128,7 @@ bool test_ray_scattering(void){
 
 		addSingleObject( ax1, "Ray", r, "m", ( r.origin() - res.exit_.intersection_point_ ).length() );
 	}
-
+	
 	closeAxis( ax1 );
 
 
@@ -142,7 +142,7 @@ bool test_ray_scattering(void){
 	ofstream ax2 = openAxis( path( "./test_ray_scattering_angles.txt" ), true );
 
 	addSingleObject( ax2, "Angles", anglesHistogram, "Angles;Num;Dots");
-
-	closeAxis( ax2 );
+	
+	closeAxis( ax2 );*/
 	return true;
 }
