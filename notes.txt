@@ -35,6 +35,7 @@ Device
 	detectorProperties
 	detectorPixel
 	xRayDetector
+	gantry
 
 Physics
 	Linear Algebra
