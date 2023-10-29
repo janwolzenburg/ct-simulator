@@ -23,7 +23,6 @@
   Implementations
 *********************************************************************/
 
-
 /*!
  * radonTransformed implementation
 */

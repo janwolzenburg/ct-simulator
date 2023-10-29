@@ -35,10 +35,9 @@ detector getTestDetector( void ){
 		500
 	};
 
-	detectorIndipendentParameter indipendentParameter{
+	PhysicalDetectorProperties indipendentParameter{
 		1000.,
-		10,
-		false
+		10
 	};
 
 	// 50 degree GetAngle
@@ -61,7 +60,7 @@ bool test_tube(void) {
 
 	vector<pixel> allPixel = test_detector.getPixel();
 
-	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 1. );
+	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance, 1. );
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 
@@ -399,7 +398,7 @@ bool test_detector(void) {
 		pixelNormals.push_back( currentPixel.NormalLine() );
 	}
 
-	addObject( ax1, "DetectorNormals", pixelNormals, "r", test_detector.getPhysicalParameters().detectorFocusDistance );
+	addObject( ax1, "DetectorNormals", pixelNormals, "r", test_detector.properties().detector_focus_distance );
 
 	closeAxis(ax1);
 	
@@ -421,10 +420,9 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 		500
 	};
 
-	detectorIndipendentParameter indipendentParameter{
+	PhysicalDetectorProperties indipendentParameter{
 		1000.,
-		50,
-		false
+		50
 	};
 
 	gantry testGantry{ GlobalSystem()->CreateCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
@@ -434,6 +432,7 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
 
 bool test_gantry( void ){
+
 
 	gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
 	const CoordinateSystem* const radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
@@ -448,11 +447,11 @@ bool test_gantry( void ){
 	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
-	testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );
+	//testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );
 
 	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
-	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
+	//for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
 	addSingleObject( ax2, "RadonPoints", points, "Angle;Distance;Energy;Dots" );
 
 	closeAxis( ax2 );

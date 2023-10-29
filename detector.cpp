@@ -23,20 +23,20 @@
 *********************************************************************/
 
 
-detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
 	cSys( coordinate_system ),
-	physicalParameters{ radonParameter, indipendentParameter },
-	radonParameters( radonParameter )
+	properties_{ radonParameter, physical_properties }
+	//radonParameters( radonParameter )
 {
 
 	// Important parameter
-	const size_t nDistance = radonParameters.numberPoints.r;									// Amount of distances or pixel
-	const double distanceRange = (double) ( nDistance - 1) * radonParameters.resolution.r;	// Covered field of measure
+	const size_t nDistance = properties_.number_of_pixel.c;									// Amount of distances or pixel
+	const double distanceRange = (double) ( nDistance - 1) * radonParameter.resolution.r;	// Covered field of measure
 
-	const double deltaTheta = radonParameters.resolution.c;		// Angle resolution
-	const double deltaDistance = radonParameters.resolution.r;	// Distance resolution
+	const double deltaTheta = radonParameter.resolution.c;		// Angle resolution
+	const double deltaDistance = radonParameter.resolution.r;	// Distance resolution
 
-	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin_
+	const double detectorCenterDistance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
 	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
@@ -121,8 +121,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 							   pixelNormal.origin(),
 							   -currentPixelSize / 2,
 							   currentPixelSize / 2,
-							   -indipendentParameter.columnSize / 2.,
-							   indipendentParameter.columnSize / 2. );
+							   -properties_.row_width / 2.,
+							   properties_.row_width / 2. );
 
 		// Add mirrored when not middle pixel
 		if( currentIndex > 0 ){
@@ -140,8 +140,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 								   mirroredPixelNormal.origin(),
 								   -currentPixelSize / 2,
 								   currentPixelSize / 2,
-								   -indipendentParameter.columnSize / 2.,
-								   indipendentParameter.columnSize / 2. );
+								   -properties_.row_width / 2.,
+								   properties_.row_width / 2. );
 		}
 
 	}
@@ -172,8 +172,8 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 		// Do they intersect?
 		if( pixelHit.intersection_exists_ ){
 			
-			// If structured and GetAngle allowed by structure
-			if( !physicalParameters.structured || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
+			// If has_anti_scattering_structure and GetAngle allowed by structure
+			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
 				allPixel.at( pixelIdx ).addDetectedProperties( r.properties() );		// Add detected Ray properties_ to pixel
 				allPixelLock.unlock();

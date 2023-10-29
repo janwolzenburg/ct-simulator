@@ -42,7 +42,7 @@ class radonTransformed : private grid<> {
 
 	/*!
 	 * @brief Constructor
-	 * @param detectorParameter Parameters to get the grid dimension from
+	 * @param physical_detector_properties_ Parameters to get the grid dimension from
 	*/
 	radonTransformed( const radonProperties detectorParameter );
 

@@ -1,5 +1,5 @@
 /*********************************************************************
- * @file   detectorParameter.cpp
+ * @file   physical_detector_properties_.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -13,115 +13,53 @@
 *********************************************************************/
 
 #include "detectorParameter.h"
-#include "simulation.h"
-#include "serialization.h"
-
 
 
 /*********************************************************************
   Implementations
 *********************************************************************/
 
-const string radonProperties::FILE_PREAMBLE{ "RADONPARAMETER_FILE_PREAMBLE" };
 
+const string PhysicalDetectorProperties::FILE_PREAMBLE{ "PHYSICAL_DETECTOR_PROPERTIES_FILE_PREAMBLE" };
 
-/*!
- * radonProperties implementation
-*/
-
-radonProperties::radonProperties( const GridIndex numberPoints_, const double distanceRange_ ) :
-	distanceRange( ForcePositive( distanceRange_ ) ),
-	numberPoints{	ForceToMin( numberPoints_.c, (size_t) 2 ),
-					ForceToMin( ForceOdd ( numberPoints_.r ), (size_t) 3 ) },
-	resolution{ PI / (double) ( numberPoints.c - 1 ),
-				ForcePositive( distanceRange ) / (double) ( numberPoints.r - 1 ) },
-	framesToFillSinogram( numberPoints.c - 1 + numberPoints.r - 1)
-{
-
-	// Check GetAngle
-	double currentAngle = (double) ( numberPoints.r - 1 ) * resolution.c;
-
-	// Store current number of distances 
-	size_t newNumberPointsRow = numberPoints.r;
-
-	// Detector GetAngle exceeds maximum or minimum
-	if( currentAngle > max_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) floor( max_detetector_arc_angle_rad / resolution.c ) + 1;
-	if( currentAngle < min_detetector_arc_angle_rad ) newNumberPointsRow = (size_t) ceil( min_detetector_arc_angle_rad / resolution.c ) + 1;
-
-	// Recalculate if number of point changed
-	if( newNumberPointsRow != numberPoints.r ){
-		numberPoints.r = ForceToMin( ForceOdd( newNumberPointsRow ), (size_t) 3 );
-		resolution.r = distanceRange / (double) ( numberPoints.r - 1 );
-		framesToFillSinogram = numberPoints.c - 1 + numberPoints.r - 1;
-	}
-}
-
-
-radonProperties::radonProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	distanceRange( DeSerializeBuildIn( 400., binary_data, it ) ),
-	numberPoints( DeSerialize<GridIndex>( binary_data, it ) ),
-	resolution( DeSerialize<GridCoordinates>( binary_data, it ) ),
-	framesToFillSinogram( numberPoints.c - 1 + numberPoints.r - 1 ){
-}
-
-
-size_t radonProperties::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
-
-
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( distanceRange, binary_data );
-	num_bytes += numberPoints.Serialize( binary_data );
-	num_bytes += resolution.Serialize( binary_data );
-
-	return num_bytes;
-}
-
-
-/*!
- * detectorIndipendentParameter implementation
-*/
-
-
-const string detectorIndipendentParameter::FILE_PREAMBLE{ "Ver01DETECTORPARAMETER_FILE_PREAMBLE" };
-
-detectorIndipendentParameter::detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_, const double maxRayAngleDetectable_ ) :
-	arcRadius( arcRadius_ ),
-	columnSize( ForcePositive( columnSize_ ) ),
-	structured( structured_ ),
-	maxRayAngleDetectable( ForceToMax( ForceToMin( maxRayAngleDetectable_, 0. ), PI / 2. ) )
+PhysicalDetectorProperties::PhysicalDetectorProperties( void ) :
+	row_width( 1. ), detector_focus_distance( 300. ), has_anti_scattering_structure( false ), 
+	max_ray_angle_allowed_by_structure( default_max_ray_angle_allowed_by_structure )
 {}
 
-detectorIndipendentParameter::detectorIndipendentParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	arcRadius( DeSerializeBuildIn( 1000., binary_data, it ) ),
-	columnSize( DeSerializeBuildIn( 50., binary_data, it ) ),
-	structured( DeSerializeBuildIn( true, binary_data, it ) ),
-	maxRayAngleDetectable( DeSerializeBuildIn( 5. / 360. * 2. * PI, binary_data, it ) ){
+PhysicalDetectorProperties::PhysicalDetectorProperties( const double row_width, const double detector_focus_distance, 
+														const bool has_anti_scattering_structure, const double max_ray_angle_allowed_by_structure ) :
+	row_width( ForcePositive( row_width ) ), detector_focus_distance( ForcePositive( detector_focus_distance ) ),
+	has_anti_scattering_structure( has_anti_scattering_structure ), max_ray_angle_allowed_by_structure( ForceRange( max_ray_angle_allowed_by_structure, 0., PI/2 ) )
+{};
 
-}
+PhysicalDetectorProperties::PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	row_width( DeSerializeBuildIn<double>( 1., binary_data, current_byte ) ),
+	detector_focus_distance( DeSerializeBuildIn<double>( 300., binary_data, current_byte ) ),
+	has_anti_scattering_structure( DeSerializeBuildIn<bool>( false, binary_data, current_byte ) ),
+	max_ray_angle_allowed_by_structure( DeSerializeBuildIn<double>( default_max_ray_angle_allowed_by_structure, binary_data, current_byte ) )
+{}
 
-size_t detectorIndipendentParameter::Serialize( vector<char>& binary_data ) const{
+size_t PhysicalDetectorProperties::Serialize( vector<char>& binary_data ) const{
+
 	size_t num_bytes = 0;
-
-
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( arcRadius, binary_data );
-	num_bytes += SerializeBuildIn( columnSize, binary_data );
-	num_bytes += SerializeBuildIn( structured, binary_data );
-	num_bytes += SerializeBuildIn( maxRayAngleDetectable, binary_data );
+	num_bytes += SerializeBuildIn<double>( row_width, binary_data );
+	num_bytes += SerializeBuildIn<double>( detector_focus_distance, binary_data );
+	num_bytes += SerializeBuildIn<bool>( has_anti_scattering_structure, binary_data );
+	num_bytes += SerializeBuildIn<double>( max_ray_angle_allowed_by_structure, binary_data );
 
 	return num_bytes;
 }
 
-
 /*!
- * detectorPhysicalParameter implementation
+ * DetectorProperties implementation
 */
 
-detectorPhysicalParameter::detectorPhysicalParameter( const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
-	number{ radonParameter.numberPoints.r, 1 },
-	angle( (double) ( radonParameter.numberPoints.r - 1 ) * radonParameter.resolution.c ),
-	detectorFocusDistance( indipendentParameter.arcRadius ),
-	structured( indipendentParameter.structured ),
-	maxRayAngleDetectable( indipendentParameter.maxRayAngleDetectable )
+DetectorProperties::DetectorProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties ) :
+	number_of_pixel{ radon_properties.numberPoints.r, 1 },
+	row_width( physical_properties.row_width ),
+	arc_angle( (double) ( radon_properties.numberPoints.r - 1 ) * radon_properties.resolution.c ),
+	detector_focus_distance( physical_properties.detector_focus_distance ),
+	has_anti_scattering_structure( physical_properties.has_anti_scattering_structure ),
+	max_ray_angle_allowed_by_structure( max_ray_angle_allowed_by_structure )
 {}

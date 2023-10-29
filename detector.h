@@ -39,9 +39,9 @@ class detector {
 	 * @brief Cnstructor
 	 * @param coordinate_system Coordinate system
 	 * @param radonParameter Radon parameter
-	 * @param indipendentParameter Parameter indipendent of radon parameter
+	 * @param physical_properties Parameter indipendent of radon parameter
 	*/
-	detector(CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter );
+	detector(CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -64,13 +64,13 @@ class detector {
 	 * @brief Get the radon parameters of detector
 	 * @return Radon parameters of detector
 	*/
-	radonProperties getSignalParameter( void ) const{ return radonParameters; };
+	//radonProperties getSignalParameter( void ) const{ return radonParameters; };
 
 	/*!
 	 * @brief Get the physical parameters of detector
 	 * @return Physical parameters of detector
 	*/
-	detectorPhysicalParameter getPhysicalParameters( void ) const{ return physicalParameters; };
+	DetectorProperties properties( void ) const{ return properties_; };
 
 	/*!
 	 * @brief Get coordinate system of detector
@@ -92,8 +92,8 @@ class detector {
 	vector<pixel> allPixel;							/*!<Pixels of detector*/
 	vector<pixel> allPixelConverted;				/*!<Pixel in different coordinate system*/
 
-	detectorPhysicalParameter physicalParameters;	/*!<Physical parameters*/		// Order is important since physicalParameters constructor changes radonParameters
-	radonProperties radonParameters;			/*!<Radon parameters*/
+	DetectorProperties properties_;	/*!<Physical parameters*/		// Order is important since properties_ constructor changes radonParameters
+	//radonProperties radonParameters;			/*!<Radon parameters*/
 
 };
 

@@ -119,7 +119,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, const double exposureTime ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
 
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
@@ -158,7 +158,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const d
 			const Line tempLine{ currentPixel.GetNormal().ConvertTo( coordinate_system_ ), currentOrigin.ConvertTo( coordinate_system_ ) };
 
 			// Origin of Ray with specific distance to pixel
-			const Point3D rayOrigin = tempLine.GetPoint( detectorFocusDistance );
+			const Point3D rayOrigin = tempLine.GetPoint( detector_focus_distance );
 
 			// Add Ray in tube's coordinate system to vector
 			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties);

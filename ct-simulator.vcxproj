@@ -252,6 +252,7 @@
     <ClCompile Include="detectorParameter.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="radonCoordinates.cpp" />
+    <ClCompile Include="radonProperties.cpp" />
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="filter.cpp" />

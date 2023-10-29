@@ -171,6 +171,6 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	 * @param GetAngle Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const PrimitiveVector3 axis, const double angle );
+	MathError Rotate( const PrimitiveVector3 axis, const double arc_angle );
 
 };

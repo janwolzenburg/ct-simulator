@@ -527,6 +527,9 @@
     <ClCompile Include="radonTransform.cpp">
       <Filter>Quelldateien\Processing\Radon</Filter>
     </ClCompile>
+    <ClCompile Include="radonProperties.cpp">
+      <Filter>Quelldateien\Processing\Radon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

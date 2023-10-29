@@ -96,7 +96,7 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	 * @param axis Rotation axis
 	 * @param GetAngle Rotation GetAngle
 	*/
-	MathError Rotate( const PrimitiveVector3 axis, const double angle );
+	MathError Rotate( const PrimitiveVector3 axis, const double arc_angle );
 
 
 	protected:

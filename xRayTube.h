@@ -48,7 +48,7 @@ class XRayTubeProperties {
 	};
 
 	/*!
-	 * @brief Material map. Combines enumeration with name_ and atomic number
+	 * @brief Material map. Combines enumeration with name_ and atomic number_of_pixel
 	*/
 	static const std::map<Material, pair<string, size_t>> materials;
 
@@ -125,7 +125,7 @@ class XRayTube{
 	CoordinateSystem* coordinate_system( void ) const { return coordinate_system_; };
 
 	/*!
-	 * @brief Get the set number of pixel per ray
+	 * @brief Get the set number_of_pixel of pixel per ray
 	 * @return Rays per Pixel
 	*/
 	size_t number_of_rays_per_pixel( void ) const{ return properties_.number_of_rays_per_pixel_; };
@@ -175,7 +175,7 @@ class XRayTube{
 	CoordinateSystem* coordinate_system_;	/*!<Coordinate system of tube*/
 
 	XRayTubeProperties properties_;			/*!<Tube properties*/
-	size_t anode_material_atomic_number_;	/*!<Atomic number of anode material*/
+	size_t anode_material_atomic_number_;	/*!<Atomic number_of_pixel of anode material*/
 
 	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
 	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 

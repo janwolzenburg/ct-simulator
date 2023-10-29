@@ -77,7 +77,7 @@ class gantryEdition : public Fl_Group{
 	Fl_Bound_Input<Fl_Int_Input, size_t> rowPnts;			/*!<Amount of distances in sinogram*/
 	Fl_Bound_Input<Fl_Float_Input, double> distRange;		/*!<Measure field*/
 	Fl_Bound_Input<Fl_Int_Input, int> raysPerPixelIn;		/*!<Amount of rays per pixel to simulate*/
-	Fl_Bound_Input<Fl_Float_Input, double> arcRadiusIn;		/*!<Detector arc radius*/
+	Fl_Bound_Input<Fl_Float_Input, double> detector_focus_distance_input;		/*!<Detector arc radius*/
 	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
 	Fl_Bound_Input<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum GetAngle when structure is enabled*/
 	Fl_Plot<geoplot> detectorPlot;							/*!<Plot for detector geometry*/

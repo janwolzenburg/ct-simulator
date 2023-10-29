@@ -179,7 +179,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param phi Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const UnitVector3D axis, const double angle );
+	MathError Rotate( const UnitVector3D axis, const double arc_angle );
 
 	/*!
 	 * @brief Rotate coordinate system
@@ -187,7 +187,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param phi Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const Line axis, const double angle );
+	MathError Rotate( const Line axis, const double arc_angle );
 
 
 

@@ -85,7 +85,7 @@ propabilityDistribution::propabilityDistribution( const vector<Tuple2D> distribu
 	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
 	double smallestPropability = sortedDistribution.front().y;
 
-	// Check against maximum number of bins
+	// Check against maximum number_of_pixel of bins
 	if( 1. / smallestPropability > static_cast<double>( maxNumberOfBins ) ) smallestPropability = 1. / static_cast<double>( maxNumberOfBins );
 
 	// Insert amount corrensponding to probability into uniform distribution

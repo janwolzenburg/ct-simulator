@@ -22,3 +22,5 @@ constexpr double default_ray_step_size_mm = 5e-2;							/*!<Stepsize during Ray 
 constexpr double default_complete_model_scatter_propability = 0.05;			/*!<Propability that a Ray is scattered when transmitting through complete model*/
 
 constexpr size_t default_max_radiation_loops = 16;							/*!<How often can a Ray be scattered*/
+
+constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!<Default maximum arc_angle between ray and pixel normal allowed by anti scattering structure*/

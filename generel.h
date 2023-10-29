@@ -253,18 +253,18 @@ template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand, const T right_operand );
 
 /*!
- * @brief Convert number to string with given precision
- * @tparam T Type of number
+ * @brief Convert number_of_pixel to string with given precision
+ * @tparam T Type of number_of_pixel
  * @param value Value
- * @param precision Precision of converted number. Negative rounds number to significant digits
+ * @param precision Precision of converted number_of_pixel. Negative rounds number_of_pixel to significant digits
  * @return Number as string
 */
 template<typename T>
 string ToString( T value, const int precision = 0 );
 
 /*!
- * @brief Convert string to number
- * @tparam T Type of number
+ * @brief Convert string to number_of_pixel
+ * @tparam T Type of number_of_pixel
  * @param str String
  * @return Number corresponding to string
 */

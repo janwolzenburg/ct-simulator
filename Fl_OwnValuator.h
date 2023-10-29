@@ -22,7 +22,7 @@
 *********************************************************************/
 
 /*!
- * @brief Class for a valuator with custom number to string conversion
+ * @brief Class for a valuator with custom number_of_pixel to string conversion
  * @details Able to display the current valuator value in the label
  * @tparam C Class derived from Fl_Valuator
 */

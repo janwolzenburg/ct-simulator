@@ -27,13 +27,13 @@ using std::cref;
 
 
 gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
-				const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+				const radonProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
 	cSys( coordinate_system ),
 	resetPostition( cSys->GetPrimitive() ),
 	rayDetector{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
 	raySource{ cSys->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ },
-	radius( rayDetector.getPhysicalParameters().detectorFocusDistance / 2 ),
+	radius( rayDetector.properties().detector_focus_distance / 2 ),
 	rayScatterAngles{ 127, raySource.GetEmittedEnergyRange(), 64, cSys->GetEz() }
 
 {
@@ -41,18 +41,18 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
 	cSys->SetPrimitive( xAxisAligned );
 
-	raySource.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.getPhysicalParameters().detectorFocusDistance / 2, 0 }, cSys } );
+	raySource.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, rayDetector.properties().detector_focus_distance / 2, 0 }, cSys } );
 	
 }
 
 
 vector<Ray> gantry::getBeam( const double exposureTime ) const{
-	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.getPhysicalParameters().detectorFocusDistance, exposureTime );
+	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.properties().detector_focus_distance, exposureTime );
 }
 
 
-void gantry::rotateCounterClockwise( const double angle ){
-	this->cSys->Rotate( cSys->GetZAxis(), angle );
+void gantry::rotateCounterClockwise( const double arc_angle ){
+	this->cSys->Rotate( cSys->GetZAxis(), arc_angle );
 }
 
 void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,

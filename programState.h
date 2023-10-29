@@ -200,13 +200,13 @@ class programState{
 	 * @brief Get reference to detector parameter
 	 * @return Constant reference to detector parameter
 	*/
-	const detectorIndipendentParameter& DetectorParameter( void ) const{ return detectorParameter; };
+	const PhysicalDetectorProperties& DetectorParameter( void ) const{ return physical_detector_properties_; };
 
 	/*!
 	 * @brief Get physical detector parameter
 	 * @return Physical detector parameter
 	*/
-	const detectorPhysicalParameter DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().getPhysicalParameters(); };
+	const DetectorProperties DetectorPhysicalParameter( void ) const{ return gantryInstance.Detector().properties(); };
 		
 	/*!
 	 * @brief Get reference to gantry
@@ -221,7 +221,7 @@ class programState{
 	 * @param indipendentParameter Detector parameter
 	*/
 	void buildGantry( const XRayTubeProperties tubeParameter_,
-					  const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter );
+					  const radonProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
 
 
 	/***************************************** Tomography ******************************************/
@@ -299,8 +299,8 @@ class programState{
 	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
 	radonProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
 	storedObject<radonProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
-	detectorIndipendentParameter detectorParameter;						/*!<Parameter only dependent on the physical properties_ od detector*/
-	storedObject<detectorIndipendentParameter> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
+	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
+	storedObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 	storedObject<tomographyParameter> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/

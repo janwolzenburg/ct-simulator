@@ -140,7 +140,7 @@ void tomographyExec::handleEvents( void ){
 		state.tomographyInstance = tomography{ state.tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.Gantry(), state.model(), 0, radiationProgressWindow ) );
+			state.assignRadonTransformed( state.tomographyInstance.recordSlice( state.RadonParameter(), state.Gantry(), state.model(), 0, radiationProgressWindow ) );
 			delete radiationProgressWindow;
 		}
 
@@ -166,7 +166,7 @@ void tomographyExec::handleEvents( void ){
 		informationString += "Sinogramgröße:      " + ToString( state.RadonParameter().numberPoints.c ) + " x " + ToString( state.RadonParameter().numberPoints.r ) + '\n';
 		informationString += "Sinogramauflösung:  " + ToString( state.RadonParameter().resolution.c / 2. / PI * 360.,2 ) + "° x " + ToString( state.RadonParameter().resolution.r, 2 ) + " mm" + '\n' + '\n';
 		informationString += "Gantryrotationen:   " + ToString( state.RadonParameter().framesToFillSinogram ) + '\n';
-		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
 		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().GetElectricalPower() ) + "W" + '\n';

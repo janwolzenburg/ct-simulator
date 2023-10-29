@@ -45,10 +45,10 @@ class gantry {
 	 * @param raysPerPixel_ Amount of rays per pixel in beam
 	 * @param tubeParameters Parameter of xRay tube
 	 * @param radonParameters Radon parameter of xRay detector
-	 * @param indipendentParameter Other parameter
+	 * @param physical_detector_properties Other parameter
 	*/
 	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const radonProperties radonParameter,
-			const detectorIndipendentParameter indipendentParameter );
+			const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
 	 * @brief Get all rays from tube
@@ -79,7 +79,7 @@ class gantry {
 	 * @brief Rotate gantry counter clockwise around ZAxis
 	 * @param GetAngle Rotation GetAngle
 	*/
-	void rotateCounterClockwise( const double angle );
+	void rotateCounterClockwise( const double arc_angle );
 
 	/*!
 	 * @brief Radiate model with beam
@@ -103,7 +103,7 @@ class gantry {
 	 * @param coordinate_system_ Reference coordinate system for radon transform
 	 * @return 
 	*/
-	radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
+	//radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
 
 	/*!
 	 * @brief Get reference to scattering member object

@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   detectorParameter.h
+ * @file   physical_detector_properties_.h
  * @brief  Detector parameter classes
  *
  * @author Jan Wolzenburg
@@ -13,68 +13,58 @@
  *********************************************************************/
 
  #include "generel.h"
- #include "generelMath.h"
- #include "radonProperties.h"
-
+#include "generelMath.h"
+#include "radonProperties.h"
+#include "serialization.h"
+#include "simulation.h"
 
 
 /*********************************************************************
    Definitions
 *********************************************************************/
 
-
-/*!
- * @brief Class for physical detector or simulation parameters which are not dependent on the radon parameters
-*/
-class detectorIndipendentParameter{
-
-	public:
+struct PhysicalDetectorProperties{
 
 	static const string FILE_PREAMBLE;
-
-	/*!
-	 * @brief Constructor
-	 * @param arcRadius_ Radius of the detector arc
-	 * @param columnSize_ Pixel size_ in z-Direction
-	 * @param structured_ Flag for anti scattering structure
-	 * @param maxRayAngleDetectable_ maximum GetAngle between pixel normal and incident Ray allowed by anti-scattering structure
-	*/
-	detectorIndipendentParameter( const double arcRadius_, const double columnSize_, const bool structured_ = false, const double maxRayAngleDetectable_ =  5. / 360. * 2. * PI );
 	
 	/*!
 	 * @brief Default constructor
 	*/
-	detectorIndipendentParameter( void ) :
-		detectorIndipendentParameter{ 1000., 5., true, 5. / 360. * 2. * PI }{};
+	PhysicalDetectorProperties( void );
+
+	/*!
+	 * @brief Constructor
+	 * @param row_width Width of one detector row
+	 * @param detector_focus_distance Distance from detector pixel array to its focus
+	 * @param has_anti_scattering_structure Enable anti scattering structure for pixel
+	 * @param max_ray_angle_allowed_by_structure 
+	*/
+	PhysicalDetectorProperties( const double row_width, const double detector_focus_distance, const bool has_anti_scattering_structure = false, 
+								const double max_ray_angle_allowed_by_structure = default_max_ray_angle_allowed_by_structure );
 
 	/*!
 	 * @brief Constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
+	 * @param current_byte Iterator to start of data_ in vector
 	*/
-	detectorIndipendentParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-		* @brief Serialize this object
-		* @param binary_data Reference to vector where data_ will be appended
+	* @brief Serialize this object
+	* @param binary_data Reference to vector where data_ will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
-
-	public:
-
-	double arcRadius;				/*!<Radius of arc where the pixels lie on*/
-	double columnSize;				/*!<Size of one pixel in column direction*/
-	bool structured;				/*!<Flag for anti scatter structure*/
-	double maxRayAngleDetectable;	/*!<Maximum GetAngle between pixel normal and Ray in radians*/
+	double row_width;
+	double detector_focus_distance;
+	bool has_anti_scattering_structure;
+	double max_ray_angle_allowed_by_structure;
 };
-
-
 
 /*!
  * @brief Struct for detector parameters
 */
-class detectorPhysicalParameter{
+class DetectorProperties{
 
 	public:
 
@@ -83,14 +73,16 @@ class detectorPhysicalParameter{
 	 * @param radonParameter Radon parameters
 	 * @param indipendentParameter Other detector parameters
 	*/
-	detectorPhysicalParameter( const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter );
+	DetectorProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 
 	public:
 
-	GridIndex number;					/*!<Amount of pixel in each dimension*/
-	double angle;					/*!<Angle between outer normals*/
-	double detectorFocusDistance;	/*!Distance of focus and detector pixel*/
-	bool structured;				/*!<Flag for anti scatter structure*/
-	double maxRayAngleDetectable;	/*!<Maximum GetAngle between pixel normal and Ray*/
+	GridIndex number_of_pixel;				/*!<Amount of pixel in each dimension*/
+	double row_width;				/*!<Size of one pixel in column direction*/
+	double arc_angle;					/*!<Angle between outer normals*/
+	double detector_focus_distance;	/*!<Distance of focus and detector pixel*/
+
+	bool has_anti_scattering_structure;				/*!<Flag for anti scatter structure*/
+	double max_ray_angle_allowed_by_structure;	/*!<Maximum GetAngle between pixel normal and Ray*/
 };

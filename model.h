@@ -76,7 +76,7 @@ class Model : public MathematicalObject{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get number of voxels
+	 * @brief Get number_of_pixel of voxels
 	 * @return Voxel amount
 	*/
 	Index3D number_of_voxel_3D( void ) const{ return number_of_voxel_3D_; };
