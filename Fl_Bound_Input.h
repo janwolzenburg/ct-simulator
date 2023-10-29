@@ -32,7 +32,7 @@ enum INPUT_CONSTRAINTS{
 };
 
 /*!
- * @brief Class for a bound number input
+ * @brief Class for a bound number_of_pixel input
  * @tparam C Class derived from Fl_Input
  * @tparam T Arithmetic type to input
 */
@@ -77,7 +77,7 @@ class Fl_Bound_Input : public Fl_Group{
 	 * @brief Set properties_ of input
 	 * @param min_ Minimum value
 	 * @param max_ Maximum value
-	 * @param precision_ Precision of number to show. Use negative numbers to round to multiples of ten
+	 * @param precision_ Precision of number_of_pixel to show. Use negative numbers to round to multiples of ten
 	 * @param constraint_ Contrains for inputted values
 	*/
 	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  );
@@ -101,7 +101,7 @@ class Fl_Bound_Input : public Fl_Group{
 
 	C input;				/*!<A Fl_Input derivation*/
 				
-	int precision;			/*!<Precision of number. Negative to round to significant digits*/
+	int precision;			/*!<Precision of number_of_pixel. Negative to round to significant digits*/
 	T current;				/*!<Current value*/
 	string valueString;		/*!<String with formatted value*/
 

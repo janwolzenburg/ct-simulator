@@ -36,7 +36,7 @@ radonCoords::radonCoords( const CoordinateSystem* const cSys, const Line l ) :
 
 	// Ray intersects origin_
 	if( IsNearlyEqualDistance( lot.length(), 0 ) ){
-		// Lot vector only for GetAngle calculation
+		// Lot vector only for angle calculation
 		lot = projectedLine.direction() ^ cSys->GetEz();
 	}
 	// No intersection -> distance from perpendicular
@@ -55,7 +55,7 @@ radonCoords::radonCoords( const CoordinateSystem* const cSys, const Line l ) :
 		}
 	}
 
-	// Calculate radon GetAngle
+	// Calculate radon angle
 
 	// y component is zero
 	if( IsNearlyEqualDistance( lot.Y(), 0 ) ) theta = 0;

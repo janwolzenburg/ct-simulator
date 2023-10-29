@@ -251,7 +251,7 @@ class Vector3D : protected Coordinates{
 	MathError AddToZ( const double z_ );
 
 	/*!
-	 * @brief Calculate GetAngle between this and another vector
+	 * @brief Calculate angle between this and another vector
 	 * @param v2 Second vector
 	 * @return Angle in radians
 	*/
@@ -266,64 +266,64 @@ class Vector3D : protected Coordinates{
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundXAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundYAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
-	 * @param sinPhi Sine of the GetAngle
-	 * @param cosPhi Cosine of the GetAngle
+	 * @param sinPhi Sine of the angle
+	 * @param cosPhi Cosine of the angle
 	 * @return Error code
 	*/
 	MathError RotateAroundZAxis( const double sinPhi, const double cosPhi );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around x-axis
-	 * @param angle Angle in radians
+	 * @param arc_angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundXAxis( const double angle );
+	MathError RotateAroundXAxis( const double arc_angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around y-axis
-	 * @param angle Angle in radians
+	 * @param arc_angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundYAxis( const double angle );
+	MathError RotateAroundYAxis( const double arc_angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around z-axis
-	 * @param angle Angle in radians
+	 * @param arc_angle Angle in radians
 	 * @return Error code
 	*/
-	MathError RotateAroundZAxis( const double angle );
+	MathError RotateAroundZAxis( const double arc_angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of this vector around second vector
 	 * @param n Rotation axis vector
-	 * @param angle Angle in radians
+	 * @param arc_angle Angle in radians
 	 * @return Error code
 	*/
-	MathError Rotate( const Vector3D n, const double angle );
+	MathError Rotate( const Vector3D n, const double arc_angle );
 
 	/*!
 	 * @brief Counterclockwise rotation of vector around second vector
 	 * @param n Rotation axis vector
-	 * @param angle angle in radians
+	 * @param arc_angle arc_angle in radians
 	 * @return Rotated vector
 	*/
-	Vector3D RotateConstant( const Vector3D axis, const double angle ) const;
+	Vector3D RotateConstant( const Vector3D axis, const double arc_angle ) const;
 
 	/*!
 	 * @brief Project vector on XY plane of given coordinate system

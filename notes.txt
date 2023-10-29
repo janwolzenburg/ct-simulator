@@ -27,6 +27,8 @@ Generel
 
 Device
 	xRayTube
+	detectorProperties
+	detectorPixel
 
 Physics
 	Linear Algebra

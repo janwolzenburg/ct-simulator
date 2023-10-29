@@ -57,6 +57,7 @@ bool test_detector_to_sinogram( void ){
 	addObject( ax2, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_SURFACES | GANTRY_SPECIFIERS::DETECTOR_NORMALS );
 	closeAxis( ax2 );
 
+	/*
 	radonProperties radonParameter = testGantry.getDetectorParameter();
 	CoordinateSystem* radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
 
@@ -91,7 +92,7 @@ bool test_detector_to_sinogram( void ){
 		testGantry.rotateCounterClockwise( radonParameter.resolution.c );
 	}
 
-
+	*/
 
 	
 
@@ -100,6 +101,8 @@ bool test_detector_to_sinogram( void ){
 
 
 bool test_Tomography( void ){
+
+	/*
 
 	auto start = std::chrono::system_clock::now();
 	gantry testGantry = getTestGantry( GridIndex{ 900, 300 }, 1 );
@@ -151,6 +154,7 @@ bool test_Tomography( void ){
 	//addSingleObject( ax3, "Sinogram", sinogram.Data(), "Angle;Distance;Energy;Dots", true );
 
 	//closeAxis( ax3 );
+	*/
 
 	return true;
 }

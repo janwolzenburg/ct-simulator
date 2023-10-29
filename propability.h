@@ -22,7 +22,7 @@
 *********************************************************************/
 
 /*!
- * @brief Class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
+ * @brief Class for a generic random number_of_pixel generator with a uniform distribution between 0 and 2^32 - 1
 */
 class randomNumberGenerator{
 
@@ -36,7 +36,7 @@ class randomNumberGenerator{
 	randomNumberGenerator( const unsigned int minValue, const unsigned int maxValue );
 
 	/*!
-	 * @brief Get a random number
+	 * @brief Get a random number_of_pixel
 	 * @return Random integer
 	*/
 	unsigned int getRandom( void );
@@ -57,7 +57,7 @@ class randomNumberGenerator{
 
 };
 
-extern randomNumberGenerator integerRNG;						/*!<One instance of integer random number generator*/
+extern randomNumberGenerator integerRNG;						/*!<One instance of integer random number_of_pixel generator*/
 
 
 /*!
@@ -71,7 +71,7 @@ class propabilityDistribution{
 	/*!
 	 * @brief Constructor
 	 * @param distribution_ Pseudo distribution. Sum of y values can be not equal to one
-	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
+	 * @param maxNumberBins Maximum amount of bins to put the distribution in. Low number_of_pixel may exclude low propabilites
 	*/
 	propabilityDistribution( const vector<Tuple2D> distribution_, const size_t maxNumberOfBins );
 

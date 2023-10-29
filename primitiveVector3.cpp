@@ -124,19 +124,19 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 	double d = sqrt( pow( nCpy.x, 2 ) + pow( nCpy.y, 2 ) );		// Length of the axis projection on x-y plane
 	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculation square root!" );		// Check error flag
 
-	double sinThe = 0, cosThe = 1;								// Sine and cosine of GetAngle Theta (GetAngle between rot. axis projection onto x-y plane and x axis)
+	double sinThe = 0, cosThe = 1;								// Sine and cosine of angle Theta (angle between rot. axis projection onto x-y plane and x axis)
 
 	// Avoid division by zero. d = 0 means rot. axis is parallel to z
 	if( d > 0 ){
-		sinThe = nCpy.y / d;		// Sine of the GetAngle Theta
-		cosThe = nCpy.x / d;		// Cosine of the GetAngle Theta
+		sinThe = nCpy.y / d;		// Sine of the angle Theta
+		cosThe = nCpy.x / d;		// Cosine of the angle Theta
 
 		// Clockwise rotation of rotation axis and this vector around z-axis to align rotation axis to x-z plane
 		nCpy.RotateAroundZAxis( -sinThe, cosThe );
 		this->RotateAroundZAxis( -sinThe, cosThe );
 	}
 
-	// Gamma is the GetAngle between the rotation axis (aligned to x-z plane) and the z-axis
+	// Gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
 	double sinGam = d;				// Rotation axis vector has been normalised - sine of Gamma is d / 1
 	double cosGam = nCpy.z;			// Cosine is just the z-component of vector n_z / 1
 
@@ -145,7 +145,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 
 	// The axis rotation vector is now aligned with the z-axis
 
-	// Sine and cosine of GetAngle to rotate around
+	// Sine and cosine of angle to rotate around
 	double sinPhi = sin( phi );
 	double cosPhi = cos( phi );
 

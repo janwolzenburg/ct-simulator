@@ -42,9 +42,9 @@ bool test_scattered_angle_propabilities( void ){
 
 	for( int i = 0; i < 100000; i++ ){
 		
-		double angle = anglePropabilites.getRandomAngle( testEnergy );
+		double arc_angle = anglePropabilites.getRandomAngle( testEnergy );
 		
-		size_t angleIndex = ForceToMax( (size_t) floor( ( angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
+		size_t angleIndex = ForceToMax( (size_t) floor( ( arc_angle - angleStart ) / angleResolution + 0.5 ), experimentalDistribution.size() );
 
 		( experimentalDistribution.at( angleIndex ).y )++;
 

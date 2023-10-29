@@ -86,7 +86,7 @@ template <typename T>
 double RelativeDeviation( const T a, const T b );
 
 /*!
- * @brief Checks if number is even
+ * @brief Checks if number_of_pixel is even
  * @tparam T Integer type
  * @param integer Value
  * @return True when integer is even

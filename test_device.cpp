@@ -35,14 +35,12 @@ detector getTestDetector( void ){
 		500
 	};
 
-	detectorIndipendentParameter indipendentParameter{
-		1,
+	PhysicalDetectorProperties indipendentParameter{
 		1000.,
-		10,
-		false
+		10
 	};
 
-	// 50 degree GetAngle
+	// 50 degree angle
 	detector testDetector{ GlobalSystem()->CreateCopy( "Detector system" ), radonParameter, indipendentParameter };
 
 	return testDetector;
@@ -51,17 +49,18 @@ detector getTestDetector( void ){
 bool test_tube(void) {
 
 	XRayTubeProperties tubeParas{	53000,
-								0.2,
-								XRayTubeProperties::Thungsten };
+									0.2,
+									XRayTubeProperties::Thungsten,
+									1 };
 
 	XRayTube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
 
 	detector test_detector = getTestDetector();
 
-	vector<pixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.getPixel();
 
-	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.getPhysicalParameters().detectorFocusDistance, 2, 1.);
+	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance, 1. );
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 
@@ -266,7 +265,7 @@ bool test_modifiedDetector( void ){
 
 	// All pixel normals
 
-	vector<pixel> allPixel;
+	vector<DetectorPixel> allPixel;
 
 	Line previousNormal;			// GetCenterNormal of previous pixel
 	double previousPixelSize;		// Size of previous pixel
@@ -279,7 +278,7 @@ bool test_modifiedDetector( void ){
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
@@ -310,7 +309,7 @@ bool test_modifiedDetector( void ){
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 			
-			// First pixel size_ so that the neighbooring pixel intersects at half GetAngle
+			// First pixel size_ so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -339,13 +338,14 @@ bool test_modifiedDetector( void ){
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
-		allPixel.emplace_back( currentSurfaceVector,
+		allPixel.emplace_back( BoundedSurface{ 
+								currentSurfaceVector,
 							   rotationVector,
 							   pixelNormal.origin(),
 							   -currentPixelSize / 2,
 							   currentPixelSize / 2,
 							   -10,
-							   10 );
+							   10 } );
 
 		// Add mirrored when not middle pixel
 		if( currentIndex > 0 ){
@@ -358,13 +358,13 @@ bool test_modifiedDetector( void ){
 
 			// Add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			allPixel.emplace_back( mirroredSurfaceVector,
+			allPixel.emplace_back( BoundedSurface{ mirroredSurfaceVector,
 								   rotationVector,
 								   mirroredPixelNormal.origin(),
 								   -currentPixelSize / 2,
 								   currentPixelSize / 2,
 								   -10,
-								   10 );
+								   10 } );
 		}
 
 	}
@@ -387,7 +387,7 @@ bool test_detector(void) {
 
 	detector test_detector = getTestDetector();
 
-	vector<pixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.getPixel();
 
 	ofstream ax1 = openAxis(path("./test_detector.txt"), true);
 
@@ -395,11 +395,11 @@ bool test_detector(void) {
 	
 	vector<Line> pixelNormals;
 
-	for( pixel currentPixel : allPixel ){
+	for( DetectorPixel currentPixel : allPixel ){
 		pixelNormals.push_back( currentPixel.NormalLine() );
 	}
 
-	addObject( ax1, "DetectorNormals", pixelNormals, "r", test_detector.getPhysicalParameters().detectorFocusDistance );
+	addObject( ax1, "DetectorNormals", pixelNormals, "r", test_detector.properties().detector_focus_distance );
 
 	closeAxis(ax1);
 	
@@ -409,9 +409,11 @@ bool test_detector(void) {
 
 gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
-	XRayTubeProperties tubeParas{ 100000,
+	XRayTubeProperties tubeParas{
+								100000,
 								0.2,
-								XRayTubeProperties::Thungsten };
+								XRayTubeProperties::Thungsten, 
+								raysPerPixel };
 
 
 	radonProperties radonParameter{
@@ -419,11 +421,9 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 		500
 	};
 
-	detectorIndipendentParameter indipendentParameter{
-		raysPerPixel,
+	PhysicalDetectorProperties indipendentParameter{
 		1000.,
-		50,
-		false
+		50
 	};
 
 	gantry testGantry{ GlobalSystem()->CreateCopy( "Gantry system" ), tubeParas, radonParameter, indipendentParameter };
@@ -433,6 +433,7 @@ gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 
 
 bool test_gantry( void ){
+
 
 	gantry testGantry = getTestGantry( GridIndex{ 600, 200 }, 3 );
 	const CoordinateSystem* const radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
@@ -447,11 +448,11 @@ bool test_gantry( void ){
 	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
 	
 
-	testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );
+	//testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );
 
 	//addObject( ax1, "Gantry", testGantry, "g", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::DETECTOR_NORMALS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 
-	for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
+	//for( auto& px : testGantry.getPixel() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 2. );
 	addSingleObject( ax2, "RadonPoints", points, "Angle;Distance;Energy;Dots" );
 
 	closeAxis( ax2 );

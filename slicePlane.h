@@ -40,8 +40,8 @@ class slicePlane{
 
 	CoordinateSystem* cSys;			/*!<Coordinate system of slice plane*/
 	Surface surface;			/*!<Surface for slicing*/
-	double rotationAngleX;	/*!<Current x-rotation GetAngle*/
-	double rotationAngleY;	/*!<Current y-rotation GetAngle*/
+	double rotationAngleX;	/*!<Current x-rotation angle*/
+	double rotationAngleY;	/*!<Current y-rotation angle*/
 	double positionZ;		/*!<Current z-position*/
 
 };

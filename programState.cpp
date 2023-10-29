@@ -65,9 +65,9 @@ programState::programState( void ) :
 	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
 	radonParameter{},
 	storedRadonParameter{ programState::getPath( "storedRadonParameter.txt" ), radonParameter },
-	detectorParameter{},
-	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), detectorParameter },
-	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, detectorParameter },
+	physical_detector_properties_{},
+	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), physical_detector_properties_ },
+	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
 	
 	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
 	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
@@ -138,13 +138,13 @@ void programState::deactivateAll( void ){
 }
 
 void programState::buildGantry( const XRayTubeProperties tubeParameter_,
-				  const radonProperties radonParameter_, const detectorIndipendentParameter indipendentParameter ){
+				  const radonProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
 
 	xRayTubeParameter = tubeParameter_;
 	radonParameter = radonParameter_;
-	detectorParameter = indipendentParameter;
+	physical_detector_properties_ = indipendentParameter;
 
-	gantryInstance.reset();
+	gantryInstance.ResetDetected();
 	gantry newGantry{ gantryInstance.CSys(), tubeParameter_, radonParameter, indipendentParameter };
 
 	storedXRayTubeParameter.setLoaded();

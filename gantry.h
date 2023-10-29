@@ -45,10 +45,10 @@ class gantry {
 	 * @param raysPerPixel_ Amount of rays per pixel in beam
 	 * @param tubeParameters Parameter of xRay tube
 	 * @param radonParameters Radon parameter of xRay detector
-	 * @param indipendentParameter Other parameter
+	 * @param physical_detector_properties Other parameter
 	*/
 	gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tubeParameter_, const radonProperties radonParameter,
-			const detectorIndipendentParameter indipendentParameter );
+			const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
 	 * @brief Get all rays from tube
@@ -61,7 +61,7 @@ class gantry {
 	 * @brief Get all pixel from detector 
 	 * @return Vector with pixel
 	*/
-	vector<pixel> getPixel( void ) const{ return rayDetector.getPixel();  };
+	vector<DetectorPixel> getPixel( void ) const{ return rayDetector.getPixel();  };
 
 	/*!
 	 * @brief Get radius of gantry
@@ -77,7 +77,7 @@ class gantry {
 
 	/*!
 	 * @brief Rotate gantry counter clockwise around ZAxis
-	 * @param GetAngle Rotation GetAngle
+	 * @param angle Rotation angle
 	*/
 	void rotateCounterClockwise( const double angle );
 
@@ -90,7 +90,7 @@ class gantry {
 	/*!
 	 * @brief Reset ganrtry to its initial position
 	*/
-	void reset( void );
+	void ResetDetected( void );
 
 	/*!
 	 * @brief Get the coordinate system of gantry
@@ -103,7 +103,7 @@ class gantry {
 	 * @param coordinate_system_ Reference coordinate system for radon transform
 	 * @return 
 	*/
-	radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
+	//radonProperties getDetectorParameter(void) const{ return rayDetector.getSignalParameter(); };
 
 	/*!
 	 * @brief Get reference to scattering member object
@@ -130,12 +130,11 @@ class gantry {
 	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
 
 	detector rayDetector;				/*!<Ray detector*/
-	XRayTube raySource;						/*!<xRay source*/
+	XRayTube raySource;					/*!<xRay source*/
 	
-	size_t raysPerPixel;				/*!<Amount of rays per pixel*/
 	double radius;						/*!<Radius of gantry*/
 
-	rayScattering rayScatterAngles;		/*!<Object with information about scattering and GetAngle propabilities*/
+	rayScattering rayScatterAngles;		/*!<Object with information about scattering and angle propabilities*/
 
 	/*!
 	 * @brief Thread function to speed up transmission of multiple rays through model

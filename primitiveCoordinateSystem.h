@@ -94,7 +94,7 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	/*!
 	 * @brief Rotate coordinate system
 	 * @param axis Rotation axis
-	 * @param GetAngle Rotation GetAngle
+	 * @param angle Rotation angle
 	*/
 	MathError Rotate( const PrimitiveVector3 axis, const double angle );
 

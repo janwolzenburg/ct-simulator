@@ -40,7 +40,8 @@ const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTu
 XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	anode_voltage_V( DeSerializeBuildIn( 53000., binary_data, it ) ),
 	anode_current_A( DeSerializeBuildIn( .2, binary_data, it ) ),
-	anode_material( (Material) DeSerializeBuildIn( ToUnderlying( Material::Thungsten ), binary_data, it ) )
+	anode_material( (Material) DeSerializeBuildIn( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
+	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) )
 {}
 
 
@@ -61,6 +62,7 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn( anode_voltage_V, binary_data );
 	num_bytes += SerializeBuildIn( anode_current_A, binary_data );
 	num_bytes += SerializeBuildIn( ToUnderlying( anode_material ), binary_data );
+	num_bytes += SerializeBuildIn( number_of_rays_per_pixel_, binary_data );
 
 	return num_bytes;
 }
@@ -70,13 +72,12 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	tube implementation
 */
 
-XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties parameter_ ) :
+XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties tube_properties ) :
 	coordinate_system_( coordinate_system ),
-	anode_voltage_V_( ForcePositive( parameter_.anode_voltage_V )),
-	anode_current_A_( ForcePositive( parameter_.anode_current_A )),
-	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( parameter_.anode_material ).second ) ),
-	radiation_power_W_( efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * anode_current_A_ * pow( anode_voltage_V_, 2 ) ),
-	max_photon_energy_eV_( anode_voltage_V_ )
+	properties_( tube_properties ),
+	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( properties_.anode_material ).second ) ),
+	radiation_power_W_( efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * properties_.anode_current_A * pow( properties_.anode_voltage_V, 2 ) ),
+	max_photon_energy_eV_( properties_.anode_voltage_V )
 {
 
 	// Frequencies
@@ -118,12 +119,9 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const double detectorFocusDistance, size_t raysPerPixel, const double exposureTime ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
 
-	// Force minimum of one
-	raysPerPixel = ForceToMin1( raysPerPixel );
-
-	const size_t numRays = raysPerPixel * detectorPixel.size();
+	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
 	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
 	const spectrum raySpectrum = emitted_spectrum_.getScaled( exposureTime / (double) numRays );
@@ -136,7 +134,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const d
 	vector<Ray> rays;
 
 	// Iterate all pixel
-	for( const pixel currentPixel : detectorPixel ){
+	for( const DetectorPixel currentPixel : detectorPixel ){
 		
 		// Get points on the edge of pixel
 
@@ -145,10 +143,10 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const d
 		const Line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
-		const double rayOriginDistanceDelta = edgeDistance / (double) ( raysPerPixel + 1 );	// Offset of Ray origins on pixel
+		const double rayOriginDistanceDelta = edgeDistance / (double) ( properties_.number_of_rays_per_pixel_ + 1 );	// Offset of Ray origins on pixel
 
 		// Iterate all rays hitting current pixel
-		for( size_t currentRayIndex = 0; currentRayIndex < raysPerPixel; currentRayIndex++ ){
+		for( size_t currentRayIndex = 0; currentRayIndex < properties_.number_of_rays_per_pixel_; currentRayIndex++ ){
 			
 			// Offset of current Ray origin_
 			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
@@ -160,7 +158,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<pixel> detectorPixel, const d
 			const Line tempLine{ currentPixel.GetNormal().ConvertTo( coordinate_system_ ), currentOrigin.ConvertTo( coordinate_system_ ) };
 
 			// Origin of Ray with specific distance to pixel
-			const Point3D rayOrigin = tempLine.GetPoint( detectorFocusDistance );
+			const Point3D rayOrigin = tempLine.GetPoint( detector_focus_distance );
 
 			// Add Ray in tube's coordinate system to vector
 			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties);

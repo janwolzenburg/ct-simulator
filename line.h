@@ -96,7 +96,7 @@ class Line : public MathematicalObject{
 	double GetLineParameter( const Point3D point_on_line, bool* const solution_found ) const;
 
 	/*!
-	 * @brief Get GetAngle between Line and surface
+	 * @brief Get angle between Line and surface
 	 * @param suface Surface
 	 * @return Angle in radians
 	*/

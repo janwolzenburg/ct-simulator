@@ -70,10 +70,10 @@ size_t tomographyParameter::Serialize( vector<char>& binary_data ) const{
 
 
 
-radonTransformed tomography::recordSlice( gantry Gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+radonTransformed tomography::recordSlice( const radonProperties radon_properties, gantry Gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
-	Gantry.reset();
+	Gantry.ResetDetected();
 	
 
 	// Translate Gantry
@@ -84,42 +84,39 @@ radonTransformed tomography::recordSlice( gantry Gantry, const Model& Model, con
 	this->radonCSys->CopyPrimitiveFrom( Gantry.CSys() );
 
 
-	// Get the radon paramters for the detector
-	const radonProperties radonParameter = Gantry.getDetectorParameter( );
-
 	// Create sinogram 
-	radonTransformed sinogram{ radonParameter };
+	radonTransformed sinogram{ radon_properties };
 
 	
 
 	// Radiate the model for each frame
-	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
+	for( size_t currentFrame = 0; currentFrame < radon_properties.framesToFillSinogram; currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radonParameter.framesToFillSinogram ) );
+			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.framesToFillSinogram ) );
 
 		// Radiate
 		Gantry.radiate( Model, voxel_data_ );
 		
 		// Get the detection result
-		const vector<pixel> detectionPixel = Gantry.getPixel();
+		const vector<DetectorPixel> detectionPixel = Gantry.getPixel();
 
 
 		// Iterate all pixel
-		for( const pixel& currentPixel : detectionPixel ){
+		for( const DetectorPixel& currentPixel : detectionPixel ){
 
 			// Get Coordinates for pixel
 			const radonCoords newRadonCoordinates{ this->radonCSys, currentPixel.NormalLine() };
 
 			// Get the radon point
-			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.getRadonValue() };
+			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
 		
 		// Rotate gantry
-		Gantry.rotateCounterClockwise( radonParameter.resolution.c );
+		Gantry.rotateCounterClockwise( radon_properties.resolution.c );
 
 		Fl::check();
 

@@ -43,7 +43,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	distRange{		X( detectorGrp, .6 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Range" },
 
 	raysPerPixelIn{ X( detectorGrp, .0 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Rays / Pix" },
-	arcRadiusIn{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Arc Radius" },
+	detector_focus_distance_input{	X( detectorGrp, .25 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Focus Dist." },
 	structureIn{	X( detectorGrp, .75 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Anti scat." },
 	maxRayAngleIn{	X( detectorGrp, .50 ),	Y( detectorGrp, .25 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Max angle" },
 
@@ -126,31 +126,31 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		distRange.tooltip( "Size of measure field in mm." );
 
 
-		detectorGrp.add( raysPerPixelIn ); detectorGrp.add( arcRadiusIn ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
+		detectorGrp.add( raysPerPixelIn ); detectorGrp.add( detector_focus_distance_input ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
 		
 		detectorGrp.box( FL_BORDER_BOX );
-		raysPerPixelIn.align( FL_ALIGN_TOP ); arcRadiusIn.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
+		raysPerPixelIn.align( FL_ALIGN_TOP ); detector_focus_distance_input.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
 		raysPerPixelIn.setProperties( 1, 1000, 0 );
-		raysPerPixelIn.value( (int) PROGRAM_STATE().DetectorParameter().raysPerPixel );
+		raysPerPixelIn.value( (int) PROGRAM_STATE().Tube().number_of_rays_per_pixel() );
 
-		arcRadiusIn.setProperties( 100., 100000., 0 );
-		arcRadiusIn.value( PROGRAM_STATE().DetectorParameter().arcRadius );
+		detector_focus_distance_input.setProperties( distRange.value(), 100000., 0);
+		detector_focus_distance_input.value( PROGRAM_STATE().DetectorParameter().detector_focus_distance );
 
 		maxRayAngleIn.setProperties( .1, 60., 2 );
-		maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().maxRayAngleDetectable / 2. / PI * 360. );
+		maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().max_ray_angle_allowed_by_structure / 2. / PI * 360. );
 
-		structureIn.value( (int) PROGRAM_STATE().DetectorParameter().structured );
+		structureIn.value( (int) PROGRAM_STATE().DetectorParameter().has_anti_scattering_structure );
 		structureIn.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		raysPerPixelIn.callback( button_cb, &updateGantry );
-		arcRadiusIn.callback( button_cb, &updateGantry );
+		detector_focus_distance_input.callback( button_cb, &updateGantry );
 		maxRayAngleIn.callback( button_cb, &updateGantry );
 		structureIn.callback( button_cb, &updateGantry );
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
-		arcRadiusIn.tooltip( "Radius of the arc where the pixel lie." );
-		maxRayAngleIn.tooltip( "Maximum detecable GetAngle in degree between pixel and ray. Only valid when anti scattering is activated." );
+		detector_focus_distance_input.tooltip( "Detector focus distance." );
+		maxRayAngleIn.tooltip( "Maximum detecable angle in degree between pixel and ray. Only valid when anti scattering is activated." );
 		structureIn.tooltip( "Activate anti scattering structure." );
 
 
@@ -167,9 +167,12 @@ void gantryEdition::handleEvents( void ){
 
 		Fl_Group::window()->deactivate();
 
-		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum(materialIn.value())};
+		
+		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
+
+		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
 		radonProperties newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
-		detectorIndipendentParameter newDetectorParameter{ (size_t) raysPerPixelIn.value(), arcRadiusIn.value(), 5., (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
+		PhysicalDetectorProperties newDetectorParameter{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 
 		rowPnts.value( newRadonParameter.numberPoints.r );

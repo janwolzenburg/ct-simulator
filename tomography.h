@@ -102,7 +102,7 @@ class tomography{
 	 * @brief Record a slice
 	 * @return Radon transformed of model slice
 	*/
-	radonTransformed recordSlice( gantry gantry_, const Model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
+	radonTransformed recordSlice( const radonProperties radon_properties, gantry gantry_, const Model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
 
 
 	private:

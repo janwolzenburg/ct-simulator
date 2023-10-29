@@ -117,15 +117,15 @@ bool test_modelTransmission( void ){
 
 
 	testGantry.radiate( mod, tomographyParameter{ 1., false, 16, .05, 5e-2 } );
-	vector<pixel> detectorPixel = testGantry.getPixel();
+	vector<DetectorPixel> detectorPixel = testGantry.getPixel();
 
-	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const pixel& p1, const pixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
+	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
 
 	vector<Tuple2D> primitiveDetectionResult( detectorPixel.size(), Tuple2D{0, 0});
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;
-		for( RayProperties currentProperties : detectorPixel.at( i ).getProperties() ){
+		for( RayProperties currentProperties : detectorPixel.at( i ).detected_ray_properties() ){
 			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().getSum();
 		}
 	}	

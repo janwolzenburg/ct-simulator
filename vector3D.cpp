@@ -167,7 +167,7 @@ double Vector3D::GetAngle( const Vector3D v2 ) const{
 
 	if( IsNearlyEqualDistance( scalarProduct, lengthMult ) ) return 0.;
 
-	// Return GetAngle in radians
+	// Return angle in radians
 	return acos( scalarProduct / lengthMult );
 }
 

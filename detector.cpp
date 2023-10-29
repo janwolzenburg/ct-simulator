@@ -23,20 +23,20 @@
 *********************************************************************/
 
 
-detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const detectorIndipendentParameter indipendentParameter ) :
+detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
 	cSys( coordinate_system ),
-	physicalParameters{ radonParameter, indipendentParameter },
-	radonParameters( radonParameter )
+	properties_{ radonParameter, physical_properties }
+	//radonParameters( radonParameter )
 {
 
 	// Important parameter
-	const size_t nDistance = radonParameters.numberPoints.r;									// Amount of distances or pixel
-	const double distanceRange = (double) ( nDistance - 1) * radonParameters.resolution.r;	// Covered field of measure
+	const size_t nDistance = properties_.number_of_pixel.c;									// Amount of distances or pixel
+	const double distanceRange = (double) ( nDistance - 1) * radonParameter.resolution.r;	// Covered field of measure
 
-	const double deltaTheta = radonParameters.resolution.c;		// Angle resolution
-	const double deltaDistance = radonParameters.resolution.r;	// Distance resolution
+	const double deltaTheta = radonParameter.resolution.c;		// Angle resolution
+	const double deltaDistance = radonParameter.resolution.r;	// Distance resolution
 
-	const double detectorCenterDistance = physicalParameters.detectorFocusDistance / 2.;		// Distance from middle pixel to origin_
+	const double detectorCenterDistance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
 	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
@@ -55,7 +55,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 		// Angle to rotate the middle normal vector by
 		const double rotationAngle = (double) (currentIndex) *deltaTheta;
 
-		// Middle normal vector rotation by rotation GetAngle around rotation vector
+		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
@@ -87,7 +87,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 
-			// First pixel size_ so that the neighbooring pixel intersects at half GetAngle
+			// First pixel size_ so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -116,13 +116,14 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
-		allPixel.emplace_back( currentSurfaceVector,
-							   rotationVector,
-							   pixelNormal.origin(),
-							   -currentPixelSize / 2,
-							   currentPixelSize / 2,
-							   -indipendentParameter.columnSize / 2.,
-							   indipendentParameter.columnSize / 2. );
+		allPixel.emplace_back(  BoundedSurface{ 
+								currentSurfaceVector,
+								rotationVector,
+								pixelNormal.origin(),
+								-currentPixelSize / 2,
+								currentPixelSize / 2,
+								-properties_.row_width / 2.,
+								properties_.row_width / 2. } );
 
 		// Add mirrored when not middle pixel
 		if( currentIndex > 0 ){
@@ -135,13 +136,14 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 
 			// Add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			allPixel.emplace_back( mirroredSurfaceVector,
-								   rotationVector,
-								   mirroredPixelNormal.origin(),
-								   -currentPixelSize / 2,
-								   currentPixelSize / 2,
-								   -indipendentParameter.columnSize / 2.,
-								   indipendentParameter.columnSize / 2. );
+			allPixel.emplace_back(	BoundedSurface{ 
+									mirroredSurfaceVector,
+									rotationVector,
+									mirroredPixelNormal.origin(),
+									-currentPixelSize / 2,
+									currentPixelSize / 2,
+									-properties_.row_width / 2.,
+									properties_.row_width / 2. } );
 		}
 
 	}
@@ -151,8 +153,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 }
 
 
-void detector::reset( void ){
-	for( pixel& currentPixel : allPixel ) currentPixel.reset();
+void detector::ResetDetected( void ){
+	for( DetectorPixel& currentPixel : allPixel ) currentPixel.ResetDetected();
 }
 
 
@@ -163,7 +165,7 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
 	
 		// Converted pixel
-		const pixel currentPixel = allPixelConverted.at( pixelIdx );
+		const DetectorPixel currentPixel = allPixelConverted.at( pixelIdx );
 
 	
 		// Check for intersection of Ray with current pixel
@@ -172,10 +174,10 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 		// Do they intersect?
 		if( pixelHit.intersection_exists_ ){
 			
-			// If structured and GetAngle allowed by structure
-			if( !physicalParameters.structured || ( PI / 2. - r.GetAngle( (Surface) currentPixel ) ) <= physicalParameters.maxRayAngleDetectable ){
+			// If has_anti_scattering_structure and angle allowed by structure
+			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
-				allPixel.at( pixelIdx ).addDetectedProperties( r.properties() );		// Add detected Ray properties_ to pixel
+				allPixel.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
 				allPixelLock.unlock();
 			}
 
