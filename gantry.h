@@ -101,10 +101,10 @@ class Gantry{
 
 	/*!
 	 * @brief Radiate model with beam
-	 * @param radModel Model to radiate
+	 * @param model Model to radiate
 	 * @param tomography_properties tomogrpahy properties
 	*/
-	void RadiateModel( const Model& radModel, const tomographyParameter tomography_properties ) ;
+	void RadiateModel( const Model& model, tomographyParameter tomography_properties ) ;
 	
 	/*!
 	 * @brief Reset gantry to its initial position and reset detector
@@ -123,20 +123,21 @@ class Gantry{
 
 	/*!
 	 * @brief Thread function to speed up transmission of multiple rays through model
-	 * @param radModel Reference to model
-	 * @param enableScattering Flag that enables scattering
+	 * @param model Model to radiate through
+	 * @param tomography_properties Properties of tomography
 	 * @param rayScatterAngles Reference to object with information about Ray scattering
 	 * @param rays Reference to vector with rays to transmit
-	 * @param sharedCurrentRayIndex Index of the next Ray in vector to transmit. Will be changed at each call
-	 * @param currentRayIndexMutex Mutex instance for Ray index
-	 * @param raysForNextIteration Reference to vector which hold the rays for the next iteration
-	 * @param detectorMutex Mutex for the detector Object
-	 * @param rayDetector Reference to Ray detector
-	 * @param iterationMutex Mutex for vector with rays for next iteration
+	 * @param current_ray_index Index of the next Ray in vector to transmit. Will be changed at each call
+	 * @param current_ray_index_mutex Mutex instance for Ray index
+	 * @param rays_for_next_iteration Reference to vector which hold the rays for the next iteration
+	 * @param rays_for_next_iteration_mutex Mutex for vector with rays for next iteration 
+	 * @param detector Reference to Ray detector
+	 * @param detector_mutexMutex for the detector Object
 	*/
-	static void TransmitRaysThreaded( const Model& radModel, const tomographyParameter& voxel_data_, const rayScattering& rayScatterAngles,
-								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-								vector<Ray>& raysForNextIteration, mutex& detectorMutex,
-								XRayDetector& rayDetector, mutex& iterationMutex );
+	static void TransmitRaysThreaded(	const Model& model,						const tomographyParameter tomography_properties, 
+										const rayScattering scatter_angles,		const vector<Ray>& rays, 
+										size_t& current_ray_index,				mutex& current_ray_index_mutex,
+										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
+										XRayDetector& detector,					mutex& detector_mutex );
 
 };

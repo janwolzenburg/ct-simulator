@@ -63,7 +63,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
 }
 
-void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
+void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParameter tomoParameter, const rayScattering rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								XRayDetector& rayDetector, mutex& detectorMutex ){
@@ -107,20 +107,20 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const tomographyParame
 	return;
 }
 
-void Gantry::RadiateModel( const Model& radModel, tomographyParameter voxel_data_ ) {
+void Gantry::RadiateModel( const Model& model, tomographyParameter tomography_properties ) {
 
-	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, voxel_data_.exposureTime );		// Current rays. Start with rays from source
+	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposureTime );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
-		currentRay = currentRay.ConvertTo( radModel.coordinate_system() );
+		currentRay = currentRay.ConvertTo( model.coordinate_system() );
 	}
 	
 	// Convert pixel
-	detector_.ConvertPixelArray( radModel.coordinate_system() );
+	detector_.ConvertPixelArray( model.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
-	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( radModel.coordinate_system() );
+	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
 	rayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
 
@@ -133,11 +133,11 @@ void Gantry::RadiateModel( const Model& radModel, tomographyParameter voxel_data
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < voxel_data_.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop < tomography_properties.maxRadiationLoops && rays.size() > 0; currentLoop++ ){
 
 		//cout << "Loop: " << currentLoop + 1 << endl;
 
-		voxel_data_.scattering = currentLoop < voxel_data_.maxRadiationLoops && voxel_data_.scattering;	// No scattering in last iteration
+		tomography_properties.scattering = currentLoop < tomography_properties.maxRadiationLoops && tomography_properties.scattering;	// No scattering in last iteration
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 
@@ -148,7 +148,7 @@ void Gantry::RadiateModel( const Model& radModel, tomographyParameter voxel_data
 
 
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-			threads.emplace_back( TransmitRaysThreaded,	cref( radModel ), cref( voxel_data_ ), cref( rayScatterAngles ),
+			threads.emplace_back( TransmitRaysThreaded,	cref( model ), tomography_properties , rayScatterAngles,
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 													ref( detector_ ), ref( detectorMutex ) );
