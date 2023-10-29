@@ -1,5 +1,10 @@
 
 TODO: Class and member variable names, includes
+TODO: Sorted files filter
+TODO: Check file Heads
+TODO: check comments
+TODO: check cpp files
+
 
 Naming convention:
 	- classes and types: CamelCase
@@ -29,6 +34,8 @@ Device
 	xRayTube
 	detectorProperties
 	detectorPixel
+	xRayDetector
+	gantry
 
 Physics
 	Linear Algebra

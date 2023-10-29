@@ -192,7 +192,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray tRay, const tomographyParameter tomoParameter, const rayScattering scatteringProperties ) const{
+Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter, const rayScattering scatteringProperties ) const{
 
 	Ray modelRay = tRay.ConvertTo( this->coordinate_system_ );					// Current Ray in model's coordinate system
 
@@ -206,7 +206,7 @@ Ray Model::TransmitRay( const Ray tRay, const tomographyParameter tomoParameter,
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	double currentRayStep = modelIsect.entrance_.line_parameter_ + tomoParameter.rayStepSize;		// Ray parameter at model entrance_
+	double currentRayStep = modelIsect.entrance_.line_parameter_ + tomoParameter.ray_step_length;		// Ray parameter at model entrance_
 	const double lengthInModel = modelIsect.exit_.line_parameter_ - modelIsect.entrance_.line_parameter_;
 
 	// Go a tiny step further down the Ray from intersection point with model and test if inside
@@ -222,7 +222,7 @@ Ray Model::TransmitRay( const Ray tRay, const tomographyParameter tomoParameter,
 	const double meanVoxelSideLength = ( voxel_size_.x + voxel_size_.y + voxel_size_.z ) / 3.;
 	const size_t meanVoxelAmount = (size_t) ( (double) ( number_of_voxel_3D_.x + number_of_voxel_3D_.y + number_of_voxel_3D_.z ) / 3. );
 
-	const double scatterConstant = tomoParameter.scatterPropability * meanFrequencyTube / ( meanVoxelSideLength * static_cast<double>( meanVoxelAmount ) );
+	const double scatterConstant = tomoParameter.scatter_propability * meanFrequencyTube / ( meanVoxelSideLength * static_cast<double>( meanVoxelAmount ) );
 
 
 	// Iterate through model while current point is inside model
@@ -291,11 +291,11 @@ Ray Model::TransmitRay( const Ray tRay, const tomographyParameter tomoParameter,
 			modelRay.UpdateProperties( this->GetVoxelData( currentVoxelIndices ), distance );
 			modelRay.IncrementHitCounter();
 
-			currentRayStep += distance + tomoParameter.rayStepSize;				// New Step on Ray
+			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
 			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on Ray
 		
 			// Scattering
-			if( tomoParameter.scattering ){
+			if( tomoParameter.scattering_enabled ){
 			
 				// Mean frequency of Ray
 				const double meanFrequency = modelRay.GetMeanFrequencyOfSpectrum();

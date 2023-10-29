@@ -105,9 +105,9 @@ class XRayTube{
 
 	/*!
 	 * @brief Constructor
-	 * @param parameter_ Tube parameters
+	 * @param properties Tube properties
 	*/
-	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties parameter_ );
+	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties properties );
 
 	/*!
 	 * @brief Get beam created by tube
@@ -138,7 +138,7 @@ class XRayTube{
 
 	/*!
 	 * @brief Get energy of beam when switched on for exposure time
-	 * @param exposureTime Time in seconds
+	 * @param exposure_time Time in seconds
 	 * @return Energy in joule
 	*/
 	double GetEmittedEnergy( const double exposureTime ) const{ return radiation_power_W_ * exposureTime; };
@@ -166,6 +166,12 @@ class XRayTube{
 	 * @return The spectrum points
 	*/
 	VectorPair GetEnergySpectrumPoints( void ) const;
+
+	/*!
+	 * @brief Update tube properties
+	 * @param tube_properties New properties
+	*/
+	void UpdateProperties( const XRayTubeProperties tube_properties );
 
 
 	private:

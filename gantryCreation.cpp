@@ -181,8 +181,8 @@ void gantryEdition::handleEvents( void ){
 
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
 
-		const XRayTube& tubeRef = PROGRAM_STATE().Gantry().Tube();
-		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
+		const XRayTube tubeRef = PROGRAM_STATE().gantry().tube();
+		const XRayDetector detectorRef = PROGRAM_STATE().gantry().detector();
 
 		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
 		for( auto& spectrum_value : spectrum_points.second ){
@@ -196,12 +196,12 @@ void gantryEdition::handleEvents( void ){
 
 		detectorPlot.plotRef().resetObjects();
 
-		const auto allPixel = detectorRef.getPixel();
+		const auto allPixel = detectorRef.pixel_array();
 
 		for( const auto& pixel : allPixel ){
 
-			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
-			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( PROGRAM_STATE().Gantry().CSys() );
+			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( PROGRAM_STATE().gantry().coordinate_system() );
+			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( PROGRAM_STATE().gantry().coordinate_system() );
 
 			const Tuple2D start{ startP.X(), startP.Y() };
 			const Tuple2D end{ endP.X(), endP.Y() };
@@ -210,7 +210,7 @@ void gantryEdition::handleEvents( void ){
 
 		}
 
-		const Point3D gantryCenter = PROGRAM_STATE().Gantry().Center();
+		const Point3D gantryCenter = PROGRAM_STATE().gantry().GetCenter();
 		detectorPlot.plotRef().addPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
 		detectorPlot.plotRef().create();
 		detectorPlot.assignData();

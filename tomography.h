@@ -27,9 +27,9 @@
 *********************************************************************/
 
 /*!
- * @brief Class for tomography parameter
+ * @brief Class for tomography properties
 */
-class tomographyParameter{
+class TomographyProperties{
 
 	public:
 
@@ -38,76 +38,80 @@ class tomographyParameter{
 	/*!
 	 * @brief Default constructor
 	*/
-	tomographyParameter( void );
+	TomographyProperties( void );
 
 	/*!
 	 * @brief Constructor
-	 * @param exposureTime_ Exposure time in seconds 
-	 * @param scattering_ Enable Ray scattering during transmission
-	 * @param maxRadiationLoops_ Maximum amount of loops, when rays are scattered
-	 * @param scatterPropability_ Approximate propability that a Ray is scattered once when transmitted through whole model
-	 * @param rayStepSize_ Step size_ used in Ray tracing
+	 * @param exposure_time Exposure time in seconds 
+	 * @param scattering_enabled Enable Ray scattering during transmission
+	 * @param max_scattering_occurrences Maximum amount of loops, when rays are scattered. How often can a single ray be scattered
+	 * @param scatter_propability Approximate propability that a Ray is scattered once when transmitted through whole model
+	 * @param ray_step_length Step size used in ray-tracing
 	*/
-	tomographyParameter( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ );
+	TomographyProperties( const double exposure_time, const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability, const double ray_step_length );
 	
 	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param current_byte Iterator to start of data in vector
 	*/
-	tomographyParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	public:
 
-	double exposureTime;			/*!<Exposure time in seconds*/
-	bool scattering;				/*!<Enable scattering*/
-	size_t maxRadiationLoops;		/*!<Max. amount rays can be scattered*/
-	double scatterPropability;		/*!<Approximate propability that a Ray is scattered once when transmitted through whole model*/
-	double rayStepSize;				/*!<Step size_ used in Ray tracing in mm*/
+	double exposure_time;				/*!<Exposure time in seconds*/
+	bool scattering_enabled;			/*!<Enable scattering*/
+	size_t max_scattering_occurrences;	/*!<Max. amount each rays can be scattered*/
+	double scatter_propability;			/*!<Approximate propability that a Ray is scattered once when transmitted through whole model*/
+	double ray_step_length;				/*!<Step size used in Ray tracing in mm*/
 
 };
 
 
 /*!
  * @brief Class for computed tomography
- * 
 */
-class tomography{
+class Tomography{
 
 	public:
+
 	/*!
 	 * @brief Constructor
-	 * @param gantry_ 
-	 * @param model_ 
+	 * @param properties Properties of computed tomography
 	*/
-	tomography( const tomographyParameter parameter_ ) :
-		voxel_data_( parameter_ ), radonCSys( DummySystem() )
+	Tomography( const TomographyProperties properties ) :
+		properties_( properties ), radon_coordinate_system_( DummySystem() )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	tomography( void ) :
-		voxel_data_( ), radonCSys( DummySystem() )
+	Tomography( void ) :
+		properties_( TomographyProperties{} ), radon_coordinate_system_(DummySystem())
 	{};
 
 	/*!
-	 * @brief Record a slice
-	 * @return Radon transformed of model slice
+	 * @brief Record a slice via simulated computed tomography
+	 * @param radon_properties Properties of radon transformed
+	 * @param gantry Gantry of CT-Device
+	 * @param model Model to slice
+	 * @param z_position z-positon of slice
+	 * @param progress_window Window to show progress
+	 * @return The sinogram
 	*/
-	radonTransformed recordSlice( const radonProperties radon_properties, gantry gantry_, const Model& model_, const double zPosition, Fl_Progress_Window* progressWindow = nullptr );
+	radonTransformed RecordSlice( const radonProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
 
 	private:
 
-	tomographyParameter voxel_data_;	/*!<Parameter used for tomography*/
-	CoordinateSystem* radonCSys;			/*!<Coordinate system to use as reference for radon Coordinates calculation*/
+	TomographyProperties properties_;			/*!<Properties used for tomography*/
+	CoordinateSystem* radon_coordinate_system_;	/*!<Coordinate system to use as reference for radon Coordinates calculation*/
 };
 
