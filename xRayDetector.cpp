@@ -14,7 +14,7 @@
 
 #include "generel.h"
 #include "vector3D.h"
-#include "detector.h"
+#include "xRayDetector.h"
 #include "radonTransform.h"
 
 
@@ -23,10 +23,9 @@
 *********************************************************************/
 
 
-detector::detector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
-	cSys( coordinate_system ),
+XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
+	coordinate_system_( coordinate_system ),
 	properties_{ radonParameter, physical_properties }
-	//radonParameters( radonParameter )
 {
 
 	// Important parameter
@@ -39,8 +38,8 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 	const double detectorCenterDistance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
-	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotationVector = cSys->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middleNormalVector = coordinate_system_->GetEy();					// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotationVector = coordinate_system_->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// Persistent variables
@@ -73,10 +72,6 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 
 		// The current normal 
 		const Line currentNormal{ currentNormalVector, normalPoint };
-
-		// Index of normal in vector
-		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
-
 
 		Point3D currentPixelOrigin;		// Origin of current pixel
 		double currentPixelSize;		// Size of current pixel
@@ -116,7 +111,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// Add pixel
-		allPixel.emplace_back(  BoundedSurface{ 
+		pixel_array_.emplace_back(  BoundedSurface{ 
 								currentSurfaceVector,
 								rotationVector,
 								pixelNormal.origin(),
@@ -136,7 +131,7 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 
 			// Add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			allPixel.emplace_back(	BoundedSurface{ 
+			pixel_array_.emplace_back(	BoundedSurface{ 
 									mirroredSurfaceVector,
 									rotationVector,
 									mirroredPixelNormal.origin(),
@@ -149,23 +144,23 @@ detector::detector( CoordinateSystem* const coordinate_system, const radonProper
 	}
 
 	// After constructing converted poixel are identcal to all
-	allPixelConverted = allPixel;
+	converted_pixel_array_ = pixel_array_;
 }
 
 
-void detector::ResetDetected( void ){
-	for( DetectorPixel& currentPixel : allPixel ) currentPixel.ResetDetected();
+void XRayDetector::ResetDetectedRayPorperties( void ){
+	for( DetectorPixel& currentPixel : pixel_array_ ) currentPixel.ResetDetectedRayProperties();
 }
 
 
-void detector::detectRay( const Ray r, mutex& allPixelLock ){
+void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 
 
 	// Iterate all pixel indices
-	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
+	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
 	
 		// Converted pixel
-		const DetectorPixel currentPixel = allPixelConverted.at( pixelIdx );
+		const DetectorPixel currentPixel = converted_pixel_array_.at( pixelIdx );
 
 	
 		// Check for intersection of Ray with current pixel
@@ -177,28 +172,21 @@ void detector::detectRay( const Ray r, mutex& allPixelLock ){
 			// If has_anti_scattering_structure and angle allowed by structure
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
-				allPixel.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
+				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
 				allPixelLock.unlock();
 			}
-
 
 			// Only one pixel can intersect with Ray
 			break;
 		}
-
-
 	}
-
 }
 
 
-void detector::convertPixel( const CoordinateSystem* const targetCSys ){
+void XRayDetector::ConvertPixelArray( const CoordinateSystem* const targetCSys ){
 
 	// Iterate all pixel in detector
-	for( size_t pixelIdx = 0; pixelIdx < allPixel.size(); pixelIdx++ ){
-
-		allPixelConverted.at( pixelIdx ) = allPixel.at( pixelIdx ).ConvertTo( targetCSys );
-
+	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
+		converted_pixel_array_.at( pixelIdx ) = pixel_array_.at( pixelIdx ).ConvertTo( targetCSys );
 	}
-
 }

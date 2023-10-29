@@ -182,7 +182,7 @@ void gantryEdition::handleEvents( void ){
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
 
 		const XRayTube& tubeRef = PROGRAM_STATE().Gantry().Tube();
-		const detector& detectorRef = PROGRAM_STATE().Gantry().Detector();
+		const XRayDetector& detectorRef = PROGRAM_STATE().Gantry().Detector();
 
 		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
 		for( auto& spectrum_value : spectrum_points.second ){
@@ -196,7 +196,7 @@ void gantryEdition::handleEvents( void ){
 
 		detectorPlot.plotRef().resetObjects();
 
-		const auto allPixel = detectorRef.getPixel();
+		const auto allPixel = detectorRef.pixel_array();
 
 		for( const auto& pixel : allPixel ){
 

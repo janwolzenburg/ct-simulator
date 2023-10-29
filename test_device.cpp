@@ -21,13 +21,13 @@ using std::vector;
 #include "coordinateSystemTree.h"
 #include "test_device.h"
 #include "xRayTube.h"
-#include "detector.h"
+#include "xRayDetector.h"
 #include "plotting.h"
 #include "gantry.h"
 #include "radonTransform.h"
 #include "filter.h"
 
-detector getTestDetector( void ){
+XRayDetector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
 	radonProperties radonParameter{
@@ -41,7 +41,7 @@ detector getTestDetector( void ){
 	};
 
 	// 50 degree angle
-	detector testDetector{ GlobalSystem()->CreateCopy( "Detector system" ), radonParameter, indipendentParameter };
+	XRayDetector testDetector{ GlobalSystem()->CreateCopy( "Detector system" ), radonParameter, indipendentParameter };
 
 	return testDetector;
 }
@@ -56,9 +56,9 @@ bool test_tube(void) {
 	XRayTube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
 
-	detector test_detector = getTestDetector();
+	XRayDetector test_detector = getTestDetector();
 
-	vector<DetectorPixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.pixel_array();
 
 	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance, 1. );
 
@@ -385,9 +385,9 @@ bool test_modifiedDetector( void ){
 bool test_detector(void) {
 
 
-	detector test_detector = getTestDetector();
+	XRayDetector test_detector = getTestDetector();
 
-	vector<DetectorPixel> allPixel = test_detector.getPixel();
+	vector<DetectorPixel> allPixel = test_detector.pixel_array();
 
 	ofstream ax1 = openAxis(path("./test_detector.txt"), true);
 

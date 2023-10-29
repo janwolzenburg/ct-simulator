@@ -47,7 +47,7 @@ gantry::gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 
 
 vector<Ray> gantry::getBeam( const double exposureTime ) const{
-	return raySource.GetEmittedBeam( rayDetector.getPixel(), rayDetector.properties().detector_focus_distance, exposureTime );
+	return raySource.GetEmittedBeam( rayDetector.pixel_array(), rayDetector.properties().detector_focus_distance, exposureTime );
 }
 
 
@@ -58,7 +58,7 @@ void gantry::rotateCounterClockwise( const double arc_angle ){
 void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tomoParameter, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
-								detector& rayDetector, mutex& detectorMutex ){
+								XRayDetector& rayDetector, mutex& detectorMutex ){
 
 	size_t currentRayIndex;
 	Ray currentRay;
@@ -86,7 +86,7 @@ void gantry::transmitRays(	const Model& radModel, const tomographyParameter& tom
 
 		// Is the Ray outside the model
 		if( !radModel.IsPointInside( returnedRay.origin() ) ){
-			rayDetector.detectRay( returnedRay, detectorMutex );
+			rayDetector.DetectRay( returnedRay, detectorMutex );
 		}
 		else{
 			iterationMutex.lock();
@@ -110,12 +110,12 @@ void gantry::radiate( const Model& radModel, tomographyParameter voxel_data_ ) {
 	}
 	
 	// Convert pixel
-	rayDetector.convertPixel( radModel.coordinate_system() );
+	rayDetector.ConvertPixelArray( radModel.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
 	const UnitVector3D scatteringRotationNormal = this->cSys->GetEz().ConvertTo( radModel.coordinate_system() );
 
-	rayDetector.ResetDetected();								// Reset all pixel
+	rayDetector.ResetDetectedRayPorperties();								// Reset all pixel
 
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
@@ -161,6 +161,6 @@ void gantry::ResetDetected( void ){
 	cSys->SetPrimitive( resetPostition );
 
 	// Reset detector
-	rayDetector.ResetDetected();
+	rayDetector.ResetDetectedRayPorperties();
 }
 

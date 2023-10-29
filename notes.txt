@@ -1,5 +1,9 @@
 
 TODO: Class and member variable names, includes
+TODO: Check file Heads
+TODO: check comments
+TODO: check cpp files
+
 
 Naming convention:
 	- classes and types: CamelCase

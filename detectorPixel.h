@@ -54,7 +54,7 @@ class DetectorPixel : public BoundedSurface{
 	/*!
 	 * @brief Reset detected rays
 	*/
-	void ResetDetected( void ){ detected_ray_properties_.clear(); };
+	void ResetDetectedRayProperties( void ){ detected_ray_properties_.clear(); };
 
 	/*!
 	 * @brief Get the normal of the pixel

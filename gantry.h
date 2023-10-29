@@ -21,7 +21,7 @@ using std::mutex;
 #include "generelMath.h"
 #include "ray.h"
 #include "xRayTube.h"
-#include "detector.h"
+#include "xRayDetector.h"
 #include "model.h"
 #include "scattering.h"
 #include "tomography.fwd.h"
@@ -61,7 +61,7 @@ class gantry {
 	 * @brief Get all pixel from detector 
 	 * @return Vector with pixel
 	*/
-	vector<DetectorPixel> getPixel( void ) const{ return rayDetector.getPixel();  };
+	vector<DetectorPixel> getPixel( void ) const{ return rayDetector.pixel_array();  };
 
 	/*!
 	 * @brief Get radius of gantry
@@ -115,7 +115,7 @@ class gantry {
 	 * @brief Get reference to detector instance
 	 * @return Reference to detector instance
 	*/
-	const detector& Detector( void ) const{ return rayDetector; };
+	const XRayDetector& Detector( void ) const{ return rayDetector; };
 
 	/*!
 	 * @brief Get reference to tube instance
@@ -129,7 +129,7 @@ class gantry {
 	CoordinateSystem* cSys;						/*!<Coordinate system*/
 	PrimitiveCoordinateSystem resetPostition;	/*!<Initial position of coordinate system*/
 
-	detector rayDetector;				/*!<Ray detector*/
+	XRayDetector rayDetector;				/*!<Ray detector*/
 	XRayTube raySource;					/*!<xRay source*/
 	
 	double radius;						/*!<Radius of gantry*/
@@ -152,6 +152,6 @@ class gantry {
 	static void transmitRays( const Model& radModel, const tomographyParameter& voxel_data_, const rayScattering& rayScatterAngles,
 								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 								vector<Ray>& raysForNextIteration, mutex& detectorMutex,
-								detector& rayDetector, mutex& iterationMutex );
+								XRayDetector& rayDetector, mutex& iterationMutex );
 
 };

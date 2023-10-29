@@ -186,7 +186,7 @@
     <ClInclude Include="plotting.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
-    <ClInclude Include="detector.h">
+    <ClInclude Include="xRayDetector.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
     <ClInclude Include="gantry.h">
@@ -422,7 +422,7 @@
     <ClCompile Include="plotting.cpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
-    <ClCompile Include="detector.cpp">
+    <ClCompile Include="xRayDetector.cpp">
       <Filter>Quelldateien\Device</Filter>
     </ClCompile>
     <ClCompile Include="gantry.cpp">
