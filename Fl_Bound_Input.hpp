@@ -29,6 +29,8 @@ Fl_Bound_Input<C, T>::Fl_Bound_Input( int x, int y, int w, int h, const char* la
 {
 	Fl_Group::add( input );
 	input.callback( cbFunction, (Fl_Widget*) this );
+
+	input.value( "0" );
 }
 
 template< class C, typename T>

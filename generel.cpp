@@ -135,24 +135,26 @@ NaturalNumberRange::NaturalNumberRange( const signed long long start, const sign
 
 template<>
 double ToNum<double>( const string str ){
+	if( str.length() == 0 ) return 0.;
 	return std::stod( str );
 }
 
 template<>
 int ToNum<int>( const string str ){
+	if( str.length() == 0 ) return 0;
 	return std::stoi( str );
 }
 
 template<>
 long long ToNum<long long>( const string str ){
+	if( str.length() == 0 ) return 0;
 	return std::stoll( str );
 }
 
 template<>
 size_t ToNum<size_t>( const string str ){
-
+	if( str.length() == 0 ) return 0;
 	return static_cast<size_t>( std::stoll( str ) );
-
 }
 
 bool UnsetFlag( bool& flag ){
