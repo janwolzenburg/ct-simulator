@@ -212,8 +212,8 @@ void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vec
 }
 
 template<>
-void addObject<vector<pixel>, double>( ofstream& axis, const string name, const vector<pixel> allPixels, const string voxel_data_, const double alpha ){
-	for( const pixel singlePx : allPixels ){
+void addObject<vector<DetectorPixel>, double>( ofstream& axis, const string name, const vector<DetectorPixel> allPixels, const string voxel_data_, const double alpha ){
+	for( const DetectorPixel singlePx : allPixels ){
 		addSingleObject( axis, name, BoundedSurface{ singlePx }, voxel_data_, alpha );
 	}
 }
@@ -240,7 +240,7 @@ void addObject<gantry, int>( ofstream& axis, const string name, const gantry gan
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
 		vector<Line> pixelNormals;
 
-		for( pixel currentPixel : gantry.getPixel() ){
+		for( DetectorPixel currentPixel : gantry.getPixel() ){
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
