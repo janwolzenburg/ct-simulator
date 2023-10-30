@@ -378,12 +378,12 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 
 void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 									GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
-									grid<VoxelData>& slice, mutex& sliceMutex,
+									DataGrid<VoxelData>& slice, mutex& sliceMutex,
 									const Surface& slicePlane,
 									const Model& modelRef ){
 
 	// Iterate through all columns
-	while( xIdx < slice.Size().c ){
+	while( xIdx < slice.size().c ){
 
 		size_t localXIdx, localYIdx;
 
@@ -393,7 +393,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 		localXIdx = xIdx;
 		localYIdx = yIdx;
 
-		if( yIdx >= slice.Size().r ){
+		if( yIdx >= slice.size().r ){
 			xIdx++;
 			yIdx = 0;
 		}
@@ -406,19 +406,19 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 
 		// Check 
-		if( localXIdx > slice.Size().c - 1 || localYIdx > slice.Size().r - 1 ) continue;
+		if( localXIdx > slice.size().c - 1 || localYIdx > slice.size().r - 1 ) continue;
 		
 		// Grid indices
 		const GridIndex gridIndices( localXIdx, localYIdx );
 
 		// Get point on surface for current grid indices
-		const GridCoordinates surfaceCoordinate = slice.getCoordinates( gridIndices );
+		const GridCoordinates surfaceCoordinate = slice.GetCoordinates( gridIndices );
 		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c, surfaceCoordinate.r );
 
 
 		// Are cooradinates defined in model?
 		if( !modelRef.IsPointInside( currentPoint ) ){
-			slice.setData( gridIndices, VoxelData( 0., 1., VoxelData::UNDEFINED ) );
+			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::UNDEFINED ) );
 			continue;	// Goto next iteration
 		}
 
@@ -446,7 +446,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		// Add pixel Coordinates and pixel value to slice
 		sliceMutex.lock();
-		slice.setData( gridIndices, currentValue );
+		slice.SetData( gridIndices, currentValue );
 		sliceMutex.unlock();
 
 
@@ -454,7 +454,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 }
 
-grid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double resolution ) const{
+DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double resolution ) const{
 
 	// Distance between corners furthest away from each other
 	const double cornerDistance = sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
@@ -469,12 +469,12 @@ grid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double resol
 	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
 	GridCoordinates sliceResolution( resolution, resolution );
 
-	grid<VoxelData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() );
+	DataGrid<VoxelData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() );
 
 	// Update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
-	sliceStart = largeSlice.Start();
-	sliceEnd = largeSlice.End();
-	sliceResolution = largeSlice.Resolution();
+	sliceStart = largeSlice.start();
+	sliceEnd = largeSlice.GetEnd();
+	sliceResolution = largeSlice.resolution();
 
 
 	GridCoordinates realStart( INFINITY, INFINITY );
@@ -503,29 +503,29 @@ grid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double resol
 	// Check if restart and end have infinity in them
 	if( realStart.c == INFINITY || realStart.r == INFINITY || realEnd.c == -INFINITY || realEnd.r == -INFINITY ){
 		// This means that no model voxel is in slice
-		return grid<VoxelData>{ GridIndex{ 0, 0 }, GridCoordinates{ 0., 0. }, GridCoordinates{ 1., 1. } };
+		return DataGrid<VoxelData>{ GridIndex{ 0, 0 }, GridCoordinates{ 0., 0. }, GridCoordinates{ 1., 1. } };
 
 	}
 
 	// Write data_ to smaller grid
-	grid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
+	DataGrid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
 
 
 	// Iterate grid
 	GridCoordinates coords;
 	VoxelData currentData;
 
-	for( size_t colIdx = 0; colIdx < slice.Size().c; colIdx++ ){
+	for( size_t colIdx = 0; colIdx < slice.size().c; colIdx++ ){
 
-		for( size_t rowIdx = 0; rowIdx < slice.Size().r; rowIdx++ ){
+		for( size_t rowIdx = 0; rowIdx < slice.size().r; rowIdx++ ){
 
-			coords = slice.getCoordinates( GridIndex( colIdx, rowIdx ) );
-			currentData = largeSlice.getData( coords );
+			coords = slice.GetCoordinates( GridIndex( colIdx, rowIdx ) );
+			currentData = largeSlice.GetData( coords );
 
 			if( currentData.HasSpecificProperty( VoxelData::UNDEFINED ) )
-				slice.setData( coords, VoxelData{ largeSlice.MaxValue().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV() } );
+				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV() } );
 			else
-				slice.setData( coords, currentData );
+				slice.SetData( coords, currentData );
 		}
 	}
 

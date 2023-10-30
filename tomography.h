@@ -17,7 +17,7 @@
 #include "generel.h"
 #include "gantry.h"
 #include "model.h"
-#include "radonTransform.h"
+#include "projections.h"
 
 #include "progress.h"
 
@@ -106,7 +106,7 @@ class Tomography{
 	 * @param progress_window Window to show progress
 	 * @return The sinogram
 	*/
-	radonTransformed RecordSlice( const radonProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
+	Projections RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
 
 	private:

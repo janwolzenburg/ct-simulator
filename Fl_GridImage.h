@@ -66,7 +66,7 @@ class Fl_GridImage : public Fl_Widget{
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void assignImage( const grid<VoxelData>& modGrid, const bool normalise = false );
+	void assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise = false );
 
 	/*!
 	 * @brief Calculate new image when size_ changed

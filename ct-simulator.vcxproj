@@ -159,21 +159,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="backprojection.h" />
+    <ClInclude Include="filteredProjections.h" />
     <ClInclude Include="coordinateSystem.fwd.h" />
     <ClInclude Include="coordinateSystem.h" />
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="coordinateSystemTree.fwd.h" />
     <ClInclude Include="coordinateSystemTree.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
+    <ClInclude Include="reconstructedImage.h" />
     <ClInclude Include="xRayDetector.h" />
     <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="radonCoordinates.h" />
-    <ClInclude Include="radonProperties.h" />
+    <ClInclude Include="radonTransformationProperties.h" />
     <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
-    <ClInclude Include="filter.h" />
+    <ClInclude Include="backprojectionFilter.h" />
     <ClInclude Include="Fl_Bound_Input.h" />
     <ClInclude Include="Fl_Bound_Input.hpp" />
     <ClInclude Include="Fl_GridImage.h" />
@@ -186,7 +187,7 @@
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
     <ClInclude Include="geoplot.h" />
-    <ClInclude Include="grid.h" />
+    <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="modelViewParameter.h" />
     <ClInclude Include="monoImage.fwd.h" />
@@ -225,7 +226,7 @@
     <ClInclude Include="tomography.fwd.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
-    <ClInclude Include="radonTransform.h" />
+    <ClInclude Include="projections.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
@@ -244,18 +245,19 @@
     <ClInclude Include="widgets.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="backprojection.cpp" />
+    <ClCompile Include="filteredProjections.cpp" />
     <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
+    <ClCompile Include="reconstructedImage.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="radonCoordinates.cpp" />
-    <ClCompile Include="radonProperties.cpp" />
+    <ClCompile Include="radonTransformationProperties.cpp" />
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
-    <ClCompile Include="filter.cpp" />
+    <ClCompile Include="backprojectionFilter.cpp" />
     <ClCompile Include="Fl_GridImage.cpp" />
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
@@ -266,7 +268,7 @@
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
-    <ClInclude Include="grid.hpp">
+    <ClInclude Include="dataGrid.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="mainWindow.cpp" />
@@ -291,7 +293,7 @@
     <ClCompile Include="slicePlane.cpp" />
     <ClInclude Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
-    <ClCompile Include="radonTransform.cpp" />
+    <ClCompile Include="projections.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="spectrum.cpp" />
     <ClCompile Include="surface.cpp" />

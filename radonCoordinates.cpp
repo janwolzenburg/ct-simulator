@@ -21,11 +21,11 @@
 
  
 /*!
- * radonCoords implementation
+ * RadonCoordinates implementation
 */
 
-radonCoords::radonCoords( const CoordinateSystem* const cSys, const Line l ) : 
-	theta( 0 ), distance( 0 )
+RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Line l )
+
 {
 	// Project Ray on XY plane
 	const Line projectedLine = l.ProjectOnXYPlane( cSys );

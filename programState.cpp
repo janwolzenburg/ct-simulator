@@ -138,7 +138,7 @@ void programState::deactivateAll( void ){
 }
 
 void programState::buildGantry( const XRayTubeProperties tubeParameter_,
-				  const radonProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
+				  const ProjectionsProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
 
 	xRayTubeParameter = tubeParameter_;
 	radonParameter = radonParameter_;
@@ -219,9 +219,9 @@ bool programState::sliceModel( void ){
 	storedViewParameter.setLoaded();
 	storedTomographyParamerter.setLoaded();
 
-	grid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
 	
-	if( tempSlice.Size().c == 0 || tempSlice.Size().r == 0 )
+	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
 		return false;
 
 	modelSliceInstance = tempSlice;
@@ -257,7 +257,7 @@ bool programState::loadModel( void ){
 	return true;
 }
 
-void programState::assignRadonTransformed( const radonTransformed rt ){ 
+void programState::assignRadonTransformed( const Projections rt ){ 
 	currentProjections = rt; 
 	storedProjections.setLoaded(); 
 	storedProcessingParameters.setLoaded(); 

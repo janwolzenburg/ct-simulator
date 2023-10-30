@@ -14,7 +14,7 @@
 #include "tomographyExecution.h"
 
 #include "processingWindow.h"
-#include "backprojection.h"
+#include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
 
@@ -163,16 +163,16 @@ void tomographyExec::handleEvents( void ){
 
 		string informationString;
 
-		informationString += "Sinogramgröße:      " + ToString( state.RadonParameter().numberPoints.c ) + " x " + ToString( state.RadonParameter().numberPoints.r ) + '\n';
-		informationString += "Sinogramauflösung:  " + ToString( state.RadonParameter().resolution.c / 2. / PI * 360.,2 ) + "° x " + ToString( state.RadonParameter().resolution.r, 2 ) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ToString( state.RadonParameter().framesToFillSinogram ) + '\n';
+		informationString += "Sinogramgröße:      " + ToString( state.RadonParameter().number_of_angles() ) + " x " + ToString( state.RadonParameter().number_of_distances() ) + '\n';
+		informationString += "Sinogramauflösung:  " + ToString( state.RadonParameter().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( state.RadonParameter().distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ToString( state.RadonParameter().number_of_frames_to_fill() ) + '\n';
 		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
 		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().GetElectricalPower() ) + "W" + '\n';
 		informationString += "Strahlleistung:	  " + ToString( state.Tube().GetEmittedBeamPower() ) + "W" + '\n';
 		informationString += "Strahlenergie:	  " + ToString( state.Tube().GetEmittedEnergy( state.tomographyParamerters.exposure_time ) ) + "J" + '\n';
-		informationString += "Strahlenergie gesamt:	  " + ToString( state.Tube().GetEmittedEnergy( state.tomographyParamerters.exposure_time ) * static_cast<double>( state.RadonParameter().framesToFillSinogram ) ) + "J" + '\n';
+		informationString += "Strahlenergie gesamt:	  " + ToString( state.Tube().GetEmittedEnergy( state.tomographyParamerters.exposure_time ) * static_cast<double>( state.RadonParameter().number_of_frames_to_fill() ) ) + "J" + '\n';
 		information.value( informationString.c_str() );
 
 	}

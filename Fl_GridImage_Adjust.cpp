@@ -63,7 +63,7 @@ void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
 
 }
 
-void Fl_GridImage_Adjust::assignImage( const grid<VoxelData>& modGrid, const bool normalise ){
+void Fl_GridImage_Adjust::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
 	imgWidget.assignImage( modGrid, normalise );
 

@@ -33,8 +33,8 @@ monoImage::monoImage( const size_t width_, const size_t height_ ) :
 	imData( numPixel, 0 )
 {}
 
-monoImage::monoImage( const grid<>& source, const bool normaliseImg ) :
-	monoImage{ source.Size().c, source.Size().r }
+monoImage::monoImage( const DataGrid<>& source, const bool normaliseImg ) :
+	monoImage{ source.size().c, source.size().r }
 {
 
 	for( size_t c = 0; c < width; c++ ){
@@ -47,8 +47,8 @@ monoImage::monoImage( const grid<>& source, const bool normaliseImg ) :
 		normalise();
 }
 
-monoImage::monoImage( const grid<VoxelData>& source, const bool normaliseImg ) :
-	monoImage{ source.Size().c, source.Size().r }
+monoImage::monoImage( const DataGrid<VoxelData>& source, const bool normaliseImg ) :
+	monoImage{ source.size().c, source.size().r }
 {
 	for( size_t c = 0; c < width; c++ ){
 		for( size_t r = 0; r < height; r++ ){

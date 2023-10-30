@@ -24,14 +24,14 @@ using std::vector;
 #include "xRayDetector.h"
 #include "plotting.h"
 #include "gantry.h"
-#include "radonTransform.h"
-#include "filter.h"
+#include "projections.h"
+#include "backprojectionFilter.h"
 
 XRayDetector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
-	radonProperties radonParameter{
-		GridIndex{ 63, 21 },
+	ProjectionsProperties radonParameter{
+		63, 21,
 		500
 	};
 
@@ -416,8 +416,9 @@ Gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 								raysPerPixel };
 
 
-	radonProperties radonParameter{
-		sinogramSize,
+	ProjectionsProperties radonParameter{
+		sinogramSize.c,
+		sinogramSize.r,
 		500
 	};
 
@@ -444,8 +445,8 @@ bool test_gantry( void ){
 	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	
 
-	vector<radonPoint> points;
-	for( auto& px : testGantry.pixel_array() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
+	vector<RadonPoint> points;
+	for( auto& px : testGantry.pixel_array() ) points.emplace_back( RadonCoordinates{ radonCSys, px.NormalLine() }, 1. );
 	
 
 	//testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );

@@ -70,7 +70,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 
 
-radonTransformed Tomography::RecordSlice( const radonProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+Projections Tomography::RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
@@ -85,15 +85,15 @@ radonTransformed Tomography::RecordSlice( const radonProperties radon_properties
 
 
 	// Create sinogram 
-	radonTransformed sinogram{ radon_properties };
+	Projections sinogram{ radon_properties };
 
 	
 
 	// Radiate the model for each frame
-	for( size_t currentFrame = 0; currentFrame < radon_properties.framesToFillSinogram; currentFrame++ ){
+	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.framesToFillSinogram ) );
+			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );
@@ -106,17 +106,17 @@ radonTransformed Tomography::RecordSlice( const radonProperties radon_properties
 		for( const DetectorPixel& currentPixel : detectionPixel ){
 
 			// Get Coordinates for pixel
-			const radonCoords newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
+			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
 			// Get the radon point
-			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data_ to sinogram
-			sinogram.assignData( newRadonPoint );
+			sinogram.AssignData( newRadonPoint );
 		}
 		
 		// Rotate gantry
-		gantry.RotateCounterClockwise( radon_properties.resolution.c );
+		gantry.RotateCounterClockwise( radon_properties.angles_resolution() );
 
 		Fl::check();
 

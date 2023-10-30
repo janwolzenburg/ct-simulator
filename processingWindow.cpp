@@ -7,8 +7,9 @@
 * ********************************************************************/
 
 #include "processingWindow.h"
-#include "backprojection.h"
+#include "filteredProjections.h"
 #include "widgets.h"
+#include "reconstructedImage.h"
 
 processingWindow::processingWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
@@ -45,10 +46,10 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 	filterTypeSelector.callback( button_cb, &filterChanged );
 
 	vector<string> filterNames;
-	for( auto& el : discreteFilter::filterTypes ) filterNames.push_back( el.second );
+	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
 
 	filterTypeSelector.setElements( filterNames );
-	string filterName = discreteFilter::filterTypes.at( PROGRAM_STATE().currentProcessingParameters.filterType );
+	string filterName = BackprojectionFilter::filter_types.at( PROGRAM_STATE().currentProcessingParameters.filterType );
 	filterTypeSelector.value( filterName );
 
 
@@ -100,7 +101,7 @@ void processingWindow::handleEvents( void ){
 
 	if( filterChanged ){
 		filterChanged = false;
-		PROGRAM_STATE().currentProcessingParameters.filterType = discreteFilter::getEnum( filterTypeSelector.value() );
+		PROGRAM_STATE().currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.value() );
 		recalcFilteredProjections();
 	}
 
@@ -115,9 +116,9 @@ void processingWindow::handleEvents( void ){
 	}
 }
 
-void processingWindow::assignSinogram( const radonTransformed newSinogram ){
+void processingWindow::assignSinogram( const Projections newSinogram ){
 
-	sinogramImg = monoImage( newSinogram.Data(), true );
+	sinogramImg = monoImage( newSinogram.data(), true );
 	sinogramWidget.assignImage( sinogramImg );
 	sinogramWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 
@@ -129,19 +130,19 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 
-	PROGRAM_STATE().currentFilteredProjections = filteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
+	PROGRAM_STATE().currentFilteredProjections = FilteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().getRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().r, 2.)});
-	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().PlotValues() );
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.)});
+	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 
-	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.getGrid(), true };
+	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.assignImage( filteredProjImage );
 	filteredProjWidget.setSliderBoundsFromImage();
 	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
 
-	PROGRAM_STATE().currentReconstrucedImage = reconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
+	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
 	reconstructionImage = monoImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 
