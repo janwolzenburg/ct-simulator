@@ -63,7 +63,7 @@ class programState{
 
 	Tomography tomographyInstance;				/*!<Instance of the tomography*/
 	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
-	RadonTransformation currentProjections;		/*!<The current projections from last tomography*/
+	Projections currentProjections;		/*!<The current projections from last tomography*/
 
 	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
 	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
@@ -194,7 +194,7 @@ class programState{
 	 * @brief Get reference to radon parameter
 	 * @return Constant reference to radon parameter
 	*/
-	RadonTransformationProperties RadonParameter( void ) const{ return radonParameter; };
+	ProjectionsProperties RadonParameter( void ) const{ return radonParameter; };
 
 	/*!
 	 * @brief Get reference to detector parameter
@@ -221,7 +221,7 @@ class programState{
 	 * @param indipendentParameter Detector parameter
 	*/
 	void buildGantry( const XRayTubeProperties tubeParameter_,
-					  const RadonTransformationProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
+					  const ProjectionsProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
 
 
 	/***************************************** Tomography ******************************************/
@@ -238,7 +238,7 @@ class programState{
 	 * @details Store as current projections and set flags
 	 * @param rt Radon transform to assign
 	*/
-	void assignRadonTransformed( const RadonTransformation rt );
+	void assignRadonTransformed( const Projections rt );
 	
 	/*!
 	 * @brief Set flag to update tomography parameter information
@@ -297,14 +297,14 @@ class programState{
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
 	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
-	RadonTransformationProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	storedObject<RadonTransformationProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
+	storedObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
 	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
 	storedObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 	storedObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
-	storedObject<RadonTransformation> storedProjections;				/*!<Persisting storage of projections*/
+	storedObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
 	storedObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
 	fileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/

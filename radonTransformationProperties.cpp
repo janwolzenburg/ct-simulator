@@ -25,14 +25,14 @@
 *********************************************************************/
 
 
-const string RadonTransformationProperties::FILE_PREAMBLE{ "Ver01RADONPARAMETER_FILE_PREAMBLE" };
+const string ProjectionsProperties::FILE_PREAMBLE{ "Ver01RADONPARAMETER_FILE_PREAMBLE" };
 
 
 /*!
  * radonProperties implementation
 */
 
-RadonTransformationProperties::RadonTransformationProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size ) :
+ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size ) :
 	number_of_angles_( ForceToMin( number_of_angles, (size_t) 2 ) ),
 	number_of_distances_( ForceToMin( ForceOdd ( number_of_distances ), (size_t) 3 ) ),
 	measuring_field_size_( ForcePositive( measuring_field_size ) ),
@@ -60,17 +60,17 @@ RadonTransformationProperties::RadonTransformationProperties( const size_t numbe
 }
 
 
-RadonTransformationProperties::RadonTransformationProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	number_of_angles_( DeSerializeBuildIn<size_t>( 3, binary_data, it ) ),
 	number_of_distances_( DeSerializeBuildIn<size_t>( 2, binary_data, it ) ),
 	measuring_field_size_( DeSerializeBuildIn<double>( 400., binary_data, it ) )
 {
-	*this = RadonTransformationProperties{ number_of_angles_, number_of_distances_, measuring_field_size_ };
+	*this = ProjectionsProperties{ number_of_angles_, number_of_distances_, measuring_field_size_ };
 }
 	
 
 
-size_t RadonTransformationProperties::Serialize( vector<char>& binary_data ) const{
+size_t ProjectionsProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );

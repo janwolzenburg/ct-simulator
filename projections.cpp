@@ -24,7 +24,7 @@
 *********************************************************************/
 
 /*!
- * RadonTransformation implementation
+ * Projections implementation
 */
 
 
@@ -36,7 +36,7 @@ Projections::Projections( void ) :
 	grid_errors_ = vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) );
 }
 
-Projections::Projections( const RadonTransformationProperties properties ) :
+Projections::Projections( const ProjectionsProperties properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
 				GridCoordinates{ 0., 
 								 -( (double) ( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},

@@ -33,7 +33,7 @@
 bool test_radonTransform( void ){
 
 
-	RadonTransformationProperties radonParameter{
+	ProjectionsProperties radonParameter{
 											125, 41,
 											500
 	};
@@ -185,7 +185,7 @@ void serialisedToImage( void ){
 
 bool test_serialisation( void ){
 
-	RadonTransformationProperties radonParameter{
+	ProjectionsProperties radonParameter{
 											8, 8,
 											500
 	};

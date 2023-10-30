@@ -55,7 +55,7 @@ size_t PhysicalDetectorProperties::Serialize( vector<char>& binary_data ) const{
  * DetectorProperties implementation
 */
 
-DetectorProperties::DetectorProperties( const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties ) :
+DetectorProperties::DetectorProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties ) :
 	number_of_pixel{ radon_properties.number_of_distances(), 1},
 	row_width( physical_properties.row_width ),
 	arc_angle( (double) ( radon_properties.number_of_distances() - 1 ) * radon_properties.number_of_angles() ),

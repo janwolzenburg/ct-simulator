@@ -14,7 +14,7 @@
 /*!
  * @brief Class for radon transformation properties
 */
-class RadonTransformationProperties{
+class ProjectionsProperties{
 
 	public:
 
@@ -28,19 +28,19 @@ class RadonTransformationProperties{
 	 * @param number_of_distances Amount of distances
 	 * @param measuring_field_size Distance range
 	*/
-	RadonTransformationProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size );
+	ProjectionsProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	RadonTransformationProperties( void ): RadonTransformationProperties{ 26, 59, 500. } {};
+	ProjectionsProperties( void ): ProjectionsProperties{ 26, 59, 500. } {};
 
 	/*!
 	 * @brief Constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
-	RadonTransformationProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
+	ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Serialize this object

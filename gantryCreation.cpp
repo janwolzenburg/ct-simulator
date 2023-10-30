@@ -171,7 +171,7 @@ void gantryEdition::handleEvents( void ){
 		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
 
 		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
-		RadonTransformationProperties newRadonParameter{ colPnts.value(), rowPnts.value(), distRange.value() };
+		ProjectionsProperties newRadonParameter{ colPnts.value(), rowPnts.value(), distRange.value() };
 		PhysicalDetectorProperties newDetectorParameter{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 

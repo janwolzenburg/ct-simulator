@@ -23,7 +23,7 @@
 *********************************************************************/
 
 
-XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const RadonTransformationProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
+XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_{ radonParameter, physical_properties }
 {
@@ -152,7 +152,7 @@ void XRayDetector::ResetDetectedRayPorperties( void ){
 	for( DetectorPixel& currentPixel : pixel_array_ ) currentPixel.ResetDetectedRayProperties();
 }
 
-void XRayDetector::UpdateProperties( const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties ){
+void XRayDetector::UpdateProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties ){
 
 	*this = XRayDetector{ coordinate_system_, radon_properties, physical_properties };
 

@@ -78,7 +78,7 @@ class DetectorProperties{
 	 * @param radon_properties Radon properties
 	 * @param physical_properties Physical detector properties
 	*/
-	DetectorProperties( const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	DetectorProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 
 	GridIndex number_of_pixel;					/*!<Amount of pixel in each dimension*/

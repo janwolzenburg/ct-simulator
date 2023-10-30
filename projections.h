@@ -43,7 +43,7 @@ class Projections : private DataGrid<> {
 	 * @brief Constructor
 	 * @param properties Transformation properties
 	*/
-	Projections( const RadonTransformationProperties properties );
+	Projections( const ProjectionsProperties properties );
 
 	/*!
 	 * @brief Constructor from serialized data

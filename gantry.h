@@ -45,7 +45,7 @@ class Gantry{
 	 * @param radon_properties Radon parameter of xRay detector
 	 * @param physical_detector_properties Other parameter
 	*/
-	Gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tube_properties, const RadonTransformationProperties radon_properties,
+	Gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tube_properties, const ProjectionsProperties radon_properties,
 			const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
@@ -84,7 +84,7 @@ class Gantry{
 	 * @param radon_properties New radon properties
 	 * @param physical_detector_properties New detector properties
 	*/
-	void UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const RadonTransformationProperties radon_properties,
+	void UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const ProjectionsProperties radon_properties,
 								const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
