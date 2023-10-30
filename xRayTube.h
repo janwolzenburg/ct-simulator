@@ -134,7 +134,7 @@ class XRayTube{
 	 * @brief Get the range of energies the tube emits
 	 * @return Energy Range
 	*/
-	NumberRange GetEmittedEnergyRange( void ) const{ return NumberRange{ emitted_spectrum_.getMin(), emitted_spectrum_.getMax() }; };
+	NumberRange GetEmittedEnergyRange( void ) const{ return NumberRange{ emitted_spectrum_.GetMinEnergy(), emitted_spectrum_.GetMaxEnergy() }; };
 
 	/*!
 	 * @brief Get energy of beam when switched on for exposure time
@@ -159,7 +159,7 @@ class XRayTube{
 	 * @brief Get the energy resolution of spectrum
 	 * @return Energy resolution of spectrum
 	*/
-	double GetSpectralEnergyResolution( void ) const{ return emitted_spectrum_.EnergyResolution(); };
+	double GetSpectralEnergyResolution( void ) const{ return emitted_spectrum_.energy_resolution(); };
 
 	/*!
 	 * @brief Get the spectrum points
@@ -186,6 +186,6 @@ class XRayTube{
 	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
 	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
 
-	spectrum emitted_spectrum_;				/*!<Output spectrum of tube*/
+	EnergySpectrum emitted_spectrum_;				/*!<Output spectrum of tube*/
 
  };

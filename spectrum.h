@@ -24,90 +24,88 @@
 /*!
  * @brief Class for storing a spectrum
 */
-class spectrum {
+class EnergySpectrum {
 
 	public:
 
 	/*!
 	 * @brief Default constructor
 	*/
-	spectrum(void) :
-		energyResolution( 1. ),
-		mean( 0. )
+	EnergySpectrum(void) :
+		energy_resolution_( 1. ), mean_energy_( 0. )
 	{};
 
 	/*!
 	 * @brief Constructor
-	 * @param X X values
-	 * @param Y Y values
+	 * @param energy_quantaties Energy values and their occurrences in spectrum
 	*/
-	spectrum(const vector<double> X, const vector<double> Y);
+	EnergySpectrum( const VectorPair energy_quantaties );
+
+	/*!
+	 * @brief Get raw data_
+	 * @return Vector of points
+	*/
+	vector<Tuple2D> data( void ) const { return data_; };
+
+	/*!
+	 * @brief Get the energy resolution
+	 * @return Energy resolution
+	*/
+	double energy_resolution( void ) const { return energy_resolution_; };
+
+	/*!
+	 * @brief Get mean energy
+	 * @return Mean energy by weightening with energy occurrence
+	*/
+	double mean_energy( void ) const{ return mean_energy_; };
 
 	/*!
 	 * @brief Get scaled version of this spectrum
 	 * @param factor Scaling factor
 	 * @return Scaled spectrum
 	*/
-	spectrum getScaled( const double factor ) const;
+	EnergySpectrum GetScaled( const double factor ) const;
 
+	/*!
+	 * @brief Get sum of all magintudes
+	 * @return Sum of all magintudes
+	*/
+	double GetTotal( void ) const;
+
+	/*!
+	 * @brief Get minimum x value
+	 * @return Minimum x value
+	*/
+	double GetMinEnergy( void ) const{ return data_.front().x; };
+
+	/*!
+	 * @brief Get maximum x value
+	 * @return Maximum x value
+	*/
+	double GetMaxEnergy( void ) const{ return data_.back().x; };
+
+	/*!
+	 * @brief Modify spectrum
+	 * @param modification_function Function taking reference to spectrum point to modify
+	*/
+	void Modify( std::function<void( Tuple2D& )> modification_function );
+	
 	/*!
 	 * @brief Scale this spectrum
 	 * @param factor Factor
 	*/
 	void Scale( const double factor );
 
-	/*!
-	 * @brief Get sum of all y values
-	 * @return Sum of all y values
-	*/
-	double getSum( void ) const;
-
-	/*!
-	 * @brief Get mean x value
-	 * @return Mean value of x by weightening by y value
-	*/
-	double getMean( void ) const{ return mean; };
-
-	/*!
-	 * @brief Get minimum x value
-	 * @return Minimum x value
-	*/
-	double getMin( void ) const{ return data_.front().x; };
-
-	/*!
-	 * @brief Get maximum x value
-	 * @return Maximum x value
-	*/
-	double getMax( void ) const{ return data_.back().x; };
-
-	/*!
-	 * @brief Modify spectrum
-	 * @param modFunction Function taking reference to spectrum point to modify
-	*/
-	void modify( std::function<void( Tuple2D& )> modFunction );
-
-	/*!
-	 * @brief Get raw data_
-	 * @return Vector of points
-	*/
-	vector<Tuple2D> rawData( void ) const { return data_; };
-
-	/*!
-	 * @brief Get the energy resolution
-	 * @return Energy resolution
-	*/
-	double EnergyResolution( void ) const { return energyResolution; };
-
 
 	private:
+
+	vector<Tuple2D> data_;		/*!<2D point data sorted by x value*/
+	double energy_resolution_;	/*!<Reolution of energies in spectrum*/
+	double mean_energy_;		/*!<Mean energy of spectrum*/
 
 	/*!
 	 * @brief Update mean value
 	*/
-	void updateMean( void );
-
-	vector<Tuple2D> data_;			/*!<2D point data_ sorted by x value*/
-	double energyResolution;	/*!<Reolution of energies in spectrum*/
-	double mean;				/*!<Mean Frequency of spectrum*/
+	void UpdateMeanEnergy( void );
 
 };

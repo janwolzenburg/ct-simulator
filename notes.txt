@@ -59,4 +59,7 @@ Model
 
 Rays
 	rays
+	scattering
+	propability
+	spectrum
 

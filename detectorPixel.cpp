@@ -30,7 +30,7 @@ double DetectorPixel::GetRadonValue( void ) const{
 
 	// Iterate all detected Ray properties_
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
-		intensitySum += currentRay.energy_spectrum_.getSum();
+		intensitySum += currentRay.energy_spectrum_.GetTotal();
 	}
 	return intensitySum;
 }
