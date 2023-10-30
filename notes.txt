@@ -69,4 +69,5 @@ Processing
 	dataGrid
 	backProjectionFilter
 	projections
+	filteredProjections
 

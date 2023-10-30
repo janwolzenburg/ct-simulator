@@ -23,9 +23,9 @@ using std::cref;
    Implementations
 *********************************************************************/
 
-void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMutex, reconstrucedImage& image, 
+void ReconstrucedImage::ReconstructImageColumn(	size_t& currentX, mutex& currentXMutex, ReconstrucedImage& image, 
 											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
-											const FilteredProjections& projections ){
+											const FilteredProjections projections ){
 
 	const size_t nD = image.size().r;					// Number of distances
 	const double dD = image.resolution().r;			// Distance resolution
@@ -82,7 +82,7 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 }
 
 
-reconstrucedImage::reconstrucedImage( const FilteredProjections projections, Fl_Progress_Window* progress ) :
+ReconstrucedImage::ReconstrucedImage( const FilteredProjections projections, Fl_Progress_Window* progress ) :
 	DataGrid( GridIndex{ projections.size().r, projections.size().r },
 		  GridCoordinates{ projections.start().r, projections.start().r }, 
 		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. )
@@ -95,7 +95,7 @@ reconstrucedImage::reconstrucedImage( const FilteredProjections projections, Fl_
 	vector<std::thread> threads;
 
 	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-		threads.emplace_back( reconstructColumn, ref( currentX ), ref( currentXMutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
+		threads.emplace_back( ReconstructImageColumn, ref( currentX ), ref( currentXMutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
 	}
 
 	for( std::thread& currentThread : threads ) currentThread.join();

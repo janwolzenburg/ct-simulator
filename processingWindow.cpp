@@ -9,6 +9,7 @@
 #include "processingWindow.h"
 #include "filteredProjections.h"
 #include "widgets.h"
+#include "reconstructedImage.h"
 
 processingWindow::processingWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
@@ -141,7 +142,7 @@ void processingWindow::recalcFilteredProjections( void ){
 	filteredProjWidget.setSliderBoundsFromImage();
 	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
 
-	PROGRAM_STATE().currentReconstrucedImage = reconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
+	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
 	reconstructionImage = monoImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 

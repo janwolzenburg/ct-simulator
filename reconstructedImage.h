@@ -25,39 +25,44 @@
 /*!
  * @brief Class to store reconstructed image
 */
-class reconstrucedImage : private DataGrid<> {
+class ReconstrucedImage : private DataGrid<> {
 
 	public:
 
 	/*!
 	 * @brief Default constructor
 	*/
-	reconstrucedImage( void ) : DataGrid{} {};
+	ReconstrucedImage( void ) : DataGrid{} {};
 
 	/*!
 	 * @brief Constructor
-	 * @param projections Filtered projections 
+	 * @param filtered_projections Filtered projections 
+	 * @param progress_window FL window to track progress
 	*/
-	reconstrucedImage( const FilteredProjections projections, Fl_Progress_Window* progress = nullptr );
+	ReconstrucedImage( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
+
+	/*!
+	 * @brief Get gridded data
+	 * @return Gridded data
+	*/
+	 DataGrid<> getGrid( void ) const{ return static_cast<DataGrid<>>( *this ); };
+
+
+	 private:
 
 	/*!
 	 * @brief Reconstruct image column wise
-	 * @param currentX Current x-index
-	 * @param currentXMutex Mutex for x-index
-	 * @param image Reference to image
-	 * @param imageMutex Mutex for image
-	 * @param progress Progress window
-	 * @param progressMutex Mutex for progress
-	 * @param projections Projections
+	 * @param current_x_index Current x-index
+	 * @param current_x_index_mutex Mutex for x-index
+	 * @param reconstructed_image Reference to image
+	 * @param reconstructed_image_mutex Mutex for image
+	 * @param progress_window Progress window
+	 * @param progress_window_mutex Mutex for progress
+	 * @param filtered_projections Projections
 	*/
-	static void reconstructColumn(  size_t& currentX, mutex& currentXMutex, reconstrucedImage& image, 
-									mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
-									const FilteredProjections& projections );
-
-	/*!
-	 * @brief Get base  grid
-	 * @return Grid
-	*/
-	 DataGrid<> getGrid( void ) const{ return (DataGrid<>) * this; };
+	static void ReconstructImageColumn(	size_t& current_x_index,				mutex& current_x_index_mutex, 
+										ReconstrucedImage& reconstructed_image,	mutex& reconstructed_image_mutex, 
+										Fl_Progress_Window* progress_window,	mutex& progress_window_mutex, 
+										const FilteredProjections filtered_projections );
 
 };

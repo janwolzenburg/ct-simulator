@@ -24,7 +24,7 @@
 #include "backprojectionFilter.h"
 #include "filteredProjections.h"
 #include "serialization.h"
-
+#include "reconstructedImage.h"
 
 /*********************************************************************
    Implemnetations
@@ -171,7 +171,7 @@ void serialisedToImage( void ){
 
 	Projections importedSinogram{ importedData, readStart };
 	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
-	reconstrucedImage image{ Q };
+	ReconstrucedImage image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
 	addSingleObject( ax1, "Sinogram", importedSinogram.data(), "Angle;Distance;Energy;Dots", true );
@@ -281,7 +281,7 @@ bool test_reconstruction( void ){
 
 	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
-	reconstrucedImage image{ Q };
+	ReconstrucedImage image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_reconstruction900_300_1_4xModelRes.txt" ), true );
 

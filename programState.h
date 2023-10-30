@@ -35,7 +35,7 @@
  #include "xRayTube.h"
  #include "detectorProperties.h"
  #include "gantry.h"
-
+ #include "reconstructedImage.h"
 
 
  /*********************************************************************
@@ -67,7 +67,7 @@ class programState{
 
 	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
 	FilteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
-	reconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
+	ReconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 	
 	mainWindow* mainWindow_;				/*!<Pointer to the main window*/
 	processingWindow* processingWindow_;	/*!<Pointer to the processing window*/
