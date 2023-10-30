@@ -11,8 +11,8 @@
    Includes
 *********************************************************************/
 
-#include "scattering.h"
-
+#include "rayScattering.h"
+#include "simulation.h"
 
 
 /*********************************************************************
@@ -20,21 +20,21 @@
 *********************************************************************/
 
 
-rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const UnitVector3D scatteredNormal_ ) :
+RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const UnitVector3D scatteredNormal_ ) :
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
-	energiesAmount( ForcePositive( energyAmount_ ) ),
-	energyRange( energyRange_ ),
-	energyResolution( ( energyRange.end() - energyRange.start() ) / (double) ( energiesAmount - 1 ) ),
-	scatteringNormal( scatteredNormal_ )
+	number_of_energies_( ForcePositive( energyAmount_ ) ),
+	energy_range_( energyRange_ ),
+	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / (double) ( number_of_energies_ - 1 ) ),
+	scattering_plane_normal_( scatteredNormal_ )
 {
 	
 	// GetResolution of angles
 	const double angleResolution = ( 2. * PI ) / (double) ( anglesAmount - 1 );
 
 	// Iterate all frequencies
-	for( size_t currentEnergyIndex = 0; currentEnergyIndex < energiesAmount; currentEnergyIndex++ ){
+	for( size_t currentEnergyIndex = 0; currentEnergyIndex < number_of_energies_; currentEnergyIndex++ ){
 
-		const double currentEnergy = energyRange.start() + (double) currentEnergyIndex * energyResolution;
+		const double currentEnergy = energy_range_.start() + (double) currentEnergyIndex * energy_resolution_;
 
 		// Calculate pseudo propability distribution
 		vector<Tuple2D> pseudoDistribution;
@@ -54,33 +54,28 @@ rayScattering::rayScattering( const size_t anglesAmount, const NumberRange energ
 
 		}
 
-		distributions.emplace_back( pseudoDistribution, 256 );
-		energies.push_back( currentEnergy );
+		scattering_angle_distributions_.emplace_back( currentEnergy, PropabilityDistribution{ pseudoDistribution, max_number_of_bins } );
+
+
+		//distributions.emplace_back( pseudoDistribution, 256 );
+		//energies.push_back( currentEnergy );
 	}
 
 
 };
 
-Ray rayScattering::scatterRay( const Ray r, const Point3D newOrigin ) const{
+Ray RayScattering::ScatterRay( const Ray r, const Point3D newOrigin ) const{
 
-	const UnitVector3D newDirection = r.direction().RotateConstant( scatteringNormal, getRandomAngle( r.GetMeanFrequencyOfSpectrum() ) );
+	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, GetRandomAngle( r.GetMeanFrequencyOfSpectrum() ) );
 
 	return Ray{ newDirection, newOrigin, r.properties() };
 
 }
 
-double rayScattering::getRandomAngle( const double energy ) const{
+double RayScattering::GetRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
+	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energy_range_.start() ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );
 	
-	return distributions.at( distributionIndex ).GetRandomNumber();
-
-}
-
-vector<Tuple2D> rayScattering::getDistribution( const double energy ) const{
-
-	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energyRange.start() ) / energyResolution + 0.5 ), distributions.size() );
-
-	return distributions.at( distributionIndex ).distribution();
+	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber();
 
 }

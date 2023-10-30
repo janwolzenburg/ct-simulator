@@ -25,68 +25,59 @@ using std::for_each;
    Implementations
 *********************************************************************/
 
-spectrum::spectrum(const vector<double> X, const vector<double> Y)
+EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
+	data_( ConvertToTuple( energy_quantaties ) )
 {
-	if (X.size() != Y.size() || X.size() < 2) {
-		data_ = vector<Tuple2D>{ Tuple2D{0, 0}, Tuple2D{1, 0} };
-		return;
-	}
-
-	for (size_t i = 0; i < X.size(); i++) {
-		data_.push_back(Tuple2D{ X.at(i), Y.at(i) });
-	}
 
 	// Sort data_ by x value
 	sort( data_.begin(), data_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
-	energyResolution = data_.at( 1 ).x - data_.at( 0 ).x;
+	energy_resolution_ = data_.at( 1 ).x - data_.at( 0 ).x;
 
-	// Check consistency
+	// Check consistency of energy
 	for( auto dataIt = data_.cbegin() + 1; dataIt < data_.cend(); dataIt++ ){
 
-		double diff = ( dataIt )->x - ( dataIt - 1 )->x;
+		double diff = dataIt->x - ( dataIt - 1 )->x;
 
-		if( !IsNearlyEqual( energyResolution, diff, .005, ComparisonMode::Relative ) ){
+		if( !IsNearlyEqual( energy_resolution_, diff, .005, ComparisonMode::Relative ) ){
 			cerr << "Spectrum must have energies equally spaced!" << endl;
 		}
-
-
 	}
 
-	updateMean();
+	UpdateMeanEnergy();
 }
 
-void spectrum::Scale( const double factor ){
+void EnergySpectrum::Scale( const double factor ){
 
 	for_each( data_.begin(), data_.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
-	updateMean();
+	UpdateMeanEnergy();
 }
 
-spectrum spectrum::getScaled( const double factor ) const {
+EnergySpectrum EnergySpectrum::GetScaled( const double factor ) const {
 
-	spectrum scaledSpectrum{ *this };
+	EnergySpectrum scaledSpectrum{ *this };
 	scaledSpectrum.Scale( factor );
 
 	return scaledSpectrum;
 
 }
 
-double spectrum::getSum( void ) const{
+double EnergySpectrum::GetTotal( void ) const{
 	return std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
 }
 
-void spectrum::updateMean( void ){
+void EnergySpectrum::UpdateMeanEnergy( void ){
 
 	// Get the sum of products. In principle an "expected value"
 	const double expectedValue = std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
 
-	mean = expectedValue / getSum();	
+	mean_energy_ = expectedValue / GetTotal();	
 }
 
-void spectrum::modify( std::function<void( Tuple2D& )> modFunction ){
+void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 	for( Tuple2D& v : data_ ){
 		modFunction( v );
 	}
 
-	this->updateMean();
+	this->UpdateMeanEnergy();
 }

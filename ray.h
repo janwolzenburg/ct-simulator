@@ -37,20 +37,20 @@ class RayProperties{
 	 * @brief Constructor
 	 * @param spectrum_ Ray spectrum
 	*/
-	RayProperties( const spectrum spectrum_ ) :
+	RayProperties( const EnergySpectrum spectrum_ ) :
 		energy_spectrum_( spectrum_ ), voxel_hits_( 0 ) {};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( spectrum{} ), voxel_hits_( 0 ) {};
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ) {};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
 	 * @return Energy spectrum
 	*/
-	spectrum energy_spectrum( void ) const{ return energy_spectrum_; };
+	EnergySpectrum energy_spectrum( void ) const{ return energy_spectrum_; };
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
@@ -62,7 +62,7 @@ class RayProperties{
 
 	private:
 
-	spectrum energy_spectrum_;		/*!<Energy spectrum*/
+	EnergySpectrum energy_spectrum_;		/*!<Energy spectrum*/
 	size_t voxel_hits_;				/*!<Counter for voxels hit during transmission*/
 
 };
@@ -119,7 +119,7 @@ class Ray : public Line{
 	 * @brief Get the mean frequency of spectrum
 	 * @return Mean frequency
 	*/
-	double GetMeanFrequencyOfSpectrum( void ) const{ return properties_.energy_spectrum_.getMean(); };
+	double GetMeanFrequencyOfSpectrum( void ) const{ return properties_.energy_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Increment the voxel hit count

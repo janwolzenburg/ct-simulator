@@ -80,42 +80,41 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 	max_photon_energy_eV_( properties_.anode_voltage_V )
 {
 
-	// Frequencies
-	vector<double> energies = CreateLinearSpace( al_filter_cut_off_energy_eV, max_photon_energy_eV_, number_of_points_in_spectrum_);
+	// 
+	VectorPair energy_spectrum{ CreateLinearSpace( al_filter_cut_off_energy_eV, max_photon_energy_eV_, number_of_points_in_spectrum_), 
+								vector<double>( number_of_points_in_spectrum_, 0. ) };
 
-	// Values
-	vector<double> spectralPower( energies.size(), 0.);
 
 	// Frequency to which the filter dominates spectral behavious
-	double changeEnergy = energies.front() + ( energies.back() - energies.front()) / (1. - al_filter_gradiant_factor);
+	double changeEnergy = energy_spectrum.first.front() + ( energy_spectrum.first.back() - energy_spectrum.first.front()) / (1. - al_filter_gradiant_factor);
 
 	// Fill value vector
-	for (auto energyIt = energies.begin(); energyIt < energies.end(); energyIt++) {
-		size_t curIdx = energyIt - energies.begin();	// Current index
+	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
+		size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
 
 		double bremsGradient = -1;											// Gradient of brems spectrum
 		double filterGradient = al_filter_gradiant_factor * bremsGradient;		// Gradient of filter spectrum
 
 		// Filter dominates
 		if ( *energyIt < changeEnergy ) {
-			spectralPower.at(curIdx) = ( *energyIt - energies.front() ) * filterGradient;
+			energy_spectrum.second.at(curIdx) = ( *energyIt - energy_spectrum.first.front() ) * filterGradient;
 			continue;
 		}
 
 		// Bremsspectrum dominates
-		spectralPower.at(curIdx) = ( energies.back() - *energyIt ) * ( -bremsGradient );
+		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt ) * ( -bremsGradient );
 	}
 
 
 	// Calculate correction factor for spectrum for its values to sum up to totalPower
-	double currentSum = Sum(spectralPower);
+	double currentSum = Sum( energy_spectrum.second );
 	double correctionFactor = radiation_power_W_ / currentSum;
 
 	// Correct values for sums to match
-	Scale(spectralPower, correctionFactor);
+	Scale( energy_spectrum.second, correctionFactor );
 
 	// Write frequency and power values to spectrum
-	emitted_spectrum_ = spectrum( energies, spectralPower );
+	emitted_spectrum_ = EnergySpectrum{ energy_spectrum };
 
 }
 
@@ -128,7 +127,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
 	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
-	const spectrum raySpectrum = emitted_spectrum_.getScaled( exposureTime / (double) numRays );
+	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( exposureTime / (double) numRays );
 
 	// properties of created rays
 	const RayProperties beamProperties{ raySpectrum };
@@ -177,7 +176,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 VectorPair XRayTube::GetEnergySpectrumPoints( void ) const{
 
 	VectorPair points;
-	const vector<Tuple2D> spectrumPoints = emitted_spectrum_.rawData();
+	const vector<Tuple2D> spectrumPoints = emitted_spectrum_.data();
 
 	for( auto& point : spectrumPoints ){
 		points.first.push_back( point.x );

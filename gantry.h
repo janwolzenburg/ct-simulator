@@ -23,7 +23,7 @@ using std::mutex;
 #include "xRayTube.h"
 #include "xRayDetector.h"
 #include "model.h"
-#include "scattering.h"
+#include "rayScattering.h"
 #include "tomography.fwd.h"
 
 
@@ -135,7 +135,7 @@ class Gantry{
 	 * @param detector_mutexMutex for the detector Object
 	*/
 	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties tomography_properties, 
-										const rayScattering scatter_angles,		const vector<Ray>& rays, 
+										const RayScattering scatter_angles,		const vector<Ray>& rays, 
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
 										XRayDetector& detector,					mutex& detector_mutex );

@@ -289,4 +289,11 @@ T WriteThreadVar( T& var, const T& value, mutex& var_mutex );
 */
 bool UnsetFlag( bool& flag );
 
+/*!
+ * @brief Convert a vector pair to a vector uf 2D-Tuples
+ * @param vector_pair Vector pair
+ * @return Vector with 2D-Tuples
+*/
+vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair );
+
 #include "generel.hpp"

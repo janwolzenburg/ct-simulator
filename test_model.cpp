@@ -126,7 +126,7 @@ bool test_modelTransmission( void ){
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = (double) i;
 		for( RayProperties currentProperties : detectorPixel.at( i ).detected_ray_properties() ){
-			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().getSum();
+			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().GetTotal();
 		}
 	}	
 
