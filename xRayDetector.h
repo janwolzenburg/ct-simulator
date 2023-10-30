@@ -41,7 +41,7 @@ class XRayDetector{
 	 * @param radon_properties Radon parameter
 	 * @param physical_properties Parameter indipendent of radon parameter
 	*/
-	XRayDetector( CoordinateSystem* const coordinate_system, const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	XRayDetector( CoordinateSystem* const coordinate_system, const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
 	 * @brief Get all detector pixel
@@ -60,7 +60,7 @@ class XRayDetector{
 	 * @param radon_properties New radon properties
 	 * @param physical_properties New physical properties
 	*/
-	void UpdateProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	void UpdateProperties( const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
 	 * @brief Convert all comnverted pixel to this system

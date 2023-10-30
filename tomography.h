@@ -106,7 +106,7 @@ class Tomography{
 	 * @param progress_window Window to show progress
 	 * @return The sinogram
 	*/
-	radonTransformed RecordSlice( const radonProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
+	radonTransformed RecordSlice( const RadonTransformationProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
 
 	private:

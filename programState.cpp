@@ -138,7 +138,7 @@ void programState::deactivateAll( void ){
 }
 
 void programState::buildGantry( const XRayTubeProperties tubeParameter_,
-				  const radonProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
+				  const RadonTransformationProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
 
 	xRayTubeParameter = tubeParameter_;
 	radonParameter = radonParameter_;

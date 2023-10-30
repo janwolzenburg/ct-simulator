@@ -36,16 +36,15 @@ radonTransformed::radonTransformed( void ) :
 	gridErrors = vector<vector<GridCoordinates>>( Size().c, vector<GridCoordinates>( Size().r, GridCoordinates{ INFINITY, INFINITY } ) );
 }
 
-radonTransformed::radonTransformed( const radonProperties detectorParameter ) :
-	grid<>{		GridIndex{ detectorParameter.numberPoints.c - 1,
-						detectorParameter.numberPoints.r }, 
-				GridCoordinates{	0, 
-						-( (double) ( detectorParameter.numberPoints.r - 1 ) * detectorParameter.resolution.r ) / 2. },
-				detectorParameter.resolution,
-				0 }
-{
-	gridErrors = vector<vector<GridCoordinates>>( Size().c, vector<GridCoordinates>( Size().r, GridCoordinates{ INFINITY, INFINITY }));
-}
+radonTransformed::radonTransformed( const RadonTransformationProperties properties ) :
+	grid<>{		properties.GetTransformationSize(),
+				GridCoordinates{ 0., 
+								 -( (double) ( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
+				properties.GetTransformationResolution()
+		  },
+
+	gridErrors( vector<vector<GridCoordinates>>( Size().c, vector<GridCoordinates>( Size().r, GridCoordinates{ INFINITY, INFINITY } ) ) )
+{}
 
 void radonTransformed::assignData( const RadonPoint dataPoint ){
 

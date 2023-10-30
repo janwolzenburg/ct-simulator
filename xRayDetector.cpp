@@ -23,17 +23,17 @@
 *********************************************************************/
 
 
-XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const radonProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
+XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const RadonTransformationProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_{ radonParameter, physical_properties }
 {
 
 	// Important parameter
 	const size_t nDistance = properties_.number_of_pixel.c;									// Amount of distances or pixel
-	const double distanceRange = (double) ( nDistance - 1) * radonParameter.resolution.r;	// Covered field of measure
+	const double distanceRange = (double) ( nDistance - 1) * radonParameter.distances_resolution();	// Covered field of measure
 
-	const double deltaTheta = radonParameter.resolution.c;		// Angle resolution
-	const double deltaDistance = radonParameter.resolution.r;	// Distance resolution
+	const double deltaTheta = radonParameter.angles_resolution();		// Angle resolution
+	const double deltaDistance = radonParameter.distances_resolution();	// Distance resolution
 
 	const double detectorCenterDistance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
 
@@ -152,7 +152,7 @@ void XRayDetector::ResetDetectedRayPorperties( void ){
 	for( DetectorPixel& currentPixel : pixel_array_ ) currentPixel.ResetDetectedRayProperties();
 }
 
-void XRayDetector::UpdateProperties( const radonProperties radon_properties, const PhysicalDetectorProperties physical_properties ){
+void XRayDetector::UpdateProperties( const RadonTransformationProperties radon_properties, const PhysicalDetectorProperties physical_properties ){
 
 	*this = XRayDetector{ coordinate_system_, radon_properties, physical_properties };
 

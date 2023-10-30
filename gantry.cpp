@@ -27,7 +27,7 @@ using std::cref;
 
 
 Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
-				const radonProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
+				const RadonTransformationProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
 	coordinate_system_( coordinate_system ),
 	initial_position_( coordinate_system_->GetPrimitive() ),
 	detector_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
@@ -45,7 +45,7 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 }
 
 
-void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const radonProperties radon_properties,
+void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const RadonTransformationProperties radon_properties,
 									const PhysicalDetectorProperties physical_detector_properties ){
 									
 	tube_.UpdateProperties( tube_properties );

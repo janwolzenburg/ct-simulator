@@ -194,7 +194,7 @@ class programState{
 	 * @brief Get reference to radon parameter
 	 * @return Constant reference to radon parameter
 	*/
-	radonProperties RadonParameter( void ) const{ return radonParameter; };
+	RadonTransformationProperties RadonParameter( void ) const{ return radonParameter; };
 
 	/*!
 	 * @brief Get reference to detector parameter
@@ -221,7 +221,7 @@ class programState{
 	 * @param indipendentParameter Detector parameter
 	*/
 	void buildGantry( const XRayTubeProperties tubeParameter_,
-					  const radonProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
+					  const RadonTransformationProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
 
 
 	/***************************************** Tomography ******************************************/
@@ -297,8 +297,8 @@ class programState{
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
 	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
-	radonProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	storedObject<radonProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	RadonTransformationProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
+	storedObject<RadonTransformationProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
 	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
 	storedObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/

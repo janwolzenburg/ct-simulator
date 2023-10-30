@@ -109,13 +109,13 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
 		colPnts.setProperties( 3, 10000, 0 );
-		colPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.c );
+		colPnts.value( PROGRAM_STATE().RadonParameter().number_of_angles() );
 
 		rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
-		rowPnts.value( PROGRAM_STATE().RadonParameter().numberPoints.r );
+		rowPnts.value( PROGRAM_STATE().RadonParameter().number_of_distances() );
 
 		distRange.setProperties( 1., 10000., 0 );
-		distRange.value( PROGRAM_STATE().RadonParameter().distanceRange );
+		distRange.value( PROGRAM_STATE().RadonParameter().measuring_field_size() );
 
 		colPnts.callback( button_cb, &updateGantry );
 		rowPnts.callback( button_cb, &updateGantry );
@@ -171,12 +171,12 @@ void gantryEdition::handleEvents( void ){
 		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
 
 		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
-		radonProperties newRadonParameter{ GridIndex{ colPnts.value(), rowPnts.value() }, distRange.value() };
+		RadonTransformationProperties newRadonParameter{ colPnts.value(), rowPnts.value(), distRange.value() };
 		PhysicalDetectorProperties newDetectorParameter{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 
 
-		rowPnts.value( newRadonParameter.numberPoints.r );
-		colPnts.value( newRadonParameter.numberPoints.c );
+		rowPnts.value( newRadonParameter.number_of_distances() );
+		colPnts.value( newRadonParameter.number_of_angles() );
 
 
 		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );

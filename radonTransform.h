@@ -15,7 +15,7 @@
 
 
 #include "grid.h"
-#include "radonProperties.h"
+#include "radonTransformationProperties.h"
 #include "radonCoordinates.h"
 
 
@@ -44,7 +44,7 @@ class radonTransformed : private grid<> {
 	 * @brief Constructor
 	 * @param physical_detector_properties_ Parameters to get the grid dimension from
 	*/
-	radonTransformed( const radonProperties detectorParameter );
+	radonTransformed( const RadonTransformationProperties detectorParameter );
 
 	/*!
 	 * @brief Constructor from serialized data_

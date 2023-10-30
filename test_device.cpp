@@ -30,8 +30,8 @@ using std::vector;
 XRayDetector getTestDetector( void ){
 	// 64 x 32 points in radon space
 	// 500mm measure field
-	radonProperties radonParameter{
-		GridIndex{ 63, 21 },
+	RadonTransformationProperties radonParameter{
+		63, 21,
 		500
 	};
 
@@ -416,8 +416,9 @@ Gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 								raysPerPixel };
 
 
-	radonProperties radonParameter{
-		sinogramSize,
+	RadonTransformationProperties radonParameter{
+		sinogramSize.c,
+		sinogramSize.r,
 		500
 	};
 

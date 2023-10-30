@@ -4,7 +4,7 @@ TODO: Sorted files filter
 TODO: Check file Heads
 TODO: check comments
 TODO: check cpp files
-
+TODO: use static_cast
 
 Naming convention:
 	- classes and types: CamelCase

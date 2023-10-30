@@ -70,7 +70,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 
 
-radonTransformed Tomography::RecordSlice( const radonProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+radonTransformed Tomography::RecordSlice( const RadonTransformationProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
@@ -90,10 +90,10 @@ radonTransformed Tomography::RecordSlice( const radonProperties radon_properties
 	
 
 	// Radiate the model for each frame
-	for( size_t currentFrame = 0; currentFrame < radon_properties.framesToFillSinogram; currentFrame++ ){
+	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.framesToFillSinogram ) );
+			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );
@@ -116,7 +116,7 @@ radonTransformed Tomography::RecordSlice( const radonProperties radon_properties
 		}
 		
 		// Rotate gantry
-		gantry.RotateCounterClockwise( radon_properties.resolution.c );
+		gantry.RotateCounterClockwise( radon_properties.angles_resolution() );
 
 		Fl::check();
 
