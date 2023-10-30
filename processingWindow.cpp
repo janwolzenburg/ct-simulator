@@ -45,10 +45,10 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 	filterTypeSelector.callback( button_cb, &filterChanged );
 
 	vector<string> filterNames;
-	for( auto& el : discreteFilter::filterTypes ) filterNames.push_back( el.second );
+	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
 
 	filterTypeSelector.setElements( filterNames );
-	string filterName = discreteFilter::filterTypes.at( PROGRAM_STATE().currentProcessingParameters.filterType );
+	string filterName = BackprojectionFilter::filter_types.at( PROGRAM_STATE().currentProcessingParameters.filterType );
 	filterTypeSelector.value( filterName );
 
 
@@ -100,7 +100,7 @@ void processingWindow::handleEvents( void ){
 
 	if( filterChanged ){
 		filterChanged = false;
-		PROGRAM_STATE().currentProcessingParameters.filterType = discreteFilter::getEnum( filterTypeSelector.value() );
+		PROGRAM_STATE().currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.value() );
 		recalcFilteredProjections();
 	}
 
@@ -131,8 +131,8 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentFilteredProjections = filteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().getRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().r, 2.)});
-	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().PlotValues() );
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().r, 2.)});
+	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().GetPlotValues() );
 	filterPlot.assignData();
 
 	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.getGrid(), true };

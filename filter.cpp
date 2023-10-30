@@ -19,45 +19,39 @@
    Implementations
 *********************************************************************/
 
-const std::map < discreteFilter::TYPE, string> discreteFilter::filterTypes{
+const std::map < BackprojectionFilter::TYPE, string> BackprojectionFilter::filter_types{
 		{ constant,	"Constant" },
-		//{ absolute,	"Absolute" },
 		{ ramLak,	"RamLak" },
 		{ sheppLogan,"SheppLogan" },
 };
 
-const double discreteFilter::threshold = 1e-5;
+const double BackprojectionFilter::significance_threshold = 1e-5;
 
-discreteFilter::TYPE discreteFilter::getEnum( const string searchString ){
-	for( auto& [typeEnum, typeString] : discreteFilter::filterTypes ){
-
-		if( typeString == searchString ){
-
+BackprojectionFilter::TYPE BackprojectionFilter::GetType( const string searchString ){
+	for( auto& [typeEnum, typeString] : BackprojectionFilter::filter_types ){
+		if( typeString == searchString )
 			return typeEnum;
-
-		}
 	}
 
 	return constant;
-
 }
 
-discreteFilter::discreteFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const discreteFilter::TYPE type_ ) :
-	type( type_ ),
-	pointsRange( pointsRange_ ),
-	numberPoints( static_cast<size_t>( pointsRange.end() - pointsRange.start() ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
-	samplingInterval( samplingInterval_ ),
-	values( numberPoints, 0. )
+BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const BackprojectionFilter::TYPE type_ ) :
+	type_( type_ ),
+	points_range_( pointsRange_ ),
+	number_of_points_( static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
+	sampling_interval_( samplingInterval_ ),
+	values_( number_of_points_, 0. )
 {
 
 	// Iterate over all whole numbers in range
-	for( signed long long n = pointsRange.start(); n <= pointsRange.end(); n++ ){
+	for( signed long long n = points_range_.start(); n <= points_range_.end(); n++ ){
 
 		double kernelValue = 0.;
 
-		switch( type ){
+		switch( type_ ){
 			
-			case discreteFilter::constant:
+			case BackprojectionFilter::constant:
 			{
 				if( n == 0 ) kernelValue = 1.;
 				else kernelValue = 0.;
@@ -65,42 +59,42 @@ discreteFilter::discreteFilter( const NaturalNumberRange pointsRange_, const dou
 				break;
 			}
 
-			case discreteFilter::ramLak:
+			case BackprojectionFilter::ramLak:
 			{
 				// Conditions for filter calculation
-				if( n == 0 )				kernelValue = 1. / ( 4. * pow( samplingInterval, 2. ) );
+				if( n == 0 )				kernelValue = 1. / ( 4. * pow( sampling_interval_, 2. ) );
 				else if( IsEven( n ) )		kernelValue = 0.;
-				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( samplingInterval, 2. ) * pow( (double) n, 2. ) );
+				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( (double) n, 2. ) );
 
 				break;
 			}
 
-			case discreteFilter::sheppLogan:
+			case BackprojectionFilter::sheppLogan:
 			{
-				kernelValue = - 2. / ( PI_2 * pow( samplingInterval, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
+				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
 
 				break;
 			}
 		}
 
-		this->set( getIndex( n ) ) = kernelValue;
+		this->SetValue( GetUnsignedIndex( n ), kernelValue );
 	}
 
 }
 
-NaturalNumberRange discreteFilter::getRelevantRange( void ) const{
+NaturalNumberRange BackprojectionFilter::GetRelevantRange( void ) const{
 
 	NaturalNumberRange relevant( -1, 1 );
 
-	for( signed long long int i = pointsRange.start(); i < 0; i++ ){
-		if( abs( this->operator()( i ) ) > threshold ){
+	for( signed long long int i = points_range_.start(); i < 0; i++ ){
+		if( abs( this->operator()( i ) ) > significance_threshold ){
 			relevant.start( i );
 			break;
 		}
 	}
 
-	for( signed long long int i = pointsRange.end(); i > 0; i-- ){
-		if( abs( this->operator()( i ) ) > threshold ){
+	for( signed long long int i = points_range_.end(); i > 0; i-- ){
+		if( abs( this->operator()( i ) ) > significance_threshold ){
 			relevant.end( i );
 			break;
 		}
@@ -111,32 +105,31 @@ NaturalNumberRange discreteFilter::getRelevantRange( void ) const{
 }
 
 
-VectorPair discreteFilter::PlotValues( void ) const{
+VectorPair BackprojectionFilter::GetPlotValues( void ) const{
 
-	VectorPair XY( vector<double>( numberPoints ), values );
+	VectorPair XY( vector<double>( number_of_points_ ), values_ );
 
-	std::iota( XY.first.begin(), XY.first.end(), floor( (double) pointsRange.start() ) );
+	std::iota( XY.first.begin(), XY.first.end(), floor( (double) points_range_.start() ) );
 
 	return XY;
 }
 
-size_t discreteFilter::getIndex( const signed long long Zidx ) const{
-	if( Zidx < pointsRange.start() ) return 0;
-	if( Zidx > pointsRange.end() ) return numberPoints - 1;
+size_t BackprojectionFilter::GetUnsignedIndex( const signed long long Zidx ) const{
+	if( Zidx < points_range_.start() ) return 0;
+	if( Zidx > points_range_.end() ) return number_of_points_ - 1;
 
-	return static_cast<size_t>( Zidx - pointsRange.start() );
+	return static_cast<size_t>( Zidx - points_range_.start() );
 }
 
-double& discreteFilter::set( const size_t idx ){
-	if( idx > numberPoints - 1 ) return values.at( idx );
-	return values.at( idx );
+bool BackprojectionFilter::SetValue( const size_t idx, const double new_value ){
+	if( idx > number_of_points_ - 1 ) return false;
+	
+	values_.at( idx ) = new_value;
+	
+	return true;
 }
 
-double discreteFilter::get( const size_t idx ) const{
-	if( idx > numberPoints - 1 ) return values.at( idx );
-	return values.at( idx );
-}
-
-double discreteFilter::operator()( const signed long long Zidx ) const{
-	return this->get( getIndex( Zidx ) );
+double BackprojectionFilter::GetValue( const size_t idx ) const{
+	if( idx > number_of_points_ - 1 ) return values_.at( idx );
+	return values_.at( idx );
 }

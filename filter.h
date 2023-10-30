@@ -24,7 +24,7 @@
 /*!
  * @brief Class for a 1D symmetric filter kernel
 */
-class discreteFilter{
+class BackprojectionFilter{
 	
 	public:
 
@@ -37,94 +37,92 @@ class discreteFilter{
 		sheppLogan		/*!<Shepp and Logan*/
 	};
 
-	static const std::map<TYPE, string> filterTypes;	/*!<Filter types with names*/
-	static const double threshold;						/*!<Threshold to determine significant range*/
+	static const std::map<TYPE, string> filter_types;	/*!<Filter types with names*/
+	static const double significance_threshold;			/*!<Threshold to determine significant range*/
 	
 	/*!
 	 * @brief Get filter type by string
-	 * @param searchString Name of filter type
+	 * @param search_string Name of filter type
 	 * @return Filter enumeration value
 	*/
-	static discreteFilter::TYPE getEnum( const string searchString );
-
+	static BackprojectionFilter::TYPE GetType( const string search_string );
 
 	/*!
 	 * @brief Constructor
-	 * @param pointsRange_ Range of whole numbers to calculate the filter values for
-	 * @param samplingInterval_ Sampling interval
-	 * @param type Filter type
+	 * @param points_range Range of whole numbers to calculate the filter values for
+	 * @param sampling_interval Sampling interval
+	 * @param filter_type Filter type
 	*/
-	discreteFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const TYPE type );
+	BackprojectionFilter( const NaturalNumberRange points_range, const double sampling_interval, const TYPE filter_type );
 
 	/*!
 	 * @brief Default constructor
-	 * @param  
 	*/
-	discreteFilter( void ) : 
-		discreteFilter( NaturalNumberRange{ -5, 5 }, 1., constant ) {};
+	BackprojectionFilter( void ) : 
+		BackprojectionFilter( NaturalNumberRange{ -5, 5 }, 1., constant ) {};
 
 	/*!
 	 * @brief Get values of filter kernel
 	 * @return Vector with values
 	*/
-	vector<double> Values( void ) const{ return values; };
-
-	/*!
-	 * @brief Get the filter as points
-	 * @return Vector with x,y points
-	*/
-	VectorPair PlotValues( void ) const;
+	vector<double> values( void ) const{ return values_; };
 
 	/*!
 	 * @brief Get range of kernel
 	 * @return Range
 	*/
-	NaturalNumberRange Range( void ) const{ return pointsRange; };
+	NaturalNumberRange points_range( void ) const{ return points_range_; };
+
+	/*!
+	 * @brief Get the filter as points
+	 * @return Vector with x,y points
+	*/
+	VectorPair GetPlotValues( void ) const;
 
 	/*!
 	 * @brief Get the relevant range by threshold
 	 * @return Range of indices where the filter values are significant
 	*/
-	NaturalNumberRange getRelevantRange( void ) const;
+	NaturalNumberRange GetRelevantRange( void ) const;
 
 	/*!
 	 * @brief Get value of filter at index
-	 * @param Zidx Signed index
+	 * @param signed_index Signed index
 	 * @return Value at index
 	*/
-	double operator()( const signed long long Zidx ) const;
+	double operator()( const signed long long signed_index ) const{ 
+		return this->GetValue( GetUnsignedIndex( signed_index ) ); }
 
 
 	private:
+
+	TYPE type_;							/*!<Type of filter*/
+	NaturalNumberRange points_range_;	/*!<Range of discrete sampling points*/
+	size_t number_of_points_;			/*!<Amount of points*/
+	double sampling_interval_;			/*!<Sampling interval*/
+	vector<double> values_;				/*!<Values*/
+
 
 	/*!
 	 * @brief Get unsigned index corresponding to signed index
-	 * @param Zidx 
-	 * @return 
+	 * @param signed_index signed index
+	 * @return Unsigned index
 	*/
-	size_t getIndex( const signed long long Zidx ) const;
+	size_t GetUnsignedIndex( const signed long long signed_index ) const;
 
 	/*!
 	 * @brief Get value at index
-	 * @param idx Index
+	 * @param index Index
 	 * @return Value
 	*/
-	double get( const size_t idx ) const;
+	double GetValue( const size_t index ) const;
 
 	/*!
 	 * @brief Set value at index
-	 * @param idx Index
+	 * @param index Index
 	 * @return Reference to value at index
 	*/
-	double& set( const size_t idx );
+	bool SetValue( const size_t index, const double new_value );
 
-
-	private:
-
-	TYPE type;					/*!<Type of filter*/
-	NaturalNumberRange pointsRange;			/*!<Range of discrete sampling points*/
-	size_t numberPoints;		/*!<Amount of points*/
-	double samplingInterval;	/*!<Sampling interval*/
-	vector<double> values;		/*!<Values*/
 
  };

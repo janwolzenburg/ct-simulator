@@ -170,7 +170,7 @@ void serialisedToImage( void ){
 
 
 	RadonTransformation importedSinogram{ importedData, readStart };
-	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 	reconstrucedImage image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
@@ -239,11 +239,11 @@ bool test_filter( void ){
 	NaturalNumberRange NumberRange{ -N + 1, N - 1 };
 	double samplingInterval = 5;
 
-	discreteFilter h{ NumberRange, samplingInterval, discreteFilter::ramLak };
+	BackprojectionFilter h{ NumberRange, samplingInterval, BackprojectionFilter::ramLak };
 
 	vector<Tuple2D> plot;
 
-	for( signed long long int n = h.Range().start(); n <= h.Range().end(); n++ ) plot.emplace_back( (double) n, h( n ) );
+	for( signed long long int n = h.points_range().start(); n <= h.points_range().end(); n++ ) plot.emplace_back( (double) n, h( n ) );
 
 	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
 
@@ -261,7 +261,7 @@ bool test_filteredProjection( void ){
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	RadonTransformation importedSinogram{ importedData, readStart };
 
-	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
 	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
 
@@ -279,7 +279,7 @@ bool test_reconstruction( void ){
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	RadonTransformation importedSinogram{ importedData, readStart };
 
-	filteredProjections Q{ importedSinogram, discreteFilter::ramLak };
+	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
 	reconstrucedImage image{ Q };
 

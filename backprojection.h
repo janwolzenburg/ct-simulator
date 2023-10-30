@@ -42,7 +42,7 @@ class filteredProjections : private DataGrid<> {
 	 * @param projections UNfiltered projections 
 	 * @param filterType Type of filter to apply
 	*/
-	filteredProjections( const RadonTransformation projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
+	filteredProjections( const RadonTransformation projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
 
 	/*!
 	 * @brief Get value at angle index at given distance
@@ -80,12 +80,12 @@ class filteredProjections : private DataGrid<> {
 	 * @brief Return used filter
 	 * @return Filter used in backprojections
 	*/
-	discreteFilter Filter( void ) const { return filter; };
+	BackprojectionFilter Filter( void ) const { return filter; };
 
 
 	private:
 
-	discreteFilter filter;		/*!<Filter used in backprojection*/
+	BackprojectionFilter filter;		/*!<Filter used in backprojection*/
 
 };
 

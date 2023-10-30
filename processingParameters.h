@@ -47,7 +47,7 @@ class processingParameter{
 	public:
 
 	NumberRange projectionsContrast;			/*!<Contrast for sinogram*/
-	discreteFilter::TYPE filterType;	/*!<The filter for filtering the projections*/
+	BackprojectionFilter::TYPE filterType;	/*!<The filter for filtering the projections*/
 	NumberRange filteredProjectionsContrast;	/*!<Contrast for filteredsinogram*/
 	NumberRange reconstrucedImageContrast;	/*!<Contrast for reconstructed image*/
 
