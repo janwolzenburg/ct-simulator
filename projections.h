@@ -15,7 +15,7 @@
 
 
 #include "dataGrid.h"
-#include "radonTransformationProperties.h"
+#include "projectionsProperties.h"
 #include "radonCoordinates.h"
 
 

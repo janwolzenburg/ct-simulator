@@ -23,7 +23,7 @@
 const string PhysicalDetectorProperties::FILE_PREAMBLE{ "PHYSICAL_DETECTOR_PROPERTIES_FILE_PREAMBLE" };
 
 PhysicalDetectorProperties::PhysicalDetectorProperties( void ) :
-	row_width( 1. ), detector_focus_distance( 300. ), has_anti_scattering_structure( false ), 
+	row_width( 1. ), detector_focus_distance( 1000. ), has_anti_scattering_structure( false ), 
 	max_ray_angle_allowed_by_structure( default_max_ray_angle_allowed_by_structure )
 {}
 
@@ -35,7 +35,7 @@ PhysicalDetectorProperties::PhysicalDetectorProperties( const double row_width, 
 
 PhysicalDetectorProperties::PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
 	row_width( DeSerializeBuildIn<double>( 1., binary_data, current_byte ) ),
-	detector_focus_distance( DeSerializeBuildIn<double>( 300., binary_data, current_byte ) ),
+	detector_focus_distance( DeSerializeBuildIn<double>( 1000., binary_data, current_byte ) ),
 	has_anti_scattering_structure( DeSerializeBuildIn<bool>( false, binary_data, current_byte ) ),
 	max_ray_angle_allowed_by_structure( DeSerializeBuildIn<double>( default_max_ray_angle_allowed_by_structure, binary_data, current_byte ) )
 {}

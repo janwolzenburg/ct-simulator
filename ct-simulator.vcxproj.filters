@@ -372,7 +372,7 @@
     <ClInclude Include="projections.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
-    <ClInclude Include="radonTransformationProperties.h">
+    <ClInclude Include="projectionsProperties.h">
       <Filter>Headerdateien\Processing\Radon</Filter>
     </ClInclude>
     <ClInclude Include="reconstructedImage.h">
@@ -545,7 +545,7 @@
     <ClCompile Include="reconstructedImage.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
-    <ClCompile Include="radonTransformationProperties.cpp">
+    <ClCompile Include="projectionsProperties.cpp">
       <Filter>Quelldateien\Processing\Radon</Filter>
     </ClCompile>
   </ItemGroup>

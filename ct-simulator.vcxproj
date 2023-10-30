@@ -171,7 +171,7 @@
     <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
     <ClInclude Include="radonCoordinates.h" />
-    <ClInclude Include="radonTransformationProperties.h" />
+    <ClInclude Include="projectionsProperties.h" />
     <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="backprojectionFilter.h" />
@@ -254,7 +254,7 @@
     <ClCompile Include="detectorProperties.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
     <ClCompile Include="radonCoordinates.cpp" />
-    <ClCompile Include="radonTransformationProperties.cpp" />
+    <ClCompile Include="projectionsProperties.cpp" />
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="backprojectionFilter.cpp" />
