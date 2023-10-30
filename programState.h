@@ -20,7 +20,7 @@
 
  #include "programState.fwd.h"
  #include "generel.h"
- #include "grid.h"
+ #include "dataGrid.h"
  #include "voxel.h"
  #include "modelViewParameter.h"
  #include "tomography.h"
@@ -58,7 +58,7 @@ class programState{
 	*/
 	static programState& getInstance();
 	
-	grid<VoxelData> modelSliceInstance;	/*!<Slice through model as gridded data_*/
+	DataGrid<VoxelData> modelSliceInstance;	/*!<Slice through model as gridded data_*/
 	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
 	Tomography tomographyInstance;				/*!<Instance of the tomography*/

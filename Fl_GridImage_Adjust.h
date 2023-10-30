@@ -56,7 +56,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void assignImage( const grid<VoxelData>& modGrid, const bool normalise = false );
+	void assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise = false );
 
 	/*!
 	 * @brief Set the slider range

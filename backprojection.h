@@ -15,7 +15,7 @@
 #include "generel.h"
 #include "filter.h"
 #include "radonTransformation.h"
-#include "grid.h"
+#include "dataGrid.h"
 #include "progress.h"
 
 
@@ -27,7 +27,7 @@
 /*!
  * @brief Class for storing the filtered projections
 */
-class filteredProjections : private grid<> {
+class filteredProjections : private DataGrid<> {
 
 	public:
 
@@ -35,7 +35,7 @@ class filteredProjections : private grid<> {
 	 * @brief Default construnctor
 	 * @param  
 	*/
-	filteredProjections( void ) : grid{} {};
+	filteredProjections( void ) : DataGrid{} {};
 
 	/*!
 	 * @brief Constructor
@@ -56,25 +56,25 @@ class filteredProjections : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	grid<> getGrid( void ) const{ return ( grid<> ) *this; };
+	DataGrid<> getGrid( void ) const{ return ( DataGrid<> ) *this; };
 
 	/*!
 	 * @brief Get size_ of projections
 	 * @return Size of projections
 	*/
-	GridIndex Size( void ) const{ return grid::Size(); };
+	GridIndex Size( void ) const{ return DataGrid::size(); };
 
 	/*!
 	 * @brief Get starts of axis
 	 * @return Start of axis
 	*/
-	GridCoordinates Start( void ) const{ return grid::Start(); };
+	GridCoordinates Start( void ) const{ return DataGrid::start(); };
 
 	/*!
 	 * @brief Get resolution of axis
 	 * @return GetResolution of axis
 	*/
-	GridCoordinates Resolution( void ) const{ return grid::Resolution(); };
+	GridCoordinates Resolution( void ) const{ return DataGrid::resolution(); };
 
 	/*!
 	 * @brief Return used filter
@@ -93,14 +93,14 @@ class filteredProjections : private grid<> {
 /*!
  * @brief Class to store reconstructed image
 */
-class reconstrucedImage : private grid<> {
+class reconstrucedImage : private DataGrid<> {
 
 	public:
 
 	/*!
 	 * @brief Default constructor
 	*/
-	reconstrucedImage( void ) : grid{} {};
+	reconstrucedImage( void ) : DataGrid{} {};
 
 	/*!
 	 * @brief Constructor
@@ -126,6 +126,6 @@ class reconstrucedImage : private grid<> {
 	 * @brief Get base  grid
 	 * @return Grid
 	*/
-	 grid<> getGrid( void ) const{ return (grid<>) * this; };
+	 DataGrid<> getGrid( void ) const{ return (DataGrid<>) * this; };
 
 };

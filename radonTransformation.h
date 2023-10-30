@@ -14,7 +14,7 @@
 *********************************************************************/
 
 
-#include "grid.h"
+#include "dataGrid.h"
 #include "radonTransformationProperties.h"
 #include "radonCoordinates.h"
 
@@ -28,7 +28,7 @@
 /*!
  * @brief Class for a radon transformation
 */
-class RadonTransformation : private grid<> {
+class RadonTransformation : private DataGrid<> {
 
 	public:
 
@@ -63,13 +63,13 @@ class RadonTransformation : private grid<> {
 	 * @brief Get grid data
 	 * @return Grid data
 	*/
-	grid<> data( void ) const{ return static_cast<grid<>>( *this ); };
+	DataGrid<> data( void ) const{ return static_cast<DataGrid<>>( *this ); };
 	
 	/*!
 	 * @brief Assign data at index 
 	 * @param data Data to assign
 	*/
-	void AssignData( const GridIndex index, const double value ){ this->setData( index, value ); };
+	void AssignData( const GridIndex index, const double value ){ this->SetData( index, value ); };
 
 	/*!
 	 * @brief Assign data to grid

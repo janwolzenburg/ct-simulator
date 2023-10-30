@@ -186,7 +186,7 @@
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
     <ClInclude Include="geoplot.h" />
-    <ClInclude Include="grid.h" />
+    <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="modelViewParameter.h" />
     <ClInclude Include="monoImage.fwd.h" />
@@ -266,7 +266,7 @@
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
-    <ClInclude Include="grid.hpp">
+    <ClInclude Include="dataGrid.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="mainWindow.cpp" />

@@ -24,7 +24,7 @@ using std::cref;
 *********************************************************************/
 
 filteredProjections::filteredProjections( const RadonTransformation projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress ) :
-	grid{ projections.data().Size(), projections.data().Start(), projections.data().Resolution(), 0. },		// Data grids have equal size_
+	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size_
 	filter{ NaturalNumberRange{ -( signed long long ) Size().r + 1, ( signed long long ) Size().r - 1 }, Resolution().r, filterType }
 {
 
@@ -37,7 +37,7 @@ filteredProjections::filteredProjections( const RadonTransformation projections,
 
 
 	// Local copy of projection data_
-	const grid<> projectionsData = projections.data();
+	const DataGrid<> projectionsData = projections.data();
 
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
@@ -63,7 +63,7 @@ filteredProjections::filteredProjections( const RadonTransformation projections,
 					convolutionResult += h_n * P_T;
 			}
 			convolutionResult *= dD;
-			this->setData( GridIndex{ t, n }, convolutionResult );
+			this->SetData( GridIndex{ t, n }, convolutionResult );
 
 		}
 		Fl::check();
@@ -105,8 +105,8 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
 											const filteredProjections& projections ){
 
-	const size_t nD = image.Size().r;					// Number of distances
-	const double dD = image.Resolution().r;			// Distance resolution
+	const size_t nD = image.size().r;					// Number of distances
+	const double dD = image.resolution().r;			// Distance resolution
 
 	const size_t nT = projections.Size().c;			// Number of angles
 	const double dT = projections.Resolution().c;		// Distance resolution
@@ -134,7 +134,7 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 			const double x = (double) ( ( signed long long ) xIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// x value on image
 			const double y = (double) ( ( signed long long ) yIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// y value on image
 
-			double currentValue = image.getData( GridIndex{ xIdx, yIdx } );
+			double currentValue = image.GetData( GridIndex{ xIdx, yIdx } );
 			 
 			// Iterate and sum filtered projections over all angles
 			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
@@ -148,7 +148,7 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 			}
 			
 			imageMutex.lock();
-			image.setData( GridIndex{ xIdx, yIdx }, currentValue * PI / (double) nT );
+			image.SetData( GridIndex{ xIdx, yIdx }, currentValue * PI / (double) nT );
 			imageMutex.unlock();
 		}
 
@@ -161,7 +161,7 @@ void reconstrucedImage::reconstructColumn(	size_t& currentX, mutex& currentXMute
 
 
 reconstrucedImage::reconstrucedImage( const filteredProjections projections, Fl_Progress_Window* progress ) :
-	grid( GridIndex{ projections.Size().r, projections.Size().r },
+	DataGrid( GridIndex{ projections.Size().r, projections.Size().r },
 		  GridCoordinates{ projections.Start().r, projections.Start().r }, 
 		  GridCoordinates{ projections.Resolution().r, projections.Resolution().r }, 0. )
 {

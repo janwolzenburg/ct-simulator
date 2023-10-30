@@ -147,16 +147,16 @@ string getObjectString<vector<RadonPoint>>( const vector<RadonPoint> data_ ){
 }
 
 template<>
-string getObjectString<grid<>>( const grid<> data_, const bool image ){
+string getObjectString<DataGrid<>>( const DataGrid<> data_, const bool image ){
 
 	if( image ){
 
 		string str = "image ";
-		str += to_string( data_.Size().c ) + "," + to_string( data_.Start().c ) + "," + to_string( data_.Resolution().c ) + ";";
-		str += to_string( data_.Size().r ) + "," + to_string( data_.Start().r ) + "," + to_string( data_.Resolution().r ) + ";";
+		str += to_string( data_.size().c ) + "," + to_string( data_.start().c ) + "," + to_string( data_.resolution().c ) + ";";
+		str += to_string( data_.size().r ) + "," + to_string( data_.start().r ) + "," + to_string( data_.resolution().r ) + ";";
 
-		for( size_t row = 0; row < data_.Size().r; row++ ){
-			for( size_t column = 0; column < data_.Size().c; column++ ){
+		for( size_t row = 0; row < data_.size().r; row++ ){
+			for( size_t column = 0; column < data_.size().c; column++ ){
 				str += to_string( data_( GridIndex{ column, row } ) ) + ",";
 			}
 		}
@@ -168,10 +168,10 @@ string getObjectString<grid<>>( const grid<> data_, const bool image ){
 
 		vector<double> XValues, YValues, DataValues;
 
-		for( size_t row = 0; row < data_.Size().r; row++ ){
-			for( size_t column = 0; column < data_.Size().c; column++ ){
+		for( size_t row = 0; row < data_.size().r; row++ ){
+			for( size_t column = 0; column < data_.size().c; column++ ){
 
-				GridCoordinates coordinates = data_.getCoordinates( GridIndex{ column, row });
+				GridCoordinates coordinates = data_.GetCoordinates( GridIndex{ column, row });
 
 				XValues.push_back( coordinates.c );
 				YValues.push_back( coordinates.r );

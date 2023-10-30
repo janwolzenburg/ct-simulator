@@ -50,9 +50,9 @@ void Fl_GridImage::assignImage( const monoImage& img )
 	updateScaled();
 }
 
-void Fl_GridImage::assignImage( const grid<VoxelData>& modGrid, const bool normalise ){
+void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
-	originalImage = monoImage{ modGrid.Size().c, modGrid.Size().r };
+	originalImage = monoImage{ modGrid.size().c, modGrid.size().r };
 	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 
 	const size_t width = originalImage.Width();

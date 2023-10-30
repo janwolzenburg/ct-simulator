@@ -219,9 +219,9 @@ bool programState::sliceModel( void ){
 	storedViewParameter.setLoaded();
 	storedTomographyParamerter.setLoaded();
 
-	grid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
 	
-	if( tempSlice.Size().c == 0 || tempSlice.Size().r == 0 )
+	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
 		return false;
 
 	modelSliceInstance = tempSlice;

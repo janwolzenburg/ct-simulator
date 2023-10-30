@@ -192,9 +192,9 @@ bool test_serialisation( void ){
 
 	RadonTransformation testSinogram{ radonParameter };
 
-	for( size_t col = 0; col < testSinogram.data().Size().c; col++ ){
-		for( size_t row = 0; row < testSinogram.data().Size().r; row++ ){
-			testSinogram.AssignData( GridIndex{ col, row }, 1. * (double) (col * testSinogram.data().Size().r + row ));
+	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
+		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){
+			testSinogram.AssignData( GridIndex{ col, row }, 1. * (double) (col * testSinogram.data().size().r + row ));
 		}
 	}
 
@@ -209,22 +209,22 @@ bool test_serialisation( void ){
 	RadonTransformation importedSinogram{ importedData, readStart };
 
 
-	if( testSinogram.data().Size().c != importedSinogram.data().Size().c ) return false;
-	if( testSinogram.data().Size().r != importedSinogram.data().Size().r ) return false;
+	if( testSinogram.data().size().c != importedSinogram.data().size().c ) return false;
+	if( testSinogram.data().size().r != importedSinogram.data().size().r ) return false;
 
-	if( testSinogram.data().Start().c != importedSinogram.data().Start().c ) return false;
-	if( testSinogram.data().Start().r != importedSinogram.data().Start().r ) return false;
+	if( testSinogram.data().start().c != importedSinogram.data().start().c ) return false;
+	if( testSinogram.data().start().r != importedSinogram.data().start().r ) return false;
 
-	if( testSinogram.data().Resolution().c != importedSinogram.data().Resolution().c ) return false;
-	if( testSinogram.data().Resolution().r != importedSinogram.data().Resolution().r ) return false;
+	if( testSinogram.data().resolution().c != importedSinogram.data().resolution().c ) return false;
+	if( testSinogram.data().resolution().r != importedSinogram.data().resolution().r ) return false;
 
 
-	for( size_t col = 0; col < testSinogram.data().Size().c; col++ ){
-		for( size_t row = 0; row < testSinogram.data().Size().r; row++ ){
+	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
+		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){
 
 			
 
-			if( testSinogram.data().getData( GridIndex{ col, row }) != importedSinogram.data().getData( GridIndex{ col, row } ) ) return false;
+			if( testSinogram.data().GetData( GridIndex{ col, row }) != importedSinogram.data().GetData( GridIndex{ col, row } ) ) return false;
 		}
 	}
 

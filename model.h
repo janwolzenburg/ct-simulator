@@ -19,7 +19,7 @@
 #include "voxel.h"
 #include "ray.h"
 #include "rayScattering.h"
-#include "grid.h"
+#include "dataGrid.h"
 #include "tomography.fwd.h"
 
 
@@ -214,7 +214,7 @@ class Model : public MathematicalObject{
 	 * @param resolution GetResolution of grid
 	 * @return Grid with slice
 	*/
-	grid<VoxelData> GetSlice( const Surface slice_location, const double resolution ) const; 
+	DataGrid<VoxelData> GetSlice( const Surface slice_location, const double resolution ) const; 
 
 	/*!
 	 * @brief Alter special properties in the specified sphere
@@ -244,7 +244,7 @@ class Model : public MathematicalObject{
 	*/
 	static void SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mutex& currentYMutex,
 								GridCoordinates& realStart, mutex& realStartMutex, GridCoordinates& realEnd, mutex& realEndMutex,
-								grid<VoxelData>& slice, mutex& sliceMutex,
+								DataGrid<VoxelData>& slice, mutex& sliceMutex,
 								const Surface& slicePlane,
 								const Model& modelRef );
 

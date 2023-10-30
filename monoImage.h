@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 
-#include "grid.h"
+#include "dataGrid.h"
 #include "vectorAlgorithm.h"
 
 
@@ -47,14 +47,14 @@ class monoImage{
 	 * @param source Source grid
 	 * @param Normalise Flag for normalisation
 	*/
-	monoImage( const grid<>& source, const bool normalise = false );
+	monoImage( const DataGrid<>& source, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from voxel-data_ grid
 	 * @param source Source grid with voxel data_
 	 * @param Normalise Flag for normalisation
 	*/
-	monoImage( const grid<VoxelData>& source, const bool normalise = false );
+	monoImage( const DataGrid<VoxelData>& source, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from other image but different size_
