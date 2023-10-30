@@ -12,6 +12,7 @@
  *********************************************************************/
 
 #include "generel.h"
+#include "generelMath.h"
 #include "serialization.h"
 
 
@@ -164,4 +165,22 @@ bool UnsetFlag( bool& flag ){
 	flag = false;
 
 	return previouValue;
+}
+
+vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair ){
+
+	size_t size = vector_pair.first.size();
+
+	if( vector_pair.first.size() != vector_pair.second.size() ){
+		cerr << "Vectors in VectorPair do not match in size!" << endl;
+		size_t size = Min( vector_pair.first.size(), vector_pair.second.size() );
+	}
+
+	vector<Tuple2D> tuple_vector( size, Tuple2D{ 0., 0. } );
+
+	for (size_t i = 0; i < size; i++) {
+		tuple_vector.push_back( Tuple2D{ vector_pair.first.at(i), vector_pair.second.at(i) } );
+	}
+
+	return tuple_vector;
 }
