@@ -22,7 +22,7 @@
 #include "coordinateSystemTree.h"
 #include "test_device.h"
 #include "backprojectionFilter.h"
-#include "backprojection.h"
+#include "filteredProjections.h"
 #include "serialization.h"
 
 
@@ -170,7 +170,7 @@ void serialisedToImage( void ){
 
 
 	Projections importedSinogram{ importedData, readStart };
-	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
+	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 	reconstrucedImage image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
@@ -261,11 +261,11 @@ bool test_filteredProjection( void ){
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	Projections importedSinogram{ importedData, readStart };
 
-	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
+	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
 	ofstream ax1 = openAxis( path( "./test_filteredProjection.txt" ), true );
 
-	addSingleObject( ax1, "filteredProjections", Q.getGrid(), "Angle;Distance;Energy;Dots", true);
+	addSingleObject( ax1, "filteredProjections", Q.data_grid(), "Angle;Distance;Energy;Dots", true);
 
 	closeAxis( ax1 );
 
@@ -279,7 +279,7 @@ bool test_reconstruction( void ){
 	vector<char>::const_iterator readStart = importedData.cbegin();
 	Projections importedSinogram{ importedData, readStart };
 
-	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
+	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
 	reconstrucedImage image{ Q };
 

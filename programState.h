@@ -26,7 +26,7 @@
  #include "tomography.h"
  #include "projections.h"
  #include "processingParameters.h"
- #include "backprojection.h"
+ #include "filteredProjections.h"
  #include "mainWindow.fwd.h"
  #include "processingWindow.fwd.h"
  #include "model.h"
@@ -66,7 +66,7 @@ class programState{
 	Projections currentProjections;		/*!<The current projections from last tomography*/
 
 	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
-	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
+	FilteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
 	reconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 	
 	mainWindow* mainWindow_;				/*!<Pointer to the main window*/

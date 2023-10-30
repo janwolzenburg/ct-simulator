@@ -14,7 +14,7 @@
 #include "tomographyExecution.h"
 
 #include "processingWindow.h"
-#include "backprojection.h"
+#include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
 

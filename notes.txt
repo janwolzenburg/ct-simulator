@@ -67,4 +67,6 @@ Processing
 	radonCoordinates
 	radonTransformationProperties
 	dataGrid
+	backProjectionFilter
+	projections
 

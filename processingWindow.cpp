@@ -7,7 +7,7 @@
 * ********************************************************************/
 
 #include "processingWindow.h"
-#include "backprojection.h"
+#include "filteredProjections.h"
 #include "widgets.h"
 
 processingWindow::processingWindow( int w, int h, const char* label ) :
@@ -129,13 +129,13 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 
-	PROGRAM_STATE().currentFilteredProjections = filteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
+	PROGRAM_STATE().currentFilteredProjections = FilteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.Filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.Resolution().r, 2.)});
-	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.Filter().GetPlotValues() );
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.)});
+	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 
-	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.getGrid(), true };
+	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.assignImage( filteredProjImage );
 	filteredProjWidget.setSliderBoundsFromImage();
