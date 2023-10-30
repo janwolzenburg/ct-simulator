@@ -35,9 +35,10 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 
 
 	// Ray intersects origin_
-	if( IsNearlyEqualDistance( lot.length(), 0 ) ){
+	if( IsNearlyEqualDistance( lot.length(), 0. ) ){
 		// Lot vector only for angle calculation
 		lot = projectedLine.direction() ^ cSys->GetEz();
+		distance = 0.;
 	}
 	// No intersection -> distance from perpendicular
 	else{
@@ -60,7 +61,7 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 	// y component is zero
 	if( IsNearlyEqualDistance( lot.Y(), 0 ) ) theta = 0;
 	// y component is greater than zero
-	else if( lot.Y() > 0 ) theta = cSys->GetEx().GetAngle( lot );
+	else if( lot.Y() > 0. ) theta = cSys->GetEx().GetAngle( lot );
 	// y component is less than zero
 	else theta = PI - cSys->GetEx().GetAngle( lot );
 

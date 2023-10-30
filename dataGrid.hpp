@@ -158,8 +158,8 @@ template<class D>
 void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 
 	if constexpr( std::is_arithmetic_v<D> ){
-		min_value_ = (std::numeric_limits<D>::min)(); // Additional () needed to stop macro expansion of min() and max()!!!
-		max_value_ = (std::numeric_limits<D>::max)();
+		min_value_ = (std::numeric_limits<D>::max)(); // Additional () needed to stop macro expansion of min() and max()!!!
+		max_value_ = (std::numeric_limits<D>::min)();
 	}
 	// Special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
@@ -175,7 +175,7 @@ bool DataGrid<D>::SetData( const GridIndex index, const D newValue ){
 
 	if constexpr( std::is_arithmetic_v<D> ){
 		if( newValue < min_value_ ) min_value_ = newValue;
-		if( newValue > max_value_ ) max_value_ = newValue;;
+		if( newValue > max_value_ ) max_value_ = newValue;
 	}
 	// Special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){

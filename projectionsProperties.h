@@ -33,7 +33,7 @@ class ProjectionsProperties{
 	/*!
 	 * @brief Default constructor
 	*/
-	ProjectionsProperties( void ): ProjectionsProperties{ 26, 59, 500. } {};
+	ProjectionsProperties( void ): ProjectionsProperties{ 59, 26, 500. } {};
 
 	/*!
 	 * @brief Constructor from serialized data

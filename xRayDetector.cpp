@@ -52,7 +52,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = (double) (currentIndex) *deltaTheta;
+		const double rotationAngle = (double) (currentIndex) * deltaTheta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
@@ -143,7 +143,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 
 	}
 
-	// After constructing converted poixel are identcal to all
+	// After constructing converted poixel are identical to all
 	converted_pixel_array_ = pixel_array_;
 }
 
