@@ -70,4 +70,5 @@ Processing
 	backProjectionFilter
 	projections
 	filteredProjections
+	reconstructedImage
 
