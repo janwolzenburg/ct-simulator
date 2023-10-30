@@ -42,7 +42,7 @@ class EnergySpectrum {
 	EnergySpectrum( const VectorPair energy_quantaties );
 
 	/*!
-	 * @brief Get raw data_
+	 * @brief Get raw data
 	 * @return Vector of points
 	*/
 	vector<Tuple2D> data( void ) const { return data_; };
@@ -73,14 +73,14 @@ class EnergySpectrum {
 	double GetTotal( void ) const;
 
 	/*!
-	 * @brief Get minimum x value
-	 * @return Minimum x value
+	 * @brief Get minimum energy
+	 * @return Minimum energy
 	*/
 	double GetMinEnergy( void ) const{ return data_.front().x; };
 
 	/*!
-	 * @brief Get maximum x value
-	 * @return Maximum x value
+	 * @brief Get maximum energy
+	 * @return Maximum energy
 	*/
 	double GetMaxEnergy( void ) const{ return data_.back().x; };
 
@@ -92,19 +92,19 @@ class EnergySpectrum {
 	
 	/*!
 	 * @brief Scale this spectrum
-	 * @param factor Factor
+	 * @param factor Scalar
 	*/
 	void Scale( const double factor );
 
 
 	private:
 
-	vector<Tuple2D> data_;		/*!<2D point data sorted by x value*/
-	double energy_resolution_;	/*!<Reolution of energies in spectrum*/
+	vector<Tuple2D> data_;		/*!<2D data sorted by energy*/
+	double energy_resolution_;	/*!<Resolution of energies in spectrum*/
 	double mean_energy_;		/*!<Mean energy of spectrum*/
 
 	/*!
-	 * @brief Update mean value
+	 * @brief Update mean energy
 	*/
 	void UpdateMeanEnergy( void );
 
