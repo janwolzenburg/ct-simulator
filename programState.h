@@ -24,7 +24,7 @@
  #include "voxel.h"
  #include "modelViewParameter.h"
  #include "tomography.h"
- #include "radonTransform.h"
+ #include "radonTransformation.h"
  #include "processingParameters.h"
  #include "backprojection.h"
  #include "mainWindow.fwd.h"
@@ -63,7 +63,7 @@ class programState{
 
 	Tomography tomographyInstance;				/*!<Instance of the tomography*/
 	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
-	radonTransformed currentProjections;		/*!<The current projections from last tomography*/
+	RadonTransformation currentProjections;		/*!<The current projections from last tomography*/
 
 	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
 	filteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
@@ -238,7 +238,7 @@ class programState{
 	 * @details Store as current projections and set flags
 	 * @param rt Radon transform to assign
 	*/
-	void assignRadonTransformed( const radonTransformed rt );
+	void assignRadonTransformed( const RadonTransformation rt );
 	
 	/*!
 	 * @brief Set flag to update tomography parameter information
@@ -304,7 +304,7 @@ class programState{
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 	storedObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
-	storedObject<radonTransformed> storedProjections;				/*!<Persisting storage of projections*/
+	storedObject<RadonTransformation> storedProjections;				/*!<Persisting storage of projections*/
 	storedObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
 	fileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/

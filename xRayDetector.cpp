@@ -15,7 +15,7 @@
 #include "generel.h"
 #include "vector3D.h"
 #include "xRayDetector.h"
-#include "radonTransform.h"
+#include "radonTransformation.h"
 
 
 /*********************************************************************

@@ -23,8 +23,8 @@ using std::cref;
    Implementations
 *********************************************************************/
 
-filteredProjections::filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress ) :
-	grid{ projections.Data().Size(), projections.Data().Start(), projections.Data().Resolution(), 0. },		// Data grids have equal size_
+filteredProjections::filteredProjections( const RadonTransformation projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress ) :
+	grid{ projections.data().Size(), projections.data().Start(), projections.data().Resolution(), 0. },		// Data grids have equal size_
 	filter{ NaturalNumberRange{ -( signed long long ) Size().r + 1, ( signed long long ) Size().r - 1 }, Resolution().r, filterType }
 {
 
@@ -37,7 +37,7 @@ filteredProjections::filteredProjections( const radonTransformed projections, co
 
 
 	// Local copy of projection data_
-	const grid<> projectionsData = projections.Data();
+	const grid<> projectionsData = projections.data();
 
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){

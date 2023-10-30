@@ -14,7 +14,7 @@
 
 #include "generel.h"
 #include "filter.h"
-#include "radonTransform.h"
+#include "radonTransformation.h"
 #include "grid.h"
 #include "progress.h"
 
@@ -42,7 +42,7 @@ class filteredProjections : private grid<> {
 	 * @param projections UNfiltered projections 
 	 * @param filterType Type of filter to apply
 	*/
-	filteredProjections( const radonTransformed projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
+	filteredProjections( const RadonTransformation projections, const discreteFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
 
 	/*!
 	 * @brief Get value at angle index at given distance

@@ -115,9 +115,9 @@ void processingWindow::handleEvents( void ){
 	}
 }
 
-void processingWindow::assignSinogram( const radonTransformed newSinogram ){
+void processingWindow::assignSinogram( const RadonTransformation newSinogram ){
 
-	sinogramImg = monoImage( newSinogram.Data(), true );
+	sinogramImg = monoImage( newSinogram.data(), true );
 	sinogramWidget.assignImage( sinogramImg );
 	sinogramWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 
