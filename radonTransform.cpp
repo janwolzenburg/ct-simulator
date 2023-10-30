@@ -47,9 +47,9 @@ radonTransformed::radonTransformed( const radonProperties detectorParameter ) :
 	gridErrors = vector<vector<GridCoordinates>>( Size().c, vector<GridCoordinates>( Size().r, GridCoordinates{ INFINITY, INFINITY }));
 }
 
-void radonTransformed::assignData( const radonPoint dataPoint ){
+void radonTransformed::assignData( const RadonPoint dataPoint ){
 
-	GridCoordinates point{ dataPoint.coordinates.theta, dataPoint.coordinates.distance };
+	GridCoordinates point{ dataPoint.theta, dataPoint.distance };
 	GridIndex index = getIndex( point );
 	GridCoordinates gridPoint{ getCoordinates( index )};
 

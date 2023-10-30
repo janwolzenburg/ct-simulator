@@ -69,7 +69,7 @@ class radonTransformed : private grid<> {
 	 * @brief Assign data_ to grid
 	 * @param data_ Data point
 	*/
-	void assignData( const radonPoint data_ );
+	void assignData( const RadonPoint data_ );
 
 	/*!
 	 * @brief Serialize this object

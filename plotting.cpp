@@ -118,16 +118,16 @@ string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data_ ){
 }
 
 template<>
-string getObjectString<vector<radonPoint>>( const vector<radonPoint> data_ ){
+string getObjectString<vector<RadonPoint>>( const vector<RadonPoint> data_ ){
 
 	string str = "plotS ";
 
 	vector<double> XValues, YValues, DataValues;
 
-	for( const radonPoint& p : data_ ){
+	for( const RadonPoint& p : data_ ){
 
-		XValues.push_back( p.coordinates.theta );
-		YValues.push_back( p.coordinates.distance );
+		XValues.push_back( p.theta );
+		YValues.push_back( p.distance );
 		DataValues.push_back( p.value );
 
 		

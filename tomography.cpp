@@ -106,10 +106,10 @@ radonTransformed Tomography::RecordSlice( const radonProperties radon_properties
 		for( const DetectorPixel& currentPixel : detectionPixel ){
 
 			// Get Coordinates for pixel
-			const radonCoords newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
+			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
 			// Get the radon point
-			const radonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );

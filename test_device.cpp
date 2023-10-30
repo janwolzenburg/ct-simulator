@@ -444,8 +444,8 @@ bool test_gantry( void ){
 	addObject( ax1, "Gantry", testGantry, "r", GANTRY_SPECIFIERS::ORIGIN | GANTRY_SPECIFIERS::BEAMS | GANTRY_SPECIFIERS::DETECTOR_SURFACES );
 	
 
-	vector<radonPoint> points;
-	for( auto& px : testGantry.pixel_array() ) points.emplace_back( radonCoords{ radonCSys, px.NormalLine() }, 1. );
+	vector<RadonPoint> points;
+	for( auto& px : testGantry.pixel_array() ) points.emplace_back( RadonCoordinates{ radonCSys, px.NormalLine() }, 1. );
 	
 
 	//testGantry.rotateCounterClockwise( static_cast<double>( testGantry.getDetectorParameter().numberPoints.r - 1 ) / 2. * testGantry.getDetectorParameter().resolution.c );

@@ -7,36 +7,31 @@
  * @date   October 2023
  *********************************************************************/
 
+/*********************************************************************
+   Includes
+*********************************************************************/
+
  #include "coordinateSystem.h"
  #include "line.h"
  
 
+/*********************************************************************
+	Definitions
+*********************************************************************/
+
 /*!
  * @brief Class for radon Coordinates
 */
-class radonCoords{
+class RadonCoordinates{
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param theta_ Angle
-	 * @param distance_ Distance
+	 * @param coordinate_system Reference coordinate system
+	 * @param line Line
 	*/
-	radonCoords( const double theta_, const double distance_ ) : 
-		theta( theta_ ), distance( distance_ ) {};
-
-	/*!
-	 * @brief Default constructor
-	*/
-	radonCoords( void ) : radonCoords{ 0, 0 } {};
-
-	/*!
-	 * @brief Constructor
-	 * @param coordinate_system_ Reference coordinate system
-	 * @param l Line
-	*/
-	radonCoords( const CoordinateSystem* const cSys, const Line l );
+	RadonCoordinates( const CoordinateSystem* const coordinate_system, const Line line );
 
 
 	double theta;		/*!<Angle*/
@@ -46,21 +41,21 @@ class radonCoords{
 
 
 /*!
- * @brief Radon point
+ * @brief Radon point consisting of coordinates and an associated value
 */
-class radonPoint{
+class RadonPoint : public RadonCoordinates{
 
 	public:
 
 	/*!
 	 * @brief Cosntructor
-	 * @param coordinates_ Coordinates 
-	 * @param value_ Value
+	 * @param radon_coordinates Coordinates 
+	 * @param value Value
 	*/
-	radonPoint( const radonCoords coordinates_, const double value_ ) :
-		coordinates( coordinates_ ), value( value_ ) {};
+	RadonPoint( const RadonCoordinates radon_coordinates, const double value ) :
+		RadonCoordinates{ radon_coordinates }, value( value ) {};
 
-	radonCoords coordinates;	/*!<Coordiantes*/
+
 	double value;				/*!<Value*/
 
 };
