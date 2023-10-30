@@ -97,12 +97,6 @@
     <Filter Include="Quelldateien\Program\GUI\Windows">
       <UniqueIdentifier>{ad30713f-cee7-4a15-be81-7fed7719950e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Processing\Radon">
-      <UniqueIdentifier>{ed094920-15ad-4719-9a57-5f4614049db5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Processing\Radon">
-      <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\Device\Classes">
       <UniqueIdentifier>{3f864968-709a-45d1-85e7-ec7afc630205}</UniqueIdentifier>
     </Filter>
@@ -114,6 +108,12 @@
     </Filter>
     <Filter Include="Quelldateien\Physics\Rays\Class implementation">
       <UniqueIdentifier>{0c97c343-7e98-4436-9239-e2cc238df36c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Processing\Projection">
+      <UniqueIdentifier>{ed094920-15ad-4719-9a57-5f4614049db5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Processing\Projection">
+      <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -197,15 +197,6 @@
     </ClInclude>
     <ClInclude Include="test_processing.h">
       <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
-      <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="filter.h">
-      <Filter>Headerdateien\Processing\Backprojection</Filter>
-    </ClInclude>
-    <ClInclude Include="backprojection.h">
-      <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
     <ClInclude Include="test_rays.h">
       <Filter>Headerdateien\Physics\Rays</Filter>
@@ -303,9 +294,6 @@
     <ClInclude Include="monoImage.fwd.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="grid.hpp">
-      <Filter>Quelldateien\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="modelViewParameter.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
@@ -333,14 +321,8 @@
     <ClInclude Include="serialization.hpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClInclude>
-    <ClInclude Include="radonProperties.h">
-      <Filter>Headerdateien\Processing\Radon</Filter>
-    </ClInclude>
-    <ClInclude Include="radonTransform.h">
-      <Filter>Headerdateien\Processing\Radon</Filter>
-    </ClInclude>
     <ClInclude Include="radonCoordinates.h">
-      <Filter>Headerdateien\Processing\Radon</Filter>
+      <Filter>Headerdateien\Processing\Projection</Filter>
     </ClInclude>
     <ClInclude Include="tomography.h">
       <Filter>Headerdateien\Device\Classes</Filter>
@@ -374,6 +356,27 @@
     </ClInclude>
     <ClInclude Include="spectrum.h">
       <Filter>Headerdateien\Physics\Rays\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="dataGrid.h">
+      <Filter>Headerdateien\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="dataGrid.hpp">
+      <Filter>Headerdateien\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="backprojectionFilter.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
+    <ClInclude Include="filteredProjections.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
+    <ClInclude Include="projectionsProperties.h">
+      <Filter>Headerdateien\Processing\Projection</Filter>
+    </ClInclude>
+    <ClInclude Include="reconstructedImage.h">
+      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    </ClInclude>
+    <ClInclude Include="projections.h">
+      <Filter>Headerdateien\Processing\Projection</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,12 +436,6 @@
     </ClCompile>
     <ClCompile Include="test_processing.cpp">
       <Filter>Quelldateien\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="filter.cpp">
-      <Filter>Quelldateien\Processing\Backprojection</Filter>
-    </ClCompile>
-    <ClCompile Include="backprojection.cpp">
-      <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
     <ClCompile Include="test_rays.cpp">
       <Filter>Quelldateien\Physics\Rays</Filter>
@@ -504,13 +501,7 @@
       <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
     <ClCompile Include="radonCoordinates.cpp">
-      <Filter>Quelldateien\Processing\Radon</Filter>
-    </ClCompile>
-    <ClCompile Include="radonTransform.cpp">
-      <Filter>Quelldateien\Processing\Radon</Filter>
-    </ClCompile>
-    <ClCompile Include="radonProperties.cpp">
-      <Filter>Quelldateien\Processing\Radon</Filter>
+      <Filter>Quelldateien\Processing\Projection</Filter>
     </ClCompile>
     <ClCompile Include="xRayDetector.cpp">
       <Filter>Quelldateien\Device\Class implementation</Filter>
@@ -541,6 +532,21 @@
     </ClCompile>
     <ClCompile Include="rayScattering.cpp">
       <Filter>Quelldateien\Physics\Rays\Class implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="backprojectionFilter.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    </ClCompile>
+    <ClCompile Include="filteredProjections.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    </ClCompile>
+    <ClCompile Include="reconstructedImage.cpp">
+      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    </ClCompile>
+    <ClCompile Include="projectionsProperties.cpp">
+      <Filter>Quelldateien\Processing\Projection</Filter>
+    </ClCompile>
+    <ClCompile Include="projections.cpp">
+      <Filter>Quelldateien\Processing\Projection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

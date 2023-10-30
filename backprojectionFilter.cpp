@@ -25,7 +25,6 @@ const std::map < BackprojectionFilter::TYPE, string> BackprojectionFilter::filte
 		{ sheppLogan,"SheppLogan" },
 };
 
-const double BackprojectionFilter::significance_threshold = 1e-5;
 
 BackprojectionFilter::TYPE BackprojectionFilter::GetType( const string searchString ){
 	for( auto& [typeEnum, typeString] : BackprojectionFilter::filter_types ){

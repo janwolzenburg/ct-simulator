@@ -179,7 +179,7 @@ vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair ){
 	vector<Tuple2D> tuple_vector( size, Tuple2D{ 0., 0. } );
 
 	for (size_t i = 0; i < size; i++) {
-		tuple_vector.push_back( Tuple2D{ vector_pair.first.at(i), vector_pair.second.at(i) } );
+		tuple_vector.at( i ) = ( Tuple2D{ vector_pair.first.at(i), vector_pair.second.at(i) } );
 	}
 
 	return tuple_vector;

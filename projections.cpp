@@ -31,7 +31,7 @@
 const string Projections::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
 
 Projections::Projections( void ) :
-	DataGrid<>()
+	DataGrid<>{}
 {
 	grid_errors_ = vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) );
 }

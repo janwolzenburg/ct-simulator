@@ -16,7 +16,7 @@
 #include "generelMath.h"
 #include "simulation.h"
 #include "serialization.h"
-#include "radonTransformationProperties.h"
+#include "projectionsProperties.h"
 
 
 
