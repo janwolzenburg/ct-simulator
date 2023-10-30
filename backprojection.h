@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "generel.h"
-#include "filter.h"
+#include "backprojectionFilter.h"
 #include "projections.h"
 #include "dataGrid.h"
 #include "progress.h"

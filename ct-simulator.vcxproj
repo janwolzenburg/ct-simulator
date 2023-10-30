@@ -173,7 +173,7 @@
     <ClInclude Include="radonTransformationProperties.h" />
     <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
-    <ClInclude Include="filter.h" />
+    <ClInclude Include="backprojectionFilter.h" />
     <ClInclude Include="Fl_Bound_Input.h" />
     <ClInclude Include="Fl_Bound_Input.hpp" />
     <ClInclude Include="Fl_GridImage.h" />
@@ -255,7 +255,7 @@
     <ClCompile Include="radonTransformationProperties.cpp" />
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
-    <ClCompile Include="filter.cpp" />
+    <ClCompile Include="backprojectionFilter.cpp" />
     <ClCompile Include="Fl_GridImage.cpp" />
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>

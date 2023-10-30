@@ -21,7 +21,7 @@
 #include "model.h"
 #include "coordinateSystemTree.h"
 #include "test_device.h"
-#include "filter.h"
+#include "backprojectionFilter.h"
 #include "backprojection.h"
 #include "serialization.h"
 

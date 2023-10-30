@@ -14,7 +14,7 @@
 
 
 #include "generel.h"
-#include "filter.h"
+#include "backprojectionFilter.h"
 
 /*!
  * @brief Class for storing image contrasts and filter used in processing

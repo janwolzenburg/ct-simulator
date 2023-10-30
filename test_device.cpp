@@ -25,7 +25,7 @@ using std::vector;
 #include "plotting.h"
 #include "gantry.h"
 #include "projections.h"
-#include "filter.h"
+#include "backprojectionFilter.h"
 
 XRayDetector getTestDetector( void ){
 	// 64 x 32 points in radon space

@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   filter.h
+ * @file   backprojectionFilter.h
  * @brief  Class for a filter kernel
  *
  * @author Jan Wolzenburg
