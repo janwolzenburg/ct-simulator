@@ -24,7 +24,7 @@
  #include "voxel.h"
  #include "modelViewParameter.h"
  #include "tomography.h"
- #include "radonTransformation.h"
+ #include "projections.h"
  #include "processingParameters.h"
  #include "backprojection.h"
  #include "mainWindow.fwd.h"

@@ -92,8 +92,8 @@ void mainWindow::handleEvents( void ){
 		vector<char> binary_data = ImportSerialized( chosenPath );
 		vector<char>::const_iterator it = binary_data.cbegin();
 
-		if( ValidBinaryData( RadonTransformation::FILE_PREAMBLE, binary_data, it ) ){
-			RadonTransformation importedSinogram{ binary_data, it };
+		if( ValidBinaryData( Projections::FILE_PREAMBLE, binary_data, it ) ){
+			Projections importedSinogram{ binary_data, it };
 			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 		}
 	}

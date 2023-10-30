@@ -24,7 +24,7 @@ using std::vector;
 #include "xRayDetector.h"
 #include "plotting.h"
 #include "gantry.h"
-#include "radonTransformation.h"
+#include "projections.h"
 #include "filter.h"
 
 XRayDetector getTestDetector( void ){

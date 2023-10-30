@@ -70,7 +70,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 
 
-RadonTransformation Tomography::RecordSlice( const RadonTransformationProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+Projections Tomography::RecordSlice( const RadonTransformationProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
@@ -85,7 +85,7 @@ RadonTransformation Tomography::RecordSlice( const RadonTransformationProperties
 
 
 	// Create sinogram 
-	RadonTransformation sinogram{ radon_properties };
+	Projections sinogram{ radon_properties };
 
 	
 
@@ -112,7 +112,7 @@ RadonTransformation Tomography::RecordSlice( const RadonTransformationProperties
 			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data_ to sinogram
-			sinogram.assignData( newRadonPoint );
+			sinogram.AssignData( newRadonPoint );
 		}
 		
 		// Rotate gantry

@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "vectorAlgorithm.h"
-#include "radonTransformation.h"
+#include "projections.h"
 #include "generelMath.h"
 #include "serialization.h"
 
@@ -28,15 +28,15 @@
 */
 
 
-const string RadonTransformation::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
+const string Projections::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
 
-RadonTransformation::RadonTransformation( void ) :
+Projections::Projections( void ) :
 	DataGrid<>()
 {
 	grid_errors_ = vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) );
 }
 
-RadonTransformation::RadonTransformation( const RadonTransformationProperties properties ) :
+Projections::Projections( const RadonTransformationProperties properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
 				GridCoordinates{ 0., 
 								 -( (double) ( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
@@ -46,7 +46,7 @@ RadonTransformation::RadonTransformation( const RadonTransformationProperties pr
 	grid_errors_( vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) ) )
 {}
 
-void RadonTransformation::assignData( const RadonPoint dataPoint ){
+void Projections::AssignData( const RadonPoint dataPoint ){
 
 	GridCoordinates point{ dataPoint.theta, dataPoint.distance };
 	GridIndex index = GetIndex( point );
@@ -62,7 +62,7 @@ void RadonTransformation::assignData( const RadonPoint dataPoint ){
 }
 
 
-size_t RadonTransformation::Serialize( vector<char>& binary_data ) const{
+size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
@@ -72,7 +72,7 @@ size_t RadonTransformation::Serialize( vector<char>& binary_data ) const{
 }
 
 
-RadonTransformation::RadonTransformation( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
+Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
 	DataGrid<>{ binary_data, it },
 	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, it ) )
 {}

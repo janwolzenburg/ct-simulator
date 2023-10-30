@@ -257,7 +257,7 @@ bool programState::loadModel( void ){
 	return true;
 }
 
-void programState::assignRadonTransformed( const RadonTransformation rt ){ 
+void programState::assignRadonTransformed( const Projections rt ){ 
 	currentProjections = rt; 
 	storedProjections.setLoaded(); 
 	storedProcessingParameters.setLoaded(); 

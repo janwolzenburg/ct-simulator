@@ -14,7 +14,7 @@
 #include <chrono>
 
 #include "test_processing.h"
-#include "radonTransformation.h"
+#include "projections.h"
 #include "plotting.h"
 #include "tomography.h"
 #include "test_model.h"
@@ -38,7 +38,7 @@ bool test_radonTransform( void ){
 											500
 	};
 
-	RadonTransformation test_Sinogram{ radonParameter };
+	Projections test_Sinogram{ radonParameter };
 
 	ofstream ax1 = openAxis( path( "./test_radonTransform.txt" ), true );
 
@@ -169,7 +169,7 @@ void serialisedToImage( void ){
 	vector<char>::const_iterator readStart = importedData.cbegin();
 
 
-	RadonTransformation importedSinogram{ importedData, readStart };
+	Projections importedSinogram{ importedData, readStart };
 	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 	reconstrucedImage image{ Q };
 
@@ -190,7 +190,7 @@ bool test_serialisation( void ){
 											500
 	};
 
-	RadonTransformation testSinogram{ radonParameter };
+	Projections testSinogram{ radonParameter };
 
 	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
 		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){
@@ -206,7 +206,7 @@ bool test_serialisation( void ){
 	vector<char> importedData = ImportSerialized( string{ "test_serialisation.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
-	RadonTransformation importedSinogram{ importedData, readStart };
+	Projections importedSinogram{ importedData, readStart };
 
 
 	if( testSinogram.data().size().c != importedSinogram.data().size().c ) return false;
@@ -259,7 +259,7 @@ bool test_filteredProjection( void ){
 	vector<char> importedData = ImportSerialized( string{ "test_Tomography_serialized_sinogram_300x100_1.txt" } );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
-	RadonTransformation importedSinogram{ importedData, readStart };
+	Projections importedSinogram{ importedData, readStart };
 
 	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
@@ -277,7 +277,7 @@ bool test_reconstruction( void ){
 	vector<char> importedData = ImportSerialized( string{ "test_Tomography_serialized_sinogram_900_300_1_4xModelRes.txt"} );
 
 	vector<char>::const_iterator readStart = importedData.cbegin();
-	RadonTransformation importedSinogram{ importedData, readStart };
+	Projections importedSinogram{ importedData, readStart };
 
 	filteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 

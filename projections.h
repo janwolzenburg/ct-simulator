@@ -26,32 +26,31 @@
 
 
 /*!
- * @brief Class for a radon transformation
+ * @brief Class for projections data by tomography
 */
-class RadonTransformation : private DataGrid<> {
+class Projections : private DataGrid<> {
 
 	public:
-
 
 	static const string FILE_PREAMBLE;
 
 	/*!
 	 * @brief Default constructor
 	*/
-	RadonTransformation( void );
+	Projections( void );
 
 	/*!
 	 * @brief Constructor
 	 * @param properties Transformation properties
 	*/
-	RadonTransformation( const RadonTransformationProperties properties );
+	Projections( const RadonTransformationProperties properties );
 
 	/*!
 	 * @brief Constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
-	RadonTransformation( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
+	Projections( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 	
 	/*!
 	 * @brief Serialize this object
@@ -75,7 +74,7 @@ class RadonTransformation : private DataGrid<> {
 	 * @brief Assign data to grid
 	 * @param radon_point Data point
 	*/
-	void assignData( const RadonPoint radon_point );
+	void AssignData( const RadonPoint radon_point );
 
 
 	private:

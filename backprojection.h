@@ -14,7 +14,7 @@
 
 #include "generel.h"
 #include "filter.h"
-#include "radonTransformation.h"
+#include "projections.h"
 #include "dataGrid.h"
 #include "progress.h"
 
@@ -42,7 +42,7 @@ class filteredProjections : private DataGrid<> {
 	 * @param projections UNfiltered projections 
 	 * @param filterType Type of filter to apply
 	*/
-	filteredProjections( const RadonTransformation projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
+	filteredProjections( const Projections projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress = nullptr );
 
 	/*!
 	 * @brief Get value at angle index at given distance

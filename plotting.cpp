@@ -13,7 +13,7 @@
 
 #include "plotting.h"
 #include "gantry.h"
-#include "radonTransformation.h"
+#include "projections.h"
 
 
 

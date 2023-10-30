@@ -21,7 +21,7 @@
  #include "lineplot.h"
 
  #include "programState.h"
- #include "radonTransformation.h"
+ #include "projections.h"
 
 
 
@@ -73,7 +73,7 @@ class processingWindow : public Fl_Window{
 	 * @brief Assign new sinogram
 	 * @param newSinogram New sinogram to assign
 	*/
-	void assignSinogram( const RadonTransformation newSinogram );
+	void assignSinogram( const Projections newSinogram );
 
 
 	bool newRTFlag;			/*!<Flag indicating that a new sinogram is available*/

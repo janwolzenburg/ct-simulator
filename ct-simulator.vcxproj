@@ -225,7 +225,7 @@
     <ClInclude Include="tomography.fwd.h" />
     <ClInclude Include="tomography.h" />
     <ClInclude Include="test_processing.h" />
-    <ClInclude Include="radonTransformation.h" />
+    <ClInclude Include="projections.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="spectrum.h" />
     <ClInclude Include="surf.fwd.h" />
@@ -291,7 +291,7 @@
     <ClCompile Include="slicePlane.cpp" />
     <ClInclude Include="storedObject.h" />
     <ClCompile Include="test_processing.cpp" />
-    <ClCompile Include="radonTransformation.cpp" />
+    <ClCompile Include="projections.cpp" />
     <ClCompile Include="ray.cpp" />
     <ClCompile Include="spectrum.cpp" />
     <ClCompile Include="surface.cpp" />

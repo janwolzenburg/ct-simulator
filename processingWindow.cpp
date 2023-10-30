@@ -115,7 +115,7 @@ void processingWindow::handleEvents( void ){
 	}
 }
 
-void processingWindow::assignSinogram( const RadonTransformation newSinogram ){
+void processingWindow::assignSinogram( const Projections newSinogram ){
 
 	sinogramImg = monoImage( newSinogram.data(), true );
 	sinogramWidget.assignImage( sinogramImg );

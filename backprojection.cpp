@@ -23,7 +23,7 @@ using std::cref;
    Implementations
 *********************************************************************/
 
-filteredProjections::filteredProjections( const RadonTransformation projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress ) :
+filteredProjections::filteredProjections( const Projections projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress ) :
 	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size_
 	filter{ NaturalNumberRange{ -( signed long long ) Size().r + 1, ( signed long long ) Size().r - 1 }, Resolution().r, filterType }
 {
