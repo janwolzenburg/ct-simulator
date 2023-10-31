@@ -126,17 +126,15 @@ class Gantry{
 	 * @param model Model to radiate through
 	 * @param tomography_properties Properties of tomography
 	 * @param rayScatterAngles Reference to object with information about Ray scattering
-	 * @param rays Reference to vector with rays to transmit
-	 * @param current_ray_index Index of the next Ray in vector to transmit. Will be changed at each call
-	 * @param current_ray_index_mutex Mutex instance for Ray index
+	 * @param first_and_end_ray The range of rays to transmit in one thread
 	 * @param rays_for_next_iteration Reference to vector which hold the rays for the next iteration
 	 * @param rays_for_next_iteration_mutex Mutex for vector with rays for next iteration 
 	 * @param detector Reference to Ray detector
 	 * @param detector_mutexMutex for the detector Object
 	*/
 	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties tomography_properties, 
-										const RayScattering scatter_angles,		const vector<Ray>& rays, 
-										size_t& current_ray_index,				mutex& current_ray_index_mutex,
+										const RayScattering scatter_angles,		
+										const pair<vector<Ray>::const_iterator, vector<Ray>::const_iterator> first_and_end_ray,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
 										XRayDetector& detector,					mutex& detector_mutex );
 
