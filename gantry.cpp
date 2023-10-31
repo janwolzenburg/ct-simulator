@@ -80,15 +80,16 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		sharedCurrentRayIndex += threads_ray_chunk_size;
 		currentRayIndexMutex.unlock();
 
-		for( size_t local_ray_index = 0; local_ray_index < threads_ray_chunk_size; local_ray_index++ ){
-
-			currentRayIndex += local_ray_index;
+		for( size_t local_ray_index = 0; local_ray_index < threads_ray_chunk_size; local_ray_index++, currentRayIndex++ ){
 
 			// No more rays left
 			if( currentRayIndex >= rays.size() ) break;
 
+			// Get current ray
+			currentRay =  rays.at( currentRayIndex );
+
 			// Transmit Ray through model
-			returnedRay = radModel.TransmitRay( cref( rays.at( currentRayIndex ) ), cref( tomoParameter ), cref( rayScatterAngles ) );
+			returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
 
 			// Is the Ray outside the model
 			if( !radModel.IsPointInside( returnedRay.origin() ) ){
@@ -112,7 +113,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
-		currentRay = currentRay.ConvertTo( model.coordinate_system() );
+		currentRay = std::move( currentRay.ConvertTo( model.coordinate_system() ) );
 	}
 	
 	// Convert pixel
@@ -139,7 +140,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
 														cref( rayScatterAngles ), cref( rays ), 
 														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
