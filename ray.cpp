@@ -46,14 +46,16 @@ Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
 }
 
 void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
-	properties_.AttenuateSpectrum( data_, distance );
+	
+	// Implement here handling of new properties
+	if(  data_.HasSpecificProperty( VoxelData::specialProperty::NONE ) ||
+		 data_.HasSpecificProperty( VoxelData::specialProperty::METAL ) )
+		properties_.AttenuateSpectrum( data_, distance );
 }
 
 array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void ) const{
 
 	array<bool, ToUnderlying( Voxel::Face::End )> face_possiblities{ false };
-
-	//vector<Voxel::Face> possibleFaces;
 
 	// Iterate all faces of voxel
 	for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
@@ -63,19 +65,19 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 		// Check if face can be an exit_ face of the tRay
 		switch( currentFace ){
 			case Voxel::Face::YZ_Xp:
-				if( direction_.X() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//  possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::YZ_Xm:
-				if( direction_.X() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XZ_Yp:
-				if( direction_.Y() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XZ_Ym:
-				if( direction_.Y() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XY_Zp:
-				if( direction_.Z() > 0  )face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;// possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() > 0  )face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XY_Zm:
-				if( direction_.Z() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			default: break;
 		}
