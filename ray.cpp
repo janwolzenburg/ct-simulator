@@ -55,33 +55,40 @@ void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
 	properties_.AttenuateSpectrum( data_, distance );
 }
 
-vector<Voxel::Face> Ray::GetPossibleVoxelExits( void ) const{
+array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void ) const{
 
-	vector<Voxel::Face> possibleFaces;
+	array<bool, ToUnderlying( Voxel::Face::End )> face_possiblities{ false };
+
+	//vector<Voxel::Face> possibleFaces;
 
 	// Iterate all faces of voxel
 	for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
 
+		bool possible = false;
+
 		// Check if face can be an exit_ face of the tRay
 		switch( currentFace ){
 			case Voxel::Face::YZ_Xp:
-				if( direction_.X() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//  possibleFaces.push_back( currentFace ); break;
 			case Voxel::Face::YZ_Xm:
-				if( direction_.X() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.X() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
 
 			case Voxel::Face::XZ_Yp:
-				if( direction_.Y() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
 			case Voxel::Face::XZ_Ym:
-				if( direction_.Y() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Y() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
 
 			case Voxel::Face::XY_Zp:
-				if( direction_.Z() > 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() > 0  )face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;// possibleFaces.push_back( currentFace ); break;
 			case Voxel::Face::XY_Zm:
-				if( direction_.Z() < 0 ) possibleFaces.push_back( currentFace ); break;
+				if( direction_.Z() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;//possibleFaces.push_back( currentFace ); break;
 
 			default: break;
 		}
+
+
+
 	}
-		return possibleFaces;
+		return face_possiblities;
 
 }

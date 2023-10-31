@@ -230,46 +230,51 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 
 		const Index3D currentVoxelIndices = GetVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		const vector<Voxel::Face> possibleFaces = modelRay.GetPossibleVoxelExits();		// The possible exit_ faces
+		const array<bool, ToUnderlying( Voxel::Face::End )> possibleFaces = std::move( modelRay.GetPossibleVoxelExits() );		// The possible exit_ faces
 
 		double rayParameter = INFINITY;		// The smallest Ray parameter
 
 		// Iterate all possible faces and get the Ray parameter at intersection
-		for( const Voxel::Face& currentFace : possibleFaces ){
+		for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
 
 			double currentRayParameter = INFINITY;			// Set to infinity 
 			double planePosistion;							// Position of current face
 
-			
 			// Switch faces
 			switch( currentFace ){
 
 				case Voxel::Face::YZ_Xp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxel_size_.x;		// Position of positive yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
 					break;
 
 				case Voxel::Face::YZ_Xm:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxel_size_.x;		// Position of negative yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
 					break;
 
 				case Voxel::Face::XZ_Yp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxel_size_.y;		// Position of positive xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XZ_Ym:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxel_size_.y;		// Position of negative xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XY_Zp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxel_size_.z;		// Position of positive xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
 				case Voxel::Face::XY_Zm:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxel_size_.z;		// Position of negative xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
