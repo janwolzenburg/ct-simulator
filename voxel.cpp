@@ -25,20 +25,20 @@
 	VoxelData implementation
  */
 
-VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const specialProperty specProperty ) :
+VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
 	attenuation_( GetAttenuationAtReferenceEnergy( attenuationAtFrequency, frequency ) ),
 	specialProperties_( specProperty )
 {}
 
 VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
 	attenuation_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	specialProperties_( DeSerializeBuildIn<specialPropertyEnumType>( specialProperty::UNDEFINED, binary_data, it ) )
+	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( SpecialProperty::Undefined, binary_data, it ) )
 {}
 
 double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 	// If Metal attenuation_ is approx. 10 1/mm at 100 keV
-	if( HasSpecificProperty( METAL ) ){
+	if( HasSpecificProperty( Metal ) ){
 		return 10 * pow( 100000. / energy, 3. );
 	}
 
@@ -71,9 +71,9 @@ double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEne
 
 }
 
-bool VoxelData::HasSpecificProperty( const specialProperty property ) const{
+bool VoxelData::HasSpecificProperty( const SpecialProperty property ) const{
 
-	specialPropertyEnumType propertyToCheck = ToUnderlying( property );
+	SpecialPropertyEnumType propertyToCheck = ToUnderlying( property );
 
 	if( specialProperties_ & propertyToCheck ) return true;
 	return false;
@@ -85,9 +85,9 @@ bool VoxelData::HasSpecificProperty( const specialProperty property ) const{
 	Voxel implementation
 */
 
-Voxel::Voxel( const Point3D o_, const Tuple3D size_, const VoxelData data_ ) :
-	size_( size_ ),
-	data_( data_ ),
+Voxel::Voxel( const Point3D o_, const Tuple3D size, const VoxelData data ) :
+	size_( size ),
+	data_( data ),
 	origin_corner_( o_ ),
 	faces{
 				BoundedSurface{ origin_corner_.GetCoordinateSystem()->GetEy(), origin_corner_.GetCoordinateSystem()->GetEz(), origin_corner_ + origin_corner_.GetCoordinateSystem()->GetEx() * size_.x, 0, size_.y, 0, size_.z },

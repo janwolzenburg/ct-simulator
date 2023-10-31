@@ -51,7 +51,7 @@ class Surface : public MathematicalObject{
 	Surface( void );
 
 	/*!
-	 * @brief Convert surface's data_ to string
+	 * @brief Convert surface's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return String with surface's data_
 	*/
@@ -59,7 +59,7 @@ class Surface : public MathematicalObject{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -186,7 +186,7 @@ class BoundedSurface : public Surface{
 	BoundedSurface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );
 
 	/*!
-	 * @brief Convert surface's data_ to string
+	 * @brief Convert surface's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return String with surface's data_
 	*/
@@ -194,7 +194,7 @@ class BoundedSurface : public Surface{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

@@ -167,7 +167,7 @@ bool Model::SetVoxelData( const VoxelData newData, const Index3D indices ){
 	return true;
 }
 
-bool Model::SetVoxelProperties( const VoxelData::specialProperty property, const Index3D indices ){
+bool Model::SetVoxelProperties( const VoxelData::SpecialProperty property, const Index3D indices ){
 
 	if( !AreIndicesValid( indices ) ) return false;
 
@@ -186,15 +186,15 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 
 	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxel_size_.x, (double) indices.y * voxel_size_.y, (double) indices.z * voxel_size_.z }, coordinate_system_ };
 
-	// Get voxel data_ and create voxel instance
+	// Get voxel data and create voxel instance
 	Voxel voxel{ voxOrigin, voxel_size_, GetVoxelData( indices ) };
 
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter, const RayScattering scatteringProperties ) const{
+Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties ) const{
 
-	Ray modelRay = tRay.ConvertTo( this->coordinate_system_ );					// Current Ray in model's coordinate system
+	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
 
 	// Find entrance_ in model
 	const RayVoxelIntersection modelIsect{ GetModelVoxel(), modelRay };
@@ -215,7 +215,7 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 
 
 	// Current point on the Ray
-	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance_
+	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
 
 	const double meanFrequencyTube = modelRay.GetMeanFrequencyOfSpectrum();	// Mean frequency of Ray before it enters model
@@ -230,46 +230,51 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 
 		const Index3D currentVoxelIndices = GetVoxelIndices( currentPntOnRay );		// Indices of current voxel
 
-		const vector<Voxel::Face> possibleFaces = modelRay.GetPossibleVoxelExits();		// The possible exit_ faces
+		const array<bool, ToUnderlying( Voxel::Face::End )> possibleFaces = std::move( modelRay.GetPossibleVoxelExits() );		// The possible exit_ faces
 
 		double rayParameter = INFINITY;		// The smallest Ray parameter
 
 		// Iterate all possible faces and get the Ray parameter at intersection
-		for( const Voxel::Face& currentFace : possibleFaces ){
+		for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
 
 			double currentRayParameter = INFINITY;			// Set to infinity 
 			double planePosistion;							// Position of current face
 
-			
 			// Switch faces
 			switch( currentFace ){
 
 				case Voxel::Face::YZ_Xp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxel_size_.x;		// Position of positive yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
 					break;
 
 				case Voxel::Face::YZ_Xm:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxel_size_.x;		// Position of negative yz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
 					break;
 
 				case Voxel::Face::XZ_Yp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxel_size_.y;		// Position of positive xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XZ_Ym:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxel_size_.y;		// Position of negative xz-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
 					break;
 
 				case Voxel::Face::XY_Zp:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxel_size_.z;		// Position of positive xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
 
 				case Voxel::Face::XY_Zm:
+					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
 					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxel_size_.z;		// Position of negative xy-plane
 					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
 					break;
@@ -287,13 +292,13 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 
 			const double distance = rayParameter;		// The distance is the rayParameter
 
-			// Update Ray properties_ whith distance travelled in current voxel
+			// Update Ray properties whith distance travelled in current voxel
 			modelRay.UpdateProperties( this->GetVoxelData( currentVoxelIndices ), distance );
 			modelRay.IncrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
-			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on Ray
-		
+			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
+
 			// Scattering
 			if( tomoParameter.scattering_enabled ){
 			
@@ -316,6 +321,7 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 	// New origin_ "outside" the model to return
 	modelRay.origin( currentPntOnRay );
 
+
 	return modelRay;
 }
 
@@ -332,7 +338,7 @@ bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_ };
 
 
-	// Copy data_ to new model
+	// Copy data to new model
 	for( size_t z = 0; z < newVoxNum3D.z; z++ ){
 		for( size_t y = 0; y < newVoxNum3D.y; y++ ){
 			for( size_t x = 0; x < newVoxNum3D.x; x++ ){
@@ -418,7 +424,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		// Are cooradinates defined in model?
 		if( !modelRef.IsPointInside( currentPoint ) ){
-			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::UNDEFINED ) );
+			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::Undefined ) );
 			continue;	// Goto next iteration
 		}
 
@@ -507,7 +513,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 
 	}
 
-	// Write data_ to smaller grid
+	// Write data to smaller grid
 	DataGrid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
 
 
@@ -522,7 +528,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 			coords = slice.GetCoordinates( GridIndex( colIdx, rowIdx ) );
 			currentData = largeSlice.GetData( coords );
 
-			if( currentData.HasSpecificProperty( VoxelData::UNDEFINED ) )
+			if( currentData.HasSpecificProperty( VoxelData::Undefined ) )
 				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV() } );
 			else
 				slice.SetData( coords, currentData );
@@ -534,7 +540,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 }
 
 
-void Model::AddSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius ){
+void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius ){
 	
 	// Exit when coords invalid
 	if ( !IsPointInside( center ) ) return;

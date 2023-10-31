@@ -46,8 +46,8 @@ class Coordinates : protected PrimitiveVector3{
 	Coordinates( void ) : Coordinates{ Tuple3D{}, DummySystem() } {};
 
 	/*!
-	 * @brief Convert coordinate's data_ to string
-	 * @return String with coordinate's data_
+	 * @brief Convert coordinate's data to string
+	 * @return String with coordinate's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 

@@ -26,10 +26,11 @@ using std::for_each;
 *********************************************************************/
 
 EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
-	data_( ConvertToTuple( energy_quantaties ) )
+	data_( ConvertToTuple( energy_quantaties ) ),
+	mean_energy_valid_( false )
 {
 
-	// Sort data_ by x value
+	// Sort data by x value
 	sort( data_.begin(), data_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
 	energy_resolution_ = data_.at( 1 ).x - data_.at( 0 ).x;
@@ -45,6 +46,15 @@ EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
 	}
 
 	UpdateMeanEnergy();
+}
+
+double EnergySpectrum::mean_energy( void ){
+
+	if( !mean_energy_valid_ ){
+		UpdateMeanEnergy();
+	}
+	
+	return mean_energy_;
 }
 
 void EnergySpectrum::Scale( const double factor ){
@@ -72,12 +82,22 @@ void EnergySpectrum::UpdateMeanEnergy( void ){
 	const double expectedValue = std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
 
 	mean_energy_ = expectedValue / GetTotal();	
+	mean_energy_valid_ = true;
 }
 
 void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 	for( Tuple2D& v : data_ ){
 		modFunction( v );
 	}
+}
 
-	this->UpdateMeanEnergy();
+void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distance ){
+	
+	double k;
+
+	for( auto& data_point: data_ ){
+		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
+		data_point.y *= exp( -k * distance );
+	}
+
 }

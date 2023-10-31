@@ -44,7 +44,7 @@ class ProjectionsProperties{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

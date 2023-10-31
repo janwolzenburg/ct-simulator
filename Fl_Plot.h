@@ -69,7 +69,7 @@ class Fl_Plot : public Fl_Widget{
 	plotType& plotRef( void ){ return plotInstance; };
 
 	/*!
-	 * @brief Assign image data_ from persisting storage
+	 * @brief Assign image data from persisting storage
 	*/
 	void assignData( void ){ assignImage( plotInstance.getImgPath() ); };
 

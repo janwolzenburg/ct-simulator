@@ -50,14 +50,14 @@ class monoImage{
 	monoImage( const DataGrid<>& source, const bool normalise = false );
 
 	/*!
-	 * @brief Construct image from voxel-data_ grid
-	 * @param source Source grid with voxel data_
+	 * @brief Construct image from voxel-data grid
+	 * @param source Source grid with voxel data
 	 * @param Normalise Flag for normalisation
 	*/
 	monoImage( const DataGrid<VoxelData>& source, const bool normalise = false );
 
 	/*!
-	 * @brief Construct image from other image but different size_
+	 * @brief Construct image from other image but different size
 	 * @details Constructed image will be scaled in each direction individually
 	 * @param srcImg Source image
 	 * @param newWidth Width of constructed image
@@ -66,8 +66,8 @@ class monoImage{
 	monoImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight );
 
 	/*!
-	 * @brief Construct image from binary data_
-	 * @param binary_data Binary data_
+	 * @brief Construct image from binary data
+	 * @param binary_data Binary data
 	 * @param it Iterator to start reading from
 	*/
 	monoImage( const vector<char>& binary_data, vector<char>::const_iterator& it );
@@ -115,7 +115,7 @@ class monoImage{
 	double& operator()( const size_t c, const size_t r ){ return data_.at( index( c, r ) ); };
 
 	/*!
-	 * @brief Get character data_ for image drawing
+	 * @brief Get character data for image drawing
 	 * @param c Column
 	 * @param direction_ Row
 	 * @return Grayscale value
@@ -124,8 +124,8 @@ class monoImage{
 
 	/*!
 	 * @brief Get pointer raw image data_
-	 * @details Be careful when data_ vector changes! The returned pointer may then point to false address
-	 * @return Pointer to data_ start in
+	 * @details Be careful when data vector changes! The returned pointer may then point to false address
+	 * @return Pointer to data start in
 	*/
 	const unsigned char* getDataPtr( void ){ return imData.data(); };
 
@@ -149,13 +149,13 @@ class monoImage{
 
 	/*!
 	* @brief Normalise unsigned char data_
-	* @details Converts double data_ to unsigned char. 0 will correspond to min( data_ ) and 255 to max( data_ )
+	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
 	*/
 	void normalise( void );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

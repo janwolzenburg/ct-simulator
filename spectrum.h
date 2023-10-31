@@ -15,6 +15,7 @@
 
 #include <functional>
 #include "generel.h"
+#include "voxel.h"
 
 
 /*********************************************************************
@@ -32,7 +33,7 @@ class EnergySpectrum {
 	 * @brief Default constructor
 	*/
 	EnergySpectrum(void) :
-		energy_resolution_( 1. ), mean_energy_( 0. )
+		energy_resolution_( 1. ), mean_energy_( 0. ), mean_energy_valid_( false )
 	{};
 
 	/*!
@@ -45,19 +46,19 @@ class EnergySpectrum {
 	 * @brief Get raw data
 	 * @return Vector of points
 	*/
-	vector<Tuple2D> data( void ) const { return data_; };
+	vector<Tuple2D> data( void ) const{ return data_; };
 
 	/*!
 	 * @brief Get the energy resolution
 	 * @return Energy resolution
 	*/
-	double energy_resolution( void ) const { return energy_resolution_; };
+	double energy_resolution( void ) const{ return energy_resolution_; };
 
 	/*!
 	 * @brief Get mean energy
 	 * @return Mean energy by weightening with energy occurrence
 	*/
-	double mean_energy( void ) const{ return mean_energy_; };
+	double mean_energy( void );
 
 	/*!
 	 * @brief Get scaled version of this spectrum
@@ -91,6 +92,13 @@ class EnergySpectrum {
 	void Modify( std::function<void( Tuple2D& )> modification_function );
 	
 	/*!
+	 * @brief Attenuate spectrum according to voxel data
+	 * @param voxel_data Voxel data
+	 * @param distance Distance traveled in voxel
+	*/
+	void Attenuate( const VoxelData& voxel_data, const double distance );
+
+	/*!
 	 * @brief Scale this spectrum
 	 * @param factor Scalar
 	*/
@@ -102,6 +110,7 @@ class EnergySpectrum {
 	vector<Tuple2D> data_;		/*!<2D data sorted by energy*/
 	double energy_resolution_;	/*!<Resolution of energies in spectrum*/
 	double mean_energy_;		/*!<Mean energy of spectrum*/
+	bool mean_energy_valid_;	/*!<Flag to track whether mean energy is valid*/
 
 	/*!
 	 * @brief Update mean energy

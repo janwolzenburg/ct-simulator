@@ -50,8 +50,8 @@ class LineSurfaceIntersection : public MathematicalObject{
 	LineSurfaceIntersection( void );
 
 	/*!
-	 * @brief Convert result's data_ to string
-	 * @return String with result's data_
+	 * @brief Convert result's data to string
+	 * @return String with result's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 

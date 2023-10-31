@@ -82,7 +82,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 
-			// First pixel size_ so that the neighbooring pixel intersects at half angle
+			// First pixel size so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -96,7 +96,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size_ is double the lot length_
+			// Pixel size is double the lot length
 			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 
@@ -158,7 +158,7 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
+void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 
 	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
 
@@ -177,7 +177,7 @@ void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 		}
 
 		// Converted pixel
-		const DetectorPixel currentPixel = converted_pixel_array_.at( pixelIdx );
+		const DetectorPixel& currentPixel = converted_pixel_array_.at( pixelIdx );
 
 		// Check for intersection of Ray with current pixel
 		const RayPixelIntersection pixelHit{ r, currentPixel };
@@ -188,7 +188,7 @@ void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 			// If has_anti_scattering_structure and angle allowed by structure
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
-				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
+				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties to pixel
 				allPixelLock.unlock();
 			}
 
@@ -204,6 +204,6 @@ void XRayDetector::ConvertPixelArray( const CoordinateSystem* const targetCSys )
 
 	// Iterate all pixel in detector
 	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
-		converted_pixel_array_.at( pixelIdx ) = pixel_array_.at( pixelIdx ).ConvertTo( targetCSys );
+		converted_pixel_array_.at( pixelIdx ) = std::move( pixel_array_.at( pixelIdx ).ConvertTo( targetCSys ) );
 	}
 }

@@ -32,6 +32,11 @@ using std::cerr; using std::endl; using std::cout;
 #include <mutex>
 using std::mutex;
 
+#include <chrono>
+using namespace std::chrono;
+static microseconds start_tic;
+#define tic start_tic = duration_cast< microseconds >( system_clock::now().time_since_epoch() )
+#define toc ( duration_cast< microseconds >( system_clock::now().time_since_epoch() ) - start_tic ).count()
 
 
  /*********************************************************************
@@ -110,7 +115,7 @@ class Tuple3D{
 
 
 /*!
- * @brief Class for indicies to data_ organized in row/column structure
+ * @brief Class for indicies to data organized in row/column structure
 */
 class GridIndex{
 
@@ -131,7 +136,7 @@ class GridIndex{
 
 
 /*!
- * @brief Class for  data_ organized in row/column structure
+ * @brief Class for  data organized in row/column structure
 */
 class GridCoordinates {
 

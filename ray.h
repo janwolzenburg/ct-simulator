@@ -129,7 +129,7 @@ class Ray : public Line{
 	 * @brief Get the mean frequency of spectrum
 	 * @return Mean frequency
 	*/
-	double GetMeanFrequencyOfSpectrum( void ) const{ return properties_.energy_spectrum_.mean_energy(); };
+	double GetMeanFrequencyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Increment the voxel hit count
@@ -181,7 +181,7 @@ class Ray : public Line{
 	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
 	 * @return Vector with possible face IDs
 	*/
-	vector<Voxel::Face> GetPossibleVoxelExits( void ) const;
+	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
 
 	private:

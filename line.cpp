@@ -36,7 +36,7 @@ Line::Line( const UnitVector3D v, const Point3D p ) :
 Line::Line( const Vector3D v, const Point3D p ) : 
 	direction_( UnitVector3D{ v } ), origin_( p )
 {
-	if( IsNearlyEqualDistance( direction_.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vector must have length_!" );
+	if( IsNearlyEqualDistance( direction_.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "Trajectory vector must have length!" );
 	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "Line origin_ and trajectory must be defined in the same coordinate system!" );
 }
 
@@ -56,6 +56,15 @@ string Line::ToString( unsigned int newline_tabulators ) const{
 	return str;
 }
 
+Point3D Line::GetPointFast( const double line_parameter ) const{
+
+	return Point3D{ Tuple3D{
+		origin_.X() + direction_.X() * line_parameter,
+		origin_.Y() + direction_.Y() * line_parameter,
+		origin_.Z() + direction_.Z() * line_parameter
+	}, this->direction_.GetCoordinateSystem() };
+
+}
 
 double Line::GetLineParameter( const Point3D p, bool* const solution_found_ ) const{
 	Point3D cP = p.ConvertTo( origin_ );

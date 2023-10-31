@@ -13,8 +13,6 @@
   Includes
 *********************************************************************/
 
-#include <chrono>
-using namespace std::chrono;
 #include <FL/Fl.H>
 
 #include "tomography.h"
@@ -77,20 +75,15 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
 	
-
 	// Translate Gantry
 	if( zPosition != 0. )
 		gantry.TranslateInZDirection( zPosition );
 
-	// Assign gantry csys-data_ to radon coordinate system
+	// Assign gantry csys-data to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
-
 
 	// Create sinogram 
 	Projections sinogram{ radon_properties };
-
-	
-	
 
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
@@ -118,7 +111,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get the radon point
 			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() * correction_factor };
 			
-			// Assign the data_ to sinogram
+			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );
 		}
 		

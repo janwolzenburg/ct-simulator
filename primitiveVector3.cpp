@@ -62,16 +62,16 @@ void PrimitiveVector3::Scale( const double scalar ){
 
 MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
-	// New length_
+	// New length
 	double len = this->GetLength();
 
 	// Length must not by zero
-	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length_!" );
+	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length!" );
 
-	// Exit when length_ is already one
+	// Exit when length is already one
 	if( IsNearlyEqualDistance( len, 1 ) ) return MathError::Ok;
 
-	// Calculate scaling factor as reciprocal of length_
+	// Calculate scaling factor as reciprocal of length
 	double lenRec = 1 / len;
 
 	// Scale and return error code
@@ -115,7 +115,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( IsNearlyEqualDistance( n.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length_!" );
+	if( IsNearlyEqualDistance( n.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
 
 	// Create copy and Normalise
 	PrimitiveVector3 nCpy{ n };

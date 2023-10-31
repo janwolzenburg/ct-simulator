@@ -39,14 +39,14 @@ class lineplot : public plot{
 	lineplot( void );
 
 	/*!
-	 * @brief Assign data_ to plot
+	 * @brief Assign data to plot
 	 * @param X_ Vector of x values
 	 * @param Y_ Vector of y values
 	*/
 	void assignData( const vector<double> X_, const vector<double> Y_ );
 
 	/*!
-	 * @brief Assign data_ to plot
+	 * @brief Assign data to plot
 	 * @param XY Pair of vectors with data_
 	*/
 	void assignData( const VectorPair XY ){ assignData( XY.first, XY.second ); };

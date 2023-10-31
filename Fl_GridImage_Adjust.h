@@ -52,7 +52,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	void assignImage( const monoImage& img );
 
 	/*!
-	 * @brief Assign gridded voxel data_ 
+	 * @brief Assign gridded voxel data 
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
@@ -71,7 +71,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	bool handleEvents( void );
 
 	/*!
-	 * @brief Set the contrast adjustment slider range by data_ values in image
+	 * @brief Set the contrast adjustment slider range by data values in image
 	*/
 	void setSliderBoundsFromImage( void );
 

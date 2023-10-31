@@ -208,7 +208,7 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 	// System filled with coefficients?
 	if( !IsPopulated() ) return sol;
 
-	// Get size_ of coefficient matrix 
+	// Get size of coefficient matrix 
 	size_t rows = number_of_rows(); size_t cols = number_of_columns();
 
 

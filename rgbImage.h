@@ -116,8 +116,8 @@ class rgbImage{
 
 	/*!
 	 * @brief Get pointer raw image data_
-	 * @details Be careful when data_ vector changes! The returned pointer may then point to false address
-	 * @return Pointer to data_ start in
+	 * @details Be careful when data vector changes! The returned pointer may then point to false address
+	 * @return Pointer to data start in
 	*/
 	const rgb_Int* getDataPtr( void ){ return imageData.data(); };
 
@@ -130,7 +130,7 @@ class rgbImage{
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

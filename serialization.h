@@ -50,7 +50,7 @@ template<>
 size_t SerializeBuildIn<vector<vector<GridCoordinates>>>( const vector<vector<GridCoordinates>>& val, vector<char>& binary_data );
 
 /*!
- * @brief Deserialize build in data_ type
+ * @brief Deserialize build in data type
  * @tparam T Expected type
  * @param val Reference to write value to
  * @param binary_data Vector with binary data_
@@ -64,7 +64,7 @@ template<>
 size_t DeSerializeBuildIn<string>( string& val, string defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 /*!
- * @brief Deserialize build in data_ type
+ * @brief Deserialize build in data type
  * @tparam T Type
  * @param defaultVal Default value 
  * @param binary_data Vector with binary data_
@@ -77,8 +77,8 @@ T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char
 /*!
  * @brief Deserialize and return object
  * @tparam T Type
- * @param binary_data Binary data_ 
- * @param it Iterator
+ * @param binary_data Binary data 
+ * @param current_byte Iterator
  * @return Deserialized object
 */
 template< typename T>
@@ -89,10 +89,10 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 
 
 /*!
- * @brief Export serial data_ to file
+ * @brief Export serial data to file
  * @param file_name Filename
- * @param binary_data Vector with binary data_
- * @return True at solution_found_
+ * @param binary_data Vector with binary data
+ * @return True when file found
 */
 bool ExportSerialized( const string file_name, const vector<char>& binary_data );
 
@@ -100,18 +100,18 @@ bool ExportSerialized( const path file_path, const vector<char>& binary_data );
 
 
 /*!
- * @brief Import serial data_ from file
+ * @brief Import serial data from file
  * @param file_name Filename
- * @return Vector with data_
+ * @return Vector with data
 */
 vector<char> ImportSerialized( const string file_name );
 
 vector<char> ImportSerialized( const path file_path );
 
 /*!
-	* @brief Check if data_ in vector is from a valid file
-	* @param binary_data Reference to vector with binary data_
-	* @param it Iterator to start of data_ in vector
+	* @brief Check if data in vector is from a valid file
+	* @param binary_data Reference to vector with binary data
+	* @param it Iterator to start of data in vector
 	* @return True when preambles match
 */
 bool ValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );

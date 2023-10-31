@@ -80,13 +80,13 @@ class XRayTubeProperties {
 	/*!
 	 * @brief Constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
-	 * @param current_byte Iterator to start of data_ in vector
+	 * @param current_byte Iterator to start of data in vector
 	*/
 	XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	* @brief Serialize this object
-	* @param binary_data Reference to vector where data_ will be appended
+	* @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

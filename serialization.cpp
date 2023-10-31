@@ -47,7 +47,7 @@ size_t SerializeBuildIn<string>( const string& val, vector<char>& binary_data ){
 	}
 
 
-	// Add padding at the end so data_ start at a new Line
+	// Add padding at the end so data start at a new Line
 	binary_data.insert( binary_data.end(), ( padding - ( binary_data.size() + 1 ) % padding ) % padding, string_padding );
 
 	// Termination
@@ -132,7 +132,7 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 		// Initialise sub vector
 		vector<GridCoordinates> subVec( numElements, GridCoordinates( 0., 0. ) );
 
-		// Assign deserialsized data_ to sub vector elements 
+		// Assign deserialsized data to sub vector elements 
 		for( size_t j = 0; j < numElements; j++ ){
 			subVec.at( j ) =  GridCoordinates{ binary_data, it };
 		}

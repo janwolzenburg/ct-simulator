@@ -64,7 +64,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-Ray RayScattering::ScatterRay( const Ray r, const Point3D newOrigin ) const{
+Ray RayScattering::ScatterRay( Ray r, const Point3D newOrigin ) const{
 
 	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, GetRandomAngle( r.GetMeanFrequencyOfSpectrum() ) );
 
