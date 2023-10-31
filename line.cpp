@@ -56,6 +56,15 @@ string Line::ToString( unsigned int newline_tabulators ) const{
 	return str;
 }
 
+Point3D Line::GetPointFast( const double line_parameter ) const{
+
+	return Point3D{ Tuple3D{
+		origin_.X() + direction_.X() * line_parameter,
+		origin_.Y() + direction_.Y() * line_parameter,
+		origin_.Z() + direction_.Z() * line_parameter
+	}, this->direction_.GetCoordinateSystem() };
+
+}
 
 double Line::GetLineParameter( const Point3D p, bool* const solution_found_ ) const{
 	Point3D cP = p.ConvertTo( origin_ );

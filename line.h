@@ -87,6 +87,8 @@ class Line : public MathematicalObject{
 	*/
 	Point3D GetPoint( const double line_parameter ) const{ return origin_ + ( direction_ * line_parameter ); };
 	
+	Point3D GetPointFast( const double line_parameter ) const;
+
 	/*!
 	 * @brief Get Line parameter corresponding to point
 	 * @param point_on_line Point on Line
