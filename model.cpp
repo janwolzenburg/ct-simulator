@@ -292,12 +292,11 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			const double distance = rayParameter;		// The distance is the rayParameter
 
-			// Update Ray properties_ whith distance travelled in current voxel
+			// Update Ray properties whith distance travelled in current voxel
 			modelRay.UpdateProperties( this->GetVoxelData( currentVoxelIndices ), distance );
 			modelRay.IncrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
-			//currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );	// New point on Ray
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
 			// Scattering
