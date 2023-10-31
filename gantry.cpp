@@ -67,7 +67,6 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 									XRayDetector& rayDetector, mutex& detectorMutex ){
 
-
 	size_t currentRayIndex;
 	Ray currentRay, returnedRay;
 
@@ -76,32 +75,27 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 		// Get the Ray which should be transmitted next and increment index
 		currentRayIndexMutex.lock();
-		currentRayIndex = sharedCurrentRayIndex;
-		sharedCurrentRayIndex += threads_ray_chunk_size;
+		currentRayIndex = sharedCurrentRayIndex++;
 		currentRayIndexMutex.unlock();
 
-		for( size_t local_ray_index = 0; local_ray_index < threads_ray_chunk_size; local_ray_index++, currentRayIndex++ ){
+		// No more rays left
+		if( currentRayIndex >= rays.size() ) break;
 
-			// No more rays left
-			if( currentRayIndex >= rays.size() ) break;
+		// Get current ray
+		currentRay =  rays.at( currentRayIndex );
 
-			// Get current ray
-			currentRay =  rays.at( currentRayIndex );
+		// Transmit Ray through model
+		returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
 
-			// Transmit Ray through model
-			returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
-
-			// Is the Ray outside the model
-			if( !radModel.IsPointInside( returnedRay.origin() ) ){
-				rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
-			}
-			else{
-				iterationMutex.lock();
-				raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
-				iterationMutex.unlock();
-			}
+		// Is the Ray outside the model
+		if( !radModel.IsPointInside( returnedRay.origin() ) ){
+			rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
 		}
-
+		else{
+			iterationMutex.lock();
+			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
+			iterationMutex.unlock();
+		}
 	}
 
 	return;
