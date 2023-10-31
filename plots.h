@@ -68,14 +68,14 @@ class plot{
 	void setLimits( const plotLimits newLimits ){ limits = newLimits; };
 
 	/*!
-	 * @brief Set image size_
+	 * @brief Set image size
 	 * @param size New size of image
 	*/
-	void setSize( const GridIndex size ){ imgSize = size_; };
+	void setSize( const GridIndex size ){ imgSize = size; };
 
 	/*!
-	 * @brief Get the image size_
-	 * @return Current image size_
+	 * @brief Get the image size
+	 * @return Current image size
 	*/
 	GridIndex getSize( void ) const{ return imgSize; };
 
@@ -93,7 +93,7 @@ class plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired image size_
+	 * @param imgSize_ Desired image size
 	 * @param grid_ Flag to show grid
 	*/
 	plot( const path imgPath_, const string xlabel_, const string ylabel_,

@@ -52,7 +52,7 @@ class EnergySpectrum {
 	 * @brief Get the energy resolution
 	 * @return Energy resolution
 	*/
-	double energy_resolution( void ){ return energy_resolution_; };
+	double energy_resolution( void ) const{ return energy_resolution_; };
 
 	/*!
 	 * @brief Get mean energy
