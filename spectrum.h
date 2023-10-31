@@ -15,6 +15,7 @@
 
 #include <functional>
 #include "generel.h"
+#include "voxel.h"
 
 
 /*********************************************************************
@@ -90,6 +91,13 @@ class EnergySpectrum {
 	*/
 	void Modify( std::function<void( Tuple2D& )> modification_function );
 	
+	/*!
+	 * @brief Attenuate spectrum according to voxel data
+	 * @param voxel_data Voxel data
+	 * @param distance Distance traveled in voxel
+	*/
+	void Attenuate( const VoxelData& voxel_data, const double distance );
+
 	/*!
 	 * @brief Scale this spectrum
 	 * @param factor Scalar

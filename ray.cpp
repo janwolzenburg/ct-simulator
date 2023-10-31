@@ -23,13 +23,7 @@
 */
 
 void RayProperties::AttenuateSpectrum( const VoxelData& voxelData, const double distance ){
-
-	energy_spectrum_.Modify(  [ & ] ( Tuple2D& spectrumPoint ) -> void {
-		
-		const double k = voxelData.GetAttenuationAtEnergy( spectrumPoint.x );
-		spectrumPoint.y *= exp( -k * distance );
-
-	} );
+	energy_spectrum_.Attenuate( voxelData, distance );
 }
 
 

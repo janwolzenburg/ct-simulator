@@ -129,7 +129,7 @@ class Ray : public Line{
 	 * @brief Get the mean frequency of spectrum
 	 * @return Mean frequency
 	*/
-	double GetMeanFrequencyOfSpectrum( void ) const{ return properties_.energy_spectrum_.mean_energy(); };
+	double GetMeanFrequencyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Increment the voxel hit count

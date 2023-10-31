@@ -90,3 +90,14 @@ void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 		modFunction( v );
 	}
 }
+
+void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distance ){
+	
+	double k;
+
+	for( auto& data_point: data_ ){
+		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
+		data_point.y *= exp( -k * distance );
+	}
+
+}
