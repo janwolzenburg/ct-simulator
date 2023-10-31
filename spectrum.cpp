@@ -26,7 +26,8 @@ using std::for_each;
 *********************************************************************/
 
 EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
-	data_( ConvertToTuple( energy_quantaties ) )
+	data_( ConvertToTuple( energy_quantaties ) ),
+	mean_energy_valid_( false )
 {
 
 	// Sort data_ by x value
@@ -45,6 +46,15 @@ EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
 	}
 
 	UpdateMeanEnergy();
+}
+
+double EnergySpectrum::mean_energy( void ){
+
+	if( !mean_energy_valid_ ){
+		UpdateMeanEnergy();
+	}
+	
+	return mean_energy_;
 }
 
 void EnergySpectrum::Scale( const double factor ){
@@ -72,12 +82,11 @@ void EnergySpectrum::UpdateMeanEnergy( void ){
 	const double expectedValue = std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
 
 	mean_energy_ = expectedValue / GetTotal();	
+	mean_energy_valid_ = true;
 }
 
 void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 	for( Tuple2D& v : data_ ){
 		modFunction( v );
 	}
-
-	this->UpdateMeanEnergy();
 }
