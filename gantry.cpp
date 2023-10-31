@@ -140,7 +140,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
 														cref( rayScatterAngles ), cref( rays ), 
 														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
