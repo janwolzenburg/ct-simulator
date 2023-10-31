@@ -34,9 +34,9 @@ using std::mutex;
 
 #include <chrono>
 using namespace std::chrono;
-milliseconds start_tic;
-#define tic start_tic = duration_cast< milliseconds >( system_clock::now().time_since_epoch() )
-#define toc ( duration_cast< milliseconds >( system_clock::now().time_since_epoch() ) - start_tic ).count()
+static microseconds start_tic;
+#define tic start_tic = duration_cast< microseconds >( system_clock::now().time_since_epoch() )
+#define toc ( duration_cast< microseconds >( system_clock::now().time_since_epoch() ) - start_tic ).count()
 
 
  /*********************************************************************
