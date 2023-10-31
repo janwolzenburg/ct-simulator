@@ -66,14 +66,33 @@ void Gantry::TranslateInZDirection( const double distance ){
 }
 
 void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties tomoParameter, const RayScattering rayScatterAngles,
-									const pair<vector<Ray>::const_iterator, vector<Ray>::const_iterator> first_and_end_ray,
-									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
-									XRayDetector& rayDetector, mutex& detectorMutex ){
+								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
+								XRayDetector& rayDetector, mutex& detectorMutex ){
 
-	for( auto current_ray = first_and_end_ray.first; current_ray < first_and_end_ray.second; current_ray++ ){
+
+	size_t currentRayIndex;
+	Ray currentRay;
+	Ray returnedRay;
+
+	// Loop while rays are left
+	while( sharedCurrentRayIndex < rays.size() ){
+
+		// Get the Ray which should be transmitted next and increment index
+		currentRayIndexMutex.lock();
+		currentRayIndex = sharedCurrentRayIndex++;
+		currentRayIndexMutex.unlock();
+
+
+
+		// No more rays left
+		if( currentRayIndex >= rays.size() ) break;
+
+		// Write current Ray to local variable
+		currentRay = rays.at( currentRayIndex  );
 
 		// Transmit Ray through model
-		Ray returnedRay = radModel.TransmitRay( *current_ray, tomoParameter, rayScatterAngles );
+		returnedRay = radModel.TransmitRay( currentRay, tomoParameter, rayScatterAngles );
 		returnedRay.properties().energy_spectrum().Scale( 1. / (double) returnedRay.voxel_hits() );
 
 		// Is the Ray outside the model
@@ -117,40 +136,23 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
 
+		//cout << "Loop: " << currentLoop + 1 << endl;
+
 		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	// No scattering in last iteration
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 
-		// Split rays in chunks to use for threads
-		const size_t number_of_threads = std::thread::hardware_concurrency();
-		const size_t rays_per_thread = ForceToMin1( static_cast<size_t>( ceil( static_cast<double>( rays.size() ) / static_cast<double>( number_of_threads  ) ) ) );
-		vector<Ray>::const_iterator range_start = rays.cbegin();
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < number_of_threads && range_start < rays.cend(); threadIdx++ ){
 
-			// End of ray range
-			vector<Ray>::const_iterator range_end;
-			
-			// Check if range end is valid
-			if( static_cast<size_t>( rays.cend() - range_start ) > rays_per_thread )
-				range_end = range_start + rays_per_thread;
-			else
-				range_end = rays.cend();
 
-			// Create pair with start and end of ray range for this thread
-			pair<vector<Ray>::const_iterator, vector<Ray>::const_iterator> rays_range{
-				range_start, range_end
-			};
 
-			// New start is current end
-			range_start = range_end;
-
-			// Add to threads vector
+		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), tomography_properties , rayScatterAngles,
-														rays_range, ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
-														ref( detector_ ), ref( detectorMutex ) );
+													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
+													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
+													ref( detector_ ), ref( detectorMutex ) );
 		}
 
 		// Wait for threads to finish
