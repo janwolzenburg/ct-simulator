@@ -297,8 +297,9 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 			modelRay.IncrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
-			currentPntOnRay = modelRay.GetPoint( currentRayStep );	// New point on Ray
-		
+			currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );	// New point on Ray
+	
+
 			// Scattering
 			if( tomoParameter.scattering_enabled ){
 			
@@ -320,6 +321,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 	// New origin_ "outside" the model to return
 	modelRay.origin( currentPntOnRay );
+
 
 	return modelRay;
 }

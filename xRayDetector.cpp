@@ -188,7 +188,7 @@ void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 			// If has_anti_scattering_structure and angle allowed by structure
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
-				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties_ to pixel
+				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties to pixel
 				allPixelLock.unlock();
 			}
 
@@ -204,6 +204,6 @@ void XRayDetector::ConvertPixelArray( const CoordinateSystem* const targetCSys )
 
 	// Iterate all pixel in detector
 	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
-		converted_pixel_array_.at( pixelIdx ) = pixel_array_.at( pixelIdx ).ConvertTo( targetCSys );
+		converted_pixel_array_.at( pixelIdx ) = std::move( pixel_array_.at( pixelIdx ).ConvertTo( targetCSys ) );
 	}
 }
