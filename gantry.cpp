@@ -15,6 +15,9 @@
 using std::ref;
 using std::cref;
 
+#include <chrono>
+using namespace std::chrono;
+
 #include "gantry.h"
 #include "coordinateSystemTree.h"
 #include "tomography.h"
@@ -109,6 +112,8 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
+	milliseconds start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
+
 	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
@@ -126,6 +131,9 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
+	cout << "\tRadiation preperation: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
+
+	start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
 	mutex rayIndexMutex;				// Mutex for Ray index
@@ -161,6 +169,8 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		rays = raysForNextIteration;
 
 	}
+
+	cout << "\tRay transmitting: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
 }
 
 void Gantry::ResetGantry( void ){

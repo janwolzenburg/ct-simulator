@@ -13,6 +13,8 @@
   Includes
 *********************************************************************/
 
+#include <chrono>
+using namespace std::chrono;
 #include <FL/Fl.H>
 
 #include "tomography.h"
@@ -88,6 +90,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 	Projections sinogram{ radon_properties };
 
 	
+	
 
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
@@ -95,9 +98,16 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 		if( progressWindow != nullptr ) 
 			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
+		milliseconds start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
+
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );
 		
+		cout << "Radiation: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
+
+
+		start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
+
 		// Get the detection result
 		const vector<DetectorPixel> detectionPixel = gantry.pixel_array();
 
@@ -108,13 +118,20 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
+			const size_t pixel_hits = currentPixel.detected_ray_properties().size();
+
+			const double correction_factor = pixel_hits > 1 ? 1. / static_cast<double>( pixel_hits ) : 1.;
+
 			// Get the radon point
-			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() * correction_factor };
 			
 			// Assign the data_ to sinogram
 			sinogram.AssignData( newRadonPoint );
 		}
 		
+		
+		cout << "Detection: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
+
 		// Rotate gantry
 		gantry.RotateCounterClockwise( radon_properties.angles_resolution() );
 
