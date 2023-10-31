@@ -15,9 +15,6 @@
 using std::ref;
 using std::cref;
 
-#include <chrono>
-using namespace std::chrono;
-
 #include "gantry.h"
 #include "coordinateSystemTree.h"
 #include "tomography.h"
@@ -27,7 +24,6 @@ using namespace std::chrono;
 /*********************************************************************
   Implementations
 *********************************************************************/
-
 
 Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
 				const ProjectionsProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
@@ -72,38 +68,41 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 
 	size_t currentRayIndex;
-	Ray currentRay;
-	Ray returnedRay;
+	Ray currentRay, returnedRay;
 
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
 
 		// Get the Ray which should be transmitted next and increment index
 		currentRayIndexMutex.lock();
-		currentRayIndex = sharedCurrentRayIndex++;
+		currentRayIndex = sharedCurrentRayIndex;
+		sharedCurrentRayIndex += threads_ray_chunk_size;
 		currentRayIndexMutex.unlock();
 
+		for( size_t local_ray_index = 0; local_ray_index < threads_ray_chunk_size; local_ray_index++ ){
 
+			currentRayIndex += local_ray_index;
 
-		// No more rays left
-		if( currentRayIndex >= rays.size() ) break;
+			// No more rays left
+			if( currentRayIndex >= rays.size() ) break;
 
-		// Write current Ray to local variable
-		currentRay = rays.at( currentRayIndex  );
+			// Write current Ray to local variable
+			currentRay = rays.at( currentRayIndex  );
 
-		// Transmit Ray through model
-		returnedRay = radModel.TransmitRay( currentRay, tomoParameter, rayScatterAngles );
-		returnedRay.properties().energy_spectrum().Scale( 1. / (double) returnedRay.voxel_hits() );
+			// Transmit Ray through model
+			returnedRay = radModel.TransmitRay( currentRay, tomoParameter, rayScatterAngles );
 
-		// Is the Ray outside the model
-		if( !radModel.IsPointInside( returnedRay.origin() ) ){
-			rayDetector.DetectRay( returnedRay, detectorMutex );
+			// Is the Ray outside the model
+			if( !radModel.IsPointInside( returnedRay.origin() ) ){
+				rayDetector.DetectRay( returnedRay, detectorMutex );
+			}
+			else{
+				iterationMutex.lock();
+				raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
+				iterationMutex.unlock();
+			}
 		}
-		else{
-			iterationMutex.lock();
-			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
-			iterationMutex.unlock();
-		}
+
 	}
 
 	return;
@@ -136,23 +135,17 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop < tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
 
-		//cout << "Loop: " << currentLoop + 1 << endl;
-
 		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	// No scattering in last iteration
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 
-
 		// Start threads
 		vector<std::thread> threads;
-
-
-
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), tomography_properties , rayScatterAngles,
-													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
-													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
-													ref( detector_ ), ref( detectorMutex ) );
+														cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
+														ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
+														ref( detector_ ), ref( detectorMutex ) );
 		}
 
 		// Wait for threads to finish
@@ -162,7 +155,6 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		rays = raysForNextIteration;
 
 	}
-
 }
 
 void Gantry::ResetGantry( void ){

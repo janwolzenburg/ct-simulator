@@ -27,3 +27,5 @@ constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * P
 
 constexpr size_t number_of_scatter_angles = 127;							/*!<Amount of discrete angles available for scattering*/
 constexpr size_t number_of_energies_for_scattering = 64;					/*!<Amount of energies used */
+
+constexpr size_t threads_ray_chunk_size = 32;								/*!How many rays should an iteration in thread function handle*/
