@@ -278,7 +278,7 @@ void programState::exportSinogram( void ){
 		storedExportChooser.setLoaded();
 		if( exportPath.empty() ) return;
 
-		if( exportPath.extension() != "sinogram" )
+		if( exportPath.extension() != ".sinogram" )
 			exportPath += ".sinogram";
 
 		vector<char> binary_data;
