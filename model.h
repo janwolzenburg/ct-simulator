@@ -45,7 +45,7 @@ class Model : public MathematicalObject{
 	 * @brief Constructor
 	 * @param coordinate_system Position and orientation of model in global system
 	 * @param number_of_voxel_3D	Amount of voxels in each spacial dimension
-	 * @param voxel_size Spacial size_ of voxels
+	 * @param voxel_size Spacial size of voxels
 	 * @param name Name of model
 	*/
 	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name = "Default model name_" );
@@ -63,15 +63,15 @@ class Model : public MathematicalObject{
 	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
 
 	/*!
-	 * @brief Convert model's data_ to string
+	 * @brief Convert model's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with model's data_
+	 * @return String with model's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 	
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -175,7 +175,7 @@ class Model : public MathematicalObject{
 	 * @param voxel_indices Indices of target voxel
 	 * @return True when indices are valid
 	*/
-	bool SetVoxelProperties( const VoxelData::specialProperty properties, const Index3D voxel_indices );
+	bool SetVoxelProperties( const VoxelData::SpecialProperty properties, const Index3D voxel_indices );
 
 	/*!
 	 * @brief Get voxel instance for given indices
@@ -222,7 +222,7 @@ class Model : public MathematicalObject{
 	 * @param center Center of sphere
 	 * @param radius Radius of sphere
 	*/
-	void AddSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius );
+	void AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius );
 
 
 	private:

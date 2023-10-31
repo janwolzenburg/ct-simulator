@@ -62,19 +62,19 @@ class Fl_GridImage : public Fl_Widget{
 	void assignImage( const monoImage& img );
 
 	/*!
-	 * @brief Assign gridded voxel data_ 
+	 * @brief Assign gridded voxel data 
 	 * @param modGrid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
 	void assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise = false );
 
 	/*!
-	 * @brief Calculate new image when size_ changed
+	 * @brief Calculate new image when size changed
 	*/
 	void calculateScaled( void );
 
 	/*!
-	 * @brief Update and redraw image when size_ changed
+	 * @brief Update and redraw image when size changed
 	*/
 	void updateScaled( void );
 

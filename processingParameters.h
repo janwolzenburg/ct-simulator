@@ -31,15 +31,15 @@ class processingParameter{
 	processingParameter( void );
 
 	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param it Iterator to start of data in vector
 	*/
 	processingParameter( const vector<char>& binary_data, vector<char>::const_iterator& it );
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 

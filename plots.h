@@ -52,7 +52,7 @@ class plot{
 	 * @param xlabel_ x-axis label
 	 * @param ylabel_ y-axis label
 	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired size_ of image
+	 * @param imgSize_ Desired size of image
 	 * @param xFormat_ x-ticks format string
 	 * @param yFormat_ y-ticks format string
 	 * @param axisEqual_ Flag to make axis equally scaled
@@ -69,9 +69,9 @@ class plot{
 
 	/*!
 	 * @brief Set image size_
-	 * @param size_ New size_ of image
+	 * @param size New size of image
 	*/
-	void setSize( const GridIndex size_ ){ imgSize = size_; };
+	void setSize( const GridIndex size ){ imgSize = size_; };
 
 	/*!
 	 * @brief Get the image size_

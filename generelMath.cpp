@@ -84,7 +84,7 @@ std::string MathematicalObject::GetErrorString( const MathError code ) const{
 }
 
 void MathematicalObject::Dump( std::ostream& output, const std::string objName ) const{
-	// Write type, name_ and data_ to outstream
+	// Write type, name and data to outstream
 
 	output << typeid( *this ).name() << ' ' << objName << '\n' << this->ToString() << '\n' << '\n';
 }

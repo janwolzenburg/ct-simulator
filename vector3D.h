@@ -46,8 +46,8 @@ class Vector3D : protected Coordinates{
 	Vector3D( void );
 
 	/*!
-	 * @brief Convert vector's data_ to string
-	 * @return String with vector's data_
+	 * @brief Convert vector's data to string
+	 * @return String with vector's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -125,7 +125,7 @@ class Vector3D : protected Coordinates{
 	double Z( void ) const{ return z; };
 
 	/*!
-	 * @brief Get length_ of vector
+	 * @brief Get length of vector
 	 * @return Length of vector in local coordinate system
 	*/
 	double length( void ) const{ return length_; };
@@ -223,9 +223,9 @@ class Vector3D : protected Coordinates{
 	MathError Scale( const double scalar );
 
 	/*!
-	 * @brief Normalise vector's length_ to one
+	 * @brief Normalise vector's length to one
 	 * @return Error code
-	 * @details Error code ist set when vector's length_ is zero
+	 * @details Error code ist set when vector's length is zero
 	*/
 	MathError Normalise( void );
 
@@ -343,7 +343,7 @@ class Vector3D : protected Coordinates{
 	double length_;				/*!< Length */
 
 	/*!
-	 * @brief Calculates vector's length_ corresponding to vector component and stores it in member
+	 * @brief Calculates vector's length corresponding to vector component and stores it in member
 	 * @return Error code
 	*/
 	MathError UpdateLength( void );
@@ -353,7 +353,7 @@ class Vector3D : protected Coordinates{
 
 
 /*!
- * @brief Class for unit vectors with length_ one
+ * @brief Class for unit vectors with length one
 */
 class UnitVector3D : public Vector3D{
 
@@ -426,8 +426,8 @@ class Point3D : public Vector3D{
 	Point3D( const Vector3D v ) : Vector3D( v ){};
 
 	/*!
-	 * @brief Convert point's data_ to string
-	 * @return String with point's data_
+	 * @brief Convert point's data to string
+	 * @return String with point's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 

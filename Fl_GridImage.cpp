@@ -73,10 +73,10 @@ void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool n
 				
 				hasOverlay = true;
 
-				if( data_.HasSpecificProperty( VoxelData::METAL ) )
+				if( data_.HasSpecificProperty( VoxelData::Metal ) )
 					overlay.at( originalImage.index( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
 
-				if( data_.HasSpecificProperty( VoxelData::UNDEFINED ) )
+				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
 					overlay.at( originalImage.index( c, r ) ) = { true, bgColor };
 			}
 

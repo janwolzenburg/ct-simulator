@@ -48,8 +48,8 @@ Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
 void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
 	
 	// Implement here handling of new properties
-	if(  data_.HasSpecificProperty( VoxelData::specialProperty::NONE ) ||
-		 data_.HasSpecificProperty( VoxelData::specialProperty::METAL ) )
+	if(  data_.HasSpecificProperty( VoxelData::SpecialProperty::None ) ||
+		 data_.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
 		properties_.AttenuateSpectrum( data_, distance );
 }
 

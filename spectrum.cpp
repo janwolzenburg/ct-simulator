@@ -30,7 +30,7 @@ EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
 	mean_energy_valid_( false )
 {
 
-	// Sort data_ by x value
+	// Sort data by x value
 	sort( data_.begin(), data_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
 	energy_resolution_ = data_.at( 1 ).x - data_.at( 0 ).x;

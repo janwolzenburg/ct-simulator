@@ -37,10 +37,10 @@ DataGrid<D>::DataGrid( void ) :
 }
 
 template<class D>
-DataGrid<D>::DataGrid( const GridIndex size_, const GridCoordinates start_, const GridCoordinates resolution_, D defaultValue ) :
-	size_( size_ ),
-	resolution_( resolution_ ),
-	start_( start_ )
+DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D defaultValue ) :
+	size_( size ),
+	resolution_( resolution ),
+	start_( start )
 {
 	InitialiseMinAndMaxValue();
 	FillVectors( defaultValue );
@@ -101,7 +101,7 @@ void DataGrid<D>::FillVectors( const D defaultValue ){
 	column_points_ = CreateLinearSpace( start_.c, start_.c + (double) ( size_.c - 1 ) * resolution_.c, size_.c );
 	row_points_ = CreateLinearSpace( start_.r, start_.r + (double) ( size_.r - 1 ) * resolution_.r, size_.r );
 
-	// Create data_ structure
+	// Create data structure
 	data_ = vector<vector<D>>( size_.c, vector<D>( size_.r, defaultValue ) );
 }
 
@@ -179,8 +179,8 @@ bool DataGrid<D>::SetData( const GridIndex index, const D newValue ){
 	}
 	// Special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
-		if( newValue < min_value_ && !newValue.HasSpecificProperty( VoxelData::UNDEFINED ) ) min_value_ = newValue;
-		if( newValue > max_value_ && !newValue.HasSpecificProperty( VoxelData::UNDEFINED ) ) max_value_ = newValue;
+		if( newValue < min_value_ && !newValue.HasSpecificProperty( VoxelData::Undefined ) ) min_value_ = newValue;
+		if( newValue > max_value_ && !newValue.HasSpecificProperty( VoxelData::Undefined ) ) max_value_ = newValue;
 	}
 
 	this->operator()( index ) = newValue;

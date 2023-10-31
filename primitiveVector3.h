@@ -49,12 +49,12 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	/*!
 	 * @brief Constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data_ in vector
+	 * @param it Iterator to start of data in vector
 	*/
 	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
-	 * @brief Convert data_ to string
+	 * @brief Convert data to string
 	 * @param newline_tabulators
 	 * @return String with data_
 	*/

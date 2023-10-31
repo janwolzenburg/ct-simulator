@@ -82,7 +82,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 			// This is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 
-			// First pixel size_ so that the neighbooring pixel intersects at half angle
+			// First pixel size so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
@@ -96,7 +96,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size_ is double the lot length_
+			// Pixel size is double the lot length
 			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 

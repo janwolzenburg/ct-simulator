@@ -79,7 +79,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 	if( zPosition != 0. )
 		gantry.TranslateInZDirection( zPosition );
 
-	// Assign gantry csys-data_ to radon coordinate system
+	// Assign gantry csys-data to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
 
 	// Create sinogram 
@@ -111,7 +111,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get the radon point
 			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() * correction_factor };
 			
-			// Assign the data_ to sinogram
+			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );
 		}
 		

@@ -57,7 +57,7 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 				else if( ( sp2_center - p ).length() <= sp2_radius && ( true || ( sp2_center - p ).length() >= sp2_radius - 1.1 ) ) mod.SetVoxelData( sp2_data, { x, y, z } );
 				else mod.SetVoxelData( bgData, { x, y, z } );
 			
-				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.SetVoxelProperties( VoxelData::METAL, { x, y, z } );
+				if( ( artifact - p ).length() <= artRadius && ( true || ( artifact - p ).length() >= artRadius - 1.1 ) )  mod.SetVoxelProperties( VoxelData::Metal, { x, y, z } );
 			
 			}
 		}

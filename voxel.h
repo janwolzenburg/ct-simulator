@@ -35,20 +35,20 @@ using std::array;
 /*!
  * @brief Physical voxel data_
 */
-#pragma pack(push, 1)	// Memory alignment for serializing model data_ without serializing single voxel data_ 
+#pragma pack(push, 1)	// Memory alignment for serializing model data without serializing single voxel data 
 class VoxelData{
 	
 	public:
 
-	typedef unsigned char specialPropertyEnumType;		/*!<Type to store up tu 8 special properties_*/
+	typedef unsigned char SpecialPropertyEnumType;		/*!<Type to store up tu 8 special properties_*/
 
 	/*!
 	 * @brief Special propterties a voxel can have
 	*/
-	enum specialProperty : specialPropertyEnumType{
-		NONE =			0b00000000,
-		METAL =			0b00000001,
-		UNDEFINED =		0b00000010
+	enum SpecialProperty : SpecialPropertyEnumType{
+		None =			0b00000000,
+		Metal =			0b00000001,
+		Undefined =		0b00000010
 	};
 
 	/*!
@@ -62,37 +62,37 @@ class VoxelData{
 	 * @param attenuation_at_energy Attenuation coefficient at given energy
 	 * @param energy_eV Energy in eV
 	*/
-	VoxelData( const double attenuation_at_energy, const double energy_eV, const specialProperty = UNDEFINED );
+	VoxelData( const double attenuation_at_energy, const double energy_eV, const SpecialProperty = Undefined );
 
 	/*!
 	 * @brief Constructor from serialized data_
-	 * @param binary_data Vector with serialized data_
-	 * @param current_byte Start of data_ for this object
+	 * @param binary_data Vector with serialized data
+	 * @param current_byte Start of data for this object
 	*/
 	VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	VoxelData( void ) : attenuation_( -1 ), specialProperties_( UNDEFINED ){};
+	VoxelData( void ) : attenuation_( -1 ), specialProperties_( Undefined ){};
 
 	/*!
 	 * @brief Serialize this object
-	 * @param binary_data Reference to vector where data_ will be appended
+	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
 	 * @brief Comparison
-	 * @param d2 Second voxel data_
-	 * @return True when attenuation_ of left operand is smaller than right's
+	 * @param d2 Second voxel data
+	 * @return True when attenuation of left operand is smaller than right's
 	*/
 	bool operator<( const VoxelData& d2 ) const{ return this->attenuation_ < d2.attenuation_; };
 
 	/*!
 	 * @brief Comparison
-	 * @param d2 Second voxel data_
-	 * @return True when attenuation_ of left operand is greater than right's
+	 * @param d2 Second voxel data
+	 * @return True when attenuation of left operand is greater than right's
 	*/
 	bool operator>( const VoxelData& d2 ) const{ return !operator<( d2 ); };
 
@@ -100,13 +100,13 @@ class VoxelData{
 	 * @brief Add special property
 	 * @param property Property to add
 	*/
-	void AddSpecialProperty( const specialProperty property ){ specialProperties_ |= ToUnderlying( property ); };
+	void AddSpecialProperty( const SpecialProperty property ){ specialProperties_ |= ToUnderlying( property ); };
 
 	/*!
 	 * @brief Remove special property
 	 * @param property Property to remove
 	*/
-	void RemoveSpecialProperty( const specialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
+	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
 
 	/*!
 	 * @brief Get the attenuation_ at given energy
@@ -125,14 +125,14 @@ class VoxelData{
 	 * @brief Check if there is a special property
 	 * @return True when is has at least one property
 	*/
-	bool HasSpecialProperty( void ) const{ return specialProperties_ != NONE; };
+	bool HasSpecialProperty( void ) const{ return specialProperties_ != None; };
 	
 	/*!
 	 * @brief Check for specific property
 	 * @param property Property to check
 	 * @return True when voxel has specific property
 	*/
-	bool HasSpecificProperty( const specialProperty property ) const;
+	bool HasSpecificProperty( const SpecialProperty property ) const;
 
 
 	private:
@@ -141,7 +141,7 @@ class VoxelData{
 	static constexpr double referenceEnergy_3_eV3_ = 1.728e+15;		/*!<Cube of reference energy*/
 
 	double attenuation_	= -1;										/*!<Absorption coefficient at reference Energy*/
-	specialPropertyEnumType specialProperties_;						/*!<Special properties_ in voxel*/
+	SpecialPropertyEnumType specialProperties_;						/*!<Special properties_ in voxel*/
 
 
 	/*!
@@ -183,7 +183,7 @@ class Voxel : public MathematicalObject{
 	 * @brief Constructor
 	 * @param origin Origin point of voxel
 	 * @param size	Size of voxel in unit of coordinate system's axes
-	 * @param data	Physical data_ of voxel
+	 * @param data	Physical data of voxel
 	*/
 	Voxel( const Point3D origin, const Tuple3D size, const VoxelData data );
 
@@ -193,8 +193,8 @@ class Voxel : public MathematicalObject{
 	Voxel( void ) : Voxel{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{ 1, 1, 1 }, VoxelData{} }{};
 
 	/*!
-	 * @brief Convert result's data_ to string
-	 * @return String with result's data_
+	 * @brief Convert result's data to string
+	 * @return String with result's data
 	*/
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
@@ -211,7 +211,7 @@ class Voxel : public MathematicalObject{
 	Tuple3D size( void ) const{ return size_; };
 
 	/*!
-	 * @brief Get data_ of voxel
+	 * @brief Get data of voxel
 	 * @return Voxel data
 	*/
 	VoxelData data( void ) const{ return data_; };

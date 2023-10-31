@@ -116,7 +116,7 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 	// Reset error flag
 	errno = 0;
 
-	// New length_
+	// New length
 	length_ = sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 
 	// Check error flag from sqrt()
@@ -128,7 +128,7 @@ MathematicalObject::MathError Vector3D::Scale( const double scalar ){
 	// Scale each component
 	PrimitiveVector3::Scale( scalar );
 
-	// Update vec3Dtors length_
+	// Update vec3Dtors length
 	return UpdateLength();
 }
 
@@ -159,7 +159,7 @@ MathematicalObject::MathError Vector3D::AddToZ( const double z_ ){
 };
 
 double Vector3D::GetAngle( const Vector3D v2 ) const{
-	// Check if one vec3Dtor has length_ zero
+	// Check if one vec3Dtor has length zero
 	if( IsNearlyEqualDistance( length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return 0.;
 
 	const double scalarProduct = ( ( *this ) * v2 );
@@ -172,7 +172,7 @@ double Vector3D::GetAngle( const Vector3D v2 ) const{
 }
 
 bool Vector3D::IsOrthogonal( const Vector3D v2 ) const{
-	// One vec3Dtor has no length_?
+	// One vec3Dtor has no length?
 	if( IsNearlyEqualDistance( this->length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return false;
 
 	// Check dot product

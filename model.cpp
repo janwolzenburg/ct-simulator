@@ -167,7 +167,7 @@ bool Model::SetVoxelData( const VoxelData newData, const Index3D indices ){
 	return true;
 }
 
-bool Model::SetVoxelProperties( const VoxelData::specialProperty property, const Index3D indices ){
+bool Model::SetVoxelProperties( const VoxelData::SpecialProperty property, const Index3D indices ){
 
 	if( !AreIndicesValid( indices ) ) return false;
 
@@ -186,7 +186,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 
 	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxel_size_.x, (double) indices.y * voxel_size_.y, (double) indices.z * voxel_size_.z }, coordinate_system_ };
 
-	// Get voxel data_ and create voxel instance
+	// Get voxel data and create voxel instance
 	Voxel voxel{ voxOrigin, voxel_size_, GetVoxelData( indices ) };
 
 	return voxel;
@@ -337,7 +337,7 @@ bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_ };
 
 
-	// Copy data_ to new model
+	// Copy data to new model
 	for( size_t z = 0; z < newVoxNum3D.z; z++ ){
 		for( size_t y = 0; y < newVoxNum3D.y; y++ ){
 			for( size_t x = 0; x < newVoxNum3D.x; x++ ){
@@ -423,7 +423,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		// Are cooradinates defined in model?
 		if( !modelRef.IsPointInside( currentPoint ) ){
-			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::UNDEFINED ) );
+			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::Undefined ) );
 			continue;	// Goto next iteration
 		}
 
@@ -512,7 +512,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 
 	}
 
-	// Write data_ to smaller grid
+	// Write data to smaller grid
 	DataGrid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
 
 
@@ -527,7 +527,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 			coords = slice.GetCoordinates( GridIndex( colIdx, rowIdx ) );
 			currentData = largeSlice.GetData( coords );
 
-			if( currentData.HasSpecificProperty( VoxelData::UNDEFINED ) )
+			if( currentData.HasSpecificProperty( VoxelData::Undefined ) )
 				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV() } );
 			else
 				slice.SetData( coords, currentData );
@@ -539,7 +539,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 }
 
 
-void Model::AddSpecialSphere( const VoxelData::specialProperty property, const Point3D center, const double radius ){
+void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius ){
 	
 	// Exit when coords invalid
 	if ( !IsPointInside( center ) ) return;
