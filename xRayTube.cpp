@@ -129,16 +129,17 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
 	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( exposureTime / (double) numRays );
 
-	// properties of created rays
-	const RayProperties beamProperties{ raySpectrum };
-
-
 	// Vector with rays
 	vector<Ray> rays;
+
+	size_t pixel_index = 0;
 
 	// Iterate all pixel
 	for( const DetectorPixel currentPixel : detectorPixel ){
 		
+		// Properties of created rays for this pixel
+		const RayProperties beamProperties{ raySpectrum, pixel_index++ };
+
 		// Get points on the edge of pixel
 
 		const Point3D pMin = currentPixel.GetPoint( currentPixel.parameter_1_min(), 0);		// Point on "minimum" edge
@@ -164,7 +165,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 			const Point3D rayOrigin = tempLine.GetPoint( detector_focus_distance );
 
 			// Add Ray in tube's coordinate system to vector
-			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties);
+			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties );
 
 		}
 

@@ -160,14 +160,25 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 
+	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
 
-	// Iterate all pixel indices
-	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
+	size_t pixelIdx = expected_pixel_index;
+
+	// Iterate all pixel indices. But start with the most likely pixel
+	for( size_t counter = 0; counter < pixel_array_.size() + 1; counter++ ){
 	
+		// Not first iteration: index is counter - 1 becaus first iteration was the most likely pixel
+		if( counter != 0 ){
+			pixelIdx = counter - 1;
+
+			// Skip detection if expected index would be tested again
+			if( pixelIdx == expected_pixel_index )
+				continue;
+		}
+
 		// Converted pixel
 		const DetectorPixel currentPixel = converted_pixel_array_.at( pixelIdx );
 
-	
 		// Check for intersection of Ray with current pixel
 		const RayPixelIntersection pixelHit{ r, currentPixel };
 
@@ -184,6 +195,7 @@ void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 			// Only one pixel can intersect with Ray
 			break;
 		}
+
 	}
 }
 
