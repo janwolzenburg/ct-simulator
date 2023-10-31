@@ -71,6 +71,7 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 								XRayDetector& rayDetector, mutex& detectorMutex ){
 
+
 	size_t currentRayIndex;
 	Ray currentRay;
 	Ray returnedRay;
@@ -104,15 +105,12 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
 			iterationMutex.unlock();
 		}
-
 	}
 
 	return;
 }
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
-
-	milliseconds start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
 
 	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time );		// Current rays. Start with rays from source
 	
@@ -130,10 +128,6 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	RayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
-
-	cout << "\tRadiation preperation: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
-
-	start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
 
 	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
 	mutex rayIndexMutex;				// Mutex for Ray index
@@ -155,7 +149,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 
 
-		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), tomography_properties , rayScatterAngles,
 													cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 													ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
@@ -170,7 +164,6 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 	}
 
-	cout << "\tRay transmitting: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
 }
 
 void Gantry::ResetGantry( void ){

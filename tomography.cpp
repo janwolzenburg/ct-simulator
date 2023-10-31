@@ -98,15 +98,8 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 		if( progressWindow != nullptr ) 
 			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
-		milliseconds start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
-
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );
-		
-		cout << "Radiation: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
-
-
-		start = duration_cast<milliseconds>( system_clock::now().time_since_epoch() );
 
 		// Get the detection result
 		const vector<DetectorPixel> detectionPixel = gantry.pixel_array();
@@ -129,9 +122,6 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			sinogram.AssignData( newRadonPoint );
 		}
 		
-		
-		cout << "Detection: " << ( duration_cast<milliseconds>( system_clock::now().time_since_epoch() ) - start ).count() << " ms" << endl;
-
 		// Rotate gantry
 		gantry.RotateCounterClockwise( radon_properties.angles_resolution() );
 
