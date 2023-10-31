@@ -78,7 +78,7 @@ class XRayDetector{
 	 * @param ray Ray to detect
 	 * @param pixel_mutex Mutex for multi threaded access to pixel array
 	*/
-	void DetectRay( const Ray ray, mutex& pixel_array_mutex );
+	void DetectRay( const Ray& ray, mutex& pixel_array_mutex );
 
 
 	private:

@@ -61,10 +61,11 @@ void Gantry::TranslateInZDirection( const double distance ){
 	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
 }
 
-void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties tomoParameter, const RayScattering rayScatterAngles,
-								const vector<Ray>& rays, size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-								vector<Ray>& raysForNextIteration, mutex& iterationMutex,
-								XRayDetector& rayDetector, mutex& detectorMutex ){
+void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties& tomoParameter, 
+									const RayScattering& rayScatterAngles, const vector<Ray>& rays, 
+									size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
+									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
+									XRayDetector& rayDetector, mutex& detectorMutex ){
 
 
 	size_t currentRayIndex;
@@ -86,15 +87,12 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 			// No more rays left
 			if( currentRayIndex >= rays.size() ) break;
 
-			// Write current Ray to local variable
-			currentRay = rays.at( currentRayIndex  );
-
 			// Transmit Ray through model
-			returnedRay = radModel.TransmitRay( currentRay, tomoParameter, rayScatterAngles );
+			returnedRay = radModel.TransmitRay( cref( rays.at( currentRayIndex ) ), cref( tomoParameter ), cref( rayScatterAngles ) );
 
 			// Is the Ray outside the model
 			if( !radModel.IsPointInside( returnedRay.origin() ) ){
-				rayDetector.DetectRay( returnedRay, detectorMutex );
+				rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
 			}
 			else{
 				iterationMutex.lock();
@@ -110,7 +108,7 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
-	vector<Ray> rays = tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time );		// Current rays. Start with rays from source
+	vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time ) );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){
@@ -142,8 +140,9 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		// Start threads
 		vector<std::thread> threads;
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-			threads.emplace_back( TransmitRaysThreaded,	cref( model ), tomography_properties , rayScatterAngles,
-														cref( rays ), ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
+			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
+														cref( rayScatterAngles ), cref( rays ), 
+														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 														ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 														ref( detector_ ), ref( detectorMutex ) );
 		}
@@ -152,7 +151,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		for( std::thread& currentThread : threads ) currentThread.join();
 
 		// Copy rays to vector
-		rays = raysForNextIteration;
+		rays = std::move( raysForNextIteration );
 
 	}
 }

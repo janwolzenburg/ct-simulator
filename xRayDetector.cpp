@@ -158,7 +158,7 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
+void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 
 	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
 
@@ -177,7 +177,7 @@ void XRayDetector::DetectRay( const Ray r, mutex& allPixelLock ){
 		}
 
 		// Converted pixel
-		const DetectorPixel currentPixel = converted_pixel_array_.at( pixelIdx );
+		const DetectorPixel& currentPixel = converted_pixel_array_.at( pixelIdx );
 
 		// Check for intersection of Ray with current pixel
 		const RayPixelIntersection pixelHit{ r, currentPixel };

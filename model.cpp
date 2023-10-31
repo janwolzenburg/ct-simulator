@@ -192,9 +192,9 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter, const RayScattering scatteringProperties ) const{
+Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties ) const{
 
-	Ray modelRay = tRay.ConvertTo( this->coordinate_system_ );					// Current Ray in model's coordinate system
+	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
 
 	// Find entrance_ in model
 	const RayVoxelIntersection modelIsect{ GetModelVoxel(), modelRay };
@@ -215,7 +215,7 @@ Ray Model::TransmitRay( const Ray tRay, const TomographyProperties tomoParameter
 
 
 	// Current point on the Ray
-	Point3D currentPntOnRay = modelRay.GetPoint( currentRayStep );		// Point of model entrance_
+	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
 
 	const double meanFrequencyTube = modelRay.GetMeanFrequencyOfSpectrum();	// Mean frequency of Ray before it enters model
