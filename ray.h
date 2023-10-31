@@ -35,22 +35,31 @@ class RayProperties{
 
 	/*!
 	 * @brief Constructor
-	 * @param spectrum_ Ray spectrum
+	 * @param spectrum Ray spectrum
+	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
 	*/
-	RayProperties( const EnergySpectrum spectrum_ ) :
-		energy_spectrum_( spectrum_ ), voxel_hits_( 0 ) {};
+	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0 ) :
+		energy_spectrum_( spectrum ), voxel_hits_( 0 ), expected_detector_pixel_index_( expected_pixel_index ) {};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ) {};
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), expected_detector_pixel_index_( 0 ) {};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
 	 * @return Energy spectrum
 	*/
 	EnergySpectrum energy_spectrum( void ) const{ return energy_spectrum_; };
+
+	/*!
+	 * @brief Get index of the pixel in detector-pixel vector this ray is likely to hit
+	 * @return Index of detector pixel
+	*/
+	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
+
+
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
@@ -63,7 +72,8 @@ class RayProperties{
 	private:
 
 	EnergySpectrum energy_spectrum_;		/*!<Energy spectrum*/
-	size_t voxel_hits_;				/*!<Counter for voxels hit during transmission*/
+	size_t voxel_hits_;						/*!<Counter for voxels hit during transmission*/
+	size_t expected_detector_pixel_index_;	/*!<Index of detector pixel the ray is likely to hit*/
 
 };
 
