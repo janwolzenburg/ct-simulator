@@ -29,11 +29,8 @@ bool storedObject<C>::load( const path file_path ){
 	vector<char>::iterator binaryDataIt = binaryData.begin();
 
 	if( !ValidBinaryData( object.FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
-
-	if constexpr( std::is_same_v<C, Model> )
-		object = std::move( C{ binaryData, binaryDataIt } );
-	else
-		object = C{ binaryData, binaryDataIt };
+	
+	object = std::move( C{ binaryData, binaryDataIt } );
 	
 	loaded = true;
 	return loaded;
