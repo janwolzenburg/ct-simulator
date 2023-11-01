@@ -86,6 +86,8 @@ Program
 		colorImage
 
 	Widgets
+		fl_GrayscaleImage
+		fl_AdjustableGrayscaleImage
 
 	windows
 		modelViewProperties

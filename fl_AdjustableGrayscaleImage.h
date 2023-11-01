@@ -40,60 +40,60 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label = 0L );
 
 	/*!
-	 * @brief Change contrast
-	 * @param bounds Lower and upper limit. Values below lower limit are black; values beyond upper limit are white
+	 * @brief Get the current slider values 
+	 * @return Current contrast
 	*/
-	void changeContrast( const NumberRange bounds );
+	NumberRange GetContrast( void ) const{ return NumberRange{ lower_bound_.value(), upper_bound_.value() }; };
 
 	/*!
-	 * @brief Assign grayscale image as new image data_
-	 * @param img Grayscale image
+	 * @brief Check if an image was assigned 
+	 * @return True when an image has been assigned
 	*/
-	void assignImage( const GrayscaleImage& img );
+	bool image_assigned( void ) const{ return image_widget_.image_assigned(); };
+	
+	/*!
+	 * @brief Assign grayscale image as new image data
+	 * @param grayscale_image Grayscale image
+	*/
+	void AssignImage( const GrayscaleImage& grayscale_image );
 
 	/*!
 	 * @brief Assign gridded voxel data 
-	 * @param modGrid Data grid
+	 * @param data_grid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise = false );
+	void AssignImage( const DataGrid<VoxelData>& data_grid, const bool normalise = false );
+
+	/*!
+	 * @brief Change contrast
+	 * @param bounds Lower and upper limit. Values below lower limit are black; values beyond upper limit are white
+	*/
+	void ChangeContrast( const NumberRange new_contrast );
 
 	/*!
 	 * @brief Set the slider range
 	 * @param newBound Raw limits
 	*/
-	void setSliderBounds( const NumberRange newBound );
+	void SetSliderBounds( const NumberRange new_slider_bounds );
+
+	/*!
+	 * @brief Set the contrast adjustment slider range by data values in image
+	*/
+	void SetSliderBoundsFromImage( void );
 
 	/*!
 	 * @brief Handle events
 	 * @return True when image needs update
 	*/
-	bool handleEvents( void );
-
-	/*!
-	 * @brief Set the contrast adjustment slider range by data values in image
-	*/
-	void setSliderBoundsFromImage( void );
-
-	/*!
-	 * @brief Get the current slider values 
-	 * @return Current contrast
-	*/
-	NumberRange getContrast( void ) const{ return NumberRange{ lowerBound.value(), upperBound.value() }; };
-
-	/*!
-	 * @brief Check if an image was assigned 
-	 * @return 
-	*/
-	bool imageAssigned( void ) const{ return imgWidget.image_assigned(); };
+	bool HandleEvents( void );
 
 
 	private:
 	
-	Fl_GrayscaleImage imgWidget;						/*!<The image*/
-	Fl_OwnValuator<Fl_Hor_Slider> lowerBound;	/*!<Slider for lower value bound*/
-	Fl_OwnValuator<Fl_Hor_Slider> upperBound;	/*!<Slider for upper value bound*/
-	bool boundsSet;								/*!<Flag indicating whether the bounds were set before*/
+	Fl_GrayscaleImage image_widget_;				/*!<The image widget*/
+	Fl_OwnValuator<Fl_Hor_Slider> lower_bound_;		/*!<Slider for lower value bound*/
+	Fl_OwnValuator<Fl_Hor_Slider> upper_bound_;		/*!<Slider for upper value bound*/
+	bool bounds_set_;								/*!<Flag indicating whether the bounds were set before*/
 
 
 };

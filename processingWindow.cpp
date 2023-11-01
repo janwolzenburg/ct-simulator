@@ -95,8 +95,8 @@ void processingWindow::handleEvents( void ){
 		Fl_Window::show();
 	}
 
-	if( sinogramWidget.handleEvents() ){
-		PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.getContrast();
+	if( sinogramWidget.HandleEvents() ){
+		PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
 	}
 
 	if( filterChanged ){
@@ -105,22 +105,22 @@ void processingWindow::handleEvents( void ){
 		recalcFilteredProjections();
 	}
 
-	if( filteredProjWidget.handleEvents() ){
-		if( filteredProjWidget.imageAssigned() )
-			PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
+	if( filteredProjWidget.HandleEvents() ){
+		if( filteredProjWidget.image_assigned() )
+			PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 	}
 
-	if( reconstructionImageWidget.handleEvents() ){
-		if( reconstructionImageWidget.imageAssigned() )
-			PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.getContrast();
+	if( reconstructionImageWidget.HandleEvents() ){
+		if( reconstructionImageWidget.image_assigned() )
+			PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 	}
 }
 
 void processingWindow::assignSinogram( const Projections newSinogram ){
 
 	sinogramImg = GrayscaleImage( newSinogram.data(), true );
-	sinogramWidget.assignImage( sinogramImg );
-	sinogramWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
+	sinogramWidget.AssignImage( sinogramImg );
+	sinogramWidget.ChangeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 
 }
 
@@ -138,17 +138,17 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
 
-	filteredProjWidget.assignImage( filteredProjImage );
-	filteredProjWidget.setSliderBoundsFromImage();
-	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.getContrast();
+	filteredProjWidget.AssignImage( filteredProjImage );
+	filteredProjWidget.SetSliderBoundsFromImage();
+	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 
 	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
 	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 
-	reconstructionImageWidget.assignImage( reconstructionImage );
-	reconstructionImageWidget.setSliderBoundsFromImage();
-	PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.getContrast();
+	reconstructionImageWidget.AssignImage( reconstructionImage );
+	reconstructionImageWidget.SetSliderBoundsFromImage();
+	PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 
 	delete processingProgressWindow;
 

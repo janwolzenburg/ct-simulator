@@ -21,41 +21,41 @@
 
 Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
-	imgWidget{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .9 ), "Image" },
-	lowerBound{ X( *this, 0.2 ), Y( *this, 0.91 ), W( *this, .6 ), H( *this, .04 ), "Low" },
-	upperBound{ X( *this, 0.2 ), Y( *this, 0.96 ), W( *this, .6 ), H( *this, .04 ), "High" },
-	boundsSet( false ){
+	image_widget_{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .9 ), "Image" },
+	lower_bound_{ X( *this, 0.2 ), Y( *this, 0.91 ), W( *this, .6 ), H( *this, .04 ), "Low" },
+	upper_bound_{ X( *this, 0.2 ), Y( *this, 0.96 ), W( *this, .6 ), H( *this, .04 ), "High" },
+	bounds_set_( false ){
 	
 	
-	Fl_Group::add( imgWidget );
-	Fl_Group::add( lowerBound );
-	Fl_Group::add( upperBound );
+	Fl_Group::add( image_widget_ );
+	Fl_Group::add( lower_bound_ );
+	Fl_Group::add( upper_bound_ );
 
-	lowerBound.align( FL_ALIGN_LEFT );
-	upperBound.align( FL_ALIGN_LEFT );
+	lower_bound_.align( FL_ALIGN_LEFT );
+	upper_bound_.align( FL_ALIGN_LEFT );
 
-	lowerBound.ValueToLabel( true );
-	upperBound.ValueToLabel( true );
+	lower_bound_.ValueToLabel( true );
+	upper_bound_.ValueToLabel( true );
 
 	this->hide();
 
 }
 
-void Fl_AdjustableGrayscaleImage::changeContrast( const NumberRange bounds ){
+void Fl_AdjustableGrayscaleImage::ChangeContrast( const NumberRange bounds ){
 
-	lowerBound.value( ForceRange( bounds.start(), lowerBound.minimum(), lowerBound.maximum() ) );
-	upperBound.value( ForceRange( bounds.end(), upperBound.minimum(), upperBound.maximum() ) );
+	lower_bound_.value( ForceRange( bounds.start(), lower_bound_.minimum(), lower_bound_.maximum() ) );
+	upper_bound_.value( ForceRange( bounds.end(), upper_bound_.minimum(), upper_bound_.maximum() ) );
 
 }
 
-void Fl_AdjustableGrayscaleImage::assignImage( const GrayscaleImage& img ){
+void Fl_AdjustableGrayscaleImage::AssignImage( const GrayscaleImage& img ){
 
-	imgWidget.AssignImage( img );
+	image_widget_.AssignImage( img );
 
-	if( !boundsSet )
-		setSliderBoundsFromImage();
+	if( !bounds_set_ )
+		SetSliderBoundsFromImage();
 
-	imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+	image_widget_.AdjustContrast( NumberRange( lower_bound_.value(), upper_bound_.value() ) );
 
 
 	this->show();
@@ -63,72 +63,72 @@ void Fl_AdjustableGrayscaleImage::assignImage( const GrayscaleImage& img ){
 
 }
 
-void Fl_AdjustableGrayscaleImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
+void Fl_AdjustableGrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
-	imgWidget.AssignImage( modGrid, normalise );
+	image_widget_.AssignImage( modGrid, normalise );
 
-	if( !boundsSet )
-		setSliderBoundsFromImage();
+	if( !bounds_set_ )
+		SetSliderBoundsFromImage();
 		
-	imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+	image_widget_.AdjustContrast( NumberRange( lower_bound_.value(), upper_bound_.value() ) );
 
 
 	this->show();
 
 }
 
-void Fl_AdjustableGrayscaleImage::setSliderBoundsFromImage( void ){
+void Fl_AdjustableGrayscaleImage::SetSliderBoundsFromImage( void ){
 
-	lowerBound.bounds( imgWidget.GetMinimum(), imgWidget.GetMaximum() );
-	upperBound.bounds( imgWidget.GetMinimum(), imgWidget.GetMaximum() );
+	lower_bound_.bounds( image_widget_.GetMinimum(), image_widget_.GetMaximum() );
+	upper_bound_.bounds( image_widget_.GetMinimum(), image_widget_.GetMaximum() );
 
-	lowerBound.value( lowerBound.minimum() );
-	upperBound.value( upperBound.maximum() );
+	lower_bound_.value( lower_bound_.minimum() );
+	upper_bound_.value( upper_bound_.maximum() );
 
-	lowerBound.step( imgWidget.GetMaximum() - imgWidget.GetMinimum(), 200 );
-	upperBound.step( imgWidget.GetMaximum() - imgWidget.GetMinimum(), 200 );
+	lower_bound_.step( image_widget_.GetMaximum() - image_widget_.GetMinimum(), 200 );
+	upper_bound_.step( image_widget_.GetMaximum() - image_widget_.GetMinimum(), 200 );
 
-	boundsSet = true;
+	bounds_set_ = true;
 }
 
-void Fl_AdjustableGrayscaleImage::setSliderBounds( const NumberRange newBound ){
+void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 
-	lowerBound.bounds( newBound.start(), newBound.end() );
-	upperBound.bounds( newBound.start(), newBound.end() );
+	lower_bound_.bounds( newBound.start(), newBound.end() );
+	upper_bound_.bounds( newBound.start(), newBound.end() );
 
-	lowerBound.value( newBound.start() );
-	upperBound.value( newBound.end() );
+	lower_bound_.value( newBound.start() );
+	upper_bound_.value( newBound.end() );
 
-	lowerBound.step( newBound.GetDifference() / 100. );
-	upperBound.step( newBound.GetDifference() / 100. );
+	lower_bound_.step( newBound.GetDifference() / 100. );
+	upper_bound_.step( newBound.GetDifference() / 100. );
 
-	changeContrast( newBound ); 
+	ChangeContrast( newBound ); 
 
-	boundsSet = true;
+	bounds_set_ = true;
 }
 
-bool Fl_AdjustableGrayscaleImage::handleEvents( void ){
+bool Fl_AdjustableGrayscaleImage::HandleEvents( void ){
 
 	bool updateImage = false;
 
-	if( lowerBound.ChangeFlag() ){
-		if( lowerBound.value() >= upperBound.value() ){
-			lowerBound.value( upperBound.value() - ( lowerBound.maximum() - lowerBound.minimum() ) / 200. );
+	if( lower_bound_.ChangeFlag() ){
+		if( lower_bound_.value() >= upper_bound_.value() ){
+			lower_bound_.value( upper_bound_.value() - ( lower_bound_.maximum() - lower_bound_.minimum() ) / 200. );
 		}
 
 		updateImage = true;
 	}
 
-	if( upperBound.ChangeFlag() ){
-		if( upperBound.value() <= lowerBound.value() ){
-			upperBound.value( lowerBound.value() + ( upperBound.maximum() - upperBound.minimum() ) / 200. );
+	if( upper_bound_.ChangeFlag() ){
+		if( upper_bound_.value() <= lower_bound_.value() ){
+			upper_bound_.value( lower_bound_.value() + ( upper_bound_.maximum() - upper_bound_.minimum() ) / 200. );
 		}
 
 		updateImage = true;
 	}
 
 	if( updateImage ){
-		imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+		image_widget_.AdjustContrast( NumberRange( lower_bound_.value(), upper_bound_.value() ) );
 	}
 
 	return updateImage;

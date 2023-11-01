@@ -124,8 +124,8 @@ modelView::modelView( int x, int y, int w, int h ) :
 	moveGrp.hide();
 
 	if( ModelLoaded() ){
-		viewImg.setSliderBounds( modelInstance.attenuationRange() );
-		viewImg.changeContrast( modelViewPara.contrast );
+		viewImg.SetSliderBounds( modelInstance.attenuationRange() );
+		viewImg.ChangeContrast( modelViewPara.contrast );
 	}
 }
 
@@ -238,7 +238,7 @@ void modelView::resetModel( void ){
 	zTrans.value( 0. );
 
 	sliceModel();
-	viewImg.assignImage( modelSliceInstance, true );
+	viewImg.AssignImage( modelSliceInstance, true );
 
 	Fl_Group::window()->activate();
 
@@ -263,8 +263,8 @@ bool modelView::loadModel( void ){
 
 	UpdateModel();
 
-	viewImg.setSliderBounds( modelInstance.attenuationRange() );
-	modelViewPara.contrast = viewImg.getContrast();
+	viewImg.SetSliderBounds( modelInstance.attenuationRange() );
+	modelViewPara.contrast = viewImg.GetContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
@@ -287,9 +287,9 @@ void modelView::handleEvents( void ){
 		resetModel();
 	}
 
-	if( viewImg.handleEvents() ){
+	if( viewImg.HandleEvents() ){
 		// Store contrast
-		modelViewPara.contrast = viewImg.getContrast();
+		modelViewPara.contrast = viewImg.GetContrast();
 	}
 }
 
@@ -314,7 +314,7 @@ void modelView::UpdateModel( void ){
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		viewImg.assignImage( modelSliceInstance, true );
+		viewImg.AssignImage( modelSliceInstance, true );
 	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();
