@@ -200,7 +200,7 @@ vector<char> ImportSerialized( const string file_name ){
 
 	delete[] dArray;
 
-	return std::move( binary_data );
+	return binary_data;
 
 }
 
