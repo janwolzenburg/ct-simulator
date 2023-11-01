@@ -36,6 +36,9 @@ class modelView : public Fl_Group{
 
 	public: 
 
+
+
+
 	/*!
 	 * @brief Constructor
 	 * @param x x-position
@@ -44,6 +47,57 @@ class modelView : public Fl_Group{
 	 * @param h Height
 	*/
 	modelView( int x, int y, int w, int h );
+
+	~modelView( void ){
+		storedModel.saveObject();
+		storedModelChooser.saveObject();
+		storedViewParameter.saveObject();
+	};
+
+	/*!
+	 * @brief Get Reference to model
+	 * @return Constant reference to model
+	*/
+	const Model& model( void ){ return modelInstance; };
+
+	/*!
+	 * @brief Load the model a stored path
+	 * @return True at success
+	*/
+	bool loadModel( void );
+
+	/*!
+	 * @brief Check if a model has been loaded
+	 * @return True when a model has been loaded
+	*/
+	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+
+	
+	/*!
+	 * @brief Move model to given values with respect to the slice plane coordinate system
+	 * @param targetXRot Rotation around x-axis
+	 * @param targetYRot Rotation around y-axis
+	 * @param targetZTrans Translation in z-direction
+	 * @return True at success
+	*/
+	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
+	
+	/*!
+	 * @brief Center the model
+	*/
+	void centerModel( void );
+	
+	/*!
+	 * @brief Slice model with stored slice plane
+	 * @return True at success
+	*/
+	bool sliceModel( void );
+
+	/*!
+	 * @brief Get the model description
+	 * @return String with model information
+	*/
+	string modelDescription( void ) const;
 
 	/*!
 	 * @brief Check if load button was pressed
@@ -55,18 +109,13 @@ class modelView : public Fl_Group{
 	 * @brief Check if model needs update
 	 * @return True when model need update and a model is loaded
 	*/
-	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& PROGRAM_STATE().ModelLoaded(); };
+	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& ModelLoaded(); };
 
 	/*!
 	 * @brief Check if reset button was pressed
 	 * @return True when it was pressed
 	*/
 	bool ResetBtnPressed( void ){ return UnsetFlag( resetBtnPressed ); };
-
-	/*!
-	 * @brief Load a model from persisting storage
-	*/
-	void loadModel( void );
 	
 	/*!
 	 * @brief Set flag for model update
@@ -77,11 +126,6 @@ class modelView : public Fl_Group{
 	 * @brief Update the model view
 	*/
 	void UpdateModel( void );
-	
-	/*!
-	 * @brief Slice the model
-	*/
-	void sliceModel( void );
 
 	/*!
 	 * @brief Reset model's position
@@ -95,6 +139,16 @@ class modelView : public Fl_Group{
 
 
 	private:
+	
+	modelViewParameter modelViewPara;			/*!<Parameter of the model view*/
+	DataGrid<VoxelData> modelSliceInstance;		/*!<Slice through model as gridded data*/
+	Model modelInstance;									/*!<Current model*/
+	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
+	
+	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/
+	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
+	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
+
 
 	Fl_Group headGrp;	/*!<Header group*/
 	Fl_Button loadBtn;	/*!<Button to load model*/

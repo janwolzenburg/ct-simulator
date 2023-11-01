@@ -118,10 +118,6 @@ void tomographyExec::handleEvents( void ){
 
 	programState& state = PROGRAM_STATE();
 
-	if( state.ModelLoaded() && !this->active() )
-		this->activate();
-	else if( !state.ModelLoaded() )
-		this->deactivate();
 	
 	if( state.RadonTransformedLoaded() )
 		exportButton.activate();

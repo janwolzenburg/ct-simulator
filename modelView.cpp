@@ -15,6 +15,7 @@
 #include "modelView.h"
 #include "serialization.h"
 #include "widgets.h"
+#include "programState.h"
 
 
 /*********************************************************************
@@ -22,6 +23,15 @@
 *********************************************************************/
 
 modelView::modelView( int x, int y, int w, int h ) :
+	modelSliceInstance{},
+	modelViewPara{},
+	modelInstance{},
+	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), modelInstance},
+	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
+	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), modelChooserInstance },
+	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), modelViewPara ),
+
+	
 	Fl_Group{ x, y, w, h },
 	headGrp{	X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .05 ) },
 	loadBtn{	X( headGrp, .3 ),	Y( headGrp, .05 ),	W( headGrp, .4 ),	H( headGrp, .9 ),	"Load model" },
@@ -107,36 +117,161 @@ modelView::modelView( int x, int y, int w, int h ) :
 
 
 	// Set values
-	xRot.value( PROGRAM_STATE().modelViewPara.plane.rotationAngleX );
-	yRot.value( PROGRAM_STATE().modelViewPara.plane.rotationAngleY );
-	zTrans.value( PROGRAM_STATE().modelViewPara.plane.positionZ );
+	xRot.value(modelViewPara.plane.rotationAngleX );
+	yRot.value( modelViewPara.plane.rotationAngleY );
+	zTrans.value( modelViewPara.plane.positionZ );
 
 	// Hide initially
 	moveGrp.hide();
 
-	if( PROGRAM_STATE().ModelLoaded() ){
-		viewImg.setSliderBounds( PROGRAM_STATE().model().attenuationRange() );
-		viewImg.changeContrast( PROGRAM_STATE().modelViewPara.viewContrast );
+	if( ModelLoaded() ){
+		viewImg.setSliderBounds( modelInstance.attenuationRange() );
+		viewImg.changeContrast( modelViewPara.viewContrast );
 	}
 }
 
-void modelView::loadModel( void ){
+
+string modelView::modelDescription( void ) const{
+
+	string modelDataString;
+
+	modelDataString.clear();
+	modelDataString += "Name: \t" + modelInstance.name() + '\n';
+	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.number_of_voxel_3D().x ) + " x " + ToString( modelInstance.number_of_voxel_3D().y ) + " x " + ToString( modelInstance.number_of_voxel_3D().z ) + "\n";
+	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.voxel_size().x, 2 ) + " x " + ToString( modelInstance.voxel_size().y, 2 ) + " x " + ToString( modelInstance.voxel_size().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model Größe: \t" + ToString( modelInstance.size().x ) + " x " + ToString( modelInstance.size().y ) + " x " + ToString( modelInstance.size().z ) + "  mm^3";
+
+	return modelDataString;
+}
+
+bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
+
+	const slicePlane backupPlane = modelViewPara.plane; 
+	slicePlane& planeInstance =  modelViewPara.plane;
+
+	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
+
+	if( targetXRot != planeInstance.rotationAngleX ){
+
+		const double rotationAngle = targetXRot - planeInstance.rotationAngleX;
+		planeInstance.rotationAngleX = targetXRot;
+
+		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
+
+		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+	}
+
+	if( targetYRot != planeInstance.rotationAngleY ){
+
+		const double rotationAngle = targetYRot - planeInstance.rotationAngleY;
+		planeInstance.rotationAngleY = targetYRot;
+
+		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
+
+		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+	}
+
+	if( targetZTrans != planeInstance.positionZ ){
+
+		const double translation = targetZTrans - planeInstance.positionZ;
+		planeInstance.positionZ = targetZTrans;
+
+		modelInstance.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
+	}
+
+	// Return if succeeded
+	if( sliceModel() ) return true;
+	
+	// Revert changes
+	planeInstance = backupPlane;
+	modelInstance.coordinate_system()->SetPrimitive( backupCSys );
+
+	targetXRot = planeInstance.rotationAngleX;
+	targetYRot = planeInstance.rotationAngleY;
+	targetZTrans = planeInstance.positionZ;
+
+
+	return false;
+}
+
+
+bool modelView::sliceModel( void ){
+	Fl_Group::window()->deactivate();
+	
+	storedViewParameter.setLoaded();
+
+	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
+	
+	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
+	{
+	
+		Fl_Group::window()->activate();
+		return false;
+	}
+
+	modelSliceInstance = tempSlice;
+
+	
+	return true;
+}
+
+
+void modelView::centerModel( void ){
+
+	// Center model
+	Tuple3D center = PrimitiveVector3{ modelInstance.size() } / -2.;
+
+	modelInstance.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+}
+
+
+void modelView::resetModel( void ){
 
 	Fl_Group::window()->deactivate();
+		modelViewPara.plane.rotationAngleX = 0.;
+	 modelViewPara.plane.rotationAngleY = 0.;
+	 modelViewPara.plane.positionZ = 0.;
+
+	centerModel();
+
+	xRot.value( 0. );
+	yRot.value( 0. );
+	zTrans.value( 0. );
+
+	sliceModel();
+	viewImg.assignImage( modelSliceInstance, true );
+
+	Fl_Group::window()->activate();
+
+}
+
+bool modelView::loadModel( void ){
+
+	Fl_Group::window()->deactivate();
+
+
+
 	viewImg.hide(); viewBox.show(); modelData.hide();
 	viewBox.label( "Loading model..." );
 
-	PROGRAM_STATE().loadModel();
-	PROGRAM_STATE().resetModel();
+	
+	path modelToLoad = modelChooserInstance.choose();
+	storedModelChooser.setLoaded();
+
+	if( !storedModel.load( modelToLoad ) ) return false;
+
+	resetModel();
 
 	UpdateModel();
 
-	viewImg.setSliderBounds( PROGRAM_STATE().model().attenuationRange() );
-	PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
+	viewImg.setSliderBounds( modelInstance.attenuationRange() );
+	modelViewPara.viewContrast = viewImg.getContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
 	Fl_Group::window()->activate();
+
+	return true;
 }
 
 void modelView::handleEvents( void ){
@@ -155,31 +290,12 @@ void modelView::handleEvents( void ){
 
 	if( viewImg.handleEvents() ){
 		// Store contrast
-		PROGRAM_STATE().modelViewPara.viewContrast = viewImg.getContrast();
+		modelViewPara.viewContrast = viewImg.getContrast();
 	}
 }
 
-void modelView::sliceModel( void ){
-	Fl_Group::window()->deactivate();
-	PROGRAM_STATE().sliceModel();
-	Fl_Group::window()->activate();
-}
 
-void modelView::resetModel( void ){
 
-	Fl_Group::window()->deactivate();
-	PROGRAM_STATE().resetModel();
-
-	xRot.value( 0. );
-	yRot.value( 0. );
-	zTrans.value( 0. );
-
-	PROGRAM_STATE().sliceModel();
-	viewImg.assignImage( PROGRAM_STATE().modelSliceInstance, true );
-
-	Fl_Group::window()->activate();
-
-}
 
 void modelView::UpdateModel( void ){
 
@@ -191,7 +307,7 @@ void modelView::UpdateModel( void ){
 	double oldZTrans = zTrans.value();
 
 	// Movement did not succeed?
-	if( !PROGRAM_STATE().moveModel( oldXRot, oldYRot, oldZTrans ) ){
+	if( !moveModel( oldXRot, oldYRot, oldZTrans ) ){
 		// moveModel changes arguments to previous value
 		xRot.value( oldXRot );
 		yRot.value( oldYRot );
@@ -199,13 +315,13 @@ void modelView::UpdateModel( void ){
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		viewImg.assignImage( PROGRAM_STATE().modelSliceInstance, true );
+		viewImg.assignImage( modelSliceInstance, true );
 	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
 
-	modelDataString = PROGRAM_STATE().modelDescription();
+	modelDataString = modelDescription();
 	modelData.value( modelDataString.c_str() );
 	Fl_Group::window()->activate();
 

@@ -58,8 +58,6 @@ class programState{
 	*/
 	static programState& getInstance();
 	
-	DataGrid<VoxelData> modelSliceInstance;	/*!<Slice through model as gridded data_*/
-	modelViewParameter modelViewPara;	/*!<Parameter of the model view*/
 
 	Tomography tomographyInstance;				/*!<Instance of the tomography*/
 	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
@@ -125,54 +123,7 @@ class programState{
 	/********************************************* Model *******************************************/
 	/***********************************************************************************************/
 	
-	/*!
-	 * @brief Get Reference to model
-	 * @return Constant reference to model
-	*/
-	const Model& model( void ){ return modelInstance; };
-
-	/*!
-	 * @brief Load the model a stored path
-	 * @return True at success
-	*/
-	bool loadModel( void );
-
-	/*!
-	 * @brief Check if a model has been loaded
-	 * @return True when a model has been loaded
-	*/
-	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
-
-	/*!
-	 * @brief Reset model to defautl state
-	*/
-	void resetModel( void );
-	
-	/*!
-	 * @brief Move model to given values with respect to the slice plane coordinate system
-	 * @param targetXRot Rotation around x-axis
-	 * @param targetYRot Rotation around y-axis
-	 * @param targetZTrans Translation in z-direction
-	 * @return True at success
-	*/
-	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
-	
-	/*!
-	 * @brief Center the model
-	*/
-	void centerModel( void );
-	
-	/*!
-	 * @brief Slice model with stored slice plane
-	 * @return True at success
-	*/
-	bool sliceModel( void );
-
-	/*!
-	 * @brief Get the model description
-	 * @return String with model information
-	*/
-	string modelDescription( void ) const;
+	const Model& model( void ) const;
 
 
 	/********************************************* Gantry ******************************************/
@@ -289,11 +240,6 @@ class programState{
 
 	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
 
-	Model modelInstance;									/*!<Current model*/
-	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
-	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
-	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
-	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
 	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/

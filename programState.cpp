@@ -42,8 +42,7 @@ programState& programState::getInstance(){
 
 programState::programState( void ) :
 	
-	modelSliceInstance{},
-	modelViewPara{},
+
 	tomographyInstance{},
 	tomographyParamerters{},
 	currentProjections{},
@@ -54,12 +53,6 @@ programState::programState( void ) :
 	processingWindow_( nullptr ), 
 
 	resetStateAtExit( false ),
-
-	modelInstance{},
-	storedModel{ getPath( "storedModel.model" ), modelInstance },
-	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	storedModelChooser{ getPath( "storedModelChooser.txt" ), modelChooserInstance },
-	storedViewParameter( programState::getPath( "storedViewParameter.txt" ), modelViewPara ),
 
 	xRayTubeParameter{},
 	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
@@ -88,11 +81,9 @@ programState::~programState( void ) {
 		deleteStorageDir();
 		return;
 	}
-	createStorageDir();
+	
 
-	storedModel.saveObject();
-	storedModelChooser.saveObject();
-	storedViewParameter.saveObject();
+
 
 	storedXRayTubeParameter.saveObject();
 	storedRadonParameter.saveObject();
@@ -137,6 +128,9 @@ void programState::deactivateAll( void ){
 		processingWindow_->deactivate();
 }
 
+
+const Model& programState::model( void ) const{ return mainWindow_->modView.model(); };
+
 void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 				  const ProjectionsProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
 
@@ -151,111 +145,6 @@ void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 	storedDetectorParameter.setLoaded();
 }
 
-string programState::modelDescription( void ) const{
-
-	string modelDataString;
-
-	modelDataString.clear();
-	modelDataString += "Name: \t" + modelInstance.name() + '\n';
-	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.number_of_voxel_3D().x ) + " x " + ToString( modelInstance.number_of_voxel_3D().y ) + " x " + ToString( modelInstance.number_of_voxel_3D().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.voxel_size().x, 2 ) + " x " + ToString( modelInstance.voxel_size().y, 2 ) + " x " + ToString( modelInstance.voxel_size().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + ToString( modelInstance.size().x ) + " x " + ToString( modelInstance.size().y ) + " x " + ToString( modelInstance.size().z ) + "  mm^3";
-
-	return modelDataString;
-}
-
-bool programState::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
-
-	const slicePlane backupPlane = modelViewPara.plane; 
-	slicePlane& planeInstance =  modelViewPara.plane;
-
-	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
-
-	if( targetXRot != planeInstance.rotationAngleX ){
-
-		const double rotationAngle = targetXRot - planeInstance.rotationAngleX;
-		planeInstance.rotationAngleX = targetXRot;
-
-		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
-
-		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
-	}
-
-	if( targetYRot != planeInstance.rotationAngleY ){
-
-		const double rotationAngle = targetYRot - planeInstance.rotationAngleY;
-		planeInstance.rotationAngleY = targetYRot;
-
-		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
-
-		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
-	}
-
-	if( targetZTrans != planeInstance.positionZ ){
-
-		const double translation = targetZTrans - planeInstance.positionZ;
-		planeInstance.positionZ = targetZTrans;
-
-		modelInstance.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
-	}
-
-	// Return if succeeded
-	if( sliceModel() ) return true;
-	
-	// Revert changes
-	planeInstance = backupPlane;
-	modelInstance.coordinate_system()->SetPrimitive( backupCSys );
-
-	targetXRot = planeInstance.rotationAngleX;
-	targetYRot = planeInstance.rotationAngleY;
-	targetZTrans = planeInstance.positionZ;
-
-
-	return false;
-}
-
-bool programState::sliceModel( void ){
-
-	storedViewParameter.setLoaded();
-	storedTomographyParamerter.setLoaded();
-
-	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
-	
-	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
-		return false;
-
-	modelSliceInstance = tempSlice;
-
-	return true;
-}
-
-void programState::centerModel( void ){
-
-	// Center model
-	Tuple3D center = PrimitiveVector3{ modelInstance.size() } / -2.;
-
-	modelInstance.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
-}
-
-void programState::resetModel( void ){
-
-	// Reset plane
-	 modelViewPara.plane.rotationAngleX = 0.;
-	 modelViewPara.plane.rotationAngleY = 0.;
-	 modelViewPara.plane.positionZ = 0.;
-
-	centerModel();
-}
-
-bool programState::loadModel( void ){
-
-	path modelToLoad = modelChooserInstance.choose();
-	storedModelChooser.setLoaded();
-
-	if( !storedModel.load( modelToLoad ) ) return false;
-
-	return true;
-}
 
 void programState::assignRadonTransformed( const Projections rt ){ 
 	currentProjections = rt; 
