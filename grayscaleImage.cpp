@@ -75,7 +75,7 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
 
 			this->operator()( c, r ) = srcImg( srcC, srcR );
-			SetImageData( { c, r }, srcImg.GetImageData( srcC, srcR ) );
+			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
 		}
 	}
 }

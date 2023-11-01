@@ -21,14 +21,14 @@
   Implementations
 *********************************************************************/
 
-rgb_Int getBgColor( void ){
-	rgb_Int backgroundRGB{ 0, 0, 0 };
+RGB getBgColor( void ){
+	RGB backgroundRGB{ 0, 0, 0 };
 	Fl::get_color( FL_BACKGROUND_COLOR, backgroundRGB.red, backgroundRGB.green, backgroundRGB.blue );
 
 	return backgroundRGB;
 }
 
-rgb_Int Fl_GridImage::bgColor = getBgColor();
+RGB Fl_GridImage::bgColor = getBgColor();
 
 /*
 	Fl_GridImage implementation
@@ -44,7 +44,7 @@ void Fl_GridImage::assignImage( const GrayscaleImage& img )
 {
 	originalImage = img;
 	imgAssigned = true;
-	overlay = vector<pair<bool, rgb_Int>>( originalImage.number_of_pixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
+	overlay = vector<pair<bool, RGB>>( originalImage.number_of_pixel(), pair<bool, RGB>{ false, { 0, 0, 0 } } );
 	hasOverlay = false;
 
 	updateScaled();
@@ -53,7 +53,7 @@ void Fl_GridImage::assignImage( const GrayscaleImage& img )
 void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
 	originalImage = GrayscaleImage{ modGrid.size().c, modGrid.size().r };
-	overlay = vector<pair<bool, rgb_Int>>( originalImage.number_of_pixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
+	overlay = vector<pair<bool, RGB>>( originalImage.number_of_pixel(), pair<bool, RGB>{ false, { 0, 0, 0 } } );
 
 	const size_t width = originalImage.width();
 	const size_t height = originalImage.height();
@@ -75,7 +75,7 @@ void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool n
 				hasOverlay = true;
 
 				if( data_.HasSpecificProperty( VoxelData::Metal ) )
-					overlay.at( originalImage.GetIndex( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
+					overlay.at( originalImage.GetIndex( c, r ) ) = { true, RGB{ 128, 0, 0 } };
 
 				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
 					overlay.at( originalImage.GetIndex( c, r ) ) = { true, bgColor };
@@ -94,8 +94,8 @@ void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool n
 
 void Fl_GridImage::draw( void ){
 
-	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.Width() ) / 2;
-	fl_draw_image( (unsigned char*) colorImage.getDataPtr(), centerX, y(), (int) colorImage.Width(), (int) colorImage.Height() );
+	int centerX = this->parent()->x() + ( this->parent()->w() - (int) colorImage.width() ) / 2;
+	fl_draw_image( (unsigned char*) colorImage.GetImageData(), centerX, y(), (int) colorImage.width(), (int) colorImage.height() );
 }
 
 void Fl_GridImage::resize( int x, int y, int w, int h ){
@@ -128,7 +128,7 @@ void Fl_GridImage::calculateScaled( void ){
 	}
 
 
-	colorImage = rgbImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight, overlay };
+	colorImage = ColorImage{ originalImage, (size_t) scaledWidth, (size_t) scaledHeight, overlay };
 
 }
 

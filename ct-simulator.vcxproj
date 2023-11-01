@@ -215,7 +215,7 @@
     <ClInclude Include="programState.h" />
     <ClInclude Include="progress.h" />
     <ClInclude Include="propabilityDistribution.h" />
-    <ClInclude Include="rgbImage.h" />
+    <ClInclude Include="colorImage.h" />
     <ClInclude Include="rayScattering.h" />
     <ClInclude Include="serialization.h" />
     <ClInclude Include="serialization.hpp" />
@@ -288,7 +288,7 @@
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="progress.cpp" />
     <ClCompile Include="propabilityDistribution.cpp" />
-    <ClCompile Include="rgbImage.cpp" />
+    <ClCompile Include="colorImage.cpp" />
     <ClCompile Include="rayScattering.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="slicePlane.cpp" />

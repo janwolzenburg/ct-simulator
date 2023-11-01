@@ -15,7 +15,7 @@
  #include <FL/Fl_Widget.H>
 
 #include "grayscaleImage.h"
-#include "rgbImage.h"
+#include "colorImage.h"
 
 
  /*********************************************************************
@@ -92,10 +92,10 @@ class Fl_GridImage : public Fl_Widget{
 	GrayscaleImage originalImage;	/*!<Raw grayscale imagedata*/
 
 	bool hasOverlay;						/*!<Flag indicating existing overlay*/
-	vector<pair<bool, rgb_Int>> overlay;	/*!<Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
+	vector<pair<bool, RGB>> overlay;	/*!<Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
 
-	rgbImage colorImage;		/*!<Colored image resulting from grayscale image with overlayed color data_*/
+	ColorImage colorImage;		/*!<Colored image resulting from grayscale image with overlayed color data_*/
 
-	static rgb_Int bgColor;		/*!<Background color for pixel without data_*/
+	static RGB bgColor;		/*!<Background color for pixel without data_*/
 
 };

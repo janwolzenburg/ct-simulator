@@ -23,7 +23,7 @@
 /*!
  * @brief Class for a grayscale image
 */
-class GrayscaleImage{
+class Image{
 
 	public:
 
@@ -35,26 +35,26 @@ class GrayscaleImage{
 	 * @param width Width
 	 * @param height Height
 	*/
-	GrayscaleImage( const size_t width, const size_t height );
+	Image( const size_t width, const size_t height );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	GrayscaleImage( void )  : GrayscaleImage{ 0, 0 }{};
+	Image( void )  : Image{ 0, 0 }{};
 
 	/*!
 	 * @brief Construct image from grid
 	 * @param source_grid Source grid
 	 * @param Normalise Flag for normalisation
 	*/
-	GrayscaleImage( const DataGrid<>& source_grid, const bool normalise = false );
+	Image( const DataGrid<>& source_grid, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from voxel-data grid
 	 * @param source_grid Source grid with voxel data
 	 * @param Normalise Flag for normalisation
 	*/
-	GrayscaleImage( const DataGrid<VoxelData>& source_grid, const bool normalise = false );
+	Image( const DataGrid<VoxelData>& source_grid, const bool normalise = false );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -63,14 +63,14 @@ class GrayscaleImage{
 	 * @param newWidth Width of constructed image
 	 * @param newHeight Height of constucted image
 	*/
-	GrayscaleImage( const GrayscaleImage& source_image, const size_t new_width, const size_t new_height );
+	Image( const Image& source_image, const size_t new_width, const size_t new_height );
 
 	/*!
 	 * @brief Construct image from binary data
 	 * @param binary_data Binary data
 	 * @param current_byte Iterator to start reading from
 	*/
-	GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
+	Image( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 	
 	/*!
 	 * @brief Serialize this object
@@ -125,11 +125,11 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief Get character data for image drawing
-	 * @param column Column
+	 * @param c Column
 	 * @param row Row
 	 * @return Grayscale value
 	*/
-	unsigned char GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
+	unsigned char GetImageData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 
 	/*!
 	 * @brief Set pixel data
@@ -181,5 +181,5 @@ class GrayscaleImage{
 	 * @param pixel Pixel indices
 	 * @param data New data
 	*/
-	void SetPixelData( const GridIndex pixel, const unsigned char data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = data; };
+	void SetImageData( const GridIndex pixel, const unsigned char data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = data; };
 };
