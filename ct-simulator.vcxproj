@@ -190,7 +190,6 @@
     <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="modelViewProperties.h" />
-    <ClInclude Include="grayscaleImage.fwd.h" />
     <ClInclude Include="grayscaleImage.h" />
     <ClInclude Include="lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />

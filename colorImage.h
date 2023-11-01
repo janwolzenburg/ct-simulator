@@ -12,18 +12,11 @@
 	Includes
  *********************************************************************/
 
- #include <string>
- using std::string;
-
- #include <vector>
- using std::vector;
-
-#include "grayscaleImage.fwd.h"
 #include <utility>
 using std::pair;
 
 #include "generel.h"
-
+#include "grayscaleImage.h"
 
 
  /*********************************************************************
