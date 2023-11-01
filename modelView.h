@@ -62,16 +62,20 @@ class modelView : public Fl_Group{
 	const Model& model( void ){ return modelInstance; };
 
 	/*!
+	 * @brief Check if a model has been loaded
+	 * @return True when a model has been loaded
+	*/
+	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+
+
+
+	/*!
 	 * @brief Load the model a stored path
 	 * @return True at success
 	*/
 	bool loadModel( void );
 
-	/*!
-	 * @brief Check if a model has been loaded
-	 * @return True when a model has been loaded
-	*/
-	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+
 
 	
 	/*!
@@ -141,14 +145,15 @@ class modelView : public Fl_Group{
 
 	private:
 	
+	
+	fileChooser modelChooserInstance;			/*!<File chooser for the model*/
+	Model modelInstance;						/*!<Current model*/
 	ModelViewProperties modelViewPara;			/*!<Parameter of the model view*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!<Slice through model as gridded data*/
-	Model modelInstance;									/*!<Current model*/
-	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
 	
-	storedObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
-	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
 	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
+	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
+	storedObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
 
 
 	Fl_Group headGrp;	/*!<Header group*/

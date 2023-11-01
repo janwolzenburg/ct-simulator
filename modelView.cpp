@@ -20,12 +20,14 @@
 
 
 modelView::modelView( int x, int y, int w, int h ) :
-	modelSliceInstance{},
-	modelViewPara{},
-	modelInstance{},
-	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), modelInstance},
+	
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
+	modelInstance{},
+	modelViewPara{},
+	modelSliceInstance{},
+	
 	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), modelChooserInstance },
+	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), modelInstance},
 	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), modelViewPara ),
 
 	
