@@ -210,7 +210,6 @@
     <ClInclude Include="processingParameters.h" />
     <ClInclude Include="processingWindow.fwd.h" />
     <ClInclude Include="processingWindow.h" />
-    <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="progress.h" />
     <ClInclude Include="propabilityDistribution.h" />

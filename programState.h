@@ -18,7 +18,7 @@
  #include <vector>
  using std::vector;
 
- #include "programState.fwd.h"
+ //#include "programState.fwd.h"
  #include "generel.h"
  #include "dataGrid.h"
  #include "voxel.h"
@@ -42,7 +42,7 @@
  *********************************************************************/
 
 
- programState& PROGRAM_STATE( void );
+class programState& PROGRAM_STATE( void );
 
 
 class programState{
