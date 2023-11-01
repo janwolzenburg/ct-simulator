@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   .h
+ * @file   storedObject.h
  * @brief
  *
  * @author Jan Wolzenburg
