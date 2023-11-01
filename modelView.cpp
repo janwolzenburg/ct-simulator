@@ -254,7 +254,7 @@ bool modelView::loadModel( void ){
 	viewBox.label( "Loading model..." );
 
 	
-	path modelToLoad = modelChooserInstance.choose();
+	path modelToLoad = modelChooserInstance.ChooseFile();
 	storedModelChooser.SetAsLoaded();
 
 	if( !storedModel.Load( modelToLoad ) ) return false;

@@ -80,3 +80,4 @@ Program
 	storedObject
 	windows
 		modelViewProperties
+		fileChooser

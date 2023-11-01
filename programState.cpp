@@ -163,7 +163,7 @@ void programState::setUpdateInformationFlag( void ){
 void programState::exportSinogram( void ){
 	if( storedProjections.was_loaded() ){
 
-		path exportPath = exportChooserInstance.choose();
+		path exportPath = exportChooserInstance.ChooseFile();
 		storedExportChooser.SetAsLoaded();
 		if( exportPath.empty() ) return;
 
@@ -180,5 +180,5 @@ void programState::exportSinogram( void ){
 
 path programState::importSinogram( void ){
 	storedImportChooser.SetAsLoaded();
-	return  importChooserInstance.choose();
+	return  importChooserInstance.ChooseFile();
 }
