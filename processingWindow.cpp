@@ -118,7 +118,7 @@ void processingWindow::handleEvents( void ){
 
 void processingWindow::assignSinogram( const Projections newSinogram ){
 
-	sinogramImg = monoImage( newSinogram.data(), true );
+	sinogramImg = GrayscaleImage( newSinogram.data(), true );
 	sinogramWidget.assignImage( sinogramImg );
 	sinogramWidget.changeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 
@@ -136,7 +136,7 @@ void processingWindow::recalcFilteredProjections( void ){
 	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 
-	filteredProjImage = monoImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
+	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.assignImage( filteredProjImage );
 	filteredProjWidget.setSliderBoundsFromImage();
@@ -144,7 +144,7 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = monoImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
+	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.assignImage( reconstructionImage );
 	reconstructionImageWidget.setSliderBoundsFromImage();

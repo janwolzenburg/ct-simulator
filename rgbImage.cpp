@@ -13,7 +13,7 @@
 *********************************************************************/
 
 #include "rgbImage.h"
-#include "monoImage.h"
+#include "grayscaleImage.h"
 #include "serialization.h"
 
 
@@ -49,25 +49,25 @@ rgbImage::rgbImage( const rgbImage& srcImg, const size_t newWidth, const size_t 
 	}
 }
 
-rgbImage::rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay ) :
+rgbImage::rgbImage( const GrayscaleImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay ) :
 	rgbImage{ newWidth, newHeight }
 {
 	for( size_t c = 0; c < this->Width(); c++ ){
 
-		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.Width() - 1. ) / ( (double) this->Width() - 1. ) );
+		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->Width() - 1. ) );
 
 		for( size_t r = 0; r < this->Height(); r++ ){
 
-			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.Height() - 1. ) / ( (double) this->Height() - 1. ) );
+			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->Height() - 1. ) );
 
-			if( overlay.size() != srcImg.NumPixel() ){
-				this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
+			if( overlay.size() != srcImg.number_of_pixel() ){
+				this->charData( c, r ) = { srcImg.GetImageData( srcC, srcR ), srcImg.GetImageData( srcC, srcR ), srcImg.GetImageData( srcC, srcR ) };
 			}
-			else if( overlay.at( srcImg.index( srcC, srcR ) ).first ){
-				this->charData( c, r ) = overlay.at( srcImg.index( srcC, srcR ) ).second;
+			else if( overlay.at( srcImg.GetIndex( srcC, srcR ) ).first ){
+				this->charData( c, r ) = overlay.at( srcImg.GetIndex( srcC, srcR ) ).second;
 			}
 			else{
-				this->charData( c, r ) = { srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ), srcImg.charData( srcC, srcR ) };
+				this->charData( c, r ) = { srcImg.GetImageData( srcC, srcR ), srcImg.GetImageData( srcC, srcR ), srcImg.GetImageData( srcC, srcR ) };
 			}
 		}
 	}

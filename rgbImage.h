@@ -18,7 +18,7 @@
  #include <vector>
  using std::vector;
 
-#include "monoImage.fwd.h"
+#include "grayscaleImage.fwd.h"
 #include <utility>
 using std::pair;
 
@@ -77,7 +77,7 @@ class rgbImage{
 	 * @param newHeight New height
 	 * @param overlay Overlay to draw
 	*/
-	rgbImage( const monoImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay = vector<pair<bool, rgb_Int>>( 0 ) );
+	rgbImage( const GrayscaleImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, rgb_Int>>& overlay = vector<pair<bool, rgb_Int>>( 0 ) );
 
 	/*!
 	 * @brief Construct image from binary data_

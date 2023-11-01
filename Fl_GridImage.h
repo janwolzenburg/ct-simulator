@@ -14,7 +14,7 @@
 
  #include <FL/Fl_Widget.H>
 
-#include "monoImage.h"
+#include "grayscaleImage.h"
 #include "rgbImage.h"
 
 
@@ -59,7 +59,7 @@ class Fl_GridImage : public Fl_Widget{
 	 * @brief Assign grayscale image as new image data_
 	 * @param img Grayscale image
 	*/
-	void assignImage( const monoImage& img );
+	void assignImage( const GrayscaleImage& img );
 
 	/*!
 	 * @brief Assign gridded voxel data 
@@ -89,7 +89,7 @@ class Fl_GridImage : public Fl_Widget{
 
 	bool imgAssigned;			/*!<Flag to track whether an image has been assigned*/
 
-	monoImage originalImage;	/*!<Raw grayscale imagedata*/
+	GrayscaleImage originalImage;	/*!<Raw grayscale imagedata*/
 
 	bool hasOverlay;						/*!<Flag indicating existing overlay*/
 	vector<pair<bool, rgb_Int>> overlay;	/*!<Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/

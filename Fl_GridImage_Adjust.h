@@ -49,7 +49,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @brief Assign grayscale image as new image data_
 	 * @param img Grayscale image
 	*/
-	void assignImage( const monoImage& img );
+	void assignImage( const GrayscaleImage& img );
 
 	/*!
 	 * @brief Assign gridded voxel data 

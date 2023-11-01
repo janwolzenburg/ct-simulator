@@ -40,11 +40,11 @@ Fl_GridImage::Fl_GridImage( int x, int y, int w, int h, const char* label ) :
 	hasOverlay( false )
 {}
 
-void Fl_GridImage::assignImage( const monoImage& img ) 
+void Fl_GridImage::assignImage( const GrayscaleImage& img ) 
 {
 	originalImage = img;
 	imgAssigned = true;
-	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
+	overlay = vector<pair<bool, rgb_Int>>( originalImage.number_of_pixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 	hasOverlay = false;
 
 	updateScaled();
@@ -52,11 +52,11 @@ void Fl_GridImage::assignImage( const monoImage& img )
 
 void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
-	originalImage = monoImage{ modGrid.size().c, modGrid.size().r };
-	overlay = vector<pair<bool, rgb_Int>>( originalImage.NumPixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
+	originalImage = GrayscaleImage{ modGrid.size().c, modGrid.size().r };
+	overlay = vector<pair<bool, rgb_Int>>( originalImage.number_of_pixel(), pair<bool, rgb_Int>{ false, { 0, 0, 0 } } );
 
-	const size_t width = originalImage.Width();
-	const size_t height = originalImage.Height();
+	const size_t width = originalImage.width();
+	const size_t height = originalImage.height();
 	
 	hasOverlay = false;
 
@@ -66,7 +66,8 @@ void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool n
 			const GridIndex pixel( c, r );
 			const VoxelData& data_ = modGrid.operator()( pixel );
 
-			originalImage.operator()( c, r ) = data_.GetAttenuationAtReferenceEnergy();
+
+			originalImage.SetData( pixel, data_.GetAttenuationAtReferenceEnergy() );
 			
 
 			if( data_.HasSpecialProperty() ){
@@ -74,17 +75,17 @@ void Fl_GridImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool n
 				hasOverlay = true;
 
 				if( data_.HasSpecificProperty( VoxelData::Metal ) )
-					overlay.at( originalImage.index( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
+					overlay.at( originalImage.GetIndex( c, r ) ) = { true, rgb_Int{ 128, 0, 0 } };
 
 				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
-					overlay.at( originalImage.index( c, r ) ) = { true, bgColor };
+					overlay.at( originalImage.GetIndex( c, r ) ) = { true, bgColor };
 			}
 
 		}
 	}
 
 	if( normalise )
-		originalImage.normalise();
+		originalImage.Normalise();
 
 	imgAssigned = true;
 	updateScaled();
@@ -104,12 +105,12 @@ void Fl_GridImage::resize( int x, int y, int w, int h ){
 
 void Fl_GridImage::calculateScaled( void ){
 
-	if( originalImage.Width() == 0 || originalImage.Height() == 0 ) return;
+	if( originalImage.width() == 0 || originalImage.height() == 0 ) return;
 
 	double scaledWidth = (double) w(), scaledHeight = (double) h();
 
 	const double aspectRatioWidget = (double) w() / (double) h();
-	const double aspectRatioImage = (double) originalImage.Width() / (double) originalImage.Height();
+	const double aspectRatioImage = (double) originalImage.width() / (double) originalImage.height();
 
 	// Fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){

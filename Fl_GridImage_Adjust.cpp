@@ -48,14 +48,14 @@ void Fl_GridImage_Adjust::changeContrast( const NumberRange bounds ){
 
 }
 
-void Fl_GridImage_Adjust::assignImage( const monoImage& img ){
+void Fl_GridImage_Adjust::assignImage( const GrayscaleImage& img ){
 
 	imgWidget.assignImage( img );
 
 	if( !boundsSet )
 		setSliderBoundsFromImage();
 
-	imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+	imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
 
 	this->show();
@@ -70,7 +70,7 @@ void Fl_GridImage_Adjust::assignImage( const DataGrid<VoxelData>& modGrid, const
 	if( !boundsSet )
 		setSliderBoundsFromImage();
 
-	imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+	imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 	imgWidget.updateScaled();
 
 	this->show();
@@ -79,14 +79,14 @@ void Fl_GridImage_Adjust::assignImage( const DataGrid<VoxelData>& modGrid, const
 
 void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
 
-	lowerBound.bounds( imgWidget.originalImage.minimum(), imgWidget.originalImage.maximum() );
-	upperBound.bounds( imgWidget.originalImage.minimum(), imgWidget.originalImage.maximum() );
+	lowerBound.bounds( imgWidget.originalImage.GetMinimum(), imgWidget.originalImage.GetMaximum() );
+	upperBound.bounds( imgWidget.originalImage.GetMinimum(), imgWidget.originalImage.GetMaximum() );
 
 	lowerBound.value( lowerBound.minimum() );
 	upperBound.value( upperBound.maximum() );
 
-	lowerBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
-	upperBound.step( imgWidget.originalImage.maximum() - imgWidget.originalImage.minimum(), 200 );
+	lowerBound.step( imgWidget.originalImage.GetMaximum() - imgWidget.originalImage.GetMinimum(), 200 );
+	upperBound.step( imgWidget.originalImage.GetMaximum() - imgWidget.originalImage.GetMinimum(), 200 );
 
 	boundsSet = true;
 }
@@ -129,7 +129,7 @@ bool Fl_GridImage_Adjust::handleEvents( void ){
 
 	if( updateImage ){
 
-		imgWidget.originalImage.adjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+		imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 		imgWidget.updateScaled();
 
 	}

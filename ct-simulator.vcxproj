@@ -190,8 +190,8 @@
     <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
     <ClInclude Include="modelViewProperties.h" />
-    <ClInclude Include="monoImage.fwd.h" />
-    <ClInclude Include="monoImage.h" />
+    <ClInclude Include="grayscaleImage.fwd.h" />
+    <ClInclude Include="grayscaleImage.h" />
     <ClInclude Include="lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />
     <ClInclude Include="mainWindow.h" />
@@ -274,7 +274,7 @@
     </ClInclude>
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="plots.cpp" />
-    <ClCompile Include="monoImage.cpp" />
+    <ClCompile Include="grayscaleImage.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
