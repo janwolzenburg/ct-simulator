@@ -11,7 +11,7 @@
   Includes
 *********************************************************************/
 
-#include "Fl_GridImage_Adjust.h"
+#include "fl_AdjustableGrayscaleImage.h"
 #include "widgets.h"
 
 
@@ -19,7 +19,7 @@
   Implementations
 *********************************************************************/
 
-Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label ) :
+Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
 	imgWidget{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .9 ), "Image" },
 	lowerBound{ X( *this, 0.2 ), Y( *this, 0.91 ), W( *this, .6 ), H( *this, .04 ), "Low" },
@@ -41,57 +41,57 @@ Fl_GridImage_Adjust::Fl_GridImage_Adjust( int x, int y, int w, int h, const char
 
 }
 
-void Fl_GridImage_Adjust::changeContrast( const NumberRange bounds ){
+void Fl_AdjustableGrayscaleImage::changeContrast( const NumberRange bounds ){
 
 	lowerBound.value( ForceRange( bounds.start(), lowerBound.minimum(), lowerBound.maximum() ) );
 	upperBound.value( ForceRange( bounds.end(), upperBound.minimum(), upperBound.maximum() ) );
 
 }
 
-void Fl_GridImage_Adjust::assignImage( const GrayscaleImage& img ){
+void Fl_AdjustableGrayscaleImage::assignImage( const GrayscaleImage& img ){
 
-	imgWidget.assignImage( img );
+	imgWidget.AssignImage( img );
 
 	if( !boundsSet )
 		setSliderBoundsFromImage();
 
-	imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
-	imgWidget.updateScaled();
+	imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
+
 
 	this->show();
 
 
 }
 
-void Fl_GridImage_Adjust::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
+void Fl_AdjustableGrayscaleImage::assignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
 
-	imgWidget.assignImage( modGrid, normalise );
+	imgWidget.AssignImage( modGrid, normalise );
 
 	if( !boundsSet )
 		setSliderBoundsFromImage();
+		
+	imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 
-	imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
-	imgWidget.updateScaled();
 
 	this->show();
 
 }
 
-void Fl_GridImage_Adjust::setSliderBoundsFromImage( void ){
+void Fl_AdjustableGrayscaleImage::setSliderBoundsFromImage( void ){
 
-	lowerBound.bounds( imgWidget.originalImage.GetMinimum(), imgWidget.originalImage.GetMaximum() );
-	upperBound.bounds( imgWidget.originalImage.GetMinimum(), imgWidget.originalImage.GetMaximum() );
+	lowerBound.bounds( imgWidget.GetMinimum(), imgWidget.GetMaximum() );
+	upperBound.bounds( imgWidget.GetMinimum(), imgWidget.GetMaximum() );
 
 	lowerBound.value( lowerBound.minimum() );
 	upperBound.value( upperBound.maximum() );
 
-	lowerBound.step( imgWidget.originalImage.GetMaximum() - imgWidget.originalImage.GetMinimum(), 200 );
-	upperBound.step( imgWidget.originalImage.GetMaximum() - imgWidget.originalImage.GetMinimum(), 200 );
+	lowerBound.step( imgWidget.GetMaximum() - imgWidget.GetMinimum(), 200 );
+	upperBound.step( imgWidget.GetMaximum() - imgWidget.GetMinimum(), 200 );
 
 	boundsSet = true;
 }
 
-void Fl_GridImage_Adjust::setSliderBounds( const NumberRange newBound ){
+void Fl_AdjustableGrayscaleImage::setSliderBounds( const NumberRange newBound ){
 
 	lowerBound.bounds( newBound.start(), newBound.end() );
 	upperBound.bounds( newBound.start(), newBound.end() );
@@ -107,7 +107,7 @@ void Fl_GridImage_Adjust::setSliderBounds( const NumberRange newBound ){
 	boundsSet = true;
 }
 
-bool Fl_GridImage_Adjust::handleEvents( void ){
+bool Fl_AdjustableGrayscaleImage::handleEvents( void ){
 
 	bool updateImage = false;
 
@@ -128,10 +128,7 @@ bool Fl_GridImage_Adjust::handleEvents( void ){
 	}
 
 	if( updateImage ){
-
-		imgWidget.originalImage.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
-		imgWidget.updateScaled();
-
+		imgWidget.AdjustContrast( NumberRange( lowerBound.value(), upperBound.value() ) );
 	}
 
 	return updateImage;

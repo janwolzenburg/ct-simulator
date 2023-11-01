@@ -177,8 +177,8 @@
     <ClInclude Include="backprojectionFilter.h" />
     <ClInclude Include="Fl_Bound_Input.h" />
     <ClInclude Include="Fl_Bound_Input.hpp" />
-    <ClInclude Include="Fl_GridImage.h" />
-    <ClInclude Include="Fl_GridImage_Adjust.h" />
+    <ClInclude Include="fl_GrayscaleImage.h" />
+    <ClInclude Include="fl_AdjustableGrayscaleImage.h" />
     <ClInclude Include="Fl_Selector.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="gantryCreation.h" />
@@ -257,11 +257,11 @@
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="backprojectionFilter.cpp" />
-    <ClCompile Include="Fl_GridImage.cpp" />
+    <ClCompile Include="fl_GrayscaleImage.cpp" />
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="Fl_GridImage_Adjust.cpp" />
+    <ClCompile Include="fl_AdjustableGrayscaleImage.cpp" />
     <ClCompile Include="Fl_Selector.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="gantryCreation.cpp" />

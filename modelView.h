@@ -22,7 +22,7 @@
 
 #include "programState.h"
 #include "modelViewProperties.h"
-#include "Fl_GridImage_Adjust.h"
+#include "fl_AdjustableGrayscaleImage.h"
 
 
 /*********************************************************************
@@ -162,7 +162,7 @@ class modelView : public Fl_Group{
 	Fl_Group viewGrp;				/*!<Group to view the model*/
 	Fl_Multiline_Output modelData;	/*!<Model properties_*/
 	Fl_Box viewBox;					/*!<Box to show test when no model is loaded*/
-	Fl_GridImage_Adjust viewImg;	/*!<Image with adjustable contrast to show model slice*/
+	Fl_AdjustableGrayscaleImage viewImg;	/*!<Image with adjustable contrast to show model slice*/
 	
 	Fl_Group moveGrp;	/*!<Group for the model movement*/
 	Fl_Counter xRot;	/*!<Input for x-rotation*/

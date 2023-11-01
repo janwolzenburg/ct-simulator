@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   Fl_GridImage_Adjust.h
+ * @file   fl_AdjustableGrayscaleImage.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -15,7 +15,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Hor_Slider.H>
 #include "Fl_OwnValuator.h"
-#include "Fl_GridImage.h"
+#include "fl_GrayscaleImage.h"
 
 
  /*********************************************************************
@@ -25,7 +25,7 @@
 /*!
  * @brief Class for a grayscale image with optional colored overlay and adjustable contrast
 */
-class Fl_GridImage_Adjust : public Fl_Group{
+class Fl_AdjustableGrayscaleImage : public Fl_Group{
 
 	public:
 
@@ -37,7 +37,7 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @param h Height
 	 * @param label Label
 	*/
-	Fl_GridImage_Adjust( int x, int y, int w, int h, const char* label = 0L );
+	Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label = 0L );
 
 	/*!
 	 * @brief Change contrast
@@ -85,12 +85,12 @@ class Fl_GridImage_Adjust : public Fl_Group{
 	 * @brief Check if an image was assigned 
 	 * @return 
 	*/
-	bool imageAssigned( void ) const{ return imgWidget.imageAssigned(); };
+	bool imageAssigned( void ) const{ return imgWidget.image_assigned(); };
 
 
 	private:
 	
-	Fl_GridImage imgWidget;						/*!<The image*/
+	Fl_GrayscaleImage imgWidget;						/*!<The image*/
 	Fl_OwnValuator<Fl_Hor_Slider> lowerBound;	/*!<Slider for lower value bound*/
 	Fl_OwnValuator<Fl_Hor_Slider> upperBound;	/*!<Slider for upper value bound*/
 	bool boundsSet;								/*!<Flag indicating whether the bounds were set before*/
