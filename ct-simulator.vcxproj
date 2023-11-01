@@ -189,7 +189,7 @@
     <ClInclude Include="geoplot.h" />
     <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
-    <ClInclude Include="modelViewParameter.h" />
+    <ClInclude Include="modelViewProperties.h" />
     <ClInclude Include="monoImage.fwd.h" />
     <ClInclude Include="monoImage.h" />
     <ClInclude Include="lineplot.h" />
@@ -249,6 +249,7 @@
     <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
+    <ClCompile Include="modelViewProperties.cpp" />
     <ClCompile Include="reconstructedImage.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />

@@ -7,12 +7,6 @@
  * @date   September 2023
  *********************************************************************/
 
-#include <string>
-using std::string;
-
-#include <vector>
-using std::vector;
-
 #include "generel.h"
 #include "slicePlane.h"
 
@@ -20,7 +14,7 @@ using std::vector;
 /*!
  * @brief Class to store parameters used in model view
 */
-class modelViewParameter{
+class ModelViewProperties{
 
 	public:
 
@@ -29,15 +23,15 @@ class modelViewParameter{
 	/*!
 	 * @brief Default constructor
 	*/
-	modelViewParameter( void ) : viewContrast{}, plane{}{};
+	ModelViewProperties( void ) : contrast{}, slice_plane{}{};
 
 	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data in vector
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param current_byte Iterator to start of data in vector
 	*/
-	modelViewParameter( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-		viewContrast{ binary_data, it }, plane{ binary_data, it }{};
+	ModelViewProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
+		contrast{ binary_data, current_byte }, slice_plane{ binary_data, current_byte }{};
 
 	/*!
 	 * @brief Serialize this object
@@ -46,8 +40,6 @@ class modelViewParameter{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	public:
-
-	NumberRange viewContrast;			/*!<Contrast of slice image*/
-	slicePlane plane;			/*!<Surface to slice model with*/
+	NumberRange contrast;			/*!<Contrast of slice image*/
+	slicePlane slice_plane;			/*!<Surface to slice model with*/
 };

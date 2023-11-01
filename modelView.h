@@ -21,6 +21,7 @@
 #include <FL/Fl_Window.H>
 
 #include "programState.h"
+#include "modelViewProperties.h"
 #include "Fl_GridImage_Adjust.h"
 
 
@@ -140,12 +141,12 @@ class modelView : public Fl_Group{
 
 	private:
 	
-	modelViewParameter modelViewPara;			/*!<Parameter of the model view*/
+	ModelViewProperties modelViewPara;			/*!<Parameter of the model view*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!<Slice through model as gridded data*/
 	Model modelInstance;									/*!<Current model*/
 	fileChooser modelChooserInstance;						/*!<File chooser for the model*/
 	
-	storedObject<modelViewParameter> storedViewParameter;	/*!<Persisting storage of view parameters*/
+	storedObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
 	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
 	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
 

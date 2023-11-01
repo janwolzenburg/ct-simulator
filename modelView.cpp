@@ -18,9 +18,6 @@
 #include "programState.h"
 
 
-/*********************************************************************
-  Implementations
-*********************************************************************/
 
 modelView::modelView( int x, int y, int w, int h ) :
 	modelSliceInstance{},
@@ -117,16 +114,16 @@ modelView::modelView( int x, int y, int w, int h ) :
 
 
 	// Set values
-	xRot.value(modelViewPara.plane.rotationAngleX );
-	yRot.value( modelViewPara.plane.rotationAngleY );
-	zTrans.value( modelViewPara.plane.positionZ );
+	xRot.value(modelViewPara.slice_plane.rotationAngleX );
+	yRot.value( modelViewPara.slice_plane.rotationAngleY );
+	zTrans.value( modelViewPara.slice_plane.positionZ );
 
 	// Hide initially
 	moveGrp.hide();
 
 	if( ModelLoaded() ){
 		viewImg.setSliderBounds( modelInstance.attenuationRange() );
-		viewImg.changeContrast( modelViewPara.viewContrast );
+		viewImg.changeContrast( modelViewPara.contrast );
 	}
 }
 
@@ -146,8 +143,8 @@ string modelView::modelDescription( void ) const{
 
 bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
-	const slicePlane backupPlane = modelViewPara.plane; 
-	slicePlane& planeInstance =  modelViewPara.plane;
+	const slicePlane backupPlane = modelViewPara.slice_plane; 
+	slicePlane& planeInstance =  modelViewPara.slice_plane;
 
 	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
 
@@ -200,7 +197,7 @@ bool modelView::sliceModel( void ){
 	
 	storedViewParameter.setLoaded();
 
-	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.slice_plane.surface, 1. );
 	
 	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
 	{
@@ -228,9 +225,9 @@ void modelView::centerModel( void ){
 void modelView::resetModel( void ){
 
 	Fl_Group::window()->deactivate();
-		modelViewPara.plane.rotationAngleX = 0.;
-	 modelViewPara.plane.rotationAngleY = 0.;
-	 modelViewPara.plane.positionZ = 0.;
+		modelViewPara.slice_plane.rotationAngleX = 0.;
+	 modelViewPara.slice_plane.rotationAngleY = 0.;
+	 modelViewPara.slice_plane.positionZ = 0.;
 
 	centerModel();
 
@@ -265,7 +262,7 @@ bool modelView::loadModel( void ){
 	UpdateModel();
 
 	viewImg.setSliderBounds( modelInstance.attenuationRange() );
-	modelViewPara.viewContrast = viewImg.getContrast();
+	modelViewPara.contrast = viewImg.getContrast();
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
@@ -290,7 +287,7 @@ void modelView::handleEvents( void ){
 
 	if( viewImg.handleEvents() ){
 		// Store contrast
-		modelViewPara.viewContrast = viewImg.getContrast();
+		modelViewPara.contrast = viewImg.getContrast();
 	}
 }
 
@@ -324,20 +321,5 @@ void modelView::UpdateModel( void ){
 	modelDataString = modelDescription();
 	modelData.value( modelDataString.c_str() );
 	Fl_Group::window()->activate();
-
-}
-
-
-const string modelViewParameter::FILE_PREAMBLE{ "Ver01MODELVIEWPARAMETER_FILE_PREAMBLE" };
-
-size_t modelViewParameter::Serialize( vector<char>& binary_data ) const{
-
-	size_t num_bytes = 0;
-
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += viewContrast.Serialize( binary_data );
-	num_bytes += plane.Serialize( binary_data );
-
-	return num_bytes;
 
 }

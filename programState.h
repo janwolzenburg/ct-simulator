@@ -22,7 +22,6 @@
  #include "generel.h"
  #include "dataGrid.h"
  #include "voxel.h"
- #include "modelViewParameter.h"
  #include "tomography.h"
  #include "projections.h"
  #include "processingParameters.h"
