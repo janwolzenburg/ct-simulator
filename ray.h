@@ -179,7 +179,7 @@ class Ray : public Line{
 
 	/*!
 	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
-	 * @return Vector with possible face IDs
+	 * @return Array with flag for voxel faces. True when possible
 	*/
 	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 

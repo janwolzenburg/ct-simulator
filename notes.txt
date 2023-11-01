@@ -1,6 +1,7 @@
 
 TODO: Extrapolation when filtering at sinogrma boundaries
-TODO: When detecting try pixel which is most propable to hit first
+TODO: Check filter kernel width
+TODO: range saving 
 
 TODO: Class and member variable names, includes
 TODO: Sorted files filter
