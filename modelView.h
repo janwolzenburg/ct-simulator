@@ -50,9 +50,9 @@ class modelView : public Fl_Group{
 	modelView( int x, int y, int w, int h );
 
 	~modelView( void ){
-		storedModel.saveObject();
-		storedModelChooser.saveObject();
-		storedViewParameter.saveObject();
+		storedModel.Save();
+		storedModelChooser.Save();
+		storedViewParameter.Save();
 	};
 
 	/*!
@@ -65,7 +65,7 @@ class modelView : public Fl_Group{
 	 * @brief Check if a model has been loaded
 	 * @return True when a model has been loaded
 	*/
-	bool ModelLoaded( void ) const{ return storedModel.Loaded(); };
+	bool ModelLoaded( void ) const{ return storedModel.was_loaded(); };
 
 
 
@@ -151,9 +151,9 @@ class modelView : public Fl_Group{
 	ModelViewProperties modelViewPara;			/*!<Parameter of the model view*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!<Slice through model as gridded data*/
 	
-	storedObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
-	storedObject<Model> storedModel;						/*!<Persisting storage of current model*/
-	storedObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
+	PersistingObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
+	PersistingObject<Model> storedModel;						/*!<Persisting storage of current model*/
+	PersistingObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
 
 
 	Fl_Group headGrp;	/*!<Header group*/

@@ -77,5 +77,6 @@ Processing
 	reconstructedImage
 
 Program
-	
-
+	storedObject
+	windows
+		modelViewProperties

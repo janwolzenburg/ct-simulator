@@ -29,7 +29,7 @@
  #include "mainWindow.fwd.h"
  #include "processingWindow.fwd.h"
  #include "model.h"
- #include "storedObject.h"
+ #include "persistingObject.h"
  #include "fileChooser.h"
  #include "xRayTube.h"
  #include "detectorProperties.h"
@@ -181,7 +181,7 @@ class programState{
 	 * @brief Check if a radon transformed is loaded
 	 * @return True when a radon transform is currently loaded
 	*/
-	bool RadonTransformedLoaded( void ) const{ return storedProjections.Loaded();  };
+	bool RadonTransformedLoaded( void ) const{ return storedProjections.was_loaded();  };
 
 	/*!
 	 * @brief Assign a radon transformed 
@@ -241,22 +241,22 @@ class programState{
 
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
-	storedObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
+	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
 	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	storedObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
 	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
-	storedObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
+	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
-	storedObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
-	storedObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
-	storedObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
+	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
+	PersistingObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
+	PersistingObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
 	fileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
-	storedObject<fileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
+	PersistingObject<fileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
 
 	fileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
-	storedObject<fileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
+	PersistingObject<fileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
 
 

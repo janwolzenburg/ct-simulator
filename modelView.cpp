@@ -197,7 +197,7 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 bool modelView::sliceModel( void ){
 	Fl_Group::window()->deactivate();
 	
-	storedViewParameter.setLoaded();
+	storedViewParameter.SetAsLoaded();
 
 	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.slice_plane.surface, 1. );
 	
@@ -255,9 +255,9 @@ bool modelView::loadModel( void ){
 
 	
 	path modelToLoad = modelChooserInstance.choose();
-	storedModelChooser.setLoaded();
+	storedModelChooser.SetAsLoaded();
 
-	if( !storedModel.load( modelToLoad ) ) return false;
+	if( !storedModel.Load( modelToLoad ) ) return false;
 
 	resetModel();
 

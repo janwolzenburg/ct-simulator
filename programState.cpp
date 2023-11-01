@@ -85,15 +85,15 @@ programState::~programState( void ) {
 
 
 
-	storedXRayTubeParameter.saveObject();
-	storedRadonParameter.saveObject();
-	storedDetectorParameter.saveObject();
+	storedXRayTubeParameter.Save();
+	storedRadonParameter.Save();
+	storedDetectorParameter.Save();
 
-	storedTomographyParamerter.saveObject();
-	storedProjections.saveObject();
-	storedProcessingParameters.saveObject( );
-	storedImportChooser.saveObject();
-	storedExportChooser.saveObject();
+	storedTomographyParamerter.Save();
+	storedProjections.Save();
+	storedProcessingParameters.Save( );
+	storedImportChooser.Save();
+	storedExportChooser.Save();
 }
 
 
@@ -140,16 +140,16 @@ void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 
 	gantryInstance.UpdateTubeAndDetectorProperties( xRayTubeParameter, radonParameter, physical_detector_properties_ );
 
-	storedXRayTubeParameter.setLoaded();
-	storedRadonParameter.setLoaded();
-	storedDetectorParameter.setLoaded();
+	storedXRayTubeParameter.SetAsLoaded();
+	storedRadonParameter.SetAsLoaded();
+	storedDetectorParameter.SetAsLoaded();
 }
 
 
 void programState::assignRadonTransformed( const Projections rt ){ 
 	currentProjections = rt; 
-	storedProjections.setLoaded(); 
-	storedProcessingParameters.setLoaded(); 
+	storedProjections.SetAsLoaded(); 
+	storedProcessingParameters.SetAsLoaded(); 
 	if( processingWindow_ != nullptr ){
 		processingWindow_->setNewRTFlag();
 	}
@@ -161,10 +161,10 @@ void programState::setUpdateInformationFlag( void ){
 }
 
 void programState::exportSinogram( void ){
-	if( storedProjections.Loaded() ){
+	if( storedProjections.was_loaded() ){
 
 		path exportPath = exportChooserInstance.choose();
-		storedExportChooser.setLoaded();
+		storedExportChooser.SetAsLoaded();
 		if( exportPath.empty() ) return;
 
 		if( exportPath.extension() != ".sinogram" )
@@ -179,6 +179,6 @@ void programState::exportSinogram( void ){
 }
 
 path programState::importSinogram( void ){
-	storedImportChooser.setLoaded();
+	storedImportChooser.SetAsLoaded();
 	return  importChooserInstance.choose();
 }

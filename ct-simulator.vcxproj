@@ -221,7 +221,7 @@
     <ClInclude Include="serialization.hpp" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="slicePlane.h" />
-    <ClInclude Include="storedObject.hpp" />
+    <ClInclude Include="persistingObject.hpp" />
     <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.fwd.h" />
     <ClInclude Include="tomography.h" />
@@ -292,7 +292,7 @@
     <ClCompile Include="rayScattering.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="slicePlane.cpp" />
-    <ClInclude Include="storedObject.h" />
+    <ClInclude Include="persistingObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="projections.cpp" />
     <ClCompile Include="ray.cpp" />
