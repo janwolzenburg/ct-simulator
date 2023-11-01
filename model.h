@@ -36,7 +36,7 @@ class Model : public MathematicalObject{
 	
 	public:
 
-	static const string FILE_PREAMBLE;		/*!<String at the beginning of file with exported model*/
+	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/		/*!<String at the beginning of file with exported model*/
 
 
 	public:

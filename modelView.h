@@ -146,12 +146,12 @@ class modelView : public Fl_Group{
 	private:
 	
 	
-	fileChooser modelChooserInstance;			/*!<File chooser for the model*/
+	FileChooser modelChooserInstance;			/*!<File chooser for the model*/
 	Model modelInstance;						/*!<Current model*/
 	ModelViewProperties modelViewPara;			/*!<Parameter of the model view*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!<Slice through model as gridded data*/
 	
-	PersistingObject<fileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
+	PersistingObject<FileChooser> storedModelChooser;			/*!<Persisting storage of model chooser*/
 	PersistingObject<Model> storedModel;						/*!<Persisting storage of current model*/
 	PersistingObject<ModelViewProperties> storedViewParameter;	/*!<Persisting storage of view parameters*/
 

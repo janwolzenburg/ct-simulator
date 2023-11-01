@@ -252,11 +252,11 @@ class programState{
 	PersistingObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
 	PersistingObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
-	fileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
-	PersistingObject<fileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
+	FileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
+	PersistingObject<FileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
 
-	fileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
-	PersistingObject<fileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
+	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
+	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
 
 
