@@ -149,7 +149,6 @@ void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 void programState::assignRadonTransformed( const Projections rt ){ 
 	currentProjections = rt; 
 	storedProjections.SetAsLoaded(); 
-	storedProcessingParameters.SetAsLoaded(); 
 	if( processingWindow_ != nullptr ){
 		processingWindow_->setNewRTFlag();
 	}

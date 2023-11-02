@@ -207,6 +207,10 @@ class programState{
 	path importSinogram( void );
 
 
+	bool ProcessingParameterLoaed( void ) const{ return storedProcessingParameters.was_loaded();  };
+	void ProcessingParameterSetLoaed( void ) { storedProcessingParameters.SetAsLoaded(); };
+
+
 	private:
 
 	/*!

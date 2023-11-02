@@ -36,13 +36,11 @@ ColorImage::ColorImage( const ColorImage& srcImg, const size_t newWidth, const s
 	ColorImage{ newWidth, newHeight }
 {
 	for( size_t c = 0; c < this->width(); c++ ){
-
 		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->width() - 1. ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
 
 			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
-
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
 
 		}
@@ -53,11 +51,9 @@ ColorImage::ColorImage( const GrayscaleImage& srcImg, const size_t newWidth, con
 	ColorImage{ newWidth, newHeight }
 {
 	for( size_t c = 0; c < this->width(); c++ ){
-
 		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->width() - 1. ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
-
 			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
 
 			if( overlay.size() != srcImg.number_of_pixel() ){

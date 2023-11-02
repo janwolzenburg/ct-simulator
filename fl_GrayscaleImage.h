@@ -82,9 +82,9 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	/*!
 	 * @brief Assign gridded voxel data 
 	 * @param data_grid Data grid
-	 * @param normalise Flag for normalisation
+	 * @param auto_adjust_contrast Flag for normalisation
 	*/
-	void AssignImage( const DataGrid<VoxelData>& data_grid, const bool normalise = false );
+	void AssignImage( const DataGrid<VoxelData>& data_grid, const bool auto_adjust_contrast = true );
 
 	/*!
 	 * @brief Change the images contrast to given range

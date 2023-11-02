@@ -36,7 +36,6 @@ GrayscaleImage::GrayscaleImage( const size_t width_, const size_t height_ ) :
 GrayscaleImage::GrayscaleImage( const DataGrid<>& source, const bool normaliseImg ) :
 	GrayscaleImage{ source.size().c, source.size().r }
 {
-
 	for( size_t c = 0; c < width_; c++ ){
 		for( size_t r = 0; r < height_; r++ ){
 			raw_data_.at( c + r * width_ ) = source.operator()( GridIndex{ c, r } );
@@ -44,7 +43,7 @@ GrayscaleImage::GrayscaleImage( const DataGrid<>& source, const bool normaliseIm
 	}
 
 	if( normaliseImg )
-		Normalise();
+		AdjustContrast();
 }
 
 GrayscaleImage::GrayscaleImage( const DataGrid<VoxelData>& source, const bool normaliseImg ) :
@@ -52,15 +51,12 @@ GrayscaleImage::GrayscaleImage( const DataGrid<VoxelData>& source, const bool no
 {
 	for( size_t c = 0; c < width_; c++ ){
 		for( size_t r = 0; r < height_; r++ ){
-
-			
-
-			raw_data_.at( c + r * width_ ) = source.operator()( GridIndex( c, r ) ).GetAttenuationAtReferenceEnergy();
+			raw_data_.at( c + r * width_ ) = source.operator()( GridIndex{ c, r } ).GetAttenuationAtReferenceEnergy();
 		}
 	}
-
+	
 	if( normaliseImg )
-		Normalise();
+		AdjustContrast();
 }
 
 GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWidth, const size_t newHeight ) :
@@ -78,6 +74,8 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
 		}
 	}
+
+	AdjustContrast();
 }
 
 
@@ -91,6 +89,8 @@ GrayscaleImage::GrayscaleImage( const vector<char>& binary_data, vector<char>::c
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
 		raw_data_.at( i ) = DeSerializeBuildIn( 0., binary_data, it );
 	}
+
+	AdjustContrast();
 }
 
 size_t GrayscaleImage::GetIndex( const size_t c, const size_t r ) const{
@@ -115,6 +115,7 @@ size_t GrayscaleImage::Serialize( vector<char>& binary_data ) const{
 	return num_bytes;
 }
 
+/*
 void GrayscaleImage::Normalise( void ){
 
 	if( raw_data_.size() == 0 ) return;
@@ -125,7 +126,7 @@ void GrayscaleImage::Normalise( void ){
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
 		image_data_.at( i ) = (unsigned char) ( ( ( raw_data_.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
 	}
-}
+}*/
 
 void GrayscaleImage::AdjustContrast( const NumberRange dataRange ){
 
@@ -140,4 +141,11 @@ void GrayscaleImage::AdjustContrast( const NumberRange dataRange ){
 
 		image_data_.at( i ) = (unsigned char) ( ( diffToStart / ( dataRange.GetDifference() ) ) * 255. );
 	}
+}
+
+void GrayscaleImage::AdjustContrast( void ){
+
+	AdjustContrast( NumberRange{
+		GetMinimum(), GetMaximum()
+	} );
 }

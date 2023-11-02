@@ -92,6 +92,8 @@ void processingWindow::handleEvents( void ){
 		newRTFlag = false;
 		assignSinogram( PROGRAM_STATE().currentProjections );
 		recalcFilteredProjections();
+		
+		PROGRAM_STATE().ProcessingParameterSetLoaed();
 		Fl_Window::show();
 	}
 
@@ -118,10 +120,13 @@ void processingWindow::handleEvents( void ){
 
 void processingWindow::assignSinogram( const Projections newSinogram ){
 
-	sinogramImg = GrayscaleImage( newSinogram.data(), true );
+	sinogramImg = GrayscaleImage{ newSinogram.data(), false };//, true );
+	if( PROGRAM_STATE().ProcessingParameterLoaed() ){
+		sinogramImg.AdjustContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
+	}
+	
 	sinogramWidget.AssignImage( sinogramImg );
-	sinogramWidget.ChangeContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
-
+	PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
 }
 
 void processingWindow::recalcFilteredProjections( void ){
@@ -132,11 +137,12 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentFilteredProjections = FilteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.)});
+	//pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.)
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., 1. } );
 	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 
-	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
+	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), false };//, true };
 
 	filteredProjWidget.AssignImage( filteredProjImage );
 	filteredProjWidget.SetSliderBoundsFromImage();
@@ -144,7 +150,7 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
+	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), false };//, true };
 
 	reconstructionImageWidget.AssignImage( reconstructionImage );
 	reconstructionImageWidget.SetSliderBoundsFromImage();

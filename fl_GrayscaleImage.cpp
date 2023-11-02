@@ -67,10 +67,8 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 			const GridIndex pixel( c, r );
 			const VoxelData& data_ = modGrid.operator()( pixel );
 
-
 			grayscale_image_.SetData( pixel, data_.GetAttenuationAtReferenceEnergy() );
 			
-
 			if( data_.HasSpecialProperty() ){
 				
 				has_overlay_ = true;
@@ -81,12 +79,11 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
 					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, background_color };
 			}
-
 		}
 	}
-
+	
 	if( normalise )
-		grayscale_image_.Normalise();
+		grayscale_image_.AdjustContrast();
 
 	image_assigned_ = true;
 	Update();
@@ -94,7 +91,6 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 }
 
 void Fl_GrayscaleImage::draw( void ){
-
 	int centerX = this->parent()->x() + ( this->parent()->w() - (int) color_image_.width() ) / 2;
 	fl_draw_image( (unsigned char*) color_image_.GetImageData(), centerX, y(), (int) color_image_.width(), (int) color_image_.height() );
 }
@@ -115,22 +111,16 @@ void Fl_GrayscaleImage::CalculateScaled( void ){
 
 	// Fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){
-
 		scaledHeight = (double) h();
 		scaledWidth = scaledHeight * aspectRatioImage;
-
 	}
 	// Fit image horizontally
 	else{
-
 		scaledWidth = (double) w();
 		scaledHeight = scaledWidth / aspectRatioImage;
-
 	}
 
-
 	color_image_ = ColorImage{ grayscale_image_, (size_t) scaledWidth, (size_t) scaledHeight, overlay_ };
-
 }
 
 void Fl_GrayscaleImage::Update( void ){

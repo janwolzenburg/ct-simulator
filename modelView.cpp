@@ -125,7 +125,7 @@ modelView::modelView( int x, int y, int w, int h ) :
 
 	if( ModelLoaded() ){
 		viewImg.SetSliderBounds( modelInstance.attenuationRange() );
-		viewImg.ChangeContrast( modelViewPara.contrast );
+		viewImg.ChangeSliderValues( modelViewPara.contrast );
 	}
 }
 
@@ -238,7 +238,7 @@ void modelView::resetModel( void ){
 	zTrans.value( 0. );
 
 	sliceModel();
-	viewImg.AssignImage( modelSliceInstance, true );
+	viewImg.AssignImage( modelSliceInstance );//, true );
 
 	Fl_Group::window()->activate();
 
@@ -248,23 +248,24 @@ bool modelView::loadModel( void ){
 
 	Fl_Group::window()->deactivate();
 
-
-
 	viewImg.hide(); viewBox.show(); modelData.hide();
 	viewBox.label( "Loading model..." );
 
-	
 	path modelToLoad = modelChooserInstance.ChooseFile();
 	storedModelChooser.SetAsLoaded();
 
-	if( !storedModel.Load( modelToLoad ) ) return false;
-
-	resetModel();
-
-	UpdateModel();
+	if( !storedModel.Load( modelToLoad ) ){
+		viewBox.label( "Loading failed!" );
+		Fl_Group::window()->activate();
+		return false;
+	}
 
 	viewImg.SetSliderBounds( modelInstance.attenuationRange() );
 	modelViewPara.contrast = viewImg.GetContrast();
+
+	resetModel();
+	UpdateModel();
+
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
@@ -314,7 +315,7 @@ void modelView::UpdateModel( void ){
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		viewImg.AssignImage( modelSliceInstance, true );
+		viewImg.AssignImage( modelSliceInstance );//, false );
 	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();

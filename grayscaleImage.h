@@ -47,14 +47,14 @@ class GrayscaleImage{
 	 * @param source_grid Source grid
 	 * @param Normalise Flag for normalisation
 	*/
-	GrayscaleImage( const DataGrid<>& source_grid, const bool normalise = false );
+	GrayscaleImage( const DataGrid<>& source_grid, const bool normalise = true );
 
 	/*!
 	 * @brief Construct image from voxel-data grid
 	 * @param source_grid Source grid with voxel data
 	 * @param Normalise Flag for normalisation
 	*/
-	GrayscaleImage( const DataGrid<VoxelData>& source_grid, const bool normalise = false );
+	GrayscaleImage( const DataGrid<VoxelData>& source_grid, const bool normalise = true );
 
 	/*!
 	 * @brief Construct image from other image but different size
@@ -145,10 +145,9 @@ class GrayscaleImage{
 	void AdjustContrast( const NumberRange data_range );
 
 	/*!
-	* @brief Normalise unsigned char data
-	* @details Converts double data to unsigned char. 0 will correspond to min( data ) and 255 to max( data )
+	 * @brief Adjust contrast to fit complete data
 	*/
-	void Normalise( void );
+	void AdjustContrast( void );
 
 
 	private:

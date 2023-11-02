@@ -62,13 +62,13 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	 * @param data_grid Data grid
 	 * @param Normalise Flag for normalisation
 	*/
-	void AssignImage( const DataGrid<VoxelData>& data_grid, const bool normalise = false );
+	void AssignImage( const DataGrid<VoxelData>& data_grid );
 
 	/*!
-	 * @brief Change contrast
+	 * @brief Change slider values
 	 * @param bounds Lower and upper limit. Values below lower limit are black; values beyond upper limit are white
 	*/
-	void ChangeContrast( const NumberRange new_contrast );
+	void ChangeSliderValues( const NumberRange new_contrast );
 
 	/*!
 	 * @brief Set the slider range
@@ -95,5 +95,10 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	Fl_OwnValuator<Fl_Hor_Slider> upper_bound_;		/*!<Slider for upper value bound*/
 	bool bounds_set_;								/*!<Flag indicating whether the bounds were set before*/
 
+	/*!
+	 * @brief Update slider bounds
+	 * @return True when bounds changed an image need update
+	*/
+	bool UpdateSliderBounds( void );
 
 };
