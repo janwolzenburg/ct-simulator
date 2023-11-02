@@ -53,7 +53,7 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 	filterTypeSelector.value( filterName );
 
 
-	filterPlot.initialisePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "", plotLimits{ true, true }, "", "", false, true );
+	filterPlot.initialisePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", plotLimits{ true, true }, "", "", false, true );
 
 
 
@@ -137,8 +137,12 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentFilteredProjections = FilteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
 
-	//pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.)
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., 1. } );
+	if( PROGRAM_STATE().currentFilteredProjections.filter().type() == BackprojectionFilter::TYPE::constant )
+		filterPlot.hide();
+	else
+		filterPlot.show();
+
+	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.) } );
 	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 

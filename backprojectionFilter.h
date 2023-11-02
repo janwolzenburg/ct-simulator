@@ -37,8 +37,8 @@ class BackprojectionFilter{
 		sheppLogan		/*!<Shepp and Logan*/
 	};
 
-	static const std::map<TYPE, string> filter_types;	/*!<Filter types with names*/
-	static constexpr double significance_threshold = 1e-5;			/*!<Threshold to determine significant range*/
+	static const std::map<TYPE, string> filter_types;			/*!<Filter types with names*/
+	static constexpr double significance_percentage = 1e-2;			/*!<Threshold to determine significant range*/
 	
 	/*!
 	 * @brief Get filter type by string
@@ -66,6 +66,12 @@ class BackprojectionFilter{
 	 * @return Vector with values
 	*/
 	vector<double> values( void ) const{ return values_; };
+
+	/*!
+	 * @brief Get filter type
+	 * @return Filter type
+	*/
+	TYPE type( void ) const{ return type_; };
 
 	/*!
 	 * @brief Get range of kernel

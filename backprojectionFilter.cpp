@@ -13,7 +13,7 @@
 
 #include "generelMath.h"
 #include "backprojectionFilter.h"
-
+#include "vectorAlgorithm.h"
 
 /*********************************************************************
    Implementations
@@ -42,7 +42,6 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	sampling_interval_( samplingInterval_ ),
 	values_( number_of_points_, 0. )
 {
-
 	// Iterate over all whole numbers in range
 	for( signed long long n = points_range_.start(); n <= points_range_.end(); n++ ){
 
@@ -79,11 +78,23 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 		this->SetValue( GetUnsignedIndex( n ), kernelValue );
 	}
 
+	// Crop kernel to relevant range
+	const NaturalNumberRange new_range = GetRelevantRange();
+	const size_t offset = new_range.start() - pointsRange_.start();
+	points_range_ = new_range;
+	number_of_points_ = static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1;
+	
+	values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
+
+
 }
 
 NaturalNumberRange BackprojectionFilter::GetRelevantRange( void ) const{
 
-	NaturalNumberRange relevant( -1, 1 );
+	NaturalNumberRange relevant{ - 1, 1 };
+
+	const double most_significant_value = Max( abs( GetMaxElement( values_ ) ), abs( GetMinElement( values_ ) ) );
+	const double significance_threshold = most_significant_value * significance_percentage;
 
 	for( signed long long int i = points_range_.start(); i < 0; i++ ){
 		if( abs( this->operator()( i ) ) > significance_threshold ){
