@@ -87,6 +87,7 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
 
 
+
 }
 
 NaturalNumberRange BackprojectionFilter::GetRelevantRange( void ) const{
@@ -142,4 +143,14 @@ bool BackprojectionFilter::SetValue( const size_t idx, const double new_value ){
 double BackprojectionFilter::GetValue( const size_t idx ) const{
 	if( idx > number_of_points_ - 1 ) return values_.at( idx );
 	return values_.at( idx );
+}
+
+void BackprojectionFilter::Normalise( void ){
+	
+	const double current_sum = Sum( values_ );
+	if( current_sum == 0. ) return;
+
+	for( auto& value : values_ )
+		value /= current_sum;
+
 }

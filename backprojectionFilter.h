@@ -99,6 +99,11 @@ class BackprojectionFilter{
 	double operator()( const signed long long signed_index ) const{ 
 		return this->GetValue( GetUnsignedIndex( signed_index ) ); }
 
+	/*!
+	 * @brief Normalise to make sum of values equal to one
+	*/
+	void Normalise( void );
+
 
 	private:
 
