@@ -104,12 +104,10 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
-			// Correction factor necessary because a finite amount of rays are simulated and scattering may lead to large drop in detected intensity
-			const size_t pixel_hits = currentPixel.detected_ray_properties().size();
-			const double correction_factor = pixel_hits > 1 ? 1. / static_cast<double>( pixel_hits ) : 1.;
+			
 
 			// Get the radon point
-			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() * correction_factor };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
 			
 			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );

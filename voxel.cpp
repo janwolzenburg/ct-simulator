@@ -37,9 +37,9 @@ VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_itera
 
 double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
-	// If Metal attenuation_ is approx. 10 1/mm at 100 keV
+	// If Plumbum attenuation is approx. 0.1134 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return 10 * pow( 100000. / energy, 3. );
+		return 11.34 * pow( 100000. / energy, 3. );
 	}
 
 	// Attenuation coefficient in voxel is at energy smaller than cut energy
