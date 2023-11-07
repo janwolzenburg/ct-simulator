@@ -44,8 +44,12 @@ constexpr double reduced_energy_divisor_eV = 510998.95;			/*!< Divisor in reduce
 
 constexpr double photoeffect_change_energy_eV = 40000.;			/*!<Photonenergy under which photo effect dominates absorption*/
 
-constexpr double mu_air = 0.00001883552;						/*!<Absorption air in 1 / mm	for 120keV*/
-constexpr double mu_water = 0.01611970000;						/*!<Absorption Water in 1 / mm for 120keV*/
+constexpr double reference_energy_for_mu_eV = 100000.;
+constexpr double mu_water = 3e-3 * 0.997 / 10.;					/*!<Absorption Water in 1 / mm for 100keV*/
+constexpr double mu_air = 0.;
+constexpr double mu_bone = mu_water * 2.;
+constexpr double mu_lung = mu_water * 0.8;
+constexpr double mu_iron = 0.156;
 
 constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
 

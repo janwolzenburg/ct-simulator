@@ -39,7 +39,7 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 	// iron attenuation is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return 0.156 * pow( 100000. / energy, 3. );
+		return  mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
 	}
 
 	return attenuation_ * pow( reference_energy_eV_ / energy, 3. );
