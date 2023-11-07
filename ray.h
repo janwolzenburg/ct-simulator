@@ -153,6 +153,18 @@ class Ray : public Line{
 	void ResetHitCounter( void ){ properties_.voxel_hits_ = 0; };
 	
 	/*!
+	 * @brief Set origin
+	 * @param new_origin 
+	*/
+	void SetOrigin( const Point3D new_origin );
+
+	/*!
+	 * @brief Set direction
+	 * @param new_direction 
+	*/
+	void SetDirection( const UnitVector3D new_direction );
+
+	/*!
 	 * @brief Update Ray properties_ passing through voxel for specific distance
 	 * @param voxel_properties Voxel properties
 	 * @param distance_traveled Distance the Ray is inside voxel

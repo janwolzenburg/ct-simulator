@@ -47,9 +47,9 @@ class RayScattering{
 	 * @param distance_traveled Distance the ray traveled in voxel in mm
 	 * @param propability_correction Correction factor for scattering propability
 	 * @param location Point where the scattering happens
-	 * @return Scattered Ray
+	 * @return True when scattered
 	*/
-	Ray ScatterRay( const Ray ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const Point3D location ) const;
+	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const Point3D location ) const;
 
 	/*!
 	 * @brief Get a random angle to given energy

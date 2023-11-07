@@ -30,7 +30,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	rayStepSizeIn{			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Ray step size" },
 	
 	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .35 ),	H( tomoParameterGrp, .05 ), "Maximum loops" },
-	scatterPropabilityIn{	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering prob." },
+	scatterPropabilityIn{	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .05 ), "Scattering prob." },
 	scatteringOnOff{		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" },
 	
 	information{			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .6 ), "Information" },
@@ -71,10 +71,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	radiationLoopsIn.align( FL_ALIGN_TOP );
 	scatterPropabilityIn.align( FL_ALIGN_TOP );
 
-
+	radiationLoopsIn.bounds(0, 100);
+	radiationLoopsIn.step( 1. );
 	exposureTimeIn.setProperties( 0.001, 10., 3 );
 	rayStepSizeIn.setProperties( 0.001, 10., 3 );
-	scatterPropabilityIn.setProperties( 0., 1., 3 );
+	scatterPropabilityIn.setProperties( 0., 1., 6 );
 
 
 	exposureTimeIn.tooltip( "Exposure time in seconds." );

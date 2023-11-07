@@ -64,7 +64,8 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-Ray RayScattering::ScatterRay( Ray r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const Point3D newOrigin ) const{
+bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const Point3D newOrigin ) const{
+
 
 	// Check if ray is scattered
 
@@ -78,11 +79,11 @@ Ray RayScattering::ScatterRay( Ray r, const VoxelData voxel_data, const double d
 	const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
 	// Scattering happened?
-	if( !integer_random_number_generator.DidARandomEventHappen( scatter_propability * propability_correction ) ) return r;
+	if( !integer_random_number_generator.DidARandomEventHappen( scatter_propability * propability_correction ) ) return false;
 
-
+	
 	// Ray is scattered
-
+	
 	// Scattering angle
 	const double angle = GetRandomAngle( ray_energy_eV );
 	
@@ -92,12 +93,13 @@ Ray RayScattering::ScatterRay( Ray r, const VoxelData voxel_data, const double d
 	const double relative_energy_loss = energy_after_scatter / ray_energy_eV;
 
 	// Scale spectrum according to energy loss
-	RayProperties scatter_ray_properties{ r.properties() };
-	scatter_ray_properties.ScaleSpectrum( relative_energy_loss );
+	r.ScaleSpectrum( relative_energy_loss );
 
 	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
+	r.SetOrigin( newOrigin );
+	r.SetDirection( newDirection );
 
-	return Ray{ newDirection, newOrigin, scatter_ray_properties };
+	return true;
 
 }
 

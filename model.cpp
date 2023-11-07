@@ -299,7 +299,10 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Scattering
 			if( tomoParameter.scattering_enabled ){
-				return scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay );
+				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay ) ){
+					return modelRay;
+				}
+				
 			}
 		}
 	}

@@ -88,3 +88,23 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 		return face_possiblities;
 
 }
+
+	
+void Ray::SetOrigin( const Point3D new_origin ){
+	if( !new_origin.HasSameSystem( origin_ ) ){
+		origin_ = new_origin.ConvertTo( origin_ );
+		return;
+	}
+	
+	origin_ = new_origin;
+}
+
+
+void Ray::SetDirection( const UnitVector3D new_direction ){
+		if( !new_direction.HasSameSystem( direction_ ) ){
+		direction_ = new_direction.ConvertTo( direction_ );
+		return;
+	}
+	
+	direction_ = new_direction;
+}
