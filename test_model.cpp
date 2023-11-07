@@ -32,19 +32,19 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	//double kWater = 0.01611970000;
 
-	VoxelData bgData = { 0.01, 120000. };
+	VoxelData bgData = { mu_water, reference_energy_for_mu_eV };
 
 	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.coordinate_system() };
 	double sp1_radius = 60;
-	VoxelData sp1_data = { 0.3, 120000. };
+	VoxelData sp1_data = { mu_bone, reference_energy_for_mu_eV };
 
 	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.coordinate_system() };
 	double sp2_radius = 70;
-	VoxelData sp2_data = { 0.5, 120000. };
+	VoxelData sp2_data = { mu_lung, reference_energy_for_mu_eV };
 
 
 	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.coordinate_system() };
-	double artRadius = 15;
+	double artRadius = 10;
 
 
 	for( size_t x = 0; x < mod.number_of_voxel_3D().x; x++ ){

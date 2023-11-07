@@ -98,7 +98,8 @@ NumberRange::NumberRange( const double start, const double end ) : start_( start
 {
 	if( start_ >= end_ ){
 		cerr << "class NumberRange: Start must be less than end!" << endl;
-		start_ = end_ - 1.;
+		start_ = 0.;
+		end_ = 1.;
 	}
 }
 
