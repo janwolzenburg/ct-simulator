@@ -33,12 +33,6 @@ double DetectorPixel::GetRadonValue( void ) const{
 		const double current_intensity = currentRay.energy_spectrum_.GetTotal();
 		
 
-		if( IsNearlyEqual( current_intensity, 0., 0.00001, ComparisonMode::Relative ) ){
-			
-			sum_of_line_integrals += 100;
-
-			continue;
-		}
 		sum_of_line_integrals += log( currentRay.start_intensity() / current_intensity );
 	}
 
