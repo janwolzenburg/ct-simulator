@@ -120,7 +120,7 @@ void processingWindow::handleEvents( void ){
 
 void processingWindow::assignSinogram( const Projections newSinogram ){
 
-	sinogramImg = GrayscaleImage{ newSinogram.data(), false };//, true );
+	sinogramImg = GrayscaleImage{ newSinogram.data(), true };
 	if( PROGRAM_STATE().ProcessingParameterLoaed() ){
 		sinogramImg.AdjustContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
 	}
@@ -145,8 +145,8 @@ void processingWindow::recalcFilteredProjections( void ){
 	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.) } );
 	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
-
-	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), false };//, true };
+	
+	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.AssignImage( filteredProjImage );
 	filteredProjWidget.SetSliderBoundsFromImage();
@@ -154,7 +154,7 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), false };//, true };
+	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.AssignImage( reconstructionImage );
 	reconstructionImageWidget.SetSliderBoundsFromImage();
