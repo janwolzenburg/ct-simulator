@@ -153,6 +153,7 @@ void tomographyExec::handleEvents( void ){
 	if( UnsetFlag( updateFlag )){
 		informationUpdateFlag = true;
 		state.tomographyParamerters = TomographyProperties{ exposureTimeIn.value(), (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
+		state.TomographyPropertiesSetLoaded();
 	}
 
 	if( UnsetFlag( informationUpdateFlag )){

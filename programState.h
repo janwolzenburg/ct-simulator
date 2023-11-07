@@ -210,6 +210,7 @@ class programState{
 	bool ProcessingParameterLoaed( void ) const{ return storedProcessingParameters.was_loaded();  };
 	void ProcessingParameterSetLoaed( void ) { storedProcessingParameters.SetAsLoaded(); };
 
+	void TomographyPropertiesSetLoaded( void ){ storedTomographyParamerter.SetAsLoaded(); };
 
 	private:
 
