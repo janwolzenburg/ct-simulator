@@ -26,13 +26,28 @@
 
 double DetectorPixel::GetRadonValue( void ) const{
 
-	double intensitySum = 0;
+	double sum_of_line_integrals = 0.;
 
 	// Iterate all detected Ray properties_
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
-		intensitySum += currentRay.energy_spectrum_.GetTotal();
+		const double current_intensity = currentRay.energy_spectrum_.GetTotal();
+		
+
+		if( IsNearlyEqual( current_intensity, 0., 0.00001, ComparisonMode::Relative ) ){
+			
+			sum_of_line_integrals += 100;
+
+			continue;
+		}
+		sum_of_line_integrals += log( currentRay.start_intensity() / current_intensity );
 	}
-	return intensitySum;
+
+	// Correction factor necessary because a finite amount of rays are simulated and scattering may lead to large drop in detected intensity
+	const size_t pixel_hits = detected_ray_properties().size();
+	const double correction_factor = pixel_hits > 1 ? 1. / static_cast<double>( pixel_hits ) : 1.;
+
+	// Correction factor necessary because a finite amount of rays are simulated and scattering may lead to large drop in detected intensity
+	return sum_of_line_integrals * correction_factor;
 }
 
 DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{

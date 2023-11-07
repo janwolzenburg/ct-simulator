@@ -52,7 +52,7 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window::show();
 
 
-	if( PROGRAM_STATE().ModelLoaded() ){
+	if( modView.ModelLoaded() ){
 		modView.setUpdateFlag();
 	}
 
@@ -78,6 +78,8 @@ void mainWindow::activate( void ){
 
 void mainWindow::handleEvents( void ){
 
+	
+
 	if( UnsetFlag( resetButtonPressed ) ){
 		if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
 			PROGRAM_STATE().resetStateStorageAtExit();
@@ -97,6 +99,12 @@ void mainWindow::handleEvents( void ){
 			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 		}
 	}
+
+	
+	if( modView.ModelLoaded() && !tomographyExecution.active() )
+		tomographyExecution.activate();
+	else if( !modView.ModelLoaded() )
+		tomographyExecution.deactivate();
 
 
 	modView.handleEvents();

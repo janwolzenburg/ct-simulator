@@ -14,10 +14,10 @@
 
  #include "FL/Fl_Window.H"
 
- #include "Fl_GridImage_Adjust.h"
+ #include "fl_AdjustableGrayscaleImage.h"
  #include "Fl_Selector.h"
  #include "Fl_Plot.h"
- #include "monoImage.h"
+ #include "grayscaleImage.h"
  #include "lineplot.h"
 
  #include "programState.h"
@@ -78,8 +78,8 @@ class processingWindow : public Fl_Window{
 
 	bool newRTFlag;			/*!<Flag indicating that a new sinogram is available*/
 	Fl_Group sinogramGrp;	/*!<Group for sinogram view*/
-	monoImage sinogramImg;	/*!<Sinogram as image*/
-	Fl_GridImage_Adjust sinogramWidget;	/*!<Widget for sinogram display*/
+	GrayscaleImage sinogramImg;	/*!<Sinogram as image*/
+	Fl_AdjustableGrayscaleImage sinogramWidget;	/*!<Widget for sinogram display*/
 	
 	bool filterChanged;		/*!<Flag to indicate that the filter changed*/
 	Fl_Group filterGrp;		/*!<Group for filter*/
@@ -87,12 +87,12 @@ class processingWindow : public Fl_Window{
 	Fl_Plot<dotplot> filterPlot;		/*!<Filter plot*/
 
 	Fl_Group filteredProjGrp;				/*!<Group for the fitlered projections*/
-	monoImage filteredProjImage;			/*!<Filtered projections as image*/
-	Fl_GridImage_Adjust filteredProjWidget;	/*!<Widget for filtered projections display*/
+	GrayscaleImage filteredProjImage;			/*!<Filtered projections as image*/
+	Fl_AdjustableGrayscaleImage filteredProjWidget;	/*!<Widget for filtered projections display*/
 
 	Fl_Group reconstructionGrp;			/*!<Group for the reconstructed image*/
-	monoImage reconstructionImage;		/*!<Reconstruced image*/
-	Fl_GridImage_Adjust reconstructionImageWidget;	/*!<Widget for the reconstruced image*/
+	GrayscaleImage reconstructionImage;		/*!<Reconstruced image*/
+	Fl_AdjustableGrayscaleImage reconstructionImageWidget;	/*!<Widget for the reconstruced image*/
 
 
  };

@@ -24,7 +24,7 @@ using std::cref;
 *********************************************************************/
 
 FilteredProjections::FilteredProjections( const Projections projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress ) :
-	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size_
+	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size
 	filter_{ NaturalNumberRange{ -( signed long long ) size().r + 1, ( signed long long ) size().r - 1 }, resolution().r, filterType }
 {
 
@@ -39,24 +39,38 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	// Local copy of projection data_
 	const DataGrid<> projectionsData = projections.data();
 
+	
+
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
 
 		if( progress != nullptr )
-			progress->changeLineText(0,"Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
+			progress->changeLineText( 0, "Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
+			if( filter_.type() == BackprojectionFilter::TYPE::constant ){
+				this->SetData( GridIndex{ t, n }, projectionsData( GridIndex{ t, n } ) );
+				continue;
+			}
 
 			// Convolute filter with with projections
 			double convolutionResult = 0;
-			for( size_t l = 0; l < nD; l++ ){
 
-				// projection value
-				const double P_T = projectionsData( GridIndex{ t, l } );
+			for( signed long long l = filter_.points_range().start(); l <= filter_.points_range().end(); l++ ){
+
+				// Index of current row in projection data
+				signed long long projection_row_index = static_cast<signed long long>( n ) + l;
+				
+				// Index out of bounds of input data -> add nothing is like padding input data with zero
+				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( nD ) )
+					continue;
+
+				// projection data
+				const double P_T = projectionsData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
 
 				// filter value
-				const double h_n = filter_( ( signed long long ) n - ( signed long long ) l );
+				const double h_n = filter_( l );
 
 				// Multiply
 				if( h_n != 0.)

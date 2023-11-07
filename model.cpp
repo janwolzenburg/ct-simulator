@@ -294,6 +294,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Update Ray properties whith distance travelled in current voxel
 			modelRay.UpdateProperties( this->GetVoxelData( currentVoxelIndices ), distance );
+			//cout << "Current intensity: " << modelRay.properties().energy_spectrum().GetTotal() << endl;
 			modelRay.IncrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
@@ -321,7 +322,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	// New origin_ "outside" the model to return
 	modelRay.origin( currentPntOnRay );
 
-
+	//cout << endl << endl;
 	return modelRay;
 }
 

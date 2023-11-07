@@ -23,7 +23,7 @@ class processingParameter{
 
 	public:
 
-	static const string FILE_PREAMBLE;
+	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Default constructor 

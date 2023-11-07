@@ -213,18 +213,6 @@
     <ClInclude Include="programState.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="programState.fwd.h">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="storedObject.hpp">
-      <Filter>Quelldateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="storedObject.h">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="Fl_GridImage.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="Fl_Plot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
@@ -242,9 +230,6 @@
     </ClInclude>
     <ClInclude Include="widgets.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="monoImage.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="plots.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
@@ -288,15 +273,6 @@
     <ClInclude Include="progress.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="rgbImage.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="monoImage.fwd.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="modelViewParameter.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\Device</Filter>
     </ClInclude>
@@ -311,9 +287,6 @@
     </ClInclude>
     <ClInclude Include="Fl_Bound_Input.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Fl_GridImage_Adjust.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="serialization.h">
       <Filter>Headerdateien\Generel</Filter>
@@ -377,6 +350,27 @@
     </ClInclude>
     <ClInclude Include="projections.h">
       <Filter>Headerdateien\Processing\Projection</Filter>
+    </ClInclude>
+    <ClInclude Include="colorImage.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="grayscaleImage.h">
+      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="fl_AdjustableGrayscaleImage.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="fl_GrayscaleImage.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="persistingObject.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="persistingObject.hpp">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="modelViewProperties.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -446,9 +440,6 @@
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\Program</Filter>
     </ClCompile>
-    <ClCompile Include="Fl_GridImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="widgets.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
@@ -457,9 +448,6 @@
     </ClCompile>
     <ClCompile Include="gantryCreation.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="monoImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="slicePlane.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
@@ -471,9 +459,6 @@
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="processingParameters.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="rgbImage.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="tomographyExecution.cpp">
@@ -492,9 +477,6 @@
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Fl_Selector.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="Fl_GridImage_Adjust.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
     <ClCompile Include="serialization.cpp">
@@ -547,6 +529,21 @@
     </ClCompile>
     <ClCompile Include="projections.cpp">
       <Filter>Quelldateien\Processing\Projection</Filter>
+    </ClCompile>
+    <ClCompile Include="colorImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="fl_GrayscaleImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="modelViewProperties.cpp">
+      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="grayscaleImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="fl_AdjustableGrayscaleImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

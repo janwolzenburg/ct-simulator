@@ -29,43 +29,37 @@
 /*!
  * @brief Custom class for choosing a file
 */
-class fileChooser : private Fl_Native_File_Chooser{
+class FileChooser : private Fl_Native_File_Chooser{
 
 	public:
 
-	static const string FILE_PREAMBLE;
-
-
-	public:
+	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Constructor
-	 * @param windowTitle Title of window 
-	 * @param fileFilter String with filter
-	 * @param defaultDirectory Directory to start
-	 * @param type_ File chooser type
+	 * @param window_title Title of window 
+	 * @param file_filter String with filter
+	 * @param start_directory Directory to start
+	 * @param type File chooser type
 	*/
-	fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, const Fl_Native_File_Chooser::Type type_ = Fl_Native_File_Chooser::Type::BROWSE_FILE );
-
-	/*!
-	 * @brief Constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data in vector
-	*/
-	fileChooser( const vector<char>& binary_data, vector<char>::const_iterator& it );
+	FileChooser( const string window_title, const string file_filter, const path start_directory, const Fl_Native_File_Chooser::Type type = Fl_Native_File_Chooser::Type::BROWSE_FILE );
 
 	/*!
 	 * @brief Copy constructor
-	 * @param fC instance to copy from
 	*/
-	fileChooser( const fileChooser& fC );
+	FileChooser( const FileChooser& file_chooser );
 
 	/*!
-	 * @brief Assignment operator
-	 * @param fC 
-	 * @return 
+	 * @brief Copy assignment
 	*/
-	fileChooser& operator=( const fileChooser& fC );
+	FileChooser& operator=( const FileChooser& file_chooser );
+
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param current_byte Iterator to start of data in vector
+	*/
+	FileChooser( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief Serialize this object
@@ -77,31 +71,31 @@ class fileChooser : private Fl_Native_File_Chooser{
 	 * @brief Set new window title
 	 * @param newTitle New title
 	*/
-	void setTitle( const string newTitle );
+	void SetTitle( const string new_title );
 
 	/*!
 	 * @brief Set new filter
 	 * @param newFilter New filter
 	*/
-	void setFilter( const string newFilter );
+	void SetFilter( const string new_filter );
 
 	/*!
 	 * @brief Set the start directory
 	 * @param directory Directory to start
 	*/
-	void setStartDirectory( const path directory );
+	void SetStartDirectory( const path directory );
 
 	/*!
 	 * @brief Choose a file
 	 * @return Path to chosen file
 	*/
-	path choose( void );
+	path ChooseFile( void );
 	
 
 	private:
 	
-	string titleString;		/*!<Title string*/
-	string filterString;	/*!<Filter string*/
-	path startDirectory;	/*!<Start directory*/
-	Fl_Native_File_Chooser::Type chooserType;	/*!<Type of file chooser*/
+	string title_string_;				/*!<Title string*/
+	string filter_string_;				/*!<Filter string*/
+	path start_directory_;				/*!<Start directory*/
+	Fl_Native_File_Chooser::Type type_;	/*!<Type of file chooser*/
  };

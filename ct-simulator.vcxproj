@@ -177,8 +177,8 @@
     <ClInclude Include="backprojectionFilter.h" />
     <ClInclude Include="Fl_Bound_Input.h" />
     <ClInclude Include="Fl_Bound_Input.hpp" />
-    <ClInclude Include="Fl_GridImage.h" />
-    <ClInclude Include="Fl_GridImage_Adjust.h" />
+    <ClInclude Include="fl_GrayscaleImage.h" />
+    <ClInclude Include="fl_AdjustableGrayscaleImage.h" />
     <ClInclude Include="Fl_Selector.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="gantryCreation.h" />
@@ -189,9 +189,8 @@
     <ClInclude Include="geoplot.h" />
     <ClInclude Include="dataGrid.h" />
     <ClInclude Include="Fl_Plot.h" />
-    <ClInclude Include="modelViewParameter.h" />
-    <ClInclude Include="monoImage.fwd.h" />
-    <ClInclude Include="monoImage.h" />
+    <ClInclude Include="modelViewProperties.h" />
+    <ClInclude Include="grayscaleImage.h" />
     <ClInclude Include="lineplot.h" />
     <ClInclude Include="mainWindow.fwd.h" />
     <ClInclude Include="mainWindow.h" />
@@ -211,17 +210,16 @@
     <ClInclude Include="processingParameters.h" />
     <ClInclude Include="processingWindow.fwd.h" />
     <ClInclude Include="processingWindow.h" />
-    <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="progress.h" />
     <ClInclude Include="propabilityDistribution.h" />
-    <ClInclude Include="rgbImage.h" />
+    <ClInclude Include="colorImage.h" />
     <ClInclude Include="rayScattering.h" />
     <ClInclude Include="serialization.h" />
     <ClInclude Include="serialization.hpp" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="slicePlane.h" />
-    <ClInclude Include="storedObject.hpp" />
+    <ClInclude Include="persistingObject.hpp" />
     <ClInclude Include="test_rays.h" />
     <ClInclude Include="tomography.fwd.h" />
     <ClInclude Include="tomography.h" />
@@ -249,6 +247,7 @@
     <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
+    <ClCompile Include="modelViewProperties.cpp" />
     <ClCompile Include="reconstructedImage.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />
@@ -258,11 +257,11 @@
     <ClCompile Include="systemOfEquations.cpp" />
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="backprojectionFilter.cpp" />
-    <ClCompile Include="Fl_GridImage.cpp" />
+    <ClCompile Include="fl_GrayscaleImage.cpp" />
     <ClInclude Include="Fl_Plots.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="Fl_GridImage_Adjust.cpp" />
+    <ClCompile Include="fl_AdjustableGrayscaleImage.cpp" />
     <ClCompile Include="Fl_Selector.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="gantryCreation.cpp" />
@@ -273,7 +272,7 @@
     </ClInclude>
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="plots.cpp" />
-    <ClCompile Include="monoImage.cpp" />
+    <ClCompile Include="grayscaleImage.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
@@ -287,11 +286,11 @@
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="progress.cpp" />
     <ClCompile Include="propabilityDistribution.cpp" />
-    <ClCompile Include="rgbImage.cpp" />
+    <ClCompile Include="colorImage.cpp" />
     <ClCompile Include="rayScattering.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="slicePlane.cpp" />
-    <ClInclude Include="storedObject.h" />
+    <ClInclude Include="persistingObject.h" />
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="projections.cpp" />
     <ClCompile Include="ray.cpp" />

@@ -99,5 +99,4 @@ void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distan
 		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
 		data_point.y *= exp( -k * distance );
 	}
-
 }

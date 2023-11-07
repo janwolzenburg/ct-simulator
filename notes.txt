@@ -9,6 +9,7 @@ TODO: Check file Heads
 TODO: check comments
 TODO: check cpp files
 TODO: use static_cast
+TODO: check .fwd
 
 Naming convention:
 	- classes and types: CamelCase
@@ -76,6 +77,18 @@ Processing
 	filteredProjections
 	reconstructedImage
 
-Program
-	
 
+Program
+	storedObject
+
+	Elements
+		grayscaleImage
+		colorImage
+
+	Widgets
+		fl_GrayscaleImage
+		fl_AdjustableGrayscaleImage
+
+	windows
+		modelViewProperties
+		fileChooser

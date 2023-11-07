@@ -27,17 +27,17 @@ using std::vector;
 *********************************************************************/
 
 
-const string fileChooser::FILE_PREAMBLE{ "Ver01_FILE_CHOOSER_FILE_PREAMBLE" };
+const string FileChooser::FILE_PREAMBLE{ "Ver01_FILE_CHOOSER_FILE_PREAMBLE" };
 
 
-fileChooser::fileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, Fl_Native_File_Chooser::Type type_ ) :
-	titleString( windowTitle ),
-	filterString( fileFilter ),
-	startDirectory( defaultDirectory ),
-	chooserType( type_ )
+FileChooser::FileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, Fl_Native_File_Chooser::Type type ) :
+	title_string_( windowTitle ),
+	filter_string_( fileFilter ),
+	start_directory_( defaultDirectory ),
+	type_( type )
 {
 
-	this->type( chooserType );
+	this->Fl_Native_File_Chooser::type( type_ );
 	
 	this->title( windowTitle.c_str() );
 	this->filter( fileFilter.c_str() );
@@ -49,70 +49,70 @@ fileChooser::fileChooser( const string windowTitle, const string fileFilter, con
 }
 
 
-fileChooser::fileChooser( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	fileChooser{ "", "", path{} }
+FileChooser::FileChooser( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+	FileChooser{ "", "", path{} }
 {
-	this->setTitle( DeSerializeBuildIn<string>( string{ "File chooser" }, binary_data, it ) );
-	this->setFilter( DeSerializeBuildIn<string>( string{ "" }, binary_data, it ) );
-	this->setStartDirectory( DeSerializeBuildIn<string>( string{ "./" }, binary_data, it ) );
+	this->SetTitle( DeSerializeBuildIn<string>( string{ "File chooser" }, binary_data, it ) );
+	this->SetFilter( DeSerializeBuildIn<string>( string{ "" }, binary_data, it ) );
+	this->SetStartDirectory( DeSerializeBuildIn<string>( string{ "./" }, binary_data, it ) );
 
-	this->type( DeSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binary_data, it ) );
+	this->Fl_Native_File_Chooser::type( DeSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binary_data, it ) );
 
 	this->options( SAVEAS_CONFIRM );
 
 }
 
-fileChooser::fileChooser( const fileChooser& fC ) : 
-	fileChooser{ fC.titleString, fC.filterString, fC.startDirectory, fC.chooserType }
+FileChooser::FileChooser( const FileChooser& fC ) : 
+	FileChooser{ fC.title_string_, fC.filter_string_, fC.start_directory_, fC.type_ }
 {}
 
-fileChooser& fileChooser::operator=( const fileChooser& fC ){
+FileChooser& FileChooser::operator=( const FileChooser& fC ){
 
 
-	this->type( fC.chooserType );
-	this->setTitle( fC.titleString );
-	this->setFilter( fC.filterString );
-	this->setStartDirectory( fC.startDirectory );
+	this->Fl_Native_File_Chooser::type( fC.type_ );
+	this->SetTitle( fC.title_string_ );
+	this->SetFilter( fC.filter_string_ );
+	this->SetStartDirectory( fC.start_directory_ );
 	
 
 	return *this;
 }
 
 
-size_t fileChooser::Serialize( vector<char>& binary_data ) const{
+size_t FileChooser::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += SerializeBuildIn( string{ this->title() }, binary_data);
 	num_bytes += SerializeBuildIn( string{ this->filter() }, binary_data );
 	num_bytes += SerializeBuildIn( string{ this->directory() }, binary_data );
-	num_bytes += SerializeBuildIn<unsigned char>( (unsigned char) chooserType, binary_data );
+	num_bytes += SerializeBuildIn<unsigned char>( (unsigned char) type_, binary_data );
 
 	return num_bytes;
 
 }
 
-void fileChooser::setTitle( const string newTitle ){
-	titleString = newTitle;
-	this->title( titleString.c_str() );
+void FileChooser::SetTitle( const string newTitle ){
+	title_string_ = newTitle;
+	this->title( title_string_.c_str() );
 }
 
-void fileChooser::setFilter( const string newFilter ){
-	filterString = newFilter;
-	this->filter( filterString.c_str() );
+void FileChooser::SetFilter( const string newFilter ){
+	filter_string_ = newFilter;
+	this->filter( filter_string_.c_str() );
 }
 
-void fileChooser::setStartDirectory( const path newDirectory ){
-	startDirectory = newDirectory;
-	this->directory( startDirectory.string().c_str() );
+void FileChooser::SetStartDirectory( const path newDirectory ){
+	start_directory_ = newDirectory;
+	this->directory( start_directory_.string().c_str() );
 }
 
-path fileChooser::choose( void ){
+path FileChooser::ChooseFile( void ){
 
 	if( this->show() != 0 ) return path{};
 
 	path file_path = path{ this->filename() };
-	setStartDirectory( file_path.parent_path() );
+	SetStartDirectory( file_path.parent_path() );
 	
 	return file_path;
 }
