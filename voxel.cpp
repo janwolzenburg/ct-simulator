@@ -42,7 +42,7 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 		return  mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
 	}
 
-	return attenuation_ * pow( reference_energy_eV_ / energy, 3. );
+	return attenuation_ * pow( reference_energy_for_mu_eV / energy, 3. );
 
 }
 
@@ -55,14 +55,8 @@ size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 
 double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const{
 
-
-	if constexpr( reference_energy_eV_ < photoeffect_change_energy_eV ){
-		return attenuationAtEnergy * pow( energy / reference_energy_eV_, 3. );
-	}
-	else{
-		return attenuationAtEnergy * pow( photoeffect_change_energy_eV / reference_energy_eV_, 3. );
-	}
-
+	return attenuationAtEnergy * pow( energy / reference_energy_for_mu_eV, 3. );
+	
 }
 
 bool VoxelData::HasSpecificProperty( const SpecialProperty property ) const{

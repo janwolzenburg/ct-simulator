@@ -49,7 +49,8 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
 	voxel_data_( number_of_voxel_, VoxelData{} ),
 	coordinate_system_( coordinate_system ),
-	attenuationRange_{ INFINITY, -INFINITY },
+	min_attenuation_( INFINITY ),
+	max_attenuation_( -INFINITY ),
 	name_( name_ )
 {
 	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
@@ -65,7 +66,8 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
 	voxel_data_( number_of_voxel_, VoxelData{} ),
 	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
-	attenuationRange_{ binary_data, it },
+	min_attenuation_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
+	max_attenuation_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
 	name_( DeSerializeBuildIn( string{ "Default model name_"}, binary_data, it ) )
 {
 	
@@ -161,8 +163,8 @@ bool Model::SetVoxelData( const VoxelData newData, const Index3D indices ){
 
 	this->operator()( indices ) = newData;
 
-	if( newData.GetAttenuationAtReferenceEnergy() < attenuationRange_.start()	|| attenuationRange_.start() < 0 ) attenuationRange_.start( newData.GetAttenuationAtReferenceEnergy() );
-	if( newData.GetAttenuationAtReferenceEnergy() > attenuationRange_.end()		|| attenuationRange_.end() < 0 )   attenuationRange_.end( newData.GetAttenuationAtReferenceEnergy() );
+	if( newData.GetAttenuationAtReferenceEnergy() < min_attenuation_ ) min_attenuation_ =  newData.GetAttenuationAtReferenceEnergy();
+	if( newData.GetAttenuationAtReferenceEnergy() > max_attenuation_ ) max_attenuation_ = newData.GetAttenuationAtReferenceEnergy() ;
 
 	return true;
 }
@@ -343,7 +345,7 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	expectedSize += sizeof( number_of_voxel_3D_ );
 	expectedSize += sizeof( voxel_size_ );
 	expectedSize += sizeof( CoordinateSystem );
-	expectedSize += sizeof( attenuationRange_ );
+	expectedSize += 2* sizeof( min_attenuation_ );
 	expectedSize += name_.size() + 1;
 	expectedSize += number_of_voxel_ * sizeof( voxel_data_.front() );
 
@@ -354,7 +356,8 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
 	num_bytes += voxel_size_.Serialize( binary_data );
 	num_bytes += coordinate_system_->Serialize( binary_data );
-	num_bytes += attenuationRange_.Serialize( binary_data );
+	num_bytes += SerializeBuildIn( min_attenuation_, binary_data );
+	num_bytes += SerializeBuildIn( max_attenuation_, binary_data );
 	num_bytes += SerializeBuildIn( name_, binary_data );
 
 	
@@ -513,7 +516,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 			currentData = largeSlice.GetData( coords );
 
 			if( currentData.HasSpecificProperty( VoxelData::Undefined ) )
-				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), VoxelData::reference_energy_eV() } );
+				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
 			else
 				slice.SetData( coords, currentData );
 		}

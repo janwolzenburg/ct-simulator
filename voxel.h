@@ -52,20 +52,14 @@ class VoxelData{
 	};
 
 	/*!
-	 * @brief Return the reference energy globally used
-	 * @return Reference energy in eV
-	*/
-	static double reference_energy_eV( void ) { return reference_energy_eV_; };
-
-	/*!
 	 * @brief Constructor
 	 * @param attenuation_at_energy Attenuation coefficient at given energy
 	 * @param energy_eV Energy in eV
 	*/
-	VoxelData( const double attenuation_at_energy, const double energy_eV, const SpecialProperty = Undefined );
+	VoxelData( const double attenuation_at_energy, const double energy_eV, const SpecialProperty = None );
 
 	/*!
-	 * @brief Constructor from serialized data_
+	 * @brief Constructor from serialized data
 	 * @param binary_data Vector with serialized data
 	 * @param current_byte Start of data for this object
 	*/
@@ -137,18 +131,16 @@ class VoxelData{
 
 	private:
 
-	static constexpr double reference_energy_eV_ = 120000.;			/*!<Reference Energy for attenuation_ coefficients in eV*/
-	static constexpr double referenceEnergy_3_eV3_ = 1.728e+15;		/*!<Cube of reference energy*/
 
 	double attenuation_	= -1;										/*!<Absorption coefficient at reference Energy*/
 	SpecialPropertyEnumType specialProperties_;						/*!<Special properties_ in voxel*/
 
 
 	/*!
-	 * @brief Return the 
-	 * @param attenuationAtEnergy
-	 * @param frequency 
-	 * @return 
+	 * @brief Get the attenuation at reference energy
+	 * @param attenuationAtEnergy Attenuation at given energy
+	 * @param energy Energy
+	 * @return Attenuation coefficient
 	*/
 	double GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const;
 

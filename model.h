@@ -100,10 +100,10 @@ class Model : public MathematicalObject{
 	CoordinateSystem* coordinate_system( void ) const{ return coordinate_system_; };
 
 	/*!
-	 * @brief Get range of attenuation_ in model
-	 * @return Range of attenuation_
+	 * @brief Get range of attenuation in model
+	 * @return Range of attenuation
 	*/
-	NumberRange attenuationRange( void ) const{ return attenuationRange_; };
+	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ }; };
 
 	/*!
 	 * @brief Get model name_
@@ -233,7 +233,8 @@ class Model : public MathematicalObject{
 	size_t number_of_voxel_;					/*!<Absolute amount of voxels in model*/
 	vector<VoxelData> voxel_data_;				/*!<Voxel data*/
 	CoordinateSystem* coordinate_system_;		/*!<Coordinate system*/
-	NumberRange attenuationRange_;				/*!<Attenuation range in model*/
+	double min_attenuation_;					/*!<Attenuation minimum in model*/
+	double max_attenuation_;					/*!<Attenuation maximum in model*/			
 	string name_;								/*!<Model name*/
 
 

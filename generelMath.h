@@ -42,8 +42,6 @@ constexpr double permitivity_As_Per_Vm = 8.8541878128e-12;		/*!< epsilon0: Permi
 constexpr double r_e_mm = 2.8179403262e-12;						/*!< Electron radius in mm*/
 constexpr double reduced_energy_divisor_eV = 510998.95;			/*!< Divisor in reduced energy calculation m_e * c^2*/
 
-constexpr double photoeffect_change_energy_eV = 40000.;			/*!<Photonenergy under which photo effect dominates absorption*/
-
 constexpr double reference_energy_for_mu_eV = 100000.;
 constexpr double mu_water = 3e-3 * 0.997 / 10.;					/*!<Absorption Water in 1 / mm for 100keV*/
 constexpr double mu_air = 0.;
