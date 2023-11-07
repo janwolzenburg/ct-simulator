@@ -48,7 +48,7 @@ class TomographyProperties{
 	 * @param scatter_propability Approximate propability that a Ray is scattered once when transmitted through whole model
 	 * @param ray_step_length Step size used in ray-tracing
 	*/
-	TomographyProperties( const double exposure_time, const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability, const double ray_step_length );
+	TomographyProperties( const double exposure_time, const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, const double ray_step_length );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -65,12 +65,12 @@ class TomographyProperties{
 
 
 	public:
-
-	double exposure_time;				/*!<Exposure time in seconds*/
-	bool scattering_enabled;			/*!<Enable scattering*/
-	size_t max_scattering_occurrences;	/*!<Max. amount each rays can be scattered*/
-	double scatter_propability;			/*!<Approximate propability that a Ray is scattered once when transmitted through whole model*/
-	double ray_step_length;				/*!<Step size used in Ray tracing in mm*/
+		
+	double exposure_time;					/*!<Exposure time in seconds*/
+	bool scattering_enabled;				/*!<Enable scattering*/
+	size_t max_scattering_occurrences;		/*!<Max. amount each rays can be scattered*/
+	double scatter_propability_correction;	/*!<Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
+	double ray_step_length;					/*!<Step size used in Ray tracing in mm*/
 
 };
 

@@ -29,19 +29,31 @@ constexpr double PI =   3.1415926535897932384626433832795;		/*!< PI */
 constexpr double PI_2 = 9.8696044010893586188344909998761;		/*!< PI ^ 2*/
 constexpr double c_mPers = 299792456;							/*!< Speed of light in m/s */
 constexpr double e_As = 1.6021917E-19;							/*!< Electron charge in As */
+constexpr double J_Per_eV = e_As;								/*!< Joules in one eV */
 constexpr double h_Js = 6.626196E-34;							/*!< Planck's constant */
-constexpr double h_eVs = 4.1357E-15;							
+constexpr double h_eVs = 4.1357E-15;							/*!< Planck's constant */
+constexpr double h_c_eVmm = c_mPers * h_eVs * 1000.;			/*!< Product of h and c in eV*mm*/
 
-constexpr double m_0c2_eV = 0.511E6;							/*!< Compton Wavelength in eV */
+constexpr double me_c2_eV = 0.511e6;							/*!< Compton Wavelength in eV */
+constexpr double me_c2_J = me_c2_eV * J_Per_eV;					/*!< Compton wavelenth in Joule */
+constexpr double Per_me_c2_eV = 1 / me_c2_eV;					
 
-constexpr double J_Per_eV = e_As;								/*!<Joules in on eV */
-constexpr double m_0c2_J = m_0c2_eV * J_Per_eV;					/*!<Compton wavelenth in Joule */
+constexpr double permitivity_As_Per_Vm = 8.8541878128e-12;		/*!< epsilon0: Permitivity of vaccum in As/Vm */
+constexpr double r_e_mm = 2.8179403262e-12;						/*!< Electron radius in mm*/
+constexpr double reduced_energy_divisor_eV = 510998.95;			/*!< Divisor in reduced energy calculation m_e * c^2*/
 
 constexpr double photoeffect_change_energy_eV = 40000.;			/*!<Photonenergy under which photo effect dominates absorption*/
 
 constexpr double mu_air = 0.00001883552;						/*!<Absorption air in 1 / mm	for 120keV*/
 constexpr double mu_water = 0.01611970000;						/*!<Absorption Water in 1 / mm for 120keV*/
 
+constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
+
+constexpr double mean_human_density_gPercm3 = 1.;				/*!< Mean human density in g / cm^3*/
+constexpr double mean_human_atomic_weight_gPermol = 6.;			/*!< Mean atomic weight in human*/
+constexpr double cross_section_conversion_1Permm3 =				/*!< Conversion factor from cross section to attenuation coefficiant in human tissue in 1 / mm^3*/
+				 mean_human_density_gPercm3*avogadro_1Permol /
+				 mean_human_atomic_weight_gPermol * 1e-3;
 
 inline std::ostream& math_error_out = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& standard_out = std::cout;						/*!< Standard out stream */

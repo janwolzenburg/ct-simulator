@@ -80,7 +80,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	exposureTimeIn.tooltip( "Exposure time in seconds." );
 	rayStepSizeIn.tooltip( "Step size of ray tracing in mm." );
 	radiationLoopsIn.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
-	scatterPropabilityIn.tooltip( "Probability that a ray will be scattered once when going through complete model." );
+	scatterPropabilityIn.tooltip( "Correction factor for scattering propability. More scattering with higher value." );
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
 
 	
@@ -89,7 +89,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	exposureTimeIn.value( state.tomographyParamerters.exposure_time );
 	rayStepSizeIn.value( state.tomographyParamerters.ray_step_length );
 	radiationLoopsIn.value( (double) state.tomographyParamerters.max_scattering_occurrences );
-	scatterPropabilityIn.value( state.tomographyParamerters.scatter_propability );
+	scatterPropabilityIn.value( state.tomographyParamerters.scatter_propability_correction );
 	scatteringOnOff.value( state.tomographyParamerters.scattering_enabled );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 

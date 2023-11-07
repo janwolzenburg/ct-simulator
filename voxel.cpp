@@ -37,18 +37,12 @@ VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_itera
 
 double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
-	// If Plumbum attenuation is approx. 0.1134 1/mm at 100 keV
+	// iron attenuation is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return 11.34 * pow( 100000. / energy, 3. );
+		return 0.156 * pow( 100000. / energy, 3. );
 	}
 
-	// Attenuation coefficient in voxel is at energy smaller than cut energy
-	if constexpr( reference_energy_eV_ < photoeffect_change_energy_eV ){
-		return attenuation_ * pow( reference_energy_eV_ / energy, 3. );
-	}
-	
-	return attenuation_ * pow( photoeffect_change_energy_eV / energy, 3. );
-
+	return attenuation_ * pow( reference_energy_eV_ / energy, 3. );
 
 }
 

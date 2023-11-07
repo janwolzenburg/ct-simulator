@@ -218,13 +218,6 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
 
-	const double meanFrequencyTube = modelRay.GetMeanFrequencyOfSpectrum();	// Mean frequency of Ray before it enters model
-	const double meanVoxelSideLength = ( voxel_size_.x + voxel_size_.y + voxel_size_.z ) / 3.;
-	const size_t meanVoxelAmount = (size_t) ( (double) ( number_of_voxel_3D_.x + number_of_voxel_3D_.y + number_of_voxel_3D_.z ) / 3. );
-
-	const double scatterConstant = tomoParameter.scatter_propability * meanFrequencyTube / ( meanVoxelSideLength * static_cast<double>( meanVoxelAmount ) );
-
-
 	// Iterate through model while current point is inside model
 	while( IsPointInside( currentPntOnRay ) ){
 
@@ -292,8 +285,10 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			const double distance = rayParameter;		// The distance is the rayParameter
 
+			const VoxelData current_voxel_data = this->GetVoxelData( currentVoxelIndices );
+
 			// Update Ray properties whith distance travelled in current voxel
-			modelRay.UpdateProperties( this->GetVoxelData( currentVoxelIndices ), distance );
+			modelRay.UpdateProperties( current_voxel_data, distance );
 			//cout << "Current intensity: " << modelRay.properties().energy_spectrum().GetTotal() << endl;
 			modelRay.IncrementHitCounter();
 
@@ -302,19 +297,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Scattering
 			if( tomoParameter.scattering_enabled ){
-			
-				// Mean frequency of Ray
-				const double meanFrequency = modelRay.GetMeanFrequencyOfSpectrum();
-
-				// Calculate propability that the Ray is scattered
-				const double scatterPropability = distance / meanFrequency * scatterConstant;
-
-				// Does the Ray scatter?
-				if( integer_random_number_generator.DidARandomEventHappen( scatterPropability ) ){
-					
-					// Scatter the Ray
-					return scatteringProperties.ScatterRay( modelRay, currentPntOnRay );
-				}
+				return scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay );
 			}
 		}
 	}

@@ -74,7 +74,7 @@ class XRayTubeProperties {
 	/*!
 	 * @brief Default constructor
 	*/
-	XRayTubeProperties( void ) : XRayTubeProperties{ 53000., .2, Thungsten, 1 }
+	XRayTubeProperties( void ) : XRayTubeProperties{ 12000., .2, Thungsten, 1 }
 	{};
 
 	/*!
