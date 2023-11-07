@@ -121,9 +121,9 @@ void processingWindow::handleEvents( void ){
 void processingWindow::assignSinogram( const Projections newSinogram ){
 
 	sinogramImg = GrayscaleImage{ newSinogram.data(), true };
-	if( PROGRAM_STATE().ProcessingParameterLoaed() ){
-		sinogramImg.AdjustContrast( PROGRAM_STATE().currentProcessingParameters.projectionsContrast );
-	}
+	//if( PROGRAM_STATE().ProcessingParameterLoaed() ){
+		//sinogramImg.AdjustContrast( PROGRAM_STATE().RecurrentProcessingParameters.projectionsContrast );
+	//}
 	
 	sinogramWidget.AssignImage( sinogramImg );
 	PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
