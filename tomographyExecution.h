@@ -16,7 +16,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
-#include <FL/Fl_Counter.H>
+#include <FL/Fl_Simple_Counter.H>
 #include <FL/Fl_Float_Input.H>
 #include <FL/Fl_Toggle_Button.H>
 
@@ -56,10 +56,8 @@ class tomographyExec : public Fl_Group{
 
 	Fl_Group tomoParameterGrp;	/*!<Group for parameters*/
 	Fl_Box parameterTitle;		/*!<Title of parameter group*/
-	Fl_Bound_Input<Fl_Float_Input, double> exposureTimeIn;	/*!<Exposure time in sec*/
-	Fl_Bound_Input<Fl_Float_Input, double> rayStepSizeIn;	/*!<Simulation step size in mm*/
 	
-	Fl_Counter radiationLoopsIn;		/*!<Maximum amount a Ray can be scattered*/
+	Fl_Simple_Counter radiationLoopsIn;		/*!<Maximum amount a Ray can be scattered*/
 	Fl_Bound_Input<Fl_Float_Input, double> scatterPropabilityIn;	/*!<Scatter propability*/
 	Fl_Toggle_Button scatteringOnOff;	/*!<Toggle scattering*/
 

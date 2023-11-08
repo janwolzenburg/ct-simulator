@@ -64,9 +64,9 @@ class DetectorPixel : public BoundedSurface{
 
 	/*!
 	 * @brief Get the value of radon point for the detected Ray properties
-	 * @return Value of radon point
+	 * @return Value of radon point. Negative if no rays hit the pixel
 	*/
-	double GetRadonValue( void ) const;
+	double GetDetectedLineIntegral( void ) const;
 
 	/*!
 	 * @brief Convert this pixel ot given coordinate system

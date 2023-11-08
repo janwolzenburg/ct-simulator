@@ -40,7 +40,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 		vector<Tuple2D> pseudoDistribution;
 
 		// Initial photon energy
-		const double a = currentEnergy / m_0c2_eV;
+		const double a = currentEnergy / me_c2_eV;
 	
 		// Iterate all angles
 		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount - 1; currentAngleIndex++ ){
@@ -64,11 +64,42 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-Ray RayScattering::ScatterRay( Ray r, const Point3D newOrigin ) const{
+bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const Point3D newOrigin ) const{
 
-	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, GetRandomAngle( r.GetMeanFrequencyOfSpectrum() ) );
 
-	return Ray{ newDirection, newOrigin, r.properties() };
+	// Check if ray is scattered
+
+	// Calculate compton cross-section
+	const double ray_energy_eV = r.GetMeanEnergyOfSpectrum();
+	const double compton_cross_section = Compton_Cross_Section::GetInstance().GetCrossSection( ray_energy_eV );
+
+	// Get the "attenuatuion coefficiant" and the "propability"
+	const double coefficient_1Permm = cross_section_conversion_1Permm3 * compton_cross_section;
+
+	const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
+
+	// Scattering happened?
+	if( !integer_random_number_generator.DidARandomEventHappen( scatter_propability * propability_correction ) ) return false;
+
+	
+	// Ray is scattered
+	
+	// Scattering angle
+	const double angle = GetRandomAngle( ray_energy_eV );
+	
+	// Calculate anergy loss
+	
+	const double energy_after_scatter = 1. / ( Per_me_c2_eV * ( 1. - cos( angle ) ) + 1. / ray_energy_eV );
+	const double relative_energy_loss = energy_after_scatter / ray_energy_eV;
+
+	// Scale spectrum according to energy loss
+	r.ScaleSpectrum( relative_energy_loss );
+
+	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
+	r.SetOrigin( newOrigin );
+	r.SetDirection( newDirection );
+
+	return true;
 
 }
 

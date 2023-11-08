@@ -38,7 +38,7 @@ const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTu
 };
 
 XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	anode_voltage_V( DeSerializeBuildIn( 53000., binary_data, it ) ),
+	anode_voltage_V( DeSerializeBuildIn( 120000., binary_data, it ) ),
 	anode_current_A( DeSerializeBuildIn( .2, binary_data, it ) ),
 	anode_material( (Material) DeSerializeBuildIn( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
 	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) )
@@ -122,12 +122,12 @@ void XRayTube::UpdateProperties( const XRayTubeProperties tube_properties ){
 	*this = XRayTube{ coordinate_system_, tube_properties };
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance, const double exposureTime ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance ) const{
 
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
-	// Split spectrum into the Ray spectra. Multiply by exposure time in seconds to get energy spectra
-	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( exposureTime / (double) numRays );
+	// Split spectrum into the Ray spectra
+	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( 1. / (double) numRays );
 
 	// Vector with rays
 	vector<Ray> rays;

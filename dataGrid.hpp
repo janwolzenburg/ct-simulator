@@ -163,8 +163,8 @@ void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 	}
 	// Special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
-		min_value_ = VoxelData{ INFINITY, 1. };
-		max_value_ = VoxelData{ -INFINITY, 1. };
+		min_value_ = VoxelData{ INFINITY, 1., VoxelData::Undefined };
+		max_value_ = VoxelData{ -INFINITY, 1., VoxelData::Undefined };
 	}
 }
 

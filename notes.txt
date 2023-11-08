@@ -1,7 +1,8 @@
 
-TODO: Extrapolation when filtering at sinogrma boundaries
-TODO: Check filter kernel width
-TODO: range saving 
+TODO: Al-filter activation, Remove exposure time and information
+TODO: make artefact thregth adsustable
+
+TODO: verify scattering angles and propability
 
 TODO: Class and member variable names, includes
 TODO: Sorted files filter

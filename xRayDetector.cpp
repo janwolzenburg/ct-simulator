@@ -158,7 +158,7 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
+bool XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 
 	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
 
@@ -186,6 +186,7 @@ void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 		if( pixelHit.intersection_exists_ ){
 			
 			// If has_anti_scattering_structure and angle allowed by structure
+			
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
 				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties to pixel
@@ -193,10 +194,12 @@ void XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 			}
 
 			// Only one pixel can intersect with Ray
-			break;
+			return true;
 		}
 
 	}
+
+	return false;
 }
 
 

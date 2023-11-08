@@ -27,11 +27,11 @@ using std::cerr;  using std::endl; using std::cout;
 int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	/*
-	model testModel = getTestModel( GlobalSystem(), 20 );
+	Model testModel = getTestModel( GlobalSystem(), 20 );
 
 	vector<char> modelBin;
 	testModel.Serialize( modelBin );
-	exportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
+	ExportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
 
 	return 0;
 	*/

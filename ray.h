@@ -66,6 +66,12 @@ class RayProperties{
 	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
 
 	/*!
+	 * @brief Scale specturm linearly
+	 * @param factor Factor
+	*/
+	void ScaleSpectrum( const double factor ){ energy_spectrum_.Scale( factor ); };
+
+	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
 	 * @param voxel_data Data of voxel
 	 * @param distance_traveled Distance traversed in Voxel
@@ -131,10 +137,10 @@ class Ray : public Line{
 	void ScaleSpectrum( const double factor ){ properties_.energy_spectrum_.Scale( factor ); };
 
 	/*!
-	 * @brief Get the mean frequency of spectrum
-	 * @return Mean frequency
+	 * @brief Get the mean energy of spectrum
+	 * @return Mean energy
 	*/
-	double GetMeanFrequencyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
+	double GetMeanEnergyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Increment the voxel hit count
@@ -146,6 +152,18 @@ class Ray : public Line{
 	*/
 	void ResetHitCounter( void ){ properties_.voxel_hits_ = 0; };
 	
+	/*!
+	 * @brief Set origin
+	 * @param new_origin 
+	*/
+	void SetOrigin( const Point3D new_origin );
+
+	/*!
+	 * @brief Set direction
+	 * @param new_direction 
+	*/
+	void SetDirection( const UnitVector3D new_direction );
+
 	/*!
 	 * @brief Update Ray properties_ passing through voxel for specific distance
 	 * @param voxel_properties Voxel properties
