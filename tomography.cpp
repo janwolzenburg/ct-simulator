@@ -98,19 +98,31 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 		const vector<DetectorPixel> detectionPixel = gantry.pixel_array();
 
 
+		size_t current_ray_index = 0;
+
 		// Iterate all pixel
-		for( const DetectorPixel& currentPixel : detectionPixel ){
+		for( size_t pixel_index = 0; pixel_index < gantry.pixel_array().size(); pixel_index++ ){
 
 			// Get Coordinates for pixel
-			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
+			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, detectionPixel.at( pixel_index ).NormalLine() };
 
-			
+			// Get line integral from detected rays
+			double line_integral = detectionPixel.at( pixel_index ).GetDetectedLineIntegral();
+
+			// Negative return value means no detected rays
+			if( line_integral < 0 ){
+				// Radiate only one ray to fill radon space with data
+				gantry.RadiateSingleRayWithoutScattering( Model, properties_, current_ray_index );
+				line_integral = gantry.pixel_array().at( pixel_index ).GetDetectedLineIntegral(); // Call to this method necessary becaus pixel changed
+			}
 
 			// Get the radon point
-			const RadonPoint newRadonPoint{ newRadonCoordinates, currentPixel.GetRadonValue() };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, line_integral };
 			
 			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );
+
+			current_ray_index += gantry.tube().number_of_rays_per_pixel();
 		}
 		
 		// Rotate gantry
