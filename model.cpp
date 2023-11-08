@@ -291,14 +291,13 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Update Ray properties whith distance travelled in current voxel
 			modelRay.UpdateProperties( current_voxel_data, distance );
-			//cout << "Current intensity: " << modelRay.properties().energy_spectrum().GetTotal() << endl;
 			modelRay.IncrementHitCounter();
 
 			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
-			// Scattering
-			if( tomoParameter.scattering_enabled && !disable_scattering){
+			// Scattering. Only when enabled, not overriden and current point is inside model
+			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
 				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay ) ){
 					return modelRay;
 				}
@@ -306,7 +305,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 		}
 	}
 
-	// New origin_ "outside" the model to return
+	// New origin "outside" the model to return
 	modelRay.origin( currentPntOnRay );
 
 	//cout << endl << endl;

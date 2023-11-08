@@ -61,5 +61,5 @@ DetectorProperties::DetectorProperties( const ProjectionsProperties radon_proper
 	arc_angle( (double) ( radon_properties.number_of_distances() - 1 ) * radon_properties.angles_resolution() ),
 	detector_focus_distance( physical_properties.detector_focus_distance ),
 	has_anti_scattering_structure( physical_properties.has_anti_scattering_structure ),
-	max_ray_angle_allowed_by_structure( max_ray_angle_allowed_by_structure )
+	max_ray_angle_allowed_by_structure( physical_properties.max_ray_angle_allowed_by_structure )
 {}
