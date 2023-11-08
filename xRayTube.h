@@ -113,10 +113,9 @@ class XRayTube{
 	 * @brief Get beam created by tube
 	 * @param detector_pixel Vector with all pixel
 	 * @param detector_focus_distance Distance from pixel to focus (this tube)
-	 * @param exposure_time Exposure time in seconds. For energy calculation
 	 * @return Vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/
-	vector<Ray> GetEmittedBeam( const vector<DetectorPixel> detector_pixel, const double detector_focus_distance, const double exposure_time ) const;
+	vector<Ray> GetEmittedBeam( const vector<DetectorPixel> detector_pixel, const double detector_focus_distance ) const;
 
 	/*!
 	 * @brief Get coordinate system
@@ -186,6 +185,6 @@ class XRayTube{
 	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
 	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
 
-	EnergySpectrum emitted_spectrum_;				/*!<Output spectrum of tube*/
+	EnergySpectrum emitted_spectrum_;		/*!<Output spectrum of tube*/
 
  };

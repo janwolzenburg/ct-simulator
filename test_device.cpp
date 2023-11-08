@@ -60,7 +60,7 @@ bool test_tube(void) {
 
 	vector<DetectorPixel> allPixel = test_detector.pixel_array();
 
-	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance, 1. );
+	vector<Ray> beam = testTube.GetEmittedBeam( allPixel, test_detector.properties().detector_focus_distance );
 
 	ofstream ax1 = openAxis( path( "./test_tube.txt" ), true );
 

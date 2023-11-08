@@ -116,7 +116,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 
-	testGantry.RadiateModel( mod, TomographyProperties{ 1., false, 16, .05, 5e-2 } );
+	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05, 5e-2 } );
 	vector<DetectorPixel> detectorPixel = testGantry.pixel_array();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });

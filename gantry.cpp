@@ -111,7 +111,7 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
-	vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time ) );		// Current rays. Start with rays from source
+	vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance ) );		// Current rays. Start with rays from source
 	
 	// Convert rays to model coordinate system
 	for( Ray& currentRay : rays ){

@@ -29,7 +29,6 @@
 const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver01" };
 
 TomographyProperties::TomographyProperties( void ) :
-	exposure_time( 1. ),
 	scattering_enabled( true ),
 	max_scattering_occurrences( default_max_radiation_loops ),
 	scatter_propability_correction( default_scatter_propability_correction ),
@@ -37,8 +36,7 @@ TomographyProperties::TomographyProperties( void ) :
 
 {}
 
-TomographyProperties::TomographyProperties( const double exposureTime_, const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ ) :
-	exposure_time( exposureTime_ ),
+TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ ) :
 	scattering_enabled( scattering_ ),
 	max_scattering_occurrences( maxRadiationLoops_ ),
 	scatter_propability_correction( scatterPropability_ ),
@@ -46,7 +44,6 @@ TomographyProperties::TomographyProperties( const double exposureTime_, const bo
 {}
 
 TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	exposure_time( DeSerializeBuildIn<double>( 1., binary_data, it ) ),
 	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, it) ),
 	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
 	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
@@ -58,7 +55,6 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
 	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( exposure_time, binary_data );
 	num_bytes += SerializeBuildIn( scattering_enabled, binary_data );
 	num_bytes += SerializeBuildIn( max_scattering_occurrences, binary_data );
 	num_bytes += SerializeBuildIn( scatter_propability_correction, binary_data );
@@ -105,6 +101,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
 			double line_integral = currentPixel.GetDetectedLineIntegral();
+			
 			// If negative no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
 			if( line_integral < 0 ){
