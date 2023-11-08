@@ -195,9 +195,10 @@ class Model : public MathematicalObject{
 	 * @param ray_to_transmit Ray to trace through model
 	 * @param tomography_parameter Simulation parameter used in ray tracing
 	 * @param scattering_properties Information for ray scattering
+	 * @param disable_scattering Flag to override eneabled scattering in tomography_properties
 	 * @return Ray that has been scattered or left the model
 	*/
-	Ray TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties ) const;
+	Ray TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties, const bool disable_scattering = false ) const;
 
 	/*!
 	 * @brief Crop model

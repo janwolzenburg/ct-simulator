@@ -194,7 +194,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties ) const{
+Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
 
 	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
 
@@ -298,11 +298,10 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
 			// Scattering
-			if( tomoParameter.scattering_enabled ){
+			if( tomoParameter.scattering_enabled && !disable_scattering){
 				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay ) ){
 					return modelRay;
 				}
-				
 			}
 		}
 	}

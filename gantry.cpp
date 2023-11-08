@@ -63,6 +63,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 
 void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties& tomoParameter, 
 									const RayScattering& rayScatterAngles, const vector<Ray>& rays, 
+									const bool repeat_transmission_after_scattering,
 									size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
 									XRayDetector& rayDetector, mutex& detectorMutex ){
@@ -87,39 +88,25 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		// Transmit Ray through model
 		returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
 
-		// Is the Ray outside the model
+		// Is the Ray outside the model. If not the ray has been scattered
 		if( !radModel.IsPointInside( returnedRay.origin() ) ){
 			rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
 		}
 		else{
+		
 			iterationMutex.lock();
 			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
 			iterationMutex.unlock();
+
+			if( repeat_transmission_after_scattering ){
+				// Ray has been scattered. Repeat transmission but disable scattering this time
+				returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ), true ) );
+				rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
+			}
 		}
 	}
 
 	return;
-}
-
-void Gantry::RadiateSingleRayWithoutScattering( const Model& model, TomographyProperties tomography_properties, size_t ray_index ){
-
-	// Check for valid pixel index
-	if( ray_index >= detector_.pixel_array().size() * tube_.number_of_rays_per_pixel() ) ray_index = detector_.pixel_array().size() * tube_.number_of_rays_per_pixel() - 1;
-
-	// Get ray with given index in model's system
-	const vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time ) );
-	const Ray ray = rays.at( ray_index ).ConvertTo( model.coordinate_system() );
-
-	// Disable scattering. RayScattering is created becaus TransmitRays does not have default argument
-	tomography_properties.scattering_enabled = false;
-	RayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
-
-	// Transmit ray
-	const Ray returned_ray = std::move( model.TransmitRay( cref( ray ), cref( tomography_properties ), cref( rayScatterAngles ) ) );
-
-	mutex detector_mutex;
-	detector_.DetectRay( returned_ray, detector_mutex );
-
 }
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
@@ -147,17 +134,20 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	mutex detectorMutex;				// Mutex for detector
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop < tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
+	for( size_t currentLoop = 0; currentLoop <= tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
 
-		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	// No scattering in last iteration
+		// No scattering in last iteration
+		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	
 		
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
+		sharedCurrentRayIndex = 0;										// Reset current ray index
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
-														cref( rayScatterAngles ), cref( rays ), 
+														cref( rayScatterAngles ), cref( rays ),
+														currentLoop == 0,
 														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 														ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
 														ref( detector_ ), ref( detectorMutex ) );
