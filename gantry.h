@@ -107,6 +107,14 @@ class Gantry{
 	void RadiateModel( const Model& model, TomographyProperties tomography_properties ) ;
 	
 	/*!
+	 * @brief Radiate with a single ray
+	 * @param model Model to radiate
+	 * @param tomography_properties Properties. Scattering will be disabled
+	 * @param ray_index Index of ray to radiate with 
+	*/
+	void RadiateSingleRayWithoutScattering( const Model& model, TomographyProperties tomography_properties, size_t ray_index );
+
+	/*!
 	 * @brief Reset gantry to its initial position and reset detector
 	*/
 	void ResetGantry( void );

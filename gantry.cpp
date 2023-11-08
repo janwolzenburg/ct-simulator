@@ -101,6 +101,27 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 	return;
 }
 
+void Gantry::RadiateSingleRayWithoutScattering( const Model& model, TomographyProperties tomography_properties, size_t ray_index ){
+
+	// Check for valid pixel index
+	if( ray_index >= detector_.pixel_array().size() * tube_.number_of_rays_per_pixel() ) ray_index = detector_.pixel_array().size() * tube_.number_of_rays_per_pixel() - 1;
+
+	// Get ray with given index in model's system
+	const vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time ) );
+	const Ray ray = rays.at( ray_index ).ConvertTo( model.coordinate_system() );
+
+	// Disable scattering. RayScattering is created becaus TransmitRays does not have default argument
+	tomography_properties.scattering_enabled = false;
+	RayScattering rayScatterAngles{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz() };
+
+	// Transmit ray
+	const Ray returned_ray = std::move( model.TransmitRay( cref( ray ), cref( tomography_properties ), cref( rayScatterAngles ) ) );
+
+	mutex detector_mutex;
+	detector_.DetectRay( returned_ray, detector_mutex );
+
+}
+
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
 	vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance, tomography_properties.exposure_time ) );		// Current rays. Start with rays from source
@@ -149,6 +170,9 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		rays = std::move( raysForNextIteration );
 
 	}
+
+
+
 }
 
 void Gantry::ResetGantry( void ){
