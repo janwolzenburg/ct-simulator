@@ -31,23 +31,20 @@ const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_
 TomographyProperties::TomographyProperties( void ) :
 	scattering_enabled( true ),
 	max_scattering_occurrences( default_max_radiation_loops ),
-	scatter_propability_correction( default_scatter_propability_correction ),
-	ray_step_length( default_ray_step_size_mm )
+	scatter_propability_correction( default_scatter_propability_correction )
 
 {}
 
-TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const double rayStepSize_ ) :
+TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_ ) :
 	scattering_enabled( scattering_ ),
 	max_scattering_occurrences( maxRadiationLoops_ ),
-	scatter_propability_correction( scatterPropability_ ),
-	ray_step_length( rayStepSize_ )
+	scatter_propability_correction( scatterPropability_ )
 {}
 
 TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, it) ),
 	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
-	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
-	ray_step_length( DeSerializeBuildIn<double>( default_ray_step_size_mm, binary_data, it ) )
+	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) )
 {
 }
 
@@ -58,7 +55,6 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn( scattering_enabled, binary_data );
 	num_bytes += SerializeBuildIn( max_scattering_occurrences, binary_data );
 	num_bytes += SerializeBuildIn( scatter_propability_correction, binary_data );
-	num_bytes += SerializeBuildIn( ray_step_length, binary_data );
 
 	return num_bytes;
 

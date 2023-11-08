@@ -208,7 +208,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	// Iteration through model
 	/* ---------------------------------------------------------------------------------------------------- */
 
-	double currentRayStep = modelIsect.entrance_.line_parameter_ + tomoParameter.ray_step_length;		// Ray parameter at model entrance_
+	double currentRayStep = modelIsect.entrance_.line_parameter_ + default_ray_step_size_mm;		// Ray parameter at model entrance_
 	const double lengthInModel = modelIsect.exit_.line_parameter_ - modelIsect.entrance_.line_parameter_;
 
 	// Go a tiny step further down the Ray from intersection point with model and test if inside
@@ -293,7 +293,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 			modelRay.UpdateProperties( current_voxel_data, distance );
 			modelRay.IncrementHitCounter();
 
-			currentRayStep += distance + tomoParameter.ray_step_length;				// New Step on Ray
+			currentRayStep += distance + default_ray_step_size_mm;				// New Step on Ray
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
 			// Scattering. Only when enabled, not overriden and current point is inside model

@@ -26,8 +26,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) },
 	parameterTitle{			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" },
 	
-	rayStepSizeIn{			X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .08725 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Ray step size" },
-	
 	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .25 ),	H( tomoParameterGrp, .05 ), "Maximum loops" },
 	scatterPropabilityIn{	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .05 ), "Scattering prob." },
 	scatteringOnOff{		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" },
@@ -54,7 +52,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	tomoParameterGrp.box( FL_BORDER_BOX );
 
 	tomoParameterGrp.add( parameterTitle );
-	tomoParameterGrp.add( rayStepSizeIn );
 
 	tomoParameterGrp.add( radiationLoopsIn );
 	tomoParameterGrp.add( scatterPropabilityIn );
@@ -64,17 +61,14 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 
 	parameterTitle.box( FL_NO_BOX ); parameterTitle.align( FL_ALIGN_CENTER ); parameterTitle.labelsize( 20 );
 
-	rayStepSizeIn.align( FL_ALIGN_TOP );
 	radiationLoopsIn.align( FL_ALIGN_TOP );
 	scatterPropabilityIn.align( FL_ALIGN_TOP );
 
 	radiationLoopsIn.bounds(0, 100);
 	radiationLoopsIn.step( 1. );
-	rayStepSizeIn.setProperties( 0.001, 10., 3 );
 	scatterPropabilityIn.setProperties( 0., 1., 6 );
 
 
-	rayStepSizeIn.tooltip( "Step size of ray tracing in mm." );
 	radiationLoopsIn.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scatterPropabilityIn.tooltip( "Correction factor for scattering propability. More scattering with higher value." );
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
@@ -82,13 +76,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	
 	programState& state = PROGRAM_STATE();
 
-	rayStepSizeIn.value( state.tomographyParamerters.ray_step_length );
 	radiationLoopsIn.value( (double) state.tomographyParamerters.max_scattering_occurrences );
 	scatterPropabilityIn.value( state.tomographyParamerters.scatter_propability_correction );
 	scatteringOnOff.value( state.tomographyParamerters.scattering_enabled );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-	rayStepSizeIn.callback( button_cb, &updateFlag );
 	radiationLoopsIn.callback( button_cb, &updateFlag );
 	scatterPropabilityIn.callback( button_cb, &updateFlag );
 	scatteringOnOff.callback( button_cb, &updateFlag );
@@ -146,7 +138,7 @@ void tomographyExec::handleEvents( void ){
 
 	if( UnsetFlag( updateFlag )){
 		informationUpdateFlag = true;
-		state.tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value(), rayStepSizeIn.value() };
+		state.tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() / PROGRAM_STATE().TubeParameter().number_of_rays_per_pixel_ };
 		state.TomographyPropertiesSetLoaded();
 	}
 
