@@ -104,17 +104,6 @@ class programState{
 	/********************************************* Gantry ******************************************/
 	/***********************************************************************************************/
 	
-	/*!
-	 * @brief Get reference to tube instance
-	 * @return Constant reference to tube instance
-	*/
-	//XRayTube Tube( void ) const{ return gantryInstance.tube(); };
-
-	/*!
-	 * @brief Get reference to tube parameter
-	 * @return Constant reference to tube parameter
-	*/
-	//XRayTubeProperties TubeParameter( void ) const{ return xRayTubeParameter; };
 
 	/*!
 	 * @brief Get reference to radon parameter
@@ -122,31 +111,6 @@ class programState{
 	*/
 	class gantryEdition& gantryCreation( void );
 
-	/*!
-	 * @brief Get reference to detector parameter
-	 * @return Constant reference to detector parameter
-	*/
-	//PhysicalDetectorProperties DetectorParameter( void ) const{ return physical_detector_properties_; };
-
-	/*!
-	 * @brief Get physical detector parameter
-	 * @return Physical detector parameter
-	*/
-	//DetectorProperties DetectorPhysicalParameter( void ) const{ return gantryInstance.detector().properties(); };
-		
-	/*!
-	 * @brief Get gantry
-	 * @return Constant reference to gantry
-	*/
-	//Gantry gantry( void ){ return mainWindow_->gantryBuild.gantry(); };
-
-	/*!
-	 * @brief Build gantry and store given parameter
-	 * @param tubeParameter_ Tube parameter
-	 * @param radonParameter Radon parameter for detector
-	 * @param indipendentParameter Detector parameter
-	*/
-	
 
 
 	/***************************************** Tomography ******************************************/
