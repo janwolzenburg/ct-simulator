@@ -45,12 +45,12 @@ programState::programState( void ) :
 
 	tomographyInstance{},
 	tomographyParamerters{},
-	currentProjections{},
-	currentProcessingParameters{},
-	currentFilteredProjections{},
-	currentReconstrucedImage{},
+	//currentProjections{},
+	//currentProcessingParameters{},
+	//currentFilteredProjections{},
+	//currentReconstrucedImage{},
 	mainWindow_( nullptr ),
-	processingWindow_( nullptr ), 
+	//processingWindow_( nullptr ), 
 
 	resetStateAtExit( false ),
 
@@ -63,13 +63,11 @@ programState::programState( void ) :
 	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
 	
 	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
-	storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
-	storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
+	//storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
+	//storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
 	
 	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
-	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance },
-	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
-	storedExportChooser{ getPath( "storedExportChooser.txt" ), exportChooserInstance }
+	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance }
 
 {
 	createStorageDir();
@@ -90,10 +88,9 @@ programState::~programState( void ) {
 	storedDetectorParameter.Save();
 
 	storedTomographyParamerter.Save();
-	storedProjections.Save();
-	storedProcessingParameters.Save( );
+	//storedProjections.Save();
+	//storedProcessingParameters.Save( );
 	storedImportChooser.Save();
-	storedExportChooser.Save();
 }
 
 
@@ -112,21 +109,21 @@ void programState::deleteStorageDir( void ){
 		std::filesystem::remove_all( file.path() );
 }
 
-void programState::activateAll( void ){
-	if( mainWindow_ != nullptr )
-		mainWindow_->activate();
+///void programState::activateAll( void ){
+	//if( mainWindow_ != nullptr )
+		//mainWindow_->activate();
 
-	if( processingWindow_ != nullptr )
-		processingWindow_->activate();
-}
+	//if( processingWindow_ != nullptr )
+		//processingWindow_->activate();
+//}
 
-void programState::deactivateAll( void ){
-	if( mainWindow_ != nullptr )
-		mainWindow_->deactivate();
+//void programState::deactivateAll( void ){
+	//if( mainWindow_ != nullptr )
+		//mainWindow_->deactivate();
 
-	if( processingWindow_ != nullptr )
-		processingWindow_->deactivate();
-}
+	//if( processingWindow_ != nullptr )
+		//processingWindow_->deactivate();
+//}
 
 
 const Model& programState::model( void ) const{ return mainWindow_->modView.model(); };
@@ -146,36 +143,20 @@ void programState::buildGantry( const XRayTubeProperties tubeParameter_,
 }
 
 
-void programState::assignRadonTransformed( const Projections rt ){ 
-	currentProjections = rt; 
-	storedProjections.SetAsLoaded(); 
-	if( processingWindow_ != nullptr ){
-		processingWindow_->setNewRTFlag();
-	}
-}
+//void programState::assignRadonTransformed( const Projections rt ){ 
+	//currentProjections = rt; 
+	//storedProjections.SetAsLoaded(); 
+	//if( processingWindow_ != nullptr ){
+		//processingWindow_->setNewRTFlag();
+	//}
+//}
 
 void programState::setUpdateInformationFlag( void ){
 	if( mainWindow_ != nullptr )
 		mainWindow_->tomographyExecution.updateInformation();
 }
 
-void programState::exportSinogram( void ){
-	if( storedProjections.was_loaded() ){
 
-		path exportPath = exportChooserInstance.ChooseFile();
-		storedExportChooser.SetAsLoaded();
-		if( exportPath.empty() ) return;
-
-		if( exportPath.extension() != ".sinogram" )
-			exportPath += ".sinogram";
-
-		vector<char> binary_data;
-		currentProjections.Serialize( binary_data );
-
-		ExportSerialized( exportPath, binary_data );
-
-	}
-}
 
 path programState::importSinogram( void ){
 	storedImportChooser.SetAsLoaded();

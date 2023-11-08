@@ -37,9 +37,6 @@ class modelView : public Fl_Group{
 
 	public: 
 
-
-
-
 	/*!
 	 * @brief Constructor
 	 * @param x x-position
@@ -49,11 +46,10 @@ class modelView : public Fl_Group{
 	*/
 	modelView( int x, int y, int w, int h );
 
-	~modelView( void ){
-		storedModel.Save();
-		storedModelChooser.Save();
-		storedViewParameter.Save();
-	};
+	/*!
+	 * @brief Destructor
+	*/
+	~modelView( void );
 
 	/*!
 	 * @brief Get Reference to model
@@ -67,75 +63,10 @@ class modelView : public Fl_Group{
 	*/
 	bool ModelLoaded( void ) const{ return storedModel.was_loaded(); };
 
-
-
-	/*!
-	 * @brief Load the model a stored path
-	 * @return True at success
-	*/
-	bool loadModel( void );
-
-
-
-	
-	/*!
-	 * @brief Move model to given values with respect to the slice plane coordinate system
-	 * @param targetXRot Rotation around x-axis
-	 * @param targetYRot Rotation around y-axis
-	 * @param targetZTrans Translation in z-direction
-	 * @return True at success
-	*/
-	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
-	
-	/*!
-	 * @brief Center the model
-	*/
-	void centerModel( void );
-	
-	/*!
-	 * @brief Slice model with stored slice plane
-	 * @return True at success
-	*/
-	bool sliceModel( void );
-
-	/*!
-	 * @brief Get the model description
-	 * @return String with model information
-	*/
-	string modelDescription( void ) const;
-
-	/*!
-	 * @brief Check if load button was pressed
-	 * @return True when it was pressed
-	*/
-	bool LoadBtnPressed( void ){ return UnsetFlag( loadBtnPressed ); };
-
-	/*!
-	 * @brief Check if model needs update
-	 * @return True when model need update and a model is loaded
-	*/
-	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& ModelLoaded(); };
-
-	/*!
-	 * @brief Check if reset button was pressed
-	 * @return True when it was pressed
-	*/
-	bool ResetBtnPressed( void ){ return UnsetFlag( resetBtnPressed ); };
-	
 	/*!
 	 * @brief Set flag for model update
 	*/
 	void setUpdateFlag( void ){ updateModelFlag = true; };
-
-	/*!
-	 * @brief Update the model view
-	*/
-	void UpdateModel( void );
-
-	/*!
-	 * @brief Reset model's position
-	*/
-	void resetModel( void );
 
 	/*!
 	 * @brief Handle all events
@@ -144,7 +75,6 @@ class modelView : public Fl_Group{
 
 
 	private:
-	
 	
 	FileChooser modelChooserInstance;			/*!<File chooser for the model*/
 	Model modelInstance;						/*!<Current model*/
@@ -175,5 +105,65 @@ class modelView : public Fl_Group{
 	bool updateModelFlag;	/*!<Flag for model update*/
 	bool resetBtnPressed;	/*!<Flag for model reset*/
 	
+
+	/*!
+	 * @brief Get the model description
+	 * @return String with model information
+	*/
+	string modelDescription( void ) const;
+
+	/*!
+	 * @brief Check if load button was pressed
+	 * @return True when it was pressed
+	*/
+	bool LoadBtnPressed( void ){ return UnsetFlag( loadBtnPressed ); };
+
+	/*!
+	 * @brief Check if model needs update
+	 * @return True when model need update and a model is loaded
+	*/
+	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& ModelLoaded(); };
+
+	/*!
+	 * @brief Check if reset button was pressed
+	 * @return True when it was pressed
+	*/
+	bool ResetBtnPressed( void ){ return UnsetFlag( resetBtnPressed ); };
+	
+	/*!
+	 * @brief Load the model a stored path
+	 * @return True at success
+	*/
+	bool loadModel( void );
+
+	/*!
+	 * @brief Move model to given values with respect to the slice plane coordinate system
+	 * @param targetXRot Rotation around x-axis
+	 * @param targetYRot Rotation around y-axis
+	 * @param targetZTrans Translation in z-direction
+	 * @return True at success
+	*/
+	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
+	
+	/*!
+	 * @brief Center the model
+	*/
+	void centerModel( void );
+	
+	/*!
+	 * @brief Slice model with stored slice plane
+	 * @return True at success
+	*/
+	bool sliceModel( void );
+
+	/*!
+	 * @brief Update the model view
+	*/
+	void UpdateModel( void );
+
+	/*!
+	 * @brief Reset model's position
+	*/
+	void resetModel( void );
 
 };

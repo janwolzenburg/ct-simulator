@@ -39,7 +39,13 @@ class processingWindow : public Fl_Window{
 	 * @param w Width
 	 * @param h Height
 	*/
-	processingWindow( int w, int h, const char* label );
+	processingWindow( int w, int h, const char* label, Projections newSinogram );
+
+	/*!
+	 * @brief Assign new sinogram
+	 * @param newSinogram New sinogram to assign
+	*/
+	//void assignSinogram( const Projections newSinogram );
 
 	/*!
 	 * @brief Deactivate everything in window
@@ -54,7 +60,7 @@ class processingWindow : public Fl_Window{
 	/*!
 	 * @brief Set flag for new sinogram 
 	*/
-	void setNewRTFlag( void ){ newRTFlag = true; };
+	//void setNewRTFlag( void ){ newRTFlag = true; };
 
 	/*!
 	 * @brief Handle event in main window
@@ -69,14 +75,13 @@ class processingWindow : public Fl_Window{
 	
 	private:
 
-	/*!
-	 * @brief Assign new sinogram
-	 * @param newSinogram New sinogram to assign
-	*/
-	void assignSinogram( const Projections newSinogram );
+	Projections currentprojections;
+	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
+	FilteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
+	ReconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 
 
-	bool newRTFlag;			/*!<Flag indicating that a new sinogram is available*/
+	//bool newRTFlag;			/*!<Flag indicating that a new sinogram is available*/
 	Fl_Group sinogramGrp;	/*!<Group for sinogram view*/
 	GrayscaleImage sinogramImg;	/*!<Sinogram as image*/
 	Fl_AdjustableGrayscaleImage sinogramWidget;	/*!<Widget for sinogram display*/

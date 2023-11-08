@@ -11,10 +11,10 @@
 #include "widgets.h"
 #include "reconstructedImage.h"
 
-processingWindow::processingWindow( int w, int h, const char* label ) :
+processingWindow::processingWindow( int w, int h, const char* label, Projections projections ) :
 	Fl_Window{ w, h, label },
-		
-	newRTFlag( false ),
+	currentprojections( projections ),
+	//newRTFlag( false ),
 	sinogramGrp{		X( *this, .01 ),			Y( *this, .01 ),							W( *this, .49 ),			H( *this, .325 ) },
  	sinogramWidget{		X( sinogramGrp, .0 ),		Y( sinogramGrp, .0 ),						W( sinogramGrp, 1. ),		H( sinogramGrp, 1. ) },
 		
@@ -49,7 +49,7 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
 
 	filterTypeSelector.setElements( filterNames );
-	string filterName = BackprojectionFilter::filter_types.at( PROGRAM_STATE().currentProcessingParameters.filterType );
+	string filterName = BackprojectionFilter::filter_types.at( currentProcessingParameters.filterType );
 	filterTypeSelector.value( filterName );
 
 
@@ -66,6 +66,12 @@ processingWindow::processingWindow( int w, int h, const char* label ) :
 
 	reconstructionGrp.add( reconstructionImageWidget );
 	reconstructionImageWidget.box( FL_BORDER_BOX );
+
+
+	sinogramImg = GrayscaleImage{ projections.data(), true };
+	sinogramWidget.AssignImage( sinogramImg );
+	currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
+	recalcFilteredProjections();
 }
 
 void processingWindow::deactivate( void ){
@@ -85,83 +91,64 @@ void processingWindow::activate( void ){
 }
 
 
-
 void processingWindow::handleEvents( void ){
 
-	if( PROGRAM_STATE().RadonTransformedLoaded() && newRTFlag ){
-		newRTFlag = false;
-		assignSinogram( PROGRAM_STATE().currentProjections );
-		recalcFilteredProjections();
-		
-		PROGRAM_STATE().ProcessingParameterSetLoaed();
-		Fl_Window::show();
-	}
 
 	if( sinogramWidget.HandleEvents() ){
-		PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
+		currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
 	}
 
 	if( filterChanged ){
 		filterChanged = false;
-		PROGRAM_STATE().currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.value() );
+		currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.value() );
 		recalcFilteredProjections();
 	}
 
 	if( filteredProjWidget.HandleEvents() ){
 		if( filteredProjWidget.image_assigned() )
-			PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
+			currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 	}
 
 	if( reconstructionImageWidget.HandleEvents() ){
 		if( reconstructionImageWidget.image_assigned() )
-			PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
+			currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 	}
 }
 
-void processingWindow::assignSinogram( const Projections newSinogram ){
-
-	sinogramImg = GrayscaleImage{ newSinogram.data(), true };
-	//if( PROGRAM_STATE().ProcessingParameterLoaed() ){
-		//sinogramImg.AdjustContrast( PROGRAM_STATE().RecurrentProcessingParameters.projectionsContrast );
-	//}
-	
-	sinogramWidget.AssignImage( sinogramImg );
-	PROGRAM_STATE().currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
-}
 
 void processingWindow::recalcFilteredProjections( void ){
 
-	PROGRAM_STATE().deactivateAll();
+	this->deactivate();
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 
-	PROGRAM_STATE().currentFilteredProjections = FilteredProjections{ PROGRAM_STATE().currentProjections, PROGRAM_STATE().currentProcessingParameters.filterType, processingProgressWindow };
+	currentFilteredProjections = FilteredProjections{ currentprojections, currentProcessingParameters.filterType, processingProgressWindow };
 
-	if( PROGRAM_STATE().currentFilteredProjections.filter().type() == BackprojectionFilter::TYPE::constant )
+	if( currentFilteredProjections.filter().type() == BackprojectionFilter::TYPE::constant )
 		filterPlot.hide();
 	else
 		filterPlot.show();
 
-	filterPlot.setLimits( plotLimits{ false, true, PROGRAM_STATE().currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow(PROGRAM_STATE().currentFilteredProjections.resolution().r, 2.) } );
-	filterPlot.plotRef().assignData( PROGRAM_STATE().currentFilteredProjections.filter().GetPlotValues() );
+	filterPlot.setLimits( plotLimits{ false, true, currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow( currentFilteredProjections.resolution().r, 2.) } );
+	filterPlot.plotRef().assignData(currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.assignData();
 	
-	filteredProjImage = GrayscaleImage{ PROGRAM_STATE().currentFilteredProjections.data_grid(), true };
+	filteredProjImage = GrayscaleImage{ currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.AssignImage( filteredProjImage );
 	filteredProjWidget.SetSliderBoundsFromImage();
-	PROGRAM_STATE().currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
+	currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 
-	PROGRAM_STATE().currentReconstrucedImage = ReconstrucedImage{ PROGRAM_STATE().currentFilteredProjections, processingProgressWindow };
+	currentReconstrucedImage = ReconstrucedImage{ currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = GrayscaleImage{ PROGRAM_STATE().currentReconstrucedImage.getGrid(), true };
+	reconstructionImage = GrayscaleImage{ currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.AssignImage( reconstructionImage );
 	reconstructionImageWidget.SetSliderBoundsFromImage();
-	PROGRAM_STATE().currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
+	currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 
 	delete processingProgressWindow;
 
-	PROGRAM_STATE().activateAll();
+	this->activate();
 
 }

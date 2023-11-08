@@ -129,6 +129,12 @@ modelView::modelView( int x, int y, int w, int h ) :
 	}
 }
 
+modelView::~modelView( void ){
+	storedModel.Save();
+	storedModelChooser.Save();
+	storedViewParameter.Save();
+};
+
 
 string modelView::modelDescription( void ) const{
 

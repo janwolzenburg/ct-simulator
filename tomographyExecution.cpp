@@ -38,10 +38,17 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
+	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
+	storedExportChooser{ PROGRAM_STATE().getPath( "storedExportChooser.txt" ), exportChooserInstance },
+
 	radiateFlag( false ),
 	updateFlag( false ),
 	exportFlag( false ),
-	informationUpdateFlag( false )
+	informationUpdateFlag( false ),
+
+	projections_loaded( false ),
+	currentProjection{},
+	processing_windows_( 0, nullptr )
 
 {
 	Fl_Group::box( FL_BORDER_BOX );
@@ -100,45 +107,61 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	this->deactivate();
 }
 
+
+tomographyExec::~tomographyExec( void ){
+	
+	storedExportChooser.Save();
+
+	for( auto currentWindow : processing_windows_ )
+		delete currentWindow;
+}
+
+void tomographyExec::AssignProjections( const Projections projections ){
+	projections_loaded = true;
+	currentProjection = projections;
+	processing_windows_.emplace_back( new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection } );
+	processing_windows_.back()->show();
+}
+
 void tomographyExec::handleEvents( void ){
 
 	programState& state = PROGRAM_STATE();
 
-	
-	if( state.RadonTransformedLoaded() )
+	if( projections_loaded )
 		exportButton.activate();
 	else
 		exportButton.deactivate();
 	
 	if(  UnsetFlag( radiateFlag ) ){
 
-		state.deactivateAll();
+		this->parent()->deactivate();
 
 		Fl_Progress_Window* radiationProgressWindow = nullptr;
 		if( state.mainWindow_ != nullptr )
-			radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) state.mainWindow_, 20, 5, "Radiation progress" };
+			radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this->window(), 20, 5, "Radiation progress"};
 		
 
 		state.tomographyInstance = Tomography{ state.tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			state.assignRadonTransformed( state.tomographyInstance.RecordSlice( state.RadonParameter(), state.gantry(), state.model(), 0, radiationProgressWindow ) );
+			projections_loaded = true;
+			currentProjection = state.tomographyInstance.RecordSlice( state.RadonParameter(), state.gantry(), state.model(), 0, radiationProgressWindow );
 			delete radiationProgressWindow;
 		}
 
-		if( state.processingWindow_ != nullptr )
-			state.processingWindow_->setNewRTFlag();
+		processing_windows_.emplace_back( new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection } );
+		processing_windows_.back()->show();
 
-		state.activateAll();
+		this->parent()->activate();
 	}
 
 	if( UnsetFlag( exportFlag ) )
-		state.exportSinogram();
+		exportSinogram();
 	
 
 	if( UnsetFlag( updateFlag )){
 		informationUpdateFlag = true;
-		state.tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() / PROGRAM_STATE().TubeParameter().number_of_rays_per_pixel_ };
+		state.tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
 		state.TomographyPropertiesSetLoaded();
 	}
 
@@ -156,6 +179,28 @@ void tomographyExec::handleEvents( void ){
 		informationString += "Strahlleistung:	  " + ToString( state.Tube().GetEmittedBeamPower() ) + "W" + '\n';
 		
 		information.value( informationString.c_str() );
+	}
+
+
+	for( auto currentWindow : processing_windows_ )
+		currentWindow->handleEvents();
+
+}
+
+void tomographyExec::exportSinogram( void ){
+	if( projections_loaded ){
+
+		path exportPath = exportChooserInstance.ChooseFile();
+		storedExportChooser.SetAsLoaded();
+		if( exportPath.empty() ) return;
+
+		if( exportPath.extension() != ".sinogram" )
+			exportPath += ".sinogram";
+
+		vector<char> binary_data;
+		currentProjection.Serialize( binary_data );
+
+		ExportSerialized( exportPath, binary_data );
 
 	}
 }

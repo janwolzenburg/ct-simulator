@@ -43,10 +43,10 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
 	mainWindow* mainWindow_ = new mainWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
-	processingWindow* procView = new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" };
+	//processingWindow* procView = new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" };
 
 	mainWindow_->hide();
-	procView->hide();
+	//procView->hide();
 
 	Fl_Progress_Window* initialWindow = new Fl_Progress_Window{ mainWindow_, 20, 3, "Initialisation" };
 	initialWindow->changeLineText( 1, "Loading program state..." );
@@ -55,11 +55,11 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	programState& state = PROGRAM_STATE();
 	state.registerMainWindow( mainWindow_ );
-	state.registerProcessingWindow( procView );
+	//state.registerProcessingWindow( procView );
 
-	if( state.RadonTransformedLoaded() ){
-		procView->setNewRTFlag();
-	}
+	//if( state.RadonTransformedLoaded() ){
+		//procView->setNewRTFlag();
+	//}
 
 	bool firstLoop = true;
 
@@ -67,7 +67,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	while( Fl::wait() ){
 		
 		mainWindow_->handleEvents();
-		procView->handleEvents();
+		//procView->handleEvents();
 
 		if( firstLoop ){
 			mainWindow_->show();
@@ -77,7 +77,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	}
 
 	delete mainWindow_;
-	delete procView;
+	//delete procView;
 	delete initialWindow;
 	return 0;
 	

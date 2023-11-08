@@ -39,6 +39,11 @@ class tomographyExec : public Fl_Group{
 	*/
 	tomographyExec( int x, int y, int w, int h );
 
+	/*! 
+	 * @brief Destructor
+	*/
+	~tomographyExec( void );
+
 	/*!
 	 * @brief Set information update flag
 	*/
@@ -49,6 +54,12 @@ class tomographyExec : public Fl_Group{
 	*/
 	void handleEvents( void );
 
+	/*!
+	 * @brief Export current sinogram
+	*/
+	void exportSinogram( void );
+
+	void AssignProjections( const Projections projections );
 
 	private:
 
@@ -67,9 +78,16 @@ class tomographyExec : public Fl_Group{
 	Fl_Button radiationButton;	/*!<Start button for radiation*/
 	Fl_Button exportButton;		/*!<Export button for sinogram*/
 
+	
+	FileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
+	PersistingObject<FileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
+
 	bool radiateFlag;				/*!<Flag for radiation start*/
 	bool exportFlag;				/*!<Flag for sinogram export*/
 	bool updateFlag;				/*!<Flag to update tomography parameter*/
 	bool informationUpdateFlag;		/*!<Flag for information text update*/
 
+	bool projections_loaded;
+	Projections currentProjection;
+	vector<processingWindow*> processing_windows_;
  };

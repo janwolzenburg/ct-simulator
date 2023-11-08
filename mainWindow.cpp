@@ -78,8 +78,6 @@ void mainWindow::activate( void ){
 
 void mainWindow::handleEvents( void ){
 
-	
-
 	if( UnsetFlag( resetButtonPressed ) ){
 		if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
 			PROGRAM_STATE().resetStateStorageAtExit();
@@ -96,7 +94,8 @@ void mainWindow::handleEvents( void ){
 
 		if( ValidBinaryData( Projections::FILE_PREAMBLE, binary_data, it ) ){
 			Projections importedSinogram{ binary_data, it };
-			PROGRAM_STATE().assignRadonTransformed( importedSinogram );
+			tomographyExecution.AssignProjections( importedSinogram );
+			//PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 		}
 	}
 

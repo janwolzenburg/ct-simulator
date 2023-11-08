@@ -372,6 +372,9 @@
     <ClInclude Include="modelViewProperties.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="modelCreator.h">
+      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

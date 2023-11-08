@@ -60,14 +60,12 @@ class programState{
 
 	Tomography tomographyInstance;				/*!<Instance of the tomography*/
 	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
-	Projections currentProjections;		/*!<The current projections from last tomography*/
+	//Projections currentProjections;		/*!<The current projections from last tomography*/
 
-	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
-	FilteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
-	ReconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
+	
 	
 	mainWindow* mainWindow_;				/*!<Pointer to the main window*/
-	processingWindow* processingWindow_;	/*!<Pointer to the processing window*/
+	//processingWindow* processingWindow_;	/*!<Pointer to the processing window*/
 
 
 	/*!
@@ -106,17 +104,17 @@ class programState{
 	 * @brief Store pointer to processing window for usage in program
 	 * @param ptr Pointer to the processing window
 	*/
-	void registerProcessingWindow( processingWindow* const ptr ){ processingWindow_ = ptr; };
+	//void registerProcessingWindow( processingWindow* const ptr ){ processingWindow_ = ptr; };
 	
 	/*!
 	 * @brief Activate main and processing window
 	*/
-	void activateAll( void );
+	//void activateAll( void );
 
 	/*!
 	 * @brief Deactivate main and processing window
 	*/
-	void deactivateAll( void );
+	//void deactivateAll( void );
 
 
 	/********************************************* Model *******************************************/
@@ -181,24 +179,19 @@ class programState{
 	 * @brief Check if a radon transformed is loaded
 	 * @return True when a radon transform is currently loaded
 	*/
-	bool RadonTransformedLoaded( void ) const{ return storedProjections.was_loaded();  };
+	//bool RadonTransformedLoaded( void ) const{ return storedProjections.was_loaded();  };
 
 	/*!
 	 * @brief Assign a radon transformed 
 	 * @details Store as current projections and set flags
 	 * @param rt Radon transform to assign
 	*/
-	void assignRadonTransformed( const Projections rt );
+	//void assignRadonTransformed( const Projections rt );
 	
 	/*!
 	 * @brief Set flag to update tomography parameter information
 	*/
 	void setUpdateInformationFlag( void );
-
-	/*!
-	 * @brief Export current sinogram
-	*/
-	void exportSinogram( void );
 
 	/*!
 	 * @brief Choose path to import sinogram
@@ -207,8 +200,8 @@ class programState{
 	path importSinogram( void );
 
 
-	bool ProcessingParameterLoaed( void ) const{ return storedProcessingParameters.was_loaded();  };
-	void ProcessingParameterSetLoaed( void ) { storedProcessingParameters.SetAsLoaded(); };
+	//bool ProcessingParameterLoaed( void ) const{ return storedProcessingParameters.was_loaded();  };
+	//void ProcessingParameterSetLoaed( void ) { storedProcessingParameters.SetAsLoaded(); };
 
 	void TomographyPropertiesSetLoaded( void ){ storedTomographyParamerter.SetAsLoaded(); };
 
@@ -254,11 +247,8 @@ class programState{
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
-	PersistingObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
-	PersistingObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
-
-	FileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
-	PersistingObject<FileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
+	//PersistingObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
+	//PersistingObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
 	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
 	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/

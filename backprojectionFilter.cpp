@@ -20,9 +20,9 @@
 *********************************************************************/
 
 const std::map < BackprojectionFilter::TYPE, string> BackprojectionFilter::filter_types{
-		{ constant,	"Constant" },
 		{ ramLak,	"RamLak" },
 		{ sheppLogan,"SheppLogan" },
+		{ constant,	"Constant" }
 };
 
 
