@@ -27,6 +27,15 @@
 
 gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	Fl_Group{ x, y, w, h },
+
+	xRayTubeParameter{},
+	storedXRayTubeParameter{ PROGRAM_STATE().getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
+	radonParameter{},
+	storedRadonParameter{  PROGRAM_STATE().getPath( "storedRadonParameter.txt" ), radonParameter },
+	physical_detector_properties_{},
+	storedDetectorParameter{  PROGRAM_STATE().getPath( "storedDetectorParameter.txt" ), physical_detector_properties_ },
+	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
+
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.05 ),	"Gantry" },
 
 	tubeGrp{		X( *this, .0 ),	vOff( title ) + Y( *this, .02 ),	W( *this, 1. ),		H( *this, .3 ) },
@@ -72,8 +81,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		tubeVoltageIn.setProperties( 1., 200000., 0 );
 		tubeCurrentIn.setProperties( .001, 10., 3 );
 
-		tubeVoltageIn.value( PROGRAM_STATE().TubeParameter().anode_voltage_V );
-		tubeCurrentIn.value( PROGRAM_STATE().TubeParameter().anode_current_A );
+		tubeVoltageIn.value( xRayTubeParameter.anode_voltage_V );
+		tubeCurrentIn.value( xRayTubeParameter.anode_current_A );
 
 		tubeVoltageIn.callback( button_cb, &updateGantry );
 		tubeCurrentIn.callback( button_cb, &updateGantry );
@@ -83,7 +92,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
 
 		materialIn.setElements( materialNames );
-		XRayTubeProperties::Material anode_material = PROGRAM_STATE().TubeParameter().anode_material;
+		XRayTubeProperties::Material anode_material = xRayTubeParameter.anode_material;
 		string materialName = XRayTubeProperties::materials.at( anode_material ).first;
 		materialIn.value( materialName );
 
@@ -109,13 +118,13 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
 		colPnts.setProperties( 3, 10000, 0 );
-		colPnts.value( PROGRAM_STATE().RadonParameter().number_of_angles() );
+		colPnts.value( radonParameter.number_of_angles() );
 
 		rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
-		rowPnts.value( PROGRAM_STATE().RadonParameter().number_of_distances() );
+		rowPnts.value( radonParameter.number_of_distances() );
 
 		distRange.setProperties( 1., 10000., 0 );
-		distRange.value( PROGRAM_STATE().RadonParameter().measuring_field_size() );
+		distRange.value( radonParameter.measuring_field_size() );
 
 		colPnts.callback( button_cb, &updateGantry );
 		rowPnts.callback( button_cb, &updateGantry );
@@ -132,15 +141,15 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 		raysPerPixelIn.align( FL_ALIGN_TOP ); detector_focus_distance_input.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
 		raysPerPixelIn.setProperties( 1, 1000, 0 );
-		raysPerPixelIn.value( (int) PROGRAM_STATE().Tube().number_of_rays_per_pixel() );
+		raysPerPixelIn.value( (int)  gantryInstance.tube().number_of_rays_per_pixel());
 
 		detector_focus_distance_input.setProperties( distRange.value(), 100000., 0);
-		detector_focus_distance_input.value( PROGRAM_STATE().DetectorParameter().detector_focus_distance );
+		detector_focus_distance_input.value( physical_detector_properties_.detector_focus_distance );
 
 		maxRayAngleIn.setProperties( .1, 60., 2 );
-		maxRayAngleIn.value( PROGRAM_STATE().DetectorParameter().max_ray_angle_allowed_by_structure / 2. / PI * 360. );
+		maxRayAngleIn.value( physical_detector_properties_.max_ray_angle_allowed_by_structure / 2. / PI * 360. );
 
-		structureIn.value( (int) PROGRAM_STATE().DetectorParameter().has_anti_scattering_structure );
+		structureIn.value( (int) physical_detector_properties_.has_anti_scattering_structure );
 		structureIn.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		raysPerPixelIn.callback( button_cb, &updateGantry );
@@ -160,6 +169,12 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 
 }
 
+gantryEdition::~gantryEdition( void ){
+	storedXRayTubeParameter.Save();
+	storedRadonParameter.Save();
+	storedDetectorParameter.Save();
+}
+
 void gantryEdition::handleEvents( void ){
 
 	if( UpdateGantry() ){
@@ -170,19 +185,25 @@ void gantryEdition::handleEvents( void ){
 		
 		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
 
-		XRayTubeProperties newTubeParameter{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
-		ProjectionsProperties newRadonParameter{ colPnts.value(), rowPnts.value(), distRange.value() };
-		PhysicalDetectorProperties newDetectorParameter{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
+		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
+		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };
+		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
+		
+		storedXRayTubeParameter.SetAsLoaded();
+		storedRadonParameter.SetAsLoaded();
+		storedDetectorParameter.SetAsLoaded();
+
+		rowPnts.value( radonParameter.number_of_distances() );
+		colPnts.value( radonParameter.number_of_angles() );
 
 
-		rowPnts.value( newRadonParameter.number_of_distances() );
-		colPnts.value( newRadonParameter.number_of_angles() );
+	
+		gantryInstance.UpdateTubeAndDetectorProperties( xRayTubeParameter, radonParameter, physical_detector_properties_ );
 
 
-		PROGRAM_STATE().buildGantry( newTubeParameter, newRadonParameter, newDetectorParameter );
 
-		const XRayTube tubeRef = PROGRAM_STATE().gantry().tube();
-		const XRayDetector detectorRef = PROGRAM_STATE().gantry().detector();
+		const XRayTube tubeRef = gantryInstance.tube();
+		const XRayDetector detectorRef = gantryInstance.detector();
 
 		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
 		for( auto& spectrum_value : spectrum_points.second ){
@@ -200,8 +221,8 @@ void gantryEdition::handleEvents( void ){
 
 		for( const auto& pixel : allPixel ){
 
-			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( PROGRAM_STATE().gantry().coordinate_system() );
-			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( PROGRAM_STATE().gantry().coordinate_system() );
+			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( gantryInstance.coordinate_system() );
+			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( gantryInstance.coordinate_system() );
 
 			const Tuple2D start{ startP.X(), startP.Y() };
 			const Tuple2D end{ endP.X(), endP.Y() };
@@ -210,7 +231,7 @@ void gantryEdition::handleEvents( void ){
 
 		}
 
-		const Point3D gantryCenter = PROGRAM_STATE().gantry().GetCenter();
+		const Point3D gantryCenter = gantryInstance.GetCenter();
 		detectorPlot.plotRef().addPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
 		detectorPlot.plotRef().create();
 		detectorPlot.assignData();

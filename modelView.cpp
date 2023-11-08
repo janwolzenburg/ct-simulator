@@ -232,7 +232,7 @@ void modelView::centerModel( void ){
 
 void modelView::resetModel( void ){
 
-	Fl_Group::window()->deactivate();
+	this->window()->deactivate();
 		modelViewPara.slice_plane.rotationAngleX = 0.;
 	 modelViewPara.slice_plane.rotationAngleY = 0.;
 	 modelViewPara.slice_plane.positionZ = 0.;
@@ -246,13 +246,13 @@ void modelView::resetModel( void ){
 	sliceModel();
 	viewImg.AssignImage( modelSliceInstance );//, true );
 
-	Fl_Group::window()->activate();
+	this->window()->activate();
 
 }
 
 bool modelView::loadModel( void ){
 
-	Fl_Group::window()->deactivate();
+	this->window()->deactivate();
 
 	viewImg.hide(); viewBox.show(); modelData.hide();
 	viewBox.label( "Loading model..." );
@@ -262,7 +262,7 @@ bool modelView::loadModel( void ){
 
 	if( !storedModel.Load( modelToLoad ) ){
 		viewBox.label( "Loading failed!" );
-		Fl_Group::window()->activate();
+		this->window()->activate();
 		return false;
 	}
 
@@ -275,7 +275,7 @@ bool modelView::loadModel( void ){
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
-	Fl_Group::window()->activate();
+	this->window()->activate();
 
 	return true;
 }
@@ -305,7 +305,7 @@ void modelView::handleEvents( void ){
 
 void modelView::UpdateModel( void ){
 
-	Fl_Group::window()->deactivate();
+	this->window()->deactivate();
 	
 	// Store in variable for moveModel function call
 	double oldXRot = xRot.value();
@@ -329,6 +329,6 @@ void modelView::UpdateModel( void ){
 
 	modelDataString = modelDescription();
 	modelData.value( modelDataString.c_str() );
-	Fl_Group::window()->activate();
+	this->window()->activate();
 
 }

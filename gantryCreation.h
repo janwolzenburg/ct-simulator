@@ -43,6 +43,13 @@ class gantryEdition : public Fl_Group{
 	*/
 	gantryEdition( int x, int y, int w, int h );
 
+	~gantryEdition( void );
+
+	Gantry& gantry( void ){ return gantryInstance; };
+
+	ProjectionsProperties projections_properties ( void ){ return radonParameter; };
+
+	
 	/*!
 	 * @brief Set flag for gantry update
 	*/
@@ -61,6 +68,14 @@ class gantryEdition : public Fl_Group{
 
 
 	private:
+
+	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
+	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
+	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
+	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
+	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
+	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 	Fl_Box title;		/*!<Title*/
 

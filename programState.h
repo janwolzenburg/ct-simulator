@@ -58,14 +58,8 @@ class programState{
 	static programState& getInstance();
 	
 
-	Tomography tomographyInstance;				/*!<Instance of the tomography*/
-	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
-	//Projections currentProjections;		/*!<The current projections from last tomography*/
 
-	
-	
 	mainWindow* mainWindow_;				/*!<Pointer to the main window*/
-	//processingWindow* processingWindow_;	/*!<Pointer to the processing window*/
 
 
 	/*!
@@ -100,22 +94,6 @@ class programState{
 	*/
 	void registerMainWindow( mainWindow* const ptr ){ mainWindow_ = ptr; };
 
-	/*!
-	 * @brief Store pointer to processing window for usage in program
-	 * @param ptr Pointer to the processing window
-	*/
-	//void registerProcessingWindow( processingWindow* const ptr ){ processingWindow_ = ptr; };
-	
-	/*!
-	 * @brief Activate main and processing window
-	*/
-	//void activateAll( void );
-
-	/*!
-	 * @brief Deactivate main and processing window
-	*/
-	//void deactivateAll( void );
-
 
 	/********************************************* Model *******************************************/
 	/***********************************************************************************************/
@@ -130,37 +108,37 @@ class programState{
 	 * @brief Get reference to tube instance
 	 * @return Constant reference to tube instance
 	*/
-	XRayTube Tube( void ) const{ return gantryInstance.tube(); };
+	//XRayTube Tube( void ) const{ return gantryInstance.tube(); };
 
 	/*!
 	 * @brief Get reference to tube parameter
 	 * @return Constant reference to tube parameter
 	*/
-	XRayTubeProperties TubeParameter( void ) const{ return xRayTubeParameter; };
+	//XRayTubeProperties TubeParameter( void ) const{ return xRayTubeParameter; };
 
 	/*!
 	 * @brief Get reference to radon parameter
 	 * @return Constant reference to radon parameter
 	*/
-	ProjectionsProperties RadonParameter( void ) const{ return radonParameter; };
+	class gantryEdition& gantryCreation( void );
 
 	/*!
 	 * @brief Get reference to detector parameter
 	 * @return Constant reference to detector parameter
 	*/
-	PhysicalDetectorProperties DetectorParameter( void ) const{ return physical_detector_properties_; };
+	//PhysicalDetectorProperties DetectorParameter( void ) const{ return physical_detector_properties_; };
 
 	/*!
 	 * @brief Get physical detector parameter
 	 * @return Physical detector parameter
 	*/
-	DetectorProperties DetectorPhysicalParameter( void ) const{ return gantryInstance.detector().properties(); };
+	//DetectorProperties DetectorPhysicalParameter( void ) const{ return gantryInstance.detector().properties(); };
 		
 	/*!
-	 * @brief Get reference to gantry
+	 * @brief Get gantry
 	 * @return Constant reference to gantry
 	*/
-	Gantry gantry( void ){ return gantryInstance; };
+	//Gantry gantry( void ){ return mainWindow_->gantryBuild.gantry(); };
 
 	/*!
 	 * @brief Build gantry and store given parameter
@@ -168,26 +146,12 @@ class programState{
 	 * @param radonParameter Radon parameter for detector
 	 * @param indipendentParameter Detector parameter
 	*/
-	void buildGantry( const XRayTubeProperties tubeParameter_,
-					  const ProjectionsProperties radonParameter, const PhysicalDetectorProperties indipendentParameter );
+	
 
 
 	/***************************************** Tomography ******************************************/
 	/***********************************************************************************************/
 
-	/*!
-	 * @brief Check if a radon transformed is loaded
-	 * @return True when a radon transform is currently loaded
-	*/
-	//bool RadonTransformedLoaded( void ) const{ return storedProjections.was_loaded();  };
-
-	/*!
-	 * @brief Assign a radon transformed 
-	 * @details Store as current projections and set flags
-	 * @param rt Radon transform to assign
-	*/
-	//void assignRadonTransformed( const Projections rt );
-	
 	/*!
 	 * @brief Set flag to update tomography parameter information
 	*/
@@ -199,11 +163,6 @@ class programState{
 	*/
 	path importSinogram( void );
 
-
-	//bool ProcessingParameterLoaed( void ) const{ return storedProcessingParameters.was_loaded();  };
-	//void ProcessingParameterSetLoaed( void ) { storedProcessingParameters.SetAsLoaded(); };
-
-	void TomographyPropertiesSetLoaded( void ){ storedTomographyParamerter.SetAsLoaded(); };
 
 	private:
 
@@ -238,17 +197,8 @@ class programState{
 	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
 
 
-	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
-	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
-	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
-	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
-	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
-	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
+	
 
-	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
-	//PersistingObject<Projections> storedProjections;				/*!<Persisting storage of projections*/
-	//PersistingObject<processingParameter> storedProcessingParameters;	/*!<Persisting storage of processing parameter*/
 
 	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
 	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/

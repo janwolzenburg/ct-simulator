@@ -14,7 +14,6 @@
 processingWindow::processingWindow( int w, int h, const char* label, Projections projections ) :
 	Fl_Window{ w, h, label },
 	currentprojections( projections ),
-	//newRTFlag( false ),
 	sinogramGrp{		X( *this, .01 ),			Y( *this, .01 ),							W( *this, .49 ),			H( *this, .325 ) },
  	sinogramWidget{		X( sinogramGrp, .0 ),		Y( sinogramGrp, .0 ),						W( sinogramGrp, 1. ),		H( sinogramGrp, 1. ) },
 		

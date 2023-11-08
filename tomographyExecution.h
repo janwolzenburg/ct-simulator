@@ -82,6 +82,12 @@ class tomographyExec : public Fl_Group{
 	FileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
 	PersistingObject<FileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
 
+		
+	Tomography tomographyInstance;				/*!<Instance of the tomography*/
+	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
+	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
+
+
 	bool radiateFlag;				/*!<Flag for radiation start*/
 	bool exportFlag;				/*!<Flag for sinogram export*/
 	bool updateFlag;				/*!<Flag to update tomography parameter*/

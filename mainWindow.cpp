@@ -95,7 +95,6 @@ void mainWindow::handleEvents( void ){
 		if( ValidBinaryData( Projections::FILE_PREAMBLE, binary_data, it ) ){
 			Projections importedSinogram{ binary_data, it };
 			tomographyExecution.AssignProjections( importedSinogram );
-			//PROGRAM_STATE().assignRadonTransformed( importedSinogram );
 		}
 	}
 

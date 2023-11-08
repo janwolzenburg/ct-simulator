@@ -16,7 +16,7 @@
 #include "mainWindow.h"
 #include "processingWindow.h"
 #include "serialization.h"
-
+#include "gantryCreation.h"
 
  /*********************************************************************
 	Implementations
@@ -43,29 +43,12 @@ programState& programState::getInstance(){
 programState::programState( void ) :
 	
 
-	tomographyInstance{},
-	tomographyParamerters{},
-	//currentProjections{},
-	//currentProcessingParameters{},
-	//currentFilteredProjections{},
-	//currentReconstrucedImage{},
+
 	mainWindow_( nullptr ),
-	//processingWindow_( nullptr ), 
 
 	resetStateAtExit( false ),
+	
 
-	xRayTubeParameter{},
-	storedXRayTubeParameter{ programState::getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
-	radonParameter{},
-	storedRadonParameter{ programState::getPath( "storedRadonParameter.txt" ), radonParameter },
-	physical_detector_properties_{},
-	storedDetectorParameter{ programState::getPath( "storedDetectorParameter.txt" ), physical_detector_properties_ },
-	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
-	
-	storedTomographyParamerter{ programState::getPath( "storedTomograpyParameter.txt" ), tomographyParamerters },
-	//storedProjections{ programState::getPath( "storedProjections.txt" ), currentProjections },
-	//storedProcessingParameters{ programState::getPath( "storedProcessingParameters.txt" ), currentProcessingParameters },
-	
 	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
 	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance }
 
@@ -83,13 +66,6 @@ programState::~programState( void ) {
 
 
 
-	storedXRayTubeParameter.Save();
-	storedRadonParameter.Save();
-	storedDetectorParameter.Save();
-
-	storedTomographyParamerter.Save();
-	//storedProjections.Save();
-	//storedProcessingParameters.Save( );
 	storedImportChooser.Save();
 }
 
@@ -109,47 +85,14 @@ void programState::deleteStorageDir( void ){
 		std::filesystem::remove_all( file.path() );
 }
 
-///void programState::activateAll( void ){
-	//if( mainWindow_ != nullptr )
-		//mainWindow_->activate();
-
-	//if( processingWindow_ != nullptr )
-		//processingWindow_->activate();
-//}
-
-//void programState::deactivateAll( void ){
-	//if( mainWindow_ != nullptr )
-		//mainWindow_->deactivate();
-
-	//if( processingWindow_ != nullptr )
-		//processingWindow_->deactivate();
-//}
-
 
 const Model& programState::model( void ) const{ return mainWindow_->modView.model(); };
 
-void programState::buildGantry( const XRayTubeProperties tubeParameter_,
-				  const ProjectionsProperties radonParameter_, const PhysicalDetectorProperties indipendentParameter ){
-
-	xRayTubeParameter = tubeParameter_;
-	radonParameter = radonParameter_;
-	physical_detector_properties_ = indipendentParameter;
-
-	gantryInstance.UpdateTubeAndDetectorProperties( xRayTubeParameter, radonParameter, physical_detector_properties_ );
-
-	storedXRayTubeParameter.SetAsLoaded();
-	storedRadonParameter.SetAsLoaded();
-	storedDetectorParameter.SetAsLoaded();
-}
+gantryEdition& programState::gantryCreation( void ){ 
+	return mainWindow_->gantryBuild; 
+};
 
 
-//void programState::assignRadonTransformed( const Projections rt ){ 
-	//currentProjections = rt; 
-	//storedProjections.SetAsLoaded(); 
-	//if( processingWindow_ != nullptr ){
-		//processingWindow_->setNewRTFlag();
-	//}
-//}
 
 void programState::setUpdateInformationFlag( void ){
 	if( mainWindow_ != nullptr )

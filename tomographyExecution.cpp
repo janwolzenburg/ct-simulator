@@ -17,6 +17,7 @@
 #include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
+#include "gantryCreation.h"
 
 
 tomographyExec::tomographyExec( int x, int y, int w, int h ) :
@@ -40,7 +41,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	
 	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
 	storedExportChooser{ PROGRAM_STATE().getPath( "storedExportChooser.txt" ), exportChooserInstance },
-
+	
+	tomographyInstance{},
+	tomographyParamerters{},
+	storedTomographyParamerter{ PROGRAM_STATE().getPath("storedTomograpyParameter.txt"), tomographyParamerters},
+	
 	radiateFlag( false ),
 	updateFlag( false ),
 	exportFlag( false ),
@@ -49,6 +54,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	projections_loaded( false ),
 	currentProjection{},
 	processing_windows_( 0, nullptr )
+
 
 {
 	Fl_Group::box( FL_BORDER_BOX );
@@ -83,9 +89,9 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 	
 	programState& state = PROGRAM_STATE();
 
-	radiationLoopsIn.value( (double) state.tomographyParamerters.max_scattering_occurrences );
-	scatterPropabilityIn.value( state.tomographyParamerters.scatter_propability_correction );
-	scatteringOnOff.value( state.tomographyParamerters.scattering_enabled );
+	radiationLoopsIn.value( (double) tomographyParamerters.max_scattering_occurrences );
+	scatterPropabilityIn.value( tomographyParamerters.scatter_propability_correction );
+	scatteringOnOff.value( tomographyParamerters.scattering_enabled );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	radiationLoopsIn.callback( button_cb, &updateFlag );
@@ -111,6 +117,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 tomographyExec::~tomographyExec( void ){
 	
 	storedExportChooser.Save();
+	storedTomographyParamerter.Save();
 
 	for( auto currentWindow : processing_windows_ )
 		delete currentWindow;
@@ -141,11 +148,11 @@ void tomographyExec::handleEvents( void ){
 			radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this->window(), 20, 5, "Radiation progress"};
 		
 
-		state.tomographyInstance = Tomography{ state.tomographyParamerters };
+		tomographyInstance = Tomography{ tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
 			projections_loaded = true;
-			currentProjection = state.tomographyInstance.RecordSlice( state.RadonParameter(), state.gantry(), state.model(), 0, radiationProgressWindow );
+			currentProjection = tomographyInstance.RecordSlice( state.gantryCreation().projections_properties(), state.gantryCreation().gantry(), state.model(), 0, radiationProgressWindow);
 			delete radiationProgressWindow;
 		}
 
@@ -161,22 +168,22 @@ void tomographyExec::handleEvents( void ){
 
 	if( UnsetFlag( updateFlag )){
 		informationUpdateFlag = true;
-		state.tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
-		state.TomographyPropertiesSetLoaded();
+		tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
+		storedTomographyParamerter.SetAsLoaded();
 	}
 
 	if( UnsetFlag( informationUpdateFlag )){
 
 		string informationString;
 
-		informationString += "Sinogramgröße:      " + ToString( state.RadonParameter().number_of_angles() ) + " x " + ToString( state.RadonParameter().number_of_distances() ) + '\n';
-		informationString += "Sinogramauflösung:  " + ToString( state.RadonParameter().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( state.RadonParameter().distances_resolution(), 2) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ToString( state.RadonParameter().number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ToString( state.DetectorPhysicalParameter().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Sinogramgröße:      " + ToString( state.gantryCreation().projections_properties().number_of_angles() ) + " x " + ToString( state.gantryCreation().projections_properties().number_of_distances() ) + '\n';
+		informationString += "Sinogramauflösung:  " + ToString( state.gantryCreation().projections_properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( state.gantryCreation().projections_properties().distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ToString( state.gantryCreation().projections_properties().number_of_frames_to_fill() ) + '\n';
+		informationString += "Detektorwinkel:	  " + ToString( state.gantryCreation().gantry().detector().properties().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
-		informationString += "Elektrische Leistung:	  " + ToString( state.Tube().GetElectricalPower() ) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ToString( state.Tube().GetEmittedBeamPower() ) + "W" + '\n';
+		informationString += "Elektrische Leistung:	  " + ToString( state.gantryCreation().gantry().tube().GetElectricalPower()) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ToString( state.gantryCreation().gantry().tube().GetEmittedBeamPower() ) + "W" + '\n';
 		
 		information.value( informationString.c_str() );
 	}
