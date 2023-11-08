@@ -127,7 +127,7 @@ class Gantry{
 	 * @param tomography_properties Properties of tomography
 	 * @param rayScatterAngles Reference to object with information about Ray scattering
 	 * @param rays Reference to vector with rays to transmit
-	 * @param repeat_transmission_after_scattering
+	 * @param repeat_transmission_after_scattering Flag to enable re-transmission of ray, when it has been scattered
 	 * @param current_ray_index Index of the next Ray in vector to transmit. Will be changed at each call
 	 * @param current_ray_index_mutex Mutex instance for Ray index
 	 * @param rays_for_next_iteration Reference to vector which hold the rays for the next iteration
