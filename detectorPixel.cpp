@@ -24,28 +24,26 @@
 	DetectorPixel implementation
 */
 
-double DetectorPixel::GetRadonValue( void ) const{
+double DetectorPixel::GetDetectedLineIntegral( void ) const{
 
-	double sum_of_line_integrals = 0.;
+	double sum_of_start_intensity = 0.;
+	double sum_of_end_intensity = 0.;
 
-	// Iterate all detected Ray properties_
+	// Iterate all detected Ray properties
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
-		const double current_intensity = currentRay.energy_spectrum_.GetTotal();
-		
-		// TODO: Check maths whether addition like ist is valid
-		sum_of_line_integrals += log( currentRay.start_intensity() / current_intensity );
+		sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
+		sum_of_start_intensity += currentRay.start_intensity();
 	}
 
-	// Correction factor necessary because a finite amount of rays are simulated and scattering may lead to large drop in detected intensity
-	const size_t pixel_hits = detected_ray_properties_.size();
-	if( pixel_hits == 0 ){
-		sum_of_line_integrals = 1; // make this raysperPixel
+	// Check no rays were detected return -1
+	if( detected_ray_properties_.size() == 0){
+		return -1.;
 	}
-	
-	const double correction_factor = pixel_hits > 1 ? 1. / static_cast<double>( pixel_hits ) : 1.;
 
-	// Correction factor necessary because a finite amount of rays are simulated and scattering may lead to large drop in detected intensity
-	return sum_of_line_integrals * correction_factor;
+	// Calculate line inegral
+	const double line_integral = log( sum_of_start_intensity / sum_of_end_intensity );
+
+	return line_integral;
 }
 
 DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{
