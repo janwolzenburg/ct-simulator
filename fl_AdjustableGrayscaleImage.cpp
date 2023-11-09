@@ -50,7 +50,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	lower_bound_.callback( HandleValueChange, this );
 	upper_bound_.callback( HandleValueChange, this );
 
-	//common_factor_text_.type( FL_NO_BOX );
+	common_factor_text_.type( FL_NO_BOX );
 
 	this->hide();
 
@@ -174,4 +174,7 @@ void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widgetPtr, void*
 
 	widget->image_widget_.AdjustContrast( NumberRange{ low, high } );
 	widget->contrast_changed_ = true;
+
+	widget->do_callback();
+
 }
