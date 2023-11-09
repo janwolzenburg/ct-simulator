@@ -86,10 +86,14 @@ Program
 		grayscaleImage
 		colorImage
 		boundInput
+		plot
+		lineplot
+		geoplot
 
 	Widgets
 		fl_GrayscaleImage
 		fl_AdjustableGrayscaleImage
+		fl_Plot
 
 	windows
 		modelViewProperties
