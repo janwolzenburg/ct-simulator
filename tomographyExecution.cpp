@@ -11,6 +11,8 @@
 /*********************************************************************
   Includes
 *********************************************************************/
+
+
 #include "tomographyExecution.h"
 
 #include "processingWindow.h"
@@ -54,7 +56,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 
 	projections_loaded( false ),
 	currentProjection{},
-	processing_windows_( 0, nullptr )
+	processing_windows_( 0 )
 
 
 {
@@ -121,15 +123,14 @@ tomographyExec::~tomographyExec( void ){
 	
 	storedExportChooser.Save();
 	storedTomographyParamerter.Save();
-
-	for( auto currentWindow : processing_windows_ )
-		delete currentWindow;
 }
 
 void tomographyExec::AssignProjections( const Projections projections ){
 	projections_loaded = true;
 	currentProjection = projections;
-	processing_windows_.emplace_back( new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection } );
+	
+	std::unique_ptr<processingWindow> ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
+	processing_windows_.push_back( std::move( ptr ) );
 	processing_windows_.back()->show();
 }
 
@@ -157,7 +158,8 @@ void tomographyExec::handleEvents( void ){
 			delete radiationProgressWindow;
 		}
 
-		processing_windows_.emplace_back( new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection } );
+		std::unique_ptr<processingWindow> ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
+		processing_windows_.push_back( std::move( ptr ) );
 		processing_windows_.back()->show();
 
 		this->parent()->activate();
@@ -188,10 +190,6 @@ void tomographyExec::handleEvents( void ){
 		
 		information.value( informationString.c_str() );
 	}
-
-
-	for( auto currentWindow : processing_windows_ )
-		currentWindow->handleEvents();
 
 }
 

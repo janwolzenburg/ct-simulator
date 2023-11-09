@@ -206,7 +206,6 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCoordinateSystem.h" />
     <ClInclude Include="primitiveVector3.h" />
-    <ClInclude Include="processingParameters.h" />
     <ClInclude Include="processingWindow.fwd.h" />
     <ClInclude Include="processingWindow.h" />
     <ClInclude Include="programState.h" />

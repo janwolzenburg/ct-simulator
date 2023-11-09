@@ -17,8 +17,6 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	sinogramGrp{		X( *this, .01 ),			Y( *this, .01 ),							W( *this, .49 ),			H( *this, .325 ) },
  	sinogramWidget{		X( sinogramGrp, .0 ),		Y( sinogramGrp, .0 ),						W( sinogramGrp, 1. ),		H( sinogramGrp, 1. ) },
 		
-		
-	filterChanged( false ),
 	filterGrp{			X( *this, .01 ),			vOff( sinogramGrp ) + Y( *this, 0.025 ),	W( *this, .49 ),			H( *this, .29  ) },
 	filterTypeSelector{ X( filterGrp, 0. ),			Y( filterGrp, 0. ),							W( filterGrp, .3 ),			H( filterGrp, .1 ), "Filter type" },
 	filterPlot{			X( filterGrp, 0. ),			Y( filterGrp, 0.15 ),						W( filterGrp, 1. ),			H( filterGrp, .85 ), "Filter" },
@@ -36,25 +34,19 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	sinogramGrp.add( sinogramWidget );
 	sinogramWidget.box( FL_BORDER_BOX );
 
-
 	Fl_Window::add( filterGrp );
 	filterGrp.add( filterPlot );
 	filterGrp.add( filterTypeSelector );
 
 	filterTypeSelector.align( FL_ALIGN_TOP );
-	filterTypeSelector.callback( button_cb, &filterChanged );
+	filterTypeSelector.callback( HandleFilterChange, this );
 
 	vector<string> filterNames;
 	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
-
 	filterTypeSelector.AssignElements( filterNames );
-	string filterName = BackprojectionFilter::filter_types.at( currentProcessingParameters.filterType );
-	filterTypeSelector.SetCurrentElement( filterName );
 
 
 	filterPlot.Initialise( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
-
-
 
 	Fl_Window::add( filteredProjGrp );
 
@@ -70,7 +62,6 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 
 	sinogramImg = GrayscaleImage{ projections.data(), true };
 	sinogramWidget.AssignImage( sinogramImg );
-	currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
 
 
 	filteredProjWidget.ResetBounds();
@@ -79,44 +70,11 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	recalcFilteredProjections();
 }
 
-void processingWindow::deactivate( void ){
-	Fl_Window::deactivate();
-	sinogramGrp.deactivate();
-	filterGrp.deactivate();
-	filteredProjGrp.deactivate();
-	reconstructionGrp.deactivate();
-}
-
-void processingWindow::activate( void ){
-	Fl_Window::activate();
-	sinogramGrp.activate();
-	filterGrp.activate();
-	filteredProjGrp.activate();
-	reconstructionGrp.activate();
-}
-
-
-void processingWindow::handleEvents( void ){
-
-	if( sinogramWidget.DidContrastChange() )
-		currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
+void processingWindow::HandleFilterChange( Fl_Widget* selector_widget, void* window ){
 	
+	processingWindow* windowPtr = static_cast<processingWindow*>( window );
 
-	if( filterChanged ){
-		filterChanged = false;
-		currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.current_element() );
-		recalcFilteredProjections();
-	}
-
-	if( filteredProjWidget.DidContrastChange() ){
-		if( filteredProjWidget.image_assigned() )
-			currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
-	}
-
-	if( reconstructionImageWidget.DidContrastChange() ){
-		if( reconstructionImageWidget.image_assigned() )
-			currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
-	}
+	windowPtr->recalcFilteredProjections();
 }
 
 
@@ -126,7 +84,7 @@ void processingWindow::recalcFilteredProjections( void ){
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 
-	currentFilteredProjections = FilteredProjections{ currentprojections, currentProcessingParameters.filterType, processingProgressWindow };
+	currentFilteredProjections = FilteredProjections{ currentprojections, BackprojectionFilter::GetType( filterTypeSelector.current_element() ), processingProgressWindow };
 
 	if( currentFilteredProjections.filter().type() == BackprojectionFilter::TYPE::constant )
 		filterPlot.hide();
@@ -140,16 +98,12 @@ void processingWindow::recalcFilteredProjections( void ){
 	filteredProjImage = GrayscaleImage{ currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.AssignImage( filteredProjImage );
-	//filteredProjWidget.SetSliderBoundsFromImage();
-	currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 
 	currentReconstrucedImage = ReconstrucedImage{ currentFilteredProjections, processingProgressWindow };
 
 	reconstructionImage = GrayscaleImage{ currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.AssignImage( reconstructionImage );
-	//reconstructionImageWidget.SetSliderBoundsFromImage();
-	currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 
 	delete processingProgressWindow;
 

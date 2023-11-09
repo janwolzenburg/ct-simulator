@@ -19,6 +19,7 @@
 #include <FL/Fl_Simple_Counter.H>
 #include <FL/Fl_Float_Input.H>
 #include <FL/Fl_Toggle_Button.H>
+#include <memory>
 
 #include "fl_BoundInput.h"
 #include "programState.h"
@@ -97,5 +98,5 @@ class tomographyExec : public Fl_Group{
 
 	bool projections_loaded;
 	Projections currentProjection;
-	vector<processingWindow*> processing_windows_;
+	vector<std::unique_ptr<processingWindow>> processing_windows_;
  };

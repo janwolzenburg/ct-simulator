@@ -40,21 +40,6 @@ class processingWindow : public Fl_Window{
 	 * @param h Height
 	*/
 	processingWindow( int w, int h, const char* label, Projections newSinogram );
-
-	/*!
-	 * @brief Deactivate everything in window
-	*/
-	void deactivate( void );
-
-	/*!
-	 * @brief Activate everything in window
-	*/
-	void activate( void );
-
-	/*!
-	 * @brief Handle event in main window
-	*/
-	void handleEvents( void );
 	
 	/*!
 	 * @brief Recalculate the filtered projections 
@@ -65,7 +50,6 @@ class processingWindow : public Fl_Window{
 	private:
 
 	Projections currentprojections;
-	processingParameter currentProcessingParameters;	/*!<Current processing parameters*/
 	FilteredProjections currentFilteredProjections;		/*!<Current filtered projections*/
 	ReconstrucedImage currentReconstrucedImage;			/*!<Current image reconstructed from filtered projections*/
 
@@ -74,7 +58,6 @@ class processingWindow : public Fl_Window{
 	GrayscaleImage sinogramImg;	/*!<Sinogram as image*/
 	Fl_AdjustableGrayscaleImage sinogramWidget;	/*!<Widget for sinogram display*/
 	
-	bool filterChanged;		/*!<Flag to indicate that the filter changed*/
 	Fl_Group filterGrp;		/*!<Group for filter*/
 	Fl_Selector filterTypeSelector;		/*!<Filter selector*/
 	Fl_Plot<DotPlot> filterPlot;		/*!<Filter plot*/
@@ -86,6 +69,9 @@ class processingWindow : public Fl_Window{
 	Fl_Group reconstructionGrp;			/*!<Group for the reconstructed image*/
 	GrayscaleImage reconstructionImage;		/*!<Reconstruced image*/
 	Fl_AdjustableGrayscaleImage reconstructionImageWidget;	/*!<Widget for the reconstruced image*/
+
+
+	static void HandleFilterChange( Fl_Widget* selector_widget, void* window );
 
 
  };
