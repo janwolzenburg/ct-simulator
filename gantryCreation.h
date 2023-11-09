@@ -23,8 +23,8 @@
 #include "Fl_Plot.h"
 #include "fl_BoundInput.h"
 #include "Fl_Selector.h"
-#include "lineplot.h"
-#include "geoplot.h"
+#include "linePlot.h"
+#include "geometryplot.h"
 
 
 /*!
@@ -86,7 +86,7 @@ class gantryEdition : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> tubeVoltageIn;	/*!<Tube voltage*/
 	Fl_BoundInput<Fl_Float_Input, double> tubeCurrentIn;	/*!<Tube current*/
 	Fl_Selector materialIn;				/*!<Anode material*/
-	Fl_Plot<lineplot> spectrumPlot;		/*!<Plot of tube sepctrum*/
+	Fl_Plot<LinePlot> spectrumPlot;		/*!<Plot of tube sepctrum*/
 
 	Fl_Group detectorGrp;	/*!<Group for detector elemnts*/
 	Fl_Box detectorTitle;	/*!<Detector group title*/
@@ -97,7 +97,7 @@ class gantryEdition : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> detector_focus_distance_input;		/*!<Detector arc radius*/
 	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
 	Fl_BoundInput<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
-	Fl_Plot<geoplot> detectorPlot;							/*!<Plot for detector geometry*/
+	Fl_Plot<Geometryplot> detectorPlot;							/*!<Plot for detector geometry*/
 
 	bool updateGantry;	/*!<Flag for gantry update*/
 

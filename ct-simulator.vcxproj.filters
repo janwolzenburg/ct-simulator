@@ -213,19 +213,19 @@
     <ClInclude Include="programState.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Plot.h">
+    <ClInclude Include="fl_Plot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Plots.hpp">
+    <ClInclude Include="fl_Plot.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="plots.h">
+    <ClInclude Include="plot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="mainWindow.fwd.h">
@@ -255,10 +255,10 @@
     <ClInclude Include="fileChooser.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="lineplot.h">
+    <ClInclude Include="linePlot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="geoplot.h">
+    <ClInclude Include="geometryPlot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="processingParameters.h">
@@ -452,7 +452,7 @@
     <ClCompile Include="fileChooser.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="plots.cpp">
+    <ClCompile Include="plot.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="processingParameters.cpp">

@@ -15,7 +15,7 @@
 #include "generel.h"
 #include "gantryCreation.h"
 #include "widgets.h"
-#include "plots.h"
+#include "plot.h"
 #include "tomographyExecution.h"
 #include "mainWindow.h"
 
@@ -36,16 +36,16 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 	storedDetectorParameter{  PROGRAM_STATE().getPath( "storedDetectorParameter.txt" ), physical_detector_properties_ },
 	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
 
-	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.05 ),	"Gantry" },
+	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
-	tubeGrp{		X( *this, .0 ),	vOff( title ) + Y( *this, .02 ),	W( *this, 1. ),		H( *this, .3 ) },
+	tubeGrp{		X( *this, .0 ),		Y( *this, .035 ) ,	W( *this, 1. ),		H( *this, .4 ) },
 	tubeTitle{		X( tubeGrp, 0. ),	Y( tubeGrp, 0. ),	W( tubeGrp, 1. ),	H( tubeGrp, .075 ),	"xRay Tube" },
 	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Voltage" },
 	tubeCurrentIn{	X( tubeGrp, .25 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Current" },
 	materialIn{		X( tubeGrp, .5 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .5 ),	H( tubeGrp, .1 ),	"Material" },
 	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .325 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
 
-	detectorGrp{	X( *this, .0 ),			vOff( tubeGrp ) + Y( *this, .03 ),			W( *this, 1. ),		H( *this, .6 ) },
+	detectorGrp{	X( *this, .0 ),			Y( *this, .475 ),		W( *this, 1. ),		H( *this, .475 ) },
 	detectorTitle{	X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .1 ),	"Detector" },
 	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Angles" },
 	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Pixel" },
@@ -104,7 +104,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 
 
 		tubeGrp.add( spectrumPlot );
-		spectrumPlot.initialisePlot( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", plotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrumPlot.Initialise( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -166,7 +166,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 
 
 		detectorGrp.add( detectorPlot );
-		detectorPlot.initialisePlot( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", plotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
+		detectorPlot.Initialise( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", PlotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
 
 
 }
@@ -212,12 +212,12 @@ void gantryEdition::handleEvents( void ){
 			spectrum_value /= tubeRef.GetSpectralEnergyResolution();		// "Convert" to integral to match power
 		}
 
-		spectrumPlot.plotRef().assignData( spectrum_points );
-		spectrumPlot.assignData();
+		spectrumPlot.plot().AssignData( spectrum_points );
+		spectrumPlot.AssignData();
 
 		main_window_->tomographyExecution.updateInformation();
 
-		detectorPlot.plotRef().resetObjects();
+		detectorPlot.plot().ResetObjects();
 
 		const auto allPixel = detectorRef.pixel_array();
 
@@ -229,14 +229,14 @@ void gantryEdition::handleEvents( void ){
 			const Tuple2D start{ startP.X(), startP.Y() };
 			const Tuple2D end{ endP.X(), endP.Y() };
 
-			detectorPlot.plotRef().addLine( start, end );
+			detectorPlot.plot().AddLine( start, end );
 
 		}
 
 		const Point3D gantryCenter = gantryInstance.GetCenter();
-		detectorPlot.plotRef().addPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
-		detectorPlot.plotRef().create();
-		detectorPlot.assignData();
+		detectorPlot.plot().AddPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
+		detectorPlot.plot().CreatePlot();
+		detectorPlot.AssignData();
 
 		Fl_Group::window()->activate();
 

@@ -77,7 +77,7 @@ class processingWindow : public Fl_Window{
 	bool filterChanged;		/*!<Flag to indicate that the filter changed*/
 	Fl_Group filterGrp;		/*!<Group for filter*/
 	Fl_Selector filterTypeSelector;		/*!<Filter selector*/
-	Fl_Plot<dotplot> filterPlot;		/*!<Filter plot*/
+	Fl_Plot<DotPlot> filterPlot;		/*!<Filter plot*/
 
 	Fl_Group filteredProjGrp;				/*!<Group for the fitlered projections*/
 	GrayscaleImage filteredProjImage;			/*!<Filtered projections as image*/

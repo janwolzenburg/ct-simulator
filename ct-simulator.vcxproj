@@ -187,12 +187,12 @@
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
     <ClInclude Include="generelMath.hpp" />
-    <ClInclude Include="geoplot.h" />
+    <ClInclude Include="geometryPlot.h" />
     <ClInclude Include="dataGrid.h" />
-    <ClInclude Include="Fl_Plot.h" />
+    <ClInclude Include="fl_Plot.h" />
     <ClInclude Include="modelViewProperties.h" />
     <ClInclude Include="grayscaleImage.h" />
-    <ClInclude Include="lineplot.h" />
+    <ClInclude Include="linePlot.h" />
     <ClInclude Include="mainWindow.fwd.h" />
     <ClInclude Include="mainWindow.h" />
     <ClInclude Include="model.h" />
@@ -201,7 +201,7 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
     <ClInclude Include="modelView.h" />
-    <ClInclude Include="plots.h" />
+    <ClInclude Include="plot.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCoordinateSystem.h" />
@@ -257,7 +257,7 @@
     <ClCompile Include="fileChooser.cpp" />
     <ClCompile Include="backprojectionFilter.cpp" />
     <ClCompile Include="fl_GrayscaleImage.cpp" />
-    <ClInclude Include="Fl_Plots.hpp">
+    <ClInclude Include="fl_Plot.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="fl_AdjustableGrayscaleImage.cpp" />
@@ -270,7 +270,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="mainWindow.cpp" />
-    <ClCompile Include="plots.cpp" />
+    <ClCompile Include="plot.cpp" />
     <ClCompile Include="grayscaleImage.cpp" />
     <ClCompile Include="line.cpp" />
     <ClCompile Include="main.cpp" />

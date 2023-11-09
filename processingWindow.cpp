@@ -52,7 +52,7 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	filterTypeSelector.value( filterName );
 
 
-	filterPlot.initialisePlot( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", plotLimits{ true, true }, "", "", false, true );
+	filterPlot.Initialise( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
 
 
 
@@ -133,9 +133,9 @@ void processingWindow::recalcFilteredProjections( void ){
 	else
 		filterPlot.show();
 
-	filterPlot.setLimits( plotLimits{ false, true, currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow( currentFilteredProjections.resolution().r, 2.) } );
-	filterPlot.plotRef().assignData(currentFilteredProjections.filter().GetPlotValues() );
-	filterPlot.assignData();
+	filterPlot.SetLimits( PlotLimits{ false, true, currentFilteredProjections.filter().GetRelevantRange(), NumberRange{}, 1., pow( currentFilteredProjections.resolution().r, 2.) } );
+	filterPlot.plot().AssignData(currentFilteredProjections.filter().GetPlotValues() );
+	filterPlot.AssignData();
 	
 	filteredProjImage = GrayscaleImage{ currentFilteredProjections.data_grid(), true };
 
