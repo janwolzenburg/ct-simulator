@@ -180,7 +180,7 @@
     <ClInclude Include="fl_BoundInput.hpp" />
     <ClInclude Include="fl_GrayscaleImage.h" />
     <ClInclude Include="fl_AdjustableGrayscaleImage.h" />
-    <ClInclude Include="Fl_Selector.h" />
+    <ClInclude Include="fl_Selector.h" />
     <ClInclude Include="gantry.h" />
     <ClInclude Include="gantryCreation.h" />
     <ClInclude Include="generel.h" />
@@ -261,7 +261,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClCompile Include="fl_AdjustableGrayscaleImage.cpp" />
-    <ClCompile Include="Fl_Selector.cpp" />
+    <ClCompile Include="fl_Selector.cpp" />
     <ClCompile Include="gantry.cpp" />
     <ClCompile Include="gantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />

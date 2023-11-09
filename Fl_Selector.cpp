@@ -12,7 +12,7 @@
 	Includes
  *********************************************************************/
 
-#include "Fl_Selector.h"
+#include "fl_Selector.h"
 #include "widgets.h"
 
 
@@ -22,83 +22,84 @@
 
 Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h },
-	previous{ X( *this, 0. ),		Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) },
-	current{ hOff( previous ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
-	next{ hOff( current ),	Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) }
+	previous_button_{ X( *this, 0. ),		Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) },
+	current_text_{ hOff( previous_button_ ),	Y( *this, 0. ),		w - 2 * h,			H( *this, 1. ) },
+	next_button_{ hOff( current_text_ ),	Y( *this, 0. ),		H( *this, 1. ),		H( *this, 1. ) }
 
 {
-	Fl_Group::add( previous );
-	Fl_Group::add( current );
-	Fl_Group::add( next );
+	Fl_Group::add( previous_button_ );
+	Fl_Group::add( current_text_ );
+	Fl_Group::add( next_button_ );
 
-	current.label( label );
+	current_text_.label( label );
+	current_text_.align( FL_ALIGN_TOP );
 
-	previous.label( "@<-" );
-	next.label( "@->" );
+	previous_button_.label( "@<-" );
+	next_button_.label( "@->" );
 
-	previous.callback( goPrev, (Fl_Selector*) this );
-	next.callback( goNext, (Fl_Selector*) this );
+	previous_button_.callback( SelectPrevious, (Fl_Selector*) this );
+	next_button_.callback( SelectNext, (Fl_Selector*) this );
 
-	next.deactivate();
-	previous.deactivate();
+	next_button_.deactivate();
+	previous_button_.deactivate();
 
-	currentElement = elements.cbegin();
+	current_element_ = elements_.cbegin();
 
 
 }
 
-void Fl_Selector::goPrev( [[maybe_unused]] Fl_Widget* widget, void* p ){
+void Fl_Selector::SelectPrevious( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 
-	if( selectorGrp->currentElement > selectorGrp->elements.cbegin() ) selectorGrp->currentElement--;
+	if( selectorGrp->current_element_ > selectorGrp->elements_.cbegin() ) selectorGrp->current_element_--;
 
 
-	selectorGrp->checkActivation();
-	selectorGrp->current.value( selectorGrp->currentElement->c_str() );
+	selectorGrp->CheckButtonActivation();
+	selectorGrp->current_text_.value( selectorGrp->current_element_->c_str() );
 	selectorGrp->do_callback();
 
 }
 
-void Fl_Selector::goNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
+void Fl_Selector::SelectNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
 
-	if( selectorGrp->currentElement < selectorGrp->elements.cend() - 1 ) selectorGrp->currentElement++;
+	if( selectorGrp->current_element_ < selectorGrp->elements_.cend() - 1 ) selectorGrp->current_element_++;
 
-	selectorGrp->checkActivation();
-	selectorGrp->current.value( selectorGrp->currentElement->c_str() );
+	selectorGrp->CheckButtonActivation();
+	selectorGrp->current_text_.value( selectorGrp->current_element_->c_str() );
 	selectorGrp->do_callback();
 
 }
 
-void Fl_Selector::setElements( const vector<string> newElements ){
-	elements = newElements;
-	currentElement = elements.cbegin();
+void Fl_Selector::AssignElements( const vector<string> newElements ){
+	elements_ = newElements;
+	current_element_ = elements_.cbegin();
 
-	checkActivation();
+	CheckButtonActivation();
 }
 
-void Fl_Selector::value( const string newValue ){
+void Fl_Selector::SetCurrentElement( const string newValue ){
 
-	for( vector<string>::const_iterator it = elements.cbegin(); it < elements.cend(); it++ ){
+	for( vector<string>::const_iterator it = elements_.cbegin(); it < elements_.cend(); it++ ){
 
 		if( newValue == *it ){
-			currentElement = it;
-			current.value( currentElement->c_str() );
+			current_element_ = it;
+			current_text_.value( current_element_->c_str() );
 
-			checkActivation();
+			CheckButtonActivation();
 
 			break;
 		}
 	}
 }
 
-void Fl_Selector::checkActivation( void ){
+void Fl_Selector::CheckButtonActivation( void ){
 
-	if( currentElement > elements.cbegin() ) previous.activate();
-	else previous.deactivate();
+	if( current_element_ > elements_.cbegin() ) previous_button_.activate();
+	else previous_button_.deactivate();
 
-	if( currentElement < elements.cend() - 1 ) next.activate();
-	else next.deactivate();
+	if( current_element_ < elements_.cend() - 1 ) next_button_.activate();
+	else next_button_.deactivate();
 }

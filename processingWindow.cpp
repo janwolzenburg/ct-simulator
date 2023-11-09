@@ -47,9 +47,9 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	vector<string> filterNames;
 	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
 
-	filterTypeSelector.setElements( filterNames );
+	filterTypeSelector.AssignElements( filterNames );
 	string filterName = BackprojectionFilter::filter_types.at( currentProcessingParameters.filterType );
-	filterTypeSelector.value( filterName );
+	filterTypeSelector.SetCurrentElement( filterName );
 
 
 	filterPlot.Initialise( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
@@ -104,7 +104,7 @@ void processingWindow::handleEvents( void ){
 
 	if( filterChanged ){
 		filterChanged = false;
-		currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.value() );
+		currentProcessingParameters.filterType = BackprojectionFilter::GetType( filterTypeSelector.current_element() );
 		recalcFilteredProjections();
 	}
 

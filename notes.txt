@@ -94,6 +94,8 @@ Program
 		fl_GrayscaleImage
 		fl_AdjustableGrayscaleImage
 		fl_Plot
+		fl_selector
+		fl_BoundInput
 
 	windows
 		modelViewProperties

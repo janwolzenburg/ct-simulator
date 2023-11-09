@@ -93,10 +93,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		vector<string> materialNames;
 		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
 
-		materialIn.setElements( materialNames );
+		materialIn.AssignElements( materialNames );
 		XRayTubeProperties::Material anode_material = xRayTubeParameter.anode_material;
 		string materialName = XRayTubeProperties::materials.at( anode_material ).first;
-		materialIn.value( materialName );
+		materialIn.SetCurrentElement( materialName );
 
 		tubeVoltageIn.tooltip( "Voltage in Volts." );
 		tubeCurrentIn.tooltip( "Current in Ampere." );
@@ -187,7 +187,7 @@ void gantryEdition::handleEvents( void ){
 		
 		detector_focus_distance_input.SetProperties( distRange.value(), 10000., 0 );
 
-		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
+		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.current_element() ), (size_t) raysPerPixelIn.value() };
 		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 		
