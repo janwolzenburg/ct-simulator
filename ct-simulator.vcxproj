@@ -201,8 +201,6 @@
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
     <ClInclude Include="modelView.h" />
-    <ClInclude Include="Fl_OwnValuator.h" />
-    <ClInclude Include="Fl_OwnValuator.hpp" />
     <ClInclude Include="plots.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />

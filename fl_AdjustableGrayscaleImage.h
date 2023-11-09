@@ -13,8 +13,8 @@
  *********************************************************************/
 
 #include <FL/Fl_Group.H>
-#include <FL/Fl_Hor_Slider.H>
-#include "Fl_OwnValuator.h"
+#include <FL/Fl_Hor_Value_Slider.H>
+#include <FL/Fl_Box.H>
 #include "fl_GrayscaleImage.h"
 
 
@@ -43,14 +43,26 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	 * @brief Get the current slider values 
 	 * @return Current contrast
 	*/
-	NumberRange GetContrast( void ) const{ return NumberRange{ lower_bound_.value(), upper_bound_.value() }; };
+	NumberRange GetContrast( void ) const{ return NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value()* pow( 10., -common_power_ ) }; };
 
 	/*!
 	 * @brief Check if an image was assigned 
 	 * @return True when an image has been assigned
 	*/
 	bool image_assigned( void ) const{ return image_widget_.image_assigned(); };
-	
+
+	/*!
+	 * @brief 
+	 * @param  
+	 * @return 
+	*/
+	bool DidContrastChange( void ){ return UnsetFlag( contrast_changed_ );  };
+
+	/*!
+	 * @brief 
+	*/
+	void ResetBounds( void ){ bounds_set_ = false; };
+
 	/*!
 	 * @brief Assign grayscale image as new image data
 	 * @param grayscale_image Grayscale image
@@ -81,24 +93,27 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	*/
 	void SetSliderBoundsFromImage( void );
 
-	/*!
-	 * @brief Handle events
-	 * @return True when image needs update
-	*/
-	bool HandleEvents( void );
-
+	
 
 	private:
 	
 	Fl_GrayscaleImage image_widget_;				/*!<The image widget*/
-	Fl_OwnValuator<Fl_Hor_Slider> lower_bound_;		/*!<Slider for lower value bound*/
-	Fl_OwnValuator<Fl_Hor_Slider> upper_bound_;		/*!<Slider for upper value bound*/
-	bool bounds_set_;								/*!<Flag indicating whether the bounds were set before*/
+	Fl_Hor_Value_Slider lower_bound_;
+	Fl_Hor_Value_Slider upper_bound_;
+	Fl_Box common_factor_text_;
+	int common_power_;
+	bool bounds_set_;									/*!<Flag indicating whether the bounds were set before*/
+	bool contrast_changed_;								
 
 	/*!
 	 * @brief Update slider bounds
-	 * @return True when bounds changed an image need update
 	*/
-	bool UpdateSliderBounds( void );
+	void UpdateSliderBounds( void );
+
+	/*!
+	 * @brief Callback for value change
+	 * @param widget Pointer to widget that triggered the callback
+	*/
+	static void HandleValueChange( Fl_Widget* widgetPtr, void* image_widget );
 
 };

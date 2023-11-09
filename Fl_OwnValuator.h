@@ -13,7 +13,7 @@
  *********************************************************************/
 
 #include <FL/Fl_Valuator.H>
-#include <FL/Fl_Counter.H>
+//#include <FL/Fl_Counter.H>
 #include "generel.h"
 
 
@@ -22,7 +22,7 @@
 *********************************************************************/
 
 /*!
- * @brief Class for a valuator with custom number_of_pixel to string conversion
+ * @brief Class for a valuator with custom number to string conversion
  * @details Able to display the current valuator value in the label
  * @tparam C Class derived from Fl_Valuator
 */
@@ -30,6 +30,7 @@ template< class C >
 class Fl_OwnValuator : public C{
 
 	static_assert( std::is_base_of_v< Fl_Valuator, C > );
+
 
 	public:
 
@@ -47,7 +48,7 @@ class Fl_OwnValuator : public C{
 	 * @brief Check if value changed and reset the flag
 	 * @return True, when value changed
 	*/
-	bool ChangeFlag( void ){ return UnsetFlag( changeFlag ); };
+	bool ChangeFlag( void ){ return UnsetFlag( value_changed_ ); };
 
 	/*!
 	 * @brief Get the current value
@@ -70,23 +71,24 @@ class Fl_OwnValuator : public C{
 
 
 	private:
+	
+	bool value_changed_;	/*!<Flag to track a value change*/
+	bool enable_label_;		/*!<Flag to activate the value to label conversion*/
+
 
 	/*!
 	 * @brief Update the label to current value
 	*/
-	void updateLabel( void );
+	void UpdateLabel( void );
 	
 	/*!
 	 * @brief Callback for value change
 	 * @param widget Pointer to widget that triggered the callback
 	 * @param p Pointer to a boolean, which will be set to true
 	*/
-	static void cbFunction( Fl_Widget* widgetPtr, void* flag );
+	static void HandleValueChange( Fl_Widget* widgetPtr, void* flag );
 
-	private:
 	
-	bool changeFlag;	/*!<Flag to track a value change*/
-	bool valueToLabel;	/*!<Flag to activate the value to label conversion*/
 
 };
 

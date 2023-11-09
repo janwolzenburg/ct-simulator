@@ -66,10 +66,16 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 	reconstructionGrp.add( reconstructionImageWidget );
 	reconstructionImageWidget.box( FL_BORDER_BOX );
 
+	sinogramWidget.ResetBounds();
 
 	sinogramImg = GrayscaleImage{ projections.data(), true };
 	sinogramWidget.AssignImage( sinogramImg );
 	currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
+
+
+	filteredProjWidget.ResetBounds();
+	reconstructionImageWidget.ResetBounds();
+
 	recalcFilteredProjections();
 }
 
@@ -92,10 +98,9 @@ void processingWindow::activate( void ){
 
 void processingWindow::handleEvents( void ){
 
-
-	if( sinogramWidget.HandleEvents() ){
+	if( sinogramWidget.DidContrastChange() )
 		currentProcessingParameters.projectionsContrast = sinogramWidget.GetContrast();
-	}
+	
 
 	if( filterChanged ){
 		filterChanged = false;
@@ -103,12 +108,12 @@ void processingWindow::handleEvents( void ){
 		recalcFilteredProjections();
 	}
 
-	if( filteredProjWidget.HandleEvents() ){
+	if( filteredProjWidget.DidContrastChange() ){
 		if( filteredProjWidget.image_assigned() )
 			currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 	}
 
-	if( reconstructionImageWidget.HandleEvents() ){
+	if( reconstructionImageWidget.DidContrastChange() ){
 		if( reconstructionImageWidget.image_assigned() )
 			currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 	}
@@ -135,7 +140,7 @@ void processingWindow::recalcFilteredProjections( void ){
 	filteredProjImage = GrayscaleImage{ currentFilteredProjections.data_grid(), true };
 
 	filteredProjWidget.AssignImage( filteredProjImage );
-	filteredProjWidget.SetSliderBoundsFromImage();
+	//filteredProjWidget.SetSliderBoundsFromImage();
 	currentProcessingParameters.filteredProjectionsContrast = filteredProjWidget.GetContrast();
 
 	currentReconstrucedImage = ReconstrucedImage{ currentFilteredProjections, processingProgressWindow };
@@ -143,7 +148,7 @@ void processingWindow::recalcFilteredProjections( void ){
 	reconstructionImage = GrayscaleImage{ currentReconstrucedImage.getGrid(), true };
 
 	reconstructionImageWidget.AssignImage( reconstructionImage );
-	reconstructionImageWidget.SetSliderBoundsFromImage();
+	//reconstructionImageWidget.SetSliderBoundsFromImage();
 	currentProcessingParameters.reconstrucedImageContrast = reconstructionImageWidget.GetContrast();
 
 	delete processingProgressWindow;

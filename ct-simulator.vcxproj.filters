@@ -216,16 +216,10 @@
     <ClInclude Include="Fl_Plot.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_OwnValuator.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="widgets.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Fl_Plots.hpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Fl_OwnValuator.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.hpp">

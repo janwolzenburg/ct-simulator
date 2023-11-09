@@ -298,7 +298,7 @@ void modelView::handleEvents( void ){
 		resetModel();
 	}
 
-	if( viewImg.HandleEvents() ){
+	if( viewImg.DidContrastChange() ){
 		// Store contrast
 		modelViewPara.contrast = viewImg.GetContrast();
 	}
