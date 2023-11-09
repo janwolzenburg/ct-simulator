@@ -78,6 +78,8 @@ void Fl_Selector::AssignElements( const vector<string> newElements ){
 	current_element_ = elements_.cbegin();
 
 	CheckButtonActivation();
+	current_text_.value( current_element_->c_str() );
+
 }
 
 void Fl_Selector::SetCurrentElement( const string newValue ){
