@@ -51,11 +51,10 @@ constexpr double mu_iron = 0.156;
 
 constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
 
-constexpr double mean_human_density_gPercm3 = 1.;				/*!< Mean human density in g / cm^3*/
-constexpr double mean_human_atomic_weight_gPermol = 6.;			/*!< Mean atomic weight in human*/
-constexpr double cross_section_conversion_1Permm3 =				/*!< Conversion factor from cross section to attenuation coefficiant in human tissue in 1 / mm^3*/
-				 mean_human_density_gPercm3*avogadro_1Permol /
-				 mean_human_atomic_weight_gPermol * 1e-3;
+constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Conversion factor from cross section to attenuation coefficiant for water in 1 / mm^3*/
+				 1.	*	// g/cm^3
+				 avogadro_1Permol /
+				 18. * 1e-3; // cm^3/mm^3
 
 inline std::ostream& math_error_out = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& standard_out = std::cout;						/*!< Standard out stream */

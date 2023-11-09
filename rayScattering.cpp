@@ -73,8 +73,10 @@ bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double
 	const double ray_energy_eV = r.GetMeanEnergyOfSpectrum();
 	const double compton_cross_section = Compton_Cross_Section::GetInstance().GetCrossSection( ray_energy_eV );
 
-	// Get the "attenuatuion coefficiant" and the "propability"
-	const double coefficient_1Permm = cross_section_conversion_1Permm3 * compton_cross_section;
+	// Get the "attenuatuion coefficient" and the "propability"
+	const double electron_density = electron_density_water_1Permm3 * voxel_data.GetAttenuationAtEnergy( reference_energy_for_mu_eV ) / mu_water;
+
+	const double coefficient_1Permm = electron_density * compton_cross_section;
 
 	const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
