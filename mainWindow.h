@@ -42,21 +42,14 @@ class mainWindow : public Fl_Window{
 	*/
 	mainWindow( int w, int h, const char* label );
 
-	/*!
-	 * @brief Deactivate everything in window
-	*/
-	void deactivate( void );
-
-	/*!
-	 * @brief Activate everything in window
-	*/
-	void activate( void );
+	~mainWindow( void );
 
 	/*!
 	 * @brief Handle event in main window
 	*/
 	void handleEvents( void );
 
+	path importSinogram( void );
 
 	public:
 
@@ -65,6 +58,10 @@ class mainWindow : public Fl_Window{
 	bool importSinogramFlag;			/*!<Flag for sinogram import*/
 	Fl_Button resetProgramStateBtn;		/*!<Button to reset program state*/
 	bool resetButtonPressed;			/*!<Flag for reset*/
+
+
+	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
+	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
 	modelView modView;						/*!<Model view*/
 	gantryEdition gantryBuild;				/*!<Gantry creation*/

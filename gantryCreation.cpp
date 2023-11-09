@@ -16,8 +16,8 @@
 #include "gantryCreation.h"
 #include "widgets.h"
 #include "plots.h"
-
-
+#include "tomographyExecution.h"
+#include "mainWindow.h"
 
 /*********************************************************************
   Implementations
@@ -25,9 +25,9 @@
 
 
 
-gantryEdition::gantryEdition( int x, int y, int w, int h ) :
+gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main_window ) :
 	Fl_Group{ x, y, w, h },
-
+	main_window_( main_window ),
 	xRayTubeParameter{},
 	storedXRayTubeParameter{ PROGRAM_STATE().getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
 	radonParameter{},
@@ -61,6 +61,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h ) :
 	updateGantry( false )
 	
 	{
+		main_window_->add( this );
+
 		Fl_Group::box( FL_BORDER_BOX );
 
 		Fl_Group::add( title );
@@ -213,7 +215,7 @@ void gantryEdition::handleEvents( void ){
 		spectrumPlot.plotRef().assignData( spectrum_points );
 		spectrumPlot.assignData();
 
-		PROGRAM_STATE().setUpdateInformationFlag();
+		main_window_->tomographyExecution.updateInformation();
 
 		detectorPlot.plotRef().resetObjects();
 

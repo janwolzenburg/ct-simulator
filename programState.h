@@ -59,9 +59,6 @@ class programState{
 	
 
 
-	mainWindow* mainWindow_;				/*!<Pointer to the main window*/
-
-
 	/*!
 	 * @brief Destructor
 	 * @details Stores objects in persisting storage
@@ -88,44 +85,7 @@ class programState{
 	/*********************************************** GUI *******************************************/
 	/***********************************************************************************************/
 
-	/*!
-	 * @brief Store pointer to main window for usage in program
-	 * @param ptr Pointer to the main window
-	*/
-	void registerMainWindow( mainWindow* const ptr ){ mainWindow_ = ptr; };
 
-
-	/********************************************* Model *******************************************/
-	/***********************************************************************************************/
-	
-	const Model& model( void ) const;
-
-
-	/********************************************* Gantry ******************************************/
-	/***********************************************************************************************/
-	
-
-	/*!
-	 * @brief Get reference to radon parameter
-	 * @return Constant reference to radon parameter
-	*/
-	class gantryEdition& gantryCreation( void );
-
-
-
-	/***************************************** Tomography ******************************************/
-	/***********************************************************************************************/
-
-	/*!
-	 * @brief Set flag to update tomography parameter information
-	*/
-	void setUpdateInformationFlag( void );
-
-	/*!
-	 * @brief Choose path to import sinogram
-	 * @return Path to chosen sinogram
-	*/
-	path importSinogram( void );
 
 
 	private:
@@ -157,15 +117,14 @@ class programState{
 	*/
 	void deleteStorageDir( void );
 
+	
+
+
+	//mainWindow* mainWindow_;				/*!<Pointer to the main window*/
 
 	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
 
 
-	
-
-
-	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
-	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
 
 

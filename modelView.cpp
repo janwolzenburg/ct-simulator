@@ -16,11 +16,13 @@
 #include "serialization.h"
 #include "widgets.h"
 #include "programState.h"
+#include "mainWindow.h"
 
 
-
-modelView::modelView( int x, int y, int w, int h ) :
+modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window ) :
 	
+	main_window_( main_window ),
+
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
 	modelInstance{},
 	modelViewPara{},
@@ -51,6 +53,8 @@ modelView::modelView( int x, int y, int w, int h ) :
 	resetBtnPressed( false )
 
 {
+
+	main_window_->add( this );
 
 	//--------------------------- Head ---------------------------//
 

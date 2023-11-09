@@ -18,10 +18,11 @@
 #include "progress.h"
 #include "widgets.h"
 #include "gantryCreation.h"
+#include "mainWindow.h"
 
-
-tomographyExec::tomographyExec( int x, int y, int w, int h ) :
+tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const main_window ) :
 	Fl_Group{ x, y, w, h },
+	main_window_( main_window ),
 	title{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"},
 
 	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) },
@@ -57,6 +58,8 @@ tomographyExec::tomographyExec( int x, int y, int w, int h ) :
 
 
 {
+	main_window_->add( title );
+
 	Fl_Group::box( FL_BORDER_BOX );
 	Fl_Group::add( title );
 	title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
@@ -143,16 +146,14 @@ void tomographyExec::handleEvents( void ){
 
 		this->parent()->deactivate();
 
-		Fl_Progress_Window* radiationProgressWindow = nullptr;
-		if( state.mainWindow_ != nullptr )
-			radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this->window(), 20, 5, "Radiation progress"};
+		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this->window(), 20, 5, "Radiation progress"};
 		
 
 		tomographyInstance = Tomography{ tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
 			projections_loaded = true;
-			currentProjection = tomographyInstance.RecordSlice( state.gantryCreation().projections_properties(), state.gantryCreation().gantry(), state.model(), 0, radiationProgressWindow);
+			currentProjection = tomographyInstance.RecordSlice( main_window_->gantryBuild.projections_properties(), main_window_->gantryBuild.gantry(), main_window_->modView.model(), 0, radiationProgressWindow);
 			delete radiationProgressWindow;
 		}
 
@@ -176,14 +177,14 @@ void tomographyExec::handleEvents( void ){
 
 		string informationString;
 
-		informationString += "Sinogramgröße:      " + ToString( state.gantryCreation().projections_properties().number_of_angles() ) + " x " + ToString( state.gantryCreation().projections_properties().number_of_distances() ) + '\n';
-		informationString += "Sinogramauflösung:  " + ToString( state.gantryCreation().projections_properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( state.gantryCreation().projections_properties().distances_resolution(), 2) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ToString( state.gantryCreation().projections_properties().number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ToString( state.gantryCreation().gantry().detector().properties().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Sinogramgröße:      " + ToString( main_window_->gantryBuild.projections_properties().number_of_angles() ) + " x " + ToString( main_window_->gantryBuild.projections_properties().number_of_distances() ) + '\n';
+		informationString += "Sinogramauflösung:  " + ToString( main_window_->gantryBuild.projections_properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( main_window_->gantryBuild.projections_properties().distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ToString( main_window_->gantryBuild.projections_properties().number_of_frames_to_fill() ) + '\n';
+		informationString += "Detektorwinkel:	  " + ToString( main_window_->gantryBuild.gantry().detector().properties().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
-		informationString += "Elektrische Leistung:	  " + ToString( state.gantryCreation().gantry().tube().GetElectricalPower()) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ToString( state.gantryCreation().gantry().tube().GetEmittedBeamPower() ) + "W" + '\n';
+		informationString += "Elektrische Leistung:	  " + ToString( main_window_->gantryBuild.gantry().tube().GetElectricalPower()) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ToString( main_window_->gantryBuild.gantry().tube().GetEmittedBeamPower() ) + "W" + '\n';
 		
 		information.value( informationString.c_str() );
 	}

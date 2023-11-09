@@ -37,7 +37,7 @@ class tomographyExec : public Fl_Group{
 	 * @param w Width
 	 * @param h Height
 	*/
-	tomographyExec( int x, int y, int w, int h );
+	tomographyExec( int x, int y, int w, int h, mainWindow* const main_window );
 
 	/*! 
 	 * @brief Destructor
@@ -62,6 +62,8 @@ class tomographyExec : public Fl_Group{
 	void AssignProjections( const Projections projections );
 
 	private:
+
+	class mainWindow* const main_window_;
 
 	Fl_Box title;				/*!<Title*/
 

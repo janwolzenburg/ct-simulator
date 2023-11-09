@@ -44,7 +44,7 @@ class modelView : public Fl_Group{
 	 * @param w Width
 	 * @param h Height
 	*/
-	modelView( int x, int y, int w, int h );
+	modelView( int x, int y, int w, int h, mainWindow* const main_window );
 
 	/*!
 	 * @brief Destructor
@@ -76,6 +76,8 @@ class modelView : public Fl_Group{
 
 	private:
 	
+	class mainWindow* const main_window_;
+
 	FileChooser modelChooserInstance;			/*!<File chooser for the model*/
 	Model modelInstance;						/*!<Current model*/
 	ModelViewProperties modelViewPara;			/*!<Parameter of the model view*/

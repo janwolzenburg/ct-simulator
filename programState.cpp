@@ -17,6 +17,8 @@
 #include "processingWindow.h"
 #include "serialization.h"
 #include "gantryCreation.h"
+#include "tomographyExecution.h"
+
 
  /*********************************************************************
 	Implementations
@@ -41,16 +43,8 @@ programState& programState::getInstance(){
 }
 
 programState::programState( void ) :
-	
 
-
-	mainWindow_( nullptr ),
-
-	resetStateAtExit( false ),
-	
-
-	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
-	storedImportChooser{ getPath( "storedImportChooser.txt" ), importChooserInstance }
+	resetStateAtExit( false )
 
 {
 	createStorageDir();
@@ -63,10 +57,6 @@ programState::~programState( void ) {
 		return;
 	}
 	
-
-
-
-	storedImportChooser.Save();
 }
 
 
@@ -83,25 +73,4 @@ void programState::deleteStorageDir( void ){
 	// Remove all content
 	for( const auto& file : std::filesystem::directory_iterator( stateStorage ) )
 		std::filesystem::remove_all( file.path() );
-}
-
-
-const Model& programState::model( void ) const{ return mainWindow_->modView.model(); };
-
-gantryEdition& programState::gantryCreation( void ){ 
-	return mainWindow_->gantryBuild; 
-};
-
-
-
-void programState::setUpdateInformationFlag( void ){
-	if( mainWindow_ != nullptr )
-		mainWindow_->tomographyExecution.updateInformation();
-}
-
-
-
-path programState::importSinogram( void ){
-	storedImportChooser.SetAsLoaded();
-	return  importChooserInstance.ChooseFile();
 }

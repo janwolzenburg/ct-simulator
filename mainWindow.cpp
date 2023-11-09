@@ -31,9 +31,12 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 
 	resetProgramStateBtn{	X( menu, .9 ),							Y( menu, 0. ),		W( menu, .1 ),		H( menu, 1. ), "Reset program" },
 	resetButtonPressed( false ),
-	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ) },
-	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ) },
-	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ) }
+	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ), this },
+	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), this },
+	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ), this },
+	
+	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
+	storedImportChooser{ PROGRAM_STATE().getPath( "storedImportChooser.txt" ), importChooserInstance }
 {
 	Fl_Window::resizable( *this );
 
@@ -60,20 +63,9 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 
 }
 
-void mainWindow::deactivate( void ){
-	Fl_Window::deactivate();
-	menu.deactivate();
-	modView.deactivate();
-	gantryBuild.deactivate();
-	tomographyExecution.deactivate();
-}
 
-void mainWindow::activate( void ){
-	Fl_Window::activate();
-	menu.activate();
-	modView.activate();
-	gantryBuild.activate();
-	tomographyExecution.activate();
+mainWindow::~mainWindow( void ){
+	storedImportChooser.Save();
 }
 
 void mainWindow::handleEvents( void ){
@@ -85,7 +77,7 @@ void mainWindow::handleEvents( void ){
 
 	if( UnsetFlag( importSinogramFlag ) ){
 
-		path chosenPath = PROGRAM_STATE().importSinogram();
+		path chosenPath = importSinogram();
 
 		if( chosenPath.empty() ) return;
 
@@ -109,4 +101,10 @@ void mainWindow::handleEvents( void ){
 	gantryBuild.handleEvents();
 	tomographyExecution.handleEvents();
 
+}
+
+
+path mainWindow::importSinogram( void ){
+	storedImportChooser.SetAsLoaded();
+	return  importChooserInstance.ChooseFile();
 }
