@@ -82,7 +82,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 
 	radiationLoopsIn.bounds(0, 100);
 	radiationLoopsIn.step( 1. );
-	scatterPropabilityIn.setProperties( 0., 1., 6 );
+	scatterPropabilityIn.SetProperties( 0., 1., 6 );
 
 
 	radiationLoopsIn.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );

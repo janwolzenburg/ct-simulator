@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   Fl_Bound_Input.h
+ * @file   Fl_BoundInput.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -25,19 +25,19 @@ using std::string;
 /*!
  * @brief Constraints for the bound input
 */
-enum INPUT_CONSTRAINTS{
-	NONE,
-	EVEN,
-	ODD
+enum Input_Constraints{
+	None,
+	Even,
+	Odd
 };
 
 /*!
- * @brief Class for a bound number_of_pixel input
+ * @brief Class for a bound number input
  * @tparam C Class derived from Fl_Input
  * @tparam T Arithmetic type to input
 */
 template< class C, typename T>
-class Fl_Bound_Input : public Fl_Group{
+class Fl_BoundInput : public Fl_Group{
 
 	static_assert( std::is_base_of_v< Fl_Input, C > );
 	static_assert( std::is_arithmetic_v< T >);
@@ -53,13 +53,19 @@ class Fl_Bound_Input : public Fl_Group{
 	 * @param h Height
 	 * @param label Label
 	*/
-	Fl_Bound_Input( int x, int y, int w, int h, const char* label );
+	Fl_BoundInput( int x, int y, int w, int h, const char* label );
+	
+	/*!
+	 * @brief Get current value 
+	 * @return Current value
+	*/
+	T value( void ) const{ return current_value_; }; 
 
 	/*!
 	 * @brief Set alignment for title
 	 * @param alignment Alignment
 	*/
-	void align( Fl_Align alignment ){ input.align( alignment ); };
+	void align( Fl_Align alignment ){ input_widget_.align( alignment ); };
 
 	/*!
 	 * @brief Set new value
@@ -68,47 +74,40 @@ class Fl_Bound_Input : public Fl_Group{
 	void value( const T newValue );
 
 	/*!
-	 * @brief Get current value 
-	 * @return Current value
+	 * @brief Set properties of input
+	 * @param min_value Minimum value
+	 * @param max_value Maximum value
+	 * @param precision Precision of number_of_pixel to show. Use negative numbers to round to multiples of ten
+	 * @param constraint Contrains for inputted values
 	*/
-	T value( void ) const{ return current; }; 
-
-	/*!
-	 * @brief Set properties_ of input
-	 * @param min_ Minimum value
-	 * @param max_ Maximum value
-	 * @param precision_ Precision of number_of_pixel to show. Use negative numbers to round to multiples of ten
-	 * @param constraint_ Contrains for inputted values
-	*/
-	void setProperties( const T min_, const T max_, const int precision_, const INPUT_CONSTRAINTS constraint_ = NONE  );
+	void SetProperties( const T min_value, const T max_value, const int precision, const Input_Constraints constraint = None  );
 
 
 	private:
+
+	C input_widget_;				/*!<A Fl_Input derivation*/
+				
+	int precision_;					/*!<Precision of number_of_pixel. Negative to round to significant digits*/
+	T current_value_;				/*!<Current value*/
+	string value_string_;			/*!<String with formatted value*/
+
+	T max_allowed_;					/*!<Maximum allowed value*/
+	T min_allowed_;					/*!<Minimum allowed value*/
+	Input_Constraints constraint_;	/*!<Constraints for the input*/
 
 	/*!
 	 * @brief Check if current value is in bounds and violating constrains
 	 * @details Updates value to conform
 	*/
-	void checkBounds( void );
+	void CheckAndForceConstraints( void );
 
 	/*!
 	 * @brief Callback for value change
 	 * @param widget Pointer to widget which triggered the callback
-	 * @param p Pointer to userdata. Here a pointer to the Fl_Bound_Input must be passed
+	 * @param p Pointer to userdata. Here a pointer to the Fl_BoundInput must be passed
 	*/
-	static void cbFunction( Fl_Widget* widget, void* p );
-	
-
-	C input;				/*!<A Fl_Input derivation*/
-				
-	int precision;			/*!<Precision of number_of_pixel. Negative to round to significant digits*/
-	T current;				/*!<Current value*/
-	string valueString;		/*!<String with formatted value*/
-
-	T maxVal;				/*!<Maximum allowed value*/
-	T minVal;				/*!<Minimum allowed value*/
-	INPUT_CONSTRAINTS constraint;	/*!<Constraints for the input*/
+	static void HanldeValueChange( Fl_Widget* widget, void* p );
 
 };
 
-#include "Fl_Bound_Input.hpp"
+#include "fl_BoundInput.hpp"

@@ -80,8 +80,8 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 
 		tubeVoltageIn.align( FL_ALIGN_TOP ); tubeCurrentIn.align( FL_ALIGN_TOP ); materialIn.align( FL_ALIGN_TOP );
 
-		tubeVoltageIn.setProperties( 1., 200000., 0 );
-		tubeCurrentIn.setProperties( .001, 10., 3 );
+		tubeVoltageIn.SetProperties( 1., 200000., 0 );
+		tubeCurrentIn.SetProperties( .001, 10., 3 );
 
 		tubeVoltageIn.value( xRayTubeParameter.anode_voltage_V );
 		tubeCurrentIn.value( xRayTubeParameter.anode_current_A );
@@ -119,13 +119,13 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		detectorGrp.box( FL_BORDER_BOX );
 		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
-		colPnts.setProperties( 3, 10000, 0 );
+		colPnts.SetProperties( 3, 10000, 0 );
 		colPnts.value( radonParameter.number_of_angles() );
 
-		rowPnts.setProperties( 3, 10000, 0, INPUT_CONSTRAINTS::ODD );
+		rowPnts.SetProperties( 3, 10000, 0, Input_Constraints::Odd );
 		rowPnts.value( radonParameter.number_of_distances() );
 
-		distRange.setProperties( 1., 10000., 0 );
+		distRange.SetProperties( 1., 10000., 0 );
 		distRange.value( radonParameter.measuring_field_size() );
 
 		colPnts.callback( button_cb, &updateGantry );
@@ -142,13 +142,13 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		detectorGrp.box( FL_BORDER_BOX );
 		raysPerPixelIn.align( FL_ALIGN_TOP ); detector_focus_distance_input.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
-		raysPerPixelIn.setProperties( 1, 1000, 0 );
+		raysPerPixelIn.SetProperties( 1, 1000, 0 );
 		raysPerPixelIn.value( (int)  gantryInstance.tube().number_of_rays_per_pixel());
 
-		detector_focus_distance_input.setProperties( distRange.value(), 100000., 0);
+		detector_focus_distance_input.SetProperties( distRange.value(), 100000., 0);
 		detector_focus_distance_input.value( physical_detector_properties_.detector_focus_distance );
 
-		maxRayAngleIn.setProperties( .1, 60., 2 );
+		maxRayAngleIn.SetProperties( .1, 60., 2 );
 		maxRayAngleIn.value( physical_detector_properties_.max_ray_angle_allowed_by_structure / 2. / PI * 360. );
 
 		structureIn.value( (int) physical_detector_properties_.has_anti_scattering_structure );
@@ -185,7 +185,7 @@ void gantryEdition::handleEvents( void ){
 		Fl_Group::window()->deactivate();
 
 		
-		detector_focus_distance_input.setProperties( distRange.value(), 10000., 0 );
+		detector_focus_distance_input.SetProperties( distRange.value(), 10000., 0 );
 
 		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.value() ), (size_t) raysPerPixelIn.value() };
 		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };

@@ -176,8 +176,8 @@
     <ClInclude Include="systemOfEquations.h" />
     <ClInclude Include="fileChooser.h" />
     <ClInclude Include="backprojectionFilter.h" />
-    <ClInclude Include="Fl_Bound_Input.h" />
-    <ClInclude Include="Fl_Bound_Input.hpp" />
+    <ClInclude Include="fl_BoundInput.h" />
+    <ClInclude Include="fl_BoundInput.hpp" />
     <ClInclude Include="fl_GrayscaleImage.h" />
     <ClInclude Include="fl_AdjustableGrayscaleImage.h" />
     <ClInclude Include="Fl_Selector.h" />

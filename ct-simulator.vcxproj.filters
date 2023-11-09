@@ -282,10 +282,10 @@
     <ClInclude Include="Fl_Selector.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Bound_Input.h">
+    <ClInclude Include="fl_BoundInput.h">
       <Filter>Headerdateien\Program\GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Bound_Input.hpp">
+    <ClInclude Include="fl_BoundInput.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="serialization.h">

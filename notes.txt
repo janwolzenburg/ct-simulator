@@ -85,6 +85,7 @@ Program
 	Elements
 		grayscaleImage
 		colorImage
+		boundInput
 
 	Widgets
 		fl_GrayscaleImage
