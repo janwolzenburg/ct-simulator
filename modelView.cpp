@@ -48,9 +48,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window 
 	zTrans{		X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "z-Translation" },
 	resetBtn{	X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
 
-	loadBtnPressed( false ),
-	updateModelFlag( false ),
-	resetBtnPressed( false )
+	load_model{ *this, &modelView::loadModel },
+	update_model_{ *this, &modelView::UpdateModel },
+	reset_model_{ *this, &modelView::resetModel }
 
 {
 
@@ -65,7 +65,7 @@ modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window 
 	headGrp.add( loadBtn );
 	headGrp.box( FL_BORDER_BOX );
 	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
-	loadBtn.callback( button_cb, &loadBtnPressed );
+	loadBtn.callback( HandleCallback<modelView>, &load_model );
 
 
 
@@ -112,10 +112,10 @@ modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window 
 	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
 
 	// Callbacks for Counters and reset button
-	xRot.callback( button_cb, &updateModelFlag );
-	yRot.callback( button_cb, &updateModelFlag );
-	zTrans.callback( button_cb, &updateModelFlag );
-	resetBtn.callback( button_cb, &resetBtnPressed );
+	xRot.callback( HandleCallback<modelView>, &update_model_ );
+	yRot.callback( HandleCallback<modelView>, &update_model_ );
+	zTrans.callback( HandleCallback<modelView>, &update_model_ );
+	resetBtn.callback( HandleCallback<modelView>, &reset_model_ );
 
 
 
@@ -128,6 +128,7 @@ modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window 
 	moveGrp.hide();
 
 	if( ModelLoaded() ){
+		UpdateModel();
 		viewImg.SetSliderBounds( modelInstance.attenuationRange() );
 		viewImg.ChangeSliderValues( modelViewPara.contrast );
 	}
@@ -249,12 +250,13 @@ void modelView::resetModel( void ){
 
 	sliceModel();
 	viewImg.AssignImage( modelSliceInstance );//, true );
+	modelViewPara.contrast = viewImg.GetContrast();
 
 	this->window()->activate();
 
 }
 
-bool modelView::loadModel( void ){
+void modelView::loadModel( void ){
 
 	this->window()->deactivate();
 
@@ -267,7 +269,7 @@ bool modelView::loadModel( void ){
 	if( !storedModel.Load( modelToLoad ) ){
 		viewBox.label( "Loading failed!" );
 		this->window()->activate();
-		return false;
+		return;
 	}
 
 	viewImg.SetSliderBounds( modelInstance.attenuationRange() );
@@ -280,30 +282,7 @@ bool modelView::loadModel( void ){
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
 	this->window()->activate();
-
-	return true;
 }
-
-void modelView::handleEvents( void ){
-
-	if( LoadBtnPressed() ){
-		loadModel();
-	}
-
-	if( ModelNeedsUpdate() ){
-		UpdateModel();
-	}
-
-	if( ResetBtnPressed() ){
-		resetModel();
-	}
-
-	if( viewImg.DidContrastChange() ){
-		// Store contrast
-		modelViewPara.contrast = viewImg.GetContrast();
-	}
-}
-
 
 
 
@@ -326,6 +305,7 @@ void modelView::UpdateModel( void ){
 	else{
 		// New assignment only necessary, when movement succeeded
 		viewImg.AssignImage( modelSliceInstance );//, false );
+		modelViewPara.contrast = viewImg.GetContrast();
 	}
 
 	viewImg.show(); viewBox.hide(); modelData.show();

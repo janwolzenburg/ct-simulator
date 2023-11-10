@@ -23,6 +23,8 @@
 
 #include "fl_BoundInput.h"
 #include "programState.h"
+#include "widgets.h"
+
 
 /*!
  * @brief Class for tomography execution
@@ -48,12 +50,7 @@ class tomographyExec : public Fl_Group{
 	/*!
 	 * @brief Set information update flag
 	*/
-	void updateInformation( void ){ informationUpdateFlag = true; };
-
-	/*!
-	 * @brief Handle events
-	*/
-	void handleEvents( void );
+	void updateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube );
 
 	/*!
 	 * @brief Export current sinogram
@@ -91,12 +88,17 @@ class tomographyExec : public Fl_Group{
 	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
 
 
-	bool radiateFlag;				/*!<Flag for radiation start*/
-	bool exportFlag;				/*!<Flag for sinogram export*/
-	bool updateFlag;				/*!<Flag to update tomography parameter*/
-	bool informationUpdateFlag;		/*!<Flag for information text update*/
-
-	bool projections_loaded;
 	Projections currentProjection;
 	vector<std::unique_ptr<processingWindow>> processing_windows_;
+ 
+	
+	CallbackMethod<tomographyExec> radiateCB;
+	CallbackMethod<tomographyExec> updateCB;
+	CallbackMethod<tomographyExec> exportCB;
+
+ 
+	void radiate( void );
+
+	void updateProperties( void );
+
  };

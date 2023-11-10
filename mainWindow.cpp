@@ -55,12 +55,6 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window::show();
 
 
-	if( modView.ModelLoaded() ){
-		modView.setUpdateFlag();
-	}
-
-	gantryBuild.setUpdateFlag();
-
 }
 
 
@@ -97,9 +91,6 @@ void mainWindow::handleEvents( void ){
 		tomographyExecution.deactivate();
 
 
-	modView.handleEvents();
-	gantryBuild.handleEvents();
-	tomographyExecution.handleEvents();
 
 }
 

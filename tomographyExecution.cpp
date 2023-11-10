@@ -48,16 +48,13 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 	tomographyInstance{},
 	tomographyParamerters{},
 	storedTomographyParamerter{ PROGRAM_STATE().getPath("storedTomograpyParameter.txt"), tomographyParamerters},
-	
-	radiateFlag( false ),
-	updateFlag( false ),
-	exportFlag( false ),
-	informationUpdateFlag( false ),
 
-	projections_loaded( false ),
 	currentProjection{},
-	processing_windows_( 0 )
+	processing_windows_( 0 ),
 
+	radiateCB{ *this, &tomographyExec::radiate },
+	updateCB{ *this, &tomographyExec::updateProperties },
+	exportCB{ *this, &tomographyExec::exportSinogram }
 
 {
 	main_window_->add( title );
@@ -99,9 +96,10 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 	scatteringOnOff.value( tomographyParamerters.scattering_enabled );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-	radiationLoopsIn.callback( button_cb, &updateFlag );
-	scatterPropabilityIn.callback( button_cb, &updateFlag );
-	scatteringOnOff.callback( button_cb, &updateFlag );
+	radiationLoopsIn.callback( HandleCallback<tomographyExec>, &updateCB );
+
+	scatterPropabilityIn.callback( HandleCallback<tomographyExec>, &updateCB );
+	scatteringOnOff.callback( HandleCallback<tomographyExec>, &updateCB );
 
 
 	Fl_Group::add( controlGrp );
@@ -112,8 +110,8 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 
 	exportButton.deactivate();
 
-	radiationButton.callback( button_cb, &radiateFlag );
-	exportButton.callback( button_cb, &exportFlag );
+	radiationButton.callback( HandleCallback<tomographyExec>, &radiateCB );
+	exportButton.callback( HandleCallback<tomographyExec>, &exportCB );
 
 	this->deactivate();
 }
@@ -126,75 +124,61 @@ tomographyExec::~tomographyExec( void ){
 }
 
 void tomographyExec::AssignProjections( const Projections projections ){
-	projections_loaded = true;
 	currentProjection = projections;
-	
+	exportButton.activate();
+
 	std::unique_ptr<processingWindow> ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
 	processing_windows_.push_back( std::move( ptr ) );
 	processing_windows_.back()->show();
 }
 
-void tomographyExec::handleEvents( void ){
 
-	programState& state = PROGRAM_STATE();
+void tomographyExec::updateProperties( void ){
 
-	if( projections_loaded )
-		exportButton.activate();
-	else
-		exportButton.deactivate();
-	
-	if(  UnsetFlag( radiateFlag ) ){
+		tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
+		storedTomographyParamerter.SetAsLoaded();
+		
+}
 
-		this->parent()->deactivate();
+void tomographyExec::radiate( void ){
 
-		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this->window(), 20, 5, "Radiation progress"};
+		parent()->deactivate();
+
+		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 20, 5, "Radiation progress"};
 		
 
 		tomographyInstance = Tomography{ tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			projections_loaded = true;
 			currentProjection = tomographyInstance.RecordSlice( main_window_->gantryBuild.projections_properties(), main_window_->gantryBuild.gantry(), main_window_->modView.model(), 0, radiationProgressWindow);
+			exportButton.activate();
 			delete radiationProgressWindow;
 		}
 
-		std::unique_ptr<processingWindow> ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
-		processing_windows_.push_back( std::move( ptr ) );
+		std::unique_ptr<processingWindow> window_ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
+		processing_windows_.push_back( std::move( window_ptr ) );
 		processing_windows_.back()->show();
 
-		this->parent()->activate();
-	}
+		parent()->activate();
+}
 
-	if( UnsetFlag( exportFlag ) )
-		exportSinogram();
-	
-
-	if( UnsetFlag( updateFlag )){
-		informationUpdateFlag = true;
-		tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
-		storedTomographyParamerter.SetAsLoaded();
-	}
-
-	if( UnsetFlag( informationUpdateFlag )){
-
-		string informationString;
-
-		informationString += "Sinogramgröße:      " + ToString( main_window_->gantryBuild.projections_properties().number_of_angles() ) + " x " + ToString( main_window_->gantryBuild.projections_properties().number_of_distances() ) + '\n';
-		informationString += "Sinogramauflösung:  " + ToString( main_window_->gantryBuild.projections_properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( main_window_->gantryBuild.projections_properties().distances_resolution(), 2) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ToString( main_window_->gantryBuild.projections_properties().number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ToString( main_window_->gantryBuild.gantry().detector().properties().arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+void tomographyExec::updateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube ){
+		string informationString = "";
 
 
-		informationString += "Elektrische Leistung:	  " + ToString( main_window_->gantryBuild.gantry().tube().GetElectricalPower()) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ToString( main_window_->gantryBuild.gantry().tube().GetEmittedBeamPower() ) + "W" + '\n';
+		informationString += "Sinogramgröße:      " + ToString( projection_properties.number_of_angles() ) + " x " + ToString( projection_properties.number_of_distances() ) + '\n';
+		informationString += "Sinogramauflösung:  " + ToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ToString( projection_properties.number_of_frames_to_fill() ) + '\n';
+		informationString += "Detektorwinkel:	  " + ToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+
+
+		informationString += "Elektrische Leistung:	  " + ToString( tube.GetElectricalPower()) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ToString( tube.GetEmittedBeamPower() ) + "W" + '\n';
 		
 		information.value( informationString.c_str() );
-	}
-
 }
 
 void tomographyExec::exportSinogram( void ){
-	if( projections_loaded ){
 
 		path exportPath = exportChooserInstance.ChooseFile();
 		storedExportChooser.SetAsLoaded();
@@ -208,5 +192,5 @@ void tomographyExec::exportSinogram( void ){
 
 		ExportSerialized( exportPath, binary_data );
 
-	}
+
 }

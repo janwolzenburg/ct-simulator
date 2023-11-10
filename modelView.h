@@ -23,7 +23,7 @@
 #include "programState.h"
 #include "modelViewProperties.h"
 #include "fl_AdjustableGrayscaleImage.h"
-
+#include "widgets.h"
 
 /*********************************************************************
    Definitions
@@ -63,15 +63,6 @@ class modelView : public Fl_Group{
 	*/
 	bool ModelLoaded( void ) const{ return storedModel.was_loaded(); };
 
-	/*!
-	 * @brief Set flag for model update
-	*/
-	void setUpdateFlag( void ){ updateModelFlag = true; };
-
-	/*!
-	 * @brief Handle all events
-	*/
-	void handleEvents( void );
 
 
 	private:
@@ -103,9 +94,10 @@ class modelView : public Fl_Group{
 	Fl_Button resetBtn;	/*!<Button to reset model to default*/
 
 	string modelDataString;	/*!<String with model properties_*/
-	bool loadBtnPressed;	/*!<Flag for model load*/
-	bool updateModelFlag;	/*!<Flag for model update*/
-	bool resetBtnPressed;	/*!<Flag for model reset*/
+	
+	CallbackMethod<modelView> load_model;
+	CallbackMethod<modelView> update_model_;
+	CallbackMethod<modelView> reset_model_;
 	
 
 	/*!
@@ -114,29 +106,12 @@ class modelView : public Fl_Group{
 	*/
 	string modelDescription( void ) const;
 
-	/*!
-	 * @brief Check if load button was pressed
-	 * @return True when it was pressed
-	*/
-	bool LoadBtnPressed( void ){ return UnsetFlag( loadBtnPressed ); };
-
-	/*!
-	 * @brief Check if model needs update
-	 * @return True when model need update and a model is loaded
-	*/
-	bool ModelNeedsUpdate( void ){ return UnsetFlag( updateModelFlag )&& ModelLoaded(); };
-
-	/*!
-	 * @brief Check if reset button was pressed
-	 * @return True when it was pressed
-	*/
-	bool ResetBtnPressed( void ){ return UnsetFlag( resetBtnPressed ); };
 	
 	/*!
 	 * @brief Load the model a stored path
 	 * @return True at success
 	*/
-	bool loadModel( void );
+	void loadModel( void );
 
 	/*!
 	 * @brief Move model to given values with respect to the slice plane coordinate system

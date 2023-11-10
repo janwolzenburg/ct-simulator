@@ -25,6 +25,7 @@
 #include "Fl_Selector.h"
 #include "linePlot.h"
 #include "geometryplot.h"
+#include "widgets.h"
 
 
 /*!
@@ -49,22 +50,12 @@ class gantryEdition : public Fl_Group{
 
 	ProjectionsProperties projections_properties ( void ){ return radonParameter; };
 
-	
-	/*!
-	 * @brief Set flag for gantry update
-	*/
-	void setUpdateFlag( void ){ updateGantry = true; };
-
 	/*!
 	 * @brief Check if gantry needs update 
 	 * @return True when gantry needs update
 	*/
-	bool UpdateGantry( void ){ return UnsetFlag( updateGantry ); };
+	void UpdateGantry( void );
 
-	/*!
-	 * @brief Handle events
-	*/
-	void handleEvents( void );
 
 
 	private:
@@ -99,6 +90,5 @@ class gantryEdition : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
 	Fl_Plot<Geometryplot> detectorPlot;							/*!<Plot for detector geometry*/
 
-	bool updateGantry;	/*!<Flag for gantry update*/
-
+	CallbackMethod<gantryEdition> updateCB;
 };

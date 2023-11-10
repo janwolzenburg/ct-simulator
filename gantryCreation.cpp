@@ -58,7 +58,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 
 	detectorPlot{	X( detectorGrp, .0 ),	Y( detectorGrp, .35 ),	W( detectorGrp, 1. ),	H( detectorGrp, .65 ),	"Detector Plot" },
 
-	updateGantry( false )
+	updateCB{ *this, &gantryEdition::UpdateGantry }
 	
 	{
 		main_window_->add( this );
@@ -86,9 +86,9 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		tubeVoltageIn.value( xRayTubeParameter.anode_voltage_V );
 		tubeCurrentIn.value( xRayTubeParameter.anode_current_A );
 
-		tubeVoltageIn.callback( button_cb, &updateGantry );
-		tubeCurrentIn.callback( button_cb, &updateGantry );
-		materialIn.callback( button_cb, &updateGantry );
+		tubeVoltageIn.callback( HandleCallback<gantryEdition>, &updateCB );
+		tubeCurrentIn.callback( HandleCallback<gantryEdition>, &updateCB );
+		materialIn.callback( HandleCallback<gantryEdition>, &updateCB );
 
 		vector<string> materialNames;
 		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
@@ -128,9 +128,9 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		distRange.SetProperties( 1., 10000., 0 );
 		distRange.value( radonParameter.measuring_field_size() );
 
-		colPnts.callback( button_cb, &updateGantry );
-		rowPnts.callback( button_cb, &updateGantry );
-		distRange.callback( button_cb, &updateGantry );
+		colPnts.callback( HandleCallback<gantryEdition>, &updateCB );
+		rowPnts.callback( HandleCallback<gantryEdition>, &updateCB );
+		distRange.callback( HandleCallback<gantryEdition>, &updateCB );
 
 		colPnts.tooltip( "Amount of angles in Sinogram." );
 		rowPnts.tooltip( "Amount of distances in sinogram. Is the amount of detector pixel." );
@@ -154,10 +154,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		structureIn.value( (int) physical_detector_properties_.has_anti_scattering_structure );
 		structureIn.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-		raysPerPixelIn.callback( button_cb, &updateGantry );
-		detector_focus_distance_input.callback( button_cb, &updateGantry );
-		maxRayAngleIn.callback( button_cb, &updateGantry );
-		structureIn.callback( button_cb, &updateGantry );
+		raysPerPixelIn.callback(  HandleCallback<gantryEdition>, &updateCB );
+		detector_focus_distance_input.callback( HandleCallback<gantryEdition>, &updateCB );
+		maxRayAngleIn.callback(  HandleCallback<gantryEdition>, &updateCB );
+		structureIn.callback(  HandleCallback<gantryEdition>, &updateCB  );
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
 		detector_focus_distance_input.tooltip( "Detector focus distance." );
@@ -168,7 +168,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 		detectorGrp.add( detectorPlot );
 		detectorPlot.Initialise( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", PlotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
 
-
+		UpdateGantry();
 }
 
 gantryEdition::~gantryEdition( void ){
@@ -177,9 +177,7 @@ gantryEdition::~gantryEdition( void ){
 	storedDetectorParameter.Save();
 }
 
-void gantryEdition::handleEvents( void ){
-
-	if( UpdateGantry() ){
+void gantryEdition::UpdateGantry( void ){
 
 
 		Fl_Group::window()->deactivate();
@@ -215,7 +213,7 @@ void gantryEdition::handleEvents( void ){
 		spectrumPlot.plot().AssignData( spectrum_points );
 		spectrumPlot.AssignData();
 
-		main_window_->tomographyExecution.updateInformation();
+		main_window_->tomographyExecution.updateInformation( radonParameter, detectorRef.properties(), gantryInstance.tube() );
 
 		detectorPlot.plot().ResetObjects();
 
@@ -240,6 +238,5 @@ void gantryEdition::handleEvents( void ){
 
 		Fl_Group::window()->activate();
 
-	}
 
 }
