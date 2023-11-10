@@ -55,7 +55,6 @@ class processingWindow : public Fl_Window{
 
 
 	Fl_Group sinogramGrp;	/*!<Group for sinogram view*/
-	GrayscaleImage sinogramImg;	/*!<Sinogram as image*/
 	Fl_AdjustableGrayscaleImage sinogramWidget;	/*!<Widget for sinogram display*/
 	
 	Fl_Group filterGrp;		/*!<Group for filter*/
@@ -63,11 +62,9 @@ class processingWindow : public Fl_Window{
 	Fl_Plot<DotPlot> filterPlot;		/*!<Filter plot*/
 
 	Fl_Group filteredProjGrp;				/*!<Group for the fitlered projections*/
-	GrayscaleImage filteredProjImage;			/*!<Filtered projections as image*/
 	Fl_AdjustableGrayscaleImage filteredProjWidget;	/*!<Widget for filtered projections display*/
 
 	Fl_Group reconstructionGrp;			/*!<Group for the reconstructed image*/
-	GrayscaleImage reconstructionImage;		/*!<Reconstruced image*/
 	Fl_AdjustableGrayscaleImage reconstructionImageWidget;	/*!<Widget for the reconstruced image*/
 
 

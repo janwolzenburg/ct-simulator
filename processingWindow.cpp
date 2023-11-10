@@ -60,8 +60,7 @@ processingWindow::processingWindow( int w, int h, const char* label, Projections
 
 	sinogramWidget.ResetBounds();
 
-	sinogramImg = GrayscaleImage{ projections.data(), true };
-	sinogramWidget.AssignImage( sinogramImg );
+	sinogramWidget.AssignImage( GrayscaleImage{ projections.data(), true } );
 
 
 	filteredProjWidget.ResetBounds();
@@ -95,15 +94,12 @@ void processingWindow::recalcFilteredProjections( void ){
 	filterPlot.plot().AssignData(currentFilteredProjections.filter().GetPlotValues() );
 	filterPlot.AssignData();
 	
-	filteredProjImage = GrayscaleImage{ currentFilteredProjections.data_grid(), true };
 
-	filteredProjWidget.AssignImage( filteredProjImage );
+	filteredProjWidget.AssignImage( GrayscaleImage{ currentFilteredProjections.data_grid(), true } );
 
 	currentReconstrucedImage = ReconstrucedImage{ currentFilteredProjections, processingProgressWindow };
 
-	reconstructionImage = GrayscaleImage{ currentReconstrucedImage.getGrid(), true };
-
-	reconstructionImageWidget.AssignImage( reconstructionImage );
+	reconstructionImageWidget.AssignImage( GrayscaleImage{ currentReconstrucedImage.getGrid(), true } );
 
 	delete processingProgressWindow;
 
