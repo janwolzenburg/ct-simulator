@@ -60,7 +60,7 @@ class mainWindow : public Fl_Window{
 	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
 	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
 
-	modelView modView;						/*!<Model view*/
+	ModelView modView;						/*!<Model view*/
 	gantryEdition gantryBuild;				/*!<Gantry creation*/
 	tomographyExec tomographyExecution;		/*!<Tomography execution*/
 

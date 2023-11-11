@@ -19,17 +19,17 @@
 #include "mainWindow.h"
 
 
-modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
+ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	
 	main_window_( main_window ),
 
 	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	modelInstance{},
+	model_{},
 	modelViewPara{},
 	modelSliceInstance{},
 	
 	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), modelChooserInstance },
-	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), modelInstance},
+	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), model_},
 	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), modelViewPara ),
 
 	
@@ -52,9 +52,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	yRot{		X( moveGrp, .1 ),	Y( moveGrp, .5 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "y-Rotation" },
 	zTrans{		X( moveGrp, .5 ),	Y( moveGrp, .0 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "z-Translation" },
 
-	load_model{ *this, &modelView::loadModel },
-	update_model_{ *this, &modelView::UpdateModel },
-	reset_model_{ *this, &modelView::resetModel }
+	load_model{ *this, &ModelView::loadModel },
+	update_model_{ *this, &ModelView::UpdateModel },
+	reset_model_{ *this, &ModelView::resetModel }
 
 {
 
@@ -70,7 +70,7 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	// Labelsize and callback
 	headGrp.add( loadBtn );
 	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
-	loadBtn.callback( HandleCallback<modelView>, &load_model );
+	loadBtn.callback( HandleCallback<ModelView>, &load_model );
 	
 
 
@@ -86,7 +86,7 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	viewGrp.add( resetBtn );
 	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
-	resetBtn.callback( HandleCallback<modelView>, &reset_model_ );
+	resetBtn.callback( HandleCallback<ModelView>, &reset_model_ );
 
 	// Model data_
 	modelData.hide();
@@ -118,9 +118,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 
 	// Callbacks for Counters and reset button
-	xRot.callback( HandleCallback<modelView>, &update_model_ );
-	yRot.callback( HandleCallback<modelView>, &update_model_ );
-	zTrans.callback( HandleCallback<modelView>, &update_model_ );
+	xRot.callback( HandleCallback<ModelView>, &update_model_ );
+	yRot.callback( HandleCallback<ModelView>, &update_model_ );
+	zTrans.callback( HandleCallback<ModelView>, &update_model_ );
 
 
 	// Set values
@@ -132,39 +132,39 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	moveGrp.hide();
 
 	
-	if( ModelLoaded() ){
+	if( IsModelLoaded() ){
 		UpdateModel();
-		viewImg.SetSliderBounds( modelInstance.attenuationRange() );
+		viewImg.SetSliderBounds( model_.attenuationRange() );
 		viewImg.ChangeSliderValues( modelViewPara.contrast );
 	}
 }
 
-modelView::~modelView( void ){
+ModelView::~ModelView( void ){
 	storedModel.Save();
 	storedModelChooser.Save();
 	storedViewParameter.Save();
 };
 
 
-string modelView::modelDescription( void ) const{
+string ModelView::modelDescription( void ) const{
 
 	string modelDataString;
 
 	modelDataString.clear();
-	modelDataString += "Name: \t" + modelInstance.name() + '\n';
-	modelDataString += "Voxel: \t\t\t" + ToString( modelInstance.number_of_voxel_3D().x ) + " x " + ToString( modelInstance.number_of_voxel_3D().y ) + " x " + ToString( modelInstance.number_of_voxel_3D().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + ToString( modelInstance.voxel_size().x, 2 ) + " x " + ToString( modelInstance.voxel_size().y, 2 ) + " x " + ToString( modelInstance.voxel_size().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + ToString( modelInstance.size().x ) + " x " + ToString( modelInstance.size().y ) + " x " + ToString( modelInstance.size().z ) + "  mm^3";
+	modelDataString += "Name: \t" + model_.name() + '\n';
+	modelDataString += "Voxel: \t\t\t" + ToString( model_.number_of_voxel_3D().x ) + " x " + ToString( model_.number_of_voxel_3D().y ) + " x " + ToString( model_.number_of_voxel_3D().z ) + "\n";
+	modelDataString += "Voxel Größe: \t" + ToString( model_.voxel_size().x, 2 ) + " x " + ToString( model_.voxel_size().y, 2 ) + " x " + ToString( model_.voxel_size().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model Größe: \t" + ToString( model_.size().x ) + " x " + ToString( model_.size().y ) + " x " + ToString( model_.size().z ) + "  mm^3";
 
 	return modelDataString;
 }
 
-bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
+bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
 	const SlicePlane backupPlane = modelViewPara.slice_plane; 
 	SlicePlane& planeInstance =  modelViewPara.slice_plane;
 
-	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
+	const PrimitiveCoordinateSystem backupCSys = model_.coordinate_system()->GetPrimitive();
 
 	if( targetXRot != planeInstance.rotation_angle_x ){
 
@@ -173,7 +173,7 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 
 		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
 
-		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		model_.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetYRot != planeInstance.rotation_angle_y ){
@@ -183,7 +183,7 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 
 		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
 
-		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		model_.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
 	if( targetZTrans != planeInstance.position_z ){
@@ -191,7 +191,7 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 		const double translation = targetZTrans - planeInstance.position_z;
 		planeInstance.position_z = targetZTrans;
 
-		modelInstance.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
+		model_.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
 
 	// Return if succeeded
@@ -199,7 +199,7 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 	
 	// Revert changes
 	planeInstance = backupPlane;
-	modelInstance.coordinate_system()->SetPrimitive( backupCSys );
+	model_.coordinate_system()->SetPrimitive( backupCSys );
 
 	targetXRot = planeInstance.rotation_angle_x;
 	targetYRot = planeInstance.rotation_angle_y;
@@ -210,12 +210,12 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 }
 
 
-bool modelView::sliceModel( void ){
+bool ModelView::sliceModel( void ){
 	Fl_Group::window()->deactivate();
 	
 	storedViewParameter.SetAsLoaded();
 
-	DataGrid<VoxelData> tempSlice = modelInstance.GetSlice(  modelViewPara.slice_plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = model_.GetSlice(  modelViewPara.slice_plane.surface, 1. );
 	
 	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
 	{
@@ -231,16 +231,16 @@ bool modelView::sliceModel( void ){
 }
 
 
-void modelView::centerModel( void ){
+void ModelView::centerModel( void ){
 
 	// Center model
-	Tuple3D center = PrimitiveVector3{ modelInstance.size() } / -2.;
+	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
 
-	modelInstance.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
 }
 
 
-void modelView::resetModel( void ){
+void ModelView::resetModel( void ){
 
 	this->window()->deactivate();
 		modelViewPara.slice_plane.rotation_angle_x = 0.;
@@ -261,7 +261,7 @@ void modelView::resetModel( void ){
 
 }
 
-void modelView::loadModel( void ){
+void ModelView::loadModel( void ){
 
 	this->window()->deactivate();
 
@@ -277,7 +277,7 @@ void modelView::loadModel( void ){
 		return;
 	}
 
-	viewImg.SetSliderBounds( modelInstance.attenuationRange() );
+	viewImg.SetSliderBounds( model_.attenuationRange() );
 	modelViewPara.contrast = viewImg.GetContrast();
 
 	resetModel();
@@ -360,7 +360,7 @@ void modelView::loadModel( void ){
 
 
 
-void modelView::UpdateModel( void ){
+void ModelView::UpdateModel( void ){
 
 	this->window()->deactivate();
 	

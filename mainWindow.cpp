@@ -54,7 +54,7 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	gantryBuild.deactivate();
 	tomographyExecution.deactivate();
 
-	if( modView.ModelLoaded() ){
+	if( modView.IsModelLoaded() ){
 		gantryBuild.activate();
 		tomographyExecution.activate();
 		tomographyExecution.updateInformation( gantryBuild.projections_properties(), gantryBuild.gantry().detector().properties(), gantryBuild.gantry().tube() );

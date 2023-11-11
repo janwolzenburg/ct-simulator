@@ -62,16 +62,7 @@ class gantryEdition : public Fl_Group{
 
 	private:
 
-	mainWindow& main_window_;
-
-	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
-	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
-	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
-	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
-	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
-	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
-
+	
 	Fl_Box title;		/*!<Title*/
 
 	Fl_Group tubeGrp;					/*!<Group of tube elements*/
@@ -91,6 +82,17 @@ class gantryEdition : public Fl_Group{
 	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
 	Fl_BoundInput<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
 	Fl_Plot<Geometryplot> detectorPlot;							/*!<Plot for detector geometry*/
+
+	mainWindow& main_window_;
+
+	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
+	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
+	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
+	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
+	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
+	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
+	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
+
 
 	CallbackMethod<gantryEdition> updateCB;
 };
