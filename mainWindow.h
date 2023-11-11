@@ -20,6 +20,7 @@
 #include "modelView.h"
 #include "gantryCreation.h"
 #include "tomographyExecution.h"
+#include "widgets.h"
 
 
 
@@ -44,20 +45,16 @@ class mainWindow : public Fl_Window{
 
 	~mainWindow( void );
 
-	/*!
-	 * @brief Handle event in main window
-	*/
-	void handleEvents( void );
+	void importSinogram( void );
 
-	path importSinogram( void );
+	void resetAtExit( void );
+
 
 	public:
 
 	Fl_Group menu;						/*!<Group at window top for multi purpose items*/
 	Fl_Button importSinogramBtn;		/*!<Button for sinogram import*/
-	bool importSinogramFlag;			/*!<Flag for sinogram import*/
 	Fl_Button resetProgramStateBtn;		/*!<Button to reset program state*/
-	bool resetButtonPressed;			/*!<Flag for reset*/
 
 
 	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
@@ -67,5 +64,7 @@ class mainWindow : public Fl_Window{
 	gantryEdition gantryBuild;				/*!<Gantry creation*/
 	tomographyExec tomographyExecution;		/*!<Tomography execution*/
 
+	CallbackMethod<mainWindow> setresetAtExitCB;
+	CallbackMethod<mainWindow> importSGCB;
 
 };

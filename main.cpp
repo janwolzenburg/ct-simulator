@@ -51,17 +51,11 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	initialWindow->show();
 
 
-	programState& state = PROGRAM_STATE();
-	//state.registerMainWindow( mainWindow_ );
-
-
 	bool firstLoop = true;
 
 
 	while( Fl::wait() ){
 		
-		mainWindow_->handleEvents();
-
 		if( firstLoop ){
 			mainWindow_->show();
 			initialWindow->hide();
@@ -70,7 +64,6 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	}
 
 	delete mainWindow_;
-	//delete procView;
 	delete initialWindow;
 
 	
