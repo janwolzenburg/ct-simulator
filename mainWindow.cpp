@@ -24,14 +24,13 @@
 mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
 
-	menu{					X( *this, 0. ),							Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ) },
-
+	menu{					X( *this, 0. ),							Y( *this, 0.001 ),		W( *this, 1. ),		H( *this, 0.034 ) },
 	importSinogramBtn{		X( menu, .7 ),							Y( menu, 0 ),		W( menu, .15 ),		H( menu, 1. ), "Import Sinogram" },
-
 	resetProgramStateBtn{	X( menu, .9 ),							Y( menu, 0. ),		W( menu, .1 ),		H( menu, 1. ), "Reset program" },
-	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
+
+	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.45 ),	H( *this, .95 ), *this },
 	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
-	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
+	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	
 	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
 	storedImportChooser{ PROGRAM_STATE().getPath( "storedImportChooser.txt" ), importChooserInstance },
@@ -41,18 +40,16 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	
 {
 	Fl_Window::resizable( *this );
-
 	Fl_Window::add( menu );
+	Fl_Window::add( modView );
+	Fl_Window::add( gantryBuild );
+	Fl_Window::add( tomographyExecution );
 
 	menu.add( importSinogramBtn );
 	importSinogramBtn.callback( HandleCallback<mainWindow>, &importSGCB );
 
 	menu.add( resetProgramStateBtn );
 	resetProgramStateBtn.callback( HandleCallback<mainWindow>, &setresetAtExitCB );
-
-	Fl_Window::add( modView );
-	Fl_Window::add( gantryBuild );
-	Fl_Window::add( tomographyExecution );
 
 	gantryBuild.deactivate();
 	tomographyExecution.deactivate();
@@ -81,8 +78,6 @@ void mainWindow::resetAtExit( void ){
 
 
 void mainWindow::importSinogram( void ){
-
-
 
 	storedImportChooser.SetAsLoaded();
 	path sgPath =  importChooserInstance.ChooseFile();
