@@ -126,6 +126,7 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	// Hide initially
 	moveGrp.hide();
 
+	
 	if( ModelLoaded() ){
 		UpdateModel();
 		viewImg.SetSliderBounds( modelInstance.attenuationRange() );
@@ -281,8 +282,6 @@ void modelView::loadModel( void ){
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
 
-	main_window_.gantryBuild.activate();
-	main_window_.tomographyExecution.activate();
 
 	
 	// Get necessary distance range
@@ -349,6 +348,9 @@ void modelView::loadModel( void ){
 
 
 	this->window()->activate();
+	
+	main_window_.gantryBuild.activate();
+	main_window_.tomographyExecution.activate();
 }
 
 

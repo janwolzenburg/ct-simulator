@@ -52,6 +52,15 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window::add( gantryBuild );
 	Fl_Window::add( tomographyExecution );
 
+	gantryBuild.deactivate();
+	tomographyExecution.deactivate();
+
+	if( modView.ModelLoaded() ){
+		gantryBuild.activate();
+		tomographyExecution.activate();
+		tomographyExecution.updateInformation( gantryBuild.projections_properties(), gantryBuild.gantry().detector().properties(), gantryBuild.gantry().tube() );
+	}
+
 	Fl_Window::show();
 
 
