@@ -24,6 +24,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	image_widget_{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .8 ), "Image" },
 	lower_bound_{ X( *this, 0.1 ), Y( *this, 0.82 ), W( *this, .8 ), H( *this, .08 ), "Low" },
 	upper_bound_{ X( *this, 0.1 ), Y( *this, 0.92 ), W( *this, .8 ), H( *this, .08 ), "High" },
+	
 	common_factor_text_{ X( *this, 0.9 ), Y( *this, 0.82 ), W( *this, .1 ), H( *this, .18 ), "" },
 	common_power_( 0 ),
 	bounds_set_( false ),

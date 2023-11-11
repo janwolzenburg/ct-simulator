@@ -38,14 +38,14 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
-	tubeGrp{		X( *this, .0 ),		Y( *this, .035 ) ,	W( *this, 1. ),		H( *this, .4 ) },
+	tubeGrp{		X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),		H( *this, .4 ) },
 	tubeTitle{		X( tubeGrp, 0. ),	Y( tubeGrp, 0. ),	W( tubeGrp, 1. ),	H( tubeGrp, .075 ),	"xRay Tube" },
 	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Voltage" },
 	tubeCurrentIn{	X( tubeGrp, .25 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Current" },
 	materialIn{		X( tubeGrp, .5 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .5 ),	H( tubeGrp, .1 ),	"Material" },
 	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .325 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
 
-	detectorGrp{	X( *this, .0 ),			Y( *this, .475 ),		W( *this, 1. ),		H( *this, .475 ) },
+	detectorGrp{	X( *this, .0 ),			Y( *this, .48 ),		W( *this, 1. ),		H( *this, .475 ) },
 	detectorTitle{	X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .1 ),	"Detector" },
 	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Angles" },
 	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Pixel" },

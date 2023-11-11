@@ -68,6 +68,9 @@ class modelView : public Fl_Group{
 
 	private:
 	
+	
+	Fl_Box title;		/*!<Title*/
+
 	mainWindow& main_window_;
 
 	FileChooser modelChooserInstance;			/*!<File chooser for the model*/

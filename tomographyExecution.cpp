@@ -25,9 +25,9 @@
 tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
-	title{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"},
+	title{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .035 ), "Tomography"},
 
-	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .1 ),				W( *this, 1. ),				H( *this, .6 ) },
+	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .04 ),				W( *this, 1. ),				H( *this, .6 ) },
 	parameterTitle{			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" },
 	
 	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .25 ),	H( tomoParameterGrp, .05 ), "Maximum loops" },

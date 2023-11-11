@@ -34,25 +34,33 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	
 	Fl_Group{ x, y, w, h },
-	headGrp{	X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, .05 ) },
-	loadBtn{	X( headGrp, .3 ),	Y( headGrp, .05 ),	W( headGrp, .4 ),	H( headGrp, .9 ),	"Load model" },
+	
+	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
 
-	viewGrp{	X( *this, 0. ),		vOff( headGrp ) ,	W( *this , 1. ),	H( *this, .7 ) },
-	modelData{	X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, 1. ),	H( viewGrp, .15 ) },
+	headGrp{	X( *this, 0. ),		Y( *this, 0.04 ),		W( *this, 1. ),		H( *this, .05 ) },
+	loadBtn{	X( headGrp, .1 ),	Y( headGrp, .05 ),	W( headGrp, .25 ),	H( headGrp, .9 ),	"Load model" },
+
+	viewGrp{	X( *this, 0. ),		vOff( headGrp ),	W( *this , 1. ),	H( *this, .75 ) },
+	modelData{	X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, .5 ),	H( viewGrp, .15 ) },
+	resetBtn{	X( viewGrp, .6 ),	Y( viewGrp, .06 ),	W( viewGrp, .25 ),	H( viewGrp, .03 ), "Reset model" },
+
 	viewBox{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
 	viewImg{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
 
-	moveGrp{	X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .25 ) },
-	xRot{		X( moveGrp, .1 ),	Y( moveGrp, .1 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "x-Rotation" },
-	yRot{		X( moveGrp, .1 ),	Y( moveGrp, .35 ),	W( moveGrp, .5 ),	H( moveGrp, .1), "y-Rotation" },
-	zTrans{		X( moveGrp, .1 ),	Y( moveGrp, .6 ),	W( moveGrp, .5 ),	H( moveGrp, .1 ), "z-Translation" },
-	resetBtn{	X( moveGrp, .7 ),	Y( moveGrp, .4 ),	W( moveGrp, .2 ),	H( moveGrp, .2 ), "Reset" },
+	moveGrp{	X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .165 ) },
+	xRot{		X( moveGrp, .1 ),	Y( moveGrp, .0 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "x-Rotation" },
+	yRot{		X( moveGrp, .1 ),	Y( moveGrp, .5 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "y-Rotation" },
+	zTrans{		X( moveGrp, .5 ),	Y( moveGrp, .0 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "z-Translation" },
 
 	load_model{ *this, &modelView::loadModel },
 	update_model_{ *this, &modelView::UpdateModel },
 	reset_model_{ *this, &modelView::resetModel }
 
 {
+
+	
+	Fl_Group::add( title );
+	title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
 
 
 	//--------------------------- Head ---------------------------//
@@ -63,6 +71,8 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	headGrp.add( loadBtn );
 	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
 	loadBtn.callback( HandleCallback<modelView>, &load_model );
+	
+
 
 
 
@@ -74,6 +84,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	viewGrp.add( viewBox );
 	viewGrp.add( viewImg );
 
+	viewGrp.add( resetBtn );
+	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
+	resetBtn.callback( HandleCallback<modelView>, &reset_model_ );
 
 	// Model data_
 	modelData.hide();
@@ -92,7 +105,6 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	moveGrp.add( xRot );
 	moveGrp.add( yRot );
 	moveGrp.add( zTrans );
-	moveGrp.add( resetBtn );
 
 	// Counter ranges
 	xRot.range( -180., 180. );		xRot.step( 1., 10. );
@@ -100,17 +112,15 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	zTrans.range( -500., 500. );	zTrans.step( 1., 10. );
 
 	// Labelsizes
-	xRot.labelsize( (int) ( .80 * (double) xRot.h() ) );
-	yRot.labelsize( (int) ( .80 * (double) yRot.h() ) );
-	zTrans.labelsize( (int) ( .80 * (double) zTrans.h() ) );
-	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
+	xRot.labelsize( (int) ( .50 * (double) xRot.h() ) );
+	yRot.labelsize( (int) ( .50 * (double) yRot.h() ) );
+	zTrans.labelsize( (int) ( .50 * (double) zTrans.h() ) );
+
 
 	// Callbacks for Counters and reset button
 	xRot.callback( HandleCallback<modelView>, &update_model_ );
 	yRot.callback( HandleCallback<modelView>, &update_model_ );
 	zTrans.callback( HandleCallback<modelView>, &update_model_ );
-	resetBtn.callback( HandleCallback<modelView>, &reset_model_ );
-
 
 
 	// Set values
