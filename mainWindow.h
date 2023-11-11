@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   processingWindow.h
+ * @file   mainWindow.h
  * @brief
  *
  * @author Jan Wolzenburg

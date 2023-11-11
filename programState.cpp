@@ -14,7 +14,7 @@
 #include "programState.h"
 #include "coordinateSystemTree.h"
 #include "mainWindow.h"
-#include "processingWindow.h"
+#include "fl_ProcessingWindow.h"
 #include "serialization.h"
 #include "gantryCreation.h"
 #include "tomographyExecution.h"

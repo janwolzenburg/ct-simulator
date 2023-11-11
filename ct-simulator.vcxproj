@@ -167,7 +167,7 @@
     <ClInclude Include="coordinateSystemTree.h" />
     <ClInclude Include="modelCreator.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
-    <ClInclude Include="reconstructedImage.h" />
+    <ClInclude Include="backprojection.h" />
     <ClInclude Include="xRayDetector.h" />
     <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
@@ -206,8 +206,8 @@
     <ClInclude Include="plotting.hpp" />
     <ClInclude Include="primitiveCoordinateSystem.h" />
     <ClInclude Include="primitiveVector3.h" />
-    <ClInclude Include="processingWindow.fwd.h" />
-    <ClInclude Include="processingWindow.h" />
+    <ClInclude Include="fl_ProcessingWindow.fwd.h" />
+    <ClInclude Include="fl_ProcessingWindow.h" />
     <ClInclude Include="programState.h" />
     <ClInclude Include="progress.h" />
     <ClInclude Include="propabilityDistribution.h" />
@@ -246,7 +246,7 @@
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
     <ClCompile Include="modelViewProperties.cpp" />
-    <ClCompile Include="reconstructedImage.cpp" />
+    <ClCompile Include="backprojection.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />
     <ClCompile Include="detectorPixel.cpp" />
@@ -279,8 +279,7 @@
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCoordinateSystem.cpp" />
     <ClCompile Include="primitiveVector3.cpp" />
-    <ClCompile Include="processingParameters.cpp" />
-    <ClCompile Include="processingWindow.cpp" />
+    <ClCompile Include="fl_ProcessingWindow.cpp" />
     <ClCompile Include="programState.cpp" />
     <ClCompile Include="progress.cpp" />
     <ClCompile Include="propabilityDistribution.cpp" />

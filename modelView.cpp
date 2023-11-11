@@ -58,11 +58,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	//--------------------------- Head ---------------------------//
 
 	Fl_Group::add( headGrp );
-	Fl_Group::box( FL_BORDER_BOX );
 
 	// Labelsize and callback
 	headGrp.add( loadBtn );
-	headGrp.box( FL_BORDER_BOX );
 	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
 	loadBtn.callback( HandleCallback<modelView>, &load_model );
 
@@ -72,7 +70,6 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	// View group dictates resizing
 	Fl_Group::add_resizable( viewGrp );
-	viewGrp.box( FL_BORDER_BOX );
 	viewGrp.add( modelData );
 	viewGrp.add( viewBox );
 	viewGrp.add( viewImg );
@@ -83,7 +80,6 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	// Labelsize and box
 	viewBox.labelsize( (int) ( .05 * (double) viewBox.h() ) );
-	viewBox.box( FL_BORDER_BOX );
 
 	// Hide image initially
 	viewGrp.resizable( viewBox );
@@ -93,7 +89,6 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	//--------------------------- Movement ---------------------------//
 
 	Fl_Group::add( moveGrp );
-	moveGrp.box( FL_BORDER_BOX );
 	moveGrp.add( xRot );
 	moveGrp.add( yRot );
 	moveGrp.add( zTrans );
@@ -119,9 +114,9 @@ modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 
 	// Set values
-	xRot.value(modelViewPara.slice_plane.rotationAngleX );
-	yRot.value( modelViewPara.slice_plane.rotationAngleY );
-	zTrans.value( modelViewPara.slice_plane.positionZ );
+	xRot.value(modelViewPara.slice_plane.rotation_angle_x );
+	yRot.value( modelViewPara.slice_plane.rotation_angle_y );
+	zTrans.value( modelViewPara.slice_plane.position_z );
 
 	// Hide initially
 	moveGrp.hide();
@@ -156,35 +151,35 @@ string modelView::modelDescription( void ) const{
 
 bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
-	const slicePlane backupPlane = modelViewPara.slice_plane; 
-	slicePlane& planeInstance =  modelViewPara.slice_plane;
+	const SlicePlane backupPlane = modelViewPara.slice_plane; 
+	SlicePlane& planeInstance =  modelViewPara.slice_plane;
 
 	const PrimitiveCoordinateSystem backupCSys = modelInstance.coordinate_system()->GetPrimitive();
 
-	if( targetXRot != planeInstance.rotationAngleX ){
+	if( targetXRot != planeInstance.rotation_angle_x ){
 
-		const double rotationAngle = targetXRot - planeInstance.rotationAngleX;
-		planeInstance.rotationAngleX = targetXRot;
+		const double rotationAngle = targetXRot - planeInstance.rotation_angle_x;
+		planeInstance.rotation_angle_x = targetXRot;
 
 		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
 
 		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
-	if( targetYRot != planeInstance.rotationAngleY ){
+	if( targetYRot != planeInstance.rotation_angle_y ){
 
-		const double rotationAngle = targetYRot - planeInstance.rotationAngleY;
-		planeInstance.rotationAngleY = targetYRot;
+		const double rotationAngle = targetYRot - planeInstance.rotation_angle_y;
+		planeInstance.rotation_angle_y = targetYRot;
 
 		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
 
 		modelInstance.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
 	}
 
-	if( targetZTrans != planeInstance.positionZ ){
+	if( targetZTrans != planeInstance.position_z ){
 
-		const double translation = targetZTrans - planeInstance.positionZ;
-		planeInstance.positionZ = targetZTrans;
+		const double translation = targetZTrans - planeInstance.position_z;
+		planeInstance.position_z = targetZTrans;
 
 		modelInstance.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
@@ -196,9 +191,9 @@ bool modelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 	planeInstance = backupPlane;
 	modelInstance.coordinate_system()->SetPrimitive( backupCSys );
 
-	targetXRot = planeInstance.rotationAngleX;
-	targetYRot = planeInstance.rotationAngleY;
-	targetZTrans = planeInstance.positionZ;
+	targetXRot = planeInstance.rotation_angle_x;
+	targetYRot = planeInstance.rotation_angle_y;
+	targetZTrans = planeInstance.position_z;
 
 
 	return false;
@@ -238,9 +233,9 @@ void modelView::centerModel( void ){
 void modelView::resetModel( void ){
 
 	this->window()->deactivate();
-		modelViewPara.slice_plane.rotationAngleX = 0.;
-	 modelViewPara.slice_plane.rotationAngleY = 0.;
-	 modelViewPara.slice_plane.positionZ = 0.;
+		modelViewPara.slice_plane.rotation_angle_x = 0.;
+	 modelViewPara.slice_plane.rotation_angle_y = 0.;
+	 modelViewPara.slice_plane.position_z = 0.;
 
 	centerModel();
 

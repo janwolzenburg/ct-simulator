@@ -1,6 +1,7 @@
 
 TODO: Al-filter activation, Remove exposure time and information
 TODO: make artefact thregth adsustable
+TODO: conversion to HU
 
 TODO: verify scattering angles and propability
 
@@ -89,6 +90,7 @@ Program
 		plot
 		lineplot
 		geoplot
+		slicePlane
 
 	Widgets
 		fl_GrayscaleImage
@@ -100,3 +102,4 @@ Program
 	windows
 		modelViewProperties
 		fileChooser
+

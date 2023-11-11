@@ -62,7 +62,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 	
 	{
 
-		Fl_Group::box( FL_BORDER_BOX );
 
 		Fl_Group::add( title );
 		title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
@@ -73,7 +72,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 		tubeGrp.add( tubeTitle );
 		tubeGrp.add( tubeVoltageIn ); tubeGrp.add( tubeCurrentIn ); tubeGrp.add( materialIn );
-		tubeGrp.box( FL_BORDER_BOX );
 
 		tubeTitle.box( FL_NO_BOX ); tubeTitle.align( FL_ALIGN_CENTER ); tubeTitle.labelsize( 20 );
 
@@ -115,7 +113,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 
 		detectorGrp.add( colPnts ); detectorGrp.add( rowPnts ); detectorGrp.add( distRange );
-		detectorGrp.box( FL_BORDER_BOX );
 		colPnts.align( FL_ALIGN_TOP ); rowPnts.align( FL_ALIGN_TOP ); distRange.align( FL_ALIGN_TOP );
 
 		colPnts.SetProperties( 3, 10000, 0 );
@@ -138,7 +135,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 		detectorGrp.add( raysPerPixelIn ); detectorGrp.add( detector_focus_distance_input ); detectorGrp.add( maxRayAngleIn ); detectorGrp.add( structureIn );
 		
-		detectorGrp.box( FL_BORDER_BOX );
 		raysPerPixelIn.align( FL_ALIGN_TOP ); detector_focus_distance_input.align( FL_ALIGN_TOP ); maxRayAngleIn.align( FL_ALIGN_TOP );
 
 		raysPerPixelIn.SetProperties( 1, 1000, 0 );

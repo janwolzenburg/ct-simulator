@@ -15,7 +15,7 @@
 
 #include "tomographyExecution.h"
 
-#include "processingWindow.h"
+#include "fl_ProcessingWindow.h"
 #include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
@@ -58,12 +58,10 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 
 {
 
-	Fl_Group::box( FL_BORDER_BOX );
 	Fl_Group::add( title );
 	title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
 
 	Fl_Group::add( tomoParameterGrp );
-	tomoParameterGrp.box( FL_BORDER_BOX );
 
 	tomoParameterGrp.add( parameterTitle );
 
@@ -102,7 +100,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 
 
 	Fl_Group::add( controlGrp );
-	controlGrp.box( FL_BORDER_BOX );
 
 	controlGrp.add( radiationButton );
 	controlGrp.add( exportButton );
@@ -126,7 +123,7 @@ void tomographyExec::AssignProjections( const Projections projections ){
 	currentProjection = projections;
 	exportButton.activate();
 
-	std::unique_ptr<processingWindow> ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
+	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
 	processing_windows_.push_back( std::move( ptr ) );
 	processing_windows_.back()->show();
 }
@@ -154,7 +151,7 @@ void tomographyExec::radiate( void ){
 			delete radiationProgressWindow;
 		}
 
-		std::unique_ptr<processingWindow> window_ptr = std::make_unique<processingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
+		std::unique_ptr<Fl_ProcessingWindow> window_ptr = std::make_unique<Fl_ProcessingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
 		processing_windows_.push_back( std::move( window_ptr ) );
 		processing_windows_.back()->show();
 

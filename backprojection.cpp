@@ -15,7 +15,7 @@
 using std::ref;
 using std::cref;
 #include <FL/Fl.H>
-#include "reconstructedImage.h"
+#include "backprojection.h"
 
 
 
@@ -23,7 +23,7 @@ using std::cref;
    Implementations
 *********************************************************************/
 
-void ReconstrucedImage::ReconstructImageColumn(	size_t& currentX, mutex& currentXMutex, ReconstrucedImage& image, 
+void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMutex, Backprojection& image, 
 											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
 											const FilteredProjections projections ){
 
@@ -82,7 +82,7 @@ void ReconstrucedImage::ReconstructImageColumn(	size_t& currentX, mutex& current
 }
 
 
-ReconstrucedImage::ReconstrucedImage( const FilteredProjections projections, Fl_Progress_Window* progress ) :
+Backprojection::Backprojection( const FilteredProjections projections, Fl_Progress_Window* progress ) :
 	DataGrid( GridIndex{ projections.size().r, projections.size().r },
 		  GridCoordinates{ projections.start().r, projections.start().r }, 
 		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. )

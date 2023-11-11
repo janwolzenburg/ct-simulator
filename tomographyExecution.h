@@ -89,7 +89,7 @@ class tomographyExec : public Fl_Group{
 
 
 	Projections currentProjection;
-	vector<std::unique_ptr<processingWindow>> processing_windows_;
+	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;
  
 	
 	CallbackMethod<tomographyExec> radiateCB;

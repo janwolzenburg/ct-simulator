@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   reconstructedImage.h
+ * @file   backprojection.h
  * @brief  Class for the reconstructed image
  *
  * @author Jan Wolzenburg
@@ -25,21 +25,21 @@
 /*!
  * @brief Class to store reconstructed image
 */
-class ReconstrucedImage : private DataGrid<> {
+class Backprojection : private DataGrid<> {
 
 	public:
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ReconstrucedImage( void ) : DataGrid{} {};
+	Backprojection( void ) : DataGrid{} {};
 
 	/*!
 	 * @brief Constructor
 	 * @param filtered_projections Filtered projections 
 	 * @param progress_window FL window to track progress
 	*/
-	ReconstrucedImage( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
+	Backprojection( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
 
 	/*!
 	 * @brief Get gridded data
@@ -61,7 +61,7 @@ class ReconstrucedImage : private DataGrid<> {
 	 * @param filtered_projections Projections
 	*/
 	static void ReconstructImageColumn(	size_t& current_x_index,				mutex& current_x_index_mutex, 
-										ReconstrucedImage& reconstructed_image,	mutex& reconstructed_image_mutex, 
+										Backprojection& reconstructed_image,	mutex& reconstructed_image_mutex, 
 										Fl_Progress_Window* progress_window,	mutex& progress_window_mutex, 
 										const FilteredProjections filtered_projections );
 

@@ -18,7 +18,6 @@
  #include <vector>
  using std::vector;
 
- //#include "programState.fwd.h"
  #include "generel.h"
  #include "dataGrid.h"
  #include "voxel.h"
@@ -27,14 +26,14 @@
  #include "processingParameters.h"
  #include "filteredProjections.h"
  #include "mainWindow.fwd.h"
- #include "processingWindow.fwd.h"
+ #include "fl_ProcessingWindow.fwd.h"
  #include "model.h"
  #include "persistingObject.h"
  #include "fileChooser.h"
  #include "xRayTube.h"
  #include "detectorProperties.h"
  #include "gantry.h"
- #include "reconstructedImage.h"
+ #include "backprojection.h"
 
 
  /*********************************************************************

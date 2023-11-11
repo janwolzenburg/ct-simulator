@@ -17,7 +17,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "progress.h"
 
 #include "mainWindow.h"
-#include "processingWindow.h"
+#include "fl_ProcessingWindow.h"
 
 /*!
  * @brief Main function

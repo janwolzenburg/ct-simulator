@@ -41,5 +41,5 @@ class ModelViewProperties{
 
 
 	NumberRange contrast;			/*!<Contrast of slice image*/
-	slicePlane slice_plane;			/*!<Surface to slice model with*/
+	SlicePlane slice_plane;			/*!<Surface to slice model with*/
 };

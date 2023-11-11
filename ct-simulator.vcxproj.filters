@@ -234,10 +234,10 @@
     <ClInclude Include="mainWindow.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="processingWindow.fwd.h">
+    <ClInclude Include="fl_ProcessingWindow.fwd.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="processingWindow.h">
+    <ClInclude Include="fl_ProcessingWindow.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="modelView.h">
@@ -259,9 +259,6 @@
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="geometryPlot.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="processingParameters.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="progress.h">
@@ -327,9 +324,6 @@
     <ClInclude Include="dataGrid.h">
       <Filter>Headerdateien\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="dataGrid.hpp">
-      <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="backprojectionFilter.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
@@ -339,7 +333,7 @@
     <ClInclude Include="projectionsProperties.h">
       <Filter>Headerdateien\Processing\Projection</Filter>
     </ClInclude>
-    <ClInclude Include="reconstructedImage.h">
+    <ClInclude Include="backprojection.h">
       <Filter>Headerdateien\Processing\Backprojection</Filter>
     </ClInclude>
     <ClInclude Include="projections.h">
@@ -368,6 +362,9 @@
     </ClInclude>
     <ClInclude Include="modelCreator.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="dataGrid.hpp">
+      <Filter>Quelldateien\Processing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -455,13 +452,10 @@
     <ClCompile Include="plot.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="processingParameters.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
-    </ClCompile>
     <ClCompile Include="tomographyExecution.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="processingWindow.cpp">
+    <ClCompile Include="fl_ProcessingWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="mainWindow.cpp">
@@ -518,7 +512,7 @@
     <ClCompile Include="filteredProjections.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
-    <ClCompile Include="reconstructedImage.cpp">
+    <ClCompile Include="backprojection.cpp">
       <Filter>Quelldateien\Processing\Backprojection</Filter>
     </ClCompile>
     <ClCompile Include="projectionsProperties.cpp">
