@@ -14,7 +14,6 @@
 
 #include "modelView.h"
 #include "serialization.h"
-#include "widgets.h"
 #include "programState.h"
 #include "mainWindow.h"
 
@@ -42,7 +41,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	viewGrp{	X( *this, 0. ),		vOff( headGrp ),	W( *this , 1. ),	H( *this, .75 ) },
 	modelData{	X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, .5 ),	H( viewGrp, .15 ) },
-	resetBtn{	X( viewGrp, .6 ),	Y( viewGrp, .06 ),	W( viewGrp, .25 ),	H( viewGrp, .03 ), "Reset model" },
+	resetBtn{	X( viewGrp, .6 ),	Y( viewGrp, .06 ),	W( viewGrp, .25 ),	H( viewGrp, .05 ), "Reset model" },
 
 	viewBox{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
 	viewImg{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },

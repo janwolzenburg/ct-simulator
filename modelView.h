@@ -21,11 +21,13 @@
 #include <FL/Fl_Multiline_Output.H>
 #include <FL/Fl_Window.H>
 #include "fl_AdjustableGrayscaleImage.h"
+#include "fileChooser.h"
 
 #include "modelViewProperties.h"
+#include "persistingObject.h"
 #include "widgets.h"
 #include "mainWindow.fwd.h"
-
+#include "model.h"
 
 /*********************************************************************
    Definitions
