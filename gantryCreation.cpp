@@ -25,7 +25,7 @@
 
 
 
-gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main_window ) :
+gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
 	xRayTubeParameter{},
@@ -61,7 +61,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow* const main
 	updateCB{ *this, &gantryEdition::UpdateGantry }
 	
 	{
-		main_window_->add( this );
 
 		Fl_Group::box( FL_BORDER_BOX );
 
@@ -213,7 +212,7 @@ void gantryEdition::UpdateGantry( void ){
 		spectrumPlot.plot().AssignData( spectrum_points );
 		spectrumPlot.AssignData();
 
-		main_window_->tomographyExecution.updateInformation( radonParameter, detectorRef.properties(), gantryInstance.tube() );
+		main_window_.tomographyExecution.updateInformation( radonParameter, detectorRef.properties(), gantryInstance.tube() );
 
 		detectorPlot.plot().ResetObjects();
 

@@ -19,7 +19,7 @@
 #include "mainWindow.h"
 
 
-modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window ) :
+modelView::modelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	
 	main_window_( main_window ),
 
@@ -54,7 +54,6 @@ modelView::modelView( int x, int y, int w, int h, mainWindow* const main_window 
 
 {
 
-	main_window_->add( this );
 
 	//--------------------------- Head ---------------------------//
 
@@ -281,6 +280,11 @@ void modelView::loadModel( void ){
 
 	viewImg.show(); viewBox.hide(); modelData.show();
 	moveGrp.show();
+
+	main_window_.gantryBuild.activate();
+	main_window_.tomographyExecution.activate();
+
+
 	this->window()->activate();
 }
 

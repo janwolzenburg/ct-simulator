@@ -42,7 +42,7 @@ class gantryEdition : public Fl_Group{
 	 * @param w Width
 	 * @param h Height
 	*/
-	gantryEdition( int x, int y, int w, int h, mainWindow* const main_window );
+	gantryEdition( int x, int y, int w, int h, mainWindow& main_window );
 
 	~gantryEdition( void );
 
@@ -60,7 +60,7 @@ class gantryEdition : public Fl_Group{
 
 	private:
 
-	class mainWindow* const main_window_;
+	class mainWindow& main_window_;
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
 	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/

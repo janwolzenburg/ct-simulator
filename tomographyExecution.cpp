@@ -22,7 +22,7 @@
 #include "gantryCreation.h"
 #include "mainWindow.h"
 
-tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const main_window ) :
+tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
 	title{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .05 ), "Tomography"},
@@ -57,7 +57,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow* const ma
 	exportCB{ *this, &tomographyExec::exportSinogram }
 
 {
-	main_window_->add( title );
 
 	Fl_Group::box( FL_BORDER_BOX );
 	Fl_Group::add( title );
@@ -150,7 +149,7 @@ void tomographyExec::radiate( void ){
 		tomographyInstance = Tomography{ tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			currentProjection = tomographyInstance.RecordSlice( main_window_->gantryBuild.projections_properties(), main_window_->gantryBuild.gantry(), main_window_->modView.model(), 0, radiationProgressWindow);
+			currentProjection = tomographyInstance.RecordSlice( main_window_.gantryBuild.projections_properties(), main_window_.gantryBuild.gantry(), main_window_.modView.model(), 0, radiationProgressWindow);
 			exportButton.activate();
 			delete radiationProgressWindow;
 		}

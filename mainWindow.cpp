@@ -31,9 +31,9 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 
 	resetProgramStateBtn{	X( menu, .9 ),							Y( menu, 0. ),		W( menu, .1 ),		H( menu, 1. ), "Reset program" },
 	resetButtonPressed( false ),
-	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ), this },
-	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), this },
-	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ), this },
+	modView{				X( *this, 0. ),							Y( *this, 0.04 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
+	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
+	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
 	
 	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
 	storedImportChooser{ PROGRAM_STATE().getPath( "storedImportChooser.txt" ), importChooserInstance }
@@ -83,13 +83,6 @@ void mainWindow::handleEvents( void ){
 			tomographyExecution.AssignProjections( importedSinogram );
 		}
 	}
-
-	
-	if( modView.ModelLoaded() && !tomographyExecution.active() )
-		tomographyExecution.activate();
-	else if( !modView.ModelLoaded() )
-		tomographyExecution.deactivate();
-
 
 
 }
