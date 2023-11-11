@@ -176,6 +176,13 @@ gantryEdition::~gantryEdition( void ){
 	storedDetectorParameter.Save();
 }
 
+void gantryEdition::SetDistances( const double max_corner_distance ){
+	detector_focus_distance_input.value( 2. * ( max_corner_distance + 150. ) );
+	distRange.value( 2. * ( max_corner_distance + 25. ) );
+
+	UpdateGantry();
+}
+
 void gantryEdition::UpdateGantry( void ){
 
 

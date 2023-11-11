@@ -248,7 +248,7 @@ void modelView::resetModel( void ){
 	zTrans.value( 0. );
 
 	sliceModel();
-	viewImg.AssignImage( modelSliceInstance );//, true );
+	viewImg.AssignImage( modelSliceInstance );
 	modelViewPara.contrast = viewImg.GetContrast();
 
 	this->window()->activate();
@@ -283,6 +283,69 @@ void modelView::loadModel( void ){
 
 	main_window_.gantryBuild.activate();
 	main_window_.tomographyExecution.activate();
+
+	
+	// Get necessary distance range
+	
+	// Top side
+	GridIndex top_corner{ 0, 0 };
+	for( size_t row_index = 0; row_index < modelSliceInstance.size().r; row_index++ ){
+		for( size_t column_index = 0; column_index < modelSliceInstance.size().c; column_index++ ){
+			const GridIndex grid_index{ column_index, row_index };
+			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+				top_corner = grid_index;																// Set index
+				column_index = modelSliceInstance.size().c; row_index = modelSliceInstance.size().r;	// Break condition
+			}
+		}
+	}
+	
+	// Right side
+	GridIndex right_corner{ modelSliceInstance.size().c - 1, 0 };
+	for( size_t column_index = modelSliceInstance.size().c; column_index > 0; column_index-- ){
+		for( size_t row_index = 0; row_index < modelSliceInstance.size().r; row_index++ ){
+			const GridIndex grid_index{ column_index - 1, row_index };
+			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+				right_corner = grid_index;																// Set index
+				column_index = 1; row_index = modelSliceInstance.size().r;								// Break condition
+			}
+		}
+	}
+	
+	// Bottom side
+	GridIndex bottom_corner{ modelSliceInstance.size().c - 1, modelSliceInstance.size().r - 1 };
+	for( size_t row_index = modelSliceInstance.size().r; row_index > 0; row_index-- ){
+		for( size_t column_index = modelSliceInstance.size().c; column_index > 0; column_index-- ){
+			const GridIndex grid_index{ column_index - 1, row_index - 1 };
+			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+				bottom_corner = grid_index;																// Set index
+				column_index = 1; row_index = 1;														// Break condition
+			}
+		}
+	}
+
+	// Left side
+	GridIndex left_corner{ 0, modelSliceInstance.size().r - 1 };
+	for( size_t column_index = 0; column_index < modelSliceInstance.size().c; column_index++ ){
+		for( size_t row_index = modelSliceInstance.size().r; row_index > 0; row_index-- ){
+			const GridIndex grid_index{ column_index, row_index - 1 };
+			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+				left_corner = grid_index;																// Set index
+				column_index = modelSliceInstance.size().c; row_index = 1;								// Break condition
+			}
+		}
+	}
+
+	const GridCoordinates top_left =		modelSliceInstance.GetCoordinates( top_corner    );
+	const GridCoordinates top_right =		modelSliceInstance.GetCoordinates( right_corner  );
+	const GridCoordinates bottom_left =		modelSliceInstance.GetCoordinates( left_corner   );
+	const GridCoordinates bottom_right =	modelSliceInstance.GetCoordinates( bottom_corner );
+
+	const double maximum_distance_from_origin = Max( Max(	sqrt( pow( top_left.c,		2. )	+ pow( top_left.r,		2. ) ),
+															sqrt( pow( top_right.c,		2. )	+ pow( top_right.r,		2. ) ) ), 
+													Max(	sqrt( pow( bottom_left.c,	2. )	+ pow( bottom_left.r,	2. ) ),
+															sqrt( pow( bottom_right.c,	2. )	+ pow( bottom_right.r,	2. ) ) ) );
+
+	main_window_.gantryBuild.SetDistances( maximum_distance_from_origin );
 
 
 	this->window()->activate();

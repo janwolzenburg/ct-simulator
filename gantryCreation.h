@@ -50,6 +50,8 @@ class gantryEdition : public Fl_Group{
 
 	ProjectionsProperties projections_properties ( void ){ return radonParameter; };
 
+	void SetDistances( const double max_corner_distance );
+
 	/*!
 	 * @brief Check if gantry needs update 
 	 * @return True when gantry needs update
