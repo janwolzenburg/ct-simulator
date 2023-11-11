@@ -26,7 +26,7 @@
 #include "linePlot.h"
 #include "geometryplot.h"
 #include "widgets.h"
-
+#include "mainWindow.fwd.h"
 
 /*!
  * @brief Class for a GUI element for gantry creation
@@ -62,7 +62,7 @@ class gantryEdition : public Fl_Group{
 
 	private:
 
-	class mainWindow& main_window_;
+	mainWindow& main_window_;
 
 	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
 	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/

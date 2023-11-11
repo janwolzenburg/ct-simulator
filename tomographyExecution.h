@@ -24,7 +24,7 @@
 #include "fl_BoundInput.h"
 #include "programState.h"
 #include "widgets.h"
-
+#include "mainWindow.fwd.h"
 
 /*!
  * @brief Class for tomography execution
@@ -61,7 +61,7 @@ class tomographyExec : public Fl_Group{
 
 	private:
 
-	class mainWindow& main_window_;
+	mainWindow& main_window_;
 
 	Fl_Box title;				/*!<Title*/
 

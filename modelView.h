@@ -24,6 +24,7 @@
 #include "modelViewProperties.h"
 #include "fl_AdjustableGrayscaleImage.h"
 #include "widgets.h"
+#include "mainWindow.fwd.h"
 
 /*********************************************************************
    Definitions
@@ -67,7 +68,7 @@ class modelView : public Fl_Group{
 
 	private:
 	
-	class mainWindow& main_window_;
+	mainWindow& main_window_;
 
 	FileChooser modelChooserInstance;			/*!<File chooser for the model*/
 	Model modelInstance;						/*!<Current model*/
