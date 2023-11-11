@@ -192,6 +192,8 @@ void gantryEdition::UpdateGantry( void ){
 		detector_focus_distance_input.SetProperties( distRange.value(), 10000., 0 );
 
 		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.current_element() ), (size_t) raysPerPixelIn.value() };
+		if( radonParameter.number_of_angles() < colPnts.value() ) rowPnts.value( colPnts.value()  ); // Set number of distances too high. ProjectionsProperties will adjust correctly
+		
 		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 		
