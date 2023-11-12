@@ -29,16 +29,16 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	tomoParameterGrp{		X( *this, .0 ),				Y( *this, .04 ),				W( *this, 1. ),				H( *this, .6 ) },
 	parameterTitle{			X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, 0. ),	W( tomoParameterGrp, 1. ),	H( tomoParameterGrp, .05 ), "Parameter" },
 	
-	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .25 ),	H( tomoParameterGrp, .05 ), "Maximum loops" },
-	scatterPropabilityIn{	X( tomoParameterGrp, .45 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .2 ),	H( tomoParameterGrp, .05 ), "Scattering prob." },
-	scatteringOnOff{		X( tomoParameterGrp, .75 ),	Y( tomoParameterGrp, .175 ),	W( tomoParameterGrp, .15 ),	H( tomoParameterGrp, .05 ), "Scattering" },
+	radiationLoopsIn{		X( tomoParameterGrp, 0. ),	Y( tomoParameterGrp, .1 ),	W( tomoParameterGrp, .45 ),	H( tomoParameterGrp, .045 ), "Maximum loops" },
+	scatterPropabilityIn{	X( tomoParameterGrp, .33 ),	Y( tomoParameterGrp, .6 ),	W( tomoParameterGrp, .45 ),	H( tomoParameterGrp, .045 ), "Propability factor" },
+	scatteringOnOff{		X( tomoParameterGrp, .66 ),	Y( tomoParameterGrp, .2 ),	W( tomoParameterGrp, .3 ),	H( tomoParameterGrp, .05 ), "Scattering" },
 	
-	information{			X( tomoParameterGrp, 0.2 ),	Y( tomoParameterGrp, .35 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .6 ), "Information" },
+	information{			X( tomoParameterGrp, 0.1 ),	Y( tomoParameterGrp, .4 ),	W( tomoParameterGrp, .8 ),	H( tomoParameterGrp, .4 ), "Information" },
 
 
 	controlGrp{				X( *this, .0 ), vOff( tomoParameterGrp ), W( *this, 1. ), H( *this, .1 ) },
-	radiationButton{		X( controlGrp, .25 ), Y( controlGrp, .1 ), W( controlGrp, .5 ), H( controlGrp, .4 ), "Record Slice" },
-	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
+	radiationButton{		X( controlGrp, .05 ), Y( controlGrp, .1 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Record Slice" },
+	exportButton{			X( controlGrp, .55 ), Y( controlGrp, .1 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
 	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "export.chooser" },
@@ -76,15 +76,14 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 
 	radiationLoopsIn.bounds(0, 100);
 	radiationLoopsIn.step( 1. );
-	scatterPropabilityIn.SetProperties( 0., 1., 6 );
+	scatterPropabilityIn.bounds( 1, 1000 );
+	scatterPropabilityIn.step( 1. );
+	scatterPropabilityIn.lstep( 100. );
 
 
 	radiationLoopsIn.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scatterPropabilityIn.tooltip( "Correction factor for scattering propability. More scattering with higher value." );
 	scatteringOnOff.tooltip( "Enable or disable scattering." );
-
-	
-	programState& state = PROGRAM_STATE();
 
 	radiationLoopsIn.value( (double) tomographyParamerters.max_scattering_occurrences );
 	scatterPropabilityIn.value( tomographyParamerters.scatter_propability_correction );
@@ -96,6 +95,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	scatterPropabilityIn.callback( CallbackFunction<tomographyExec>::Fl_Callback, &updateCB );
 	scatteringOnOff.callback( CallbackFunction<tomographyExec>::Fl_Callback, &updateCB );
 
+	information.align( FL_ALIGN_TOP );
 
 	Fl_Group::add( controlGrp );
 

@@ -35,14 +35,14 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
-	tubeGrp{		X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),		H( *this, .4 ) },
+	tubeGrp{		X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),		H( *this, .35 ) },
 	tubeTitle{		X( tubeGrp, 0. ),	Y( tubeGrp, 0. ),	W( tubeGrp, 1. ),	H( tubeGrp, .075 ),	"xRay Tube" },
-	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Voltage" },
-	tubeCurrentIn{	X( tubeGrp, .25 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .1 ),	"Current" },
-	materialIn{		X( tubeGrp, .5 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .5 ),	H( tubeGrp, .1 ),	"Material" },
-	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .325 ),	W( tubeGrp, 1. ),	H( tubeGrp, .725 ),	"Spectrum Plot" },
+	tubeVoltageIn{	X( tubeGrp, .0 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .075 ),	"Voltage" },
+	tubeCurrentIn{	X( tubeGrp, .25 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .15 ),	H( tubeGrp, .075 ),	"Current" },
+	materialIn{		X( tubeGrp, .5 ),	Y( tubeGrp, .15 ),	W( tubeGrp, .5 ),	H( tubeGrp, .075 ),	"Material" },
+	spectrumPlot{	X( tubeGrp, .0 ),	Y( tubeGrp, .3 ),	W( tubeGrp, 1. ),	H( tubeGrp, .75 ),	"Spectrum Plot" },
 
-	detectorGrp{	X( *this, .0 ),			Y( *this, .48 ),		W( *this, 1. ),		H( *this, .475 ) },
+	detectorGrp{	X( *this, .0 ),			Y( *this, .48 ),		W( *this, 1. ),		H( *this, .52 ) },
 	detectorTitle{	X( detectorGrp, .0 ),	Y( detectorGrp, 0. ),	W( detectorGrp, 1. ),	H( detectorGrp, .1 ),	"Detector" },
 	colPnts{		X( detectorGrp, .0 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Angles" },
 	rowPnts{		X( detectorGrp, .3 ),	Y( detectorGrp, .125 ),	W( detectorGrp, .2 ),	H( detectorGrp, .05 ),	"Pixel" },
@@ -72,7 +72,7 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 
 		tubeVoltageIn.align( FL_ALIGN_TOP ); tubeCurrentIn.align( FL_ALIGN_TOP ); materialIn.align( FL_ALIGN_TOP );
 
-		tubeVoltageIn.SetProperties( 1., 200000., 0 );
+		tubeVoltageIn.SetProperties( 20000., 200000., 0 );
 		tubeCurrentIn.SetProperties( .001, 10., 3 );
 
 		tubeVoltageIn.value( xRayTubeParameter.anode_voltage_V );
@@ -175,10 +175,9 @@ void gantryEdition::UpdateGantry( void ){
 
 		
 		detector_focus_distance_input.SetProperties( distRange.value(), 10000., 0 );
-
 		xRayTubeParameter = XRayTubeProperties{ tubeVoltageIn.value(), tubeCurrentIn.value(), XRayTubeProperties::GetMaterialEnum( materialIn.current_element() ), (size_t) raysPerPixelIn.value() };
-		if( radonParameter.number_of_angles() < colPnts.value() ) rowPnts.value( colPnts.value()  ); // Set number of distances too high. ProjectionsProperties will adjust correctly
-		
+	
+
 		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 		

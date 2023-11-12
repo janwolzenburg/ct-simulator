@@ -37,8 +37,8 @@ template< class C, typename T>
  void Fl_BoundInput<C, T>::HanldeValueChange( [[maybe_unused]] Fl_Widget* widget, void* p ){
 	Fl_BoundInput* parentPtr = static_cast<Fl_BoundInput*>( p );
 
-	parentPtr->CheckAndForceConstraints();
 	parentPtr->Fl_Group::do_callback();
+	parentPtr->CheckAndForceConstraints();
 }
 
 template< class C, typename T>

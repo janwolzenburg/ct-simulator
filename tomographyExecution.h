@@ -69,7 +69,7 @@ class tomographyExec : public Fl_Group{
 	Fl_Box parameterTitle;		/*!< Title of parameter group*/
 	
 	Fl_Simple_Counter radiationLoopsIn;		/*!< Maximum amount a Ray can be scattered*/
-	Fl_BoundInput<Fl_Float_Input, double> scatterPropabilityIn;	/*!< Scatter propability*/
+	Fl_Counter scatterPropabilityIn;	/*!< Scatter propability*/
 	Fl_Toggle_Button scatteringOnOff;	/*!< Toggle scattering*/
 
 	Fl_Multiline_Output information;	/*!< Information about tomography*/

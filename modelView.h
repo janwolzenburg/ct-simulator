@@ -85,69 +85,60 @@ class ModelView : public Fl_Group{
 	Fl_Counter z_position_;			/*!< Input for z-transloation*/
 
 
-	mainWindow& main_window_;					/*!< Reference to main window*/
-	//ModelViewProperties properties_;			/*!< Parameter of the model view*/
-
-	//FileChooser model_file_chooser_;			/*!< File chooser for the model*/
-	PersistingObject<FileChooser> storedModelChooser;			/*!< Persisting storage of model chooser*/
-
-	string model_information_string_;			/*!< String with model properties_*/
-	//Model model_;								/*!< Current model*/
-	DataGrid<VoxelData> modelSliceInstance;		/*!< Slice through model as gridded data*/
-	
+	mainWindow& main_window_;							/*!< Reference to main window*/
+	PersistingObject<FileChooser> model_chooser_;		/*!< Persisting storage of model chooser*/
 	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
+
+	string model_information_string_;					/*!< String with model properties_*/
+	DataGrid<VoxelData> model_slice_;					/*!< Slice through model as gridded data*/
+	
 	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
 
-
-
-
-	
-	CallbackFunction<ModelView> load_model;
-	CallbackFunction<ModelView> update_model_;
-	CallbackFunction<ModelView> reset_model_;
+	CallbackFunction<ModelView> load_model;		/*!< Callback for model loading*/
+	CallbackFunction<ModelView> update_model_;	/*!< Callback for model update*/
+	CallbackFunction<ModelView> reset_model_;	/*!< Callback for model reset*/
 	
 
 	/*!
 	 * @brief Get the model description
 	 * @return String with model information
 	*/
-	string modelDescription( void ) const;
+	string GetModelDescription( void ) const;
 
-	
 	/*!
 	 * @brief Load the model a stored path
 	 * @return True at success
 	*/
-	void loadModel( void );
+	void LoadModel( void );
 
 	/*!
 	 * @brief Move model to given values with respect to the slice plane coordinate system
-	 * @param targetXRot Rotation around x-axis
-	 * @param targetYRot Rotation around y-axis
-	 * @param targetZTrans Translation in z-direction
+	 * @param target_x_angle Rotation around x-axis
+	 * @param target_y_angle Rotation around y-axis
+	 * @param target_z_position Translation in z-direction
 	 * @return True at success
 	*/
-	bool moveModel( double& targetXRot, double& targetYRot, double& targetZTrans );
+	bool MoveModel( double& target_x_angle, double& target_y_angle, double& target_z_position );
 	
 	/*!
 	 * @brief Center the model
 	*/
-	void centerModel( void );
+	void CenterModel( void );
 	
+	/*!
+	 * @brief Reset model's position
+	*/
+	void ResetModel( void );
+
 	/*!
 	 * @brief Slice model with stored slice plane
 	 * @return True at success
 	*/
-	bool sliceModel( void );
+	bool SliceModel( void );
 
 	/*!
 	 * @brief Update the model view
 	*/
 	void UpdateModel( void );
-
-	/*!
-	 * @brief Reset model's position
-	*/
-	void resetModel( void );
 
 };

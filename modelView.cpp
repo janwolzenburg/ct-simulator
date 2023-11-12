@@ -41,15 +41,15 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	main_window_( main_window ),
 
-	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "model.chooser" },
+	model_chooser_{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "model.chooser" },
 	model_{ Model{}, "current.model" },
 	properties_{ ModelViewProperties{}, "view.properties" },
-	modelSliceInstance{},
+	model_slice_{},
 	
 
-	load_model{ *this, &ModelView::loadModel },
+	load_model{ *this, &ModelView::LoadModel },
 	update_model_{ *this, &ModelView::UpdateModel },
-	reset_model_{ *this, &ModelView::resetModel }
+	reset_model_{ *this, &ModelView::ResetModel }
 
 {
 
@@ -133,7 +133,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	}
 }
 
-string ModelView::modelDescription( void ) const{
+string ModelView::GetModelDescription( void ) const{
 
 	string modelDataString;
 
@@ -146,7 +146,7 @@ string ModelView::modelDescription( void ) const{
 	return modelDataString;
 }
 
-bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
+bool ModelView::MoveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
 	const SlicePlane backupPlane = properties_.slice_plane; 
 	SlicePlane& planeInstance =  properties_.slice_plane;
@@ -182,7 +182,7 @@ bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 	}
 
 	// Return if succeeded
-	if( sliceModel() ) return true;
+	if( SliceModel() ) return true;
 	
 	// Revert changes
 	planeInstance = backupPlane;
@@ -197,7 +197,7 @@ bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 }
 
 
-bool ModelView::sliceModel( void ){
+bool ModelView::SliceModel( void ){
 	Fl_Group::window()->deactivate();
 	
 	properties_.SetAsLoaded();
@@ -209,13 +209,13 @@ bool ModelView::sliceModel( void ){
 		return false;
 	}
 
-	modelSliceInstance = tempSlice;
+	model_slice_ = tempSlice;
 
 	return true;
 }
 
 
-void ModelView::centerModel( void ){
+void ModelView::CenterModel( void ){
 
 	// Center model
 	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
@@ -224,36 +224,36 @@ void ModelView::centerModel( void ){
 }
 
 
-void ModelView::resetModel( void ){
+void ModelView::ResetModel( void ){
 
 	this->window()->deactivate();
 		properties_.slice_plane.rotation_angle_x = 0.;
 	 properties_.slice_plane.rotation_angle_y = 0.;
 	 properties_.slice_plane.position_z = 0.;
 
-	centerModel();
+	CenterModel();
 
 	x_rotation_.value( 0. );
 	y_rotation_.value( 0. );
 	z_position_.value( 0. );
 
-	sliceModel();
-	model_slice_image_.AssignImage( modelSliceInstance );
+	SliceModel();
+	model_slice_image_.AssignImage( model_slice_ );
 	properties_.contrast = model_slice_image_.GetContrast();
 
 	this->window()->activate();
 
 }
 
-void ModelView::loadModel( void ){
+void ModelView::LoadModel( void ){
 
 	this->window()->deactivate();
 
 	model_slice_image_.hide(); loading_status_.show(); model_information_.hide();
 	loading_status_.label( "Loading model..." );
 
-	path modelToLoad = storedModelChooser.ChooseFile();
-	storedModelChooser.SetAsLoaded();
+	path modelToLoad = model_chooser_.ChooseFile();
+	model_chooser_.SetAsLoaded();
 
 	if( !model_.Load( modelToLoad ) ){
 		loading_status_.label( "Loading failed!" );
@@ -264,7 +264,7 @@ void ModelView::loadModel( void ){
 	model_slice_image_.SetSliderBounds( model_.attenuationRange() );
 	properties_.contrast = model_slice_image_.GetContrast();
 
-	resetModel();
+	ResetModel();
 	UpdateModel();
 
 
@@ -277,34 +277,34 @@ void ModelView::loadModel( void ){
 	
 	// Top side
 	GridIndex top_corner{ 0, 0 };
-	for( size_t row_index = 0; row_index < modelSliceInstance.size().r; row_index++ ){
-		for( size_t column_index = 0; column_index < modelSliceInstance.size().c; column_index++ ){
+	for( size_t row_index = 0; row_index < model_slice_.size().r; row_index++ ){
+		for( size_t column_index = 0; column_index < model_slice_.size().c; column_index++ ){
 			const GridIndex grid_index{ column_index, row_index };
-			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				top_corner = grid_index;																// Set index
-				column_index = modelSliceInstance.size().c; row_index = modelSliceInstance.size().r;	// Break condition
+				column_index = model_slice_.size().c; row_index = model_slice_.size().r;	// Break condition
 			}
 		}
 	}
 	
 	// Right side
-	GridIndex right_corner{ modelSliceInstance.size().c - 1, 0 };
-	for( size_t column_index = modelSliceInstance.size().c; column_index > 0; column_index-- ){
-		for( size_t row_index = 0; row_index < modelSliceInstance.size().r; row_index++ ){
+	GridIndex right_corner{ model_slice_.size().c - 1, 0 };
+	for( size_t column_index = model_slice_.size().c; column_index > 0; column_index-- ){
+		for( size_t row_index = 0; row_index < model_slice_.size().r; row_index++ ){
 			const GridIndex grid_index{ column_index - 1, row_index };
-			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				right_corner = grid_index;																// Set index
-				column_index = 1; row_index = modelSliceInstance.size().r;								// Break condition
+				column_index = 1; row_index = model_slice_.size().r;								// Break condition
 			}
 		}
 	}
 	
 	// Bottom side
-	GridIndex bottom_corner{ modelSliceInstance.size().c - 1, modelSliceInstance.size().r - 1 };
-	for( size_t row_index = modelSliceInstance.size().r; row_index > 0; row_index-- ){
-		for( size_t column_index = modelSliceInstance.size().c; column_index > 0; column_index-- ){
+	GridIndex bottom_corner{ model_slice_.size().c - 1, model_slice_.size().r - 1 };
+	for( size_t row_index = model_slice_.size().r; row_index > 0; row_index-- ){
+		for( size_t column_index = model_slice_.size().c; column_index > 0; column_index-- ){
 			const GridIndex grid_index{ column_index - 1, row_index - 1 };
-			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				bottom_corner = grid_index;																// Set index
 				column_index = 1; row_index = 1;														// Break condition
 			}
@@ -312,21 +312,21 @@ void ModelView::loadModel( void ){
 	}
 
 	// Left side
-	GridIndex left_corner{ 0, modelSliceInstance.size().r - 1 };
-	for( size_t column_index = 0; column_index < modelSliceInstance.size().c; column_index++ ){
-		for( size_t row_index = modelSliceInstance.size().r; row_index > 0; row_index-- ){
+	GridIndex left_corner{ 0, model_slice_.size().r - 1 };
+	for( size_t column_index = 0; column_index < model_slice_.size().c; column_index++ ){
+		for( size_t row_index = model_slice_.size().r; row_index > 0; row_index-- ){
 			const GridIndex grid_index{ column_index, row_index - 1 };
-			if( !modelSliceInstance.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
+			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				left_corner = grid_index;																// Set index
-				column_index = modelSliceInstance.size().c; row_index = 1;								// Break condition
+				column_index = model_slice_.size().c; row_index = 1;								// Break condition
 			}
 		}
 	}
 
-	const GridCoordinates top_left =		modelSliceInstance.GetCoordinates( top_corner    );
-	const GridCoordinates top_right =		modelSliceInstance.GetCoordinates( right_corner  );
-	const GridCoordinates bottom_left =		modelSliceInstance.GetCoordinates( left_corner   );
-	const GridCoordinates bottom_right =	modelSliceInstance.GetCoordinates( bottom_corner );
+	const GridCoordinates top_left =		model_slice_.GetCoordinates( top_corner    );
+	const GridCoordinates top_right =		model_slice_.GetCoordinates( right_corner  );
+	const GridCoordinates bottom_left =		model_slice_.GetCoordinates( left_corner   );
+	const GridCoordinates bottom_right =	model_slice_.GetCoordinates( bottom_corner );
 
 	const double maximum_distance_from_origin = Max( Max(	sqrt( pow( top_left.c,		2. )	+ pow( top_left.r,		2. ) ),
 															sqrt( pow( top_right.c,		2. )	+ pow( top_right.r,		2. ) ) ), 
@@ -354,7 +354,7 @@ void ModelView::UpdateModel( void ){
 	double oldZTrans = z_position_.value();
 
 	// Movement did not succeed?
-	if( !moveModel( oldXRot, oldYRot, oldZTrans ) ){
+	if( !MoveModel( oldXRot, oldYRot, oldZTrans ) ){
 		// moveModel changes arguments to previous value
 		x_rotation_.value( oldXRot );
 		y_rotation_.value( oldYRot );
@@ -362,14 +362,14 @@ void ModelView::UpdateModel( void ){
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		model_slice_image_.AssignImage( modelSliceInstance );//, false );
+		model_slice_image_.AssignImage( model_slice_ );
 		properties_.contrast = model_slice_image_.GetContrast();
 	}
 
 	model_slice_image_.show(); loading_status_.hide(); model_information_.show();
 	model_movement_group_.show();
 
-	model_information_string_ = modelDescription();
+	model_information_string_ = GetModelDescription();
 	model_information_.value( model_information_string_.c_str() );
 	this->window()->activate();
 
