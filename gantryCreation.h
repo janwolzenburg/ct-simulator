@@ -65,35 +65,35 @@ class gantryEdition : public Fl_Group{
 	private:
 
 	
-	Fl_Box title;		/*!<Title*/
+	Fl_Box title;		/*!< Title*/
 
-	Fl_Group tubeGrp;					/*!<Group of tube elements*/
-	Fl_Box tubeTitle;					/*!<Tube group title*/
-	Fl_BoundInput<Fl_Float_Input, double> tubeVoltageIn;	/*!<Tube voltage*/
-	Fl_BoundInput<Fl_Float_Input, double> tubeCurrentIn;	/*!<Tube current*/
-	Fl_Selector materialIn;				/*!<Anode material*/
-	Fl_Plot<LinePlot> spectrumPlot;		/*!<Plot of tube sepctrum*/
+	Fl_Group tubeGrp;					/*!< Group of tube elements*/
+	Fl_Box tubeTitle;					/*!< Tube group title*/
+	Fl_BoundInput<Fl_Float_Input, double> tubeVoltageIn;	/*!< Tube voltage*/
+	Fl_BoundInput<Fl_Float_Input, double> tubeCurrentIn;	/*!< Tube current*/
+	Fl_Selector materialIn;				/*!< Anode material*/
+	Fl_Plot<LinePlot> spectrumPlot;		/*!< Plot of tube sepctrum*/
 
-	Fl_Group detectorGrp;	/*!<Group for detector elemnts*/
-	Fl_Box detectorTitle;	/*!<Detector group title*/
-	Fl_BoundInput<Fl_Int_Input, size_t> colPnts;			/*!<Amount of angles in sinogram*/
-	Fl_BoundInput<Fl_Int_Input, size_t> rowPnts;			/*!<Amount of distances in sinogram*/
-	Fl_BoundInput<Fl_Float_Input, double> distRange;		/*!<Measure field*/
-	Fl_BoundInput<Fl_Int_Input, int> raysPerPixelIn;		/*!<Amount of rays per pixel to simulate*/
-	Fl_BoundInput<Fl_Float_Input, double> detector_focus_distance_input;		/*!<Detector arc radius*/
-	Fl_Toggle_Button structureIn;							/*!<Anti scattering structure toggle*/
-	Fl_BoundInput<Fl_Float_Input, double> maxRayAngleIn;	/*!<Maximum angle when structure is enabled*/
-	Fl_Plot<Geometryplot> detectorPlot;							/*!<Plot for detector geometry*/
+	Fl_Group detectorGrp;	/*!< Group for detector elemnts*/
+	Fl_Box detectorTitle;	/*!< Detector group title*/
+	Fl_BoundInput<Fl_Int_Input, size_t> colPnts;			/*!< Amount of angles in sinogram*/
+	Fl_BoundInput<Fl_Int_Input, size_t> rowPnts;			/*!< Amount of distances in sinogram*/
+	Fl_BoundInput<Fl_Float_Input, double> distRange;		/*!< Measure field*/
+	Fl_BoundInput<Fl_Int_Input, int> raysPerPixelIn;		/*!< Amount of rays per pixel to simulate*/
+	Fl_BoundInput<Fl_Float_Input, double> detector_focus_distance_input;		/*!< Detector arc radius*/
+	Fl_Toggle_Button structureIn;							/*!< Anti scattering structure toggle*/
+	Fl_BoundInput<Fl_Float_Input, double> maxRayAngleIn;	/*!< Maximum angle when structure is enabled*/
+	Fl_Plot<Geometryplot> detectorPlot;							/*!< Plot for detector geometry*/
 
 	mainWindow& main_window_;
 
-	XRayTubeProperties xRayTubeParameter;									/*!<xRay tube attributes*/
-	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!<Persisting storage of tube attributes*/
-	ProjectionsProperties radonParameter;								/*!<Parameter in radon space affecting the detector*/
-	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!<Persisting storage of radon parameter*/
-	PhysicalDetectorProperties physical_detector_properties_;						/*!<Parameter only dependent on the physical properties_ od detector*/
-	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!<Persisting storage of the detector parameter*/
-	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
+	XRayTubeProperties xRayTubeParameter;									/*!< xRay tube attributes*/
+	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!< Persisting storage of tube attributes*/
+	ProjectionsProperties radonParameter;								/*!< Parameter in radon space affecting the detector*/
+	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!< Persisting storage of radon parameter*/
+	PhysicalDetectorProperties physical_detector_properties_;						/*!< Parameter only dependent on the physical properties_ od detector*/
+	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!< Persisting storage of the detector parameter*/
+	Gantry gantryInstance;												/*!< Instance of the gantry constructed from tube and detector parameter*/
 
 
 	CallbackFunction<gantryEdition> updateCB;

@@ -18,7 +18,7 @@ class ModelViewProperties{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Default constructor
@@ -40,6 +40,6 @@ class ModelViewProperties{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	NumberRange contrast;			/*!<Contrast of slice image*/
-	SlicePlane slice_plane;			/*!<Surface to slice model with*/
+	NumberRange contrast;			/*!< Contrast of slice image*/
+	SlicePlane slice_plane;			/*!< Surface to slice model with*/
 };

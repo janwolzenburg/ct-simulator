@@ -214,6 +214,6 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	private:
 
-	const CoordinateSystem* parent_;	/*!<Pointer to parent system*/
-	string name_;						/*!<Name of system*/
+	const CoordinateSystem* parent_;	/*!< Pointer to parent system*/
+	string name_;						/*!< Name of system*/
 };

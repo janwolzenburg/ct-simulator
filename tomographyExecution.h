@@ -65,29 +65,29 @@ class tomographyExec : public Fl_Group{
 
 	mainWindow& main_window_;
 
-	Fl_Box title;				/*!<Title*/
+	Fl_Box title;				/*!< Title*/
 
-	Fl_Group tomoParameterGrp;	/*!<Group for parameters*/
-	Fl_Box parameterTitle;		/*!<Title of parameter group*/
+	Fl_Group tomoParameterGrp;	/*!< Group for parameters*/
+	Fl_Box parameterTitle;		/*!< Title of parameter group*/
 	
-	Fl_Simple_Counter radiationLoopsIn;		/*!<Maximum amount a Ray can be scattered*/
-	Fl_BoundInput<Fl_Float_Input, double> scatterPropabilityIn;	/*!<Scatter propability*/
-	Fl_Toggle_Button scatteringOnOff;	/*!<Toggle scattering*/
+	Fl_Simple_Counter radiationLoopsIn;		/*!< Maximum amount a Ray can be scattered*/
+	Fl_BoundInput<Fl_Float_Input, double> scatterPropabilityIn;	/*!< Scatter propability*/
+	Fl_Toggle_Button scatteringOnOff;	/*!< Toggle scattering*/
 
-	Fl_Multiline_Output information;	/*!<Information about tomography*/
+	Fl_Multiline_Output information;	/*!< Information about tomography*/
 	
-	Fl_Group controlGrp;		/*!<Group for control elements*/
-	Fl_Button radiationButton;	/*!<Start button for radiation*/
-	Fl_Button exportButton;		/*!<Export button for sinogram*/
+	Fl_Group controlGrp;		/*!< Group for control elements*/
+	Fl_Button radiationButton;	/*!< Start button for radiation*/
+	Fl_Button exportButton;		/*!< Export button for sinogram*/
 
 	
-	FileChooser exportChooserInstance;				/*!<File chooser for sinogram export*/
-	PersistingObject<FileChooser> storedExportChooser;	/*!<Persisting storage of sinogram export file selection*/
+	FileChooser exportChooserInstance;				/*!< File chooser for sinogram export*/
+	PersistingObject<FileChooser> storedExportChooser;	/*!< Persisting storage of sinogram export file selection*/
 
 		
-	Tomography tomographyInstance;				/*!<Instance of the tomography*/
-	TomographyProperties tomographyParamerters;	/*!<Parameter of tomography*/
-	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!<Persisting storage of the tomography parameter*/
+	Tomography tomographyInstance;				/*!< Instance of the tomography*/
+	TomographyProperties tomographyParamerters;	/*!< Parameter of tomography*/
+	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!< Persisting storage of the tomography parameter*/
 
 
 	Projections currentProjection;

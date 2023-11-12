@@ -28,7 +28,7 @@
 */
 struct PhysicalDetectorProperties{
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 	
 	/*!
 	 * @brief Default constructor
@@ -59,10 +59,10 @@ struct PhysicalDetectorProperties{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double row_width;								/*!<Row width. The length of one the pixel side which is connected to the next pixel inside one row*/
-	double detector_focus_distance;					/*!<Distance from the detector array to the focus*/
-	bool has_anti_scattering_structure;				/*!<Flag for anti scatter structure*/
-	double max_ray_angle_allowed_by_structure;		/*!<Maximum angle between pixel normal and Ray if structure is enabled*/
+	double row_width;								/*!< Row width. The length of one the pixel side which is connected to the next pixel inside one row*/
+	double detector_focus_distance;					/*!< Distance from the detector array to the focus*/
+	bool has_anti_scattering_structure;				/*!< Flag for anti scatter structure*/
+	double max_ray_angle_allowed_by_structure;		/*!< Maximum angle between pixel normal and Ray if structure is enabled*/
 };
 
 
@@ -81,11 +81,11 @@ class DetectorProperties{
 	DetectorProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 
-	GridIndex number_of_pixel;					/*!<Amount of pixel in each dimension*/
-	double row_width;							/*!<Size of one pixel in column direction*/
-	double arc_angle;							/*!<Angle between outer normals*/
-	double detector_focus_distance;				/*!<Distance of focus and detector pixel*/
+	GridIndex number_of_pixel;					/*!< Amount of pixel in each dimension*/
+	double row_width;							/*!< Size of one pixel in column direction*/
+	double arc_angle;							/*!< Angle between outer normals*/
+	double detector_focus_distance;				/*!< Distance of focus and detector pixel*/
 
-	bool has_anti_scattering_structure;			/*!<Flag for anti scatter structure*/
-	double max_ray_angle_allowed_by_structure;	/*!<Maximum angle between pixel normal and Ray*/
+	bool has_anti_scattering_structure;			/*!< Flag for anti scatter structure*/
+	double max_ray_angle_allowed_by_structure;	/*!< Maximum angle between pixel normal and Ray*/
 };

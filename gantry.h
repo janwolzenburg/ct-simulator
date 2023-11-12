@@ -114,11 +114,11 @@ class Gantry{
 
 	private:
 	
-	CoordinateSystem* coordinate_system_;			/*!<Coordinate system*/
-	PrimitiveCoordinateSystem initial_position_;	/*!<Initial position of coordinate system*/
+	CoordinateSystem* coordinate_system_;			/*!< Coordinate system*/
+	PrimitiveCoordinateSystem initial_position_;	/*!< Initial position of coordinate system*/
 
-	XRayDetector detector_;							/*!<Ray detector*/
-	XRayTube tube_;									/*!<xRay source*/
+	XRayDetector detector_;							/*!< Ray detector*/
+	XRayTube tube_;									/*!< xRay source*/
 	
 
 	/*!

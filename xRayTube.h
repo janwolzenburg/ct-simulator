@@ -36,7 +36,7 @@ class XRayTubeProperties {
 	
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 	
 	/*!
 	 * @brief Enumeration for anode materials
@@ -91,10 +91,10 @@ class XRayTubeProperties {
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double anode_voltage_V;				/*!<Anode Voltage in volts*/
-	double anode_current_A;				/*!<Current in ampere*/
-	Material anode_material;			/*!<Atomic Number of anode material*/
-	size_t number_of_rays_per_pixel_;	/*!<The amount of discrete rays to emit per detector pixel*/
+	double anode_voltage_V;				/*!< Anode Voltage in volts*/
+	double anode_current_A;				/*!< Current in ampere*/
+	Material anode_material;			/*!< Atomic Number of anode material*/
+	size_t number_of_rays_per_pixel_;	/*!< The amount of discrete rays to emit per detector pixel*/
 
 };
 
@@ -175,16 +175,16 @@ class XRayTube{
 
 	private:
 	
-	static constexpr size_t number_of_points_in_spectrum_ = 30;		/*!<Amount of discrete datapoints in spectrum*/
+	static constexpr size_t number_of_points_in_spectrum_ = 30;		/*!< Amount of discrete datapoints in spectrum*/
 
-	CoordinateSystem* coordinate_system_;	/*!<Coordinate system of tube*/
+	CoordinateSystem* coordinate_system_;	/*!< Coordinate system of tube*/
 
-	XRayTubeProperties properties_;			/*!<Tube properties*/
-	size_t anode_material_atomic_number_;	/*!<Atomic number_of_pixel of anode material*/
+	XRayTubeProperties properties_;			/*!< Tube properties*/
+	size_t anode_material_atomic_number_;	/*!< Atomic number_of_pixel of anode material*/
 
-	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
-	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
+	double radiation_power_W_;				/*!< Total radiation power of tube in watts*/
+	double max_photon_energy_eV_;			/*!< Maximum radiation energy in eV based on anode voltage*/ 
 
-	EnergySpectrum emitted_spectrum_;		/*!<Output spectrum of tube*/
+	EnergySpectrum emitted_spectrum_;		/*!< Output spectrum of tube*/
 
  };

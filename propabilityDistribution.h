@@ -22,7 +22,7 @@
 *********************************************************************/
 
 
-extern class RandomNumberGenerator integer_random_number_generator;		/*!<One instance of integer random number generator*/
+extern class RandomNumberGenerator integer_random_number_generator;		/*!< One instance of integer random number generator*/
 
 /*!
  * @brief Class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
@@ -54,9 +54,9 @@ class RandomNumberGenerator{
 
 	private:
 
-	std::default_random_engine generator_;							/*!<Generator*/
-	std::uniform_int_distribution<unsigned int> distribution_;		/*!<Uniform distribution*/
-	mutex mutex_;													/*!<Mutex for thread safety*/
+	std::default_random_engine generator_;							/*!< Generator*/
+	std::uniform_int_distribution<unsigned int> distribution_;		/*!< Uniform distribution*/
+	mutex mutex_;													/*!< Mutex for thread safety*/
 
 };
 
@@ -90,7 +90,7 @@ class PropabilityDistribution{
 
 	private:
 
-	vector<Tuple2D> distribution_;				/*!<Distribution*/
-	vector<double> uniform_propabilities_;		/*!<Vector with values from distribution reated according to their propability*/
+	vector<Tuple2D> distribution_;				/*!< Distribution*/
+	vector<double> uniform_propabilities_;		/*!< Vector with values from distribution reated according to their propability*/
 
 };

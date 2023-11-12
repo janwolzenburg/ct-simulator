@@ -167,16 +167,16 @@ class DataGrid{
 
 	private:
 
-	GridIndex size_;					/*!<Size of grid*/
-	GridCoordinates start_;				/*!<Start of axis*/
-	GridCoordinates resolution_;		/*!<Resolution of grid*/
+	GridIndex size_;					/*!< Size of grid*/
+	GridCoordinates start_;				/*!< Start of axis*/
+	GridCoordinates resolution_;		/*!< Resolution of grid*/
 
-	vector<double> column_points_;		/*!<Vector with values on column axis*/
-	vector<double> row_points_;			/*!<Vector with values on row axis*/
-	vector<vector<D>> data_;			/*!<2D Vector with data points*/
+	vector<double> column_points_;		/*!< Vector with values on column axis*/
+	vector<double> row_points_;			/*!< Vector with values on row axis*/
+	vector<vector<D>> data_;			/*!< 2D Vector with data points*/
 
-	D max_value_;						/*!<Maximum value in grid*/
-	D min_value_;						/*!<Minimum value in grid*/
+	D max_value_;						/*!< Maximum value in grid*/
+	D min_value_;						/*!< Minimum value in grid*/
 
 
 	/*!

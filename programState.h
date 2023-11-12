@@ -119,9 +119,9 @@ class programState{
 	
 
 
-	//mainWindow* mainWindow_;				/*!<Pointer to the main window*/
+	//mainWindow* mainWindow_;				/*!< Pointer to the main window*/
 
-	bool resetStateAtExit;									/*!<Flag indicating whether to reset the program state at program exit_*/
+	bool resetStateAtExit;									/*!< Flag indicating whether to reset the program state at program exit_*/
 
 
 

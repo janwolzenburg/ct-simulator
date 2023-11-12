@@ -61,12 +61,12 @@ class Fl_Progress_Window : public Fl_Window{
 	*/
 	void updateOutput( void );
 
-	unsigned int numLines;				/*!<Amount of lines*/
+	unsigned int numLines;				/*!< Amount of lines*/
 
-	Fl_Multiline_Output textDisplay;	/*!<Widget for text output*/
-	vector<string> lines;				/*!<Line texts*/
-	string displayText;					/*!<String to pass to widget*/
+	Fl_Multiline_Output textDisplay;	/*!< Widget for text output*/
+	vector<string> lines;				/*!< Line texts*/
+	string displayText;					/*!< String to pass to widget*/
 
-	constexpr static int padding = 20;				/*!<Padding of text to window borders*/
-	constexpr static int charactersPerLine = 30;	/*!<Approximate amount of characters per Line*/
+	constexpr static int padding = 20;				/*!< Padding of text to window borders*/
+	constexpr static int charactersPerLine = 30;	/*!< Approximate amount of characters per Line*/
  };

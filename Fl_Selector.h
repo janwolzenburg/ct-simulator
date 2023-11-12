@@ -64,12 +64,12 @@ class Fl_Selector : public Fl_Group{
 
 	private:
 
-	Fl_Button previous_button_;		/*!<Button to select previous element*/
-	Fl_Output current_text_;		/*!<Text outpur for current element*/
-	Fl_Button next_button_;			/*!<Button to select next element*/
+	Fl_Button previous_button_;		/*!< Button to select previous element*/
+	Fl_Output current_text_;		/*!< Text outpur for current element*/
+	Fl_Button next_button_;			/*!< Button to select next element*/
 
-	vector<string> elements_;		/*!<All elements*/
-	vector<string>::const_iterator current_element_;	/*!<Current element*/
+	vector<string> elements_;		/*!< All elements*/
+	vector<string>::const_iterator current_element_;	/*!< Current element*/
 
 
 	/*!

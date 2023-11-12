@@ -85,15 +85,15 @@ class Fl_BoundInput : public Fl_Group{
 
 	private:
 
-	C input_widget_;				/*!<A Fl_Input derivation*/
+	C input_widget_;				/*!< A Fl_Input derivation*/
 				
-	int precision_;					/*!<Precision of number_of_pixel. Negative to round to significant digits*/
-	T current_value_;				/*!<Current value*/
-	string value_string_;			/*!<String with formatted value*/
+	int precision_;					/*!< Precision of number_of_pixel. Negative to round to significant digits*/
+	T current_value_;				/*!< Current value*/
+	string value_string_;			/*!< String with formatted value*/
 
-	T max_allowed_;					/*!<Maximum allowed value*/
-	T min_allowed_;					/*!<Minimum allowed value*/
-	Input_Constraints constraint_;	/*!<Constraints for the input*/
+	T max_allowed_;					/*!< Maximum allowed value*/
+	T min_allowed_;					/*!< Minimum allowed value*/
+	Input_Constraints constraint_;	/*!< Constraints for the input*/
 
 	/*!
 	 * @brief Check if current value is in bounds and violating constrains

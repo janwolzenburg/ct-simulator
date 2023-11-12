@@ -20,14 +20,14 @@
 */
 struct PlotLimits{
 
-	bool autoXRange = true;				/*!<Enable or disable automatic x-axis limits*/
-	bool autoYRange = true;				/*!<Enable or disable automatic y-axis limits*/
+	bool autoXRange = true;				/*!< Enable or disable automatic x-axis limits*/
+	bool autoYRange = true;				/*!< Enable or disable automatic y-axis limits*/
 
-	NumberRange xRange = NumberRange{ 0., 1. };		/*!<x-range*/
-	NumberRange yRange = NumberRange{ 0., 1. };		/*!<y-range*/
+	NumberRange xRange = NumberRange{ 0., 1. };		/*!< x-range*/
+	NumberRange yRange = NumberRange{ 0., 1. };		/*!< y-range*/
 
-	double xFactor = 1.;				/*!<Factor for x-axis sclaing*/
-	double yFactor = 1.;				/*!<Factor for y-axis sclaing*/
+	double xFactor = 1.;				/*!< Factor for x-axis sclaing*/
+	double yFactor = 1.;				/*!< Factor for y-axis sclaing*/
 
  };
 
@@ -117,19 +117,19 @@ class Plot{
 
 	protected:
 	
-	string label_;	/*!<Figure label*/
-	path image_path_;	/*!<Path to image. Plots are exported to this direction*/
-	string x_label_;	/*!<Label of x-axis*/
-	string y_label_;	/*!<Lable of y-axis*/
+	string label_;	/*!< Figure label*/
+	path image_path_;	/*!< Path to image. Plots are exported to this direction*/
+	string x_label_;	/*!< Label of x-axis*/
+	string y_label_;	/*!< Lable of y-axis*/
 
-	bool are_axis_equal_ = false;	/*!<Flag to make axis equally scaled*/
-	bool enable_grid_ = false;		/*!<Flag to make grid visible*/
+	bool are_axis_equal_ = false;	/*!< Flag to make axis equally scaled*/
+	bool enable_grid_ = false;		/*!< Flag to make grid visible*/
 
-	string x_format_;		/*!<Format string for x-axis tick values*/
-	string y_format_;		/*!<Format string for y-axis tick values*/
-	PlotLimits limits_;	/*!<Limits of plot*/
+	string x_format_;		/*!< Format string for x-axis tick values*/
+	string y_format_;		/*!< Format string for y-axis tick values*/
+	PlotLimits limits_;	/*!< Limits of plot*/
 
-	GridIndex image_size_;				/*!<Size of image*/
-	sciplot::Plot2D plot_2D_;		/*!<Instance of sciplot 2D-plot*/
+	GridIndex image_size_;				/*!< Size of image*/
+	sciplot::Plot2D plot_2D_;		/*!< Instance of sciplot 2D-plot*/
 
  };

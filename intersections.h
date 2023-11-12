@@ -80,10 +80,10 @@ class RayVoxelIntersection {
 	RayVoxelIntersection( const Voxel voxel, const Ray r_ );
 
 
-	Voxel::Face entrance_face_;										/*!<Entrance face*/
-	LineSurfaceIntersection<Ray, BoundedSurface> entrance_;		/*!<Entrance*/
+	Voxel::Face entrance_face_;										/*!< Entrance face*/
+	LineSurfaceIntersection<Ray, BoundedSurface> entrance_;		/*!< Entrance*/
 
-	Voxel::Face exit_face_;										/*!<Exit face*/
+	Voxel::Face exit_face_;										/*!< Exit face*/
 	LineSurfaceIntersection<Ray, BoundedSurface> exit_;		/*!Exit*/
 
 };

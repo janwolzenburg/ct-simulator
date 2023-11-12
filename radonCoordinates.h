@@ -34,8 +34,8 @@ class RadonCoordinates{
 	RadonCoordinates( const CoordinateSystem* const coordinate_system, const Line line );
 
 
-	double theta;		/*!<Angle*/
-	double distance;	/*!<Distance*/
+	double theta;		/*!< Angle*/
+	double distance;	/*!< Distance*/
 	
 };
 
@@ -56,6 +56,6 @@ class RadonPoint : public RadonCoordinates{
 		RadonCoordinates{ radon_coordinates }, value( value ) {};
 
 
-	double value;				/*!<Value*/
+	double value;				/*!< Value*/
 
 };

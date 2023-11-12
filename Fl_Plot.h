@@ -96,10 +96,10 @@ class Fl_Plot : public Fl_Widget{
 
 	private:
 
-	string label_;				/*!<Label*/
-	P plot_;		/*!<A plot*/
-	Fl_PNG_Image* raw_image_;	/*!<Raw image*/
-	Fl_Image* image_;			/*!<Scaled FL-image*/
+	string label_;				/*!< Label*/
+	P plot_;		/*!< A plot*/
+	Fl_PNG_Image* raw_image_;	/*!< Raw image*/
+	Fl_Image* image_;			/*!< Scaled FL-image*/
 
 
 	/*!

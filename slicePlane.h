@@ -47,10 +47,10 @@ class SlicePlane{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	CoordinateSystem* coordinate_system;	/*!<Coordinate system of slice plane*/
-	Surface surface;						/*!<Surface for slicing*/
-	double rotation_angle_x;	/*!<Current x-rotation angle*/
-	double rotation_angle_y;	/*!<Current y-rotation angle*/
-	double position_z;			/*!<Current z-position*/
+	CoordinateSystem* coordinate_system;	/*!< Coordinate system of slice plane*/
+	Surface surface;						/*!< Surface for slicing*/
+	double rotation_angle_x;	/*!< Current x-rotation angle*/
+	double rotation_angle_y;	/*!< Current y-rotation angle*/
+	double position_z;			/*!< Current z-position*/
 
 };

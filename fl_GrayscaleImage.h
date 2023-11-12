@@ -29,7 +29,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 
 	public:
 
-	static const RGB background_color;		/*!<Background color for pixel without data*/
+	static const RGB background_color;		/*!< Background color for pixel without data*/
 
 	/*!
 	 * @brief Constructor
@@ -95,13 +95,13 @@ class Fl_GrayscaleImage : public Fl_Widget{
 
 	private:
 
-	GrayscaleImage grayscale_image_;	/*!<Raw grayscale imagedata*/
-	bool image_assigned_;				/*!<Flag to track whether an image has been assigned*/
+	GrayscaleImage grayscale_image_;	/*!< Raw grayscale imagedata*/
+	bool image_assigned_;				/*!< Flag to track whether an image has been assigned*/
 	
-	vector<pair<bool, RGB>> overlay_;	/*!<Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
-	bool has_overlay_;					/*!<Flag indicating existing overlay*/
+	vector<pair<bool, RGB>> overlay_;	/*!< Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
+	bool has_overlay_;					/*!< Flag indicating existing overlay*/
 	
-	ColorImage color_image_;			/*!<Colored image resulting from grayscale image with overlayed color data_*/
+	ColorImage color_image_;			/*!< Colored image resulting from grayscale image with overlayed color data_*/
 
 
 	/*!

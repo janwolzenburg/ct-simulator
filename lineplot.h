@@ -59,7 +59,7 @@ class LinePlot : public Plot{
 
 	protected:
 
-	vector<double> X, Y;	/*!<Vectors with points*/
+	vector<double> X, Y;	/*!< Vectors with points*/
 
 };
 

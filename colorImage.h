@@ -41,7 +41,7 @@ class ColorImage{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Construct empty image with given size
@@ -130,11 +130,11 @@ class ColorImage{
 
 	private:
 
-	size_t width_;					/*!<Image width*/
-	size_t height_;					/*!<Image height*/
-	size_t number_of_pixel_;		/*!<Amount of pixel in image*/
+	size_t width_;					/*!< Image width*/
+	size_t height_;					/*!< Image height*/
+	size_t number_of_pixel_;		/*!< Amount of pixel in image*/
 
-	vector<RGB> image_data_;		/*!<Data as unsigned char values*/
+	vector<RGB> image_data_;		/*!< Data as unsigned char values*/
 
 
 	/*!

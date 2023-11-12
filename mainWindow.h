@@ -53,17 +53,17 @@ class mainWindow : public Fl_Window{
 
 	public:
 
-	Fl_Group menu;						/*!<Group at window top for multi purpose items*/
-	Fl_Button importSinogramBtn;		/*!<Button for sinogram import*/
-	Fl_Button resetProgramStateBtn;		/*!<Button to reset program state*/
+	Fl_Group menu;						/*!< Group at window top for multi purpose items*/
+	Fl_Button importSinogramBtn;		/*!< Button for sinogram import*/
+	Fl_Button resetProgramStateBtn;		/*!< Button to reset program state*/
 
 
-	FileChooser importChooserInstance;				/*!<File chooser for sinogram import*/
-	PersistingObject<FileChooser> storedImportChooser;	/*!<Persisting storage of sinogram import file selection*/
+	FileChooser importChooserInstance;				/*!< File chooser for sinogram import*/
+	PersistingObject<FileChooser> storedImportChooser;	/*!< Persisting storage of sinogram import file selection*/
 
-	ModelView modView;						/*!<Model view*/
-	gantryEdition gantryBuild;				/*!<Gantry creation*/
-	tomographyExec tomographyExecution;		/*!<Tomography execution*/
+	ModelView modView;						/*!< Model view*/
+	gantryEdition gantryBuild;				/*!< Gantry creation*/
+	tomographyExec tomographyExecution;		/*!< Tomography execution*/
 
 	CallbackFunction<mainWindow> setresetAtExitCB;
 	CallbackFunction<mainWindow> importSGCB;

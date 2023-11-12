@@ -33,7 +33,7 @@ class TomographyProperties{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Default constructor
@@ -64,9 +64,9 @@ class TomographyProperties{
 
 	public:
 	
-	bool scattering_enabled;				/*!<Enable scattering*/
-	size_t max_scattering_occurrences;		/*!<Max. amount each rays can be scattered*/
-	double scatter_propability_correction;	/*!<Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
+	bool scattering_enabled;				/*!< Enable scattering*/
+	size_t max_scattering_occurrences;		/*!< Max. amount each rays can be scattered*/
+	double scatter_propability_correction;	/*!< Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
 
 };
 
@@ -107,7 +107,7 @@ class Tomography{
 
 	private:
 
-	TomographyProperties properties_;			/*!<Properties used for tomography*/
-	CoordinateSystem* radon_coordinate_system_;	/*!<Coordinate system to use as reference for radon Coordinates calculation*/
+	TomographyProperties properties_;			/*!< Properties used for tomography*/
+	CoordinateSystem* radon_coordinate_system_;	/*!< Coordinate system to use as reference for radon Coordinates calculation*/
 };
 

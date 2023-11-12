@@ -107,10 +107,10 @@ class EnergySpectrum {
 
 	private:
 
-	vector<Tuple2D> data_;		/*!<2D data sorted by energy*/
-	double energy_resolution_;	/*!<Resolution of energies in spectrum*/
-	double mean_energy_;		/*!<Mean energy of spectrum*/
-	bool mean_energy_valid_;	/*!<Flag to track whether mean energy is valid*/
+	vector<Tuple2D> data_;		/*!< 2D data sorted by energy*/
+	double energy_resolution_;	/*!< Resolution of energies in spectrum*/
+	double mean_energy_;		/*!< Mean energy of spectrum*/
+	bool mean_energy_valid_;	/*!< Flag to track whether mean energy is valid*/
 
 	/*!
 	 * @brief Update mean energy

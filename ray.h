@@ -81,10 +81,10 @@ class RayProperties{
 
 	private:
 
-	EnergySpectrum energy_spectrum_;		/*!<Energy spectrum*/
-	size_t voxel_hits_;						/*!<Counter for voxels hit during transmission*/
-	double start_intensity_;				/*!<Intensity before radiation*/
-	size_t expected_detector_pixel_index_;	/*!<Index of detector pixel the ray is likely to hit*/
+	EnergySpectrum energy_spectrum_;		/*!< Energy spectrum*/
+	size_t voxel_hits_;						/*!< Counter for voxels hit during transmission*/
+	double start_intensity_;				/*!< Intensity before radiation*/
+	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
 
 };
 
@@ -209,5 +209,5 @@ class Ray : public Line{
 
 	private:
 
-	RayProperties properties_;			/*!<Properties of Ray*/
+	RayProperties properties_;			/*!< Properties of Ray*/
 };

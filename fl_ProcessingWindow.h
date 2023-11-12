@@ -49,20 +49,20 @@ class Fl_ProcessingWindow : public Fl_Window{
 	
 	private:
 
-	Fl_AdjustableGrayscaleImage projections_image_;				/*!<Widget for sinogram display*/
+	Fl_AdjustableGrayscaleImage projections_image_;				/*!< Widget for sinogram display*/
 	
-	Fl_Group filter_group_;										/*!<Group for filter*/
-	Fl_Selector filter_type_selector_;							/*!<Filter selector*/
-	Fl_Plot<DotPlot> filter_plot_;								/*!<Filter plot*/
+	Fl_Group filter_group_;										/*!< Group for filter*/
+	Fl_Selector filter_type_selector_;							/*!< Filter selector*/
+	Fl_Plot<DotPlot> filter_plot_;								/*!< Filter plot*/
 
-	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!<Widget for filtered projections display*/
-	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!<Widget for the reconstruced image*/
+	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< Widget for filtered projections display*/
+	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
 
 	Projections projections_;
-	FilteredProjections filtered_projections_;					/*!<Current filtered projections*/
-	Backprojection backprojection_;								/*!<Current image reconstructed from filtered projections*/
+	FilteredProjections filtered_projections_;					/*!< Current filtered projections*/
+	Backprojection backprojection_;								/*!< Current image reconstructed from filtered projections*/
 
-	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;	/*!<Callback function for filter change*/
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;	/*!< Callback function for filter change*/
 
 		
 	/*!

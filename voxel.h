@@ -40,7 +40,7 @@ class VoxelData{
 	
 	public:
 
-	typedef unsigned char SpecialPropertyEnumType;		/*!<Type to store up tu 8 special properties_*/
+	typedef unsigned char SpecialPropertyEnumType;		/*!< Type to store up tu 8 special properties_*/
 
 	/*!
 	 * @brief Special propterties a voxel can have
@@ -132,8 +132,8 @@ class VoxelData{
 	private:
 
 
-	double attenuation_	= -1;										/*!<Absorption coefficient at reference Energy*/
-	SpecialPropertyEnumType specialProperties_;						/*!<Special properties_ in voxel*/
+	double attenuation_	= -1;										/*!< Absorption coefficient at reference Energy*/
+	SpecialPropertyEnumType specialProperties_;						/*!< Special properties_ in voxel*/
 
 
 	/*!
@@ -161,14 +161,14 @@ class Voxel : public MathematicalObject{
 	 */
 	enum class Face : unsigned char{
 		Begin,
-		YZ_Xp = Begin,		/*!<Y-Z plane at positive x*/
-		XZ_Yp,				/*!<X-Z plane at positive y*/
-		XY_Zp,				/*!<X-Y plane at positive z*/
-		XY_Zm,				/*!<X-Y plane at negative x*/
-		XZ_Ym,				/*!<X-Z plane at negative y*/
-		YZ_Xm,				/*!<Y-Z plane at negative z*/
+		YZ_Xp = Begin,		/*!< Y-Z plane at positive x*/
+		XZ_Yp,				/*!< X-Z plane at positive y*/
+		XY_Zp,				/*!< X-Y plane at positive z*/
+		XY_Zm,				/*!< X-Y plane at negative x*/
+		XZ_Ym,				/*!< X-Z plane at negative y*/
+		YZ_Xm,				/*!< Y-Z plane at negative z*/
 		End,
-		Invalid = End		/*!<Invalid face x*/
+		Invalid = End		/*!< Invalid face x*/
 	};
 
 	/*!
@@ -231,8 +231,8 @@ class Voxel : public MathematicalObject{
 
 	private:
 
-	Tuple3D size_;				/*!<Size in local coordinate system*/
-	VoxelData data_;			/*!<Physical voxel data_*/
-	Point3D origin_corner_;		/*!<Point as origin_ of voxel in coordinate system*/
-	array<BoundedSurface, ToUnderlying( Face::End )> faces;	/*!<Faces in global context*/
+	Tuple3D size_;				/*!< Size in local coordinate system*/
+	VoxelData data_;			/*!< Physical voxel data_*/
+	Point3D origin_corner_;		/*!< Point as origin_ of voxel in coordinate system*/
+	array<BoundedSurface, ToUnderlying( Face::End )> faces;	/*!< Faces in global context*/
 };

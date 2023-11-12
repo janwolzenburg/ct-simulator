@@ -86,6 +86,6 @@ class FilteredProjections : private DataGrid<> {
 
 	private:
 
-	BackprojectionFilter filter_;		/*!<Filter used in backprojection*/
+	BackprojectionFilter filter_;		/*!< Filter used in backprojection*/
 
 };

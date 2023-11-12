@@ -127,9 +127,9 @@ class Matrix : public MathematicalObject{
 	private:
 
 	
-	size_t number_of_columns_;	/*!<Columns*/
-	size_t number_of_rows_;		/*!<Rows*/
-	vector<double> data_;		/*!<Data-> Access with [index  * row + col] left to right - top to bottom*/
+	size_t number_of_columns_;	/*!< Columns*/
+	size_t number_of_rows_;		/*!< Rows*/
+	vector<double> data_;		/*!< Data-> Access with [index  * row + col] left to right - top to bottom*/
 };
 
 
@@ -185,8 +185,8 @@ class SystemOfEquations : private Matrix{
 
 	private:
 
-	const size_t number_of_variables_;			/*!<Number of variables*/
-	size_t currently_populated_columns_;		/*!<Number of populated columns*/
+	const size_t number_of_variables_;			/*!< Number of variables*/
+	size_t currently_populated_columns_;		/*!< Number of populated columns*/
 };
 
 
@@ -251,7 +251,7 @@ class SystemOfEquationsSolution : public MathematicalObject{
 
 	private:
 
-	size_t number_of_variables_;				/*!<Amount of variables*/
-	vector<double> variable_values_;		/*!<Array of variables*/
-	bool solution_found_;				/*!<System has solution*/
+	size_t number_of_variables_;				/*!< Amount of variables*/
+	vector<double> variable_values_;		/*!< Array of variables*/
+	bool solution_found_;				/*!< System has solution*/
 };
