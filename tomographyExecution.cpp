@@ -41,13 +41,13 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
-	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "storedExportChooser.chooser" },
+	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "export.chooser" },
 	
 	tomographyInstance{},
-	tomographyParamerters{ TomographyProperties{}, "storedTomograpyParameter.properties" },
+	tomographyParamerters{ TomographyProperties{}, "tomography.properties" },
 	
 
-	currentProjection{ Projections{}, "storedProjections.sinogram" },
+	currentProjection{ Projections{}, "projections.sinogram" },
 	processing_windows_( 0 ),
 
 	radiateCB{ *this, &tomographyExec::radiate },

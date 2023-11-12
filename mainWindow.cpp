@@ -32,7 +32,7 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	
-	importChooserInstance{ FileChooser{ "Import Sinogram", "*.sinogram", path{ "./" } }, "storedImportChooser.chooser", false },
+	importChooserInstance{ FileChooser{ "Import Sinogram", "*.sinogram", path{ "./" } }, "import.chooser", false },
 	
 
 	setresetAtExitCB{ *this, &mainWindow::resetAtExit },

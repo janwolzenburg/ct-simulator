@@ -41,9 +41,9 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	main_window_( main_window ),
 
-	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "storedModelChooser.chooser" },
-	model_{ Model{}, "storedModel.model" },
-	properties_{ ModelViewProperties{}, "storedViewParameter.properties" },
+	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "model.chooser" },
+	model_{ Model{}, "current.model" },
+	properties_{ ModelViewProperties{}, "view.properties" },
 	modelSliceInstance{},
 	
 
