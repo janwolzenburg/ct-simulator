@@ -29,7 +29,7 @@ PersistingObject<C>::PersistingObject( const C&& standard, const char* file_name
 template< class C >
 PersistingObject<C>::~PersistingObject( void ){
 	if( was_loaded_ && !PROGRAM_STATE().ResetStateAtExit() && !disable_saving )
-		Save();
+		SaveToFile();
 };
 
 template< class C >
@@ -60,20 +60,21 @@ bool PersistingObject<C>::Load( const path file_path ){
 };
 
 template< class C >
-bool PersistingObject<C>::Save( const bool force ) const{
-
-	return Save( file_path_, force );
-};
-
-template< class C >
-bool PersistingObject<C>::Save( const path file_path, const bool force ){
+bool PersistingObject<C>::Save( const path file_path, const bool force ) const{
 
 	if( !was_loaded_ && !force ) return false;
 
 	vector<char> binaryData;
-	SerializeBuildIn<string>( FILE_PREAMLBE, binaryData );
+	SerializeBuildIn<string>( C::FILE_PREAMBLE, binaryData );
 	C::Serialize( binaryData );
 
-	return ExportSerialized( file_path_, binaryData );
+	return ExportSerialized( file_path, binaryData );
 
 };
+
+template< class C >
+bool PersistingObject<C>::SaveToFile( const bool force ) const{
+
+	return this->Save( file_path_, force );
+};
+

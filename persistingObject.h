@@ -82,18 +82,12 @@ class PersistingObject : public C{
 	bool Load( const path file_path );
 
 	/*!
-	 * @brief Save the object
-	 * @param force When false only store if object was loaded before
-	*/
-	bool Save( const bool force = false ) const;
-
-	/*!
 	 * @brief Save obejct to specific path
 	 * @param file_path Path to save object at
 	 * @param force Force saving when not loaded
 	 * @return True at success
 	*/
-	bool Save( const path file_path, const bool force = false );
+	bool Save( const path file_path, const bool force = false ) const;
 
 
 	private:
@@ -107,7 +101,12 @@ class PersistingObject : public C{
 	 * @brief Load file from stored path
 	*/
 	bool LoadFromFile( void ){ return Load( file_path_ ); };
-
+	
+	/*!
+	 * @brief Save the object
+	 * @param force When false only store if object was loaded before
+	*/
+	bool SaveToFile( const bool force = false ) const;
 };
 
 #include "persistingObject.hpp"
