@@ -25,6 +25,8 @@
 #include "programState.h"
 #include "widgets.h"
 #include "mainWindow.fwd.h"
+#include "callbackFunction.h"
+
 
 /*!
  * @brief Class for tomography execution
@@ -92,9 +94,9 @@ class tomographyExec : public Fl_Group{
 	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;
  
 	
-	CallbackMethod<tomographyExec> radiateCB;
-	CallbackMethod<tomographyExec> updateCB;
-	CallbackMethod<tomographyExec> exportCB;
+	CallbackFunction<tomographyExec> radiateCB;
+	CallbackFunction<tomographyExec> updateCB;
+	CallbackFunction<tomographyExec> exportCB;
 
  
 	void radiate( void );

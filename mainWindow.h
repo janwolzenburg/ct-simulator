@@ -21,6 +21,7 @@
 #include "gantryCreation.h"
 #include "tomographyExecution.h"
 #include "widgets.h"
+#include "callbackFunction.h"
 
 
 
@@ -64,7 +65,7 @@ class mainWindow : public Fl_Window{
 	gantryEdition gantryBuild;				/*!<Gantry creation*/
 	tomographyExec tomographyExecution;		/*!<Tomography execution*/
 
-	CallbackMethod<mainWindow> setresetAtExitCB;
-	CallbackMethod<mainWindow> importSGCB;
+	CallbackFunction<mainWindow> setresetAtExitCB;
+	CallbackFunction<mainWindow> importSGCB;
 
 };

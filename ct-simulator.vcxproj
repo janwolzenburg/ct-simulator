@@ -159,6 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="callbackFunction.h" />
+    <ClInclude Include="callbackFunction.hpp" />
     <ClInclude Include="filteredProjections.h" />
     <ClInclude Include="coordinateSystem.fwd.h" />
     <ClInclude Include="coordinateSystem.h" />

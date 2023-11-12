@@ -40,28 +40,4 @@ template<class C, std::enable_if_t<std::is_base_of_v< Fl_Widget, C >, bool> = fa
 int hOff( const C& parent );
 
 
-
-/*!
- * @brief Class to store information about an object instance and a pointer to a member function
- * @tparam C Class
-*/
-template<typename C>
-struct CallbackMethod{
-
-
-	void execute( void ){
-		(instance.*method_ptr_)();
-	}
-
-	C& instance;
-	void (C::*method_ptr_)( void );
-
-};
-
-template<class C>
-static void HandleCallback( Fl_Widget* widget, void* callback ){
-	CallbackMethod<C>* cb = static_cast<CallbackMethod<C>*>( callback );
-	cb->execute();
-}
-
 #include "widgets.hpp"

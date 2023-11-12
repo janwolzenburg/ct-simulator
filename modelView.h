@@ -28,6 +28,8 @@
 #include "widgets.h"
 #include "mainWindow.fwd.h"
 #include "model.h"
+#include "callbackFunction.h"
+
 
 /*********************************************************************
    Definitions
@@ -104,9 +106,9 @@ class ModelView : public Fl_Group{
 
 
 	
-	CallbackMethod<ModelView> load_model;
-	CallbackMethod<ModelView> update_model_;
-	CallbackMethod<ModelView> reset_model_;
+	CallbackFunction<ModelView> load_model;
+	CallbackFunction<ModelView> update_model_;
+	CallbackFunction<ModelView> reset_model_;
 	
 
 	/*!

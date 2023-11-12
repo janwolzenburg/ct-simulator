@@ -366,6 +366,12 @@
     <ClInclude Include="dataGrid.hpp">
       <Filter>Quelldateien\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="callbackFunction.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="callbackFunction.hpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">

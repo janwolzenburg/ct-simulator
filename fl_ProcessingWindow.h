@@ -12,16 +12,17 @@
 	Includes
  *********************************************************************/
 
- #include "FL/Fl_Window.H"
- #include "fl_AdjustableGrayscaleImage.h"
- #include "fl_Selector.h"
- #include "fl_Plot.h"
- #include "lineplot.h"
+#include "FL/Fl_Window.H"
+#include "fl_AdjustableGrayscaleImage.h"
+#include "fl_Selector.h"
+#include "fl_Plot.h"
+#include "lineplot.h"
 
- #include "projections.h"
- #include "filteredProjections.h"
- #include "backprojection.h"
- #include "widgets.h"
+#include "projections.h"
+#include "filteredProjections.h"
+#include "backprojection.h"
+#include "widgets.h"
+#include "callbackFunction.h"
 
 
  /*********************************************************************
@@ -61,7 +62,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	FilteredProjections filtered_projections_;					/*!<Current filtered projections*/
 	Backprojection backprojection_;								/*!<Current image reconstructed from filtered projections*/
 
-	CallbackMethod<Fl_ProcessingWindow> filter_change_callback_;	/*!<Callback function for filter change*/
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;	/*!<Callback function for filter change*/
 
 		
 	/*!

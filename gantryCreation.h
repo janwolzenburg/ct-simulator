@@ -19,14 +19,16 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Tooltip.H>
 
-#include "programState.h"
-#include "Fl_Plot.h"
+#include "fl_Plot.h"
 #include "fl_BoundInput.h"
 #include "Fl_Selector.h"
+
+#include "programState.h"
 #include "linePlot.h"
 #include "geometryplot.h"
 #include "widgets.h"
 #include "mainWindow.fwd.h"
+#include "callbackFunction.h"
 
 /*!
  * @brief Class for a GUI element for gantry creation
@@ -94,5 +96,5 @@ class gantryEdition : public Fl_Group{
 	Gantry gantryInstance;												/*!<Instance of the gantry constructed from tube and detector parameter*/
 
 
-	CallbackMethod<gantryEdition> updateCB;
+	CallbackFunction<gantryEdition> updateCB;
 };
