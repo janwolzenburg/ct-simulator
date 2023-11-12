@@ -104,7 +104,6 @@ size_t GrayscaleImage::GetIndex( const size_t c, const size_t r ) const{
 size_t GrayscaleImage::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += SerializeBuildIn( width_, binary_data );
 	num_bytes += SerializeBuildIn( height_, binary_data );
 

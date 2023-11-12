@@ -58,7 +58,6 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += SerializeBuildIn( anode_voltage_V, binary_data );
 	num_bytes += SerializeBuildIn( anode_current_A, binary_data );
 	num_bytes += SerializeBuildIn( ToUnderlying( anode_material ), binary_data );

@@ -12,22 +12,23 @@
 
 
 template< class C >
-PersistingObject<C>::PersistingObject( const C&& standard, const path file_path ) :
+PersistingObject<C>::PersistingObject( const C&& standard, const path file_path, const bool deactivate_saving ) :
 	C( std::move( standard ) ),
 	file_path_( file_path ),
-	was_loaded_( false )
+	was_loaded_( false ),
+	disable_saving( deactivate_saving )
 {
 	LoadFromFile();
 };
 
 template< class C >
-PersistingObject<C>::PersistingObject( const C&& standard, const char* file_name ) :
-	PersistingObject<C>{ std::move( standard ), PROGRAM_STATE().getPath( string{ file_name } ) }
+PersistingObject<C>::PersistingObject( const C&& standard, const char* file_name, const bool deactivate_saving ) :
+	PersistingObject<C>{ std::move( standard ), PROGRAM_STATE().getPath( string{ file_name } ), deactivate_saving }
 {};
 
 template< class C >
 PersistingObject<C>::~PersistingObject( void ){
-	if( was_loaded_ && !PROGRAM_STATE().ResetStateAtExit() )
+	if( was_loaded_ && !PROGRAM_STATE().ResetStateAtExit() && !disable_saving )
 		Save();
 };
 
@@ -61,9 +62,16 @@ bool PersistingObject<C>::Load( const path file_path ){
 template< class C >
 bool PersistingObject<C>::Save( const bool force ) const{
 
+	return Save( file_path_, force );
+};
+
+template< class C >
+bool PersistingObject<C>::Save( const path file_path, const bool force ){
+
 	if( !was_loaded_ && !force ) return false;
 
 	vector<char> binaryData;
+	SerializeBuildIn<string>( FILE_PREAMLBE, binaryData );
 	C::Serialize( binaryData );
 
 	return ExportSerialized( file_path_, binaryData );

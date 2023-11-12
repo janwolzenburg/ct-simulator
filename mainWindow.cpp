@@ -80,13 +80,9 @@ void mainWindow::importSinogram( void ){
 	importChooserInstance.SetAsLoaded();
 
 	if( sgPath.empty() ) return;
+	
+	PersistingObject<Projections> tempory_projections{ Projections{}, sgPath, true };
 
-	vector<char> binary_data = ImportSerialized( sgPath );
-	vector<char>::const_iterator it = binary_data.cbegin();
-
-	if( ValidBinaryData( Projections::FILE_PREAMBLE, binary_data, it ) ){
-		Projections importedSinogram{ binary_data, it };
-		tomographyExecution.AssignProjections( importedSinogram );
-	}
+	tomographyExecution.AssignProjections( tempory_projections );
 	
 }

@@ -86,7 +86,7 @@ class tomographyExec : public Fl_Group{
 	PersistingObject<TomographyProperties> tomographyParamerters;	/*!< Parameter of tomography*/
 
 
-	Projections currentProjection;
+	PersistingObject<Projections> currentProjection;
 	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;
  
 	

@@ -47,7 +47,7 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	tomographyParamerters{ TomographyProperties{}, "storedTomograpyParameter.properties" },
 	
 
-	currentProjection{},
+	currentProjection{ Projections{}, "storedProjections.sinogram" },
 	processing_windows_( 0 ),
 
 	radiateCB{ *this, &tomographyExec::radiate },
@@ -160,17 +160,13 @@ void tomographyExec::updateInformation( ProjectionsProperties projection_propert
 
 void tomographyExec::exportSinogram( void ){
 
-		path exportPath = exportChooserInstance.ChooseFile();
-		exportChooserInstance.SetAsLoaded();
-		if( exportPath.empty() ) return;
+	path exportPath = exportChooserInstance.ChooseFile();
+	exportChooserInstance.SetAsLoaded();
+	if( exportPath.empty() ) return;
 
-		if( exportPath.extension() != ".sinogram" )
-			exportPath += ".sinogram";
+	if( exportPath.extension() != ".sinogram" )
+		exportPath += ".sinogram";
 
-		vector<char> binary_data;
-		currentProjection.Serialize( binary_data );
-
-		ExportSerialized( exportPath, binary_data );
-
+	currentProjection.Save( exportPath );
 
 }

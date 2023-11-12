@@ -96,7 +96,6 @@ size_t ColorImage::GetIndex( const size_t c, const size_t r ) const{
 size_t ColorImage::Serialize( vector<char>& binsourceData ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binsourceData );
 	num_bytes += SerializeBuildIn( width_, binsourceData );
 	num_bytes += SerializeBuildIn( height_, binsourceData );
 

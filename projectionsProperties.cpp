@@ -73,7 +73,6 @@ ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, v
 size_t ProjectionsProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += SerializeBuildIn( number_of_angles_, binary_data );
 	num_bytes += SerializeBuildIn( number_of_distances_, binary_data );
 	num_bytes += SerializeBuildIn( measuring_field_size_, binary_data );

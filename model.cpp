@@ -353,7 +353,6 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	binary_data.reserve( expectedSize );
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
 	num_bytes += voxel_size_.Serialize( binary_data );
 	num_bytes += coordinate_system_->Serialize( binary_data );

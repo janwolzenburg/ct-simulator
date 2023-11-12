@@ -37,16 +37,18 @@ class PersistingObject : public C{
 	 * @details Tries to load object from path
 	 * @param standard Standard instance
 	 * @param file_path Path to load from and save file
+	 * @param deactivate_saving Deactivate saving at destruction
 	*/
-	PersistingObject( const C&& standard, const path file_path );
+	PersistingObject( const C&& standard, const path file_path, const bool deactivate_saving = false );
 
 	/*!
 	 * @brief Constructor
 	 * @details Tries to load object from program storage
 	 * @param standard Standard instance
 	 * @param file_name Name of file in program storage
+	 * @param deactivate_saving Deactivate saving at destruction
 	*/
-	PersistingObject( const C&& standard, const char* file_name );
+	PersistingObject( const C&& standard, const char* file_name, const bool deactivate_saving = false );
 
 	/*!
 	 * @brief Destructor
@@ -85,11 +87,20 @@ class PersistingObject : public C{
 	*/
 	bool Save( const bool force = false ) const;
 
+	/*!
+	 * @brief Save obejct to specific path
+	 * @param file_path Path to save object at
+	 * @param force Force saving when not loaded
+	 * @return True at success
+	*/
+	bool Save( const path file_path, const bool force = false );
+
 
 	private:
 
-	path file_path_;		/*!>Path to file on filesystem*/
-	bool was_loaded_;		/*!>Flag to indicate whether the object was loaded or is default*/
+	path file_path_;		/*!< Path to file on filesystem*/
+	bool was_loaded_;		/*!< Flag to indicate whether the object was loaded or is default*/
+	bool disable_saving;	/*!< Flag to disable saving*/
 
 
 	/*!
