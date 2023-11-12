@@ -185,7 +185,7 @@
     <ClInclude Include="fl_AdjustableGrayscaleImage.h" />
     <ClInclude Include="fl_Selector.h" />
     <ClInclude Include="gantry.h" />
-    <ClInclude Include="gantryCreation.h" />
+    <ClInclude Include="fl_GantryCreation.h" />
     <ClInclude Include="generel.h" />
     <ClInclude Include="generel.hpp" />
     <ClInclude Include="generelMath.h" />
@@ -203,7 +203,7 @@
     <ClInclude Include="line.fwd.h" />
     <ClInclude Include="line.h" />
     <ClInclude Include="intersections.hpp" />
-    <ClInclude Include="modelView.h" />
+    <ClInclude Include="fl_ModelView.h" />
     <ClInclude Include="plot.h" />
     <ClInclude Include="plotting.h" />
     <ClInclude Include="plotting.hpp" />
@@ -265,7 +265,7 @@
     <ClCompile Include="fl_AdjustableGrayscaleImage.cpp" />
     <ClCompile Include="fl_Selector.cpp" />
     <ClCompile Include="gantry.cpp" />
-    <ClCompile Include="gantryCreation.cpp" />
+    <ClCompile Include="fl_GantryCreation.cpp" />
     <ClCompile Include="generel.cpp" />
     <ClCompile Include="generelMath.cpp" />
     <ClInclude Include="dataGrid.hpp">
@@ -278,7 +278,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="intersections.cpp" />
-    <ClCompile Include="modelView.cpp" />
+    <ClCompile Include="fl_ModelView.cpp" />
     <ClCompile Include="plotting.cpp" />
     <ClCompile Include="primitiveCoordinateSystem.cpp" />
     <ClCompile Include="primitiveVector3.cpp" />

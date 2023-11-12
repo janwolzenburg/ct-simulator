@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   modelView.h
+ * @file   fl_ModelView.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -39,7 +39,7 @@
 /*!
  * @brief Class for the model viewer
 */
-class ModelView : public Fl_Group{
+class Fl_ModelView : public Fl_Group{
 
 	public: 
 
@@ -51,7 +51,7 @@ class ModelView : public Fl_Group{
 	 * @param h Height
 	 * @param main_window Reference to the main window
 	*/
-	ModelView( int x, int y, int w, int h, mainWindow& main_window );
+	Fl_ModelView( int x, int y, int w, int h, mainWindow& main_window );
 
 	/*!
 	 * @brief Get Reference to model
@@ -94,9 +94,9 @@ class ModelView : public Fl_Group{
 	DataGrid<VoxelData> model_slice_;					/*!< Slice through model as gridded data*/
 	
 
-	CallbackFunction<ModelView> load_model;		/*!< Callback for model loading*/
-	CallbackFunction<ModelView> update_model_;	/*!< Callback for model update*/
-	CallbackFunction<ModelView> reset_model_;	/*!< Callback for model reset*/
+	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< Callback for model loading*/
+	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< Callback for model update*/
+	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< Callback for model reset*/
 	
 
 	/*!

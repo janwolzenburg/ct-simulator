@@ -240,10 +240,10 @@
     <ClInclude Include="fl_ProcessingWindow.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="modelView.h">
+    <ClInclude Include="fl_ModelView.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="gantryCreation.h">
+    <ClInclude Include="fl_GantryCreation.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="tomographyExecution.h">
@@ -446,10 +446,10 @@
     <ClCompile Include="widgets.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="modelView.cpp">
+    <ClCompile Include="fl_ModelView.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="gantryCreation.cpp">
+    <ClCompile Include="fl_GantryCreation.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="slicePlane.cpp">

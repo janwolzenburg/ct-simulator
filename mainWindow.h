@@ -17,8 +17,8 @@
 #include "FL/Fl_Button.H"
 
 #include "programState.h"
-#include "modelView.h"
-#include "gantryCreation.h"
+#include "fl_ModelView.h"
+#include "fl_GantryCreation.h"
 #include "tomographyExecution.h"
 #include "widgets.h"
 #include "callbackFunction.h"
@@ -56,11 +56,10 @@ class mainWindow : public Fl_Window{
 	Fl_Button resetProgramStateBtn;		/*!< Button to reset program state*/
 
 
-	//FileChooser importChooserInstance;				/*!< File chooser for sinogram import*/
 	PersistingObject<FileChooser> importChooserInstance;	/*!< Persisting storage of sinogram import file selection*/
 
-	ModelView modView;						/*!< Model view*/
-	gantryEdition gantryBuild;				/*!< Gantry creation*/
+	Fl_ModelView modView;						/*!< Model view*/
+	Fl_GantryCreation gantryBuild;				/*!< Gantry creation*/
 	tomographyExec tomographyExecution;		/*!< Tomography execution*/
 
 	CallbackFunction<mainWindow> setresetAtExitCB;

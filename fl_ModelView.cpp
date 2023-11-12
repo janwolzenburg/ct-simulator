@@ -12,13 +12,13 @@
   Includes
 *********************************************************************/
 
-#include "modelView.h"
+#include "fl_ModelView.h"
 #include "serialization.h"
 #include "programState.h"
 #include "mainWindow.h"
 
 
-ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
+Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
@@ -46,9 +46,9 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	model_slice_{},
 	
 
-	load_model{ *this, &ModelView::LoadModel },
-	update_model_{ *this, &ModelView::UpdateModel },
-	reset_model_{ *this, &ModelView::ResetModel }
+	load_model_callback_{ *this, &Fl_ModelView::LoadModel },
+	update_model_callback_{ *this, &Fl_ModelView::UpdateModel },
+	reset_model_callback_{ *this, &Fl_ModelView::ResetModel }
 
 {
 
@@ -63,7 +63,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	// Labelsize and callback
 	head_group_.add( load_model_button_ );
 	load_model_button_.labelsize( (int) ( .5 * (double) load_model_button_.h() ) );
-	load_model_button_.callback( CallbackFunction<ModelView>::Fl_Callback, &load_model );
+	load_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &load_model_callback_ );
 	
 
 
@@ -79,7 +79,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	model_inspection_group_.add( reset_model_button_ );
 	reset_model_button_.labelsize( (int) ( .6 * (double) reset_model_button_.h() ) );
-	reset_model_button_.callback( CallbackFunction<ModelView>::Fl_Callback, &reset_model_ );
+	reset_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &reset_model_callback_ );
 
 	// Model data_
 	model_information_.hide();
@@ -111,9 +111,9 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 
 	// Callbacks for Counters and reset button
-	x_rotation_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
-	y_rotation_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
-	z_position_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	x_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
+	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
+	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 
 
 	// Set values
@@ -132,7 +132,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	}
 }
 
-string ModelView::GetModelDescription( void ) const{
+string Fl_ModelView::GetModelDescription( void ) const{
 
 	string modelDataString;
 
@@ -145,7 +145,7 @@ string ModelView::GetModelDescription( void ) const{
 	return modelDataString;
 }
 
-bool ModelView::MoveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
+bool Fl_ModelView::MoveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
 	const SlicePlane backupPlane = properties_.slice_plane; 
 	SlicePlane& planeInstance =  properties_.slice_plane;
@@ -196,7 +196,7 @@ bool ModelView::MoveModel( double& targetXRot, double& targetYRot, double& targe
 }
 
 
-bool ModelView::SliceModel( void ){
+bool Fl_ModelView::SliceModel( void ){
 	Fl_Group::window()->deactivate();
 	
 	properties_.SetAsLoaded();
@@ -214,7 +214,7 @@ bool ModelView::SliceModel( void ){
 }
 
 
-void ModelView::CenterModel( void ){
+void Fl_ModelView::CenterModel( void ){
 
 	// Center model
 	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
@@ -223,7 +223,7 @@ void ModelView::CenterModel( void ){
 }
 
 
-void ModelView::ResetModel( void ){
+void Fl_ModelView::ResetModel( void ){
 
 	this->window()->deactivate();
 		properties_.slice_plane.rotation_angle_x = 0.;
@@ -244,7 +244,7 @@ void ModelView::ResetModel( void ){
 
 }
 
-void ModelView::LoadModel( void ){
+void Fl_ModelView::LoadModel( void ){
 
 	this->window()->deactivate();
 
@@ -343,7 +343,7 @@ void ModelView::LoadModel( void ){
 
 
 
-void ModelView::UpdateModel( void ){
+void Fl_ModelView::UpdateModel( void ){
 
 	this->window()->deactivate();
 	
