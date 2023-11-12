@@ -73,32 +73,33 @@ class ModelView : public Fl_Group{
 
 	private:
 	
-	Fl_Box title;		/*!< Title*/
+	Fl_Box title_;					/*!< Title*/
 	
-	Fl_Group headGrp;	/*!< Header group*/
-	Fl_Button loadBtn;	/*!< Button to load model*/
+	Fl_Group head_group_;			/*!< Header group*/
+	Fl_Button load_model_button_;	/*!< Button to load model*/
 
-	Fl_Group viewGrp;						/*!< Group to view the model*/
-	Fl_Multiline_Output modelData;			/*!< Model properties_*/
-	Fl_Button resetBtn;						/*!< Button to reset model to default*/
-	Fl_Box viewBox;							/*!< Box to show test when no model is loaded*/
-	Fl_AdjustableGrayscaleImage viewImg;	/*!< Image with adjustable contrast to show model slice*/
+	Fl_Group model_inspection_group_;				/*!< Group to view the model*/
+	Fl_Multiline_Output model_information_;			/*!< Model properties_*/
+	Fl_Button reset_model_button_;					/*!< Button to reset model to default*/
+	Fl_Box loading_status_;							/*!< Box to show test when no model is loaded*/
+	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< Image with adjustable contrast to show model slice*/
 	
-	Fl_Group moveGrp;	/*!< Group for the model movement*/
-	Fl_Counter xRot;	/*!< Input for x-rotation*/
-	Fl_Counter yRot;	/*!< Input for y-rotation*/
-	Fl_Counter zTrans;	/*!< Input for z-transloation*/
+	Fl_Group model_movement_group_;	/*!< Group for the model movement*/
+	Fl_Counter x_rotation_;			/*!< Input for x-rotation*/
+	Fl_Counter y_rotation_;			/*!< Input for y-rotation*/
+	Fl_Counter z_position_;			/*!< Input for z-transloation*/
 
 
-	mainWindow& main_window_;
+	mainWindow& main_window_;					/*!< Reference to main window*/
+	ModelViewProperties properties_;			/*!< Parameter of the model view*/
 
-	FileChooser modelChooserInstance;			/*!< File chooser for the model*/
-	string modelDataString;	/*!< String with model properties_*/
-	Model model_;						/*!< Current model*/
-	ModelViewProperties modelViewPara;			/*!< Parameter of the model view*/
+	FileChooser model_file_chooser_;			/*!< File chooser for the model*/
+	PersistingObject<FileChooser> storedModelChooser;			/*!< Persisting storage of model chooser*/
+
+	string model_information_string_;			/*!< String with model properties_*/
+	Model model_;								/*!< Current model*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!< Slice through model as gridded data*/
 	
-	PersistingObject<FileChooser> storedModelChooser;			/*!< Persisting storage of model chooser*/
 	PersistingObject<Model> storedModel;						/*!< Persisting storage of current model*/
 	PersistingObject<ModelViewProperties> storedViewParameter;	/*!< Persisting storage of view parameters*/
 

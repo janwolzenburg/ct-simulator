@@ -20,36 +20,35 @@
 
 ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	
-	main_window_( main_window ),
-
-	modelChooserInstance{ "Choose CT model", "*.model", path{ "./" } },
-	model_{},
-	modelViewPara{},
-	modelSliceInstance{},
-	
-	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), modelChooserInstance },
-	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), model_},
-	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), modelViewPara ),
-
-	
 	Fl_Group{ x, y, w, h },
 	
-	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
+	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
 
-	headGrp{	X( *this, 0. ),		Y( *this, 0.04 ),		W( *this, 1. ),		H( *this, .05 ) },
-	loadBtn{	X( headGrp, .1 ),	Y( headGrp, .05 ),	W( headGrp, .25 ),	H( headGrp, .9 ),	"Load model" },
+	head_group_{	X( *this, 0. ),		Y( *this, 0.04 ),		W( *this, 1. ),		H( *this, .05 ) },
+	load_model_button_{	X( head_group_, .1 ),	Y( head_group_, .05 ),	W( head_group_, .25 ),	H( head_group_, .9 ),	"Load model" },
 
-	viewGrp{	X( *this, 0. ),		vOff( headGrp ),	W( *this , 1. ),	H( *this, .75 ) },
-	modelData{	X( viewGrp, 0. ),	Y( viewGrp, 0. ),	W( viewGrp, .5 ),	H( viewGrp, .15 ) },
-	resetBtn{	X( viewGrp, .6 ),	Y( viewGrp, .06 ),	W( viewGrp, .25 ),	H( viewGrp, .05 ), "Reset model" },
+	model_inspection_group_{	X( *this, 0. ),		vOff( head_group_ ),	W( *this , 1. ),	H( *this, .75 ) },
+	model_information_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, 0. ),	W( model_inspection_group_, .5 ),	H( model_inspection_group_, .15 ) },
+	reset_model_button_{	X( model_inspection_group_, .6 ),	Y( model_inspection_group_, .06 ),	W( model_inspection_group_, .25 ),	H( model_inspection_group_, .05 ), "Reset model" },
 
-	viewBox{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ),	"No model loaded" },
-	viewImg{	X( viewGrp, 0. ),	Y( viewGrp, .175 ),	W( viewGrp, 1. ),	H( viewGrp, .725 ) },
+	loading_status_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ),	"No model loaded" },
+	model_slice_image_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ) },
 
-	moveGrp{	X( *this, 0. ),		vOff( viewGrp ),	W( *this, 1. ),		H( *this, .165 ) },
-	xRot{		X( moveGrp, .1 ),	Y( moveGrp, .0 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "x-Rotation" },
-	yRot{		X( moveGrp, .1 ),	Y( moveGrp, .5 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "y-Rotation" },
-	zTrans{		X( moveGrp, .5 ),	Y( moveGrp, .0 ),	W( moveGrp, .3 ),	H( moveGrp, .25 ), "z-Translation" },
+	model_movement_group_{	X( *this, 0. ),		vOff( model_inspection_group_ ),	W( *this, 1. ),		H( *this, .165 ) },
+	x_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },
+	y_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
+	z_position_{		X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
+
+	main_window_( main_window ),
+
+	model_file_chooser_{ "Choose CT model", "*.model", path{ "./" } },
+	model_{},
+	properties_{},
+	modelSliceInstance{},
+	
+	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), model_file_chooser_ },
+	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), model_},
+	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), properties_ ),
 
 	load_model{ *this, &ModelView::loadModel },
 	update_model_{ *this, &ModelView::UpdateModel },
@@ -58,18 +57,18 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 {
 
 	
-	Fl_Group::add( title );
-	title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
+	Fl_Group::add( title_ );
+	title_.box( FL_NO_BOX ); title_.align( FL_ALIGN_CENTER ); title_.labelsize( 30 );
 
 
 	//--------------------------- Head ---------------------------//
 
-	Fl_Group::add( headGrp );
+	Fl_Group::add( head_group_ );
 
 	// Labelsize and callback
-	headGrp.add( loadBtn );
-	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
-	loadBtn.callback( CallbackFunction<ModelView>::Fl_Callback, &load_model );
+	head_group_.add( load_model_button_ );
+	load_model_button_.labelsize( (int) ( .5 * (double) load_model_button_.h() ) );
+	load_model_button_.callback( CallbackFunction<ModelView>::Fl_Callback, &load_model );
 	
 
 
@@ -78,63 +77,63 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	//--------------------------- View ---------------------------//
 
 	// View group dictates resizing
-	Fl_Group::add_resizable( viewGrp );
-	viewGrp.add( modelData );
-	viewGrp.add( viewBox );
-	viewGrp.add( viewImg );
+	Fl_Group::add_resizable( model_inspection_group_ );
+	model_inspection_group_.add( model_information_ );
+	model_inspection_group_.add( loading_status_ );
+	model_inspection_group_.add( model_slice_image_ );
 
-	viewGrp.add( resetBtn );
-	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
-	resetBtn.callback( CallbackFunction<ModelView>::Fl_Callback, &reset_model_ );
+	model_inspection_group_.add( reset_model_button_ );
+	reset_model_button_.labelsize( (int) ( .6 * (double) reset_model_button_.h() ) );
+	reset_model_button_.callback( CallbackFunction<ModelView>::Fl_Callback, &reset_model_ );
 
 	// Model data_
-	modelData.hide();
+	model_information_.hide();
 
 	// Labelsize and box
-	viewBox.labelsize( (int) ( .05 * (double) viewBox.h() ) );
+	loading_status_.labelsize( (int) ( .05 * (double) loading_status_.h() ) );
 
 	// Hide image initially
-	viewGrp.resizable( viewBox );
-	viewImg.hide();
+	model_inspection_group_.resizable( loading_status_ );
+	model_slice_image_.hide();
 
 
 	//--------------------------- Movement ---------------------------//
 
-	Fl_Group::add( moveGrp );
-	moveGrp.add( xRot );
-	moveGrp.add( yRot );
-	moveGrp.add( zTrans );
+	Fl_Group::add( model_movement_group_ );
+	model_movement_group_.add( x_rotation_ );
+	model_movement_group_.add( y_rotation_ );
+	model_movement_group_.add( z_position_ );
 
 	// Counter ranges
-	xRot.range( -180., 180. );		xRot.step( 1., 10. );
-	yRot.range( -180., 180. );		yRot.step( 1., 10. );
-	zTrans.range( -500., 500. );	zTrans.step( 1., 10. );
+	x_rotation_.range( -180., 180. );		x_rotation_.step( 1., 10. );
+	y_rotation_.range( -180., 180. );		y_rotation_.step( 1., 10. );
+	z_position_.range( -500., 500. );	z_position_.step( 1., 10. );
 
 	// Labelsizes
-	xRot.labelsize( (int) ( .50 * (double) xRot.h() ) );
-	yRot.labelsize( (int) ( .50 * (double) yRot.h() ) );
-	zTrans.labelsize( (int) ( .50 * (double) zTrans.h() ) );
+	x_rotation_.labelsize( (int) ( .50 * (double) x_rotation_.h() ) );
+	y_rotation_.labelsize( (int) ( .50 * (double) y_rotation_.h() ) );
+	z_position_.labelsize( (int) ( .50 * (double) z_position_.h() ) );
 
 
 	// Callbacks for Counters and reset button
-	xRot.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
-	yRot.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
-	zTrans.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	x_rotation_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	y_rotation_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	z_position_.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
 
 
 	// Set values
-	xRot.value(modelViewPara.slice_plane.rotation_angle_x );
-	yRot.value( modelViewPara.slice_plane.rotation_angle_y );
-	zTrans.value( modelViewPara.slice_plane.position_z );
+	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
+	y_rotation_.value( properties_.slice_plane.rotation_angle_y );
+	z_position_.value( properties_.slice_plane.position_z );
 
 	// Hide initially
-	moveGrp.hide();
+	model_movement_group_.hide();
 
 	
 	if( IsModelLoaded() ){
 		UpdateModel();
-		viewImg.SetSliderBounds( model_.attenuationRange() );
-		viewImg.ChangeSliderValues( modelViewPara.contrast );
+		model_slice_image_.SetSliderBounds( model_.attenuationRange() );
+		model_slice_image_.ChangeSliderValues( properties_.contrast );
 	}
 }
 
@@ -160,8 +159,8 @@ string ModelView::modelDescription( void ) const{
 
 bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
-	const SlicePlane backupPlane = modelViewPara.slice_plane; 
-	SlicePlane& planeInstance =  modelViewPara.slice_plane;
+	const SlicePlane backupPlane = properties_.slice_plane; 
+	SlicePlane& planeInstance =  properties_.slice_plane;
 
 	const PrimitiveCoordinateSystem backupCSys = model_.coordinate_system()->GetPrimitive();
 
@@ -214,7 +213,7 @@ bool ModelView::sliceModel( void ){
 	
 	storedViewParameter.SetAsLoaded();
 
-	DataGrid<VoxelData> tempSlice = model_.GetSlice(  modelViewPara.slice_plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, 1. );
 	
 	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
 	{
@@ -242,19 +241,19 @@ void ModelView::centerModel( void ){
 void ModelView::resetModel( void ){
 
 	this->window()->deactivate();
-		modelViewPara.slice_plane.rotation_angle_x = 0.;
-	 modelViewPara.slice_plane.rotation_angle_y = 0.;
-	 modelViewPara.slice_plane.position_z = 0.;
+		properties_.slice_plane.rotation_angle_x = 0.;
+	 properties_.slice_plane.rotation_angle_y = 0.;
+	 properties_.slice_plane.position_z = 0.;
 
 	centerModel();
 
-	xRot.value( 0. );
-	yRot.value( 0. );
-	zTrans.value( 0. );
+	x_rotation_.value( 0. );
+	y_rotation_.value( 0. );
+	z_position_.value( 0. );
 
 	sliceModel();
-	viewImg.AssignImage( modelSliceInstance );
-	modelViewPara.contrast = viewImg.GetContrast();
+	model_slice_image_.AssignImage( modelSliceInstance );
+	properties_.contrast = model_slice_image_.GetContrast();
 
 	this->window()->activate();
 
@@ -264,27 +263,27 @@ void ModelView::loadModel( void ){
 
 	this->window()->deactivate();
 
-	viewImg.hide(); viewBox.show(); modelData.hide();
-	viewBox.label( "Loading model..." );
+	model_slice_image_.hide(); loading_status_.show(); model_information_.hide();
+	loading_status_.label( "Loading model..." );
 
-	path modelToLoad = modelChooserInstance.ChooseFile();
+	path modelToLoad = model_file_chooser_.ChooseFile();
 	storedModelChooser.SetAsLoaded();
 
 	if( !storedModel.Load( modelToLoad ) ){
-		viewBox.label( "Loading failed!" );
+		loading_status_.label( "Loading failed!" );
 		this->window()->activate();
 		return;
 	}
 
-	viewImg.SetSliderBounds( model_.attenuationRange() );
-	modelViewPara.contrast = viewImg.GetContrast();
+	model_slice_image_.SetSliderBounds( model_.attenuationRange() );
+	properties_.contrast = model_slice_image_.GetContrast();
 
 	resetModel();
 	UpdateModel();
 
 
-	viewImg.show(); viewBox.hide(); modelData.show();
-	moveGrp.show();
+	model_slice_image_.show(); loading_status_.hide(); model_information_.show();
+	model_movement_group_.show();
 
 
 	
@@ -364,28 +363,28 @@ void ModelView::UpdateModel( void ){
 	this->window()->deactivate();
 	
 	// Store in variable for moveModel function call
-	double oldXRot = xRot.value();
-	double oldYRot = yRot.value();
-	double oldZTrans = zTrans.value();
+	double oldXRot = x_rotation_.value();
+	double oldYRot = y_rotation_.value();
+	double oldZTrans = z_position_.value();
 
 	// Movement did not succeed?
 	if( !moveModel( oldXRot, oldYRot, oldZTrans ) ){
 		// moveModel changes arguments to previous value
-		xRot.value( oldXRot );
-		yRot.value( oldYRot );
-		zTrans.value( oldZTrans );
+		x_rotation_.value( oldXRot );
+		y_rotation_.value( oldYRot );
+		z_position_.value( oldZTrans );
 	}
 	else{
 		// New assignment only necessary, when movement succeeded
-		viewImg.AssignImage( modelSliceInstance );//, false );
-		modelViewPara.contrast = viewImg.GetContrast();
+		model_slice_image_.AssignImage( modelSliceInstance );//, false );
+		properties_.contrast = model_slice_image_.GetContrast();
 	}
 
-	viewImg.show(); viewBox.hide(); modelData.show();
-	moveGrp.show();
+	model_slice_image_.show(); loading_status_.hide(); model_information_.show();
+	model_movement_group_.show();
 
-	modelDataString = modelDescription();
-	modelData.value( modelDataString.c_str() );
+	model_information_string_ = modelDescription();
+	model_information_.value( model_information_string_.c_str() );
 	this->window()->activate();
 
 }
