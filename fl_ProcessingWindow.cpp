@@ -51,7 +51,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	filter_group_.add( filter_type_selector_ );
 
 	filter_type_selector_.align( FL_ALIGN_TOP );
-	filter_type_selector_.callback( HandleCallback<Fl_ProcessingWindow>, &filter_change_callback_ );
+	filter_type_selector_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &filter_change_callback_ );
 
 	vector<string> filterNames;
 	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );

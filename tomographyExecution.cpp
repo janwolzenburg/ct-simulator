@@ -93,10 +93,10 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	scatteringOnOff.value( tomographyParamerters.scattering_enabled );
 	scatteringOnOff.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-	radiationLoopsIn.callback( HandleCallback<tomographyExec>, &updateCB );
+	radiationLoopsIn.callback( CallbackFunction<tomographyExec>::Fl_Callback, &updateCB );
 
-	scatterPropabilityIn.callback( HandleCallback<tomographyExec>, &updateCB );
-	scatteringOnOff.callback( HandleCallback<tomographyExec>, &updateCB );
+	scatterPropabilityIn.callback( CallbackFunction<tomographyExec>::Fl_Callback, &updateCB );
+	scatteringOnOff.callback( CallbackFunction<tomographyExec>::Fl_Callback, &updateCB );
 
 
 	Fl_Group::add( controlGrp );
@@ -106,8 +106,8 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 
 	exportButton.deactivate();
 
-	radiationButton.callback( HandleCallback<tomographyExec>, &radiateCB );
-	exportButton.callback( HandleCallback<tomographyExec>, &exportCB );
+	radiationButton.callback( CallbackFunction<tomographyExec>::Fl_Callback, &radiateCB );
+	exportButton.callback( CallbackFunction<tomographyExec>::Fl_Callback, &exportCB );
 
 	this->deactivate();
 }

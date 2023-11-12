@@ -83,9 +83,9 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 		tubeVoltageIn.value( xRayTubeParameter.anode_voltage_V );
 		tubeCurrentIn.value( xRayTubeParameter.anode_current_A );
 
-		tubeVoltageIn.callback( HandleCallback<gantryEdition>, &updateCB );
-		tubeCurrentIn.callback( HandleCallback<gantryEdition>, &updateCB );
-		materialIn.callback( HandleCallback<gantryEdition>, &updateCB );
+		tubeVoltageIn.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		tubeCurrentIn.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		materialIn.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
 
 		vector<string> materialNames;
 		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
@@ -124,9 +124,9 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 		distRange.SetProperties( 1., 10000., 0 );
 		distRange.value( radonParameter.measuring_field_size() );
 
-		colPnts.callback( HandleCallback<gantryEdition>, &updateCB );
-		rowPnts.callback( HandleCallback<gantryEdition>, &updateCB );
-		distRange.callback( HandleCallback<gantryEdition>, &updateCB );
+		colPnts.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		rowPnts.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		distRange.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
 
 		colPnts.tooltip( "Amount of angles in Sinogram." );
 		rowPnts.tooltip( "Amount of distances in sinogram. Is the amount of detector pixel." );
@@ -149,10 +149,10 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 		structureIn.value( (int) physical_detector_properties_.has_anti_scattering_structure );
 		structureIn.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-		raysPerPixelIn.callback(  HandleCallback<gantryEdition>, &updateCB );
-		detector_focus_distance_input.callback( HandleCallback<gantryEdition>, &updateCB );
-		maxRayAngleIn.callback(  HandleCallback<gantryEdition>, &updateCB );
-		structureIn.callback(  HandleCallback<gantryEdition>, &updateCB  );
+		raysPerPixelIn.callback(  CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		detector_focus_distance_input.callback( CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		maxRayAngleIn.callback(  CallbackFunction<gantryEdition>::Fl_Callback, &updateCB );
+		structureIn.callback(  CallbackFunction<gantryEdition>::Fl_Callback, &updateCB  );
 
 		raysPerPixelIn.tooltip( "How many rays will be simulated per pixel." );
 		detector_focus_distance_input.tooltip( "Detector focus distance." );

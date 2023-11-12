@@ -69,7 +69,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	// Labelsize and callback
 	headGrp.add( loadBtn );
 	loadBtn.labelsize( (int) ( .5 * (double) loadBtn.h() ) );
-	loadBtn.callback( HandleCallback<ModelView>, &load_model );
+	loadBtn.callback( CallbackFunction<ModelView>::Fl_Callback, &load_model );
 	
 
 
@@ -85,7 +85,7 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	viewGrp.add( resetBtn );
 	resetBtn.labelsize( (int) ( .6 * (double) resetBtn.h() ) );
-	resetBtn.callback( HandleCallback<ModelView>, &reset_model_ );
+	resetBtn.callback( CallbackFunction<ModelView>::Fl_Callback, &reset_model_ );
 
 	// Model data_
 	modelData.hide();
@@ -117,9 +117,9 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 
 	// Callbacks for Counters and reset button
-	xRot.callback( HandleCallback<ModelView>, &update_model_ );
-	yRot.callback( HandleCallback<ModelView>, &update_model_ );
-	zTrans.callback( HandleCallback<ModelView>, &update_model_ );
+	xRot.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	yRot.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
+	zTrans.callback( CallbackFunction<ModelView>::Fl_Callback, &update_model_ );
 
 
 	// Set values

@@ -21,9 +21,8 @@ void CallbackFunction<C>::Execute( void ){
 	(instance_.*member_function_)();
 }
 
-
 template<class C>
-static void HandleCallback( Fl_Widget* widget, void* callback ){
+void CallbackFunction<C>::Fl_Callback( Fl_Widget* widget, void* callback ){
 	CallbackFunction<C>* cb = static_cast<CallbackFunction<C>*>( callback );
 	cb->Execute();
 }

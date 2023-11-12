@@ -41,6 +41,12 @@ class CallbackFunction{
 	*/
 	void Execute( void );
 
+	/*!
+	 * @brief Function to pass to FLTK callback() function
+	 * @param widget Pointer to widget
+	 * @param callback Pointer to CallbackFunction instance
+	*/
+	static void Fl_Callback( Fl_Widget* widget, void* callback );
 
 	private:
 
@@ -48,15 +54,5 @@ class CallbackFunction{
 	void (C::*member_function_)( void );	/*!< Pointer to member function*/
 
 };
-
-/*!
- * @brief Function to execute callback
- * @tparam C Class
- * @param widget FLTK widget
- * @param callback Pointer to CallbackMethod
-*/
-template<class C>
-static void HandleCallback( Fl_Widget* widget, void* callback );
-
 
 #include "callbackFunction.hpp"

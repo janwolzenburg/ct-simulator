@@ -46,10 +46,10 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	Fl_Window::add( tomographyExecution );
 
 	menu.add( importSinogramBtn );
-	importSinogramBtn.callback( HandleCallback<mainWindow>, &importSGCB );
+	importSinogramBtn.callback( CallbackFunction<mainWindow>::Fl_Callback, &importSGCB);
 
 	menu.add( resetProgramStateBtn );
-	resetProgramStateBtn.callback( HandleCallback<mainWindow>, &setresetAtExitCB );
+	resetProgramStateBtn.callback( CallbackFunction<mainWindow>::Fl_Callback, &setresetAtExitCB );
 
 	gantryBuild.deactivate();
 	tomographyExecution.deactivate();
