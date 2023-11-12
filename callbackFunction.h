@@ -34,7 +34,7 @@ class CallbackFunction{
 	 * @param class_instance Reference to class instance 
 	 * @param member_function Pointer to member function
 	*/
-	CallbackFunction( C& class_instance, void ( C::*member_function )( void )  );
+	CallbackFunction( C& class_instance, void ( C::*member_function )( void ) );
 
 	/*!
 	 * @brief Execute member function
