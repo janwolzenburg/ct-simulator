@@ -19,7 +19,6 @@
 
 
 ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
-	
 	Fl_Group{ x, y, w, h },
 	
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
@@ -30,7 +29,6 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	model_inspection_group_{	X( *this, 0. ),		vOff( head_group_ ),	W( *this , 1. ),	H( *this, .75 ) },
 	model_information_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, 0. ),	W( model_inspection_group_, .5 ),	H( model_inspection_group_, .15 ) },
 	reset_model_button_{	X( model_inspection_group_, .6 ),	Y( model_inspection_group_, .06 ),	W( model_inspection_group_, .25 ),	H( model_inspection_group_, .05 ), "Reset model" },
-
 	loading_status_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ),	"No model loaded" },
 	model_slice_image_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ) },
 
@@ -39,11 +37,12 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	y_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
 	z_position_{		X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
 
+	
+	properties_{ ModelViewProperties{}, "view.properties" },
 	main_window_( main_window ),
 
 	model_chooser_{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "model.chooser" },
 	model_{ Model{}, "current.model" },
-	properties_{ ModelViewProperties{}, "view.properties" },
 	model_slice_{},
 	
 

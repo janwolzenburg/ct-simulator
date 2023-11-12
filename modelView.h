@@ -84,7 +84,8 @@ class ModelView : public Fl_Group{
 	Fl_Counter y_rotation_;			/*!< Input for y-rotation*/
 	Fl_Counter z_position_;			/*!< Input for z-transloation*/
 
-
+	
+	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
 	mainWindow& main_window_;							/*!< Reference to main window*/
 	PersistingObject<FileChooser> model_chooser_;		/*!< Persisting storage of model chooser*/
 	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
@@ -92,7 +93,6 @@ class ModelView : public Fl_Group{
 	string model_information_string_;					/*!< String with model properties_*/
 	DataGrid<VoxelData> model_slice_;					/*!< Slice through model as gridded data*/
 	
-	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
 
 	CallbackFunction<ModelView> load_model;		/*!< Callback for model loading*/
 	CallbackFunction<ModelView> update_model_;	/*!< Callback for model update*/
