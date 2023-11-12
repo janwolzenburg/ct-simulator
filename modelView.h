@@ -54,11 +54,6 @@ class ModelView : public Fl_Group{
 	ModelView( int x, int y, int w, int h, mainWindow& main_window );
 
 	/*!
-	 * @brief Destructor
-	*/
-	~ModelView( void );
-
-	/*!
 	 * @brief Get Reference to model
 	 * @return Constant reference to model
 	*/
@@ -68,7 +63,7 @@ class ModelView : public Fl_Group{
 	 * @brief Check if a model has been loaded
 	 * @return True when a model has been loaded
 	*/
-	bool IsModelLoaded( void ) const{ return storedModel.was_loaded(); };
+	bool IsModelLoaded( void ) const{ return model_.was_loaded(); };
 
 
 	private:
@@ -91,17 +86,17 @@ class ModelView : public Fl_Group{
 
 
 	mainWindow& main_window_;					/*!< Reference to main window*/
-	ModelViewProperties properties_;			/*!< Parameter of the model view*/
+	//ModelViewProperties properties_;			/*!< Parameter of the model view*/
 
-	FileChooser model_file_chooser_;			/*!< File chooser for the model*/
+	//FileChooser model_file_chooser_;			/*!< File chooser for the model*/
 	PersistingObject<FileChooser> storedModelChooser;			/*!< Persisting storage of model chooser*/
 
 	string model_information_string_;			/*!< String with model properties_*/
-	Model model_;								/*!< Current model*/
+	//Model model_;								/*!< Current model*/
 	DataGrid<VoxelData> modelSliceInstance;		/*!< Slice through model as gridded data*/
 	
-	PersistingObject<Model> storedModel;						/*!< Persisting storage of current model*/
-	PersistingObject<ModelViewProperties> storedViewParameter;	/*!< Persisting storage of view parameters*/
+	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
+	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
 
 
 

@@ -32,13 +32,14 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	gantryBuild{			hOff( modView ) + X( *this, .025 ),		Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	tomographyExecution{	hOff( gantryBuild ) + X( *this, .025 ), Y( *this, 0.04 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	
-	importChooserInstance{ "Import Sinogram", "*.sinogram", path{ "./" } },
-	storedImportChooser{ PROGRAM_STATE().getPath( "storedImportChooser.txt" ), importChooserInstance },
+	importChooserInstance{ FileChooser{ "Import Sinogram", "*.sinogram", path{ "./" } }, "storedImportChooser.txt"},
+	
 
 	setresetAtExitCB{ *this, &mainWindow::resetAtExit },
 	importSGCB{ *this, &mainWindow::importSinogram }
 	
 {
+
 	Fl_Window::resizable( *this );
 	Fl_Window::add( menu );
 	Fl_Window::add( modView );
@@ -66,10 +67,6 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 }
 
 
-mainWindow::~mainWindow( void ){
-	storedImportChooser.Save();
-}
-
 void mainWindow::resetAtExit( void ){
 
 	if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
@@ -79,7 +76,7 @@ void mainWindow::resetAtExit( void ){
 
 void mainWindow::importSinogram( void ){
 
-	storedImportChooser.SetAsLoaded();
+	importChooserInstance.SetAsLoaded();
 	path sgPath =  importChooserInstance.ChooseFile();
 
 	if( sgPath.empty() ) return;

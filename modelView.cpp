@@ -41,14 +41,11 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	main_window_( main_window ),
 
-	model_file_chooser_{ "Choose CT model", "*.model", path{ "./" } },
-	model_{},
-	properties_{},
+	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "storedModelChooser.model" },
+	model_{ Model{}, "storedModel.txt" },
+	properties_{ ModelViewProperties{}, "storedViewParameter.model" },
 	modelSliceInstance{},
 	
-	storedModelChooser{ PROGRAM_STATE().getPath( "storedModelChooser.txt" ), model_file_chooser_ },
-	storedModel{ PROGRAM_STATE().getPath("storedModel.model"), model_},
-	storedViewParameter( PROGRAM_STATE().getPath( "storedViewParameter.txt" ), properties_ ),
 
 	load_model{ *this, &ModelView::loadModel },
 	update_model_{ *this, &ModelView::UpdateModel },
@@ -56,7 +53,6 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 {
 
-	
 	Fl_Group::add( title_ );
 	title_.box( FL_NO_BOX ); title_.align( FL_ALIGN_CENTER ); title_.labelsize( 30 );
 
@@ -137,13 +133,6 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 	}
 }
 
-ModelView::~ModelView( void ){
-	storedModel.Save();
-	storedModelChooser.Save();
-	storedViewParameter.Save();
-};
-
-
 string ModelView::modelDescription( void ) const{
 
 	string modelDataString;
@@ -211,7 +200,7 @@ bool ModelView::moveModel( double& targetXRot, double& targetYRot, double& targe
 bool ModelView::sliceModel( void ){
 	Fl_Group::window()->deactivate();
 	
-	storedViewParameter.SetAsLoaded();
+	properties_.SetAsLoaded();
 
 	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, 1. );
 	
@@ -266,10 +255,10 @@ void ModelView::loadModel( void ){
 	model_slice_image_.hide(); loading_status_.show(); model_information_.hide();
 	loading_status_.label( "Loading model..." );
 
-	path modelToLoad = model_file_chooser_.ChooseFile();
+	path modelToLoad = storedModelChooser.ChooseFile();
 	storedModelChooser.SetAsLoaded();
 
-	if( !storedModel.Load( modelToLoad ) ){
+	if( !model_.Load( modelToLoad ) ){
 		loading_status_.label( "Loading failed!" );
 		this->window()->activate();
 		return;

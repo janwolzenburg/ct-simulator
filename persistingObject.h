@@ -14,7 +14,6 @@
 
 #include "generel.h"
 
-
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -24,7 +23,7 @@
  * @tparam C Class of object
 */
 template< class C >
-class PersistingObject{
+class PersistingObject : public C{
 
 	
 	static_assert( std::is_pointer<decltype( &C::FILE_PREAMBLE )>::value );
@@ -37,7 +36,28 @@ class PersistingObject{
 	 * @param file_path Path to file
 	 * @param object_Reference Reference to object
 	*/
-	PersistingObject( const path file_path, C& object_Reference );
+	PersistingObject( const C&& source, const path file_path ) :
+		C( source ),
+		file_path_( file_path ),
+		was_loaded_( false ){
+		LoadFromFile();
+	};
+
+	PersistingObject( const C&& source, const char* file_name ) :
+		PersistingObject{ source, PROGRAM_STATE().getPath( string{ file_name } ) }
+	{};
+
+	~PersistingObject( void ){
+		if( was_loaded_ )
+			Save();
+	}
+
+
+	PersistingObject& operator=( const C& instance ){
+		C::operator=( instance );
+		was_loaded_ = true;
+		return *this;
+	}
 
 	/*!
 	 * @brief Check if an object was loaded
@@ -61,19 +81,18 @@ class PersistingObject{
 	 * @brief Save the object
 	 * @param force When false only store if object was loaded before
 	*/
-	void Save( const bool force = false ) const;
+	bool Save( const bool force = false ) const;
 
 
 	private:
 
 	path file_path_;		/*!>Path to file on filesystem*/
-	C& object_reference_;	/*!>Reference to object*/
 	bool was_loaded_;		/*!>Flag to indicate whether the object was loaded or is default*/
 
 	/*!
 	 * @brief Load file from stored path
 	*/
-	void LoadFromFile( void );
+	bool LoadFromFile( void );
 
 };
 

@@ -146,6 +146,8 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 
 bool ExportSerialized( const path file_path, const vector<char>& binary_data ){
 
+	if( file_path.empty() ) return false;
+
 	// Storage directory when it does not exist
 	if( !std::filesystem::exists( file_path.parent_path()  )) std::filesystem::create_directory( file_path.parent_path() );
 

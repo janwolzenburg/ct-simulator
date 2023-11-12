@@ -15,7 +15,6 @@
 
 #include "tomographyExecution.h"
 
-#include "fl_ProcessingWindow.h"
 #include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
@@ -42,12 +41,11 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
-	exportChooserInstance{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE },
-	storedExportChooser{ PROGRAM_STATE().getPath( "storedExportChooser.txt" ), exportChooserInstance },
+	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "storedExportChooser.txt" },
 	
 	tomographyInstance{},
-	tomographyParamerters{},
-	storedTomographyParamerter{ PROGRAM_STATE().getPath("storedTomograpyParameter.txt"), tomographyParamerters},
+	tomographyParamerters{ TomographyProperties{}, "storedTomograpyParameter.txt" },
+	
 
 	currentProjection{},
 	processing_windows_( 0 ),
@@ -55,8 +53,8 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	radiateCB{ *this, &tomographyExec::radiate },
 	updateCB{ *this, &tomographyExec::updateProperties },
 	exportCB{ *this, &tomographyExec::exportSinogram }
-
 {
+
 
 	Fl_Group::add( title );
 	title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
@@ -112,13 +110,6 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	this->deactivate();
 }
 
-
-tomographyExec::~tomographyExec( void ){
-	
-	storedExportChooser.Save();
-	storedTomographyParamerter.Save();
-}
-
 void tomographyExec::AssignProjections( const Projections projections ){
 	currentProjection = projections;
 	exportButton.activate();
@@ -130,10 +121,7 @@ void tomographyExec::AssignProjections( const Projections projections ){
 
 
 void tomographyExec::updateProperties( void ){
-
 		tomographyParamerters = TomographyProperties{ (bool) scatteringOnOff.value(), (size_t) radiationLoopsIn.value(), scatterPropabilityIn.value() };
-		storedTomographyParamerter.SetAsLoaded();
-		
 }
 
 void tomographyExec::radiate( void ){
@@ -177,7 +165,7 @@ void tomographyExec::updateInformation( ProjectionsProperties projection_propert
 void tomographyExec::exportSinogram( void ){
 
 		path exportPath = exportChooserInstance.ChooseFile();
-		storedExportChooser.SetAsLoaded();
+		exportChooserInstance.SetAsLoaded();
 		if( exportPath.empty() ) return;
 
 		if( exportPath.extension() != ".sinogram" )

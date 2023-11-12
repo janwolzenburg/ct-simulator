@@ -26,6 +26,7 @@
 #include "widgets.h"
 #include "mainWindow.fwd.h"
 #include "callbackFunction.h"
+#include "fl_ProcessingWindow.h"
 
 
 /*!
@@ -43,11 +44,6 @@ class tomographyExec : public Fl_Group{
 	 * @param h Height
 	*/
 	tomographyExec( int x, int y, int w, int h, mainWindow& main_window );
-
-	/*! 
-	 * @brief Destructor
-	*/
-	~tomographyExec( void );
 
 	/*!
 	 * @brief Set information update flag
@@ -81,13 +77,13 @@ class tomographyExec : public Fl_Group{
 	Fl_Button exportButton;		/*!< Export button for sinogram*/
 
 	
-	FileChooser exportChooserInstance;				/*!< File chooser for sinogram export*/
-	PersistingObject<FileChooser> storedExportChooser;	/*!< Persisting storage of sinogram export file selection*/
+	//FileChooser exportChooserInstance;				/*!< File chooser for sinogram export*/
+	PersistingObject<FileChooser> exportChooserInstance;	/*!< Persisting storage of sinogram export file selection*/
 
 		
 	Tomography tomographyInstance;				/*!< Instance of the tomography*/
-	TomographyProperties tomographyParamerters;	/*!< Parameter of tomography*/
-	PersistingObject<TomographyProperties> storedTomographyParamerter;	/*!< Persisting storage of the tomography parameter*/
+	//TomographyProperties tomographyParamerters;	/*!< Parameter of tomography*/
+	PersistingObject<TomographyProperties> tomographyParamerters;	/*!< Persisting storage of the tomography parameter*/
 
 
 	Projections currentProjection;

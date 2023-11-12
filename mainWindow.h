@@ -44,8 +44,6 @@ class mainWindow : public Fl_Window{
 	*/
 	mainWindow( int w, int h, const char* label );
 
-	~mainWindow( void );
-
 	void importSinogram( void );
 
 	void resetAtExit( void );
@@ -58,8 +56,8 @@ class mainWindow : public Fl_Window{
 	Fl_Button resetProgramStateBtn;		/*!< Button to reset program state*/
 
 
-	FileChooser importChooserInstance;				/*!< File chooser for sinogram import*/
-	PersistingObject<FileChooser> storedImportChooser;	/*!< Persisting storage of sinogram import file selection*/
+	//FileChooser importChooserInstance;				/*!< File chooser for sinogram import*/
+	PersistingObject<FileChooser> importChooserInstance;	/*!< Persisting storage of sinogram import file selection*/
 
 	ModelView modView;						/*!< Model view*/
 	gantryEdition gantryBuild;				/*!< Gantry creation*/

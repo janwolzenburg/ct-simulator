@@ -28,12 +28,9 @@
 gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
-	xRayTubeParameter{},
-	storedXRayTubeParameter{ PROGRAM_STATE().getPath( "storedTubeParameter.txt" ), xRayTubeParameter },
-	radonParameter{},
-	storedRadonParameter{  PROGRAM_STATE().getPath( "storedRadonParameter.txt" ), radonParameter },
-	physical_detector_properties_{},
-	storedDetectorParameter{  PROGRAM_STATE().getPath( "storedDetectorParameter.txt" ), physical_detector_properties_ },
+	xRayTubeParameter{ XRayTubeProperties{}, "storedTubeParameter.txt" },
+	radonParameter{ ProjectionsProperties{}, "storedRadonParameter.txt" },
+	physical_detector_properties_{ PhysicalDetectorProperties{}, "storedPhysicalParameter.txt" },
 	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
 
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
@@ -61,8 +58,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 	updateCB{ *this, &gantryEdition::UpdateGantry }
 	
 	{
-
-
 		Fl_Group::add( title );
 		title.box( FL_NO_BOX ); title.align( FL_ALIGN_CENTER ); title.labelsize( 30 );
 
@@ -166,12 +161,6 @@ gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_windo
 		UpdateGantry();
 }
 
-gantryEdition::~gantryEdition( void ){
-	storedXRayTubeParameter.Save();
-	storedRadonParameter.Save();
-	storedDetectorParameter.Save();
-}
-
 void gantryEdition::SetDistances( const double max_corner_distance ){
 	detector_focus_distance_input.value( 2. * ( max_corner_distance + 150. ) );
 	distRange.value( 2. * ( max_corner_distance + 25. ) );
@@ -193,9 +182,6 @@ void gantryEdition::UpdateGantry( void ){
 		radonParameter = ProjectionsProperties{ colPnts.value(), rowPnts.value(), distRange.value() };
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input.value(), (bool) structureIn.value(), maxRayAngleIn.value() / 360. * 2. * PI };
 		
-		storedXRayTubeParameter.SetAsLoaded();
-		storedRadonParameter.SetAsLoaded();
-		storedDetectorParameter.SetAsLoaded();
 
 		rowPnts.value( radonParameter.number_of_distances() );
 		colPnts.value( radonParameter.number_of_angles() );

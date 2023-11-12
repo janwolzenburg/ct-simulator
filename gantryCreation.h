@@ -46,8 +46,6 @@ class gantryEdition : public Fl_Group{
 	*/
 	gantryEdition( int x, int y, int w, int h, mainWindow& main_window );
 
-	~gantryEdition( void );
-
 	Gantry& gantry( void ){ return gantryInstance; };
 
 	ProjectionsProperties projections_properties ( void ){ return radonParameter; };
@@ -87,12 +85,12 @@ class gantryEdition : public Fl_Group{
 
 	mainWindow& main_window_;
 
-	XRayTubeProperties xRayTubeParameter;									/*!< xRay tube attributes*/
-	PersistingObject<XRayTubeProperties> storedXRayTubeParameter;				/*!< Persisting storage of tube attributes*/
-	ProjectionsProperties radonParameter;								/*!< Parameter in radon space affecting the detector*/
-	PersistingObject<ProjectionsProperties> storedRadonParameter;			/*!< Persisting storage of radon parameter*/
-	PhysicalDetectorProperties physical_detector_properties_;						/*!< Parameter only dependent on the physical properties_ od detector*/
-	PersistingObject<PhysicalDetectorProperties> storedDetectorParameter;	/*!< Persisting storage of the detector parameter*/
+	//XRayTubeProperties xRayTubeParameter;									/*!< xRay tube attributes*/
+	PersistingObject<XRayTubeProperties> xRayTubeParameter;				/*!< Persisting storage of tube attributes*/
+	//ProjectionsProperties radonParameter;								/*!< Parameter in radon space affecting the detector*/
+	PersistingObject<ProjectionsProperties> radonParameter;			/*!< Persisting storage of radon parameter*/
+	//PhysicalDetectorProperties physical_detector_properties_;						/*!< Parameter only dependent on the physical properties_ od detector*/
+	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< Persisting storage of the detector parameter*/
 	Gantry gantryInstance;												/*!< Instance of the gantry constructed from tube and detector parameter*/
 
 
