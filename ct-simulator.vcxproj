@@ -168,6 +168,7 @@
     <ClInclude Include="coordinateSystemTree.fwd.h" />
     <ClInclude Include="coordinateSystemTree.h" />
     <ClInclude Include="modelCreator.h" />
+    <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
     <ClInclude Include="backprojection.h" />
     <ClInclude Include="xRayDetector.h" />

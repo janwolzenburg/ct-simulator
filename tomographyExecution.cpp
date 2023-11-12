@@ -14,12 +14,12 @@
 
 
 #include "tomographyExecution.h"
-
 #include "filteredProjections.h"
 #include "progress.h"
 #include "widgets.h"
 #include "gantryCreation.h"
 #include "mainWindow.h"
+
 
 tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
@@ -41,10 +41,10 @@ tomographyExec::tomographyExec( int x, int y, int w, int h, mainWindow& main_win
 	exportButton{			X( controlGrp, .65 ), Y( controlGrp, .6 ), W( controlGrp, .4 ), H( controlGrp, .4 ), "Export Sinogram" },
 
 	
-	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "storedExportChooser.txt" },
+	exportChooserInstance{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "storedExportChooser.chooser" },
 	
 	tomographyInstance{},
-	tomographyParamerters{ TomographyProperties{}, "storedTomograpyParameter.txt" },
+	tomographyParamerters{ TomographyProperties{}, "storedTomograpyParameter.properties" },
 	
 
 	currentProjection{},
@@ -134,14 +134,10 @@ void tomographyExec::radiate( void ){
 		tomographyInstance = Tomography{ tomographyParamerters };
 
 		if( radiationProgressWindow != nullptr ){
-			currentProjection = tomographyInstance.RecordSlice( main_window_.gantryBuild.projections_properties(), main_window_.gantryBuild.gantry(), main_window_.modView.model(), 0, radiationProgressWindow);
-			exportButton.activate();
+			Projections new_projections = tomographyInstance.RecordSlice( main_window_.gantryBuild.projections_properties(), main_window_.gantryBuild.gantry(), main_window_.modView.model(), 0, radiationProgressWindow);
+			AssignProjections( std::move( new_projections ) );
 			delete radiationProgressWindow;
 		}
-
-		std::unique_ptr<Fl_ProcessingWindow> window_ptr = std::make_unique<Fl_ProcessingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", currentProjection );
-		processing_windows_.push_back( std::move( window_ptr ) );
-		processing_windows_.back()->show();
 
 		parent()->activate();
 }

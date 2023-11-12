@@ -41,9 +41,9 @@ ModelView::ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
 
 	main_window_( main_window ),
 
-	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "storedModelChooser.model" },
-	model_{ Model{}, "storedModel.txt" },
-	properties_{ ModelViewProperties{}, "storedViewParameter.model" },
+	storedModelChooser{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "storedModelChooser.chooser" },
+	model_{ Model{}, "storedModel.model" },
+	properties_{ ModelViewProperties{}, "storedViewParameter.properties" },
 	modelSliceInstance{},
 	
 
@@ -204,16 +204,13 @@ bool ModelView::sliceModel( void ){
 
 	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, 1. );
 	
-	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 )
-	{
-	
+	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 ){
 		Fl_Group::window()->activate();
 		return false;
 	}
 
 	modelSliceInstance = tempSlice;
 
-	
 	return true;
 }
 

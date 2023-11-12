@@ -19,6 +19,7 @@
 #include "lineplot.h"
 
 #include "projections.h"
+#include "persistingObject.h"
 #include "filteredProjections.h"
 #include "backprojection.h"
 #include "widgets.h"

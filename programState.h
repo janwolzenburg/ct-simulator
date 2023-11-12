@@ -12,28 +12,7 @@
 	Includes
  *********************************************************************/
 
- #include <string>
- using std::string;
-
- #include <vector>
- using std::vector;
-
  #include "generel.h"
- #include "dataGrid.h"
- #include "voxel.h"
- #include "tomography.h"
- #include "projections.h"
- #include "processingParameters.h"
- #include "filteredProjections.h"
- #include "mainWindow.fwd.h"
- #include "fl_ProcessingWindow.fwd.h"
- #include "model.h"
- #include "persistingObject.h"
- #include "fileChooser.h"
- #include "xRayTube.h"
- #include "detectorProperties.h"
- #include "gantry.h"
- #include "backprojection.h"
 
 
  /*********************************************************************
@@ -56,34 +35,25 @@ class programState{
 	*/
 	static programState& getInstance();
 	
-
-
 	/*!
 	 * @brief Destructor
 	 * @details Stores objects in persisting storage
 	*/
 	~programState( void );
 
-
-	/*********************************************** Storage ***************************************/
-	/***********************************************************************************************/
-
 	/*!
 	 * @brief Set flag to reset program state at program exit_
 	*/
 	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
 	
+	bool ResetStateAtExit( void ) const{ return resetStateAtExit; };
+
 	/*!
 	 * @brief Get persitent storage path of file with given name_
 	 * @param filename Name of file
 	 * @return Absoulte path of file
 	*/
 	path getPath( const string filename ) const{ return stateStorage / filename; };
-
-
-	/*********************************************** GUI *******************************************/
-	/***********************************************************************************************/
-
 
 
 
@@ -116,16 +86,8 @@ class programState{
 	*/
 	void deleteStorageDir( void );
 
-	
-
-
-	//mainWindow* mainWindow_;				/*!< Pointer to the main window*/
 
 	bool resetStateAtExit;									/*!< Flag indicating whether to reset the program state at program exit_*/
-
-
-
-
 
 };
 

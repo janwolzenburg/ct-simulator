@@ -354,9 +354,6 @@
     <ClInclude Include="persistingObject.h">
       <Filter>Headerdateien\Program</Filter>
     </ClInclude>
-    <ClInclude Include="persistingObject.hpp">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
     <ClInclude Include="modelViewProperties.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
@@ -371,6 +368,12 @@
     </ClInclude>
     <ClInclude Include="callbackFunction.hpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="programState.fwd.h">
+      <Filter>Headerdateien\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="persistingObject.hpp">
+      <Filter>Quelldateien\Program</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

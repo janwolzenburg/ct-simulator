@@ -28,9 +28,9 @@
 gantryEdition::gantryEdition( int x, int y, int w, int h, mainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
-	xRayTubeParameter{ XRayTubeProperties{}, "storedTubeParameter.txt" },
-	radonParameter{ ProjectionsProperties{}, "storedRadonParameter.txt" },
-	physical_detector_properties_{ PhysicalDetectorProperties{}, "storedPhysicalParameter.txt" },
+	xRayTubeParameter{ XRayTubeProperties{}, "storedTubeParameter.properties" },
+	radonParameter{ ProjectionsProperties{}, "storedRadonParameter.properties" },
+	physical_detector_properties_{ PhysicalDetectorProperties{}, "storedPhysicalParameter.properties" },
 	gantryInstance{ CoordinateSystems().AddSystem( "Gantry system"), xRayTubeParameter, radonParameter, physical_detector_properties_ },
 
 	title{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },

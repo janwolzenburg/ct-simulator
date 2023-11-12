@@ -14,6 +14,7 @@
 
 #include "generel.h"
 
+
 /*********************************************************************
    Definitions
 *********************************************************************/
@@ -33,31 +34,32 @@ class PersistingObject : public C{
 
 	/*!
 	 * @brief Constructor
-	 * @param file_path Path to file
-	 * @param object_Reference Reference to object
+	 * @details Tries to load object from path
+	 * @param standard Standard instance
+	 * @param file_path Path to load from and save file
 	*/
-	PersistingObject( const C&& source, const path file_path ) :
-		C( source ),
-		file_path_( file_path ),
-		was_loaded_( false ){
-		LoadFromFile();
-	};
+	PersistingObject( const C&& standard, const path file_path );
 
-	PersistingObject( const C&& source, const char* file_name ) :
-		PersistingObject{ source, PROGRAM_STATE().getPath( string{ file_name } ) }
-	{};
+	/*!
+	 * @brief Constructor
+	 * @details Tries to load object from program storage
+	 * @param standard Standard instance
+	 * @param file_name Name of file in program storage
+	*/
+	PersistingObject( const C&& standard, const char* file_name );
 
-	~PersistingObject( void ){
-		if( was_loaded_ )
-			Save();
-	}
+	/*!
+	 * @brief Destructor
+	 * @details Stored instance on Disc
+	*/
+	~PersistingObject( void );
 
-
-	PersistingObject& operator=( const C& instance ){
-		C::operator=( instance );
-		was_loaded_ = true;
-		return *this;
-	}
+	/*!
+	 * @brief Copy assignment operator
+	 * @param instance Instance to assign
+	 * @return Reference to this
+	*/
+	PersistingObject& operator=( const C& instance );
 
 	/*!
 	 * @brief Check if an object was loaded
@@ -89,10 +91,11 @@ class PersistingObject : public C{
 	path file_path_;		/*!>Path to file on filesystem*/
 	bool was_loaded_;		/*!>Flag to indicate whether the object was loaded or is default*/
 
+
 	/*!
 	 * @brief Load file from stored path
 	*/
-	bool LoadFromFile( void );
+	bool LoadFromFile( void ){ return Load( file_path_ ); };
 
 };
 

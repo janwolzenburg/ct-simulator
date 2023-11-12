@@ -23,12 +23,14 @@
 #include "fl_BoundInput.h"
 #include "Fl_Selector.h"
 
-#include "programState.h"
+#include "persistingObject.h"
 #include "linePlot.h"
 #include "geometryplot.h"
 #include "widgets.h"
 #include "mainWindow.fwd.h"
 #include "callbackFunction.h"
+#include "gantry.h"
+#include "xRayTube.h"
 
 /*!
  * @brief Class for a GUI element for gantry creation
@@ -85,12 +87,9 @@ class gantryEdition : public Fl_Group{
 
 	mainWindow& main_window_;
 
-	//XRayTubeProperties xRayTubeParameter;									/*!< xRay tube attributes*/
-	PersistingObject<XRayTubeProperties> xRayTubeParameter;				/*!< Persisting storage of tube attributes*/
-	//ProjectionsProperties radonParameter;								/*!< Parameter in radon space affecting the detector*/
-	PersistingObject<ProjectionsProperties> radonParameter;			/*!< Persisting storage of radon parameter*/
-	//PhysicalDetectorProperties physical_detector_properties_;						/*!< Parameter only dependent on the physical properties_ od detector*/
-	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< Persisting storage of the detector parameter*/
+	PersistingObject<XRayTubeProperties> xRayTubeParameter;				/*!< xRay tube attributes*/
+	PersistingObject<ProjectionsProperties> radonParameter;			/*!< Parameter in radon space affecting the detector*/
+	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< Parameter only dependent on the physical properties_ od detector*/
 	Gantry gantryInstance;												/*!< Instance of the gantry constructed from tube and detector parameter*/
 
 

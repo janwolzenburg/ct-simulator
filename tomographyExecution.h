@@ -22,11 +22,13 @@
 #include <memory>
 
 #include "fl_BoundInput.h"
-#include "programState.h"
+#include "persistingObject.h"
 #include "widgets.h"
 #include "mainWindow.fwd.h"
 #include "callbackFunction.h"
 #include "fl_ProcessingWindow.h"
+#include "tomography.h"
+#include "fileChooser.h"
 
 
 /*!
@@ -77,13 +79,11 @@ class tomographyExec : public Fl_Group{
 	Fl_Button exportButton;		/*!< Export button for sinogram*/
 
 	
-	//FileChooser exportChooserInstance;				/*!< File chooser for sinogram export*/
-	PersistingObject<FileChooser> exportChooserInstance;	/*!< Persisting storage of sinogram export file selection*/
+	PersistingObject<FileChooser> exportChooserInstance;	/*!< File chooser for sinogram export*/
 
 		
 	Tomography tomographyInstance;				/*!< Instance of the tomography*/
-	//TomographyProperties tomographyParamerters;	/*!< Parameter of tomography*/
-	PersistingObject<TomographyProperties> tomographyParamerters;	/*!< Persisting storage of the tomography parameter*/
+	PersistingObject<TomographyProperties> tomographyParamerters;	/*!< Parameter of tomography*/
 
 
 	Projections currentProjection;
