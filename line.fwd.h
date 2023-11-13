@@ -1,10 +1,4 @@
-/*********************************************************************
- * @file   Line.fwd.h
- * @brief  Forward decleration for lines
- *
- * @author Jan Wolzenburg
- * @date   December 2022
- *********************************************************************/
+#pragma once
 
 class Line;
 class Ray;

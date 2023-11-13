@@ -1,10 +1,4 @@
-/*********************************************************************
- * @file   vec.fwd.h
- * @brief  Forward decleration for vector, unit vector and point
- *
- * @author Jan Wolzenburg
- * @date   December 2022
- *********************************************************************/
+#pragma once
 
 class Vector3D;
 class Point3D;
