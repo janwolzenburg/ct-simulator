@@ -86,25 +86,14 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 								vector<double>( number_of_points_in_spectrum_, 0. ) };
 
 
-	// Frequency to which the filter dominates spectral behavious
-	double changeEnergy = energy_spectrum.first.front() + ( energy_spectrum.first.back() - energy_spectrum.first.front()) / (1. - al_filter_gradient_factor);
+	
+	const double bremsGradient = -1;		
 
 	// Fill value vector
 	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
 		size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
-
-		const double bremsGradient = -1;											// Gradient of brems spectrum
+									// Gradient of brems spectrum
 		
-		if( properties_.has_filter_ ){
-			const double filterGradient = al_filter_gradient_factor * bremsGradient;		// Gradient of filter spectrum
-
-			// Filter dominates
-			if ( *energyIt < changeEnergy ) {
-				energy_spectrum.second.at(curIdx) = ( *energyIt - energy_spectrum.first.front() ) * filterGradient;
-				continue;
-			}
-		}
-
 		// Bremsspectrum dominates
 		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt ) * ( -bremsGradient );
 	}
@@ -116,6 +105,28 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 	// Correct values for sums to match
 	Scale( energy_spectrum.second, correctionFactor );
+
+	if( properties_.has_filter_ ){
+		// Frequency to which the filter dominates spectral behavious
+		double changeEnergy = al_filter_cut_off_energy_eV +  ( energy_spectrum.first.back() - al_filter_cut_off_energy_eV ) / ( 1. -  al_filter_gradient_factor );
+
+		for ( auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++ ) {
+			
+			const size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
+			
+			if( *energyIt <= al_filter_cut_off_energy_eV ){
+				energy_spectrum.second.at( curIdx ) = 0.;
+				continue;
+			}
+
+			const double filterGradient = al_filter_gradient_factor * bremsGradient * correctionFactor;		// Gradient of filter spectrum
+
+			// Filter dominates
+			if ( *energyIt < changeEnergy ) {
+				energy_spectrum.second.at( curIdx ) = ( *energyIt - al_filter_cut_off_energy_eV ) * filterGradient;
+			}
+		}
+	}
 
 	// Write frequency and power values to spectrum
 	emitted_spectrum_ = EnergySpectrum{ energy_spectrum };
