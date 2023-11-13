@@ -25,12 +25,15 @@
 Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Projections projections ) :
 	Fl_Window{ w, h, label },
 	
-	projections_image_{		X( *this, .01 ),			Y( *this, .01 ),							W( *this, .49 ),			H( *this, .325 ) },
-	filter_group_{			X( *this, .01 ),			Y( *this, 0.36 ),	W( *this, .49 ),			H( *this, .29  ) },
-	filter_type_selector_{ X( filter_group_, 0. ),			Y( filter_group_, 0. ),							W( filter_group_, .3 ),			H( filter_group_, .1 ), "Filter type" },
-	filter_plot_{			X( filter_group_, 0. ),			Y( filter_group_, 0.15 ),						W( filter_group_, 1. ),			H( filter_group_, .85 ), "Filter" },
-	filtered_projections_image_{	X( *this, .01 ),			vOff( filter_group_ ) + Y( *this, 0.025 ),		W( *this, .49 ),			H( *this, .325 ) },
-	reconstructed_image_{ X( *this, .51 ),				Y( *this, 0.01 ),							W( *this, .48 ),			H( *this, .8 ) },
+	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .3 ), "Projections"},
+	
+	filter_group_{					X( *this, .025 ),			Y( *this, 0.4 ),			W( *this, .45 ),			H( *this, .29  ) },
+	filter_type_selector_{			X( filter_group_, 0. ),		Y( filter_group_, 0. ),		W( filter_group_, .3 ),		H( filter_group_, .1 ), "Filter type" },
+	filter_plot_{					X( filter_group_, 0. ),		Y( filter_group_, 0.15 ),	W( filter_group_, 1. ),		H( filter_group_, .85 ), "Filter" },
+	
+	filtered_projections_image_{	X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .3 ), "Filtered projections"},
+	
+	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.375 ),		W( *this, .45 ),			H( *this, .6 ), "Backprojection"},
 
 	projections_( projections ),
 	filter_change_callback_{ *this, &Fl_ProcessingWindow::ReconstructImage }
@@ -59,6 +62,13 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 
 	filter_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
 
+	projections_image_.align( FL_ALIGN_TOP );
+	filtered_projections_image_.align( FL_ALIGN_TOP );
+	reconstructed_image_.align( FL_ALIGN_TOP );
+
+	projections_image_.labelsize( 20 );
+	filtered_projections_image_.labelsize( 20 );
+	reconstructed_image_.labelsize( 20 );
 	
 	filtered_projections_image_.ResetBounds();
 	reconstructed_image_.ResetBounds();

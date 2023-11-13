@@ -21,11 +21,11 @@
 
 Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
-	image_widget_{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .88 ), "Image" },
-	lower_bound_{ X( *this, 0.1 ), Y( *this, 0.89 ), W( *this, .8 ), H( *this, .05 ), "Low" },
-	upper_bound_{ X( *this, 0.1 ), Y( *this, 0.95 ), W( *this, .8 ), H( *this, .05 ), "High" },
+	image_widget_{ X( *this, 0. ), Y( *this, 0. ),		W( *this, 1. ), H( *this, .83 ), "Image" },
+	lower_bound_{ X( *this, 0.1 ), Y( *this, 0.84 ),	W( *this, .8 ), H( *this, .075 ), "Low" },
+	upper_bound_{ X( *this, 0.1 ), Y( *this, 0.925),	W( *this, .8 ), H( *this, .075 ), "High" },
 	
-	common_factor_text_{ X( *this, 0.9 ), Y( *this, 0.89 ), W( *this, .1 ), H( *this, .1 ), "" },
+	common_factor_text_{ X( *this, 0.9 ), Y( *this, 0.84 ), W( *this, .1 ), H( *this, .15 ), "" },
 	common_power_( 0 ),
 	bounds_set_( false ),
 	contrast_changed_( false )

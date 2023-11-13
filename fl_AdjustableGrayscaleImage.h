@@ -96,10 +96,11 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	
 
 	private:
-	
-	Fl_GrayscaleImage image_widget_;				/*!< The image widget*/
+
 	Fl_Hor_Value_Slider lower_bound_;
 	Fl_Hor_Value_Slider upper_bound_;
+	Fl_GrayscaleImage image_widget_;				/*!< The image widget*/
+
 	Fl_Box common_factor_text_;
 	int common_power_;
 	bool bounds_set_;									/*!< Flag indicating whether the bounds were set before*/

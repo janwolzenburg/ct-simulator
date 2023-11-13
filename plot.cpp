@@ -15,7 +15,7 @@
 #include "plot.h"
 #include "linePlot.h"
 #include "geometryPlot.h"
-
+#include "fl_GrayscaleImage.h"
 
 
 /*********************************************************************
@@ -65,6 +65,16 @@ void Plot::DrawPlot( void ){
 
 
 	plot_2D_.xlabel( x_label_ ); plot_2D_.ylabel( y_label_ );
+	
+	
+	RGB color = Fl_GrayscaleImage::background_color;
+
+	char colorBuffer[32];
+	snprintf( colorBuffer, 32, "#%2X%2X%2X", color.red, color.green, color.blue );
+	string colorString{ colorBuffer };
+
+	plot_2D_.gnuplot( "set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb \"" + colorString + "\" behind ");
+
 	if( !limits_.autoXRange )
 		plot_2D_.xrange( limits_.xRange.start(), limits_.xRange.end() );
 
