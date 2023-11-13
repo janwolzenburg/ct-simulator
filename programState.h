@@ -13,6 +13,7 @@
  *********************************************************************/
 
  #include "generel.h"
+ #include "programState.fwd.h"
 
 
  /*********************************************************************
@@ -20,74 +21,78 @@
  *********************************************************************/
 
 
-class programState& PROGRAM_STATE( void );
+ProgramState& PROGRAM_STATE( void );
 
 
-class programState{
+class ProgramState{
 
 	public:
 
-	static const path stateStorage;		/*!< Path to persisting storage location*/
+	static const path storage_path_;		/*!< Path to persisting storage location*/
 	
 	/*!
 	 * @brief Get reference of singlular instance
 	 * @return Reference to program state
 	*/
-	static programState& getInstance();
+	static ProgramState& GetInstance();
 	
 	/*!
 	 * @brief Destructor
 	 * @details Stores objects in persisting storage
 	*/
-	~programState( void );
-
-	/*!
-	 * @brief Set flag to reset program state at program exit_
-	*/
-	void resetStateStorageAtExit( void ){ resetStateAtExit = true; };
+	~ProgramState( void );
 	
-	bool ResetStateAtExit( void ) const{ return resetStateAtExit; };
+	/*!
+	 * @brief Get flag for state reset at exit
+	 * @return True when state will be reset at exit
+	*/
+	bool reset_state_at_exit( void ) const{ return reset_state_at_exit_; };
 
 	/*!
-	 * @brief Get persitent storage path of file with given name_
+	 * @brief Set flag to reset program state at program exit
+	*/
+	void SetResetStateAtExit( void ){ reset_state_at_exit_ = true; };
+	
+	/*!
+	 * @brief Get persitent storage path of file with given name
 	 * @param filename Name of file
 	 * @return Absoulte path of file
 	*/
-	path getPath( const string filename ) const{ return stateStorage / filename; };
-
+	path GetAbsolutePath( const string filename ) const{ return storage_path_ / filename; };
 
 
 	private:
 
+	bool reset_state_at_exit_;			/*!< Flag indicating whether to reset the program state at program exit_*/
+
+
 	/*!
 	 * @brief Constructor
 	*/
-	programState( void );
+	ProgramState( void );
 
 	/*!
 	 * @brief Copy constructor 
 	 * @details Deleted for singleton pattern
 	*/
-	programState( const programState& ) = delete;
+	ProgramState( const ProgramState& ) = delete;
 
 	/*!
 	 * @brief Copy assignment 
 	 * @details Deleted for singleton pattern
 	*/
-	programState& operator=( const programState& ) = delete;
+	ProgramState& operator=( const ProgramState& ) = delete;
 
 	/*!
 	 * @brief Create the storage directory
 	*/
-	void createStorageDir( void );
+	void CreateStorageDirectory( void );
 
 	/*!
 	 * @brief Delete storage directory
 	*/
-	void deleteStorageDir( void );
+	void DeleteStorageDirectory( void );
 
-
-	bool resetStateAtExit;									/*!< Flag indicating whether to reset the program state at program exit_*/
 
 };
 

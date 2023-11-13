@@ -96,7 +96,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 
 		tube_group_.add( spectrum_plot_ );
-		spectrum_plot_.Initialise( PROGRAM_STATE().getPath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -156,7 +156,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 
 		detector_group_.add( detector_plot_ );
-		detector_plot_.Initialise( PROGRAM_STATE().getPath( "detectorPlot.png" ), "x in mm", "y in mm", PlotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
+		detector_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "detectorPlot.png" ), "x in mm", "y in mm", PlotLimits{ true, true, NumberRange{ 0, 1 }, NumberRange{ 0, 1 } }, "", "", true, true );
 
 		UpdateGantry();
 }

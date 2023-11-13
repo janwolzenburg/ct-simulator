@@ -23,12 +23,12 @@ PersistingObject<C>::PersistingObject( const C&& standard, const path file_path,
 
 template< class C >
 PersistingObject<C>::PersistingObject( const C&& standard, const char* file_name, const bool deactivate_saving ) :
-	PersistingObject<C>{ std::move( standard ), PROGRAM_STATE().getPath( string{ file_name } ), deactivate_saving }
+	PersistingObject<C>{ std::move( standard ), PROGRAM_STATE().GetAbsolutePath( string{ file_name } ), deactivate_saving }
 {};
 
 template< class C >
 PersistingObject<C>::~PersistingObject( void ){
-	if( was_loaded_ && !PROGRAM_STATE().ResetStateAtExit() && !disable_saving )
+	if( was_loaded_ && !PROGRAM_STATE().reset_state_at_exit() && !disable_saving )
 		SaveToFile();
 };
 

@@ -23,10 +23,10 @@
 
 #include "fl_BoundInput.h"
 #include "fl_ProcessingWindow.h"
+#include "fl_MainWindow.fwd.h"
 
 #include "persistingObject.h"
 #include "widgets.h"
-#include "fl_MainWindow.fwd.h"
 #include "callbackFunction.h"
 #include "tomography.h"
 #include "fileChooser.h"

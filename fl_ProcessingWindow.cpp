@@ -57,7 +57,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	for( auto& el : BackprojectionFilter::filter_types ) filterNames.push_back( el.second );
 	filter_type_selector_.AssignElements( filterNames );
 
-	filter_plot_.Initialise( PROGRAM_STATE().getPath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
+	filter_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
 
 	
 	filtered_projections_image_.ResetBounds();

@@ -69,7 +69,7 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 void Fl_MainWindow::SetResetAtExit( void ){
 
 	if( fl_choice( "Do you want to reset program status?\nThis will happen at the program's exit!", "Reset", "Keep state", 0 ) == 0 )
-		PROGRAM_STATE().resetStateStorageAtExit();
+		PROGRAM_STATE().SetResetStateAtExit();
 }
 
 

@@ -20,51 +20,51 @@
 
 
 #ifdef WIN32
-	const path programState::stateStorage{ ".\\stateStorage\\" };
+	const path ProgramState::storage_path_{ ".\\stateStorage\\" };
 #else
 	const path programState::stateStorage{ "./stateStorage/" };
 #endif // WIN32
 
 
-programState& PROGRAM_STATE( void ){
-	return programState::getInstance();
+ProgramState& PROGRAM_STATE( void ){
+	return ProgramState::GetInstance();
 }
 
 
-programState& programState::getInstance(){
-	static programState instance;
+ProgramState& ProgramState::GetInstance(){
+	static ProgramState instance;
 	return instance;
 }
 
-programState::programState( void ) :
+ProgramState::ProgramState( void ) :
 
-	resetStateAtExit( false )
+	reset_state_at_exit_( false )
 
 {
-	createStorageDir();
+	CreateStorageDirectory();
 }
 
-programState::~programState( void ) {
+ProgramState::~ProgramState( void ) {
 	
-	if( resetStateAtExit ){
-		deleteStorageDir();
+	if( reset_state_at_exit_ ){
+		DeleteStorageDirectory();
 		return;
 	}
 	
 }
 
 
-void programState::createStorageDir( void ){
+void ProgramState::CreateStorageDirectory( void ){
 	// Check if state storage directory erxists
-	if( !std::filesystem::is_directory( stateStorage ) ) std::filesystem::create_directory( stateStorage );
+	if( !std::filesystem::is_directory( storage_path_ ) ) std::filesystem::create_directory( storage_path_ );
 }
 
-void programState::deleteStorageDir( void ){
+void ProgramState::DeleteStorageDirectory( void ){
 
 	// Check if state storage directory erxists
-	if( !std::filesystem::is_directory( stateStorage ) ) return;
+	if( !std::filesystem::is_directory( storage_path_ ) ) return;
 
 	// Remove all content
-	for( const auto& file : std::filesystem::directory_iterator( stateStorage ) )
+	for( const auto& file : std::filesystem::directory_iterator( storage_path_ ) )
 		std::filesystem::remove_all( file.path() );
 }
