@@ -19,7 +19,7 @@
 #include "programState.h"
 #include "fl_ModelView.h"
 #include "fl_GantryCreation.h"
-#include "tomographyExecution.h"
+#include "fl_TomographyExecution.h"
 #include "widgets.h"
 #include "callbackFunction.h"
 
@@ -60,7 +60,7 @@ class mainWindow : public Fl_Window{
 
 	Fl_ModelView modView;						/*!< Model view*/
 	Fl_GantryCreation gantryBuild;				/*!< Gantry creation*/
-	tomographyExec tomographyExecution;		/*!< Tomography execution*/
+	Fl_TomographyExecution tomographyExecution;		/*!< Tomography execution*/
 
 	CallbackFunction<mainWindow> setresetAtExitCB;
 	CallbackFunction<mainWindow> importSGCB;

@@ -16,7 +16,7 @@
 #include "fl_GantryCreation.h"
 #include "widgets.h"
 #include "plot.h"
-#include "tomographyExecution.h"
+#include "fl_TomographyExecution.h"
 #include "mainWindow.h"
 
 /*********************************************************************
@@ -202,7 +202,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		spectrum_plot_.plot().AssignData( spectrum_points );
 		spectrum_plot_.AssignData();
 
-		main_window_.tomographyExecution.updateInformation( projections_properties_, detectorRef.properties(), gantry_.tube() );
+		main_window_.tomographyExecution.UpdateInformation( projections_properties_, detectorRef.properties(), gantry_.tube() );
 
 		detector_plot_.plot().ResetObjects();
 

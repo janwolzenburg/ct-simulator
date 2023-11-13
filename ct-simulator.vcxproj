@@ -234,7 +234,7 @@
     <ClInclude Include="test_all.h" />
     <ClInclude Include="test_device.h" />
     <ClInclude Include="test_model.h" />
-    <ClInclude Include="tomographyExecution.h" />
+    <ClInclude Include="fl_TomographyExecution.h" />
     <ClInclude Include="xRayTube.h" />
     <ClInclude Include="vector3D.fwd.h" />
     <ClInclude Include="vector3D.h" />
@@ -301,7 +301,7 @@
     <ClCompile Include="test_model.cpp" />
     <ClCompile Include="test_rays.cpp" />
     <ClCompile Include="tomography.cpp" />
-    <ClCompile Include="tomographyExecution.cpp" />
+    <ClCompile Include="fl_TomographyExecution.cpp" />
     <ClCompile Include="xRayTube.cpp" />
     <ClCompile Include="vector3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />

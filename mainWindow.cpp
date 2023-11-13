@@ -58,7 +58,7 @@ mainWindow::mainWindow( int w, int h, const char* label ) :
 	if( modView.IsModelLoaded() ){
 		gantryBuild.activate();
 		tomographyExecution.activate();
-		tomographyExecution.updateInformation( gantryBuild.projections_properties(), gantryBuild.gantry().detector().properties(), gantryBuild.gantry().tube() );
+		tomographyExecution.UpdateInformation( gantryBuild.projections_properties(), gantryBuild.gantry().detector().properties(), gantryBuild.gantry().tube() );
 	}
 
 	Fl_Window::show();

@@ -246,7 +246,7 @@
     <ClInclude Include="fl_GantryCreation.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="tomographyExecution.h">
+    <ClInclude Include="fl_TomographyExecution.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="slicePlane.h">
@@ -461,7 +461,7 @@
     <ClCompile Include="plot.cpp">
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="tomographyExecution.cpp">
+    <ClCompile Include="fl_TomographyExecution.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="fl_ProcessingWindow.cpp">

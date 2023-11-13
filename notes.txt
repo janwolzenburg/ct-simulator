@@ -103,4 +103,6 @@ Program
 	windows
 		modelViewProperties
 		fileChooser
+		fl_modelview
+		fl_gantryCreation
 
