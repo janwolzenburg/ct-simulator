@@ -50,7 +50,7 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double eventPropability
 
 	const unsigned int numberInterval = distribution_.max() - distribution_.min();
 	
-	const double singleValuePropability = 1. /  ( (double) numberInterval + 1. );
+	const double singleValuePropability = 1. /  ( static_cast<double>( numberInterval ) + 1. );
 
 	const unsigned int eventIntervalSize = (unsigned int) (eventPropability / singleValuePropability);
 
@@ -86,7 +86,8 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	double smallestPropability = sortedDistribution.front().y;
 
 	// Check against maximum number_of_pixel of bins
-	if( 1. / smallestPropability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) smallestPropability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
+	if( 1. / smallestPropability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) 
+		smallestPropability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
 
 	// Insert amount corrensponding to probability into uniform distribution
 	for( const Tuple2D& currentValue : distribution_ ){
@@ -94,7 +95,7 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 		const double currentProbabilty = currentValue.y;
 
 		// How many elements of current value to add to vector. The factor 4 is used
-		const size_t currentBinAmount = (size_t) floor( bin_amount_scaling * currentProbabilty / smallestPropability + 0.5 );
+		const size_t currentBinAmount = static_cast<size_t>( floor( bin_amount_scaling * currentProbabilty / smallestPropability + 0.5 ) );
 
 		// Insert into vector
 		uniform_propabilities_.insert( uniform_propabilities_.end(), currentBinAmount, currentValue.x );

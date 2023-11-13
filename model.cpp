@@ -68,10 +68,10 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
 	min_attenuation_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
 	max_attenuation_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
-	name_( DeSerializeBuildIn( string{ "Default model name_"}, binary_data, it ) )
+	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) )
 {
 	
-	if( number_of_voxel_ * sizeof( VoxelData ) == (size_t) (binary_data.end() - it) ){
+	if( number_of_voxel_ * sizeof( VoxelData ) == static_cast<size_t>( binary_data.end() - it ) ){
 		memcpy( voxel_data_.data(), &( *it ), number_of_voxel_ * sizeof(VoxelData));
 		it += static_cast<long long int>( number_of_voxel_ * sizeof( VoxelData ) );
 	}
@@ -130,9 +130,9 @@ Index3D Model::GetVoxelIndices( const Tuple3D locCoords ) const{
 	}
 
 	Index3D indices{
-		(size_t) ( locCoords.x / voxel_size_.x ),
-		(size_t) ( locCoords.y / voxel_size_.y ),
-		(size_t) ( locCoords.z / voxel_size_.z )
+		static_cast<size_t>( locCoords.x / voxel_size_.x ),
+		static_cast<size_t>( locCoords.y / voxel_size_.y ),
+		static_cast<size_t>( locCoords.z / voxel_size_.z )
 	};
 
 
@@ -186,7 +186,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 		return Voxel{};
 	}
 
-	Point3D voxOrigin{ Tuple3D{ (double) indices.x * voxel_size_.x, (double) indices.y * voxel_size_.y, (double) indices.z * voxel_size_.z }, coordinate_system_ };
+	Point3D voxOrigin{ Tuple3D{ static_cast<double>( indices.x ) * voxel_size_.x, static_cast<double>( indices.y ) * voxel_size_.y, static_cast<double>( indices.z ) * voxel_size_.z }, coordinate_system_ };
 
 	// Get voxel data and create voxel instance
 	Voxel voxel{ voxOrigin, voxel_size_, GetVoxelData( indices ) };
@@ -356,9 +356,9 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
 	num_bytes += voxel_size_.Serialize( binary_data );
 	num_bytes += coordinate_system_->Serialize( binary_data );
-	num_bytes += SerializeBuildIn( min_attenuation_, binary_data );
-	num_bytes += SerializeBuildIn( max_attenuation_, binary_data );
-	num_bytes += SerializeBuildIn( name_, binary_data );
+	num_bytes += SerializeBuildIn<double>( min_attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<double>( max_attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<string>( name_, binary_data );
 
 	
 	binary_data.insert( binary_data.end(), (char*) voxel_data_.data(), (char*) voxel_data_.data() + sizeof(VoxelData) * number_of_voxel_);
@@ -537,16 +537,16 @@ void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const P
 
 	// Index distance from center in each dimension
 	Index3D indexDelta{
-		ForceToMax( (size_t) ceil( radius / voxel_size_.x ), Min( centerIdx.x, number_of_voxel_3D_.x - centerIdx.x ) ),
-		ForceToMax( (size_t) ceil( radius / voxel_size_.y ), Min( centerIdx.y, number_of_voxel_3D_.y - centerIdx.y ) ),
-		ForceToMax( (size_t) ceil( radius / voxel_size_.z ), Min( centerIdx.z, number_of_voxel_3D_.z - centerIdx.z ) )
+		ForceToMax( static_cast<size_t>( ceil( radius / voxel_size_.x ) ), Min( centerIdx.x, number_of_voxel_3D_.x - centerIdx.x ) ),
+		ForceToMax( static_cast<size_t>( ceil( radius / voxel_size_.y ) ), Min( centerIdx.y, number_of_voxel_3D_.y - centerIdx.y ) ),
+		ForceToMax( static_cast<size_t>( ceil( radius / voxel_size_.z ) ), Min( centerIdx.z, number_of_voxel_3D_.z - centerIdx.z ) )
 	};
 
 	for( size_t x = centerIdx.x - indexDelta.x; x < centerIdx.x + indexDelta.x; x++ ){
 		for( size_t y = centerIdx.y - indexDelta.y; x < centerIdx.y + indexDelta.y; y++ ){
 			for( size_t z = centerIdx.z - indexDelta.z; x < centerIdx.z + indexDelta.z; z++ ){
 
-				Point3D p( Tuple3D( (double) x * voxel_size_.x , (double) y * voxel_size_.y , (double) z * voxel_size_.z ), coordinate_system_ );
+				Point3D p( Tuple3D( static_cast<double>( x ) * voxel_size_.x , static_cast<double>( y ) * voxel_size_.y , static_cast<double>( z ) * voxel_size_.z ), coordinate_system_ );
 
 				if( ( center - p ).length() <= radius )   (*this).operator()( { x, y, z } ).AddSpecialProperty( property );
 				

@@ -30,7 +30,7 @@ bool test_scattered_angle_propabilities( void ){
 	size_t numEnergies = 20;
 	//double energyResolution = energyRange.GetResolution( numEnergies );
 
-	RayScattering anglePropabilites{ (size_t) (2.*PI / angleResolution), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
+	RayScattering anglePropabilites{ static_cast<size_t>( 2. * PI / angleResolution ), energyRange, numEnergies, UnitVector3D{Tuple3D{1., 0., 0.}, GlobalSystem()}};
 
 	const double testEnergy = 100000.;
 	/*vector<Tuple2D> distribution = anglePropabilites.GetDistribution(testEnergy);

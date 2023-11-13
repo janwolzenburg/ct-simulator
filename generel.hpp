@@ -43,11 +43,11 @@ string ToString<T>( T value, const int precision ){
 
 	if( precision < 0 ){
 
-		T factor = (T) pow( 10., (double) ( -precision - 1 ) );
+		T factor = static_cast<T>( pow( 10., static_cast<double>( -precision - 1 ) ) );
 
 		value /= factor;
 
-		value = (T) round( value );
+		value = static_cast<T>( round( value ) );
 		value *= factor;
 
 		out.precision( 0 );

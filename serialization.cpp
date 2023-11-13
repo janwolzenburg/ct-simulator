@@ -118,7 +118,7 @@ template<>
 vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( const vector<char>& binary_data, vector<char>::const_iterator& it ){
 
 	// Amount sub vectors
-	size_t amount_sub_vectors = DeSerializeBuildIn<size_t>( (size_t) 0, binary_data, it );
+	size_t amount_sub_vectors = DeSerializeBuildIn<size_t>( 0, binary_data, it );
 	
 	// Instance to return
 	vector<vector<GridCoordinates>> vec;
@@ -127,7 +127,7 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 	for( size_t i = 0; i < amount_sub_vectors; i++ ){
 
 		// Amount of elements in sub vector
-		size_t numElements = DeSerializeBuildIn<size_t>( (size_t) 0, binary_data, it );
+		size_t numElements = DeSerializeBuildIn<size_t>( 0, binary_data, it );
 		
 		// Initialise sub vector
 		vector<GridCoordinates> subVec( numElements, GridCoordinates( 0., 0. ) );
@@ -211,7 +211,7 @@ bool ValidBinaryData( const string preamble, const vector<char>& binary_data, ve
 	string readPreamble;
 	
 	// Read file preamble
-	DeSerializeBuildIn( readPreamble, string{}, binary_data, it );
+	DeSerializeBuildIn<string>( readPreamble, string{}, binary_data, it );
 
 	// Compare
 	return preamble == readPreamble;

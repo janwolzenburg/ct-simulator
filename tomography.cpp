@@ -51,9 +51,9 @@ TomographyProperties::TomographyProperties( const vector<char>& binary_data, vec
 size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( scattering_enabled, binary_data );
-	num_bytes += SerializeBuildIn( max_scattering_occurrences, binary_data );
-	num_bytes += SerializeBuildIn( scatter_propability_correction, binary_data );
+	num_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
+	num_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
 
 	return num_bytes;
 

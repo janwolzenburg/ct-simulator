@@ -30,10 +30,10 @@ vector<double> CreateLinearSpace(const double start, const double end, const siz
 	if (start > end || numPoints < 2) return vector<double>{ start };
 
 	vector<double> vec( numPoints, 0. );
-	const double delta = ( end - start ) / ( (double) numPoints - 1 );
+	const double delta = ( end - start ) / static_cast<double>( numPoints - 1 );
 
 	for (size_t i = 0; i < numPoints; i++) {
-		vec.at( i ) = ( start + (double) i * delta );
+		vec.at( i ) = ( start + static_cast<double>( i ) * delta );
 	}
 
 	return vec;

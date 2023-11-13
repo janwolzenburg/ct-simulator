@@ -85,8 +85,8 @@ bool test_nonUniformDetector( void ){
 	const double distanceRange = 500;
 	const double arcRadius = 1000;
 
-	const double deltaTheta = PI / (double) ( nTheta - 1 );
-	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
+	const double deltaTheta = PI / static_cast<double>( ( nTheta - 1 );
+	const double deltaDistance = distanceRange / static_cast<double>( ( nDistance - 1 );
 
 	const UnitVector3D middleNormalVec = cSys->GetEy();			// Middle normal is the negative y axis
 	const UnitVector3D rotationAxis = cSys->GetEz();			//Rotation axis is z axis
@@ -99,7 +99,7 @@ bool test_nonUniformDetector( void ){
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// Rotation GetAngle to rotate the middle normal by
-		const double rotationAngle = (double) ( currentIndex ) * deltaTheta;
+		const double rotationAngle = static_cast<double>( ( currentIndex ) * deltaTheta;
 
 		// Rotated normal
 		const UnitVector3D currentNormalVec = middleNormalVec.RotateConstant( rotationAxis, rotationAngle );
@@ -113,7 +113,7 @@ bool test_nonUniformDetector( void ){
 		//addSingleObject( ax1, "NormalLot", normalLot, "g", coordinate_system_->Origin() );
 
 		// Distance from origin_ to normal
-		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
+		const double currentDistance = distanceRange / 2 - static_cast<double>( ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
 		// Set lot length_ to distance
 		normalLot.Scale( currentDistance );
@@ -255,8 +255,8 @@ bool test_modifiedDetector( void ){
 	const double distanceRange = 500;
 	const double detectorCenterDistance = 500;
 
-	const double deltaTheta = PI / (double) ( nTheta - 1 );
-	const double deltaDistance = distanceRange / (double) ( nDistance - 1 );
+	const double deltaTheta = PI / static_cast<double>( nTheta - 1 );
+	const double deltaDistance = distanceRange / static_cast<double>( nDistance - 1 );
 
 	// Important vectors
 	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
@@ -276,7 +276,7 @@ bool test_modifiedDetector( void ){
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = (double) (currentIndex) *deltaTheta;
+		const double rotationAngle = static_cast<double>( currentIndex ) * deltaTheta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
@@ -289,7 +289,7 @@ bool test_modifiedDetector( void ){
 		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
 		// Distance from origin_ to normal. Is the distance in the sinogram
-		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
+		const double currentDistance = distanceRange / 2. - ( static_cast<double>( nDistance - 1 ) / 2. - static_cast<double>( currentIndex ) ) * deltaDistance;
 
 		// Point which lies on the current normal and has the correct distance from the origin_ 
 		const Point3D normalPoint = Vector3D{ normalLot } * currentDistance;

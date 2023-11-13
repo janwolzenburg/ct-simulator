@@ -64,11 +64,11 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 {
 	for( size_t c = 0; c < this->width(); c++ ){
 
-		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->width() - 1. ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
 
-			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
 
 			this->operator()( c, r ) = srcImg( srcC, srcR );
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
@@ -80,14 +80,14 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 
 
 GrayscaleImage::GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	width_( DeSerializeBuildIn( (size_t) 1, binary_data, it ) ),
-	height_( DeSerializeBuildIn( (size_t) 1, binary_data, it ) ),
+	width_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
+	height_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
 	number_of_pixel_( width_* height_ ),
 	raw_data_( number_of_pixel_, 0. ),
 	image_data_( number_of_pixel_, 0 ){
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		raw_data_.at( i ) = DeSerializeBuildIn( 0., binary_data, it );
+		raw_data_.at( i ) = DeSerializeBuildIn<double>( 0., binary_data, it );
 	}
 
 	AdjustContrast();
@@ -104,11 +104,11 @@ size_t GrayscaleImage::GetIndex( const size_t c, const size_t r ) const{
 size_t GrayscaleImage::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( width_, binary_data );
-	num_bytes += SerializeBuildIn( height_, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( width_, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( height_, binary_data );
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		num_bytes += SerializeBuildIn( raw_data_.at( i ), binary_data );
+		num_bytes += SerializeBuildIn<unsigned char>( raw_data_.at( i ), binary_data );
 	}
 
 	return num_bytes;

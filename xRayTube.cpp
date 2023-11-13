@@ -38,9 +38,9 @@ const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTu
 };
 
 XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	anode_voltage_V( DeSerializeBuildIn( 120000., binary_data, it ) ),
-	anode_current_A( DeSerializeBuildIn( .2, binary_data, it ) ),
-	anode_material( (Material) DeSerializeBuildIn( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
+	anode_voltage_V( DeSerializeBuildIn<double>( 120000., binary_data, it ) ),
+	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, it ) ),
+	anode_material( (Material) DeSerializeBuildIn<>( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
 	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) )
 {}
 
@@ -58,10 +58,10 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 
-	num_bytes += SerializeBuildIn( anode_voltage_V, binary_data );
-	num_bytes += SerializeBuildIn( anode_current_A, binary_data );
-	num_bytes += SerializeBuildIn( ToUnderlying( anode_material ), binary_data );
-	num_bytes += SerializeBuildIn( number_of_rays_per_pixel_, binary_data );
+	num_bytes += SerializeBuildIn<double>( anode_voltage_V, binary_data );
+	num_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
+	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ToUnderlying( anode_material ), binary_data );
+	num_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
 
 	return num_bytes;
 }
@@ -126,7 +126,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
 	// Split spectrum into the Ray spectra
-	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( 1. / (double) numRays );
+	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( 1. / static_cast<double>( numRays ) );
 
 	// Vector with rays
 	vector<Ray> rays;
@@ -146,13 +146,13 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 		const Line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
 
 		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
-		const double rayOriginDistanceDelta = edgeDistance / (double) ( properties_.number_of_rays_per_pixel_ + 1 );	// Offset of Ray origins on pixel
+		const double rayOriginDistanceDelta = edgeDistance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );	// Offset of Ray origins on pixel
 
 		// Iterate all rays hitting current pixel
 		for( size_t currentRayIndex = 0; currentRayIndex < properties_.number_of_rays_per_pixel_; currentRayIndex++ ){
 			
 			// Offset of current Ray origin_
-			const double currentOffset = (double) ( currentRayIndex + 1 ) * rayOriginDistanceDelta;
+			const double currentOffset = static_cast<double>( currentRayIndex + 1 ) * rayOriginDistanceDelta;
 
 			// Current Ray origin_
 			const Point3D currentOrigin = connectionLine.GetPoint( currentOffset );

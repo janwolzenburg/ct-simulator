@@ -95,7 +95,7 @@ void Plot::DrawPlot( void ){
 	sciplot::Figure  fig = { {plot_2D_} };
 	sciplot::Canvas canvas = { {fig} };
 
-	canvas.size( (size_t) ( image_size_.c ), (size_t) ( image_size_.r ) );
+	canvas.size( static_cast<size_t>( image_size_.c ), static_cast<size_t>( image_size_.r ) );
 	canvas.save( image_path_.string() );
 
 }

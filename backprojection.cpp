@@ -53,15 +53,15 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 			
 		for( size_t yIdx = 0; yIdx < nD; yIdx++ ){
 
-			const double x = (double) ( ( signed long long ) xIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// x value on image
-			const double y = (double) ( ( signed long long ) yIdx - ( ( signed long long ) nD - 1 ) / 2 ) * dD;		// y value on image
+			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - static_cast<signed long long>( nD ) - 1 ) / 2. * dD;		// x value on image
+			const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - static_cast<signed long long>( nD ) - 1 ) / 2. * dD;		// y value on image
 
 			double currentValue = image.GetData( GridIndex{ xIdx, yIdx } );
 			 
 			// Iterate and sum filtered projections over all angles
 			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
 
-				const double arc_angle = (double) angleIdx * dT;			// Current angle value
+				const double arc_angle = static_cast<double>( angleIdx ) * dT;			// Current angle value
 				const double t = x * cos( arc_angle ) + y * sin( arc_angle );	// Current "distance" or magnitude in polar Coordinates
 
 				// Get the projection value and add to current value
@@ -70,7 +70,7 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 			}
 			
 			imageMutex.lock();
-			image.SetData( GridIndex{ xIdx, yIdx }, currentValue * PI / (double) nT );
+			image.SetData( GridIndex{ xIdx, yIdx }, currentValue * PI / static_cast<double>( nT ) );
 			imageMutex.unlock();
 		}
 

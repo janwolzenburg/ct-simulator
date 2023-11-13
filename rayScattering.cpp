@@ -24,17 +24,17 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
 	number_of_energies_( ForcePositive( energyAmount_ ) ),
 	energy_range_( energyRange_ ),
-	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / (double) ( number_of_energies_ - 1 ) ),
+	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	scattering_plane_normal_( scatteredNormal_ )
 {
 	
 	// GetResolution of angles
-	const double angleResolution = ( 2. * PI ) / (double) ( anglesAmount - 1 );
+	const double angleResolution = ( 2. * PI ) / static_cast<double>( anglesAmount - 1 );
 
 	// Iterate all frequencies
 	for( size_t currentEnergyIndex = 0; currentEnergyIndex < number_of_energies_; currentEnergyIndex++ ){
 
-		const double currentEnergy = energy_range_.start() + (double) currentEnergyIndex * energy_resolution_;
+		const double currentEnergy = energy_range_.start() + static_cast<double>( currentEnergyIndex ) * energy_resolution_;
 
 		// Calculate pseudo propability distribution
 		vector<Tuple2D> pseudoDistribution;
@@ -45,7 +45,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 		// Iterate all angles
 		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount - 1; currentAngleIndex++ ){
 
-			const double t = -PI + (double) currentAngleIndex * angleResolution;
+			const double t = -PI + static_cast<double>( currentAngleIndex ) * angleResolution;
 
 			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
@@ -107,7 +107,7 @@ bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double
 
 double RayScattering::GetRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = ForceToMax( (size_t) floor( ( energy - energy_range_.start() ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );
+	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );
 	
 	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber();
 

@@ -133,7 +133,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_rays_per_pixel_input_.align( FL_ALIGN_TOP ); detector_focus_distance_input_.align( FL_ALIGN_TOP ); maximum_ray_angle_input_.align( FL_ALIGN_TOP );
 
 		number_of_rays_per_pixel_input_.SetProperties( 1, 1000, 0 );
-		number_of_rays_per_pixel_input_.value( (int)  gantry_.tube().number_of_rays_per_pixel());
+		number_of_rays_per_pixel_input_.value( static_cast<int>( gantry_.tube().number_of_rays_per_pixel() ) );
 
 		detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 100000., 0);
 		detector_focus_distance_input_.value( physical_detector_properties_.detector_focus_distance );
@@ -141,7 +141,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		maximum_ray_angle_input_.SetProperties( .1, 60., 2 );
 		maximum_ray_angle_input_.value( physical_detector_properties_.max_ray_angle_allowed_by_structure / 2. / PI * 360. );
 
-		scattering_structure_input_.value( (int) physical_detector_properties_.has_anti_scattering_structure );
+		scattering_structure_input_.value( static_cast<int>( physical_detector_properties_.has_anti_scattering_structure ) );
 		scattering_structure_input_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		number_of_rays_per_pixel_input_.callback(  CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
@@ -175,11 +175,11 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 		
 		detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 10000., 0 );
-		tube_properties_ = XRayTubeProperties{ voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anoder_material_input.current_element() ), (size_t) number_of_rays_per_pixel_input_.value() };
+		tube_properties_ = XRayTubeProperties{ voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anoder_material_input.current_element() ), static_cast<size_t>( number_of_rays_per_pixel_input_.value() ) };
 	
 
 		projections_properties_ = ProjectionsProperties{ number_of_angles_input_.value(), number_of_distances_input_.value(), distance_range_input_.value() };
-		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input_.value(), (bool) scattering_structure_input_.value(), maximum_ray_angle_input_.value() / 360. * 2. * PI };
+		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input_.value(), static_cast<bool>( scattering_structure_input_.value() ), maximum_ray_angle_input_.value() / 360. * 2. * PI };
 		
 
 		number_of_distances_input_.value( projections_properties_.number_of_distances() );

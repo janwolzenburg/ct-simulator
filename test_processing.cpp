@@ -194,7 +194,7 @@ bool test_serialisation( void ){
 
 	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
 		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){
-			testSinogram.AssignData( GridIndex{ col, row }, 1. * (double) (col * testSinogram.data().size().r + row ));
+			testSinogram.AssignData( GridIndex{ col, row }, 1. * static_cast<double>( col * testSinogram.data().size().r + row ) );
 		}
 	}
 
@@ -243,7 +243,7 @@ bool test_filter( void ){
 
 	vector<Tuple2D> plot;
 
-	for( signed long long int n = h.points_range().start(); n <= h.points_range().end(); n++ ) plot.emplace_back( (double) n, h( n ) );
+	for( signed long long int n = h.points_range().start(); n <= h.points_range().end(); n++ ) plot.emplace_back( static_cast<double>( n ), h( n ) );
 
 	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
 

@@ -91,8 +91,8 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 }
 
 void Fl_GrayscaleImage::draw( void ){
-	int centerX = this->parent()->x() + ( this->parent()->w() - (int) color_image_.width() ) / 2;
-	fl_draw_image( (unsigned char*) color_image_.GetImageData(), centerX, y(), (int) color_image_.width(), (int) color_image_.height() );
+	int centerX = this->parent()->x() + ( this->parent()->w() - static_cast<int>( color_image_.width() ) ) / 2;
+	fl_draw_image( (unsigned char*) color_image_.GetImageData(), centerX, y(), static_cast<int>( color_image_.width() ), static_cast<int>( color_image_.height() ) );
 }
 
 void Fl_GrayscaleImage::resize( int x, int y, int w, int h ){
@@ -104,23 +104,23 @@ void Fl_GrayscaleImage::CalculateScaled( void ){
 
 	if( grayscale_image_.width() == 0 || grayscale_image_.height() == 0 ) return;
 
-	double scaledWidth = (double) w(), scaledHeight = (double) h();
+	double scaledWidth = static_cast<double>( w() ), scaledHeight = static_cast<double>( h() );
 
-	const double aspectRatioWidget = (double) w() / (double) h();
-	const double aspectRatioImage = (double) grayscale_image_.width() / (double) grayscale_image_.height();
+	const double aspectRatioWidget = static_cast<double>( w() ) / static_cast<double>( h() );
+	const double aspectRatioImage = static_cast<double>( grayscale_image_.width() ) / static_cast<double>( grayscale_image_.height() );
 
 	// Fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){
-		scaledHeight = (double) h();
+		scaledHeight = static_cast<double>( h() );
 		scaledWidth = scaledHeight * aspectRatioImage;
 	}
 	// Fit image horizontally
 	else{
-		scaledWidth = (double) w();
+		scaledWidth = static_cast<double>( w() );
 		scaledHeight = scaledWidth / aspectRatioImage;
 	}
 
-	color_image_ = ColorImage{ grayscale_image_, (size_t) scaledWidth, (size_t) scaledHeight, overlay_ };
+	color_image_ = ColorImage{ grayscale_image_, static_cast<size_t>( scaledWidth ), static_cast<size_t>( scaledHeight ), overlay_ };
 }
 
 void Fl_GrayscaleImage::Update( void ){

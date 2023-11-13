@@ -42,7 +42,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	Fl_Tooltip::enable();
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
-	Fl_MainWindow* mainWindow_ = new Fl_MainWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
+	Fl_MainWindow* mainWindow_ = new Fl_MainWindow{ static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "CT-Simulator" };
 
 	mainWindow_->hide();
 

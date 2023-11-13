@@ -62,14 +62,14 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 				// Conditions for filter calculation
 				if( n == 0 )				kernelValue = 1. / ( 4. * pow( sampling_interval_, 2. ) );
 				else if( IsEven( n ) )		kernelValue = 0.;
-				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( (double) n, 2. ) );
+				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( static_cast<double>( n ), 2. ) );
 
 				break;
 			}
 
 			case BackprojectionFilter::sheppLogan:
 			{
-				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
+				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( static_cast<double>( n ), 2. ) - 1.  );
 
 				break;
 			}
@@ -120,7 +120,7 @@ VectorPair BackprojectionFilter::GetPlotValues( void ) const{
 
 	VectorPair XY( vector<double>( number_of_points_ ), values_ );
 
-	std::iota( XY.first.begin(), XY.first.end(), floor( (double) points_range_.start() ) );
+	std::iota( XY.first.begin(), XY.first.end(), floor( static_cast<double>( points_range_.start() ) ) );
 
 	return XY;
 }

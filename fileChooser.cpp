@@ -82,9 +82,9 @@ FileChooser& FileChooser::operator=( const FileChooser& fC ){
 size_t FileChooser::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( string{ this->title() }, binary_data);
-	num_bytes += SerializeBuildIn( string{ this->filter() }, binary_data );
-	num_bytes += SerializeBuildIn( string{ this->directory() }, binary_data );
+	num_bytes += SerializeBuildIn<string>( string{ this->title() }, binary_data);
+	num_bytes += SerializeBuildIn<string>( string{ this->filter() }, binary_data );
+	num_bytes += SerializeBuildIn<string>( string{ this->directory() }, binary_data );
 	num_bytes += SerializeBuildIn<unsigned char>( (unsigned char) type_, binary_data );
 
 	return num_bytes;

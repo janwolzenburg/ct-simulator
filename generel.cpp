@@ -35,9 +35,9 @@ Index3D::Index3D( const vector<char>& binary_data, vector<char>::const_iterator&
 size_t Index3D::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( this->x, binary_data );
-	num_bytes += SerializeBuildIn( this->y, binary_data );
-	num_bytes += SerializeBuildIn( this->z, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( this->x, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( this->y, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( this->z, binary_data );
 
 	return num_bytes;
 }
@@ -52,9 +52,9 @@ Tuple3D::Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator&
 size_t Tuple3D::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( this->x, binary_data );
-	num_bytes += SerializeBuildIn( this->y, binary_data );
-	num_bytes += SerializeBuildIn( this->z, binary_data );
+	num_bytes += SerializeBuildIn<double>( this->x, binary_data );
+	num_bytes += SerializeBuildIn<double>( this->y, binary_data );
+	num_bytes += SerializeBuildIn<double>( this->z, binary_data );
 
 	return num_bytes;
 }
@@ -68,8 +68,8 @@ GridIndex::GridIndex( const vector<char>& binary_data, vector<char>::const_itera
 size_t GridIndex::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( this->c, binary_data );
-	num_bytes += SerializeBuildIn( this->r, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( this->c, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( this->r, binary_data );
 
 	return num_bytes;
 }
@@ -83,8 +83,8 @@ GridCoordinates::GridCoordinates( const vector<char>& binary_data, vector<char>:
 size_t GridCoordinates::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( this->c, binary_data );
-	num_bytes += SerializeBuildIn( this->r, binary_data );
+	num_bytes += SerializeBuildIn<double>( this->c, binary_data );
+	num_bytes += SerializeBuildIn<double>( this->r, binary_data );
 
 	return num_bytes;
 }
@@ -104,7 +104,7 @@ NumberRange::NumberRange( const double start, const double end ) : start_( start
 }
 
 NumberRange::NumberRange( const NaturalNumberRange naturalRange ) :
-	NumberRange{ (double) naturalRange.start(), (double) naturalRange.end() }
+	NumberRange{ static_cast<double>( naturalRange.start() ), static_cast<double>( naturalRange.end() ) }
 {}
 
 NumberRange::NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
@@ -120,8 +120,8 @@ double NumberRange::GetResolution( const size_t number ) const{
 size_t NumberRange::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
-	num_bytes += SerializeBuildIn( start_, binary_data );
-	num_bytes += SerializeBuildIn( end_, binary_data );
+	num_bytes += SerializeBuildIn<double>( start_, binary_data );
+	num_bytes += SerializeBuildIn<double>( end_, binary_data );
 
 	return num_bytes;
 }

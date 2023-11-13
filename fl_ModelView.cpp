@@ -62,7 +62,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	// Labelsize and callback
 	head_group_.add( load_model_button_ );
-	load_model_button_.labelsize( (int) ( .5 * (double) load_model_button_.h() ) );
+	load_model_button_.labelsize( static_cast<int>( .5 * static_cast<double>( load_model_button_.h() ) ) );
 	load_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &load_model_callback_ );
 	
 
@@ -78,14 +78,14 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	model_inspection_group_.add( model_slice_image_ );
 
 	model_inspection_group_.add( reset_model_button_ );
-	reset_model_button_.labelsize( (int) ( .6 * (double) reset_model_button_.h() ) );
+	reset_model_button_.labelsize( static_cast<int>( .6 * static_cast<double>( reset_model_button_.h() ) ) );
 	reset_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &reset_model_callback_ );
 
 	// Model data_
 	model_information_.hide();
 
 	// Labelsize and box
-	loading_status_.labelsize( (int) ( .05 * (double) loading_status_.h() ) );
+	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
 	// Hide image initially
 	model_inspection_group_.resizable( loading_status_ );
@@ -105,9 +105,9 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	z_position_.range( -500., 500. );	z_position_.step( 1., 10. );
 
 	// Labelsizes
-	x_rotation_.labelsize( (int) ( .50 * (double) x_rotation_.h() ) );
-	y_rotation_.labelsize( (int) ( .50 * (double) y_rotation_.h() ) );
-	z_position_.labelsize( (int) ( .50 * (double) z_position_.h() ) );
+	x_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( x_rotation_.h() ) ) );
+	y_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( y_rotation_.h() ) ) );
+	z_position_.labelsize( static_cast<int>( .50 * static_cast<double>( z_position_.h() ) ) );
 
 
 	// Callbacks for Counters and reset button

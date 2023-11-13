@@ -46,7 +46,7 @@ template<class plotType>
 void Fl_Plot<plotType>::Initialise( const path path_, const string xlabel_, const string ylabel_,
 					 const PlotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
 
-	plot_.Initialise( path_, label_, xlabel_, ylabel_, limits_, GridIndex{ (size_t) Fl_Widget::w(), (size_t) Fl_Widget::h() }, xFormat_, yFormat_, axisEqual_, grid_ );
+	plot_.Initialise( path_, label_, xlabel_, ylabel_, limits_, GridIndex{ static_cast<size_t>( Fl_Widget::w() ), static_cast<size_t>( Fl_Widget::h() ) }, xFormat_, yFormat_, axisEqual_, grid_ );
 }
 
 template<class plotType>
@@ -65,10 +65,10 @@ void Fl_Plot<plotType>::resize( int x, int y, int w, int h ){
 	Fl_Widget::resize( x, y, w, h );
 
 	GridIndex currentImgSize = plot_.image_size();
-	if( RelativeDeviation( (int) currentImgSize.c, w ) > 0.15 ||
-		RelativeDeviation( (int) currentImgSize.r, h ) > 0.15 ){
+	if( RelativeDeviation( static_cast<int>( currentImgSize.c ), w ) > 0.15 ||
+		RelativeDeviation( static_cast<int>( currentImgSize.r ), h ) > 0.15 ){
 
-		plot_.SetSize( GridIndex{ (size_t) w, (size_t) h } );
+		plot_.SetSize( GridIndex{ static_cast<size_t>( w ), static_cast<size_t>( h ) } );
 		plot_.CreatePlot();
 		AssignImage( plot_.image_path() );
 	} 
@@ -83,21 +83,21 @@ void Fl_Plot<plotType>::CalculateScaled( void ){
 
 	int scaledWidth = w(), scaledHeight = h();
 
-	const double aspectRatioWidget = (double) w() / (double) h();
-	const double aspectRatioImage = (double) raw_image_->w() / (double) raw_image_->h();
+	const double aspectRatioWidget = static_cast<double>( w() ) / static_cast<double>( h() );
+	const double aspectRatioImage = static_cast<double>( raw_image_->w() ) / static_cast<double>( raw_image_->h() );
 
 	// Fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){
 
 		scaledHeight = h();
-		scaledWidth = (int) ( (double) scaledHeight * aspectRatioImage );
+		scaledWidth = static_cast<int>( static_cast<double>( scaledHeight ) * aspectRatioImage );
 
 	}
 	// Fit image horizontally
 	else{
 
 		scaledWidth = w();
-		scaledHeight = (int) ( (double) scaledWidth / aspectRatioImage );
+		scaledHeight = static_cast<int>( static_cast<double>( scaledWidth ) / aspectRatioImage );
 
 	}
 

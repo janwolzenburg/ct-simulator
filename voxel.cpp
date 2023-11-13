@@ -48,8 +48,8 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( attenuation_, binary_data );
-	num_bytes += SerializeBuildIn( specialProperties_, binary_data );
+	num_bytes += SerializeBuildIn<double>( attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
 	return num_bytes;
 }
 

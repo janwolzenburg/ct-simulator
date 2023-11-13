@@ -45,7 +45,7 @@ string CoordinateSystem::ToString( const unsigned int newline_tabulators ) const
 
 	str += newLine + name_;
 	str += newLine + PrimitiveCoordinateSystem::ToString();
-	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", (size_t) parent_ );
+	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( parent_ ) );
 	return str;
 }
 
@@ -213,7 +213,7 @@ size_t CoordinateSystem::Serialize( vector<char>& binary_data ) const{
 	num_bytes += GetEy().GetGlobalComponents().Serialize( binary_data );
 	num_bytes += GetEz().GetGlobalComponents().Serialize( binary_data );
 	
-	num_bytes += SerializeBuildIn( name_, binary_data );
+	num_bytes += SerializeBuildIn<string>( name_, binary_data );
 
 	return num_bytes;
 

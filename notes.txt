@@ -9,8 +9,6 @@ TODO: Tooltips and labels
 TODO: Check file Heads
 TODO: check comments
 TODO: check cpp files
-TODO: use static_cast
-TODO: check .fwd
 
 
 Precomputation for presentation

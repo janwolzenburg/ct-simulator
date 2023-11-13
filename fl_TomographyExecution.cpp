@@ -84,7 +84,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	scattering_propability_factor_input_.tooltip( "Correction factor for scattering propability. More scattering with higher value." );
 	disable_scattering_button_.tooltip( "Enable or disable scattering." );
 
-	maximum_scatterings_input_.value( (double) tomography_properties_.max_scattering_occurrences );
+	maximum_scatterings_input_.value( static_cast<double>( tomography_properties_.max_scattering_occurrences ) );
 	scattering_propability_factor_input_.value( tomography_properties_.scatter_propability_correction );
 	disable_scattering_button_.value( tomography_properties_.scattering_enabled );
 	disable_scattering_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
@@ -113,14 +113,14 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	projections_ = projections;
 	export_projections_button_.activate();
 
-	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing", projections_ );
+	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
 	processing_windows_.push_back( std::move( ptr ) );
 	processing_windows_.back()->show();
 }
 
 
 void Fl_TomographyExecution::UpdateProperties( void ){
-		tomography_properties_ = TomographyProperties{ (bool) disable_scattering_button_.value(), (size_t) maximum_scatterings_input_.value(), scattering_propability_factor_input_.value() };
+		tomography_properties_ = TomographyProperties{ static_cast<bool>( disable_scattering_button_.value() ), static_cast<size_t>( maximum_scatterings_input_.value() ), scattering_propability_factor_input_.value() };
 }
 
 void Fl_TomographyExecution::DoTomography( void ){

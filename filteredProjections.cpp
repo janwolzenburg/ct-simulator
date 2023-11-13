@@ -88,29 +88,29 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 double FilteredProjections::GetValue( const size_t angleIdx, const double distance ) const{
 
 
-	double dD = resolution().r;	// Distance resolution
-	size_t nD = size().r;			// Number of distances
+	const double dD = resolution().r;	// Distance resolution
+	const size_t nD = size().r;			// Number of distances
 
-	double exactDistanceIdx = distance / dD + ( (double) nD - 1. ) / 2.;		// Exact "index" of distance
+	double exactDistanceIdx = distance / dD + ( static_cast<double>( nD ) - 1. ) / 2.;		// Exact "index" of distance
 
 	// Index must be in bounds
 	exactDistanceIdx = ForceToMin( exactDistanceIdx, 0. );
-	exactDistanceIdx = ForceToMax( exactDistanceIdx, (double) nD - 1.);
+	exactDistanceIdx = ForceToMax( exactDistanceIdx, static_cast<double>( nD ) - 1.);
 
 	// If the exact index is a whole number_of_pixel
 	if( IsNearlyEqualDistance( round( exactDistanceIdx ), exactDistanceIdx ) ){
 		// Return value at distance index
-		return this->operator()( GridIndex{ angleIdx, (size_t) exactDistanceIdx });
+		return this->operator()( GridIndex{ angleIdx, static_cast<size_t>( exactDistanceIdx ) } );
 	}
 
 	// Interpolate
-	size_t distanceIdxFloor = (size_t) floor( exactDistanceIdx );		// Lower index
-	size_t distanceIdxCeil = (size_t) ceil( exactDistanceIdx );			// Upper index
+	const size_t distanceIdxFloor = static_cast<size_t>( floor( exactDistanceIdx ) );		// Lower index
+	const size_t distanceIdxCeil = static_cast<size_t>( ceil( exactDistanceIdx ) );			// Upper index
 
-	double valueAtFloor = this->operator()( GridIndex{ angleIdx, distanceIdxFloor } );	// Value at floor index
-	double valueAtCeil = this->operator()( GridIndex{ angleIdx, distanceIdxCeil } );	// Value at ceil index
+	const double valueAtFloor = this->operator()( GridIndex{ angleIdx, distanceIdxFloor } );	// Value at floor index
+	const double valueAtCeil = this->operator()( GridIndex{ angleIdx, distanceIdxCeil } );	// Value at ceil index
 
 	// Return the interpolated value
-	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( static_cast<double>( distanceIdxCeil - distanceIdxFloor ) ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) );
+	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( static_cast<double>( distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) ) );
 
 }

@@ -36,11 +36,11 @@ ColorImage::ColorImage( const ColorImage& srcImg, const size_t newWidth, const s
 	ColorImage{ newWidth, newHeight }
 {
 	for( size_t c = 0; c < this->width(); c++ ){
-		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->width() - 1. ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
 
-			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
 
 		}
@@ -51,10 +51,10 @@ ColorImage::ColorImage( const GrayscaleImage& srcImg, const size_t newWidth, con
 	ColorImage{ newWidth, newHeight }
 {
 	for( size_t c = 0; c < this->width(); c++ ){
-		size_t srcC = (size_t) ( (double) c * ( (double) srcImg.width() - 1. ) / ( (double) this->width() - 1. ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
-			size_t srcR = (size_t) ( (double) r * ( (double) srcImg.height() - 1. ) / ( (double) this->height() - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
 
 			if( overlay.size() != srcImg.number_of_pixel() ){
 				this->SetPixelData( { c, r }, { srcImg.GetPixelData( srcC, srcR ), srcImg.GetPixelData( srcC, srcR ), srcImg.GetPixelData( srcC, srcR ) } );
@@ -71,8 +71,8 @@ ColorImage::ColorImage( const GrayscaleImage& srcImg, const size_t newWidth, con
 
 
 ColorImage::ColorImage( const vector<char>& binsourceData, vector<char>::const_iterator& it ) :
-	width_( DeSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
-	height_( DeSerializeBuildIn( (size_t) 1, binsourceData, it ) ),
+	width_( DeSerializeBuildIn<size_t>( 1, binsourceData, it ) ),
+	height_( DeSerializeBuildIn<size_t>( 1, binsourceData, it ) ),
 	number_of_pixel_( width_* height_ ),
 	image_data_( number_of_pixel_, RGB{ 0, 0, 0 } )
 {
@@ -96,13 +96,13 @@ size_t ColorImage::GetIndex( const size_t c, const size_t r ) const{
 size_t ColorImage::Serialize( vector<char>& binsourceData ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( width_, binsourceData );
-	num_bytes += SerializeBuildIn( height_, binsourceData );
+	num_bytes += SerializeBuildIn<size_t>( width_, binsourceData );
+	num_bytes += SerializeBuildIn<size_t>( height_, binsourceData );
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		num_bytes += SerializeBuildIn( image_data_.at( i ).red, binsourceData );
-		num_bytes += SerializeBuildIn( image_data_.at( i ).green, binsourceData );
-		num_bytes += SerializeBuildIn( image_data_.at( i ).blue, binsourceData );
+		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).red, binsourceData );
+		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).green, binsourceData );
+		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).blue, binsourceData );
 	}
 
 	return num_bytes;

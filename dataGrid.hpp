@@ -48,12 +48,12 @@ DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const 
 
 template<class D>
 DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange, const GridCoordinates resolution_, D defaultValue ) :
-	size_{ GridIndex{	(size_t) ( ( columnRange.end() - columnRange.start() ) / resolution_.c ) + 1,
-					(size_t) ( ( rowRange.end() - rowRange.start() ) / resolution_.r ) + 1 } },
+	size_{ GridIndex{	static_cast<size_t>( ( columnRange.end() - columnRange.start() ) / resolution_.c ) + 1,
+						static_cast<size_t>( ( rowRange.end() - rowRange.start() ) / resolution_.r ) + 1 } },
 	start_{ GridCoordinates{	columnRange.start(),
-					rowRange.start() } },
-	resolution_{ GridCoordinates{ ( columnRange.end() - start_.c ) / (double) ( size_.c - 1 ),
-						( rowRange.end() - start_.r ) / (double) ( size_.r - 1 ) } }
+								rowRange.start() } },
+	resolution_{ GridCoordinates{ ( columnRange.end() - start_.c )	/ static_cast<double>( size_.c - 1 ),
+								  ( rowRange.end() - start_.r )		/ static_cast<double>( size_.r - 1 ) } }
 {
 	InitialiseMinAndMaxValue();
 	FillVectors( defaultValue );
@@ -61,16 +61,16 @@ DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange
 
 template<class D>
 DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	size_( GridIndex( binary_data, it ) ),
-	start_( GridCoordinates( binary_data, it ) ),
-	resolution_( GridCoordinates( binary_data, it ) )
+	size_( GridIndex{ binary_data, it } ),
+	start_( GridCoordinates{ binary_data, it } ),
+	resolution_( GridCoordinates{ binary_data, it } )
 {
 
 		FillVectors( D() );
 
 		if constexpr( std::is_fundamental_v<D> ){
-			min_value_ = DeSerializeBuildIn( D(), binary_data, it );
-			max_value_ = DeSerializeBuildIn( D(), binary_data, it );
+			min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
+			max_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
 		}
 		else{
 
@@ -81,7 +81,7 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 		for( vector<D>& column : data_ ){
 			for( D& rowData : column ){
 				if constexpr( std::is_fundamental_v<D> )
-					rowData = DeSerializeBuildIn( D{}, binary_data, it );
+					rowData = DeSerializeBuildIn<D>( D{}, binary_data, it );
 				else
 					rowData = D{ binary_data, it };
 			}
@@ -98,8 +98,8 @@ void DataGrid<D>::FillVectors( const D defaultValue ){
 
 
 	// Fill axis
-	column_points_ = CreateLinearSpace( start_.c, start_.c + (double) ( size_.c - 1 ) * resolution_.c, size_.c );
-	row_points_ = CreateLinearSpace( start_.r, start_.r + (double) ( size_.r - 1 ) * resolution_.r, size_.r );
+	column_points_ = CreateLinearSpace( start_.c, start_.c + static_cast<double>( size_.c - 1 ) * resolution_.c, size_.c );
+	row_points_ = CreateLinearSpace( start_.r, start_.r + static_cast<double>( size_.r - 1 ) * resolution_.r, size_.r );
 
 	// Create data structure
 	data_ = vector<vector<D>>( size_.c, vector<D>( size_.r, defaultValue ) );
@@ -133,8 +133,8 @@ template<class D>
 GridIndex DataGrid<D>::GetIndex( const GridCoordinates coordinates ) const{
 
 	GridIndex index{
-		(size_t) floor( ( coordinates.c - start_.c ) / resolution_.c + 0.5 ),
-		(size_t) floor( ( coordinates.r - start_.r ) / resolution_.r + 0.5 )
+		static_cast<size_t>( floor( ( coordinates.c - start_.c ) / resolution_.c + 0.5 ) ),
+		static_cast<size_t>( floor( ( coordinates.r - start_.r ) / resolution_.r + 0.5 ) )
 	};
 
 	if( index.c >= size_.c ) index.c = size_.c - 1;
@@ -198,8 +198,8 @@ size_t DataGrid<D>::Serialize( vector<char>& binary_data ) const{
 	num_bytes += resolution_.Serialize( binary_data );
 
 	if constexpr( std::is_fundamental_v<D> ){
-		num_bytes += SerializeBuildIn( min_value_, binary_data );
-		num_bytes += SerializeBuildIn( max_value_, binary_data );
+		num_bytes += SerializeBuildIn<D>( min_value_, binary_data );
+		num_bytes += SerializeBuildIn<D>( max_value_, binary_data );
 	}
 	else{
 		num_bytes += min_value_.Serialize( binary_data );
@@ -210,7 +210,7 @@ size_t DataGrid<D>::Serialize( vector<char>& binary_data ) const{
 		for( const D& rowData : column ){
 
 			if constexpr( std::is_fundamental_v<D> )
-				num_bytes += SerializeBuildIn( rowData, binary_data );
+				num_bytes += SerializeBuildIn<D>( rowData, binary_data );
 			else
 				num_bytes += rowData.Serialize( binary_data );
 		}
