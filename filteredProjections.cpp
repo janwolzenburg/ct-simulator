@@ -111,6 +111,6 @@ double FilteredProjections::GetValue( const size_t angleIdx, const double distan
 	const double valueAtCeil = this->operator()( GridIndex{ angleIdx, distanceIdxCeil } );	// Value at ceil index
 
 	// Return the interpolated value
-	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / ( static_cast<double>( distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) ) );
+	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / static_cast<double>( distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) );
 
 }
