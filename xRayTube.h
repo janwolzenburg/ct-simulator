@@ -65,16 +65,18 @@ class XRayTubeProperties {
 	 * @param anodeCurrent_A Anode Current in A
 	 * @param anode_material Anode material
 	 * @param number_of_rays_per_pixel Amount of rays to emit per pixel
+	 * @param has_filter Flag for Al-filter
 	*/
-	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material, const size_t number_of_rays_per_pixel ) :
+	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material, const size_t number_of_rays_per_pixel, const bool has_filter ) :
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
-		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) )
+		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
+		has_filter_( has_filter )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	XRayTubeProperties( void ) : XRayTubeProperties{ 120000., .2, Thungsten, 1 }
+	XRayTubeProperties( void ) : XRayTubeProperties{ 120000., .2, Thungsten, 1, true }
 	{};
 
 	/*!
@@ -95,6 +97,7 @@ class XRayTubeProperties {
 	double anode_current_A;				/*!< Current in ampere*/
 	Material anode_material;			/*!< Atomic Number of anode material*/
 	size_t number_of_rays_per_pixel_;	/*!< The amount of discrete rays to emit per detector pixel*/
+	bool has_filter_;					/*!< Flag for Al-Filter*/
 
 };
 

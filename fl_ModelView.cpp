@@ -27,10 +27,10 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	load_model_button_{	X( head_group_, .1 ),	Y( head_group_, .05 ),	W( head_group_, .25 ),	H( head_group_, .9 ),	"Load model" },
 
 	model_inspection_group_{	X( *this, 0. ),		vOff( head_group_ ),	W( *this , 1. ),	H( *this, .75 ) },
-	model_information_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, 0. ),	W( model_inspection_group_, .5 ),	H( model_inspection_group_, .15 ) },
+	model_information_{	X( model_inspection_group_, 0.05 ),	Y( model_inspection_group_, 0.1 ),	W( model_inspection_group_, .45 ),	H( model_inspection_group_, .15 ) },
 	reset_model_button_{	X( model_inspection_group_, .6 ),	Y( model_inspection_group_, .06 ),	W( model_inspection_group_, .25 ),	H( model_inspection_group_, .05 ), "Reset model" },
-	loading_status_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ),	"No model loaded" },
-	model_slice_image_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .175 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ) },
+	loading_status_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .2 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ),	"No model loaded" },
+	model_slice_image_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .2 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ) },
 
 	model_movement_group_{	X( *this, 0. ),		vOff( model_inspection_group_ ),	W( *this, 1. ),		H( *this, .165 ) },
 	x_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },

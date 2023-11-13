@@ -35,14 +35,15 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
-	tube_group_{		X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),		H( *this, .35 ) },
-	tube_title_{		X( tube_group_, 0. ),	Y( tube_group_, 0. ),	W( tube_group_, 1. ),	H( tube_group_, .075 ),	"xRay Tube" },
-	voltage_input_{	X( tube_group_, .0 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Voltage" },
-	current_input_{	X( tube_group_, .25 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Current" },
-	anoder_material_input{		X( tube_group_, .5 ),	Y( tube_group_, .15 ),	W( tube_group_, .5 ),	H( tube_group_, .075 ),	"Material" },
-	spectrum_plot_{	X( tube_group_, .0 ),	Y( tube_group_, .3 ),	W( tube_group_, 1. ),	H( tube_group_, .75 ),	"Spectrum Plot" },
+	tube_group_{			X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),					H( *this, .4 ) },
+	tube_title_{			X( tube_group_, 0. ),	Y( tube_group_, 0. ),	W( tube_group_, 1. ),	H( tube_group_, .075 ),	"xRay Tube" },
+	voltage_input_{			X( tube_group_, .0 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Voltage" },
+	current_input_{			X( tube_group_, .25 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Current" },
+	anode_material_input_{	X( tube_group_, .5 ),	Y( tube_group_, .15 ),	W( tube_group_, .5 ),	H( tube_group_, .075 ),	"Material" },
+	toggle_filter_button_{  X( tube_group_, .33 ),	Y( tube_group_, .25 ),	W( tube_group_, .33 ),	H( tube_group_, .075 ),	"Al-Filter" },
+	spectrum_plot_{			X( tube_group_, .0 ),	Y( tube_group_, .35 ),	W( tube_group_, 1. ),	H( tube_group_, .65 ),	"Spectrum Plot" },
 
-	detector_group_{	X( *this, .0 ),			Y( *this, .48 ),		W( *this, 1. ),		H( *this, .52 ) },
+	detector_group_{	X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
 	detector_title_{	X( detector_group_, .0 ),	Y( detector_group_, 0. ),	W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
 	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Angles" },
 	number_of_distances_input_{		X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Pixel" },
@@ -66,33 +67,38 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		Fl_Group::add( tube_group_ );
 
 		tube_group_.add( tube_title_ );
-		tube_group_.add( voltage_input_ ); tube_group_.add( current_input_ ); tube_group_.add( anoder_material_input );
+		tube_group_.add( voltage_input_ ); tube_group_.add( current_input_ ); tube_group_.add( anode_material_input_ );
+		tube_group_.add( toggle_filter_button_ );
 
 		tube_title_.box( FL_NO_BOX ); tube_title_.align( FL_ALIGN_CENTER ); tube_title_.labelsize( 20 );
 
-		voltage_input_.align( FL_ALIGN_TOP ); current_input_.align( FL_ALIGN_TOP ); anoder_material_input.align( FL_ALIGN_TOP );
+		voltage_input_.align( FL_ALIGN_TOP ); current_input_.align( FL_ALIGN_TOP ); anode_material_input_.align( FL_ALIGN_TOP );
 
 		voltage_input_.SetProperties( 20000., 200000., 0 );
 		current_input_.SetProperties( .001, 10., 3 );
 
 		voltage_input_.value( tube_properties_.anode_voltage_V );
 		current_input_.value( tube_properties_.anode_current_A );
+		toggle_filter_button_.value( static_cast<int>( tube_properties_.has_filter_ ) );
 
 		voltage_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		current_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
-		anoder_material_input.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
+		anode_material_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
+		toggle_filter_button_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
+				
+		toggle_filter_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		vector<string> materialNames;
 		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
 
-		anoder_material_input.AssignElements( materialNames );
+		anode_material_input_.AssignElements( materialNames );
 		XRayTubeProperties::Material anode_material = tube_properties_.anode_material;
 		string materialName = XRayTubeProperties::materials.at( anode_material ).first;
-		anoder_material_input.SetCurrentElement( materialName );
+		anode_material_input_.SetCurrentElement( materialName );
 
 		voltage_input_.tooltip( "Voltage in Volts." );
 		current_input_.tooltip( "Current in Ampere." );
-		anoder_material_input.tooltip( "Anode material." );
+		anode_material_input_.tooltip( "Anode material." );
 
 
 		tube_group_.add( spectrum_plot_ );
@@ -175,7 +181,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 		
 		detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 10000., 0 );
-		tube_properties_ = XRayTubeProperties{ voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anoder_material_input.current_element() ), static_cast<size_t>( number_of_rays_per_pixel_input_.value() ) };
+		tube_properties_ = XRayTubeProperties{ voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anode_material_input_.current_element() ), static_cast<size_t>( number_of_rays_per_pixel_input_.value() ), static_cast<bool>( toggle_filter_button_.value() ) };
 	
 
 		projections_properties_ = ProjectionsProperties{ number_of_angles_input_.value(), number_of_distances_input_.value(), distance_range_input_.value() };

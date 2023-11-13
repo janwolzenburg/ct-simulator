@@ -41,7 +41,8 @@ XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<
 	anode_voltage_V( DeSerializeBuildIn<double>( 120000., binary_data, it ) ),
 	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, it ) ),
 	anode_material( (Material) DeSerializeBuildIn<>( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
-	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) )
+	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
+	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) )
 {}
 
 
@@ -62,6 +63,7 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
 	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ToUnderlying( anode_material ), binary_data );
 	num_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
+	num_bytes += SerializeBuildIn<bool>( has_filter_, binary_data );
 
 	return num_bytes;
 }
@@ -80,24 +82,27 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 {
 
 	// 
-	VectorPair energy_spectrum{ CreateLinearSpace( al_filter_cut_off_energy_eV, max_photon_energy_eV_, number_of_points_in_spectrum_), 
+	VectorPair energy_spectrum{ CreateLinearSpace( 1000., max_photon_energy_eV_, number_of_points_in_spectrum_), 
 								vector<double>( number_of_points_in_spectrum_, 0. ) };
 
 
 	// Frequency to which the filter dominates spectral behavious
-	double changeEnergy = energy_spectrum.first.front() + ( energy_spectrum.first.back() - energy_spectrum.first.front()) / (1. - al_filter_gradiant_factor);
+	double changeEnergy = energy_spectrum.first.front() + ( energy_spectrum.first.back() - energy_spectrum.first.front()) / (1. - al_filter_gradient_factor);
 
 	// Fill value vector
 	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
 		size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
 
-		double bremsGradient = -1;											// Gradient of brems spectrum
-		double filterGradient = al_filter_gradiant_factor * bremsGradient;		// Gradient of filter spectrum
+		const double bremsGradient = -1;											// Gradient of brems spectrum
+		
+		if( properties_.has_filter_ ){
+			const double filterGradient = al_filter_gradient_factor * bremsGradient;		// Gradient of filter spectrum
 
-		// Filter dominates
-		if ( *energyIt < changeEnergy ) {
-			energy_spectrum.second.at(curIdx) = ( *energyIt - energy_spectrum.first.front() ) * filterGradient;
-			continue;
+			// Filter dominates
+			if ( *energyIt < changeEnergy ) {
+				energy_spectrum.second.at(curIdx) = ( *energyIt - energy_spectrum.first.front() ) * filterGradient;
+				continue;
+			}
 		}
 
 		// Bremsspectrum dominates

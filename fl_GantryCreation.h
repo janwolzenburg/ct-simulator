@@ -81,7 +81,8 @@ class Fl_GantryCreation : public Fl_Group{
 	Fl_Box tube_title_;					/*!< Tube group title*/
 	Fl_BoundInput<Fl_Float_Input, double> voltage_input_;	/*!< Tube voltage*/
 	Fl_BoundInput<Fl_Float_Input, double> current_input_;	/*!< Tube current*/
-	Fl_Selector anoder_material_input;		/*!< Anode material*/
+	Fl_Selector anode_material_input_;		/*!< Anode material*/
+	Fl_Toggle_Button toggle_filter_button_;	/*!< Toggle Al-Filter*/
 	Fl_Plot<LinePlot> spectrum_plot_;		/*!< Plot of tube sepctrum*/
 
 	Fl_Group detector_group_;	/*!< Group for detector elemnts*/

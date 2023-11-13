@@ -25,7 +25,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	lower_bound_{ X( *this, 0.1 ), Y( *this, 0.89 ), W( *this, .8 ), H( *this, .05 ), "Low" },
 	upper_bound_{ X( *this, 0.1 ), Y( *this, 0.95 ), W( *this, .8 ), H( *this, .05 ), "High" },
 	
-	common_factor_text_{ X( *this, 0.9 ), Y( *this, 0.82 ), W( *this, .1 ), H( *this, .18 ), "" },
+	common_factor_text_{ X( *this, 0.9 ), Y( *this, 0.89 ), W( *this, .1 ), H( *this, .1 ), "" },
 	common_power_( 0 ),
 	bounds_set_( false ),
 	contrast_changed_( false )
@@ -44,7 +44,8 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 
 	lower_bound_.align( FL_ALIGN_LEFT );
 	upper_bound_.align( FL_ALIGN_LEFT );
-	
+	common_factor_text_.align( FL_ALIGN_CENTER );
+
 	lower_bound_.precision( 0 );
 	upper_bound_.precision( 0 );
 
