@@ -95,12 +95,13 @@ void Plot::DrawPlot( void ){
 
 	plot_2D_.palette( "set1" );
 	plot_2D_.fontSize( image_size_.r / 18 );
-	plot_2D_.legend().fontSize( image_size_.r / 18 );
 
 	if( !label_.empty() ){
 		plot_2D_.gnuplot( "set title \"" + label_ + "\"" );
 		plot_2D_.gnuplot( "show title" );
 	}
+
+	plot_2D_.legend().hide();
 
 	sciplot::Figure  fig = { {plot_2D_} };
 	sciplot::Canvas canvas = { {fig} };
@@ -148,12 +149,16 @@ void LinePlot::AssignData( const vector<double> X_, const vector<double> Y_ ){
 void LinePlot::CreatePlot( void ){
 	Plot::reset();
 	Plot::plot_2D_.drawCurve( X, Y ).labelNone();
+	
+	plot_2D_.legend().hide();
 	Plot::DrawPlot();
 }
 
 void DotPlot::CreatePlot( void ){
 	Plot::reset();
 	Plot::plot_2D_.drawPoints( X, Y ).labelNone();
+	
+	plot_2D_.legend().hide();
 	Plot::DrawPlot();
 }
 
@@ -185,6 +190,7 @@ void Geometryplot::CreatePlot( void ){
 		vector<double> Y{ point.first.y };
 
 		Plot::plot_2D_.drawPoints( X, Y ).label( point.second.c_str() );
+
 	}
 
 	Plot::DrawPlot();
