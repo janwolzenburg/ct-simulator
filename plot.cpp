@@ -63,9 +63,8 @@ void Plot::reset( void ){
 
 void Plot::DrawPlot( void ){
 
-	plot_2D_.xlabel( x_label_ ); plot_2D_.ylabel( y_label_ );
-	plot_2D_.legend().hide();
 
+	plot_2D_.xlabel( x_label_ ); plot_2D_.ylabel( y_label_ );
 	if( !limits_.autoXRange )
 		plot_2D_.xrange( limits_.xRange.start(), limits_.xRange.end() );
 
@@ -86,6 +85,7 @@ void Plot::DrawPlot( void ){
 
 	plot_2D_.palette( "set1" );
 	plot_2D_.fontSize( image_size_.r / 18 );
+	plot_2D_.legend().fontSize( image_size_.r / 18 );
 
 	if( !label_.empty() ){
 		plot_2D_.gnuplot( "set title \"" + label_ + "\"" );
@@ -137,13 +137,13 @@ void LinePlot::AssignData( const vector<double> X_, const vector<double> Y_ ){
 
 void LinePlot::CreatePlot( void ){
 	Plot::reset();
-	Plot::plot_2D_.drawCurve( X, Y );
+	Plot::plot_2D_.drawCurve( X, Y ).labelNone();
 	Plot::DrawPlot();
 }
 
 void DotPlot::CreatePlot( void ){
 	Plot::reset();
-	Plot::plot_2D_.drawPoints( X, Y );
+	Plot::plot_2D_.drawPoints( X, Y ).labelNone();
 	Plot::DrawPlot();
 }
 
@@ -166,15 +166,15 @@ void Geometryplot::CreatePlot( void ){
 		vector<double> X{ Line.first.x, Line.second.x };
 		vector<double> Y{ Line.first.y, Line.second.y };
 
-		Plot::plot_2D_.drawCurve( X, Y );
+		Plot::plot_2D_.drawCurve( X, Y ).labelNone();
 	}
 
 	for( const auto& point : points_ ){
 
-		vector<double> X{ point.x };
-		vector<double> Y{ point.y };
+		vector<double> X{ point.first.x };
+		vector<double> Y{ point.first.y };
 
-		Plot::plot_2D_.drawPoints( X, Y );
+		Plot::plot_2D_.drawPoints( X, Y ).label( point.second.c_str() );
 	}
 
 	Plot::DrawPlot();

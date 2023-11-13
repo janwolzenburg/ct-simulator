@@ -33,7 +33,7 @@ class Geometryplot : public Plot{
 	Geometryplot( const string name, const string x_label, const string y_label,
 				  const PlotLimits limits, const GridIndex image_size, const bool enable_grid ) :
 			Plot{ name, x_label, y_label, limits, image_size, enable_grid }, 
-			lines_( 0, std::pair<Tuple2D, Tuple2D>{} ), points_( 0, Tuple2D{} ){};
+			lines_( 0, std::pair<Tuple2D, Tuple2D>{} ), points_( 0, { Tuple2D{}, string{} } ){};
 
 	/*!
 	 * @brief Default constructor
@@ -52,8 +52,10 @@ class Geometryplot : public Plot{
 	 * @brief Add point to plot
 	 * @param point Point coordiantes
 	*/
-	void AddPoint( const Tuple2D point ){
-		points_.emplace_back( Tuple2D{ limits_.xFactor * point.x, limits_.yFactor * point.y } ); };
+	void AddPoint( const Tuple2D point, const string name = string{}){
+		points_.emplace_back( Tuple2D{ limits_.xFactor * point.x, limits_.yFactor * point.y }, name ); };
+
+
 
 	/*!
 	 * @brief Remove all lines and points
@@ -68,7 +70,7 @@ class Geometryplot : public Plot{
 
 	private:
 
-	vector<std::pair<Tuple2D, Tuple2D>> lines_;	/*!< Lines in plot*/
-	vector<Tuple2D> points_;					/*!< Points in plot*/
+	vector<std::pair<Tuple2D, Tuple2D>> lines_;			/*!< Lines in plot*/
+	vector<pair<Tuple2D, string>> points_;					/*!< Points in plot*/
 
 };

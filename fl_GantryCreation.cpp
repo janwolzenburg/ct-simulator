@@ -227,7 +227,9 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		}
 
 		const Point3D gantryCenter = gantry_.GetCenter();
-		detector_plot_.plot().AddPoint( Tuple2D( gantryCenter.X(), gantryCenter.Y() ) );
+		detector_plot_.plot().AddPoint( Tuple2D{ gantryCenter.X(), gantryCenter.Y() }, "Center");
+		detector_plot_.plot().AddPoint( Tuple2D{ gantry_.tube().coordinate_system()->GetOriginInParentSystem().X(), gantry_.tube().coordinate_system()->GetOriginInParentSystem().Y() }, "Tube");
+		
 		detector_plot_.plot().CreatePlot();
 		detector_plot_.AssignData();
 
