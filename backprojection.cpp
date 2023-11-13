@@ -53,8 +53,8 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 			
 		for( size_t yIdx = 0; yIdx < nD; yIdx++ ){
 
-			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - static_cast<signed long long>( nD ) - 1 ) / 2. * dD;		// x value on image
-			const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - static_cast<signed long long>( nD ) - 1 ) / 2. * dD;		// y value on image
+			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// x value on image
+			const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// y value on image
 
 			double currentValue = image.GetData( GridIndex{ xIdx, yIdx } );
 			 
