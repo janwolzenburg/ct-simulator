@@ -106,7 +106,7 @@ class Fl_BoundInput : public Fl_Group{
 	 * @param widget Pointer to widget which triggered the callback
 	 * @param p Pointer to userdata. Here a pointer to the Fl_BoundInput must be passed
 	*/
-	static void HanldeValueChange( Fl_Widget* widget, void* p );
+	static void HandleValueChange( Fl_Widget* widget, void* p );
 
 };
 

@@ -21,24 +21,24 @@ Fl_BoundInput<C, T>::Fl_BoundInput( int x, int y, int w, int h, const char* labe
 	Fl_Group{ x, y, w, h },
 	input_widget_{ x, y, w, h, label },
 	precision_( 0 ),
-	current_value_( (T) 0 ),
+	current_value_( static_cast<T>( 0 ) ),
 	value_string_( ToString( current_value_, precision_ ) ),
-	max_allowed_( (T) 100 ),
-	min_allowed_( (T) 0 ),
+	max_allowed_( static_cast<T>( 100 ) ),
+	min_allowed_( static_cast<T>( 0 ) ),
 	constraint_( None )
 {
 	Fl_Group::add( input_widget_ );
-	input_widget_.callback( HanldeValueChange, (Fl_Widget*) this );
+	input_widget_.callback( HandleValueChange, static_cast<Fl_Widget*>( this ) );
 
 	input_widget_.value( "0" );
 }
 
 template< class C, typename T>
- void Fl_BoundInput<C, T>::HanldeValueChange( [[maybe_unused]] Fl_Widget* widget, void* p ){
+ void Fl_BoundInput<C, T>::HandleValueChange( [[maybe_unused]] Fl_Widget* widget, void* p ){
 	Fl_BoundInput* parentPtr = static_cast<Fl_BoundInput*>( p );
 
-	parentPtr->Fl_Group::do_callback();
 	parentPtr->CheckAndForceConstraints();
+	parentPtr->Fl_Group::do_callback();
 }
 
 template< class C, typename T>
