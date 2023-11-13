@@ -67,35 +67,17 @@ void Fl_AdjustableGrayscaleImage::ChangeSliderValues( const NumberRange bounds )
 
 void Fl_AdjustableGrayscaleImage::AssignImage( const GrayscaleImage& img ){
 	image_widget_.AssignImage( img );
-	UpdateSliderBounds();
-	image_widget_.AdjustContrast( NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value() * pow( 10., -common_power_ ) } );
+	SetSliderBoundsFromImage();
 	this->show();
 }
 
 void Fl_AdjustableGrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid ){//, const bool normalise ){
 
 	image_widget_.AssignImage( modGrid, false );
-	UpdateSliderBounds();
-	image_widget_.AdjustContrast( NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value() * pow( 10., -common_power_ ) } );
+	SetSliderBoundsFromImage();
 	
 	this->show();
 }
-
-void Fl_AdjustableGrayscaleImage::UpdateSliderBounds( void ){
-	
-	const bool bounds_were_set = bounds_set_;
-
-	double previous_low = lower_bound_.value();
-	double previous_upper = upper_bound_.value();
-
-	SetSliderBoundsFromImage();
-
-	if( bounds_were_set )
-		ChangeSliderValues( NumberRange{ previous_low * pow( 10., -common_power_ ), previous_upper * pow( 10., -common_power_ ) } );
-	
-}
-
-
 
 void Fl_AdjustableGrayscaleImage::SetSliderBoundsFromImage( void ){
 	SetSliderBounds( NumberRange{ image_widget_.GetMinimum(), image_widget_.GetMaximum() } );
@@ -151,6 +133,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 	lower_bound_.value( scaledBounds.start() );
 	upper_bound_.value( scaledBounds.end() );
 
+	image_widget_.AdjustContrast( NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value() * pow( 10., -common_power_ ) } );
 
 	contrast_changed_ = true;
 	bounds_set_ = true;

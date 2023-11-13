@@ -89,6 +89,7 @@ void Fl_ProcessingWindow::ReconstructImage( void ){
 
 	backprojection_ = Backprojection{ filtered_projections_, processingProgressWindow };
 
+	
 	reconstructed_image_.AssignImage( GrayscaleImage{ backprojection_.getGrid(), true } );
 
 	delete processingProgressWindow;

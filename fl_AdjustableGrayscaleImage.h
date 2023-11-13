@@ -106,11 +106,6 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	bool contrast_changed_;								
 
 	/*!
-	 * @brief Update slider bounds
-	*/
-	void UpdateSliderBounds( void );
-
-	/*!
 	 * @brief Callback for value change
 	 * @param widget Pointer to widget that triggered the callback
 	*/
