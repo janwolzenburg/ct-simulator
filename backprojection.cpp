@@ -83,9 +83,9 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 
 
 Backprojection::Backprojection( const FilteredProjections projections, Fl_Progress_Window* progress ) :
-	DataGrid( GridIndex{ projections.size().r, projections.size().r },
+	DataGrid{ GridIndex{ projections.size().r, projections.size().r },
 		  GridCoordinates{ projections.start().r, projections.start().r }, 
-		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. )
+		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. }
 {
 
 	size_t currentX = 0; 

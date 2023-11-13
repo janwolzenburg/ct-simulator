@@ -64,11 +64,11 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 {
 	for( size_t c = 0; c < this->width(); c++ ){
 
-		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * static_cast<double>( srcImg.width() - 1 ) / static_cast<double>( this->width()- 1 ) );
 
 		for( size_t r = 0; r < this->height(); r++ ){
 
-			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * static_cast<double>( srcImg.height() - 1 ) / static_cast<double>( this->height() - 1 ) );
 
 			this->operator()( c, r ) = srcImg( srcC, srcR );
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
@@ -108,24 +108,11 @@ size_t GrayscaleImage::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<size_t>( height_, binary_data );
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		num_bytes += SerializeBuildIn<unsigned char>( raw_data_.at( i ), binary_data );
+		num_bytes += SerializeBuildIn<double>( raw_data_.at( i ), binary_data );
 	}
 
 	return num_bytes;
 }
-
-/*
-void GrayscaleImage::Normalise( void ){
-
-	if( raw_data_.size() == 0 ) return;
-
-	const double maxVal = GetMaxElement( raw_data_ );
-	const double minVal = GetMinElement( raw_data_ );
-
-	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		image_data_.at( i ) = (unsigned char) ( ( ( raw_data_.at( i ) - minVal ) / ( maxVal - minVal ) ) * 255. );
-	}
-}*/
 
 void GrayscaleImage::AdjustContrast( const NumberRange dataRange ){
 
@@ -138,7 +125,7 @@ void GrayscaleImage::AdjustContrast( const NumberRange dataRange ){
 		if( diffToStart > dataRange.GetDifference() ) diffToStart = dataRange.GetDifference();
 
 
-		image_data_.at( i ) = (unsigned char) ( ( diffToStart / ( dataRange.GetDifference() ) ) * 255. );
+		image_data_.at( i ) = static_cast<unsigned char>( ( diffToStart / ( dataRange.GetDifference() ) ) * 255. );
 	}
 }
 
