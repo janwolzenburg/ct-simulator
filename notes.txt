@@ -7,8 +7,6 @@ TODO: verify scattering angles and propability
 TODO: Tooltips and labels
 
 TODO: Check file Heads
-TODO: check comments
-TODO: check cpp files
 
 
 Precomputation for presentation
