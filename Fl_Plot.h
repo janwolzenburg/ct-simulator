@@ -12,6 +12,8 @@
 	Includes
  *********************************************************************/
 
+ #include <memory>
+
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Widget.H>
 #include "plot.h"
@@ -37,11 +39,6 @@ class Fl_Plot : public Fl_Widget{
 	 * @param label Label
 	*/
 	Fl_Plot( int x, int y, int w, int h,  const char* label = 0L );
-
-	/*!
-	 * @brief Destructor
-	*/
-	~Fl_Plot();
 
 	/*!
 	 * @brief Initialise plot
@@ -98,8 +95,8 @@ class Fl_Plot : public Fl_Widget{
 
 	string label_;				/*!< Label*/
 	P plot_;		/*!< A plot*/
-	Fl_PNG_Image* raw_image_;	/*!< Raw image*/
-	Fl_Image* image_;			/*!< Scaled FL-image*/
+	std::unique_ptr<Fl_PNG_Image> raw_image_;	/*!< Raw image*/
+	std::unique_ptr<Fl_Image> image_;			/*!< Scaled FL-image*/
 
 
 	/*!

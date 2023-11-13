@@ -37,12 +37,6 @@ Fl_Plot<plotType>::Fl_Plot( int x, int y, int w, int h, const char* label_ ) :
 }
 
 template<class plotType>
-Fl_Plot<plotType>::~Fl_Plot(){
-	delete image_;
-	delete raw_image_;
-}
-
-template<class plotType>
 void Fl_Plot<plotType>::Initialise( const path path_, const string xlabel_, const string ylabel_,
 					 const PlotLimits limits_, const string xFormat_, const string yFormat_, const bool axisEqual_, const bool grid_ ){
 
@@ -54,7 +48,7 @@ void Fl_Plot<plotType>::draw( void ){
 
 	CalculateScaled();
 
-	if( image_ != nullptr )
+	if( image_.get() != nullptr )
 		image_->draw( x(), y() );
 
 }
@@ -79,7 +73,7 @@ void Fl_Plot<plotType>::resize( int x, int y, int w, int h ){
 template<class plotType>
 void Fl_Plot<plotType>::CalculateScaled( void ){
 
-	if( raw_image_ == nullptr ) return;
+	if( raw_image_.get() == nullptr ) return;
 
 	int scaledWidth = w(), scaledHeight = h();
 
@@ -101,18 +95,15 @@ void Fl_Plot<plotType>::CalculateScaled( void ){
 
 	}
 
-	if( image_ != nullptr ) delete image_;
-
-	image_ = raw_image_->copy( scaledWidth, scaledHeight );
+	image_ = std::unique_ptr<Fl_Image>( raw_image_->copy( scaledWidth, scaledHeight ) );
 
 }
 
 template<class plotType>
 void Fl_Plot<plotType>::AssignImage( const path filename ){
 
-	delete raw_image_;
 
-	raw_image_ = new Fl_PNG_Image{ filename.string().c_str() };
+	raw_image_ = std::make_unique<Fl_PNG_Image>( filename.string().c_str() );
 
 	redraw();
 }
