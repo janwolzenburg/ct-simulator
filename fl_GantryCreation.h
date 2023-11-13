@@ -27,7 +27,7 @@
 #include "linePlot.h"
 #include "geometryplot.h"
 #include "widgets.h"
-#include "mainWindow.fwd.h"
+#include "fl_MainWindow.fwd.h"
 #include "callbackFunction.h"
 #include "gantry.h"
 #include "xRayTube.h"
@@ -47,7 +47,7 @@ class Fl_GantryCreation : public Fl_Group{
 	 * @param h Height
 	 * @param main_window Reference to the main window
 	*/
-	Fl_GantryCreation( int x, int y, int w, int h, mainWindow& main_window );
+	Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow& main_window );
 
 	/*!
 	 * @brief Get reference to gantry instance
@@ -95,7 +95,7 @@ class Fl_GantryCreation : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> maximum_ray_angle_input_;			/*!< Maximum angle when structure is enabled*/
 	Fl_Plot<Geometryplot> detector_plot_;									/*!< Plot for detector geometry*/
 
-	mainWindow& main_window_;
+	Fl_MainWindow& main_window_;
 
 	PersistingObject<XRayTubeProperties> tube_properties_;						/*!< xRay tube attributes*/
 	PersistingObject<ProjectionsProperties> projections_properties_;			/*!< Parameter in radon space affecting the detector*/

@@ -17,7 +17,7 @@
 #include "widgets.h"
 #include "plot.h"
 #include "fl_TomographyExecution.h"
-#include "mainWindow.h"
+#include "fl_MainWindow.h"
 
 /*********************************************************************
   Implementations
@@ -25,7 +25,7 @@
 
 
 
-Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, mainWindow& main_window ) :
+Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
 	tube_properties_{ XRayTubeProperties{}, "tube.properties" },
@@ -202,7 +202,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		spectrum_plot_.plot().AssignData( spectrum_points );
 		spectrum_plot_.AssignData();
 
-		main_window_.tomographyExecution.UpdateInformation( projections_properties_, detectorRef.properties(), gantry_.tube() );
+		main_window_.tomography_execution_.UpdateInformation( projections_properties_, detectorRef.properties(), gantry_.tube() );
 
 		detector_plot_.plot().ResetObjects();
 

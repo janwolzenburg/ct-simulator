@@ -19,35 +19,33 @@
 #include "filteredProjections.h"
 #include "fl_ProgressWindow.h"
 #include "widgets.h"
-#include "mainWindow.h"
+#include "fl_MainWindow.h"
 
 
-Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, mainWindow& main_window ) :
+Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
-	main_window_( main_window ),
 	title_{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .035 ), "Tomography"},
 
 	tomography_properties_group_{		X( *this, .0 ),				Y( *this, .04 ),				W( *this, 1. ),				H( *this, .6 ) },
 	properties_title_{			X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, 0. ),	W( tomography_properties_group_, 1. ),	H( tomography_properties_group_, .05 ), "Parameter" },
-	
 	maximum_scatterings_input_{		X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
 	scattering_propability_factor_input_{	X( tomography_properties_group_, .33 ),	Y( tomography_properties_group_, .6 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Propability factor" },
 	disable_scattering_button_{		X( tomography_properties_group_, .66 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
 	
 	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
-
 	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
 	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
 	export_projections_button_{			X( control_group_, .55 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Sinogram" },
 
 	
+	main_window_( main_window ),
+
 	export_projections_file_chooser_{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "export.chooser" },
 	
-	tomography_{},
 	tomography_properties_{ TomographyProperties{}, "tomography.properties" },
+	tomography_{},
 	
-
 	projections_{ Projections{}, "projections.sinogram" },
 	processing_windows_( 0 ),
 
@@ -135,7 +133,7 @@ void Fl_TomographyExecution::DoTomography( void ){
 		tomography_ = Tomography{ tomography_properties_ };
 
 		if( radiationProgressWindow != nullptr ){
-			Projections new_projections = tomography_.RecordSlice( main_window_.gantryBuild.projections_properties(), main_window_.gantryBuild.gantry(), main_window_.modView.model(), 0, radiationProgressWindow);
+			Projections new_projections = tomography_.RecordSlice( main_window_.gantry_creation_.projections_properties(), main_window_.gantry_creation_.gantry(), main_window_.model_view_.model(), 0, radiationProgressWindow);
 			AssignProjections( std::move( new_projections ) );
 			delete radiationProgressWindow;
 		}

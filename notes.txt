@@ -4,6 +4,7 @@ TODO: make artefact thregth adsustable
 TODO: conversion to HU
 
 TODO: verify scattering angles and propability
+TODO: Tooltips and labels
 
 TODO: Class and member variable names, includes
 TODO: Sorted files filter
@@ -91,6 +92,7 @@ Program
 		lineplot
 		geoplot
 		slicePlane
+		fl_progress
 
 	Widgets
 		fl_GrayscaleImage

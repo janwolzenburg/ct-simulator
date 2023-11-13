@@ -26,7 +26,7 @@
 #include "modelViewProperties.h"
 #include "persistingObject.h"
 #include "widgets.h"
-#include "mainWindow.fwd.h"
+#include "fl_MainWindow.fwd.h"
 #include "model.h"
 #include "callbackFunction.h"
 
@@ -51,7 +51,7 @@ class Fl_ModelView : public Fl_Group{
 	 * @param h Height
 	 * @param main_window Reference to the main window
 	*/
-	Fl_ModelView( int x, int y, int w, int h, mainWindow& main_window );
+	Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_window );
 
 	/*!
 	 * @brief Get Reference to model
@@ -86,7 +86,7 @@ class Fl_ModelView : public Fl_Group{
 
 	
 	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
-	mainWindow& main_window_;							/*!< Reference to main window*/
+	Fl_MainWindow& main_window_;							/*!< Reference to main window*/
 	PersistingObject<FileChooser> model_chooser_;		/*!< Persisting storage of model chooser*/
 	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
 

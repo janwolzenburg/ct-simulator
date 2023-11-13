@@ -196,8 +196,8 @@
     <ClInclude Include="modelViewProperties.h" />
     <ClInclude Include="grayscaleImage.h" />
     <ClInclude Include="linePlot.h" />
-    <ClInclude Include="mainWindow.fwd.h" />
-    <ClInclude Include="mainWindow.h" />
+    <ClInclude Include="fl_MainWindow.fwd.h" />
+    <ClInclude Include="fl_MainWindow.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="intersections.h" />
     <ClInclude Include="line.fwd.h" />
@@ -271,7 +271,7 @@
     <ClInclude Include="dataGrid.hpp">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClCompile Include="mainWindow.cpp" />
+    <ClCompile Include="fl_MainWindow.cpp" />
     <ClCompile Include="plot.cpp" />
     <ClCompile Include="grayscaleImage.cpp" />
     <ClCompile Include="line.cpp" />

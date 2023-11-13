@@ -115,6 +115,9 @@
     <Filter Include="Quelldateien\Processing\Projection">
       <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Forward Declerations">
+      <UniqueIdentifier>{8f257742-efa4-4176-8fce-76e8cdf6e571}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generelMath.h">
@@ -228,10 +231,10 @@
     <ClInclude Include="plot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="mainWindow.fwd.h">
+    <ClInclude Include="fl_MainWindow.fwd.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="mainWindow.h">
+    <ClInclude Include="fl_MainWindow.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="fl_ProcessingWindow.fwd.h">
@@ -260,9 +263,6 @@
     </ClInclude>
     <ClInclude Include="geometryPlot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="fl_ProgressWindow.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\Device</Filter>
@@ -375,6 +375,9 @@
     <ClInclude Include="persistingObject.hpp">
       <Filter>Quelldateien\Program</Filter>
     </ClInclude>
+    <ClInclude Include="fl_ProgressWindow.h">
+      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generelMath.cpp">
@@ -467,14 +470,11 @@
     <ClCompile Include="fl_ProcessingWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="mainWindow.cpp">
+    <ClCompile Include="fl_MainWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="vectorAlgotrithm.cpp">
       <Filter>Quelldateien\Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="fl_ProgressWindow.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Fl_Selector.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
@@ -543,6 +543,9 @@
       <Filter>Quelldateien\Program\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="fl_AdjustableGrayscaleImage.cpp">
+      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="fl_ProgressWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Widgets</Filter>
     </ClCompile>
   </ItemGroup>

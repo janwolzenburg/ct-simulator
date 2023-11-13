@@ -15,10 +15,10 @@
 #include "fl_ModelView.h"
 #include "serialization.h"
 #include "programState.h"
-#include "mainWindow.h"
+#include "fl_MainWindow.h"
 
 
-Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, mainWindow& main_window ) :
+Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
@@ -332,13 +332,13 @@ void Fl_ModelView::LoadModel( void ){
 													Max(	sqrt( pow( bottom_left.c,	2. )	+ pow( bottom_left.r,	2. ) ),
 															sqrt( pow( bottom_right.c,	2. )	+ pow( bottom_right.r,	2. ) ) ) );
 
-	main_window_.gantryBuild.SetDistances( maximum_distance_from_origin );
+	main_window_.gantry_creation_.SetDistances( maximum_distance_from_origin );
 
 
 	this->window()->activate();
 	
-	main_window_.gantryBuild.activate();
-	main_window_.tomographyExecution.activate();
+	main_window_.gantry_creation_.activate();
+	main_window_.tomography_execution_.activate();
 }
 
 

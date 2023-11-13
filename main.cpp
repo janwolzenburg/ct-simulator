@@ -16,7 +16,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "coordinateSystemTree.h"
 #include "fl_ProgressWindow.h"
 
-#include "mainWindow.h"
+#include "fl_MainWindow.h"
 #include "fl_ProcessingWindow.h"
 
 /*!
@@ -42,7 +42,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	Fl_Tooltip::enable();
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
-	mainWindow* mainWindow_ = new mainWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
+	Fl_MainWindow* mainWindow_ = new Fl_MainWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
 
 	mainWindow_->hide();
 

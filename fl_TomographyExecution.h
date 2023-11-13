@@ -26,7 +26,7 @@
 
 #include "persistingObject.h"
 #include "widgets.h"
-#include "mainWindow.fwd.h"
+#include "fl_MainWindow.fwd.h"
 #include "callbackFunction.h"
 #include "tomography.h"
 #include "fileChooser.h"
@@ -47,7 +47,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	 * @param h Height
 	 * @param main_window Reference to the main window
 	*/
-	Fl_TomographyExecution( int x, int y, int w, int h, mainWindow& main_window );
+	Fl_TomographyExecution( int x, int y, int w, int h, Fl_MainWindow& main_window );
 
 	/*!
 	 * @brief Set information update flag
@@ -78,17 +78,17 @@ class Fl_TomographyExecution : public Fl_Group{
 
 	Fl_Multiline_Output information_;				/*!< Information about tomography*/
 	
-	Fl_Group control_group_;				/*!< Group for control elements*/
-	Fl_Button record_slice_button_;			/*!< Start button for radiation*/
-	Fl_Button export_projections_button_;	/*!< Export button for projections*/
+	Fl_Group control_group_;						/*!< Group for control elements*/
+	Fl_Button record_slice_button_;					/*!< Start button for radiation*/
+	Fl_Button export_projections_button_;			/*!< Export button for projections*/
 	
-	mainWindow& main_window_;				/*!< Reference to main window*/
+	Fl_MainWindow& main_window_;					/*!< Reference to main window*/
 
-	PersistingObject<FileChooser> export_projections_file_chooser_;	/*!< File chooser for projections export*/
+	PersistingObject<FileChooser> export_projections_file_chooser_;		/*!< File chooser for projections export*/
 
-	PersistingObject<TomographyProperties> tomography_properties_;	/*!< Parameter of tomography*/
-	Tomography tomography_;											/*!< Instance of the tomography*/
-	PersistingObject<Projections> projections_;						/*!< Latest projections*/
+	PersistingObject<TomographyProperties> tomography_properties_;		/*!< Parameter of tomography*/
+	Tomography tomography_;												/*!< Instance of the tomography*/
+	PersistingObject<Projections> projections_;							/*!< Latest projections*/
 	
 	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;	/*!< Collection of opened processing windows*/
  
