@@ -19,7 +19,7 @@
 #include "model.h"
 #include "projections.h"
 
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
 
 /*********************************************************************

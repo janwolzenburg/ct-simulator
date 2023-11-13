@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   progress.h
+ * @file   fl_ProgressWindow.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -45,28 +45,30 @@ class Fl_Progress_Window : public Fl_Window{
 	 * @param lineNumber Linenumber to change. Starting at 0
 	 * @param newText New Line text
 	*/
-	void changeLineText( const unsigned int lineNumber, const string newText);
+	void ChangeLineText( const unsigned int lineNumber, const string newText);
 
 	/*!
 	 * @brief Get amount of lines
 	 * @return Available lines
 	*/
-	unsigned int NumLines( void ) const { return numLines; }
+	unsigned int number_of_lines( void ) const { return number_of_lines_; }
 
 
 	private:
 
+	constexpr static int padding_ = 20;							/*!< Padding of text to window borders*/
+	constexpr static int number_of_character_per_line_ = 30;	/*!< Approximate amount of characters per Line*/
+
+	unsigned int number_of_lines_;				/*!< Amount of lines*/
+
+	Fl_Multiline_Output text_output_;	/*!< Widget for text output*/
+	vector<string> line_texts_;			/*!< Line texts*/
+	string continuous_text_;			/*!< String to pass to widget*/
+
+ 
 	/*!
 	 * @brief Update text output
 	*/
-	void updateOutput( void );
-
-	unsigned int numLines;				/*!< Amount of lines*/
-
-	Fl_Multiline_Output textDisplay;	/*!< Widget for text output*/
-	vector<string> lines;				/*!< Line texts*/
-	string displayText;					/*!< String to pass to widget*/
-
-	constexpr static int padding = 20;				/*!< Padding of text to window borders*/
-	constexpr static int charactersPerLine = 30;	/*!< Approximate amount of characters per Line*/
+	void UpdateOutput( void );
+ 
  };

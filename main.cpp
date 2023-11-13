@@ -14,7 +14,7 @@ using std::cerr;  using std::endl; using std::cout;
 #include "programState.h"
 #include "test_model.h"
 #include "coordinateSystemTree.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
 #include "mainWindow.h"
 #include "fl_ProcessingWindow.h"
@@ -47,7 +47,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	mainWindow_->hide();
 
 	Fl_Progress_Window* initialWindow = new Fl_Progress_Window{ mainWindow_, 20, 3, "Initialisation" };
-	initialWindow->changeLineText( 1, "Loading program state..." );
+	initialWindow->ChangeLineText( 1, "Loading program state..." );
 	initialWindow->show();
 
 

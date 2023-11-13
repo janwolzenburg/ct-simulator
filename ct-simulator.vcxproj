@@ -212,7 +212,7 @@
     <ClInclude Include="fl_ProcessingWindow.fwd.h" />
     <ClInclude Include="fl_ProcessingWindow.h" />
     <ClInclude Include="programState.h" />
-    <ClInclude Include="progress.h" />
+    <ClInclude Include="fl_ProgressWindow.h" />
     <ClInclude Include="propabilityDistribution.h" />
     <ClInclude Include="colorImage.h" />
     <ClInclude Include="rayScattering.h" />
@@ -284,7 +284,7 @@
     <ClCompile Include="primitiveVector3.cpp" />
     <ClCompile Include="fl_ProcessingWindow.cpp" />
     <ClCompile Include="programState.cpp" />
-    <ClCompile Include="progress.cpp" />
+    <ClCompile Include="fl_ProgressWindow.cpp" />
     <ClCompile Include="propabilityDistribution.cpp" />
     <ClCompile Include="colorImage.cpp" />
     <ClCompile Include="rayScattering.cpp" />

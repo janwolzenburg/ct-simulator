@@ -261,7 +261,7 @@
     <ClInclude Include="geometryPlot.h">
       <Filter>Headerdateien\Program\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="progress.h">
+    <ClInclude Include="fl_ProgressWindow.h">
       <Filter>Headerdateien\Program\GUI\Windows</Filter>
     </ClInclude>
     <ClInclude Include="tomography.fwd.h">
@@ -473,7 +473,7 @@
     <ClCompile Include="vectorAlgotrithm.cpp">
       <Filter>Quelldateien\Generel</Filter>
     </ClCompile>
-    <ClCompile Include="progress.cpp">
+    <ClCompile Include="fl_ProgressWindow.cpp">
       <Filter>Quelldateien\Program\GUI\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Fl_Selector.cpp">

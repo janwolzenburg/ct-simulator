@@ -47,7 +47,7 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 
 		if( progress != nullptr ){
 			progressMutex.lock();
-			progress->changeLineText( 1, "Reconstructing column " + ToString( xIdx + 1 ) + " of " + ToString( nD ) );
+			progress->ChangeLineText( 1, "Reconstructing column " + ToString( xIdx + 1 ) + " of " + ToString( nD ) );
 			progressMutex.unlock();
 		}
 			

@@ -16,7 +16,7 @@
 #include "backprojectionFilter.h"
 #include "projections.h"
 #include "dataGrid.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
 
 

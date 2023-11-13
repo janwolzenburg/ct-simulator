@@ -17,7 +17,7 @@
 #include "fl_GantryCreation.h"
 
 #include "filteredProjections.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 #include "widgets.h"
 #include "mainWindow.h"
 

@@ -14,7 +14,7 @@
 
 #include "dataGrid.h"
 #include "filteredProjections.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
 
 

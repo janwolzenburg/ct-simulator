@@ -80,7 +80,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
+			progressWindow->ChangeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );

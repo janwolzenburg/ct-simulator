@@ -45,7 +45,7 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	for( size_t t = 0; t < nT; t++ ){
 
 		if( progress != nullptr )
-			progress->changeLineText( 0, "Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
+			progress->ChangeLineText( 0, "Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
 
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
