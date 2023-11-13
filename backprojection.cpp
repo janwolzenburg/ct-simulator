@@ -28,10 +28,10 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 											const FilteredProjections projections ){
 
 	const size_t nD = image.size().r;					// Number of distances
-	const double dD = image.resolution().r;			// Distance resolution
+	const double dD = image.resolution().r;				// Distance resolution
 
-	const size_t nT = projections.size().c;			// Number of angles
-	const double dT = projections.resolution().c;		// Distance resolution
+	const size_t nT = projections.size().c;				// Number of angles
+	const double dT = projections.resolution().c;		// Angle resolution
 
 	// Iterate all points on image. Points are spaced by the distance resolution in filtered projections
 	while( currentX < nD ){
@@ -56,7 +56,7 @@ void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMu
 			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// x value on image
 			const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// y value on image
 
-			double currentValue = image.GetData( GridIndex{ xIdx, yIdx } );
+			double currentValue = 0.;
 			 
 			// Iterate and sum filtered projections over all angles
 			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
