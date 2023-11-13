@@ -86,8 +86,6 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	
 	values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
 
-
-
 }
 
 NaturalNumberRange BackprojectionFilter::GetRelevantRange( void ) const{

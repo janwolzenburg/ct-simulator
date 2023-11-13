@@ -39,8 +39,6 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	// Local copy of projection data_
 	const DataGrid<> projectionsData = projections.data();
 
-	
-
 	// Iterate all thetas
 	for( size_t t = 0; t < nT; t++ ){
 
@@ -81,6 +79,14 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 
 		}
 		Fl::check();
+	}
+
+	const double min_value = this->min_value();
+
+	for( size_t t = 0; t < nT; t++ ){
+		for( size_t n = 0; n < nD; n++ ){
+			this->SetData( GridIndex{ t, n }, this->GetData( GridIndex{ t, n } ) - min_value );
+		}
 	}
 }
 
