@@ -12,54 +12,54 @@
 	Includes
  *********************************************************************/
 
- #include "plots.h"
+ #include "plot.h"
 
 /*!
  * @brief Class for a 2D lineplot
 */
-class lineplot : public plot{
+class LinePlot : public Plot{
 
 	public:
 
 	/*!
 	 * @brief Constructor
-	 * @param name_ Name of plot
-	 * @param xlabel_ x-axis label
-	 * @param ylabel_ y-axis label
-	 * @param limits_ Plot limits
-	 * @param imgSize_ Desired image size_
-	 * @param grid_ Flag to show grid
+	 * @param name Name of plot
+	 * @param x_label x-axis label
+	 * @param y_label y-axis label
+	 * @param limits Plot limits
+	 * @param image_size Desired image size_
+	 * @param enable_grid Flag to show grid
 	*/
-	lineplot( const string name_, const string xlabel_, const string ylabel_,
-			  const plotLimits limits_, const GridIndex imgSize_, const bool grid_ );
+	LinePlot( const string name, const string x_label, const string y_label,
+			  const PlotLimits limits, const GridIndex image_size, const bool enable_grid );
 
 	/*!
 	 * @brief Default constructor 
 	*/
-	lineplot( void );
+	LinePlot( void );
 
 	/*!
 	 * @brief Assign data to plot
 	 * @param X_ Vector of x values
 	 * @param Y_ Vector of y values
 	*/
-	void assignData( const vector<double> X_, const vector<double> Y_ );
+	void AssignData( const vector<double> X_, const vector<double> Y_ );
 
 	/*!
 	 * @brief Assign data to plot
 	 * @param XY Pair of vectors with data_
 	*/
-	void assignData( const VectorPair XY ){ assignData( XY.first, XY.second ); };
+	void AssignData( const VectorPair XY ){ AssignData( XY.first, XY.second ); };
 
 	/*!
 	 * @brief Create the plot
 	*/
-	virtual void create( void );
+	virtual void CreatePlot( void );
 
 
 	protected:
 
-	vector<double> X, Y;	/*!<Vectors with points*/
+	vector<double> X, Y;	/*!< Vectors with points*/
 
 };
 
@@ -67,15 +67,15 @@ class lineplot : public plot{
 /*!
  * @brief Class for a 2D dot-plot
 */
-class dotplot : public lineplot{
+class DotPlot : public LinePlot{
 
-	using lineplot::lineplot;
+	using LinePlot::LinePlot;
 
 	public:
 
 	/*!
 	 * @brief Create the plot
 	*/
-	void create( void ) override;
+	void CreatePlot( void ) override;
 
 };

@@ -70,6 +70,6 @@ typename std::enable_if_t<std::is_integral_v<T>, T>  ForceOdd( T a ){
 template <typename T>
 double RelativeDeviation( const T a, const T b ){
 
-	return (double) std::abs( a - b ) / (double) std::abs( b );
+	return static_cast<double>( std::abs( a - b ) ) / static_cast<double>( std::abs( b ) );
 
 }

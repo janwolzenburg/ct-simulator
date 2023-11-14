@@ -18,7 +18,7 @@ class ProjectionsProperties{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 
 	public:
@@ -99,11 +99,11 @@ class ProjectionsProperties{
 
 	private:
 
-	size_t number_of_angles_;				/*!<Number of angles. Is the number of projections*/
-	size_t number_of_distances_;			/*!<Number of distances. Is the number of point in one projection*/
-	double measuring_field_size_;			/*!<Measuring field in mm*/
+	size_t number_of_angles_;				/*!< Number of angles. Is the number of projections*/
+	size_t number_of_distances_;			/*!< Number of distances. Is the number of point in one projection*/
+	double measuring_field_size_;			/*!< Measuring field in mm*/
 
-	double angles_resolution_;				/*!<Angle resolution*/
-	double distances_resolution_;			/*!<Distance resolution*/
-	size_t number_of_frames_to_fill_;		/*!<Amount of frames to fill sinogram*/
+	double angles_resolution_;				/*!< Angle resolution*/
+	double distances_resolution_;			/*!< Distance resolution*/
+	size_t number_of_frames_to_fill_;		/*!< Amount of frames to fill sinogram*/
 };

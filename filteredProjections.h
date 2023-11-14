@@ -16,7 +16,7 @@
 #include "backprojectionFilter.h"
 #include "projections.h"
 #include "dataGrid.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
 
 
@@ -86,6 +86,6 @@ class FilteredProjections : private DataGrid<> {
 
 	private:
 
-	BackprojectionFilter filter_;		/*!<Filter used in backprojection*/
+	BackprojectionFilter filter_;		/*!< Filter used in backprojection*/
 
 };

@@ -33,7 +33,7 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Constructor
@@ -94,8 +94,8 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	private:
 	
-	string title_string_;				/*!<Title string*/
-	string filter_string_;				/*!<Filter string*/
-	path start_directory_;				/*!<Start directory*/
-	Fl_Native_File_Chooser::Type type_;	/*!<Type of file chooser*/
+	string title_string_;				/*!< Title string*/
+	string filter_string_;				/*!< Filter string*/
+	path start_directory_;				/*!< Start directory*/
+	Fl_Native_File_Chooser::Type type_;	/*!< Type of file chooser*/
  };

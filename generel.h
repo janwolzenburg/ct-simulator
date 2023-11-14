@@ -130,8 +130,8 @@ class GridIndex{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	size_t c;	/*!<Column*/
-	size_t r;	/*!<Row*/
+	size_t c;	/*!< Column*/
+	size_t r;	/*!< Row*/
 };
 
 

@@ -39,7 +39,7 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 	// iron attenuation is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return  0.01 * mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
+		return  0.1 * mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
 	}
 
 	return attenuation_ * pow( reference_energy_for_mu_eV / energy, 3. );
@@ -48,8 +48,8 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( attenuation_, binary_data );
-	num_bytes += SerializeBuildIn( specialProperties_, binary_data );
+	num_bytes += SerializeBuildIn<double>( attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
 	return num_bytes;
 }
 

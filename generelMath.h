@@ -43,7 +43,7 @@ constexpr double r_e_mm = 2.8179403262e-12;						/*!< Electron radius in mm*/
 constexpr double reduced_energy_divisor_eV = 510998.95;			/*!< Divisor in reduced energy calculation m_e * c^2*/
 
 constexpr double reference_energy_for_mu_eV = 100000.;
-constexpr double mu_water = 3e-3 * 0.997 / 10.;					/*!<Absorption Water in 1 / mm for 100keV*/
+constexpr double mu_water = 3e-3 * 0.997 / 10.;					/*!< Absorption Water in 1 / mm for 100keV*/
 constexpr double mu_air = 0.;
 constexpr double mu_bone = mu_water * 2.;
 constexpr double mu_lung = mu_water * 0.8;
@@ -51,11 +51,10 @@ constexpr double mu_iron = 0.156;
 
 constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
 
-constexpr double mean_human_density_gPercm3 = 1.;				/*!< Mean human density in g / cm^3*/
-constexpr double mean_human_atomic_weight_gPermol = 6.;			/*!< Mean atomic weight in human*/
-constexpr double cross_section_conversion_1Permm3 =				/*!< Conversion factor from cross section to attenuation coefficiant in human tissue in 1 / mm^3*/
-				 mean_human_density_gPercm3*avogadro_1Permol /
-				 mean_human_atomic_weight_gPermol * 1e-3;
+constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Conversion factor from cross section to attenuation coefficiant for water in 1 / mm^3*/
+				 1.	*	// g/cm^3
+				 avogadro_1Permol /
+				 18. * 1e-3; // cm^3/mm^3
 
 inline std::ostream& math_error_out = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& standard_out = std::cout;						/*!< Standard out stream */

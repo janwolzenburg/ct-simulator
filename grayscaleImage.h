@@ -27,7 +27,7 @@ class GrayscaleImage{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 
 	/*!
@@ -132,6 +132,14 @@ class GrayscaleImage{
 	unsigned char GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 
 	/*!
+	 * @brief Get raw data
+	 * @param column Column
+	 * @param row Row
+	 * @return Raw value
+	*/
+	double GetData( const size_t column, const size_t row ) const{ return raw_data_.at( GetIndex( column, row ) ); } ;
+
+	/*!
 	 * @brief Set pixel data
 	 * @param pixel Pixel indices
 	 * @param data New data
@@ -152,12 +160,12 @@ class GrayscaleImage{
 
 	private:
 
-	size_t width_;					/*!<Image width*/
-	size_t height_;					/*!<Image height*/
-	size_t number_of_pixel_;		/*!<Amount of pixel in image*/
+	size_t width_;					/*!< Image width*/
+	size_t height_;					/*!< Image height*/
+	size_t number_of_pixel_;		/*!< Amount of pixel in image*/
 
-	vector<double> raw_data_;			/*!<Double data*/
-	vector<unsigned char> image_data_;	/*!<Data as unsigned char values*/
+	vector<double> raw_data_;			/*!< Double data*/
+	vector<unsigned char> image_data_;	/*!< Data as unsigned char values*/
 
 	/*!
 	 * @brief Acces operator

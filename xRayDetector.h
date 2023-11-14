@@ -84,11 +84,11 @@ class XRayDetector{
 
 	private:
 
-	CoordinateSystem* coordinate_system_;			/*!<Local coordinate system*/
-	vector<DetectorPixel> pixel_array_;				/*!<All pixel of detector*/
-	vector<DetectorPixel> converted_pixel_array_;	/*!<Pixel in different coordinate system*/
+	CoordinateSystem* coordinate_system_;			/*!< Local coordinate system*/
+	vector<DetectorPixel> pixel_array_;				/*!< All pixel of detector*/
+	vector<DetectorPixel> converted_pixel_array_;	/*!< Pixel in different coordinate system*/
 
-	DetectorProperties properties_;					/*!<Properties*/
+	DetectorProperties properties_;					/*!< Properties*/
 
 };
 

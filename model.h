@@ -36,7 +36,7 @@ class Model : public MathematicalObject{
 	
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/		/*!<String at the beginning of file with exported model*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/		/*!< String at the beginning of file with exported model*/
 
 
 	public:
@@ -228,15 +228,15 @@ class Model : public MathematicalObject{
 
 	private:
 
-	Index3D number_of_voxel_3D_;				/*!<Amount of voxels in each dimension*/
-	Tuple3D voxel_size_;						/*!<Voxelsize in each dimension in mm*/
-	Tuple3D size_;								/*!<Size of complete model in mm*/
-	size_t number_of_voxel_;					/*!<Absolute amount of voxels in model*/
-	vector<VoxelData> voxel_data_;				/*!<Voxel data*/
-	CoordinateSystem* coordinate_system_;		/*!<Coordinate system*/
-	double min_attenuation_;					/*!<Attenuation minimum in model*/
-	double max_attenuation_;					/*!<Attenuation maximum in model*/			
-	string name_;								/*!<Model name*/
+	Index3D number_of_voxel_3D_;				/*!< Amount of voxels in each dimension*/
+	Tuple3D voxel_size_;						/*!< Voxelsize in each dimension in mm*/
+	Tuple3D size_;								/*!< Size of complete model in mm*/
+	size_t number_of_voxel_;					/*!< Absolute amount of voxels in model*/
+	vector<VoxelData> voxel_data_;				/*!< Voxel data*/
+	CoordinateSystem* coordinate_system_;		/*!< Coordinate system*/
+	double min_attenuation_;					/*!< Attenuation minimum in model*/
+	double max_attenuation_;					/*!< Attenuation maximum in model*/			
+	string name_;								/*!< Model name*/
 
 
 	private:

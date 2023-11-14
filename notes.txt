@@ -1,95 +1,13 @@
 
-TODO: Al-filter activation, Remove exposure time and information
 TODO: make artefact thregth adsustable
+TODO: conversion to HU
 
 TODO: verify scattering angles and propability
+TODO: Tooltips and labels
 
-TODO: Class and member variable names, includes
-TODO: Sorted files filter
 TODO: Check file Heads
-TODO: check comments
-TODO: check cpp files
-TODO: use static_cast
-TODO: check .fwd
 
-Naming convention:
-	- classes and types: CamelCase
-	- functions: CamelCase 
-		- with verb at front
-		- getters and setters named like variable without trailing underscore
-	- enums: CamelCase
-	- variables: snake_case
-		- member: trailing underscore
-		- struct: no underscore
 
 Precomputation for presentation
 Model creation
 DICOM converter
-
-
-
-Renaming done:
-
-Generel
-	generel
-	serialization
-	simulation
-	vectorAlgorithm
-
-Device
-	xRayTube
-	detectorProperties
-	detectorPixel
-	xRayDetector
-	gantry
-	tomography
-
-Physics
-	Linear Algebra
-		Cartesian
-			primitiveVector3
-			primitiveCoordinateSystem
-			coordinateSystem
-			coordinateSystemTree
-			coordinates
-
-		vector3D
-		equationSystem
-		line
-		surface
-		intersections
-
-Model
-	voxel
-	model
-
-Rays
-	rays
-	scattering
-	propability
-	spectrum
-
-Processing
-	radonCoordinates
-	radonTransformationProperties
-	dataGrid
-	backProjectionFilter
-	projections
-	filteredProjections
-	reconstructedImage
-
-
-Program
-	storedObject
-
-	Elements
-		grayscaleImage
-		colorImage
-
-	Widgets
-		fl_GrayscaleImage
-		fl_AdjustableGrayscaleImage
-
-	windows
-		modelViewProperties
-		fileChooser

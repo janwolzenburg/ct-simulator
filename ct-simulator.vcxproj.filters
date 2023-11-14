@@ -13,537 +13,534 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Quelldateien\Generel">
-      <UniqueIdentifier>{f8421204-9155-43fa-ae64-f57eb33adf7e}</UniqueIdentifier>
+    <Filter Include="Headerdateien\00 Forward Declerations">
+      <UniqueIdentifier>{8f257742-efa4-4176-8fce-76e8cdf6e571}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Generel">
-      <UniqueIdentifier>{de98b23c-5f41-4cd6-8501-10eb850c4c8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Physics">
-      <UniqueIdentifier>{03502783-3148-403b-82ef-505dc4903d27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Physics\Linear algebra">
-      <UniqueIdentifier>{123198b1-3557-4140-9a87-9a26f5100a33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Physics\Model">
-      <UniqueIdentifier>{57c320ba-179b-4349-a7ad-95ab8c825774}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Physics">
-      <UniqueIdentifier>{04c88842-2072-49e3-a4b6-b5e03aa42002}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Physics\Linear algebra">
-      <UniqueIdentifier>{ed97129a-f34c-4c5a-9ffc-2c50a27f51cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Physics\Model">
-      <UniqueIdentifier>{020ddcb7-a4c9-4568-8989-6f4207d17140}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Device">
+    <Filter Include="Headerdateien\13 Device">
       <UniqueIdentifier>{243430df-ac49-4c18-a102-97257a93e4dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\Physics\Linear algebra\Cartesian">
-      <UniqueIdentifier>{d199b2c1-e0fe-40f5-b001-7cf884265856}</UniqueIdentifier>
+    <Filter Include="Headerdateien\11 Generel">
+      <UniqueIdentifier>{de98b23c-5f41-4cd6-8501-10eb850c4c8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Physics\Linear algebra\Cartesian">
-      <UniqueIdentifier>{edab5e0b-3e22-4b15-af67-d8c0b051dffc}</UniqueIdentifier>
+    <Filter Include="Headerdateien\12 Physics">
+      <UniqueIdentifier>{03502783-3148-403b-82ef-505dc4903d27}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Device">
-      <UniqueIdentifier>{a3211d33-2fdf-4145-ad82-4b40a623be58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Processing">
+    <Filter Include="Headerdateien\14 Processing">
       <UniqueIdentifier>{f222f2ad-6376-4460-91b4-7775d54d93d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Processing">
-      <UniqueIdentifier>{cd191329-df7a-485b-97af-2db7f650c7c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Processing\Backprojection">
+    <Filter Include="Headerdateien\14 Processing\02 Backprojection">
       <UniqueIdentifier>{e8b1f761-fcb3-4457-bff9-70a41d25e071}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Processing\Backprojection">
-      <UniqueIdentifier>{54e0f6ec-7d05-41c8-9ce9-85303d288b81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Physics\Rays">
-      <UniqueIdentifier>{68998947-6fef-493d-9800-eef69f82683d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Physics\Rays">
-      <UniqueIdentifier>{5b35f49f-e6fc-4f97-b916-56bb9c99829b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Program">
-      <UniqueIdentifier>{c765e23e-e59f-4de5-9781-951a1dc3e1c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Program">
-      <UniqueIdentifier>{d3033035-8f42-44cc-aa9a-20823bfafa53}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Program\GUI">
-      <UniqueIdentifier>{3b7829ee-04f5-46ff-b127-fe2b3ffd934a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Program\GUI">
-      <UniqueIdentifier>{3bea51d8-f6bc-413d-9eb9-552fdaf53fda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Program\GUI\Widgets">
-      <UniqueIdentifier>{b2fcf4a0-54b8-4218-b1b8-08db599b752b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Program\GUI\Widgets">
-      <UniqueIdentifier>{ad4dce5c-f60a-456f-86b8-d5c922caf031}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Program\GUI\Elements">
-      <UniqueIdentifier>{4494f7c9-b674-455a-b3e9-5f7eb7a516c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Program\GUI\Windows">
-      <UniqueIdentifier>{d28de2e5-78c0-42ae-92f0-fae8fe5cb3ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Program\GUI\Elements">
-      <UniqueIdentifier>{cc49d4f4-8f2b-4edf-ba2d-a77ee16627d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Program\GUI\Windows">
-      <UniqueIdentifier>{ad30713f-cee7-4a15-be81-7fed7719950e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Device\Classes">
-      <UniqueIdentifier>{3f864968-709a-45d1-85e7-ec7afc630205}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Device\Class implementation">
-      <UniqueIdentifier>{5fdb795d-86c5-493a-bf25-9c57ad81c161}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Physics\Rays\Classes">
-      <UniqueIdentifier>{9e775577-529f-4fa7-9472-876125b1d261}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\Physics\Rays\Class implementation">
-      <UniqueIdentifier>{0c97c343-7e98-4436-9239-e2cc238df36c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Processing\Projection">
+    <Filter Include="Headerdateien\14 Processing\01 Projection">
       <UniqueIdentifier>{ed094920-15ad-4719-9a57-5f4614049db5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Processing\Projection">
+    <Filter Include="Headerdateien\15 Program">
+      <UniqueIdentifier>{c765e23e-e59f-4de5-9781-951a1dc3e1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\01 Tests">
+      <UniqueIdentifier>{acc740f8-c147-4e5e-9b45-462141e3c3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\15 Program\01 Elements">
+      <UniqueIdentifier>{4494f7c9-b674-455a-b3e9-5f7eb7a516c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\15 Program\02 GUI">
+      <UniqueIdentifier>{3b7829ee-04f5-46ff-b127-fe2b3ffd934a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\15 Program\02 GUI\01 Widgets">
+      <UniqueIdentifier>{b2fcf4a0-54b8-4218-b1b8-08db599b752b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\15 Program\02 GUI\02 Windows">
+      <UniqueIdentifier>{d28de2e5-78c0-42ae-92f0-fae8fe5cb3ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\01 Tests">
+      <UniqueIdentifier>{dd3e19e0-5cdc-46ad-8238-74425d78229f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\12 Physics\01 Linear algebra">
+      <UniqueIdentifier>{123198b1-3557-4140-9a87-9a26f5100a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\12 Physics\01 Linear algebra\Cartesian">
+      <UniqueIdentifier>{d199b2c1-e0fe-40f5-b001-7cf884265856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\12 Physics\02 Model">
+      <UniqueIdentifier>{57c320ba-179b-4349-a7ad-95ab8c825774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\12 Physics\03 Rays">
+      <UniqueIdentifier>{68998947-6fef-493d-9800-eef69f82683d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\11 Generel">
+      <UniqueIdentifier>{f8421204-9155-43fa-ae64-f57eb33adf7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\12 Physics">
+      <UniqueIdentifier>{04c88842-2072-49e3-a4b6-b5e03aa42002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\12 Physics\01 Linear algebra">
+      <UniqueIdentifier>{ed97129a-f34c-4c5a-9ffc-2c50a27f51cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\12 Physics\01 Linear algebra\Cartesian">
+      <UniqueIdentifier>{edab5e0b-3e22-4b15-af67-d8c0b051dffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\12 Physics\02 Model">
+      <UniqueIdentifier>{020ddcb7-a4c9-4568-8989-6f4207d17140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\12 Physics\03 Rays">
+      <UniqueIdentifier>{5b35f49f-e6fc-4f97-b916-56bb9c99829b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\13 Device">
+      <UniqueIdentifier>{a3211d33-2fdf-4145-ad82-4b40a623be58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\14 Processing">
+      <UniqueIdentifier>{cd191329-df7a-485b-97af-2db7f650c7c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\14 Processing\01 Projection">
       <UniqueIdentifier>{311cb4e3-e1cb-4035-b049-01ae71fdcfad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\14 Processing\02 Backprojection">
+      <UniqueIdentifier>{54e0f6ec-7d05-41c8-9ce9-85303d288b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\15 Program">
+      <UniqueIdentifier>{d3033035-8f42-44cc-aa9a-20823bfafa53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\15 Program\02 GUI">
+      <UniqueIdentifier>{3bea51d8-f6bc-413d-9eb9-552fdaf53fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\15 Program\02 GUI\01 Widgets">
+      <UniqueIdentifier>{ad4dce5c-f60a-456f-86b8-d5c922caf031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\15 Program\02 GUI\02 Windows">
+      <UniqueIdentifier>{ad30713f-cee7-4a15-be81-7fed7719950e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\15 Program\01 Elements">
+      <UniqueIdentifier>{cc49d4f4-8f2b-4edf-ba2d-a77ee16627d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generelMath.h">
-      <Filter>Headerdateien\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="generelMath.hpp">
-      <Filter>Quelldateien\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="generel.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="generel.hpp">
-      <Filter>Quelldateien\Generel</Filter>
-    </ClInclude>
-    <ClInclude Include="vector3D.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="line.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="surf.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="vector3D.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="line.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="surface.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="systemOfEquations.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="tests_linear_algebra.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="voxel.h">
-      <Filter>Headerdateien\Physics\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>Headerdateien\Physics\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="coordinateSystem.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Headerdateien\12 Physics\02 Model</Filter>
     </ClInclude>
     <ClInclude Include="coordinateSystem.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="primitiveVector3.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="primitiveCoordinateSystem.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="coordinateSystemTree.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
-    </ClInclude>
-    <ClInclude Include="coordinateSystemTree.fwd.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="coordinates.h">
-      <Filter>Headerdateien\Physics\Linear algebra\Cartesian</Filter>
-    </ClInclude>
-    <ClInclude Include="test_device.h">
-      <Filter>Headerdateien\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="test_all.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClInclude>
     <ClInclude Include="plotting.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="plotting.hpp">
-      <Filter>Quelldateien\Generel</Filter>
-    </ClInclude>
-    <ClInclude Include="test_model.h">
-      <Filter>Headerdateien\Physics\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="test_processing.h">
-      <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="test_rays.h">
-      <Filter>Headerdateien\Physics\Rays</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="simulation.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="intersections.h">
-      <Filter>Headerdateien\Physics\Linear algebra</Filter>
+      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="intersections.hpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
     <ClInclude Include="programState.h">
-      <Filter>Headerdateien\Program</Filter>
+      <Filter>Headerdateien\15 Program</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Plot.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Fl_OwnValuator.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    <ClInclude Include="fl_Plot.h">
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Plots.hpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="Fl_OwnValuator.hpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    <ClInclude Include="fl_Plot.hpp">
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="widgets.hpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="plots.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    <ClInclude Include="plot.h">
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
-    <ClInclude Include="mainWindow.fwd.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    <ClInclude Include="fl_MainWindow.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
-    <ClInclude Include="mainWindow.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    <ClInclude Include="fl_ProcessingWindow.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
-    <ClInclude Include="processingWindow.fwd.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    <ClInclude Include="fl_ModelView.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
-    <ClInclude Include="processingWindow.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    <ClInclude Include="fl_GantryCreation.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
-    <ClInclude Include="modelView.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="gantryCreation.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="tomographyExecution.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+    <ClInclude Include="fl_TomographyExecution.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
     <ClInclude Include="slicePlane.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
     <ClInclude Include="fileChooser.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
-    <ClInclude Include="lineplot.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+    <ClInclude Include="linePlot.h">
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
-    <ClInclude Include="geoplot.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="processingParameters.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="progress.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="tomography.fwd.h">
-      <Filter>Headerdateien\Device</Filter>
+    <ClInclude Include="geometryPlot.h">
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
     <ClInclude Include="vectorAlgorithm.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="Fl_Selector.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Bound_Input.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+    <ClInclude Include="fl_BoundInput.h">
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="Fl_Bound_Input.hpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+    <ClInclude Include="fl_BoundInput.hpp">
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="serialization.h">
-      <Filter>Headerdateien\Generel</Filter>
+      <Filter>Headerdateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="serialization.hpp">
-      <Filter>Quelldateien\Generel</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="radonCoordinates.h">
-      <Filter>Headerdateien\Processing\Projection</Filter>
-    </ClInclude>
-    <ClInclude Include="tomography.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="xRayTube.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="xRayDetector.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="detectorProperties.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="detectorPixel.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="gantry.h">
-      <Filter>Headerdateien\Device\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="propabilityDistribution.fwd.h">
-      <Filter>Headerdateien\Physics\Rays</Filter>
-    </ClInclude>
-    <ClInclude Include="propabilityDistribution.h">
-      <Filter>Headerdateien\Physics\Rays\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="ray.h">
-      <Filter>Headerdateien\Physics\Rays\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="rayScattering.h">
-      <Filter>Headerdateien\Physics\Rays\Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="spectrum.h">
-      <Filter>Headerdateien\Physics\Rays\Classes</Filter>
+      <Filter>Headerdateien\14 Processing\01 Projection</Filter>
     </ClInclude>
     <ClInclude Include="dataGrid.h">
-      <Filter>Headerdateien\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="dataGrid.hpp">
-      <Filter>Headerdateien\Processing</Filter>
+      <Filter>Headerdateien\14 Processing</Filter>
     </ClInclude>
     <ClInclude Include="backprojectionFilter.h">
-      <Filter>Headerdateien\Processing\Backprojection</Filter>
+      <Filter>Headerdateien\14 Processing\02 Backprojection</Filter>
     </ClInclude>
     <ClInclude Include="filteredProjections.h">
-      <Filter>Headerdateien\Processing\Backprojection</Filter>
+      <Filter>Headerdateien\14 Processing\02 Backprojection</Filter>
     </ClInclude>
     <ClInclude Include="projectionsProperties.h">
-      <Filter>Headerdateien\Processing\Projection</Filter>
+      <Filter>Headerdateien\14 Processing\01 Projection</Filter>
     </ClInclude>
-    <ClInclude Include="reconstructedImage.h">
-      <Filter>Headerdateien\Processing\Backprojection</Filter>
+    <ClInclude Include="backprojection.h">
+      <Filter>Headerdateien\14 Processing\02 Backprojection</Filter>
     </ClInclude>
     <ClInclude Include="projections.h">
-      <Filter>Headerdateien\Processing\Projection</Filter>
+      <Filter>Headerdateien\14 Processing\01 Projection</Filter>
     </ClInclude>
     <ClInclude Include="colorImage.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
     <ClInclude Include="grayscaleImage.h">
-      <Filter>Headerdateien\Program\GUI\Elements</Filter>
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
     </ClInclude>
     <ClInclude Include="fl_AdjustableGrayscaleImage.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="fl_GrayscaleImage.h">
-      <Filter>Headerdateien\Program\GUI\Widgets</Filter>
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="persistingObject.h">
-      <Filter>Headerdateien\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="persistingObject.hpp">
-      <Filter>Headerdateien\Program</Filter>
+      <Filter>Headerdateien\15 Program</Filter>
     </ClInclude>
     <ClInclude Include="modelViewProperties.h">
-      <Filter>Headerdateien\Program\GUI\Windows</Filter>
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="modelCreator.h">
+      <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="dataGrid.hpp">
+      <Filter>Quelldateien\14 Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="callbackFunction.h">
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="callbackFunction.hpp">
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="persistingObject.hpp">
+      <Filter>Quelldateien\15 Program</Filter>
+    </ClInclude>
+    <ClInclude Include="fl_ProgressWindow.h">
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="test_processing.h">
+      <Filter>Headerdateien\01 Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="test_device.h">
+      <Filter>Headerdateien\01 Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="test_all.h">
+      <Filter>Headerdateien\01 Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="test_rays.h">
+      <Filter>Headerdateien\01 Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Headerdateien\12 Physics\02 Model</Filter>
+    </ClInclude>
+    <ClInclude Include="test_model.h">
+      <Filter>Headerdateien\01 Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="tomography.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorPixel.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorProperties.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="gantry.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="tomography.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayDetector.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayTube.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="spectrum.h">
+      <Filter>Headerdateien\12 Physics\03 Rays</Filter>
+    </ClInclude>
+    <ClInclude Include="propabilityDistribution.h">
+      <Filter>Headerdateien\12 Physics\03 Rays</Filter>
+    </ClInclude>
+    <ClInclude Include="ray.h">
+      <Filter>Headerdateien\12 Physics\03 Rays</Filter>
+    </ClInclude>
+    <ClInclude Include="rayScattering.h">
+      <Filter>Headerdateien\12 Physics\03 Rays</Filter>
+    </ClInclude>
+    <ClInclude Include="propabilityDistribution.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="coordinateSystem.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="coordinateSystemTree.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="line.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="surf.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="vector3D.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="fl_MainWindow.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="programState.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="fl_ProcessingWindow.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
+    <ClInclude Include="generelMath.h">
+      <Filter>Headerdateien\11 Generel</Filter>
+    </ClInclude>
+    <ClInclude Include="generelMath.hpp">
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="generelMath.cpp">
-      <Filter>Quelldateien\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Quelldateien\Generel</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="generel.cpp">
-      <Filter>Quelldateien\Generel</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="vector3D.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="line.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="surface.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="systemOfEquations.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
-    </ClCompile>
-    <ClCompile Include="tests_linear_algebra.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="voxel.cpp">
-      <Filter>Quelldateien\Physics\Model</Filter>
+      <Filter>Quelldateien\12 Physics\02 Model</Filter>
     </ClCompile>
     <ClCompile Include="model.cpp">
-      <Filter>Quelldateien\Physics\Model</Filter>
+      <Filter>Quelldateien\12 Physics\02 Model</Filter>
     </ClCompile>
     <ClCompile Include="primitiveVector3.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="coordinateSystem.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="primitiveCoordinateSystem.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="coordinateSystemTree.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="coordinates.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra\Cartesian</Filter>
-    </ClCompile>
-    <ClCompile Include="test_device.cpp">
-      <Filter>Quelldateien\Device</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
     </ClCompile>
     <ClCompile Include="plotting.cpp">
-      <Filter>Quelldateien\Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="test_model.cpp">
-      <Filter>Quelldateien\Physics\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="test_processing.cpp">
-      <Filter>Quelldateien\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="test_rays.cpp">
-      <Filter>Quelldateien\Physics\Rays</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="intersections.cpp">
-      <Filter>Quelldateien\Physics\Linear algebra</Filter>
+      <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
     </ClCompile>
     <ClCompile Include="programState.cpp">
-      <Filter>Quelldateien\Program</Filter>
+      <Filter>Quelldateien\15 Program</Filter>
     </ClCompile>
     <ClCompile Include="widgets.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="modelView.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    <ClCompile Include="fl_ModelView.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
-    <ClCompile Include="gantryCreation.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    <ClCompile Include="fl_GantryCreation.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
     <ClCompile Include="slicePlane.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
     <ClCompile Include="fileChooser.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
-    <ClCompile Include="plots.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    <ClCompile Include="plot.cpp">
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
-    <ClCompile Include="processingParameters.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+    <ClCompile Include="fl_TomographyExecution.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
-    <ClCompile Include="tomographyExecution.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    <ClCompile Include="fl_ProcessingWindow.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
-    <ClCompile Include="processingWindow.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="mainWindow.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+    <ClCompile Include="fl_MainWindow.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
     <ClCompile Include="vectorAlgotrithm.cpp">
-      <Filter>Quelldateien\Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="progress.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="Fl_Selector.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClCompile>
     <ClCompile Include="serialization.cpp">
-      <Filter>Quelldateien\Generel</Filter>
+      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="radonCoordinates.cpp">
-      <Filter>Quelldateien\Processing\Projection</Filter>
-    </ClCompile>
-    <ClCompile Include="xRayDetector.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="detectorProperties.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="detectorPixel.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="gantry.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="xRayTube.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="tomography.cpp">
-      <Filter>Quelldateien\Device\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="spectrum.cpp">
-      <Filter>Quelldateien\Physics\Rays\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="propabilityDistribution.cpp">
-      <Filter>Quelldateien\Physics\Rays\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="ray.cpp">
-      <Filter>Quelldateien\Physics\Rays\Class implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="rayScattering.cpp">
-      <Filter>Quelldateien\Physics\Rays\Class implementation</Filter>
+      <Filter>Quelldateien\14 Processing\01 Projection</Filter>
     </ClCompile>
     <ClCompile Include="backprojectionFilter.cpp">
-      <Filter>Quelldateien\Processing\Backprojection</Filter>
+      <Filter>Quelldateien\14 Processing\02 Backprojection</Filter>
     </ClCompile>
     <ClCompile Include="filteredProjections.cpp">
-      <Filter>Quelldateien\Processing\Backprojection</Filter>
+      <Filter>Quelldateien\14 Processing\02 Backprojection</Filter>
     </ClCompile>
-    <ClCompile Include="reconstructedImage.cpp">
-      <Filter>Quelldateien\Processing\Backprojection</Filter>
+    <ClCompile Include="backprojection.cpp">
+      <Filter>Quelldateien\14 Processing\02 Backprojection</Filter>
     </ClCompile>
     <ClCompile Include="projectionsProperties.cpp">
-      <Filter>Quelldateien\Processing\Projection</Filter>
+      <Filter>Quelldateien\14 Processing\01 Projection</Filter>
     </ClCompile>
     <ClCompile Include="projections.cpp">
-      <Filter>Quelldateien\Processing\Projection</Filter>
+      <Filter>Quelldateien\14 Processing\01 Projection</Filter>
     </ClCompile>
     <ClCompile Include="colorImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
     <ClCompile Include="fl_GrayscaleImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClCompile>
     <ClCompile Include="modelViewProperties.cpp">
-      <Filter>Quelldateien\Program\GUI\Windows</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
     <ClCompile Include="grayscaleImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Elements</Filter>
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
     <ClCompile Include="fl_AdjustableGrayscaleImage.cpp">
-      <Filter>Quelldateien\Program\GUI\Widgets</Filter>
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="fl_ProgressWindow.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="detectorPixel.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="detectorProperties.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="gantry.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="tomography.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="xRayDetector.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="xRayTube.cpp">
+      <Filter>Quelldateien\13 Device</Filter>
+    </ClCompile>
+    <ClCompile Include="test_device.cpp">
+      <Filter>Quelldateien\01 Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests_linear_algebra.cpp">
+      <Filter>Quelldateien\01 Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="test_model.cpp">
+      <Filter>Quelldateien\01 Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="test_rays.cpp">
+      <Filter>Quelldateien\01 Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="propabilityDistribution.cpp">
+      <Filter>Quelldateien\12 Physics\03 Rays</Filter>
+    </ClCompile>
+    <ClCompile Include="ray.cpp">
+      <Filter>Quelldateien\12 Physics\03 Rays</Filter>
+    </ClCompile>
+    <ClCompile Include="rayScattering.cpp">
+      <Filter>Quelldateien\12 Physics\03 Rays</Filter>
+    </ClCompile>
+    <ClCompile Include="spectrum.cpp">
+      <Filter>Quelldateien\12 Physics\03 Rays</Filter>
+    </ClCompile>
+    <ClCompile Include="generelMath.cpp">
+      <Filter>Quelldateien\11 Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="test_processing.cpp">
+      <Filter>Quelldateien\01 Tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

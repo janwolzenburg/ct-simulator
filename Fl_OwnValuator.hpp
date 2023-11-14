@@ -25,22 +25,22 @@
 
 
 template< class C >
-void Fl_OwnValuator<C>::cbFunction( Fl_Widget* widgetPtr, void* flag ){
+void Fl_OwnValuator<C>::HandleValueChange( Fl_Widget* widgetPtr, void* flag ){
 	*( (bool*) flag ) = true;
 
 	Fl_OwnValuator* valuatorPtr = static_cast<Fl_OwnValuator*>( widgetPtr );
 
-	if( valuatorPtr->valueToLabel ){
-		valuatorPtr->updateLabel();
+	if( valuatorPtr->enable_label_ ){
+		valuatorPtr->UpdateLabel();
 	}
 }
 
 template< class C >
 Fl_OwnValuator<C>::Fl_OwnValuator( int x, int y, int w, int h, const char* label ) :
 	C{ x, y, w, h, label },
-	changeFlag( false ),
-	valueToLabel( false ){
-	Fl_Valuator::callback( cbFunction, &changeFlag );
+	value_changed_( false ),
+	enable_label_( false ){
+	Fl_Valuator::callback( HandleValueChange, &value_changed_ );
 }
 
 template< class C >
@@ -48,22 +48,22 @@ int Fl_OwnValuator<C>::value( double newVal ){
 
 	int valueReturn = Fl_Valuator::value( newVal );
 
-	changeFlag = true;
+	value_changed_ = true;
 
-	if( valueToLabel )
-		updateLabel();
+	if( enable_label_ )
+		UpdateLabel();
 
 	return valueReturn;
 }
 
 template< class C >
 void Fl_OwnValuator<C>::ValueToLabel( const bool yesNo ){
-	valueToLabel = yesNo;
-	if( yesNo ) updateLabel();
+	enable_label_ = yesNo;
+	if( yesNo ) UpdateLabel();
 }
 
 template< class C >
-void Fl_OwnValuator<C>::updateLabel( void ){
+void Fl_OwnValuator<C>::UpdateLabel( void ){
 
 	int significantDigits = (int) ceil(  - log10( Fl_Valuator::step() ) );
 	if( significantDigits < 0 ) significantDigits = 0;

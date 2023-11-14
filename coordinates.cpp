@@ -12,6 +12,7 @@
 	Includes
  *********************************************************************/
  #include <format>
+ #include <stdint.h>
 
 #include "coordinates.h"
 #include "systemOfEquations.h"
@@ -36,7 +37,7 @@ string Coordinates::ToString( const unsigned int newline_tabulators ) const{
 	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
 
 	str += newLine + tempCharArr;
-	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", (size_t) coordinate_system_ );
+	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( coordinate_system_ ) );
 
 	return str;
 }

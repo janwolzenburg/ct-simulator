@@ -85,7 +85,7 @@ class DetectorPixel : public BoundedSurface{
 
 	private:
 
-	vector<RayProperties> detected_ray_properties_;		/*!<Ray properties of rays detected with this pixel*/
+	vector<RayProperties> detected_ray_properties_;		/*!< Ray properties of rays detected with this pixel*/
 
  };
 
@@ -105,7 +105,7 @@ class RayPixelIntersection : public LineSurfaceIntersection<Ray, DetectorPixel>{
 	RayPixelIntersection( const Ray ray, const DetectorPixel pixel );
 
 
-	RayProperties ray_properties;	/*!<Properties of detected ray*/
+	RayProperties ray_properties;	/*!< Properties of detected ray*/
 
  };
 

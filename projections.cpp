@@ -39,7 +39,7 @@ Projections::Projections( void ) :
 Projections::Projections( const ProjectionsProperties properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
 				GridCoordinates{ 0., 
-								 -( (double) ( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
+								 -( static_cast<double>( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
 				properties.GetTransformationResolution()
 		  },
 
@@ -65,9 +65,8 @@ void Projections::AssignData( const RadonPoint dataPoint ){
 size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += DataGrid<>::Serialize( binary_data );
-	num_bytes += SerializeBuildIn( grid_errors_, binary_data );
+	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
 	return num_bytes;
 }
 

@@ -112,9 +112,9 @@ class Surface : public MathematicalObject{
 
 
 	protected:
-	UnitVector3D  direction_1_;			/*!<First direction vector*/
-	UnitVector3D  direction_2_;			/*!<Second direction vector*/
-	Point3D  origin_;					/*!<Origin*/
+	UnitVector3D  direction_1_;			/*!< First direction vector*/
+	UnitVector3D  direction_2_;			/*!< Second direction vector*/
+	Point3D  origin_;					/*!< Origin*/
 };
 
 
@@ -253,7 +253,7 @@ class BoundedSurface : public Surface{
 	
 	private:
 	
-	NumberRange parameter_1_range_;		/*!<Bounds for parameter 1*/
-	NumberRange parameter_2_range_;		/*!<Bounds for parameter 2*/
+	NumberRange parameter_1_range_;		/*!< Bounds for parameter 1*/
+	NumberRange parameter_2_range_;		/*!< Bounds for parameter 2*/
 	
 };

@@ -27,7 +27,7 @@
 */
 class RayScattering{
 	
-	static constexpr size_t max_number_of_bins = 256; /*!<Maximum amount of bins used to created uniform angle propability distribution*/
+	static constexpr size_t max_number_of_bins = 256; /*!< Maximum amount of bins used to created uniform angle propability distribution*/
 
 	public:
 
@@ -61,13 +61,13 @@ class RayScattering{
 
 	private:
 
-	size_t number_of_energies_;				/*!<Amount of frequencies*/
-	NumberRange energy_range_;				/*!<Range of frequencies*/
-	double energy_resolution_;				/*!<Frequency resolution*/
+	size_t number_of_energies_;				/*!< Amount of frequencies*/
+	NumberRange energy_range_;				/*!< Range of frequencies*/
+	double energy_resolution_;				/*!< Frequency resolution*/
 
-	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!<Vector with energies and the correspondeing angle distribution*/
+	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!< Vector with energies and the correspondeing angle distribution*/
 
-	UnitVector3D scattering_plane_normal_;	/*!<Rotation normal for scattered rays*/
+	UnitVector3D scattering_plane_normal_;	/*!< Rotation normal for scattered rays*/
  };
 
 /*!

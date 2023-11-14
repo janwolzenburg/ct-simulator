@@ -36,7 +36,7 @@ class XRayTubeProperties {
 	
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 	
 	/*!
 	 * @brief Enumeration for anode materials
@@ -65,16 +65,18 @@ class XRayTubeProperties {
 	 * @param anodeCurrent_A Anode Current in A
 	 * @param anode_material Anode material
 	 * @param number_of_rays_per_pixel Amount of rays to emit per pixel
+	 * @param has_filter Flag for Al-filter
 	*/
-	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material, const size_t number_of_rays_per_pixel ) :
+	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material, const size_t number_of_rays_per_pixel, const bool has_filter ) :
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
-		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) )
+		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
+		has_filter_( has_filter )
 	{};
 
 	/*!
 	 * @brief Default constructor
 	*/
-	XRayTubeProperties( void ) : XRayTubeProperties{ 120000., .2, Thungsten, 1 }
+	XRayTubeProperties( void ) : XRayTubeProperties{ 120000., .2, Thungsten, 1, true }
 	{};
 
 	/*!
@@ -91,10 +93,11 @@ class XRayTubeProperties {
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double anode_voltage_V;				/*!<Anode Voltage in volts*/
-	double anode_current_A;				/*!<Current in ampere*/
-	Material anode_material;			/*!<Atomic Number of anode material*/
-	size_t number_of_rays_per_pixel_;	/*!<The amount of discrete rays to emit per detector pixel*/
+	double anode_voltage_V;				/*!< Anode Voltage in volts*/
+	double anode_current_A;				/*!< Current in ampere*/
+	Material anode_material;			/*!< Atomic Number of anode material*/
+	size_t number_of_rays_per_pixel_;	/*!< The amount of discrete rays to emit per detector pixel*/
+	bool has_filter_;					/*!< Flag for Al-Filter*/
 
 };
 
@@ -175,16 +178,16 @@ class XRayTube{
 
 	private:
 	
-	static constexpr size_t number_of_points_in_spectrum_ = 30;		/*!<Amount of discrete datapoints in spectrum*/
+	static constexpr size_t number_of_points_in_spectrum_ = 30;		/*!< Amount of discrete datapoints in spectrum*/
 
-	CoordinateSystem* coordinate_system_;	/*!<Coordinate system of tube*/
+	CoordinateSystem* coordinate_system_;	/*!< Coordinate system of tube*/
 
-	XRayTubeProperties properties_;			/*!<Tube properties*/
-	size_t anode_material_atomic_number_;	/*!<Atomic number_of_pixel of anode material*/
+	XRayTubeProperties properties_;			/*!< Tube properties*/
+	size_t anode_material_atomic_number_;	/*!< Atomic number_of_pixel of anode material*/
 
-	double radiation_power_W_;				/*!<Total radiation power of tube in watts*/
-	double max_photon_energy_eV_;			/*!<Maximum radiation energy in eV based on anode voltage*/ 
+	double radiation_power_W_;				/*!< Total radiation power of tube in watts*/
+	double max_photon_energy_eV_;			/*!< Maximum radiation energy in eV based on anode voltage*/ 
 
-	EnergySpectrum emitted_spectrum_;		/*!<Output spectrum of tube*/
+	EnergySpectrum emitted_spectrum_;		/*!< Output spectrum of tube*/
 
  };

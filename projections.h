@@ -32,7 +32,7 @@ class Projections : private DataGrid<> {
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!<String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Default constructor
@@ -79,5 +79,5 @@ class Projections : private DataGrid<> {
 
 	private:
 
-	vector<vector<GridCoordinates>> grid_errors_;	/*!<Grid errors when interpolating*/
+	vector<vector<GridCoordinates>> grid_errors_;	/*!< Grid errors when interpolating*/
 };

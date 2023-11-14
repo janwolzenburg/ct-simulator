@@ -50,7 +50,7 @@ T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char
 
 	T temp{};
 	
-	DeSerializeBuildIn( temp, defaultVal, binary_data, it );
+	DeSerializeBuildIn<T>( temp, defaultVal, binary_data, it );
 
 	return temp;
 

@@ -14,10 +14,10 @@ using std::cerr;  using std::endl; using std::cout;
 #include "programState.h"
 #include "test_model.h"
 #include "coordinateSystemTree.h"
-#include "progress.h"
+#include "fl_ProgressWindow.h"
 
-#include "mainWindow.h"
-#include "processingWindow.h"
+#include "fl_MainWindow.h"
+#include "fl_ProcessingWindow.h"
 
 /*!
  * @brief Main function
@@ -26,13 +26,25 @@ using std::cerr;  using std::endl; using std::cout;
 */
 int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
+	
+	//Model testModel = getTestModel( GlobalSystem(), 20 );
 	/*
-	Model testModel = getTestModel( GlobalSystem(), 20 );
+	Model debugModel{ GlobalSystem()->CreateCopy( "Model system"), Index3D{3, 3, 1}, Tuple3D{1., 1., 1.}, string{"Debug model"}};
+	
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 2, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 1, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .1, 100000., }, Index3D{ 1, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 1, 2, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 2, 0 } );
+	
 
-	vector<char> modelBin;
-	testModel.Serialize( modelBin );
-	ExportSerialized(path{ "./testModel_Artifact_20x.model" }, modelBin );
-
+	PersistingObject<Model> saveableModel{ Model{}, path{"./debug.model"} };
+	saveableModel = debugModel;
+	saveableModel.Save( path{". / debug.model"}, true );
 	return 0;
 	*/
 
@@ -42,33 +54,20 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	Fl_Tooltip::enable();
 	Fl_Tooltip::hoverdelay( (float) 0.05 );
 
-	mainWindow* mainWindow_ = new mainWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "CT-Simulator" };
-	processingWindow* procView = new processingWindow{ (int) ( 1920. * 0.9 ), (int) ( 1080. * 0.9 ), "Processing" };
+	Fl_MainWindow* mainWindow_ = new Fl_MainWindow{ static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "CT-Simulator" };
 
 	mainWindow_->hide();
-	procView->hide();
 
 	Fl_Progress_Window* initialWindow = new Fl_Progress_Window{ mainWindow_, 20, 3, "Initialisation" };
-	initialWindow->changeLineText( 1, "Loading program state..." );
+	initialWindow->ChangeLineText( 1, "Loading program state..." );
 	initialWindow->show();
 
-
-	programState& state = PROGRAM_STATE();
-	state.registerMainWindow( mainWindow_ );
-	state.registerProcessingWindow( procView );
-
-	if( state.RadonTransformedLoaded() ){
-		procView->setNewRTFlag();
-	}
 
 	bool firstLoop = true;
 
 
 	while( Fl::wait() ){
 		
-		mainWindow_->handleEvents();
-		procView->handleEvents();
-
 		if( firstLoop ){
 			mainWindow_->show();
 			initialWindow->hide();
@@ -77,8 +76,9 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	}
 
 	delete mainWindow_;
-	delete procView;
 	delete initialWindow;
+
+	
 	return 0;
 	
 }

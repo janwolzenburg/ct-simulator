@@ -20,9 +20,9 @@
 *********************************************************************/
 
 const std::map < BackprojectionFilter::TYPE, string> BackprojectionFilter::filter_types{
-		{ constant,	"Constant" },
 		{ ramLak,	"RamLak" },
 		{ sheppLogan,"SheppLogan" },
+		{ constant,	"Constant" }
 };
 
 
@@ -62,14 +62,14 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 				// Conditions for filter calculation
 				if( n == 0 )				kernelValue = 1. / ( 4. * pow( sampling_interval_, 2. ) );
 				else if( IsEven( n ) )		kernelValue = 0.;
-				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( (double) n, 2. ) );
+				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( static_cast<double>( n ), 2. ) );
 
 				break;
 			}
 
 			case BackprojectionFilter::sheppLogan:
 			{
-				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( (double) n, 2. ) - 1.  );
+				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( static_cast<double>( n ), 2. ) - 1.  );
 
 				break;
 			}
@@ -85,8 +85,6 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	number_of_points_ = static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1;
 	
 	values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
-
-
 
 }
 
@@ -120,7 +118,7 @@ VectorPair BackprojectionFilter::GetPlotValues( void ) const{
 
 	VectorPair XY( vector<double>( number_of_points_ ), values_ );
 
-	std::iota( XY.first.begin(), XY.first.end(), floor( (double) points_range_.start() ) );
+	std::iota( XY.first.begin(), XY.first.end(), floor( static_cast<double>( points_range_.start() ) ) );
 
 	return XY;
 }

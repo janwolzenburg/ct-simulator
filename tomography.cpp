@@ -51,10 +51,9 @@ TomographyProperties::TomographyProperties( const vector<char>& binary_data, vec
 size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
-	num_bytes += SerializeBuildIn( scattering_enabled, binary_data );
-	num_bytes += SerializeBuildIn( max_scattering_occurrences, binary_data );
-	num_bytes += SerializeBuildIn( scatter_propability_correction, binary_data );
+	num_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
+	num_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
 
 	return num_bytes;
 
@@ -81,7 +80,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
 		
 		if( progressWindow != nullptr ) 
-			progressWindow->changeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
+			progressWindow->ChangeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
 
 		// Radiate
 		gantry.RadiateModel( Model, properties_ );

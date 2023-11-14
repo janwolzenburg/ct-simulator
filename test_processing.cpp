@@ -24,7 +24,7 @@
 #include "backprojectionFilter.h"
 #include "filteredProjections.h"
 #include "serialization.h"
-#include "reconstructedImage.h"
+#include "backprojection.h"
 
 /*********************************************************************
    Implemnetations
@@ -171,7 +171,7 @@ void serialisedToImage( void ){
 
 	Projections importedSinogram{ importedData, readStart };
 	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
-	ReconstrucedImage image{ Q };
+	Backprojection image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_Tomography_900_300_1_10xModelRes.txt" ), true );
 	addSingleObject( ax1, "Sinogram", importedSinogram.data(), "Angle;Distance;Energy;Dots", true );
@@ -194,7 +194,7 @@ bool test_serialisation( void ){
 
 	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
 		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){
-			testSinogram.AssignData( GridIndex{ col, row }, 1. * (double) (col * testSinogram.data().size().r + row ));
+			testSinogram.AssignData( GridIndex{ col, row }, 1. * static_cast<double>( col * testSinogram.data().size().r + row ) );
 		}
 	}
 
@@ -243,7 +243,7 @@ bool test_filter( void ){
 
 	vector<Tuple2D> plot;
 
-	for( signed long long int n = h.points_range().start(); n <= h.points_range().end(); n++ ) plot.emplace_back( (double) n, h( n ) );
+	for( signed long long int n = h.points_range().start(); n <= h.points_range().end(); n++ ) plot.emplace_back( static_cast<double>( n ), h( n ) );
 
 	ofstream ax = openAxis( path( "./test_filter_ramLak.txt" ), true );
 
@@ -281,7 +281,7 @@ bool test_reconstruction( void ){
 
 	FilteredProjections Q{ importedSinogram, BackprojectionFilter::ramLak };
 
-	ReconstrucedImage image{ Q };
+	Backprojection image{ Q };
 
 	ofstream ax1 = openAxis( path( "./test_reconstruction900_300_1_4xModelRes.txt" ), true );
 

@@ -28,7 +28,7 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	CoordinateSystem* modelSys = parent->AddCoordinateSystem( Tuple3D{ -200, -200, -200 }, Tuple3D{ 1, 0, 0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0, 0, 1 }, "Model system" );
 
-	Model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / (double) res, 20. / (double) res, 20 / (double) res }, "testModel" + to_string( res ) + "x"};
+	Model mod{ modelSys, Index3D {  20 * res, 20 * res, 20 * res}, Tuple3D {20. / static_cast<double>( res ), 20. / static_cast<double>( res ), 20 / static_cast<double>( res ) }, "testModel" + to_string( res ) + "x"};
 
 	//double kWater = 0.01611970000;
 
@@ -50,7 +50,7 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 	for( size_t x = 0; x < mod.number_of_voxel_3D().x; x++ ){
 		for( size_t y = 0; y < mod.number_of_voxel_3D().y; y++ ){
 			for( size_t z = 0; z < mod.number_of_voxel_3D().z; z++ ){
-				Point3D p{ { (double) x * mod.voxel_size().x , (double) y * mod.voxel_size().y , (double) z * mod.voxel_size().z }, modelSys };
+				Point3D p{ { static_cast<double>( x ) * mod.voxel_size().x , static_cast<double>( y ) * mod.voxel_size().y , static_cast<double>( z ) * mod.voxel_size().z }, modelSys };
 
 
 				if( ( sp1_center - p ).length() <= sp1_radius && ( true || ( sp1_center - p ).length() >= sp1_radius - 1.1 ) )  mod.SetVoxelData( sp1_data, { x, y, z } );
@@ -116,7 +116,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 
-	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05, 5e-2 } );
+	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05 } );
 	vector<DetectorPixel> detectorPixel = testGantry.pixel_array();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
@@ -124,7 +124,7 @@ bool test_modelTransmission( void ){
 	vector<Tuple2D> primitiveDetectionResult( detectorPixel.size(), Tuple2D{0, 0});
 
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
-		primitiveDetectionResult.at( i ).x = (double) i;
+		primitiveDetectionResult.at( i ).x = static_cast<double>( i );
 		for( RayProperties currentProperties : detectorPixel.at( i ).detected_ray_properties() ){
 			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().GetTotal();
 		}

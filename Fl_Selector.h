@@ -44,59 +44,52 @@ class Fl_Selector : public Fl_Group{
 	Fl_Selector( int x, int y, int w, int h, const char* label );
 
 	/*!
-	 * @brief Set alignment for title
-	 * @param alignment Alignment
-	*/
-	void align( Fl_Align alignment ){ current.align( alignment ); };
-
-	/*!
-	 * @brief Set selectable elements
-	 * @param newElements Elements
-	*/
-	void setElements( const vector<string> newElements );
-
-	/*!
-	 * @brief Set new value of selector
-	 * @param newValue Selected string
-	*/
-	void value( const string newValue );
-
-	/*!
 	 * @brief Get selected item
 	 * @return Item
 	*/
-	string value( void ) const{ return *currentElement;	};
+	string current_element( void ) const{ return *current_element_; };
+
+	/*!
+	 * @brief Set selectable elements
+	 * @param elements Elements
+	*/
+	void AssignElements( const vector<string> elements );
+
+	/*!
+	 * @brief Set new value of selector
+	 * @param element Selected string
+	*/
+	void SetCurrentElement( const string element );
 
 
 	private:
 
+	Fl_Button previous_button_;		/*!< Button to select previous element*/
+	Fl_Output current_text_;		/*!< Text outpur for current element*/
+	Fl_Button next_button_;			/*!< Button to select next element*/
+
+	vector<string> elements_;		/*!< All elements*/
+	vector<string>::const_iterator current_element_;	/*!< Current element*/
+
+
 	/*!
 	 * @brief Goto previous selectable option
 	 * @detail Is static because this function is registered as a callback
-	 * @param widget Pointer to widget
-	 * @param p Pointer to userdata. Here a pointer to the Fl_Selector must be passed
+	 * @param button_widget Pointer to button widget
+	 * @param fl_selector Pointer to userdata. Here a pointer to the Fl_Selector must be passed
 	*/
-	static void goPrev( Fl_Widget* widget, void* p );
+	static void SelectPrevious( Fl_Widget* button_widget, void* fl_selector );
 
 	/*!
 	 * @brief Goto next selectable option
 	 * @detail Is static because this function is registered as a callback
-	 * @param widget Pointer to widget
-	 * @param p Pointer to userdata. Here a pointer to the Fl_Selector must be passed
+	 * @param button_widget Pointer to button widget
+	 * @param fl_selector Pointer to userdata. Here a pointer to the Fl_Selector must be passed
 	*/
-	static void goNext( Fl_Widget* widget,  void* p );
+	static void SelectNext( Fl_Widget* button_widget,  void* fl_selector );
 
 	/*!
 	 * @brief Check for activation of buttons
 	*/
-	void checkActivation( void );
-
-
-	Fl_Button previous;		/*!<Button to select previous element*/
-	Fl_Output current;		/*!<Text outpur for current element*/
-	Fl_Button next;			/*!<Button to select next element*/
-
-	vector<string> elements;	/*!<All elements*/
-	vector<string>::const_iterator currentElement;	/*!<Current element*/
-
+	void CheckButtonActivation( void );
 };

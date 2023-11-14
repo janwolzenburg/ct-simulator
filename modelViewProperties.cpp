@@ -25,7 +25,6 @@ size_t ModelViewProperties::Serialize( vector<char>& binary_data ) const{
 
 	size_t num_bytes = 0;
 
-	num_bytes += SerializeBuildIn( FILE_PREAMBLE, binary_data );
 	num_bytes += contrast.Serialize( binary_data );
 	num_bytes += slice_plane.Serialize( binary_data );
 

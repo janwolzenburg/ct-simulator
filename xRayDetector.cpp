@@ -30,7 +30,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 
 	// Important parameter
 	const size_t nDistance = properties_.number_of_pixel.c;									// Amount of distances or pixel
-	const double distanceRange = (double) ( nDistance - 1) * radonParameter.distances_resolution();	// Covered field of measure
+	const double distanceRange = static_cast<double>( nDistance - 1 ) * radonParameter.distances_resolution();	// Covered field of measure
 
 	const double deltaTheta = radonParameter.angles_resolution();		// Angle resolution
 	const double deltaDistance = radonParameter.distances_resolution();	// Distance resolution
@@ -52,7 +52,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = (double) (currentIndex) * deltaTheta;
+		const double rotationAngle = static_cast<double>( currentIndex ) * deltaTheta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
@@ -65,8 +65,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
 		// Distance from origin_ to normal. Is the distance in the sinogram
-		const double currentDistance = distanceRange / 2 - (double) ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
-
+		const double currentDistance = distanceRange / 2 - ( static_cast<double>( nDistance - 1 ) / 2. - static_cast<double>( currentIndex ) ) * deltaDistance;
+															
 		// Point which lies on the current normal and has the correct distance from the origin_ 
 		const Point3D normalPoint = Vector3D{ normalLot } *currentDistance;
 
