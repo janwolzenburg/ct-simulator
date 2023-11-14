@@ -64,11 +64,11 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 {
 	for( size_t c = 0; c < this->width(); c++ ){
 
-		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * static_cast<double>( srcImg.width() - 1 ) / static_cast<double>( this->width()- 1 ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * static_cast<double>( srcImg.width() ) / static_cast<double>( this->width() ));
 
 		for( size_t r = 0; r < this->height(); r++ ){
 
-			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * static_cast<double>( srcImg.height() - 1 ) / static_cast<double>( this->height() - 1 ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * static_cast<double>( srcImg.height() ) / static_cast<double>( this->height() ) );
 
 			this->operator()( c, r ) = srcImg( srcC, srcR );
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );

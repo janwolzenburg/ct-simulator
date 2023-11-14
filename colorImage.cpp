@@ -35,26 +35,33 @@ ColorImage::ColorImage( const size_t width_, const size_t height_ ) :
 ColorImage::ColorImage( const ColorImage& srcImg, const size_t newWidth, const size_t newHeight ) :
 	ColorImage{ newWidth, newHeight }
 {
+	cout << this->width() << endl;
 	for( size_t c = 0; c < this->width(); c++ ){
-		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
-
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) ) / ( static_cast<double>( this->width() ) ) );
+		
+		cout << srcC << endl;
 		for( size_t r = 0; r < this->height(); r++ ){
 
-			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) ) / ( static_cast<double>( this->height() ) ) );
 			SetPixelData( { c, r }, srcImg.GetPixelData( srcC, srcR ) );
 
 		}
 	}
+
+	cout << endl;
 }
 
 ColorImage::ColorImage( const GrayscaleImage& srcImg, const size_t newWidth, const size_t newHeight, const vector<pair<bool, RGB>>& overlay ) :
 	ColorImage{ newWidth, newHeight }
 {
+	//cout << this->width() << endl;
 	for( size_t c = 0; c < this->width(); c++ ){
-		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * ( static_cast<double>( srcImg.width() ) - 1. ) / ( static_cast<double>( this->width() ) - 1. ) );
+		size_t srcC = static_cast<size_t>( static_cast<double>( c ) * static_cast<double>( srcImg.width() ) / static_cast<double>( this->width() ) );
+		
+		//cout << srcC << endl;
 
 		for( size_t r = 0; r < this->height(); r++ ){
-			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) - 1. ) / ( static_cast<double>( this->height() ) - 1. ) );
+			size_t srcR = static_cast<size_t>( static_cast<double>( r ) * ( static_cast<double>( srcImg.height() ) ) / ( static_cast<double>( this->height() ) ) );
 
 			if( overlay.size() != srcImg.number_of_pixel() ){
 				this->SetPixelData( { c, r }, { srcImg.GetPixelData( srcC, srcR ), srcImg.GetPixelData( srcC, srcR ), srcImg.GetPixelData( srcC, srcR ) } );

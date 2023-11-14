@@ -406,7 +406,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		// Get point on surface for current grid indices
 		const GridCoordinates surfaceCoordinate = slice.GetCoordinates( gridIndices );
-		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c - slice.resolution().c, surfaceCoordinate.r - slice.resolution().r );
+		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c , surfaceCoordinate.r  );
 
 
 		// Are cooradinates defined in model?
@@ -459,7 +459,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 	 
 
 
-	GridCoordinates sliceStart( 0, 0 );
+	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
 	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
 	GridCoordinates sliceResolution( resolution, resolution );
 
