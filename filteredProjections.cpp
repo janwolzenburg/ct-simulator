@@ -81,13 +81,13 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 		Fl::check();
 	}
 
-	const double min_value = this->min_value();
+	/*const double min_value = this->min_value();
 
 	for( size_t t = 0; t < nT; t++ ){
 		for( size_t n = 0; n < nD; n++ ){
 			this->SetData( GridIndex{ t, n }, this->GetData( GridIndex{ t, n } ) - min_value );
 		}
-	}
+	}*/
 }
 
 
@@ -100,8 +100,7 @@ double FilteredProjections::GetValue( const size_t angleIdx, const double distan
 	double exactDistanceIdx = distance / dD + ( static_cast<double>( nD ) - 1. ) / 2.;		// Exact "index" of distance
 
 	// Index must be in bounds
-	exactDistanceIdx = ForceToMin( exactDistanceIdx, 0. );
-	exactDistanceIdx = ForceToMax( exactDistanceIdx, static_cast<double>( nD ) - 1.);
+	exactDistanceIdx = ForceRange( exactDistanceIdx, 0., static_cast<double>( nD ) - 1.);
 
 	// If the exact index is a whole number_of_pixel
 	if( IsNearlyEqualDistance( round( exactDistanceIdx ), exactDistanceIdx ) ){
