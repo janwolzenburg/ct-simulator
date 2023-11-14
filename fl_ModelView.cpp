@@ -201,7 +201,7 @@ bool Fl_ModelView::SliceModel( void ){
 	
 	properties_.SetAsLoaded();
 
-	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, 1. );
+	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, .5 * Min( Min( model_.voxel_size().x, model_.voxel_size().y ), model_.voxel_size().z ) );
 	
 	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 ){
 		Fl_Group::window()->activate();
@@ -219,16 +219,17 @@ void Fl_ModelView::CenterModel( void ){
 	// Center model
 	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
 
-	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{1,0,0}, Tuple3D{0,1,0}, Tuple3D{0,0,1} } );
+	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
+
 }
 
 
 void Fl_ModelView::ResetModel( void ){
 
 	this->window()->deactivate();
-		properties_.slice_plane.rotation_angle_x = 0.;
-	 properties_.slice_plane.rotation_angle_y = 0.;
-	 properties_.slice_plane.position_z = 0.;
+	properties_.slice_plane.rotation_angle_x = 0.;
+	properties_.slice_plane.rotation_angle_y = 0.;
+	properties_.slice_plane.position_z = 0.;
 
 	CenterModel();
 
