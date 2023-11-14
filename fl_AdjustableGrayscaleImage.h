@@ -63,6 +63,10 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	*/
 	void ResetBounds( void ){ bounds_set_ = false; };
 
+	
+
+	int handle( int event );
+
 	/*!
 	 * @brief Assign grayscale image as new image data
 	 * @param grayscale_image Grayscale image
@@ -102,6 +106,7 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	Fl_Hor_Value_Slider lower_bound_;	/*!< Low bound*/
 	Fl_Hor_Value_Slider upper_bound_;	/*!< High bound*/
 			
+	Fl_Box current_value_text_;			/*!< Output for common factor*/
 	Fl_Box common_factor_text_;			/*!< Output for common factor*/
 	int common_power_;					/*!< Common power of ten*/
 	bool bounds_set_;					/*!< Flag indicating whether the bounds were set before*/

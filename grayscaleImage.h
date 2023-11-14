@@ -132,6 +132,14 @@ class GrayscaleImage{
 	unsigned char GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 
 	/*!
+	 * @brief Get raw data
+	 * @param column Column
+	 * @param row Row
+	 * @return Raw value
+	*/
+	double GetData( const size_t column, const size_t row ) const{ return raw_data_.at( GetIndex( column, row ) ); } ;
+
+	/*!
 	 * @brief Set pixel data
 	 * @param pixel Pixel indices
 	 * @param data New data

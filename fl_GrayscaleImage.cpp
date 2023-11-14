@@ -29,7 +29,7 @@ RGB getBgColor( void ){
 }
 
 const RGB Fl_GrayscaleImage::background_color = getBgColor();
-
+const RGB Fl_GrayscaleImage::metal_color{ 128, 0, 0 };
 
 /*
 	Fl_GridImage implementation
@@ -74,7 +74,7 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 				has_overlay_ = true;
 
 				if( data_.HasSpecificProperty( VoxelData::Metal ) )
-					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, RGB{ 128, 0, 0 } };
+					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, metal_color };
 
 				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
 					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, background_color };
@@ -87,6 +87,22 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 
 	image_assigned_ = true;
 	Update();
+
+}
+
+optional<pair<double, RGB>> Fl_GrayscaleImage::GetValue( int x, int y ) const{
+
+	const int x_padding = ( w() - static_cast<int>( color_image_.width() ) ) / 2;
+	const int y_padding = ( h() - static_cast<int>( color_image_.height() ) ) / 2;
+
+	if( x < x_padding || x > w() - x_padding ||
+		y < y_padding || y > h() - y_padding )
+		return{};
+
+	x = ForceToMin( x - x_padding, 0 );
+	y = ForceToMin( y - y_padding, 0 );
+
+	return pair{ grayscale_image_scaled_.GetData( x, y ), color_image_.GetPixelData( x, y ) };
 
 }
 
@@ -121,6 +137,7 @@ void Fl_GrayscaleImage::CalculateScaled( void ){
 	}
 
 	color_image_ = ColorImage{ grayscale_image_, static_cast<size_t>( scaledWidth ), static_cast<size_t>( scaledHeight ), overlay_ };
+	grayscale_image_scaled_ = GrayscaleImage{ grayscale_image_, static_cast<size_t>( scaledWidth ), static_cast<size_t>( scaledHeight ) };
 }
 
 void Fl_GrayscaleImage::Update( void ){

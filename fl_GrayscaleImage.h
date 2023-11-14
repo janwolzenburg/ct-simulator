@@ -13,6 +13,8 @@
  *********************************************************************/
 
  #include <FL/Fl_Widget.H>
+ #include <optional>
+ using std::optional;
 
 #include "grayscaleImage.h"
 #include "colorImage.h"
@@ -22,6 +24,7 @@
 	Definitions
  *********************************************************************/
 
+
 /*!
  * @brief Class for a Fl_Widget to display grayscale image with optional colored overlay
 */
@@ -30,6 +33,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	public:
 
 	static const RGB background_color;		/*!< Background color for pixel without data*/
+	static const RGB metal_color;			/*!< Overlay color of metal*/
 
 	/*!
 	 * @brief Constructor
@@ -74,6 +78,14 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	double GetMaximum( void ) const{ return grayscale_image_.GetMaximum(); };
 
 	/*!
+	 * @brief Get value for given x and y coordinate
+	 * @param x Local x coordinate
+	 * @param y Local y coordinate
+	 * @return Raw and color value when x and y are inside image
+	*/
+	optional<pair<double, RGB>> GetValue( int x, int y ) const;
+
+	/*!
 	 * @brief Assign grayscale image as new image data
 	 * @param grayscale_image Grayscale image
 	*/
@@ -101,6 +113,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	vector<pair<bool, RGB>> overlay_;	/*!< Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
 	bool has_overlay_;					/*!< Flag indicating existing overlay*/
 	
+	GrayscaleImage grayscale_image_scaled_;
 	ColorImage color_image_;			/*!< Colored image resulting from grayscale image with overlayed color data_*/
 
 
