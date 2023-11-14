@@ -107,7 +107,6 @@ int Fl_AdjustableGrayscaleImage::handle( int event ){
 					current_value_text_.copy_label( "Metal" );
 				}
 				else{
-					cout << to_string( pixel_value.value().first ) << endl;
 
 					double factored_value = pixel_value.value().first * pow( 10., common_power_ );
 					
