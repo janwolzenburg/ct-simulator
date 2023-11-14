@@ -342,7 +342,7 @@ bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 
 size_t Model::Serialize( vector<char>& binary_data ) const{
 
-	size_t expectedSize = FILE_PREAMBLE.size() + 1;
+	size_t expectedSize = 0;
 	expectedSize += sizeof( number_of_voxel_3D_ );
 	expectedSize += sizeof( voxel_size_ );
 	expectedSize += sizeof( CoordinateSystem );
@@ -406,7 +406,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		// Get point on surface for current grid indices
 		const GridCoordinates surfaceCoordinate = slice.GetCoordinates( gridIndices );
-		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c, surfaceCoordinate.r );
+		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c - slice.resolution().c, surfaceCoordinate.r - slice.resolution().r );
 
 
 		// Are cooradinates defined in model?
@@ -456,9 +456,10 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 
 	// Surface in model's system
 	const Surface localSurface = sliceLocation.ConvertTo( coordinate_system_ );
+	 
 
 
-	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
+	GridCoordinates sliceStart( 0, 0 );
 	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
 	GridCoordinates sliceResolution( resolution, resolution );
 
@@ -484,7 +485,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+	for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 		threads.emplace_back( SliceThreaded,	ref( xIdx ), ref( currentXMutex ), ref( yIdx ), ref( currentYMutex ),
 													ref( realStart ), ref( realStartMutex), ref( realEnd ), ref( realEndMutex ),
 													ref( largeSlice ), ref( sliceMutex ),
