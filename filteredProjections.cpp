@@ -60,12 +60,10 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 				// Index of current row in projection data
 				signed long long projection_row_index = static_cast<signed long long>( n ) - k;
 				
-				// Index out of bounds of input data -> add nothing is like padding input data with zero/last value
-				if( projection_row_index < 0 )
-					projection_row_index = 0;
-
-				if( projection_row_index >= static_cast<signed long long>( nD ) )
-					projection_row_index = static_cast<signed long long>( nD - 1 );
+				// Index out of bounds of input data -> add nothing is like padding input data with zero/
+				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( nD ) ){
+					continue;
+				}
 
 				// projection data
 				const double P_T = projectionsData.GetData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
@@ -74,8 +72,7 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 				const double h_n = filter_( k );
 
 				// Multiply
-				//if( h_n != 0.)
-					convolutionResult += h_n * P_T;
+				convolutionResult += h_n * P_T;
 			}
 			convolutionResult *= dD;
 			this->SetData( GridIndex{ t, n }, convolutionResult );
