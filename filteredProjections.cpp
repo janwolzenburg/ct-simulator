@@ -48,30 +48,33 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 		// Iterate all distances
 		for( size_t n = 0; n < nD; n++ ){
 			if( filter_.type() == BackprojectionFilter::TYPE::constant ){
-				this->SetData( GridIndex{ t, n }, projectionsData( GridIndex{ t, n } ) );
+				this->SetData( GridIndex{ t, n }, projectionsData.GetData( GridIndex{ t, n } ) );
 				continue;
 			}
 
 			// Convolute filter with with projections
 			double convolutionResult = 0;
 
-			for( signed long long l = filter_.points_range().start(); l <= filter_.points_range().end(); l++ ){
+			for( signed long long k = filter_.points_range().start(); k <= filter_.points_range().end(); k++ ){
 
 				// Index of current row in projection data
-				signed long long projection_row_index = static_cast<signed long long>( n ) + l;
+				signed long long projection_row_index = static_cast<signed long long>( n ) - k;
 				
-				// Index out of bounds of input data -> add nothing is like padding input data with zero
-				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( nD ) )
-					continue;
+				// Index out of bounds of input data -> add nothing is like padding input data with zero/last value
+				if( projection_row_index < 0 )
+					projection_row_index = 0;
+
+				if( projection_row_index >= static_cast<signed long long>( nD ) )
+					projection_row_index = static_cast<signed long long>( nD - 1 );
 
 				// projection data
-				const double P_T = projectionsData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
+				const double P_T = projectionsData.GetData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
 
 				// filter value
-				const double h_n = filter_( l );
+				const double h_n = filter_( k );
 
 				// Multiply
-				if( h_n != 0.)
+				//if( h_n != 0.)
 					convolutionResult += h_n * P_T;
 			}
 			convolutionResult *= dD;

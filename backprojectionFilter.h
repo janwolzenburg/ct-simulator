@@ -32,13 +32,13 @@ class BackprojectionFilter{
 	 * @brief Available filter types
 	*/
 	enum TYPE{
-		constant,		/*!< No filter*/
 		ramLak,			/*!< Ramachandran and Lakshminarayanan*/
-		sheppLogan		/*!< Shepp and Logan*/
+		sheppLogan,		/*!< Shepp and Logan*/
+		constant,		/*!< No filter*/
 	};
 
-	static const std::map<TYPE, string> filter_types;			/*!< Filter types with names*/
-	static constexpr double significance_percentage = 1e-2;			/*!< Threshold to determine significant range*/
+	static const std::map<TYPE, string> filter_types;				/*!< Filter types with names*/
+	static constexpr double significance_percentage = 1e-3;			/*!< Threshold to determine significant range*/
 	
 	/*!
 	 * @brief Get filter type by string
@@ -59,7 +59,7 @@ class BackprojectionFilter{
 	 * @brief Default constructor
 	*/
 	BackprojectionFilter( void ) : 
-		BackprojectionFilter( NaturalNumberRange{ -5, 5 }, 1., constant ) {};
+		BackprojectionFilter( NaturalNumberRange{ -5, 5 }, 1., ramLak ) {};
 
 	/*!
 	 * @brief Get values of filter kernel
