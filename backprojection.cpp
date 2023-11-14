@@ -79,11 +79,24 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 }
 
 
-Backprojection::Backprojection( const FilteredProjections projections, Fl_Progress_Window* progress ) :
-	DataGrid{ GridIndex{ projections.size().r, projections.size().r },
-		  GridCoordinates{ projections.start().r, projections.start().r }, 
-		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. }
+Backprojection::Backprojection( const FilteredProjections projections, Fl_Progress_Window* progress )
 {
+
+	const double distance_range =  ( projections.size().r - 1 ) * projections.resolution().r ;
+	const double side_length = distance_range / sqrt ( 2 );
+	const GridCoordinates image_start{ -side_length / 2., -side_length / 2.  };
+
+
+	double image_resolution = projections.resolution().r;
+
+	const size_t number_of_pixel = ForceOdd( static_cast<size_t>( floor( ( side_length / image_resolution + 1 ) ) ) );
+	image_resolution = side_length / ( number_of_pixel - 1 );
+	
+	const GridIndex image_size{ number_of_pixel, number_of_pixel };
+
+
+	*static_cast<DataGrid*>( this ) = DataGrid{ image_size, image_start, { image_resolution, image_resolution }, 0. };
+
 
 	size_t current_angle_index = 0; 
 	mutex current_angle_index_mutex, imageMutex, progressMutex;
@@ -91,7 +104,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+	for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 		threads.emplace_back( ReconstructImageColumn, ref( current_angle_index ), ref( current_angle_index_mutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
 	}
 
