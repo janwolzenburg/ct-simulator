@@ -23,55 +23,52 @@ using std::cref;
    Implementations
 *********************************************************************/
 
-void Backprojection::ReconstructImageColumn(	size_t& currentX, mutex& currentXMutex, Backprojection& image, 
+void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex& current_angle_index_mutex, Backprojection& image, 
 											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
 											const FilteredProjections projections ){
 
-	const size_t nD = image.size().r;					// Number of distances
-	const double dD = image.resolution().r;				// Distance resolution
+	const size_t number_of_distances = image.size().r;				// Number of distances
+	const double distance_resolution = image.resolution().r;		// Distance resolution
 
-	const size_t nT = projections.size().c;				// Number of angles
-	const double dT = projections.resolution().c;		// Angle resolution
+	const size_t number_of_angles = projections.size().c;			// Number of angles
+	const double angle_resolution = projections.resolution().c;		// Angle resolution
 
-	// Iterate all points on image. Points are spaced by the distance resolution in filtered projections
-	while( currentX < nD ){
 
-		size_t xIdx;
+	while( current_angle_index < number_of_angles ){
 
-		currentXMutex.lock();
-		xIdx = currentX++;
-		currentXMutex.unlock();
+		size_t angle_index;
 
-		if( xIdx >= nD ) break;
+		current_angle_index_mutex.lock();
+		angle_index = current_angle_index++;
+		current_angle_index_mutex.unlock();
 
+		if( angle_index >= number_of_angles ) break;
 
 		if( progress != nullptr ){
 			progressMutex.lock();
-			progress->ChangeLineText( 1, "Reconstructing column " + ToString( xIdx + 1 ) + " of " + ToString( nD ) );
+			progress->ChangeLineText( 1, "Backprojection projection " + ToString( angle_index + 1 ) + " of " + ToString( number_of_angles ) );
 			progressMutex.unlock();
 		}
-			
-		for( size_t yIdx = 0; yIdx < nD; yIdx++ ){
+		
+		const double angle = static_cast<double>( angle_index ) * angle_resolution;			// Current angle value
+		const double cos_angle = cos( angle );
+		const double sin_angle = sin( angle );
 
-			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// x value on image
-			const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - ( static_cast<signed long long>( nD ) - 1 ) / 2 ) * dD;		// y value on image
+		for( size_t xIdx = 0; xIdx < number_of_distances; xIdx++ ){
+			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - ( static_cast<signed long long>( number_of_distances ) - 1 ) / 2 ) * distance_resolution;		// x value on image
 
-			double currentValue = 0.;
-			 
-			// Iterate and sum filtered projections over all angles
-			for( size_t angleIdx = 0; angleIdx < nT; angleIdx++ ){
+			for( size_t yIdx = 0; yIdx < number_of_distances; yIdx++ ){
+				
+				const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - ( static_cast<signed long long>( number_of_distances ) - 1 ) / 2 ) * distance_resolution;		// y value on image
+				const double t = x * cos_angle + y * sin_angle;	// Current "distance" or magnitude in polar Coordinates
 
-				const double arc_angle = static_cast<double>( angleIdx ) * dT;			// Current angle value
-				const double t = x * cos( arc_angle ) + y * sin( arc_angle );	// Current "distance" or magnitude in polar Coordinates
-
-				// Get the projection value and add to current value
-				const double projectionValue = projections.GetValue( angleIdx, t );
-				currentValue += projectionValue;
+				const double projectionValue = projections.GetValue( angle_index, t );
+				const double new_value = ( image.GetData( GridIndex{ xIdx, yIdx } ) + projectionValue * PI / static_cast<double>( number_of_angles ) );
+				
+				imageMutex.lock();
+				image.SetData( GridIndex{ xIdx, yIdx }, new_value );
+				imageMutex.unlock();
 			}
-			
-			imageMutex.lock();
-			image.SetData( GridIndex{ xIdx, yIdx }, currentValue * PI / static_cast<double>( nT ) );
-			imageMutex.unlock();
 		}
 
 		progressMutex.lock();
@@ -88,14 +85,14 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 		  GridCoordinates{ projections.resolution().r, projections.resolution().r }, 0. }
 {
 
-	size_t currentX = 0; 
-	mutex currentXMutex, imageMutex, progressMutex;
+	size_t current_angle_index = 0; 
+	mutex current_angle_index_mutex, imageMutex, progressMutex;
 
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
-		threads.emplace_back( ReconstructImageColumn, ref( currentX ), ref( currentXMutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
+	for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
+		threads.emplace_back( ReconstructImageColumn, ref( current_angle_index ), ref( current_angle_index_mutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
 	}
 
 	for( std::thread& currentThread : threads ) currentThread.join();
