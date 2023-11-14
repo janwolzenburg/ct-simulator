@@ -113,7 +113,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	vector<pair<bool, RGB>> overlay_;	/*!< Overlay as collection of a flag and color value. At assignment initialised with an element for each pixel*/
 	bool has_overlay_;					/*!< Flag indicating existing overlay*/
 	
-	GrayscaleImage grayscale_image_scaled_;
+	GrayscaleImage grayscale_image_scaled_;	/*!< Scaled copy of original image*/
 	ColorImage color_image_;			/*!< Colored image resulting from grayscale image with overlayed color data_*/
 
 
