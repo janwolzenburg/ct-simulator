@@ -485,7 +485,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
+	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 		threads.emplace_back( SliceThreaded,	ref( xIdx ), ref( currentXMutex ), ref( yIdx ), ref( currentYMutex ),
 													ref( realStart ), ref( realStartMutex), ref( realEnd ), ref( realEndMutex ),
 													ref( largeSlice ), ref( sliceMutex ),
