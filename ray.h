@@ -78,6 +78,7 @@ class RayProperties{
 	*/
 	void AttenuateSpectrum( const VoxelData& voxel_data, const double distance_traveled );
 
+	double J = 1.;
 
 	private:
 
@@ -85,6 +86,8 @@ class RayProperties{
 	size_t voxel_hits_;						/*!< Counter for voxels hit during transmission*/
 	double start_intensity_;				/*!< Intensity before radiation*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
+
+
 
 };
 
