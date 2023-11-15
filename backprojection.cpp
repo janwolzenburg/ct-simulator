@@ -89,7 +89,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 
 	double image_resolution = projections.resolution().r;
 
-	const size_t number_of_pixel = ForceOdd( static_cast<size_t>( 2.* floor( ( side_length / image_resolution + 1 ) ) ) );
+	const size_t number_of_pixel = ForceEven( static_cast<size_t>( 2.* floor( ( side_length / image_resolution + 1 ) ) ) );
 	image_resolution = side_length / ( number_of_pixel - 1 );
 	
 	const GridIndex image_size{ number_of_pixel, number_of_pixel };

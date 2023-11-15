@@ -34,7 +34,7 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	const size_t nD = size().r;		// Number of distances
 
 	const double dD = resolution().r;	// Distance resolution
-
+	
 
 	// Local copy of projection data_
 	const DataGrid<> projectionsData = projections.data();
