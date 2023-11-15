@@ -168,8 +168,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 }
 
 void Fl_GantryCreation::SetDistances( const double max_corner_distance ){
-	detector_focus_distance_input_.value( 2. * ( max_corner_distance + 150. ) );
-	distance_range_input_.value( 2. * ( max_corner_distance + 25. ) );
+	detector_focus_distance_input_.value( 2.15 * ( max_corner_distance ) );
+	distance_range_input_.value( 2.05 * ( max_corner_distance ) );
 
 	UpdateGantry();
 }
