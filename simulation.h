@@ -18,7 +18,7 @@ constexpr double al_filter_gradient_factor = -3.5;							/*!< Quotient of filter
 constexpr double max_detetector_arc_angle_rad = 2. * PI * ( 90. / 360. );	/*!< Maximum angle of detector arc*/
 constexpr double min_detetector_arc_angle_rad = 2. * PI * ( 40. / 360. );	/*!< Minimum angle of detector arc*/
 
-constexpr double default_ray_step_size_mm = 1e-3;							/*!< Stepsize during Ray iteration in Ray direction vector's unit*/
+constexpr double default_ray_step_size_mm = 5e-2;							/*!< Stepsize during Ray iteration in Ray direction vector's unit*/
 constexpr double default_scatter_propability_correction = 0.05;				/*!< Correction factor for scatter propability*/
 
 constexpr size_t default_max_radiation_loops = 16;							/*!< How often can a Ray be scattered*/
