@@ -138,7 +138,6 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 								properties_.row_width / 2. } );
 
 		RadonCoordinates radon_coords { this->coordinate_system_, pixelNormal };
-		cout << "Pixel " << currentIndex << ": " << radon_coords.theta << ";" << radon_coords.distance << endl;
 
 	}
 
