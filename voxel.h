@@ -128,12 +128,19 @@ class VoxelData{
 	*/
 	bool HasSpecificProperty( const SpecialProperty property ) const;
 
+	/*!
+	 * @brief Set the metal artifact impact factor
+	 * @param artefact_impact_factor New factor
+	*/
+	static void SetArtefactImpactFactor( const double artefact_impact_factor );
+
 
 	private:
 
+	static double artefact_impact_factor_;			/*!< Factor for altering metal artefact strength*/
 
-	double attenuation_	= -1;										/*!< Absorption coefficient at reference Energy*/
-	SpecialPropertyEnumType specialProperties_;						/*!< Special properties_ in voxel*/
+	double attenuation_	= -1;						/*!< Absorption coefficient at reference Energy*/
+	SpecialPropertyEnumType specialProperties_;		/*!< Special properties in voxel*/
 
 
 	/*!

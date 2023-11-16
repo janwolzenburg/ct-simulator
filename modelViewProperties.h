@@ -9,6 +9,7 @@
 
 #include "generel.h"
 #include "slicePlane.h"
+#include "serialization.h"
 
 
 /*!
@@ -23,7 +24,7 @@ class ModelViewProperties{
 	/*!
 	 * @brief Default constructor
 	*/
-	ModelViewProperties( void ) : contrast{}, slice_plane{}{};
+	ModelViewProperties( void ) : contrast{}, slice_plane{}, artefact_impact( 1 ){};
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -31,7 +32,8 @@ class ModelViewProperties{
 	 * @param current_byte Iterator to start of data in vector
 	*/
 	ModelViewProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
-		contrast{ binary_data, current_byte }, slice_plane{ binary_data, current_byte }{};
+		contrast{ binary_data, current_byte }, slice_plane{ binary_data, current_byte }, artefact_impact( DeSerializeBuildIn<double>( 1., binary_data, current_byte ) )
+		{};
 
 	/*!
 	 * @brief Serialize this object
@@ -42,4 +44,5 @@ class ModelViewProperties{
 
 	NumberRange contrast;			/*!< Contrast of slice image*/
 	SlicePlane slice_plane;			/*!< Surface to slice model with*/
+	double artefact_impact;			/*!< Artefact impact factor*/
 };

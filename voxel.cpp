@@ -25,6 +25,8 @@
 	VoxelData implementation
  */
 
+ double VoxelData::artefact_impact_factor_ = 1.;
+
 VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
 	attenuation_( GetAttenuationAtReferenceEnergy( attenuationAtFrequency, frequency ) ),
 	specialProperties_( specProperty )
@@ -39,11 +41,18 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 	// iron attenuation is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return  0.1 * mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
+		return  artefact_impact_factor_ * mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
 	}
 
 	return attenuation_ * pow( reference_energy_for_mu_eV / energy, 3. );
 
+}
+
+void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
+
+	// impact factor from 0 to 10 should map from mu_water / mu_iron to 1.
+
+	artefact_impact_factor_ = ForceToMin( artefact_impact_factor * ( 1 - mu_water / mu_iron ) / 10. + mu_water / mu_iron, 0. );
 }
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{

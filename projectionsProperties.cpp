@@ -55,7 +55,7 @@ ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, con
 	if( newNumberPointsRow != number_of_distances_ ){
 		number_of_distances_ = ForceToMin( ForceEven( newNumberPointsRow ), static_cast<size_t>( 3 ) );
 		distances_resolution_ = measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 );
-		number_of_frames_to_fill_ = 2. *  static_cast<double>( number_of_angles_ ) - static_cast<double>( number_of_distances_ ) + 1;
+		number_of_frames_to_fill_ = 2 * number_of_angles_ - number_of_distances_ + 1;
 	}
 }
 
