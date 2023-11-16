@@ -119,7 +119,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_angles_input_.SetProperties( 3, 10000, 0 );
 		number_of_angles_input_.value( projections_properties_.number_of_angles() );
 
-		number_of_distances_input_.SetProperties( 3, 10000, 0, Input_Constraints::Odd );
+		number_of_distances_input_.SetProperties( 4, 10000, 0, Input_Constraints::Even );
 		number_of_distances_input_.value( projections_properties_.number_of_distances() );
 
 		distance_range_input_.SetProperties( 1., 10000., 0 );
@@ -168,8 +168,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 }
 
 void Fl_GantryCreation::SetDistances( const double max_corner_distance ){
-	detector_focus_distance_input_.value( 2. * ( max_corner_distance + 150. ) );
-	distance_range_input_.value( 2. * ( max_corner_distance + 25. ) );
+	detector_focus_distance_input_.value( ceil( 2.75 * ( max_corner_distance ) ) );
+	distance_range_input_.value( ceil( 2.5 * ( max_corner_distance ) ) );
 
 	UpdateGantry();
 }

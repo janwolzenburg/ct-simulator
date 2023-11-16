@@ -28,24 +28,25 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	
 	//Model testModel = getTestModel( GlobalSystem(), 20 );
-	/*
-	Model debugModel{ GlobalSystem()->CreateCopy( "Model system"), Index3D{3, 3, 1}, Tuple3D{1., 1., 1.}, string{"Debug model"}};
 	
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 0, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 1, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 0, 2, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 1, 0, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .1, 100000., }, Index3D{ 1, 1, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 1, 2, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 0, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 1, 0 } );
-	debugModel.SetVoxelData( VoxelData{ .01, 100000., }, Index3D{ 2, 2, 0 } );
+	Model debugModel{ GlobalSystem()->CreateCopy( "Model system"), Index3D{3, 3, 1}, Tuple3D{1., 1., 1.}, string{"Debug model"}};
+	/*
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 0, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 0, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 0, 2, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 1, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_bone, reference_energy_for_mu_eV, }, Index3D{ 1, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 1, 2, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 2, 0, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 2, 1, 0 } );
+	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 2, 2, 0 } );
 	
 
 	PersistingObject<Model> saveableModel{ Model{}, path{"./debug.model"} };
 	saveableModel = debugModel;
 	saveableModel.Save( path{". / debug.model"}, true );
 	return 0;
+	
 	*/
 
 	

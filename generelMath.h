@@ -183,6 +183,16 @@ typename std::enable_if_t<std::is_integral_v<T>, T>
 ForceOdd( T a );
 
 /*!
+ * @brief Force value to an even value
+ * @tparam T Integral type
+ * @param a Value
+ * @return a when add. a + 1 when even
+*/
+template <typename T>
+typename std::enable_if_t<std::is_integral_v<T>, T>
+Forceeven( T a );
+
+/*!
  * @brief Force value to a range
  * @tparam T Arithmetic type
  * @param value Value

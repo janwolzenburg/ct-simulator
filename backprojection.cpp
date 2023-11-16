@@ -50,29 +50,31 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 			progressMutex.unlock();
 		}
 		
-		const double angle = static_cast<double>( angle_index ) * angle_resolution;			// Current angle value
+		const double angle = static_cast<double>( angle_index ) * angle_resolution + angle_resolution / 2.;			// Current angle value
 		const double cos_angle = cos( angle );
 		const double sin_angle = sin( angle );
 
-		for( size_t xIdx = 0; xIdx < number_of_distances; xIdx++ ){
-			const double x = static_cast<double>( static_cast<signed long long>( xIdx ) - ( static_cast<signed long long>( number_of_distances ) - 1 ) / 2 ) * distance_resolution;		// x value on image
+		for( size_t column_index = 0; column_index < number_of_distances; column_index++ ){
+			const double x = static_cast<double>( static_cast<signed long long>( column_index ) - static_cast<signed long long>( number_of_distances ) / 2 ) * distance_resolution;		// x value on image
+			const double column_coordinate = image.GetColCoordinate( column_index );
 
-			for( size_t yIdx = 0; yIdx < number_of_distances; yIdx++ ){
+			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){
 				
-				const double y = static_cast<double>( static_cast<signed long long>( yIdx ) - ( static_cast<signed long long>( number_of_distances ) - 1 ) / 2 ) * distance_resolution;		// y value on image
-				const double t = x * cos_angle + y * sin_angle;	// Current "distance" or magnitude in polar Coordinates
+				//const double row_coordinate = static_cast<double>( static_cast<signed long long>( row_index ) - static_cast<signed long long>( number_of_distances ) / 2 + 1 ) * distance_resolution;		// y value on image
+				const double row_coordinate = image.GetRowCoordinate( row_index );
+				const double t = column_coordinate * cos_angle + row_coordinate * sin_angle;	// Current "distance" or magnitude in polar Coordinates
 
 				const double projectionValue = projections.GetValue( angle_index, t );
-				const double new_value = ( image.GetData( GridIndex{ xIdx, yIdx } ) + projectionValue * PI / static_cast<double>( number_of_angles ) );
+				const double new_value = ( image.GetData( GridIndex{ column_index, row_index } ) + projectionValue * PI / static_cast<double>( number_of_angles ) );
 				
 				imageMutex.lock();
-				image.SetData( GridIndex{ xIdx, yIdx }, new_value );
+				image.SetData( GridIndex{ column_index, row_index }, new_value );
 				imageMutex.unlock();
 			}
 		}
 
 		progressMutex.lock();
-		Fl::check();
+		Fl::check(); 
 		progressMutex.unlock();
 	}
 
@@ -89,7 +91,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 
 	double image_resolution = projections.resolution().r;
 
-	const size_t number_of_pixel = ForceOdd( static_cast<size_t>( floor( ( side_length / image_resolution + 1 ) ) ) );
+	const size_t number_of_pixel = ForceEven( static_cast<size_t>( 2.* floor( ( side_length / image_resolution + 1 ) ) ) );
 	image_resolution = side_length / ( number_of_pixel - 1 );
 	
 	const GridIndex image_size{ number_of_pixel, number_of_pixel };

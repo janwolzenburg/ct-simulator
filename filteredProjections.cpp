@@ -34,7 +34,7 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	const size_t nD = size().r;		// Number of distances
 
 	const double dD = resolution().r;	// Distance resolution
-
+	
 
 	// Local copy of projection data_
 	const DataGrid<> projectionsData = projections.data();
@@ -81,13 +81,6 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 		Fl::check();
 	}
 
-	/*const double min_value = this->min_value();
-
-	for( size_t t = 0; t < nT; t++ ){
-		for( size_t n = 0; n < nD; n++ ){
-			this->SetData( GridIndex{ t, n }, this->GetData( GridIndex{ t, n } ) - min_value );
-		}
-	}*/
 }
 
 
@@ -97,7 +90,7 @@ double FilteredProjections::GetValue( const size_t angleIdx, const double distan
 	const double dD = resolution().r;	// Distance resolution
 	const size_t nD = size().r;			// Number of distances
 
-	double exactDistanceIdx = distance / dD + ( static_cast<double>( nD ) - 1. ) / 2.;		// Exact "index" of distance
+	double exactDistanceIdx = distance / dD + static_cast<double>( nD - 1 ) / 2.;		// Exact "index" of distance
 
 	// Index must be in bounds
 	exactDistanceIdx = ForceRange( exactDistanceIdx, 0., static_cast<double>( nD ) - 1.);

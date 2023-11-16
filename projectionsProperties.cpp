@@ -33,12 +33,12 @@ const string ProjectionsProperties::FILE_PREAMBLE{ "Ver01RADONPARAMETER_FILE_PRE
 */
 
 ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size ) :
-	number_of_angles_( ForceToMin( number_of_angles, static_cast<size_t>( 2 ) ) ),
-	number_of_distances_( ForceToMin( ForceOdd ( number_of_distances ), static_cast<size_t>( 3 ) ) ),
+	number_of_angles_( ForceToMin( number_of_angles, static_cast<size_t>( 8 ) ) ),
+	number_of_distances_( ForceToMin( ForceEven( number_of_distances ), static_cast<size_t>( 4 ) ) ),
 	measuring_field_size_( ForcePositive( measuring_field_size ) ),
 	angles_resolution_( PI / static_cast<double>( number_of_angles_ ) ),
 	distances_resolution_( measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 ) ),
-	number_of_frames_to_fill_( number_of_angles_ - 1 + number_of_distances_ - 1 )
+	number_of_frames_to_fill_( 2 *  number_of_angles_ - number_of_distances_ + 2 )
 {
 
 	// Check angle
@@ -53,16 +53,16 @@ ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, con
 
 	// Recalculate if number_of_pixel of point changed
 	if( newNumberPointsRow != number_of_distances_ ){
-		number_of_distances_ = ForceToMin( ForceOdd( newNumberPointsRow ), static_cast<size_t>( 3 ) );
+		number_of_distances_ = ForceToMin( ForceEven( newNumberPointsRow ), static_cast<size_t>( 3 ) );
 		distances_resolution_ = measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 );
-		number_of_frames_to_fill_ = number_of_angles_ - 1 + number_of_distances_ - 1;
+		number_of_frames_to_fill_ = 2. *  static_cast<double>( number_of_angles_ ) - static_cast<double>( number_of_distances_ ) + 1;
 	}
 }
 
 
 ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	number_of_angles_( DeSerializeBuildIn<size_t>( 3, binary_data, it ) ),
-	number_of_distances_( DeSerializeBuildIn<size_t>( 2, binary_data, it ) ),
+	number_of_angles_( DeSerializeBuildIn<size_t>( 5, binary_data, it ) ),
+	number_of_distances_( DeSerializeBuildIn<size_t>( 4, binary_data, it ) ),
 	measuring_field_size_( DeSerializeBuildIn<double>( 400., binary_data, it ) )
 {
 	*this = ProjectionsProperties{ number_of_angles_, number_of_distances_, measuring_field_size_ };

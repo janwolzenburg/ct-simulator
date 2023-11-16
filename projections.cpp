@@ -38,7 +38,7 @@ Projections::Projections( void ) :
 
 Projections::Projections( const ProjectionsProperties properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
-				GridCoordinates{ 0., 
+				GridCoordinates{ properties.angles_resolution() / 2.,
 								 -( static_cast<double>( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
 				properties.GetTransformationResolution()
 		  },
