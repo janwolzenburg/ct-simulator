@@ -19,7 +19,7 @@
   Implementations
 *********************************************************************/
 
-const string ModelViewProperties::FILE_PREAMBLE{ "Ver01MODELVIEWPARAMETER_FILE_PREAMBLE" };
+const string ModelViewProperties::FILE_PREAMBLE{ "Ver02MODELVIEWPARAMETER_FILE_PREAMBLE" };
 
 size_t ModelViewProperties::Serialize( vector<char>& binary_data ) const{
 
@@ -27,6 +27,7 @@ size_t ModelViewProperties::Serialize( vector<char>& binary_data ) const{
 
 	num_bytes += contrast.Serialize( binary_data );
 	num_bytes += slice_plane.Serialize( binary_data );
+	num_bytes += SerializeBuildIn<double>( artefact_impact, binary_data );
 
 	return num_bytes;
 

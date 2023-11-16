@@ -36,6 +36,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	x_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },
 	y_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
 	z_position_{		X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
+	artefact_impact_{	X( model_movement_group_, .5 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "Artefact factor" },
 
 	
 	properties_{ ModelViewProperties{}, "view.properties" },
@@ -48,7 +49,8 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	load_model_callback_{ *this, &Fl_ModelView::LoadModel },
 	update_model_callback_{ *this, &Fl_ModelView::UpdateModel },
-	reset_model_callback_{ *this, &Fl_ModelView::ResetModel }
+	reset_model_callback_{ *this, &Fl_ModelView::ResetModel },
+	update_artefact_impact_{ *this, &Fl_ModelView::UpdateArtefactImpact }
 
 {
 
@@ -98,28 +100,33 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	model_movement_group_.add( x_rotation_ );
 	model_movement_group_.add( y_rotation_ );
 	model_movement_group_.add( z_position_ );
+	model_movement_group_.add( artefact_impact_ );
 
 	// Counter ranges
 	x_rotation_.range( -180., 180. );		x_rotation_.step( 1., 10. );
 	y_rotation_.range( -180., 180. );		y_rotation_.step( 1., 10. );
-	z_position_.range( -500., 500. );	z_position_.step( 1., 10. );
+	z_position_.range( -500., 500. );		z_position_.step( 1., 10. );
+	artefact_impact_.range( 0. , 10. );		artefact_impact_.step( 0.01, 0.1 );
 
 	// Labelsizes
 	x_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( x_rotation_.h() ) ) );
 	y_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( y_rotation_.h() ) ) );
 	z_position_.labelsize( static_cast<int>( .50 * static_cast<double>( z_position_.h() ) ) );
+	artefact_impact_.labelsize( static_cast<int>( .50 * static_cast<double>( artefact_impact_.h() ) ) );
 
 
 	// Callbacks for Counters and reset button
 	x_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
+	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
 
 
 	// Set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
 	y_rotation_.value( properties_.slice_plane.rotation_angle_y );
 	z_position_.value( properties_.slice_plane.position_z );
+	artefact_impact_.value( properties_.artefact_impact );
 
 	// Hide initially
 	model_movement_group_.hide();
@@ -347,7 +354,8 @@ void Fl_ModelView::LoadModel( void ){
 void Fl_ModelView::UpdateModel( void ){
 
 	this->window()->deactivate();
-	
+
+
 	// Store in variable for moveModel function call
 	double oldXRot = x_rotation_.value();
 	double oldYRot = y_rotation_.value();
@@ -373,4 +381,9 @@ void Fl_ModelView::UpdateModel( void ){
 	model_information_.value( model_information_string_.c_str() );
 	this->window()->activate();
 
+}
+
+void Fl_ModelView::UpdateArtefactImpact( void ){
+	
+	VoxelData::SetArtefactImpactFactor( artefact_impact_.value() );	
 }

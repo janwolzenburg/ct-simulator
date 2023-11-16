@@ -85,10 +85,10 @@ class Fl_ModelView : public Fl_Group{
 	Fl_Counter x_rotation_;			/*!< Input for x-rotation*/
 	Fl_Counter y_rotation_;			/*!< Input for y-rotation*/
 	Fl_Counter z_position_;			/*!< Input for z-transloation*/
-
+	Fl_Counter artefact_impact_;	/*!< Input for artefact impact*/
 	
 	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
-	Fl_MainWindow& main_window_;							/*!< Reference to main window*/
+	Fl_MainWindow& main_window_;						/*!< Reference to main window*/
 	PersistingObject<FileChooser> model_chooser_;		/*!< Persisting storage of model chooser*/
 	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
 
@@ -99,7 +99,7 @@ class Fl_ModelView : public Fl_Group{
 	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< Callback for model loading*/
 	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< Callback for model update*/
 	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< Callback for model reset*/
-	
+	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< Callback for change og artifact impact*/
 
 	/*!
 	 * @brief Get the model description
@@ -143,4 +143,8 @@ class Fl_ModelView : public Fl_Group{
 	*/
 	void UpdateModel( void );
 
+	/*!
+	 * @brief Update VoxelData artefact impact inputted
+	*/
+	void UpdateArtefactImpact( void );
 };
