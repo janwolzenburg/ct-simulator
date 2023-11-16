@@ -79,12 +79,12 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	}
 
 	// Crop kernel to relevant range
-	const NaturalNumberRange new_range = GetRelevantRange();
-	const size_t offset = new_range.start() - pointsRange_.start();
-	points_range_ = new_range;
-	number_of_points_ = static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1;
+	//const NaturalNumberRange new_range = GetRelevantRange();
+	//const size_t offset = new_range.start() - pointsRange_.start();
+	//points_range_ = new_range;
+	//number_of_points_ = static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1;
 	
-	values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
+	//values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
 
 }
 

@@ -35,7 +35,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 	const double deltaTheta = radonParameter.angles_resolution();		// Angle resolution
 	const double deltaDistance = radonParameter.distances_resolution();	// Distance resolution
 
-	const double detectorCenterDistance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
+	const double detector_focus_distance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
 
 	// Important vectors
 	const UnitVector3D middleNormalVector = coordinate_system_->GetEy();					// y-axis of coordinate system is the middle normal vector
@@ -49,26 +49,26 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 
 	// Iterate through half of pixel normals. Second half is created by symmetry
 	// Normals will be created inside to outside
-	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
+	for( size_t currentIndex = 0; currentIndex < nDistance / 2; currentIndex++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = static_cast<double>( currentIndex ) * deltaTheta;
+		const double rotationAngle = ( static_cast<double>( currentIndex ) + 0.5 ) * deltaTheta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
 		// Find a point with the distance corresponding to distance in sinogram
-		// The point's origin_ vector must be perpendicular to the current normal vector
+		// The point's origin vector must be perpendicular to the current normal vector
 
 		// The lot is perpendicular to the current normal vector and it lies in xy-plane
 		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
-		// Distance from origin_ to normal. Is the distance in the sinogram
-		const double currentDistance = distanceRange / 2 - ( static_cast<double>( nDistance - 1 ) / 2. - static_cast<double>( currentIndex ) ) * deltaDistance;
+		// Distance from origin to normal. Is the distance in the sinogram
+		const double currentDistance = distanceRange / 2. - ( static_cast<double>( nDistance ) / 2. - static_cast<double>( currentIndex ) - 1 ) * deltaDistance;
 															
 		// Point which lies on the current normal and has the correct distance from the origin_ 
-		const Point3D normalPoint = Vector3D{ normalLot } *currentDistance;
+		const Point3D normalPoint = Vector3D{ normalLot } * currentDistance;
 
 		// The current normal 
 		const Line currentNormal{ currentNormalVector, normalPoint };
@@ -80,10 +80,10 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 		// "Middle" normal
 		if( currentIndex == 0 ){
 			// This is the starting point
-			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
+			currentPixelOrigin = currentNormal.GetPoint( detector_focus_distance );
 
 			// First pixel size so that the neighbooring pixel intersects at half angle
-			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
+			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detector_focus_distance + currentDistance / tan( deltaTheta / 2. ) );
 
 		}
 		else{
@@ -120,30 +120,28 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const Pro
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
 
-		// Add mirrored when not middle pixel
-		if( currentIndex > 0 ){
+		// Mirror current normal around y-axis
+		const Line mirroredPixelNormal{
+			pixelNormal.direction().NegateXComponent(),
+			pixelNormal.origin().NegateXComponent()
+		};
 
-			// Mirror current normal around y-axis
-			const Line mirroredPixelNormal{
-				pixelNormal.direction().NegateXComponent(),
-				pixelNormal.origin().NegateXComponent()
-			};
+		// Add mirrored pixel
+		const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
+		pixel_array_.emplace_back(	BoundedSurface{ 
+								mirroredSurfaceVector,
+								rotationVector,
+								mirroredPixelNormal.origin(),
+								-currentPixelSize / 2,
+								currentPixelSize / 2,
+								-properties_.row_width / 2.,
+								properties_.row_width / 2. } );
 
-			// Add mirrored pixel
-			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
-			pixel_array_.emplace_back(	BoundedSurface{ 
-									mirroredSurfaceVector,
-									rotationVector,
-									mirroredPixelNormal.origin(),
-									-currentPixelSize / 2,
-									currentPixelSize / 2,
-									-properties_.row_width / 2.,
-									properties_.row_width / 2. } );
-		}
+		RadonCoordinates radon_coords { this->coordinate_system_, pixelNormal };
 
 	}
 
-	// After constructing converted poixel are identical to all
+	// After constructing converted poixel are identical
 	converted_pixel_array_ = pixel_array_;
 }
 

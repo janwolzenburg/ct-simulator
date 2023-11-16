@@ -124,6 +124,10 @@ class DataGrid{
 	*/
 	GridCoordinates GetCoordinates( const GridIndex index ) const;
 
+	double GetRowCoordinate( const size_t row_index ) const{ return row_points_.at( row_index ); };
+
+	double GetColCoordinate( const size_t col_index ) const{ return column_points_.at( col_index ); };
+
 	/*!
 	 * @brief Get element value
 	 * @param index Index of element
