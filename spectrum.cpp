@@ -73,7 +73,9 @@ EnergySpectrum EnergySpectrum::GetScaled( const double factor ) const {
 }
 
 double EnergySpectrum::GetTotal( void ) const{
+
 	return std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
+
 }
 
 void EnergySpectrum::UpdateMeanEnergy( void ){
@@ -96,7 +98,7 @@ void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distan
 	double k;
 
 	for( auto& data_point: data_ ){
-		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
+		k = voxel_data.GetAttenuationAtReferenceEnergy();//( data_point.x );
 		data_point.y *= exp( -k * distance );
 	}
 }

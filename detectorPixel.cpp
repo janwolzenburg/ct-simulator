@@ -36,11 +36,12 @@ double DetectorPixel::GetDetectedLineIntegral( void ) const{
 		//sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
 		//sum_of_start_intensity += currentRay.start_intensity();
 		double q_espec = currentRay.start_intensity() / currentRay.energy_spectrum_.GetTotal();
-		
+
+		double q_J = 1. / currentRay.J;
+
 		sum_of_end_intensity += currentRay.J;
 		sum_of_start_intensity += 1.;
 
-		double q_J = sum_of_start_intensity / sum_of_end_intensity;
 	}
 
 	// Check no rays were detected return -1
