@@ -384,6 +384,6 @@ void Fl_ModelView::UpdateModel( void ){
 }
 
 void Fl_ModelView::UpdateArtefactImpact( void ){
-	
+	properties_.artefact_impact = artefact_impact_.value();
 	VoxelData::SetArtefactImpactFactor( artefact_impact_.value() );	
 }
