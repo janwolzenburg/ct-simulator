@@ -33,8 +33,6 @@ class RayProperties{
 
 	public:
 
-	double J = 1.;
-
 	/*!
 	 * @brief Constructor
 	 * @param spectrum Ray spectrum
