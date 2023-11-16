@@ -115,7 +115,6 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 
 	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
 	processing_windows_.push_back( std::move( ptr ) );
-	processing_windows_.back()->show();
 }
 
 
@@ -125,7 +124,7 @@ void Fl_TomographyExecution::UpdateProperties( void ){
 
 void Fl_TomographyExecution::DoTomography( void ){
 
-		parent()->deactivate();
+		main_window_.deactivate();
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 20, 5, "Radiation progress"};
 		
@@ -138,7 +137,7 @@ void Fl_TomographyExecution::DoTomography( void ){
 			delete radiationProgressWindow;
 		}
 
-		parent()->activate();
+		main_window_.activate();
 }
 
 void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube ){

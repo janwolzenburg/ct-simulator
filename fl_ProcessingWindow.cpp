@@ -73,6 +73,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	filtered_projections_image_.ResetBounds();
 	reconstructed_image_.ResetBounds();
 
+	
+	this->show();
 	ReconstructImage();
 }
 

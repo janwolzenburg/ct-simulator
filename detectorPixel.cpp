@@ -31,10 +31,8 @@ double DetectorPixel::GetDetectedLineIntegral( void ) const{
 
 	// Iterate all detected Ray properties
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
-		//sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
-		//sum_of_start_intensity += currentRay.start_intensity();
-		sum_of_end_intensity += currentRay.J;
-		sum_of_start_intensity += 1.;
+		sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
+		sum_of_start_intensity += currentRay.start_intensity();
 	}
 
 	// Check no rays were detected return -1

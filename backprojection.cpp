@@ -74,7 +74,7 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 		}
 
 		progressMutex.lock();
-		Fl::check();
+		Fl::check(); 
 		progressMutex.unlock();
 	}
 
