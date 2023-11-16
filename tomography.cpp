@@ -72,7 +72,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 
 	// Assign gantry csys-data to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
-	this->radon_coordinate_system_->Rotate( this->radon_coordinate_system_->GetEz(), radon_properties.angles_resolution() / 2. );
+	//this->radon_coordinate_system_->Rotate( this->radon_coordinate_system_->GetEz(), radon_properties.angles_resolution() / 2. );
 
 	// Create sinogram 
 	Projections sinogram{ radon_properties };

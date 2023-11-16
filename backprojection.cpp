@@ -50,7 +50,7 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 			progressMutex.unlock();
 		}
 		
-		const double angle = static_cast<double>( angle_index ) * angle_resolution;			// Current angle value
+		const double angle = static_cast<double>( angle_index ) * angle_resolution + angle_resolution / 2.;			// Current angle value
 		const double cos_angle = cos( angle );
 		const double sin_angle = sin( angle );
 
