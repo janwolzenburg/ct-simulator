@@ -57,8 +57,6 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 		scattering_angle_distributions_.emplace_back( currentEnergy, PropabilityDistribution{ pseudoDistribution, max_number_of_bins } );
 
 
-		//distributions.emplace_back( pseudoDistribution, 256 );
-		//energies.push_back( currentEnergy );
 	}
 
 
