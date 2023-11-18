@@ -1,6 +1,6 @@
 
 ToDO: Scattering ray attenuation
-
+TODO: Tube efficiancy - does every ray "get out"
 
 TODO: conversion to HU
 

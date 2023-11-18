@@ -98,10 +98,14 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt ) * ( -bremsGradient );
 	}
 
+	double complete_power = 0.;
+	for( size_t energy_index = 0; energy_index < energy_spectrum.first.size(); energy_index++ ){
 
-	// Calculate correction factor for spectrum for its values to sum up to totalPower
-	double currentSum = Sum( energy_spectrum.second );
-	double correctionFactor = radiation_power_W_ / currentSum;
+		complete_power += energy_spectrum.first.at( energy_index ) * energy_spectrum.second.at( energy_index );
+
+	}
+
+	double correctionFactor = radiation_power_W_ / complete_power;
 
 	// Correct values for sums to match
 	Scale( energy_spectrum.second, correctionFactor );
@@ -142,7 +146,7 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
 
 	// Split spectrum into the Ray spectra
-	const EnergySpectrum raySpectrum = emitted_spectrum_.GetScaled( 1. / static_cast<double>( numRays ) );
+	const EnergySpectrum raySpectrum = emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( numRays ) );
 
 	// Vector with rays
 	vector<Ray> rays;

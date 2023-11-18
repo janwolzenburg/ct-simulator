@@ -41,14 +41,14 @@ class RayProperties{
 	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
 	*/
 	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0 ) :
-		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotal() ), expected_detector_pixel_index_( expected_pixel_index ),
+		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
 		simple_intensity_( 1. ){};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotal() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ) {};
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ) {};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
@@ -78,7 +78,7 @@ class RayProperties{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void ScaleSpectrum( const double factor ){ energy_spectrum_.Scale( factor ); };
+	void ScaleSpectrumEvenly( const double factor ){ energy_spectrum_.ScaleEvenly( factor ); };
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
@@ -144,7 +144,7 @@ class Ray : public Line{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void ScaleSpectrum( const double factor ){ properties_.energy_spectrum_.Scale( factor ); };
+	void ScaleSpectrumEvenly( const double factor ){ properties_.energy_spectrum_.ScaleEvenly( factor ); };
 
 	/*!
 	 * @brief Get the mean energy of spectrum

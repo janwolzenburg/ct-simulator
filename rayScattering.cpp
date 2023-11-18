@@ -93,7 +93,7 @@ bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double
 	const double relative_energy_loss = energy_after_scatter / ray_energy_eV;
 
 	// Scale spectrum according to energy loss
-	r.ScaleSpectrum( relative_energy_loss );
+	r.ScaleSpectrumEvenly( relative_energy_loss );
 
 	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
 	r.SetOrigin( newOrigin );

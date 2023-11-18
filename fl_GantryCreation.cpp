@@ -102,7 +102,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 
 		tube_group_.add( spectrum_plot_ );
-		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "N_P in s^-1 * keV^-1", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -202,7 +202,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
 		for( auto& spectrum_value : spectrum_points.second ){
-			spectrum_value /= tubeRef.GetSpectralEnergyResolution();		// "Convert" to integral to match power
+			spectrum_value /= tubeRef.GetSpectralEnergyResolution() / 1000.;		// "Convert" to integral to match power
 		}
 
 		spectrum_plot_.plot().AssignData( spectrum_points );
