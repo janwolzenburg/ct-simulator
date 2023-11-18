@@ -24,23 +24,21 @@
 	DetectorPixel implementation
 */
 
-double DetectorPixel::GetDetectedLineIntegral( void ) const{
+double DetectorPixel::GetDetectedLineIntegral( const bool use_simple_attenuation ) const{
 
 	double sum_of_start_intensity = 0.;
 	double sum_of_end_intensity = 0.;
-
+	double sum_of_simple_end_intensity = 0.;
+	double sum_of_simple_start_intensity = 0.;
 
 
 	// Iterate all detected Ray properties
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
-		//sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
-		//sum_of_start_intensity += currentRay.start_intensity();
-		double q_espec = currentRay.start_intensity() / currentRay.energy_spectrum_.GetTotal();
+		sum_of_end_intensity += currentRay.energy_spectrum_.GetTotal();
+		sum_of_start_intensity += currentRay.start_intensity();
 
-		double q_J = 1. / currentRay.J;
-
-		sum_of_end_intensity += currentRay.J;
-		sum_of_start_intensity += 1.;
+		sum_of_simple_end_intensity += currentRay.J;
+		sum_of_simple_start_intensity += 1.;
 
 	}
 
@@ -50,9 +48,10 @@ double DetectorPixel::GetDetectedLineIntegral( void ) const{
 	}
 
 	// Calculate line inegral
-	const double line_integral = log( sum_of_start_intensity / sum_of_end_intensity );
+	const double line_integral_spectrum = log( sum_of_start_intensity / sum_of_end_intensity );
+	const double line_integral_simple= log( sum_of_simple_start_intensity / sum_of_simple_end_intensity );
 
-	return line_integral;
+	return !use_simple_attenuation ? line_integral_spectrum : line_integral_simple;
 }
 
 DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{

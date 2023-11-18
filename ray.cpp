@@ -24,7 +24,7 @@
 
 void RayProperties::AttenuateSpectrum( const VoxelData& voxelData, const double distance ){
 	energy_spectrum_.Attenuate( voxelData, distance );
-	J *= exp( -voxelData.GetAttenuationAtReferenceEnergy() * distance );
+	simple_intensity_ *= exp( -voxelData.GetAttenuationAtReferenceEnergy() * distance );
 }
 
 

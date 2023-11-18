@@ -1,5 +1,7 @@
 
-TODO: make artefact thregth adsustable
+ToDO: Scattering ray attenuation
+
+
 TODO: conversion to HU
 
 TODO: verify scattering angles and propability

@@ -75,6 +75,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	Fl_Simple_Counter maximum_scatterings_input_;	/*!< Maximum amount a Ray can be scattered*/
 	Fl_Counter scattering_propability_factor_input_;/*!< Scatter propability*/
 	Fl_Toggle_Button disable_scattering_button_;	/*!< Toggle scattering*/
+	Fl_Toggle_Button use_simple_attenuation_button_;/*!< Simple or "real" attenuation*/
 
 	Fl_Multiline_Output information_;				/*!< Information about tomography*/
 	
