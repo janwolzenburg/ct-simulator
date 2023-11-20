@@ -77,8 +77,7 @@ double EnergySpectrum::GetSum( void ) const{
 	return std::accumulate( photonflow_per_energy_.cbegin(), photonflow_per_energy_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
 }
 
-double EnergySpectrum::GetTotalPower( void ) const{
-
+double EnergySpectrum::GetTotalPowerIn_eVPerSecond( void ) const{
 	return std::accumulate( photonflow_per_energy_.cbegin(), photonflow_per_energy_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );;
 
 }
@@ -86,7 +85,7 @@ double EnergySpectrum::GetTotalPower( void ) const{
 void EnergySpectrum::UpdateMeanEnergy( void ){
 
 	// Get the sum of products. In principle an "expected value"
-	const double expectedValue = GetTotalPower();
+	const double expectedValue = GetTotalPowerIn_eVPerSecond();
 
 	mean_energy_ = expectedValue / GetSum();	
 	mean_energy_valid_ = true;

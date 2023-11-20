@@ -91,7 +91,7 @@ class RayProperties{
 
 	EnergySpectrum energy_spectrum_;		/*!< Energy spectrum*/
 	size_t voxel_hits_;						/*!< Counter for voxels hit during transmission*/
-	double initial_power_;					/*!< Intensity before radiation*/
+	double initial_power_;					/*!< Intensity before radiation in watts*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
 	double simple_intensity_;				/*!< Current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
 

@@ -127,6 +127,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.value( properties_.slice_plane.rotation_angle_y );
 	z_position_.value( properties_.slice_plane.position_z );
 	artefact_impact_.value( properties_.artefact_impact );
+	VoxelData::SetArtefactImpactFactor( artefact_impact_.value() );	
 
 	// Hide initially
 	model_movement_group_.hide();

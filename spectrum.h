@@ -60,6 +60,10 @@ class EnergySpectrum {
 	*/
 	double mean_energy( void );
 
+	/*!
+	 * @brief Get sum of photons per second
+	 * @return Photons per second
+	*/
 	double GetSum( void ) const;
 
 	/*!
@@ -68,9 +72,18 @@ class EnergySpectrum {
 	 * @return Scaled spectrum
 	*/
 	EnergySpectrum GetEvenlyScaled( const double factor ) const;
-
 	
-	double GetTotalPower( void ) const;
+	/*!
+	 * @brief Get total power in eV per second. Sum of photonflow multiplied with the energy
+	 * @return Total power in seconds
+	*/
+	double GetTotalPowerIn_eVPerSecond( void ) const;
+
+	/*!
+	 * @brief Get total power in watt 
+	 * @return Total Power in watt
+	*/
+	double GetTotalPower( void ) const{ return GetTotalPowerIn_eVPerSecond() * J_Per_eV; };
 
 	/*!
 	 * @brief Get minimum energy

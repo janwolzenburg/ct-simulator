@@ -82,7 +82,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 {
 
 	// 
-	VectorPair energy_spectrum{ CreateLinearSpace( 1000., max_photon_energy_eV_, number_of_points_in_spectrum_), 
+	VectorPair energy_spectrum{ CreateLinearSpace( 1., max_photon_energy_eV_, number_of_points_in_spectrum_), 
 								vector<double>( number_of_points_in_spectrum_, 0. ) };
 
 
@@ -105,7 +105,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 	}
 
-	double correctionFactor = radiation_power_W_ / complete_power;
+	double correctionFactor = radiation_power_W_ / complete_power / J_Per_eV;
 
 	// Correct values for sums to match
 	Scale( energy_spectrum.second, correctionFactor );
