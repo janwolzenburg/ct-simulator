@@ -49,6 +49,8 @@ constexpr double mu_bone = mu_water * 2.;
 constexpr double mu_lung = mu_water * 0.8;
 constexpr double mu_iron = 0.156;
 
+constexpr double change_energy_for_constant_mu = 60e3;
+
 constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
 
 constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Conversion factor from cross section to attenuation coefficiant for water in 1 / mm^3*/
