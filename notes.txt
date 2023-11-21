@@ -1,6 +1,8 @@
+- Export filtered projections, Reconstructed image
+- Filter adjustable
 
-ToDO: Scattering ray attenuation
-TODO: Tube efficiancy - does every ray "get out"
+
+TODO: Scattering ray attenuation
 
 TODO: conversion to HU
 
@@ -12,4 +14,4 @@ TODO: Check file Heads
 
 Precomputation for presentation
 Model creation
-DICOM converter
+//DICOM converter

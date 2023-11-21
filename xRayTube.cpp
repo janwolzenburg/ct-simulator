@@ -28,7 +28,7 @@
 	tubeParameter
 */
 
-const string XRayTubeProperties::FILE_PREAMBLE{ "TUBEPARAMETER_FILE_PREAMBLE" };
+const string XRayTubeProperties::FILE_PREAMBLE{ "Ver01TUBEPARAMETER_FILE_PREAMBLE" };
 
 
 const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTubeProperties::materials{
@@ -42,7 +42,9 @@ XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<
 	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, it ) ),
 	anode_material( (Material) DeSerializeBuildIn<>( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
 	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
-	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) )
+	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) ),
+	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, it ) ),
+	filter_strength( DeSerializeBuildIn<double>( 10., binary_data, it ) )
 {}
 
 
@@ -64,6 +66,8 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ToUnderlying( anode_material ), binary_data );
 	num_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
 	num_bytes += SerializeBuildIn<bool>( has_filter_, binary_data );
+	num_bytes += SerializeBuildIn<double>( filter_cut_of_energy, binary_data );
+	num_bytes += SerializeBuildIn<double>( filter_strength, binary_data );
 
 	return num_bytes;
 }
@@ -112,22 +116,22 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 	if( properties_.has_filter_ ){
 		// Frequency to which the filter dominates spectral behavious
-		double changeEnergy = al_filter_cut_off_energy_eV +  ( energy_spectrum.first.back() - al_filter_cut_off_energy_eV ) / ( 1. -  al_filter_gradient_factor );
+		double changeEnergy = properties_.filter_cut_of_energy +  ( energy_spectrum.first.back() - properties_.filter_cut_of_energy ) / ( 1. +  properties_.filter_strength );
 
 		for ( auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++ ) {
 			
 			const size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
 			
-			if( *energyIt <= al_filter_cut_off_energy_eV ){
+			if( *energyIt <= properties_.filter_cut_of_energy ){
 				energy_spectrum.second.at( curIdx ) = 0.;
 				continue;
 			}
 
-			const double filterGradient = al_filter_gradient_factor * bremsGradient * correctionFactor;		// Gradient of filter spectrum
+			const double filterGradient = -properties_.filter_strength * bremsGradient * correctionFactor;		// Gradient of filter spectrum
 
 			// Filter dominates
 			if ( *energyIt < changeEnergy ) {
-				energy_spectrum.second.at( curIdx ) = ( *energyIt - al_filter_cut_off_energy_eV ) * filterGradient;
+				energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy ) * filterGradient;
 			}
 		}
 	}
