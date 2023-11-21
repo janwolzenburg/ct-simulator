@@ -27,7 +27,8 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	image_widget_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ), H( *this, .83 ), "Image" },
 	lower_bound_{			X( *this, 0.1 ),	Y( *this, 0.84 ),	W( *this, .6 ), H( *this, .075 ), "Low" },
 	upper_bound_{			X( *this, 0.1 ),	Y( *this, 0.925),	W( *this, .6 ), H( *this, .075 ), "High" },
-	current_value_text_{	X( *this, 0.7 ),	Y( *this, 0.84 ),	W( *this, .2 ), H( *this, .15 ), "" },
+	current_value_text_{	X( *this, 0.7 ),	Y( *this, 0.84 ),	W( *this, .2 ), H( *this, .1 ), "" },
+	current_value_tip_{		X( *this, 0.7 ),	Y( *this, 0.94 ),	W( *this, .2 ), H( *this, .05 ), "" },
 	common_factor_text_{	X( *this, 0.9 ),	Y( *this, 0.84 ),	W( *this, .1 ), H( *this, .15 ), "" },
 	common_power_( 0 ),
 	bounds_set_( false ),
@@ -40,6 +41,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	
 	Fl_Group::add( current_value_text_ );
 	Fl_Group::add( common_factor_text_ );
+	Fl_Group::add( current_value_tip_ );
 
 	lower_bound_.type( FL_HOR_NICE_SLIDER  );
 	upper_bound_.type( FL_HOR_NICE_SLIDER  );
@@ -51,6 +53,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	upper_bound_.align( FL_ALIGN_LEFT );
 	current_value_text_.align( FL_ALIGN_CENTER );
 	common_factor_text_.align( FL_ALIGN_CENTER );
+	current_value_tip_.align( FL_ALIGN_CENTER );
 
 	lower_bound_.precision( 0 );
 	upper_bound_.precision( 0 );
@@ -60,8 +63,10 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	
 	current_value_text_.type( FL_NO_BOX );
 	common_factor_text_.type( FL_NO_BOX );
+	current_value_tip_.type( FL_NO_BOX );
 	
 	current_value_text_.labelsize( 20 );
+	current_value_tip_.labelsize( 13 );
 
 	this->hide();
 
@@ -242,9 +247,9 @@ void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widgetPtr, void*
 
 
 
-void Fl_AdjustableGrayscaleImage::SetValueTooltip( const string tooltip_text ){
+void Fl_AdjustableGrayscaleImage::SetValueTip( const string tooltip_text ){
 
 
-	current_value_text_.copy_tooltip( tooltip_text.c_str() );
+	current_value_tip_.copy_label( tooltip_text.c_str() );
 
 }

@@ -103,7 +103,7 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	 * @brief Set the tooltip text for the value
 	 * @param tooltip_text new text
 	*/
-	void SetValueTooltip( const string tooltip_text );
+	void SetValueTip( const string tooltip_text );
 
 	private:
 
@@ -112,6 +112,7 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	Fl_Hor_Value_Slider upper_bound_;	/*!< High bound*/
 			
 	Fl_Box current_value_text_;			/*!< Output for common factor*/
+	Fl_Box current_value_tip_;			/*!< Output for common factor*/
 	Fl_Box common_factor_text_;			/*!< Output for common factor*/
 
 	int common_power_;					/*!< Common power of ten*/
