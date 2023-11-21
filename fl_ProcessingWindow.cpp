@@ -118,14 +118,17 @@ void Fl_ProcessingWindow::ReconstructImage( void ){
 
 	DataGrid<> raw_image_data = backprojection_.getGrid();
 	
-	for( size_t column_index = 0; column_index < raw_image_data.size().c; column_index++ ){
-		for( size_t row_index = 0; row_index < raw_image_data.size().r; row_index++ ){
-		
-			raw_image_data.SetData( GridIndex{ column_index, row_index }, 
-							VoxelData::GetAttenuationAtReferenceEnergy( 
-								raw_image_data.GetData( GridIndex{ column_index, row_index } ), 
-								projections_.properties().tube_mean_energy() ) );
+	if( projections_.properties().tube_mean_energy() >= 0 ){
 
+		for( size_t column_index = 0; column_index < raw_image_data.size().c; column_index++ ){
+			for( size_t row_index = 0; row_index < raw_image_data.size().r; row_index++ ){
+		
+				raw_image_data.SetData( GridIndex{ column_index, row_index }, 
+								VoxelData::GetAttenuationAtReferenceEnergy( 
+									raw_image_data.GetData( GridIndex{ column_index, row_index } ), 
+									projections_.properties().tube_mean_energy() ) );
+
+			}
 		}
 	}
 

@@ -117,6 +117,11 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 
 void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	projections_ = projections;
+
+	if( tomography_properties_.use_simple_attenuation ){
+		projections_.tube_mean_energy( -1. );
+	}
+
 	export_projections_button_.activate();
 
 	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );

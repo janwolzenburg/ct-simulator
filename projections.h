@@ -78,6 +78,9 @@ class Projections : private DataGrid<> {
 	*/
 	void AssignData( const RadonPoint radon_point );
 
+	double tube_mean_energy( void ) const{ return properties_.tube_mean_energy(); };
+
+	double tube_mean_energy( const double energy ){ return properties_.tube_mean_energy( energy ); };
 
 	private:
 

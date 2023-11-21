@@ -98,7 +98,7 @@ class ProjectionsProperties{
 
 	double tube_mean_energy( void ) const{ return tube_mean_energy_; };
 
-	double tube_mean_energy( const double energy ){ return tube_mean_energy_ = ForceToMin( energy, 1. ); };
+	double tube_mean_energy( const double energy ){ return tube_mean_energy_ = energy ; };
 
 
 	private:
