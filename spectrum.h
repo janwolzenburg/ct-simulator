@@ -46,7 +46,7 @@ class EnergySpectrum {
 	 * @brief Get raw data
 	 * @return Vector of points
 	*/
-	vector<Tuple2D> data( void ) const{ return data_; };
+	vector<Tuple2D> data( void ) const{ return photonflow_per_energy_; };
 
 	/*!
 	 * @brief Get the energy resolution
@@ -61,29 +61,41 @@ class EnergySpectrum {
 	double mean_energy( void );
 
 	/*!
+	 * @brief Get sum of photons per second
+	 * @return Photons per second
+	*/
+	double GetSum( void ) const;
+
+	/*!
 	 * @brief Get scaled version of this spectrum
 	 * @param factor Scaling factor
 	 * @return Scaled spectrum
 	*/
-	EnergySpectrum GetScaled( const double factor ) const;
+	EnergySpectrum GetEvenlyScaled( const double factor ) const;
+	
+	/*!
+	 * @brief Get total power in eV per second. Sum of photonflow multiplied with the energy
+	 * @return Total power in seconds
+	*/
+	double GetTotalPowerIn_eVPerSecond( void ) const;
 
 	/*!
-	 * @brief Get sum of all magintudes
-	 * @return Sum of all magintudes
+	 * @brief Get total power in watt 
+	 * @return Total Power in watt
 	*/
-	double GetTotal( void ) const;
+	double GetTotalPower( void ) const{ return GetTotalPowerIn_eVPerSecond() * J_Per_eV; };
 
 	/*!
 	 * @brief Get minimum energy
 	 * @return Minimum energy
 	*/
-	double GetMinEnergy( void ) const{ return data_.front().x; };
+	double GetMinEnergy( void ) const{ return photonflow_per_energy_.front().x; };
 
 	/*!
 	 * @brief Get maximum energy
 	 * @return Maximum energy
 	*/
-	double GetMaxEnergy( void ) const{ return data_.back().x; };
+	double GetMaxEnergy( void ) const{ return photonflow_per_energy_.back().x; };
 
 	/*!
 	 * @brief Modify spectrum
@@ -99,15 +111,15 @@ class EnergySpectrum {
 	void Attenuate( const VoxelData& voxel_data, const double distance );
 
 	/*!
-	 * @brief Scale this spectrum
+	 * @brief Scale this spectrum energy indipendent
 	 * @param factor Scalar
 	*/
-	void Scale( const double factor );
+	void ScaleEvenly( const double factor );
 
 
 	private:
 
-	vector<Tuple2D> data_;		/*!< 2D data sorted by energy*/
+	vector<Tuple2D> photonflow_per_energy_;		/*!< 2D data sorted by energy. x is energy. y is the number of photons per second with energy in the interval dE */
 	double energy_resolution_;	/*!< Resolution of energies in spectrum*/
 	double mean_energy_;		/*!< Mean energy of spectrum*/
 	bool mean_energy_valid_;	/*!< Flag to track whether mean energy is valid*/

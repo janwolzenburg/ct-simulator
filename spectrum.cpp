@@ -26,17 +26,17 @@ using std::for_each;
 *********************************************************************/
 
 EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
-	data_( ConvertToTuple( energy_quantaties ) ),
+	photonflow_per_energy_( ConvertToTuple( energy_quantaties ) ),
 	mean_energy_valid_( false )
 {
 
 	// Sort data by x value
-	sort( data_.begin(), data_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
+	sort( photonflow_per_energy_.begin(), photonflow_per_energy_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
-	energy_resolution_ = data_.at( 1 ).x - data_.at( 0 ).x;
+	energy_resolution_ = photonflow_per_energy_.at( 1 ).x - photonflow_per_energy_.at( 0 ).x;
 
 	// Check consistency of energy
-	for( auto dataIt = data_.cbegin() + 1; dataIt < data_.cend(); dataIt++ ){
+	for( auto dataIt = photonflow_per_energy_.cbegin() + 1; dataIt < photonflow_per_energy_.cend(); dataIt++ ){
 
 		double diff = dataIt->x - ( dataIt - 1 )->x;
 
@@ -57,36 +57,42 @@ double EnergySpectrum::mean_energy( void ){
 	return mean_energy_;
 }
 
-void EnergySpectrum::Scale( const double factor ){
+void EnergySpectrum::ScaleEvenly( const double factor ){
 
-	for_each( data_.begin(), data_.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
+	for_each( photonflow_per_energy_.begin(), photonflow_per_energy_.end(), [ & ] ( Tuple2D& v ) { v.y *= factor; } );
 	UpdateMeanEnergy();
 }
 
-EnergySpectrum EnergySpectrum::GetScaled( const double factor ) const {
+EnergySpectrum EnergySpectrum::GetEvenlyScaled( const double factor ) const {
 
 	EnergySpectrum scaledSpectrum{ *this };
-	scaledSpectrum.Scale( factor );
+	scaledSpectrum.ScaleEvenly( factor );
 
 	return scaledSpectrum;
 
 }
 
-double EnergySpectrum::GetTotal( void ) const{
-	return std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
+
+double EnergySpectrum::GetSum( void ) const{
+	return std::accumulate( photonflow_per_energy_.cbegin(), photonflow_per_energy_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ) { return currentSum + currentValue.y; });
+}
+
+double EnergySpectrum::GetTotalPowerIn_eVPerSecond( void ) const{
+	return std::accumulate( photonflow_per_energy_.cbegin(), photonflow_per_energy_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );;
+
 }
 
 void EnergySpectrum::UpdateMeanEnergy( void ){
 
 	// Get the sum of products. In principle an "expected value"
-	const double expectedValue = std::accumulate( data_.cbegin(), data_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );
+	const double expectedValue = GetTotalPowerIn_eVPerSecond();
 
-	mean_energy_ = expectedValue / GetTotal();	
+	mean_energy_ = expectedValue / GetSum();	
 	mean_energy_valid_ = true;
 }
 
 void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
-	for( Tuple2D& v : data_ ){
+	for( Tuple2D& v : photonflow_per_energy_ ){
 		modFunction( v );
 	}
 }
@@ -95,7 +101,7 @@ void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distan
 	
 	double k;
 
-	for( auto& data_point: data_ ){
+	for( auto& data_point: photonflow_per_energy_ ){
 		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
 		data_point.y *= exp( -k * distance );
 	}

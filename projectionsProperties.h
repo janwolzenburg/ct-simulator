@@ -96,6 +96,10 @@ class ProjectionsProperties{
 	*/
 	size_t number_of_frames_to_fill( void ) const{ return number_of_frames_to_fill_; };
 
+	double tube_mean_energy( void ) const{ return tube_mean_energy_; };
+
+	double tube_mean_energy( const double energy ){ return tube_mean_energy_ = ForceToMin( energy, 1. ); };
+
 
 	private:
 
@@ -106,4 +110,6 @@ class ProjectionsProperties{
 	double angles_resolution_;				/*!< Angle resolution*/
 	double distances_resolution_;			/*!< Distance resolution*/
 	size_t number_of_frames_to_fill_;		/*!< Amount of frames to fill sinogram*/
+
+	double tube_mean_energy_;				/*!< Mean energy of tube*/
 };

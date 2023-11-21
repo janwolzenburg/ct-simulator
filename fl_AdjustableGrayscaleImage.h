@@ -52,19 +52,21 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	bool image_assigned( void ) const{ return image_widget_.image_assigned(); };
 
 	/*!
-	 * @brief 
-	 * @param  
-	 * @return 
+	 * @brief Check if contrast changed and unset the flag
+	 * @return True when contrast changed
 	*/
 	bool DidContrastChange( void ){ return UnsetFlag( contrast_changed_ );  };
 
 	/*!
-	 * @brief 
+	 * @brief Reset slider bounds
 	*/
 	void ResetBounds( void ){ bounds_set_ = false; };
 
-	
-
+	/*!
+	 * @brief Handle FLTK events
+	 * @param event Eventnumber
+	 * @return 1 if handled, 0 otheriwse
+	*/
 	int handle( int event );
 
 	/*!
@@ -97,20 +99,26 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	*/
 	void SetSliderBoundsFromImage( void );
 
-	
+	/*!
+	 * @brief Set the tooltip text for the value
+	 * @param tooltip_text new text
+	*/
+	void SetValueTip( const string tooltip_text );
 
 	private:
-
 
 	Fl_GrayscaleImage image_widget_;	/*!< The image widget*/
 	Fl_Hor_Value_Slider lower_bound_;	/*!< Low bound*/
 	Fl_Hor_Value_Slider upper_bound_;	/*!< High bound*/
 			
 	Fl_Box current_value_text_;			/*!< Output for common factor*/
+	Fl_Box current_value_tip_;			/*!< Output for common factor*/
 	Fl_Box common_factor_text_;			/*!< Output for common factor*/
+
 	int common_power_;					/*!< Common power of ten*/
 	bool bounds_set_;					/*!< Flag indicating whether the bounds were set before*/
 	bool contrast_changed_;				/*!< Flag indicating constrast change*/
+
 
 	/*!
 	 * @brief Callback for value change

@@ -40,7 +40,9 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 	voltage_input_{			X( tube_group_, .0 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Voltage" },
 	current_input_{			X( tube_group_, .25 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Current" },
 	anode_material_input_{	X( tube_group_, .5 ),	Y( tube_group_, .15 ),	W( tube_group_, .5 ),	H( tube_group_, .075 ),	"Material" },
-	toggle_filter_button_{  X( tube_group_, .33 ),	Y( tube_group_, .25 ),	W( tube_group_, .33 ),	H( tube_group_, .075 ),	"Al-Filter" },
+	toggle_filter_button_{  X( tube_group_, .0 ),	Y( tube_group_, .25 ),	W( tube_group_, .175 ),	H( tube_group_, .075 ),	"Filter" },
+	filter_cutoff_input{	X( tube_group_, .4 ),	Y( tube_group_, .25 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Cut-Off-Energy" },
+	filter_gradient_input{  X( tube_group_, .9 ),	Y( tube_group_, .25 ),	W( tube_group_, .1 ),	H( tube_group_, .075 ),	"Gradient" },
 	spectrum_plot_{			X( tube_group_, .0 ),	Y( tube_group_, .35 ),	W( tube_group_, 1. ),	H( tube_group_, .65 ),	"Spectrum Plot" },
 
 	detector_group_{	X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
@@ -68,7 +70,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 		tube_group_.add( tube_title_ );
 		tube_group_.add( voltage_input_ ); tube_group_.add( current_input_ ); tube_group_.add( anode_material_input_ );
-		tube_group_.add( toggle_filter_button_ );
+		tube_group_.add( toggle_filter_button_ ); tube_group_.add( filter_cutoff_input ); tube_group_.add( filter_gradient_input );
 
 		tube_title_.box( FL_NO_BOX ); tube_title_.align( FL_ALIGN_CENTER ); tube_title_.labelsize( 20 );
 
@@ -77,15 +79,23 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		voltage_input_.SetProperties( 20000., 200000., 0 );
 		current_input_.SetProperties( .001, 10., 3 );
 
+		filter_cutoff_input.SetProperties( 0., 120000., 0 );
+		filter_gradient_input.SetProperties( .1, 10., 1 );
+
 		voltage_input_.value( tube_properties_.anode_voltage_V );
 		current_input_.value( tube_properties_.anode_current_A );
 		toggle_filter_button_.value( static_cast<int>( tube_properties_.has_filter_ ) );
+		filter_cutoff_input.value( tube_properties_.filter_cut_of_energy );
+		filter_gradient_input.value( tube_properties_.filter_gradient );
 
 		voltage_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		current_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		anode_material_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		toggle_filter_button_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
-				
+		filter_cutoff_input.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
+		filter_gradient_input.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
+					
+		
 		toggle_filter_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 		vector<string> materialNames;
@@ -99,10 +109,12 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		voltage_input_.tooltip( "Voltage in Volts." );
 		current_input_.tooltip( "Current in Ampere." );
 		anode_material_input_.tooltip( "Anode material." );
-
+		
+		filter_cutoff_input.tooltip( "Energy under which the filter dominates the spectrum. In eV." );
+		filter_gradient_input.tooltip( "Gradient of filter." );
 
 		tube_group_.add( spectrum_plot_ );
-		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "Spec. Pow. in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
+		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "N_P/sec * E in W/keV", PlotLimits{ false, true, NumberRange{ 1., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
 
 
 		//-----------------------------
@@ -181,10 +193,14 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 		
 		detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 10000., 0 );
-		tube_properties_ = XRayTubeProperties{ voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anode_material_input_.current_element() ), static_cast<size_t>( number_of_rays_per_pixel_input_.value() ), static_cast<bool>( toggle_filter_button_.value() ) };
+		tube_properties_ = XRayTubeProperties{	voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anode_material_input_.current_element() ), 
+												static_cast<size_t>( number_of_rays_per_pixel_input_.value() ), static_cast<bool>( toggle_filter_button_.value() ),
+												filter_cutoff_input.value(), filter_gradient_input.value() };
 	
 
 		projections_properties_ = ProjectionsProperties{ number_of_angles_input_.value(), number_of_distances_input_.value(), distance_range_input_.value() };
+		projections_properties_.tube_mean_energy( gantry_.tube().GetMeanEnergy() );
+		
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input_.value(), static_cast<bool>( scattering_structure_input_.value() ), maximum_ray_angle_input_.value() / 360. * 2. * PI };
 		
 
@@ -201,8 +217,10 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		const XRayDetector detectorRef = gantry_.detector();
 
 		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
-		for( auto& spectrum_value : spectrum_points.second ){
-			spectrum_value /= tubeRef.GetSpectralEnergyResolution();		// "Convert" to integral to match power
+		//for( auto& spectrum_value : spectrum_points.second ){
+		for( size_t energy_index = 0; energy_index < spectrum_points.first.size(); energy_index++ ){
+			spectrum_points.second.at( energy_index ) *= spectrum_points.first.at( energy_index )  / tubeRef.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
+			//spectrum_points.second.at( energy_index ) *= 1.  / tubeRef.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
 		}
 
 		spectrum_plot_.plot().AssignData( spectrum_points );

@@ -41,10 +41,10 @@ double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
 
 	// iron attenuation is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return  artefact_impact_factor_ * mu_iron * pow( reference_energy_for_mu_eV / energy, 3. );
+		return artefact_impact_factor_ * mu_iron * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 	}
 
-	return attenuation_ * pow( reference_energy_for_mu_eV / energy, 3. );
+	return attenuation_ * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 
 }
 
@@ -62,9 +62,9 @@ size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	return num_bytes;
 }
 
-double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const{
+double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ){
 
-	return attenuationAtEnergy * pow( energy / reference_energy_for_mu_eV, 3. );
+	return attenuationAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. );
 	
 }
 

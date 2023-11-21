@@ -116,7 +116,7 @@ bool test_modelTransmission( void ){
 	closeAxis( ax1 );
 
 
-	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05 } );
+	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05, true } );
 	vector<DetectorPixel> detectorPixel = testGantry.pixel_array();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });
@@ -126,7 +126,7 @@ bool test_modelTransmission( void ){
 	for( size_t i = 0; i < detectorPixel.size(); i++ ){	
 		primitiveDetectionResult.at( i ).x = static_cast<double>( i );
 		for( RayProperties currentProperties : detectorPixel.at( i ).detected_ray_properties() ){
-			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().GetTotal();
+			primitiveDetectionResult.at( i ).y += currentProperties.energy_spectrum().GetTotalPower();
 		}
 	}	
 

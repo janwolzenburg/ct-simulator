@@ -1,5 +1,9 @@
+- Export filtered projections, Reconstructed image
+- Filter adjustable
 
-TODO: make artefact thregth adsustable
+
+TODO: Scattering ray attenuation
+
 TODO: conversion to HU
 
 TODO: verify scattering angles and propability
@@ -10,4 +14,4 @@ TODO: Check file Heads
 
 Precomputation for presentation
 Model creation
-DICOM converter
+//DICOM converter

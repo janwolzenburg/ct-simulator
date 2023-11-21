@@ -85,7 +85,7 @@ void Fl_ProcessingWindow::ReconstructImage( void ){
 
 	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
 
-	filtered_projections_ = FilteredProjections{ projections_, BackprojectionFilter::GetType( filter_type_selector_.current_element() ), processingProgressWindow };
+	filtered_projections_ = std::move( FilteredProjections{ projections_, BackprojectionFilter::GetType( filter_type_selector_.current_element() ), processingProgressWindow } );
 
 	if( filtered_projections_.filter().type() == BackprojectionFilter::TYPE::constant )
 		filter_plot_.hide();
@@ -97,12 +97,24 @@ void Fl_ProcessingWindow::ReconstructImage( void ){
 	filter_plot_.AssignData();
 	
 
-	filtered_projections_image_.AssignImage( GrayscaleImage{ filtered_projections_.data_grid(), true } );
+	filtered_projections_image_.AssignImage( std::move( GrayscaleImage{ filtered_projections_.data_grid(), true } ) );
 
-	backprojection_ = Backprojection{ filtered_projections_, processingProgressWindow };
+	backprojection_ = std::move( Backprojection{ filtered_projections_, processingProgressWindow } );
 
+	DataGrid<> raw_image_data = backprojection_.getGrid();
 	
-	reconstructed_image_.AssignImage( GrayscaleImage{ backprojection_.getGrid(), true } );
+	for( size_t column_index = 0; column_index < raw_image_data.size().c; column_index++ ){
+		for( size_t row_index = 0; row_index < raw_image_data.size().r; row_index++ ){
+		
+			raw_image_data.SetData( GridIndex{ column_index, row_index }, 
+							VoxelData::GetAttenuationAtReferenceEnergy( 
+								raw_image_data.GetData( GridIndex{ column_index, row_index } ), 
+								projections_.properties().tube_mean_energy() ) );
+
+		}
+	}
+
+	reconstructed_image_.AssignImage( std::move( GrayscaleImage{ std::move( raw_image_data ), true } ) );
 
 	delete processingProgressWindow;
 

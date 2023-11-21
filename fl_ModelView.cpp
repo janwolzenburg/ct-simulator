@@ -89,6 +89,8 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	// Labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
+	model_slice_image_.SetValueTip( "µ at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
+
 	// Hide image initially
 	model_inspection_group_.resizable( loading_status_ );
 	model_slice_image_.hide();
@@ -127,6 +129,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.value( properties_.slice_plane.rotation_angle_y );
 	z_position_.value( properties_.slice_plane.position_z );
 	artefact_impact_.value( properties_.artefact_impact );
+	VoxelData::SetArtefactImpactFactor( artefact_impact_.value() );	
 
 	// Hide initially
 	model_movement_group_.hide();
@@ -384,6 +387,6 @@ void Fl_ModelView::UpdateModel( void ){
 }
 
 void Fl_ModelView::UpdateArtefactImpact( void ){
-	
+	properties_.artefact_impact = artefact_impact_.value();
 	VoxelData::SetArtefactImpactFactor( artefact_impact_.value() );	
 }

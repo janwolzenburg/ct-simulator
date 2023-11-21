@@ -26,25 +26,28 @@
 *********************************************************************/
 
 
-const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver01" };
+const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver02" };
 
 TomographyProperties::TomographyProperties( void ) :
 	scattering_enabled( true ),
 	max_scattering_occurrences( default_max_radiation_loops ),
-	scatter_propability_correction( default_scatter_propability_correction )
+	scatter_propability_correction( default_scatter_propability_correction ),
+	use_simple_attenuation( true )
 
 {}
 
-TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_ ) :
+TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const bool use_simple_attenuation ) :
 	scattering_enabled( scattering_ ),
 	max_scattering_occurrences( maxRadiationLoops_ ),
-	scatter_propability_correction( scatterPropability_ )
+	scatter_propability_correction( scatterPropability_ ),
+	use_simple_attenuation( use_simple_attenuation )
 {}
 
 TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, it) ),
 	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
-	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) )
+	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
+	use_simple_attenuation( DeSerializeBuildIn<bool>(true, binary_data, it) )
 {
 }
 
@@ -54,6 +57,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
 	num_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
 	num_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
+	num_bytes += SerializeBuildIn<bool>( use_simple_attenuation, binary_data );
 
 	return num_bytes;
 
@@ -96,17 +100,16 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
-			double line_integral = currentPixel.GetDetectedLineIntegral();
+			double line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_attenuation );
 			
 			// If negative no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
 			if( line_integral < 0 ){
 				line_integral = 25.; // Is like ray's energy is 1 / 100000000000 of its start energy 
 			}
-
 			// Get the radon point
 			const RadonPoint newRadonPoint{ newRadonCoordinates, line_integral };
-			
+
 			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );
 		}

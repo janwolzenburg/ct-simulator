@@ -33,19 +33,21 @@ class RayProperties{
 
 	public:
 
+
 	/*!
 	 * @brief Constructor
 	 * @param spectrum Ray spectrum
 	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
 	*/
 	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0 ) :
-		energy_spectrum_( spectrum ), voxel_hits_( 0 ), start_intensity_( energy_spectrum_.GetTotal() ), expected_detector_pixel_index_( expected_pixel_index ) {};
+		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
+		simple_intensity_( 1. ){};
 
 	/*!
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), start_intensity_( energy_spectrum_.GetTotal() ), expected_detector_pixel_index_( 0 ) {};
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ) {};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
@@ -57,7 +59,7 @@ class RayProperties{
 	 * @brief Get intensity at start
 	 * @return Intensity at start
 	*/
-	double start_intensity( void ) const{ return start_intensity_; };
+	double start_intensity( void ) const{ return initial_power_; };
 
 	/*!
 	 * @brief Get index of the pixel in detector-pixel vector this ray is likely to hit
@@ -66,10 +68,16 @@ class RayProperties{
 	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
 
 	/*!
+	 * @brief Get the intensity if ray is attenuated after lampert beer's model without energy dependence. Start value is 1.
+	 * @return Intensity.
+	*/
+	double simple_intensity( void ) const{ return simple_intensity_; };
+
+	/*!
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void ScaleSpectrum( const double factor ){ energy_spectrum_.Scale( factor ); };
+	void ScaleSpectrumEvenly( const double factor ){ energy_spectrum_.ScaleEvenly( factor ); };
 
 	/*!
 	 * @brief Attenuate spectrum according to distance in given voxel
@@ -83,8 +91,9 @@ class RayProperties{
 
 	EnergySpectrum energy_spectrum_;		/*!< Energy spectrum*/
 	size_t voxel_hits_;						/*!< Counter for voxels hit during transmission*/
-	double start_intensity_;				/*!< Intensity before radiation*/
+	double initial_power_;					/*!< Intensity before radiation in watts*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
+	double simple_intensity_;				/*!< Current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
 
 };
 
@@ -134,7 +143,7 @@ class Ray : public Line{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void ScaleSpectrum( const double factor ){ properties_.energy_spectrum_.Scale( factor ); };
+	void ScaleSpectrumEvenly( const double factor ){ properties_.energy_spectrum_.ScaleEvenly( factor ); };
 
 	/*!
 	 * @brief Get the mean energy of spectrum

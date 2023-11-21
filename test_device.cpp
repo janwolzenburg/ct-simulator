@@ -51,7 +51,7 @@ bool test_tube(void) {
 	XRayTubeProperties tubeParas{	53000,
 									0.2,
 									XRayTubeProperties::Thungsten,
-									1, true };
+									1, true, al_filter_cut_off_energy_eV, -al_filter_gradient_factor };
 
 	XRayTube testTube{ GlobalSystem()->CreateCopy( "Tube system" ), tubeParas };
 
@@ -413,7 +413,7 @@ Gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 								100000,
 								0.2,
 								XRayTubeProperties::Thungsten, 
-								raysPerPixel, true };
+								raysPerPixel, true, al_filter_cut_off_energy_eV, al_filter_gradient_factor };
 
 
 	ProjectionsProperties radonParameter{

@@ -52,6 +52,14 @@ class VoxelData{
 	};
 
 	/*!
+	 * @brief Get the attenuation at reference energy
+	 * @param attenuationAtEnergy Attenuation at given energy
+	 * @param energy Energy
+	 * @return Attenuation coefficient
+	*/
+	static double GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy );
+
+	/*!
 	 * @brief Constructor
 	 * @param attenuation_at_energy Attenuation coefficient at given energy
 	 * @param energy_eV Energy in eV
@@ -143,13 +151,7 @@ class VoxelData{
 	SpecialPropertyEnumType specialProperties_;		/*!< Special properties in voxel*/
 
 
-	/*!
-	 * @brief Get the attenuation at reference energy
-	 * @param attenuationAtEnergy Attenuation at given energy
-	 * @param energy Energy
-	 * @return Attenuation coefficient
-	*/
-	double GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const;
+
 
 };
 #pragma pack(pop)
