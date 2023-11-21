@@ -99,7 +99,7 @@ class Fl_ModelView : public Fl_Group{
 	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< Callback for model loading*/
 	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< Callback for model update*/
 	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< Callback for model reset*/
-	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< Callback for change og artifact impact*/
+	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< Callback for change of artifact impact*/
 
 	/*!
 	 * @brief Get the model description
