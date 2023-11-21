@@ -15,8 +15,11 @@
 #include "FL/Fl_Window.H"
 #include "fl_AdjustableGrayscaleImage.h"
 #include "fl_Selector.h"
+#include "FL/Fl_Toggle_Button.H"
 #include "fl_Plot.h"
 #include "lineplot.h"
+#include "fl_BoundInput.h"
+#include <FL/Fl_Float_Input.H>
 
 #include "fileChooser.h"
 #include "projections.h"
@@ -57,6 +60,10 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_Selector filter_type_selector_;							/*!< Filter selector*/
 	Fl_Plot<DotPlot> filter_plot_;								/*!< Filter plot*/
 
+	Fl_Group processing_properties_group_;
+	Fl_Toggle_Button hu_mu_selection_button_;
+	Fl_BoundInput<Fl_Float_Input, double> mu_water_input_;
+
 	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< Widget for filtered projections display*/
 	Fl_Button export_filteredProjections_button_;			/*!< Export button for projections*/
 
@@ -71,7 +78,9 @@ class Fl_ProcessingWindow : public Fl_Window{
 	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
 
 	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;			/*!< Callback function for filter change*/
-	
+	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;
+	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;
+
 	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< Callback for projection export*/
 	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;		/*!< Callback for image export*/
 
@@ -80,7 +89,11 @@ class Fl_ProcessingWindow : public Fl_Window{
 	/*!
 	 * @brief Reconstruct the image from projections
 	*/
-	void ReconstructImage( void );
+	void FilterAndReconstructImage( void );
+
+	void UpdateImage( void );
+
+	void HandleMUChange( void );
 
 	void ExportFilteredProjections( void );
 
