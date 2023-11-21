@@ -239,3 +239,12 @@ void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widgetPtr, void*
 	widget->do_callback();
 
 }
+
+
+
+void Fl_AdjustableGrayscaleImage::SetValueTooltip( const string tooltip_text ){
+
+
+	current_value_text_.copy_tooltip( tooltip_text.c_str() );
+
+}

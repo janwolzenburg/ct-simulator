@@ -89,6 +89,8 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	// Labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
+	model_slice_image_.SetValueTooltip( "Attenuation coefficient at " + to_string( reference_energy_for_mu_eV ) + "keV. In mm^-1");
+
 	// Hide image initially
 	model_inspection_group_.resizable( loading_status_ );
 	model_slice_image_.hide();
