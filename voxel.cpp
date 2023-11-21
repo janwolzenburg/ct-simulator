@@ -62,9 +62,9 @@ size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	return num_bytes;
 }
 
-double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ) const{
+double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ){
 
-	return attenuationAtEnergy * pow( energy / reference_energy_for_mu_eV, 3. );
+	return attenuationAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. );
 	
 }
 

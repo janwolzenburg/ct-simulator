@@ -28,7 +28,7 @@
 */
 
 
-const string Projections::FILE_PREAMBLE{ "RADON_TRANSFORMED_FILE_PREAMBLE" };
+const string Projections::FILE_PREAMBLE{ "Ver01RADON_TRANSFORMED_FILE_PREAMBLE" };
 
 Projections::Projections( void ) :
 	DataGrid<>{}
@@ -40,8 +40,8 @@ Projections::Projections( const ProjectionsProperties properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
 				GridCoordinates{ properties.angles_resolution() / 2.,
 								 -( static_cast<double>( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
-				properties.GetTransformationResolution()
-		  },
+				properties.GetTransformationResolution() },
+	properties_( properties ),
 
 	grid_errors_( vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) ) )
 {}
@@ -65,6 +65,7 @@ void Projections::AssignData( const RadonPoint dataPoint ){
 size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
+	num_bytes += properties_.Serialize( binary_data );
 	num_bytes += DataGrid<>::Serialize( binary_data );
 	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
 	return num_bytes;
@@ -72,6 +73,7 @@ size_t Projections::Serialize( vector<char>& binary_data ) const{
 
 
 Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
+	properties_{ binary_data, it },
 	DataGrid<>{ binary_data, it },
 	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, it ) )
 {}

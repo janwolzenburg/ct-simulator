@@ -86,7 +86,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		current_input_.value( tube_properties_.anode_current_A );
 		toggle_filter_button_.value( static_cast<int>( tube_properties_.has_filter_ ) );
 		filter_cutoff_input.value( tube_properties_.filter_cut_of_energy );
-		filter_gradient_input.value( tube_properties_.filter_strength );
+		filter_gradient_input.value( tube_properties_.filter_gradient );
 
 		voltage_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		current_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
@@ -199,6 +199,8 @@ void Fl_GantryCreation::UpdateGantry( void ){
 	
 
 		projections_properties_ = ProjectionsProperties{ number_of_angles_input_.value(), number_of_distances_input_.value(), distance_range_input_.value() };
+		projections_properties_.tube_mean_energy( gantry_.tube().GetMeanEnergy() );
+		
 		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input_.value(), static_cast<bool>( scattering_structure_input_.value() ), maximum_ray_angle_input_.value() / 360. * 2. * PI };
 		
 

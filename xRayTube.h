@@ -72,7 +72,7 @@ class XRayTubeProperties {
 						const bool has_filter, const double filter_cut_of_energy, const double filter_strength ) :
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
 		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
-		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_strength( ForceRange( filter_strength, .1, 10. ) )
+		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) )
 	{};
 
 	/*!
@@ -100,8 +100,8 @@ class XRayTubeProperties {
 	Material anode_material;			/*!< Atomic Number of anode material*/
 	size_t number_of_rays_per_pixel_;	/*!< The amount of discrete rays to emit per detector pixel*/
 	bool has_filter_;					/*!< Flag for Al-Filter*/
-	double filter_cut_of_energy;
-	double filter_strength;
+	double filter_cut_of_energy;		/*!< Energy under which all radiating is absorbed by filter*/
+	double filter_gradient;				/*!< Gradient of filter*/
 };
 
 
@@ -171,6 +171,12 @@ class XRayTube{
 	 * @return The spectrum points
 	*/
 	VectorPair GetEnergySpectrumPoints( void ) const;
+
+	/*!
+	 * @brief Get mean energy of spectrum
+	 * @return Mean energy
+	*/
+	double GetMeanEnergy( void ){ return emitted_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Update tube properties

@@ -64,6 +64,8 @@ class Projections : private DataGrid<> {
 	*/
 	DataGrid<> data( void ) const{ return static_cast<DataGrid<>>( *this ); };
 	
+	ProjectionsProperties properties( void ) const{ return properties_; };
+	
 	/*!
 	 * @brief Assign data at index 
 	 * @param data Data to assign
@@ -79,5 +81,6 @@ class Projections : private DataGrid<> {
 
 	private:
 
+	ProjectionsProperties properties_;				/*!< proeprties of projection*/
 	vector<vector<GridCoordinates>> grid_errors_;	/*!< Grid errors when interpolating*/
 };
