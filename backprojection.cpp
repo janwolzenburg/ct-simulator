@@ -23,6 +23,9 @@ using std::cref;
    Implementations
 *********************************************************************/
 
+
+const string Backprojection::FILE_PREAMBLE{ "BACKPROJECTION_FILE_PREAMBLE" };
+
 void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex& current_angle_index_mutex, Backprojection& image, 
 											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
 											const FilteredProjections projections ){

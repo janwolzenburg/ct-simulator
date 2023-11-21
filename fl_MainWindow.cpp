@@ -32,7 +32,7 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	gantry_creation_{			hOff( model_view_ ) + X( *this, .025 ),		Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
 	tomography_execution_{	hOff( gantry_creation_ ) + X( *this, .025 ), Y( *this, 0.045 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	
-	import_projections_file_chooser_{ FileChooser{ "Import Sinogram", "*.sinogram", path{ "./" } }, "import.chooser", false },
+	import_projections_file_chooser_{ FileChooser{ "Import Sinogram", "*.projections", path{ "./" } }, "import.chooser", false },
 	
 	reset_program_state_callback_{ *this, &Fl_MainWindow::SetResetAtExit },
 	import_projections_callback_{ *this, &Fl_MainWindow::ImportProjections }

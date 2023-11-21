@@ -21,6 +21,9 @@
 	Implementations
  *********************************************************************/
 
+ 
+PersistingObject<FileChooser> Fl_ProcessingWindow::export_filteredProjections_file_chooser_{ FileChooser{ "Export", "*.filteredprojections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportFilteredProjections.chooser" };
+PersistingObject<FileChooser> Fl_ProcessingWindow::export_image_chooser_{ FileChooser{ "Export", "*.backprojection", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportBackprojection.chooser" };
 
 Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Projections projections ) :
 	Fl_Window{ w, h, label },
@@ -31,12 +34,18 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	filter_type_selector_{			X( filter_group_, 0. ),		Y( filter_group_, 0. ),		W( filter_group_, .3 ),		H( filter_group_, .1 ), "Filter type" },
 	filter_plot_{					X( filter_group_, 0. ),		Y( filter_group_, 0.15 ),	W( filter_group_, 1. ),		H( filter_group_, .85 ), "Filter" },
 	
-	filtered_projections_image_{	X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .3 ), "Filtered projections"},
+	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .29 ), "Filtered projections"},
+	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .35 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
+	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.39 ),		W( *this, .45 ),			H( *this, .555 ), "Backprojection"},
+	export_image_button_{			X( *this, .525 ),			Y( *this, 0.950 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
 	
-	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.375 ),		W( *this, .45 ),			H( *this, .6 ), "Backprojection"},
-
 	projections_( projections ),
-	filter_change_callback_{ *this, &Fl_ProcessingWindow::ReconstructImage }
+	filtered_projections_{ FilteredProjections{}, "saved.filteredprojections", true },
+	backprojection_{ Backprojection{}, "saved.backprojection", true },
+
+	filter_change_callback_{ *this, &Fl_ProcessingWindow::ReconstructImage },
+	export_filteredProjections_callback_{ *this, &Fl_ProcessingWindow::ExportFilteredProjections },
+	export_image_callback_{ *this, &Fl_ProcessingWindow::ExportBackprojections }
 
 {
 	Fl_Window::resizable( *this );
@@ -44,6 +53,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	Fl_Window::add( filter_group_ );
 	Fl_Window::add( filtered_projections_image_ );
 	Fl_Window::add( reconstructed_image_ );
+	Fl_Window::add( export_filteredProjections_button_ );
+	Fl_Window::add( export_image_button_ );
 
 	
 	projections_image_.ResetBounds();
@@ -70,6 +81,10 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	filtered_projections_image_.labelsize( 20 );
 	reconstructed_image_.labelsize( 20 );
 	
+	
+	export_filteredProjections_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &export_filteredProjections_callback_ );
+	export_image_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &export_image_callback_ );
+
 	filtered_projections_image_.ResetBounds();
 	reconstructed_image_.ResetBounds();
 
@@ -120,4 +135,27 @@ void Fl_ProcessingWindow::ReconstructImage( void ){
 
 	this->activate();
 
+}
+
+void Fl_ProcessingWindow::ExportFilteredProjections( void ){
+	path exportPath = export_filteredProjections_file_chooser_.ChooseFile();
+	export_filteredProjections_file_chooser_.SetAsLoaded();
+	if( exportPath.empty() ) return;
+
+	if( exportPath.extension() != ".filteredprojections" )
+		exportPath += ".filteredprojections";
+
+	filtered_projections_.Save( exportPath );
+}
+
+void Fl_ProcessingWindow::ExportBackprojections( void ){
+
+	path exportPath = export_image_chooser_.ChooseFile();
+	export_image_chooser_.SetAsLoaded();
+	if( exportPath.empty() ) return;
+
+	if( exportPath.extension() != ".backprojection" )
+		exportPath += ".backprojection";
+
+	backprojection_.Save( exportPath );
 }

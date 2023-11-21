@@ -97,7 +97,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	CallbackFunction<Fl_TomographyExecution> update_properties_callback_;	/*!< Callback for propertiy update*/
 	CallbackFunction<Fl_TomographyExecution> export_projections_callback_;	/*!< Callback for projection export*/
 
- 
+
 	/*!
 	 * @brief Do tomography
 	*/

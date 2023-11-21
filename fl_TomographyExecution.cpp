@@ -37,17 +37,17 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 
 	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
 	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
-	export_projections_button_{			X( control_group_, .55 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Sinogram" },
+	export_projections_button_{			X( control_group_, .55 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
 
 	
 	main_window_( main_window ),
 
-	export_projections_file_chooser_{ FileChooser{ "Export Sinogram", "*.sinogram", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "export.chooser" },
+	export_projections_file_chooser_{ FileChooser{ "Export projections", "*.projections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "projectionsExport.chooser" },
 	
-	tomography_properties_{ TomographyProperties{}, "tomography.properties" },
+	tomography_properties_{ TomographyProperties{}, "saved.tomographyproperties" },
 	tomography_{},
 	
-	projections_{ Projections{}, "projections.sinogram" },
+	projections_{ Projections{}, "saved.projections" },
 	processing_windows_( 0 ),
 
 	record_slice_callback_{ *this, &Fl_TomographyExecution::DoTomography },
@@ -168,8 +168,8 @@ void Fl_TomographyExecution::ExportProjections( void ){
 	export_projections_file_chooser_.SetAsLoaded();
 	if( exportPath.empty() ) return;
 
-	if( exportPath.extension() != ".sinogram" )
-		exportPath += ".sinogram";
+	if( exportPath.extension() != ".projections" )
+		exportPath += ".projections";
 
 	projections_.Save( exportPath );
 

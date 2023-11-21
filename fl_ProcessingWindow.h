@@ -18,6 +18,7 @@
 #include "fl_Plot.h"
 #include "lineplot.h"
 
+#include "fileChooser.h"
 #include "projections.h"
 #include "persistingObject.h"
 #include "filteredProjections.h"
@@ -57,18 +58,32 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_Plot<DotPlot> filter_plot_;								/*!< Filter plot*/
 
 	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< Widget for filtered projections display*/
+	Fl_Button export_filteredProjections_button_;			/*!< Export button for projections*/
+
 	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
+	Fl_Button export_image_button_;			/*!< Export button for image*/
 
 	Projections projections_;
-	FilteredProjections filtered_projections_;					/*!< Current filtered projections*/
-	Backprojection backprojection_;								/*!< Current image reconstructed from filtered projections*/
+	PersistingObject<FilteredProjections> filtered_projections_;					/*!< Current filtered projections*/
+	PersistingObject<Backprojection> backprojection_;								/*!< Current image reconstructed from filtered projections*/
 
-	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;	/*!< Callback function for filter change*/
+	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
+	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
+
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;			/*!< Callback function for filter change*/
+	
+	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< Callback for projection export*/
+	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;		/*!< Callback for image export*/
+
 
 		
 	/*!
 	 * @brief Reconstruct the image from projections
 	*/
 	void ReconstructImage( void );
+
+	void ExportFilteredProjections( void );
+
+	void ExportBackprojections( void );
 
  };

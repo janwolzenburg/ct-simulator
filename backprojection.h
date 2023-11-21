@@ -28,6 +28,8 @@
 class Backprojection : private DataGrid<> {
 
 	public:
+	
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
 
 	/*!
 	 * @brief Default constructor
@@ -41,11 +43,16 @@ class Backprojection : private DataGrid<> {
 	*/
 	Backprojection( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
 
+	Backprojection( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	DataGrid<>{ binary_data, current_byte }{};
+
 	/*!
 	 * @brief Get gridded data
 	 * @return Gridded data
 	*/
 	 DataGrid<> getGrid( void ) const{ return static_cast<DataGrid<>>( *this ); };
+
+	 size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 
 	 private:

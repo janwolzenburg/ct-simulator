@@ -20,9 +20,9 @@
 
 
 #ifdef WIN32
-	const path ProgramState::storage_path_{ ".\\stateStorage\\" };
+	#define STATE_STORAGE ".\\stateStorage\\"
 #else
-	const path programState::stateStorage{ "./stateStorage/" };
+	#define STATE_STORAGE  "./stateStorage/"
 #endif // WIN32
 
 
@@ -38,7 +38,8 @@ ProgramState& ProgramState::GetInstance(){
 
 ProgramState::ProgramState( void ) :
 
-	reset_state_at_exit_( false )
+	reset_state_at_exit_( false ),
+	storage_path_{ STATE_STORAGE }
 
 {
 	CreateStorageDirectory();

@@ -28,7 +28,7 @@ class ProgramState{
 
 	public:
 
-	static const path storage_path_;		/*!< Path to persisting storage location*/
+	const path storage_path_;		/*!< Path to persisting storage location*/
 	
 	/*!
 	 * @brief Get reference of singlular instance

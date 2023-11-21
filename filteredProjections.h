@@ -31,6 +31,8 @@ class FilteredProjections : private DataGrid<> {
 
 	public:
 
+	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
+
 	/*!
 	 * @brief Default constructor
 	*/
@@ -43,6 +45,11 @@ class FilteredProjections : private DataGrid<> {
 	 * @param progress_window FL window to track progress
 	*/
 	FilteredProjections( const Projections projections, const BackprojectionFilter::TYPE filter_type, Fl_Progress_Window* progress_window = nullptr );
+	
+	FilteredProjections( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	DataGrid<>{ binary_data, current_byte }{};
+	
+	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 	/*!
 	 * @brief Get gridded data

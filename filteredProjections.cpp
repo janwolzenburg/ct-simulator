@@ -23,6 +23,9 @@ using std::cref;
    Implementations
 *********************************************************************/
 
+
+const string FilteredProjections::FILE_PREAMBLE{ "FILTEREDPROJECTIONS_FILE_PREAMBLE" };
+
 FilteredProjections::FilteredProjections( const Projections projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress ) :
 	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size
 	filter_{ NaturalNumberRange{ -( signed long long ) size().r + 1, ( signed long long ) size().r - 1 }, resolution().r, filterType }

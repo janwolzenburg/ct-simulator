@@ -28,9 +28,9 @@
 Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
-	tube_properties_{ XRayTubeProperties{}, "tube.properties" },
-	projections_properties_{ ProjectionsProperties{}, "projections.properties" },
-	physical_detector_properties_{ PhysicalDetectorProperties{}, "physical.properties" },
+	tube_properties_{ XRayTubeProperties{}, "saved.tubeproperties" },
+	projections_properties_{ ProjectionsProperties{}, "saved.projectionproperties" },
+	physical_detector_properties_{ PhysicalDetectorProperties{}, "saved.physicalproperties" },
 	gantry_{ CoordinateSystems().AddSystem( "Gantry system"), tube_properties_, projections_properties_, physical_detector_properties_ },
 
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },

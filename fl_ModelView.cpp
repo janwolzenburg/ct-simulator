@@ -39,11 +39,11 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	artefact_impact_{	X( model_movement_group_, .5 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "Artefact factor" },
 
 	
-	properties_{ ModelViewProperties{}, "view.properties" },
+	properties_{ ModelViewProperties{}, "saved.viewproperties" },
 	main_window_( main_window ),
 
 	model_chooser_{ FileChooser{ "Choose CT model", "*.model", path{ "./" } }, "model.chooser" },
-	model_{ Model{}, "current.model" },
+	model_{ Model{}, "saved.model" },
 	model_slice_{},
 	
 
