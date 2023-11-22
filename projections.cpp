@@ -66,7 +66,7 @@ size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 	num_bytes += DataGrid<>::Serialize( binary_data );
-	num_bytes += DataGrid<>::Serialize( binary_data );
+	num_bytes += properties_.Serialize( binary_data );
 	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
 	return num_bytes;
 }
