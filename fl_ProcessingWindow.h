@@ -65,10 +65,10 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_BoundInput<Fl_Float_Input, double> mu_water_input_;
 
 	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< Widget for filtered projections display*/
-	Fl_Button export_filteredProjections_button_;			/*!< Export button for projections*/
+	Fl_Button export_filteredProjections_button_;				/*!< Export button for projections*/
 
 	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
-	Fl_Button export_image_button_;			/*!< Export button for image*/
+	Fl_Button export_image_button_;								/*!< Export button for image*/
 
 	Projections projections_;
 	PersistingObject<FilteredProjections> filtered_projections_;					/*!< Current filtered projections*/
@@ -77,12 +77,12 @@ class Fl_ProcessingWindow : public Fl_Window{
 	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
 	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
 
-	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;			/*!< Callback function for filter change*/
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< Callback function for filter change*/
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;
 
 	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< Callback for projection export*/
-	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;		/*!< Callback for image export*/
+	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;					/*!< Callback for image export*/
 
 
 		
