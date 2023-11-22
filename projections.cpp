@@ -65,15 +65,15 @@ void Projections::AssignData( const RadonPoint dataPoint ){
 size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
-	num_bytes += properties_.Serialize( binary_data );
 	num_bytes += DataGrid<>::Serialize( binary_data );
+	num_bytes += properties_.Serialize( binary_data );
 	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
 	return num_bytes;
 }
 
 
 Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	properties_{ binary_data, it },
 	DataGrid<>{ binary_data, it },
+	properties_{ binary_data, it },
 	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, it ) )
 {}

@@ -108,7 +108,8 @@ optional<pair<double, RGB>> Fl_GrayscaleImage::GetValue( int x, int y ) const{
 
 void Fl_GrayscaleImage::draw( void ){
 	int centerX = this->parent()->x() + ( this->parent()->w() - static_cast<int>( color_image_.width() ) ) / 2;
-	fl_draw_image( (unsigned char*) color_image_.GetImageData(), centerX, y(), static_cast<int>( color_image_.width() ), static_cast<int>( color_image_.height() ) );
+	int centerY = this->parent()->y() + ( this->parent()->h() - static_cast<int>( color_image_.height() ) ) / 2;
+	fl_draw_image( (unsigned char*) color_image_.GetImageData(), centerX, centerY, static_cast<int>( color_image_.width() ), static_cast<int>( color_image_.height() ) );
 }
 
 void Fl_GrayscaleImage::resize( int x, int y, int w, int h ){

@@ -105,9 +105,15 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	*/
 	void SetValueTip( const string tooltip_text );
 
+	void Setlabel( const pair<string, string> label ){ image_widget_.SetAxisLabel( label ); };
+
+	
+	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size ){ image_widget_.SetAxis( pixel_start, pixel_size ); };
+
+
 	private:
 
-	Fl_GrayscaleImage image_widget_;	/*!< The image widget*/
+	Fl_GrayscaleImageWithAxis image_widget_;	/*!< The image widget*/
 	Fl_Hor_Value_Slider lower_bound_;	/*!< Low bound*/
 	Fl_Hor_Value_Slider upper_bound_;	/*!< High bound*/
 			

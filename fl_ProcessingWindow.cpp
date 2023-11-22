@@ -25,23 +25,23 @@
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_filteredProjections_file_chooser_{ FileChooser{ "Export", "*.filteredprojections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportFilteredProjections.chooser" };
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_image_chooser_{ FileChooser{ "Export", "*.backprojection", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportBackprojection.chooser" };
 
-Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Projections projections ) :
+Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections projections ) :
 	Fl_Window{ w, h, label },
 	
-	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .3 ), "Projections"},
+	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .45 ), "Projections"},
 	
-	filter_group_{					X( *this, .025 ),			Y( *this, 0.4 ),			W( *this, .45 ),			H( *this, .29  ) },
+	filter_group_{					X( *this, .025 ),			Y( *this, 0.525 ),			W( *this, .45 ),			H( *this, .35  ) },
 	filter_type_selector_{			X( filter_group_, 0. ),		Y( filter_group_, 0. ),		W( filter_group_, .3 ),		H( filter_group_, .1 ), "Filter type" },
-	filter_plot_{					X( filter_group_, 0. ),		Y( filter_group_, 0.15 ),	W( filter_group_, 1. ),		H( filter_group_, .85 ), "Filter" },
+	filter_plot_{					X( filter_group_, 0.35 ),		Y( filter_group_, 0.15 ),	W( filter_group_, .7 ),		H( filter_group_, .65 ), "Filter" },
 	
-	processing_properties_group_{	X( *this, .025 ),			Y( *this, 0.75 ),			W( *this, .45 ),			H( *this, .25  ) },
-	hu_mu_selection_button_{        X( processing_properties_group_, 0. ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .15 ), "Enable HU" },
-	mu_water_input_{				X( processing_properties_group_, .3 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .125 ), "µ water" },
+	processing_properties_group_{	X( *this, .025 ),			Y( *this, 0.9 ),			W( *this, .45 ),			H( *this, .1  ) },
+	hu_mu_selection_button_{        X( processing_properties_group_, 0. ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .275 ), "Enable HU" },
+	mu_water_input_{				X( processing_properties_group_, .3 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .25 ), "µ water" },
 
-	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .29 ), "Filtered projections"},
-	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .35 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
-	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.39 ),		W( *this, .45 ),			H( *this, .555 ), "Backprojection"},
-	export_image_button_{			X( *this, .525 ),			Y( *this, 0.950 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
+	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .35 ), "Filtered projections"},
+	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .41 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
+	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.45 ),		W( *this, .45 ),			H( *this, .5 ), "Backprojection"},
+	export_image_button_{			X( *this, .525 ),			Y( *this, 0.960 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
 	
 	projections_( projections ),
 	filtered_projections_{ FilteredProjections{}, "saved.filteredprojections", true },
@@ -54,17 +54,16 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	export_image_callback_{ *this, &Fl_ProcessingWindow::ExportBackprojections }
 
 {
-	Fl_Window::resizable( *this );
-	Fl_Window::add( projections_image_ );
 	Fl_Window::add( filter_group_ );
+	Fl_Window::add( projections_image_ );
 	Fl_Window::add( filtered_projections_image_ );
 	Fl_Window::add( reconstructed_image_ );
 	Fl_Window::add( export_filteredProjections_button_ );
 	Fl_Window::add( export_image_button_ );
 	Fl_Window::add( processing_properties_group_ );
+	Fl_Window::resizable( *this );
 	
-	projections_image_.ResetBounds();
-	projections_image_.AssignImage( GrayscaleImage{ projections.data(), true } );
+
 
 
 	filter_group_.add( filter_plot_ );
@@ -88,6 +87,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
 
+	mu_water_input_.tooltip( "Enter attenuation coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
+	hu_mu_selection_button_.tooltip("Switch between view of attenuation coefficient and Houndsfield Units. Least are calculated by the entered value.");
 
 	projections_image_.align( FL_ALIGN_TOP );
 	filtered_projections_image_.align( FL_ALIGN_TOP );
@@ -97,14 +98,21 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, Proje
 	filtered_projections_image_.labelsize( 20 );
 	reconstructed_image_.labelsize( 20 );
 	
+	projections_image_.Setlabel( { "angle in rad", " d in mm" } ); 
+	filtered_projections_image_.Setlabel( { "angle in rad", " d in mm" } ); 
+	reconstructed_image_.Setlabel( { "x in mm", " y in mm" } ); 
+
 	export_filteredProjections_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &export_filteredProjections_callback_ );
 	export_image_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &export_image_callback_ );
-
+	
+	projections_image_.ResetBounds();
 	filtered_projections_image_.ResetBounds();
 	reconstructed_image_.ResetBounds();
 
 	
 	this->show();
+
+	
 	FilterAndReconstructImage();
 }
 
@@ -126,8 +134,11 @@ void Fl_ProcessingWindow::FilterAndReconstructImage( void ){
 	filter_plot_.plot().AssignData(filtered_projections_.filter().GetPlotValues() );
 	filter_plot_.AssignData();
 	
-
+	projections_image_.AssignImage( std::move( GrayscaleImage{ projections_.data(), true } ) );
 	filtered_projections_image_.AssignImage( std::move( GrayscaleImage{ filtered_projections_.data_grid(), true } ) );
+
+	projections_image_.SetAxis( { projections_.start().c, projections_.start().r }, {projections_.resolution().c, projections_.resolution().r} );
+	filtered_projections_image_.SetAxis( { filtered_projections_.start().c, filtered_projections_.start().r }, {filtered_projections_.resolution().c, filtered_projections_.resolution().r} );
 
 	backprojection_ = std::move( Backprojection{ filtered_projections_, processingProgressWindow } );
 
@@ -198,6 +209,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 	}
 
 	reconstructed_image_.AssignImage( std::move( GrayscaleImage{ std::move( raw_image_data ), true } ) );
+	reconstructed_image_.SetAxis( { raw_image_data.start().c, raw_image_data.start().r }, {raw_image_data.resolution().c, raw_image_data.resolution().r} );
 
 }
 

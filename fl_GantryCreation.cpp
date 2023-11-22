@@ -47,14 +47,14 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 	detector_group_{	X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
 	detector_title_{	X( detector_group_, .0 ),	Y( detector_group_, 0. ),	W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
-	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Angles" },
-	number_of_distances_input_{		X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Pixel" },
-	distance_range_input_{		X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Range" },
+	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Projections" },
+	number_of_distances_input_{		X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances" },
+	distance_range_input_{		X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distnace range" },
 
-	number_of_rays_per_pixel_input_{ X( detector_group_, .0 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pix" },
+	number_of_rays_per_pixel_input_{ X( detector_group_, .0 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pixel" },
 	detector_focus_distance_input_{	X( detector_group_, .25 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Focus Dist." },
-	scattering_structure_input_{	X( detector_group_, .75 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Anti scat." },
-	maximum_ray_angle_input_{	X( detector_group_, .50 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Max angle" },
+	scattering_structure_input_{	X( detector_group_, .75 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Scatter grid" },
+	maximum_ray_angle_input_{	X( detector_group_, .50 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Max. angle" },
 
 	detector_plot_{	X( detector_group_, .0 ),	Y( detector_group_, .35 ),	W( detector_group_, 1. ),	H( detector_group_, .65 ),	"Detector Plot" },
 
@@ -110,7 +110,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		current_input_.tooltip( "Current in Ampere." );
 		anode_material_input_.tooltip( "Anode material." );
 		
-		filter_cutoff_input.tooltip( "Energy under which the filter dominates the spectrum. In eV." );
+		filter_cutoff_input.tooltip( "Energy under which the filter absorbs completely. In eV." );
 		filter_gradient_input.tooltip( "Gradient of filter." );
 
 		tube_group_.add( spectrum_plot_ );
@@ -141,8 +141,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_distances_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		distance_range_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 
-		number_of_angles_input_.tooltip( "Amount of angles in Sinogram." );
-		number_of_distances_input_.tooltip( "Amount of distances in sinogram. Is the amount of detector pixel." );
+		number_of_angles_input_.tooltip( "Amount of projections." );
+		number_of_distances_input_.tooltip( "Amount of distances in projections. Is the amount of detector pixel." );
 		distance_range_input_.tooltip( "Size of measure field in mm." );
 
 
@@ -170,7 +170,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_rays_per_pixel_input_.tooltip( "How many rays will be simulated per pixel." );
 		detector_focus_distance_input_.tooltip( "Detector focus distance." );
 		maximum_ray_angle_input_.tooltip( "Maximum detecable angle in degree between pixel and ray. Only valid when anti scattering is activated." );
-		scattering_structure_input_.tooltip( "Activate anti scattering structure." );
+		scattering_structure_input_.tooltip( "Activate anti scattering grid." );
 
 
 		detector_group_.add( detector_plot_ );
