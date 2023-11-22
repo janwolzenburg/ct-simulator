@@ -87,6 +87,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
 
+	mu_water_input_.tooltip( "Enter attenuation coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
+	hu_mu_selection_button_.tooltip("Switch between view of attenuation coefficient and Houndsfield Units. Least are calculated by the entered value.");
 
 	projections_image_.align( FL_ALIGN_TOP );
 	filtered_projections_image_.align( FL_ALIGN_TOP );
