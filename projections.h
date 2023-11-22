@@ -64,6 +64,10 @@ class Projections : private DataGrid<> {
 	*/
 	DataGrid<> data( void ) const{ return static_cast<DataGrid<>>( *this ); };
 	
+	GridCoordinates start( void ) const{ return DataGrid<>::start(); };
+
+	GridCoordinates resolution( void ) const{ return DataGrid<>::resolution(); };
+
 	ProjectionsProperties properties( void ) const{ return properties_; };
 	
 	/*!

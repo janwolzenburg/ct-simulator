@@ -24,7 +24,7 @@
 
 Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
-	image_widget_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ), H( *this, .83 ), "Image" },
+	image_widget_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ), H( *this, .75 ), "Image" },
 	lower_bound_{			X( *this, 0.1 ),	Y( *this, 0.84 ),	W( *this, .6 ), H( *this, .075 ), "Low" },
 	upper_bound_{			X( *this, 0.1 ),	Y( *this, 0.925),	W( *this, .6 ), H( *this, .075 ), "High" },
 	current_value_text_{	X( *this, 0.7 ),	Y( *this, 0.84 ),	W( *this, .2 ), H( *this, .1 ), "" },
@@ -35,7 +35,7 @@ Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, i
 	contrast_changed_( false )
 {
 	
-	Fl_Group::add( image_widget_ );
+	Fl_Group::add( static_cast<Fl_Group*>( &image_widget_ ) );
 	Fl_Group::add( lower_bound_ );
 	Fl_Group::add( upper_bound_ );
 	

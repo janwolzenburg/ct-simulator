@@ -90,6 +90,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
 	model_slice_image_.SetValueTip( "µ at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
+	model_slice_image_.Setlabel( { "x in mm", " y in mm" } ); 
 
 	// Hide image initially
 	model_inspection_group_.resizable( loading_status_ );
@@ -122,7 +123,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
-
+	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same attenuation as water.\nAt 10 it beheaves like real iron.");
 
 	// Set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
@@ -377,6 +378,7 @@ void Fl_ModelView::UpdateModel( void ){
 		properties_.contrast = model_slice_image_.GetContrast();
 	}
 
+	model_slice_image_.SetAxis( { model_slice_.start().c, model_slice_.start().r }, { model_slice_.resolution().c, model_slice_.resolution().r});
 	model_slice_image_.show(); loading_status_.hide(); model_information_.show();
 	model_movement_group_.show();
 
