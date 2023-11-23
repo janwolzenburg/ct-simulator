@@ -48,7 +48,7 @@ class Model : public MathematicalObject{
 	 * @param voxel_size Spacial size of voxels
 	 * @param name Name of model
 	*/
-	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name = "Default model name_" );
+	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name, const VoxelData defaultData = VoxelData{} );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -60,7 +60,7 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief Default constructor
 	*/
-	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
+	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } , string{}, VoxelData{} ){};
 
 	/*!
 	 * @brief Convert model's data to string

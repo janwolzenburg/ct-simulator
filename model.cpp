@@ -40,14 +40,14 @@ using std::cref;
 
 const string Model::FILE_PREAMBLE{ "CT_MODEL_FILE_PREAMBLE_Ver2"};
 
-Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_ ) :
+Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_, const Tuple3D voxSize3D_, const string name_, const VoxelData defaultData ) :
 	number_of_voxel_3D_( numVox3D_ ),
 	voxel_size_( voxSize3D_ ),
 	size_{	static_cast<double>( number_of_voxel_3D_.x ) * voxel_size_.x,
 			static_cast<double>( number_of_voxel_3D_.y ) * voxel_size_.y,
 			static_cast<double>( number_of_voxel_3D_.z ) * voxel_size_.z } ,
 	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
-	voxel_data_( number_of_voxel_, VoxelData{} ),
+	voxel_data_( number_of_voxel_, defaultData ),
 	coordinate_system_( coordinate_system ),
 	min_attenuation_( INFINITY ),
 	max_attenuation_( -INFINITY ),
@@ -322,7 +322,7 @@ bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	Index3D newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
 	// New model
-	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_ };
+	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_, name_, VoxelData{} };
 
 
 	// Copy data to new model
