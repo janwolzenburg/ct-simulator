@@ -19,7 +19,7 @@ using std::for_each;
 #include <numeric>
 #include "spectrum.h"
 #include "generelMath.h"
-
+#include "rayScattering.h"
 
 /*********************************************************************
    Implementations
@@ -79,6 +79,16 @@ double EnergySpectrum::GetSum( void ) const{
 
 double EnergySpectrum::GetTotalPowerIn_eVPerSecond( void ) const{
 	return std::accumulate( photonflow_per_energy_.cbegin(), photonflow_per_energy_.cend(), 0., [] ( const double& currentSum, const Tuple2D& currentValue ){ return currentSum + currentValue.x * currentValue.y; } );;
+
+}
+
+double EnergySpectrum::GetMeanComptonCrossSection( void ) const{
+
+	return std::accumulate( photonflow_per_energy_.cbegin(), 
+							photonflow_per_energy_.cend(), 0., 
+							[] ( const double& currentSum, const Tuple2D& currentValue ){ 
+								return currentSum + currentValue.y * Compton_Cross_Section::GetInstance().GetCrossSection( currentValue.x ); } ) / GetSum();
+
 
 }
 

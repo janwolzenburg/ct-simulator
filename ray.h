@@ -180,6 +180,8 @@ class Ray : public Line{
 	*/
 	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
 
+	double GetMeanComptonCrossSection( void ) const{ return properties_.energy_spectrum_.GetMeanComptonCrossSection(); };
+
 	/*!
 	 * @brief Convert Ray components to different coordinate system
 	 * @param target_coordinate_system Target system

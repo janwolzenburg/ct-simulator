@@ -116,6 +116,8 @@ class EnergySpectrum {
 	*/
 	void ScaleEvenly( const double factor );
 
+	double GetMeanComptonCrossSection( void ) const;
+
 
 	private:
 
