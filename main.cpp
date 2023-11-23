@@ -10,6 +10,8 @@
 using std::cerr;  using std::endl; using std::cout;
 
 #include <type_traits>
+#include <memory>
+using std::unique_ptr;
 
 #include "programState.h"
 #include "test_model.h"
@@ -18,6 +20,8 @@ using std::cerr;  using std::endl; using std::cout;
 
 #include "fl_MainWindow.h"
 #include "fl_ProcessingWindow.h"
+
+#include "fl_ModelCreator.h"
 
 /*!
  * @brief Main function
@@ -29,7 +33,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	
 	//Model testModel = getTestModel( GlobalSystem(), 20 );
 	
-	Model debugModel{ GlobalSystem()->CreateCopy( "Model system"), Index3D{3, 3, 1}, Tuple3D{1., 1., 1.}, string{"Debug model"}};
+	//Model debugModel{ GlobalSystem()->CreateCopy( "Model system"), Index3D{3, 3, 1}, Tuple3D{1., 1., 1.}, string{"Debug model"}};
 	/*
 	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 0, 0, 0 } );
 	debugModel.SetVoxelData( VoxelData{ mu_water, reference_energy_for_mu_eV, }, Index3D{ 0, 1, 0 } );
@@ -49,6 +53,11 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	
 	*/
 
+	unique_ptr<Fl_ModelCreator> model_creator = std::make_unique<Fl_ModelCreator>( 1280, 720, "Model Creator" );
+
+	while( Fl::wait() );
+
+	return 0;
 	
 
 	Fl_Group::current( NULL );
