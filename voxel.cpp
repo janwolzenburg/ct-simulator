@@ -26,7 +26,7 @@
  */
 
  const std::map < VoxelData::SpecialProperty, string> VoxelData::special_property_names{
-		{ None,			"Not special" },
+		{ None,			"None" },
 		{ Metal,		"Iron" },
 		{ Undefined,	"Undefined" }
 };
