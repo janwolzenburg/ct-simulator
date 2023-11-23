@@ -25,7 +25,13 @@
 	VoxelData implementation
  */
 
- double VoxelData::artefact_impact_factor_ = 1.;
+ const std::map < VoxelData::SpecialProperty, string> VoxelData::special_property_names{
+		{ None,			"Not special" },
+		{ Metal,		"Iron" },
+		{ Undefined, "Undefined" }
+};
+
+double VoxelData::artefact_impact_factor_ = 1.;
 
 VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
 	attenuation_( GetAttenuationAtReferenceEnergy( attenuationAtFrequency, frequency ) ),
