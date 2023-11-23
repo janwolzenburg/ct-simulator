@@ -100,15 +100,15 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
-			double line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_attenuation );
+			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_attenuation, gantry.tube().number_of_rays_per_pixel() );
 			
 			// If negative no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
-			if( line_integral < 0 ){
+			if( !line_integral.has_value() ){
 				line_integral = 25.; // Is like ray's energy is 1 / 100000000000 of its start energy 
 			}
 			// Get the radon point
-			const RadonPoint newRadonPoint{ newRadonCoordinates, line_integral };
+			const RadonPoint newRadonPoint{ newRadonCoordinates, line_integral.value() };
 
 			// Assign the data to sinogram
 			sinogram.AssignData( newRadonPoint );

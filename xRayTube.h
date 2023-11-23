@@ -49,7 +49,7 @@ class XRayTubeProperties {
 	};
 
 	/*!
-	 * @brief Material map. Combines enumeration with name_ and atomic number_of_pixel
+	 * @brief Material map. Combines enumeration with name and atomic number
 	*/
 	static const std::map<Material, pair<string, size_t>> materials;
 

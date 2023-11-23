@@ -24,32 +24,34 @@
 	DetectorPixel implementation
 */
 
-double DetectorPixel::GetDetectedLineIntegral( const bool use_simple_attenuation ) const{
+optional<double> DetectorPixel::GetDetectedLineIntegral( const bool use_simple_attenuation, const size_t expected_ray_hits ) const{
 
-	double sum_of_start_intensity = 0.;
+	double start_intensity = 0.;
 	double sum_of_end_intensity = 0.;
 	double sum_of_simple_end_intensity = 0.;
-	double sum_of_simple_start_intensity = 0.;
+	//double sum_of_simple_start_intensity = 0.;
 
 
 	// Iterate all detected Ray properties
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
+
 		sum_of_end_intensity += currentRay.energy_spectrum_.GetTotalPower();
-		sum_of_start_intensity += currentRay.start_intensity();
+		start_intensity = currentRay.start_intensity();
+		//sum_of_start_intensity += currentRay.start_intensity();
 
 		sum_of_simple_end_intensity += currentRay.simple_intensity();
-		sum_of_simple_start_intensity += 1.;
+		//sum_of_simple_start_intensity += 1.;
 
 	}
 
-	// Check no rays were detected return -1
+	// Check no rays were detected return empty
 	if( detected_ray_properties_.size() == 0){
-		return -1.;
+		return {};
 	}
 
 	// Calculate line inegral
-	const double line_integral_spectrum = log( sum_of_start_intensity / sum_of_end_intensity );
-	const double line_integral_simple= log( sum_of_simple_start_intensity / sum_of_simple_end_intensity );
+	const double line_integral_spectrum = ForceToMin( log( start_intensity * static_cast<double>( expected_ray_hits ) / sum_of_end_intensity ), 0. );
+	const double line_integral_simple= ForceToMin( log( 1.* static_cast<double>( expected_ray_hits ) / sum_of_simple_end_intensity ), 0. );
 
 	return !use_simple_attenuation ? line_integral_spectrum : line_integral_simple;
 }

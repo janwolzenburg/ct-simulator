@@ -49,7 +49,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 	detector_title_{	X( detector_group_, .0 ),	Y( detector_group_, 0. ),	W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
 	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Projections" },
 	number_of_distances_input_{		X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances" },
-	distance_range_input_{		X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distnace range" },
+	distance_range_input_{		X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distance range" },
 
 	number_of_rays_per_pixel_input_{ X( detector_group_, .0 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pixel" },
 	detector_focus_distance_input_{	X( detector_group_, .25 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Focus Dist." },

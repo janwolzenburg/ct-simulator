@@ -15,6 +15,8 @@
  #include<FL/Fl_Widget.H>
  #include<type_traits>
 
+ #include "generel.h"
+
  /*********************************************************************
 	Definitions
  *********************************************************************/
@@ -39,5 +41,20 @@ int vOff( const C& parent );
 template<class C, std::enable_if_t<std::is_base_of_v< Fl_Widget, C >, bool> = false>
 int hOff( const C& parent );
 
+
+ struct PixelCoordinates{
+
+	PixelCoordinates( const int x, const int y ) : 
+		x( x ), y( y ){};
+
+	PixelCoordinates( const size_t u_x, const size_t u_y ) : 
+		PixelCoordinates{ static_cast<int>( u_x ), static_cast<int>( u_y ) }{};
+
+	PixelCoordinates( const Index2D index ) :
+		PixelCoordinates{ index.x, index.y }{};
+
+	int x;
+	int y;
+ };
 
 #include "widgets.hpp"

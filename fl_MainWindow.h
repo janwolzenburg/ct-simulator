@@ -16,6 +16,7 @@
 #include "FL/Fl_Group.H"
 #include "FL/Fl_Button.H"
 
+#include "fl_ModelCreator.h"
 #include "fl_ModelView.h"
 #include "fl_GantryCreation.h"
 #include "fl_TomographyExecution.h"
@@ -55,10 +56,12 @@ class Fl_MainWindow : public Fl_Window{
 	*/
 	void SetResetAtExit( void );
 
+	void CreateModel( void );
 
 	public:
 
 	Fl_Group menu_group_;							/*!< Group at window top for multi purpose items*/
+	Fl_Button model_creator_button_;				/*!< Button for model creation*/
 	Fl_Button import_projections_button_;			/*!< Button for projections import*/
 	Fl_Button reset_program_state_at_exit_button_;	/*!< Button to reset program state*/
 
@@ -70,5 +73,7 @@ class Fl_MainWindow : public Fl_Window{
 
 	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;	/*!< Callback to reset program state at exit*/
 	CallbackFunction<Fl_MainWindow> import_projections_callback_;	/*!< Callback to import projections*/
+	CallbackFunction<Fl_MainWindow> create_model_callback_;	/*!< Callback to create model*/
 
+	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;
 };

@@ -25,6 +25,7 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
 
 	menu_group_{					X( *this, 0. ),							Y( *this, 0.005 ),		W( *this, 1. ),		H( *this, 0.034 ) },
+	model_creator_button_{			X( menu_group_, .1 ),							Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
 	import_projections_button_{		X( menu_group_, .7 ),							Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
 	reset_program_state_at_exit_button_{	X( menu_group_, .9 ),							Y( menu_group_, 0. ),		W( menu_group_, .1 ),		H( menu_group_, 1. ), "Reset program" },
 
@@ -35,7 +36,8 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	import_projections_file_chooser_{ FileChooser{ "Import Sinogram", "*.projections", path{ "./" } }, "import.chooser", false },
 	
 	reset_program_state_callback_{ *this, &Fl_MainWindow::SetResetAtExit },
-	import_projections_callback_{ *this, &Fl_MainWindow::ImportProjections }
+	import_projections_callback_{ *this, &Fl_MainWindow::ImportProjections },
+	create_model_callback_{ *this, &Fl_MainWindow::CreateModel }
 	
 {
 
@@ -50,6 +52,10 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 
 	menu_group_.add( reset_program_state_at_exit_button_ );
 	reset_program_state_at_exit_button_.callback( CallbackFunction<Fl_MainWindow>::Fl_Callback, &reset_program_state_callback_ );
+	
+	menu_group_.add( model_creator_button_ );
+	model_creator_button_.callback( CallbackFunction<Fl_MainWindow>::Fl_Callback, &create_model_callback_ );
+
 
 	gantry_creation_.deactivate();
 	tomography_execution_.deactivate();
@@ -84,4 +90,12 @@ void Fl_MainWindow::ImportProjections( void ){
 
 	tomography_execution_.AssignProjections( static_cast<Projections>( tempory_projections ) );
 	
+}
+
+void Fl_MainWindow::CreateModel( void ){
+
+	std::unique_ptr<Fl_ModelCreator> ptr = std::make_unique<Fl_ModelCreator>(  static_cast<int>( 1440 ), static_cast<int>( 720 ), "Model Creator" );
+	creator_windows_.push_back( std::move( ptr ) );
+	creator_windows_.back()->show();
+
 }

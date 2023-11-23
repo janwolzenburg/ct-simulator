@@ -11,6 +11,9 @@
   /*********************************************************************
 	Includes
  *********************************************************************/
+ 
+ #include <optional>
+ using std::optional;
  #include "surface.h"
  #include "ray.h"
  #include "intersections.h"
@@ -65,9 +68,10 @@ class DetectorPixel : public BoundedSurface{
 	/*!
 	 * @brief Get the value of radon point for the detected Ray properties
 	 * @param use_simple_attenuation If set use ideal model attenuation which is not energy dependent
+	 * @param expected_ray_hits The expected amount of rays to hit the pixel
 	 * @return Value of radon point
 	*/
-	double GetDetectedLineIntegral( const bool use_simple_attenuation ) const;
+	optional<double> GetDetectedLineIntegral( const bool use_simple_attenuation, const size_t expected_ray_hits ) const;
 
 	/*!
 	 * @brief Convert this pixel ot given coordinate system

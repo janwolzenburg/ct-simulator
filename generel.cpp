@@ -148,6 +148,12 @@ int ToNum<int>( const string str ){
 }
 
 template<>
+unsigned int ToNum<unsigned int>( const string str ){
+	if( str.length() == 0 ) return 0;
+	return std::stoul( str );
+}
+
+template<>
 long long ToNum<long long>( const string str ){
 	if( str.length() == 0 ) return 0;
 	return std::stoll( str );

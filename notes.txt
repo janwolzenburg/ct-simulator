@@ -1,17 +1,9 @@
-- Export filtered projections, Reconstructed image
-- Filter adjustable
-
-
-TODO: Scattering ray attenuation
-
-TODO: conversion to HU
 
 TODO: verify scattering angles and propability
-TODO: Tooltips and labels
+
 
 TODO: Check file Heads
 
 
 Precomputation for presentation
-Model creation
 //DICOM converter

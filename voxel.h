@@ -14,6 +14,8 @@
 
 #include <array> 
 using std::array;
+#include <map>
+using std::map;
 #include "generelMath.h"
 #include "vector3D.h"
 #include "surface.h"
@@ -50,6 +52,15 @@ class VoxelData{
 		Metal =			0b00000001,
 		Undefined =		0b00000010
 	};
+
+	static const std::map<SpecialProperty, string> special_property_names;
+	
+	/*!
+	 * @brief Get enumeration from string
+	 * @param property_string String to find property for
+	 * @return Proeprty enumeration
+	*/
+	static SpecialProperty GetPropertyEnum( const string property_string );
 
 	/*!
 	 * @brief Get the attenuation at reference energy

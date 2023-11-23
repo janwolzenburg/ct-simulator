@@ -48,7 +48,7 @@ class Model : public MathematicalObject{
 	 * @param voxel_size Spacial size of voxels
 	 * @param name Name of model
 	*/
-	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name = "Default model name_" );
+	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name, const VoxelData defaultData = VoxelData{} );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -60,7 +60,7 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief Default constructor
 	*/
-	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } ){};
+	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } , string{}, VoxelData{} ){};
 
 	/*!
 	 * @brief Convert model's data to string
@@ -103,7 +103,7 @@ class Model : public MathematicalObject{
 	 * @brief Get range of attenuation in model
 	 * @return Range of attenuation
 	*/
-	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ }; };
+	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ + ( min_attenuation_ == max_attenuation_ ) ? min_attenuation_ + 1e-18 : 0. }; };
 
 	/*!
 	 * @brief Get model name_
@@ -212,10 +212,10 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief Get slice through model
 	 * @param slice_location Where to slice
-	 * @param resolution GetResolution of grid
+	 * @param number_of_points Amount of points along the slice axis
 	 * @return Grid with slice
 	*/
-	DataGrid<VoxelData> GetSlice( const Surface slice_location, const double resolution ) const; 
+	DataGrid<VoxelData> GetSlice( const Surface slice_location, const GridIndex number_of_points ) const; 
 
 	/*!
 	 * @brief Alter special properties in the specified sphere
