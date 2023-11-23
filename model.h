@@ -103,7 +103,7 @@ class Model : public MathematicalObject{
 	 * @brief Get range of attenuation in model
 	 * @return Range of attenuation
 	*/
-	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ }; };
+	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ + ( min_attenuation_ == max_attenuation_ ) ? min_attenuation_ + 1e-18 : 0. }; };
 
 	/*!
 	 * @brief Get model name_

@@ -49,8 +49,8 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
 	voxel_data_( number_of_voxel_, defaultData ),
 	coordinate_system_( coordinate_system ),
-	min_attenuation_( INFINITY ),
-	max_attenuation_( -INFINITY ),
+	min_attenuation_( defaultData.GetAttenuationAtReferenceEnergy() ),
+	max_attenuation_( defaultData.GetAttenuationAtReferenceEnergy() ),
 	name_( name_ )
 {
 	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
