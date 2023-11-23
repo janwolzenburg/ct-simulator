@@ -45,7 +45,7 @@ int hOff( const C& parent );
  struct PixelCoordinates{
 
 	PixelCoordinates( const int x, const int y ) : 
-		x( x ), y( x ){};
+		x( x ), y( y ){};
 
 	PixelCoordinates( const size_t u_x, const size_t u_y ) : 
 		PixelCoordinates{ static_cast<int>( u_x ), static_cast<int>( u_y ) }{};
