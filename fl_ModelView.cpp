@@ -212,7 +212,7 @@ bool Fl_ModelView::SliceModel( void ){
 	
 	properties_.SetAsLoaded();
 
-	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, .5 * Min( Min( model_.voxel_size().x, model_.voxel_size().y ), model_.voxel_size().z ) );
+	DataGrid<VoxelData> tempSlice = model_.GetSlice(  properties_.slice_plane.surface, .25 * Min( Min( model_.voxel_size().x, model_.voxel_size().y ), model_.voxel_size().z ) );
 	
 	if( tempSlice.size().c == 0 || tempSlice.size().r == 0 ){
 		Fl_Group::window()->activate();
