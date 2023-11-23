@@ -54,6 +54,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	*/
 
 	unique_ptr<Fl_ModelCreator> model_creator = std::make_unique<Fl_ModelCreator>( 1280, 720, "Model Creator" );
+	model_creator->show();
 
 	while( Fl::wait() );
 
