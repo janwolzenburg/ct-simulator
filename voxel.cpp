@@ -45,7 +45,7 @@ VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_str
 }
 
 VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
-	attenuation_( GetAttenuationAtReferenceEnergy( attenuationAtFrequency, frequency ) ),
+	attenuation_( attenuationAtFrequency * pow( frequency / reference_energy_for_mu_eV, 3. ) ),
 	specialProperties_( specProperty )
 {}
 

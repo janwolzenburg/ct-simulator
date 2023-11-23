@@ -6,5 +6,4 @@ TODO: Check file Heads
 
 
 Precomputation for presentation
-Model creation
 //DICOM converter
