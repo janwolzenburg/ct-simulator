@@ -447,7 +447,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 }
 
-DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double resolution ) const{
+DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridIndex number_of_points ) const{
 
 	// Distance between corners furthest away from each other
 	const double cornerDistance = sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
@@ -458,12 +458,12 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const double r
 	const Surface localSurface = sliceLocation.ConvertTo( coordinate_system_ );
 	 
 
-
+	size_t Mmax_number_of_points = Max( number_of_points.c, number_of_points.r );
 	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
 	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
-	GridCoordinates sliceResolution( resolution, resolution );
+	GridCoordinates sliceResolution( ( sliceEnd.c - sliceStart.c ) / Mmax_number_of_points / 4., ( sliceEnd.r - sliceStart.r ) / Mmax_number_of_points / 4.  );
 
-	DataGrid<VoxelData> largeSlice( NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() );
+	DataGrid<VoxelData> largeSlice{ NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() };
 
 	// Update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
 	sliceStart = largeSlice.start();

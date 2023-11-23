@@ -212,10 +212,10 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief Get slice through model
 	 * @param slice_location Where to slice
-	 * @param resolution GetResolution of grid
+	 * @param number_of_points Amount of points along the slice axis
 	 * @return Grid with slice
 	*/
-	DataGrid<VoxelData> GetSlice( const Surface slice_location, const double resolution ) const; 
+	DataGrid<VoxelData> GetSlice( const Surface slice_location, const GridIndex number_of_points ) const; 
 
 	/*!
 	 * @brief Alter special properties in the specified sphere
