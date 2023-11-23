@@ -46,14 +46,14 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_ModelCreator( int w, int h, const char* label ) :
 		Fl_Window{ w, h, label },
 		
-		model_size_group_{		X( *this, .05 ),				Y( *this, .05 ),				W( *this, .4 ),				H( *this, .9 ), "Model size" },
-		model_size_x_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .05 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "# Voxel x: " },
-		model_size_y_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .15 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "# Voxel x: " },
-		model_size_z_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .25 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "# Voxel x: " },
-		voxel_size_x_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .4 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
-		voxel_size_y_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .5 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
-		voxel_size_z_input_{	X( model_size_group_, .5 ),		Y( model_size_group_, .6 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
-		store_size_button_{		X( model_size_group_, .5 ),		Y( model_size_group_, .6 ),	W( model_size_group_, .4 ),	H( model_size_group_, .05 ), "Store size" },
+		model_size_group_{		X( *this, .05 ),				Y( *this, .075 ),				W( *this, .3 ),					H( *this, .85 ), "Model size" },
+		model_size_x_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .05 ),	W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "# Voxel x: " },
+		model_size_y_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .125 ),	W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "# Voxel x: " },
+		model_size_z_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .20 ),	W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "# Voxel x: " },
+		voxel_size_x_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
+		voxel_size_y_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
+		voxel_size_z_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .25 ),	H( model_size_group_, .05 ), "Voxelsize x in mm: " },
+		store_size_button_{		X( model_size_group_, .25 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .5 ),		H( model_size_group_, .075 ), "Store size" },
 
 
 		model_size_changed_callback_{ *this, &Fl_ModelCreator::UpdateModelSize },
@@ -63,8 +63,9 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_{ 1., 1., 1. }
 	{
 		Fl_Window::add( model_size_group_ );
+		model_size_group_.labelsize( 30 );
 
-		
+		model_size_group_.box( FL_BORDER_BOX );
 		model_size_group_.add( model_size_x_input_ ); model_size_group_.add( model_size_y_input_ ); model_size_group_.add( model_size_z_input_ ); 
 		model_size_group_.add( voxel_size_x_input_ ); model_size_group_.add( voxel_size_y_input_ ); model_size_group_.add( voxel_size_z_input_ ); 
 
@@ -90,6 +91,7 @@ class Fl_ModelCreator : public Fl_Window{
 
 
 		model_size_group_.add( store_size_button_ );
+		store_size_button_.labelsize( 25 );
 		store_size_button_.callback( CallbackFunction<Fl_ModelCreator>::Fl_Callback, &model_size_stored_callback_ );
 
 	};
