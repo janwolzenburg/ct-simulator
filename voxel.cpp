@@ -28,10 +28,21 @@
  const std::map < VoxelData::SpecialProperty, string> VoxelData::special_property_names{
 		{ None,			"Not special" },
 		{ Metal,		"Iron" },
-		{ Undefined, "Undefined" }
+		{ Undefined,	"Undefined" }
 };
 
 double VoxelData::artefact_impact_factor_ = 1.;
+
+VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_string ){
+	
+	for( auto& [matEnum, value] : VoxelData::special_property_names ){
+		if( property_string == value )
+			return matEnum;
+	}
+
+	return None;
+
+}
 
 VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
 	attenuation_( GetAttenuationAtReferenceEnergy( attenuationAtFrequency, frequency ) ),

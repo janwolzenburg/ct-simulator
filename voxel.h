@@ -54,6 +54,13 @@ class VoxelData{
 	};
 
 	static const std::map<SpecialProperty, string> special_property_names;
+	
+	/*!
+	 * @brief Get enumeration from string
+	 * @param property_string String to find property for
+	 * @return Proeprty enumeration
+	*/
+	static SpecialProperty GetPropertyEnum( const string property_string );
 
 	/*!
 	 * @brief Get the attenuation at reference energy
