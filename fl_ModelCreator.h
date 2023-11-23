@@ -50,7 +50,7 @@ class Fl_ModelFeature : public Fl_Group{
 		y_positon_input_{			hOff( x_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "y: " },
 		z_positon_input_{			hOff( y_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "z: " },
 		size_input_{				hOff( z_positon_input_ ) + 50,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "Size: " },
-		shape_input_{				hOff( size_input_ ) + 50,				Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "" }
+		shape_input_{				hOff( size_input_ ) + 10,				Y( *this, 0.05 ),		W( *this, .175 ),		H( *this, .9 ), "" }
 	
 	{
 		Fl_Group::add( active_button_ );		
@@ -141,7 +141,8 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_x_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
 		voxel_size_y_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
 		voxel_size_z_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-		store_size_button_{		X( model_size_group_, .2 ),		Y( model_size_group_, .55 ),	W( model_size_group_, .6 ),		H( model_size_group_, .075 ),	"Store size" },
+		name_input_{			X( model_size_group_, .50 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
+		store_size_button_{		X( model_size_group_, .2 ),		Y( model_size_group_, .7 ),		W( model_size_group_, .6 ),		H( model_size_group_, .075 ),	"Store size" },
 
 		features_group_{		X( *this, .25 ),				Y( *this, .075 ),				W( *this, .7 ),					H( *this, .9 ),				"Model features" },
 		background_input_{		X( features_group_, .2 ),		Y( features_group_, .05 ),		W( features_group_, .2 ),		H( features_group_, .05 ),		"Background in 1/mm" },
@@ -157,6 +158,7 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_{ 1., 1., 1. },
 		background_attenuation_( mu_water )
 	{
+
 		Fl_Window::add( model_size_group_ );
 		model_size_group_.labelsize( 30 );
 
@@ -184,6 +186,11 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_y_input_.callback( CallbackFunction<Fl_ModelCreator>::Fl_Callback, &model_size_changed_callback_ );
 		voxel_size_z_input_.callback( CallbackFunction<Fl_ModelCreator>::Fl_Callback, &model_size_changed_callback_ );
 
+		
+		model_size_group_.add( name_input_ );
+		name_input_.align( FL_ALIGN_LEFT );
+		name_input_.value( "Model name" );
+		name_ = string{ name_input_.value() };
 
 		model_size_group_.add( store_size_button_ );
 		store_size_button_.labelsize( 25 );
@@ -222,7 +229,6 @@ class Fl_ModelCreator : public Fl_Window{
 		build_button_.callback( CallbackFunction<Fl_ModelCreator>::Fl_Callback, &build_model_callback_ );
 	
 		
-		
 		features_group_.deactivate();
 
 	};
@@ -241,6 +247,7 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_x_input_;
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_y_input_;
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_z_input_;
+	Fl_Input name_input_;
 	Fl_Button store_size_button_;
 	
 	Fl_Group features_group_;
@@ -257,6 +264,7 @@ class Fl_ModelCreator : public Fl_Window{
 
 	Index3D model_size_;
 	Tuple3D voxel_size_;
+	string name_;
 
 	double background_attenuation_;
 
@@ -271,6 +279,7 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_.y = ForceRange<double>( voxel_size_y_input_.value(), .001, 1000. );
 		voxel_size_.z = ForceRange<double>( voxel_size_z_input_.value(), .001, 1000. );
 
+		name_ = string{ name_input_.value() };
 	};
 
 	void StoreModelSize( void ){
@@ -291,6 +300,13 @@ class Fl_ModelCreator : public Fl_Window{
 	};
 
 	void BuildModel( void ){
+
+		Model model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_ };
+
+
+
+
+
 
 	}
 
