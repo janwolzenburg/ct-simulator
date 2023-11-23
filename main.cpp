@@ -52,13 +52,6 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	return 0;
 	
 	*/
-
-	unique_ptr<Fl_ModelCreator> model_creator = std::make_unique<Fl_ModelCreator>( 1440, 720, "Model Creator" );
-	model_creator->show();
-
-	while( Fl::wait() );
-
-	return 0;
 	
 
 	Fl_Group::current( NULL );

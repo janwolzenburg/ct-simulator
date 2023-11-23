@@ -375,7 +375,7 @@ class Fl_ModelCreator : public Fl_Window{
 		model_size_group_.deactivate();
 		
 		features_group_.activate();
-		features_.begin()->get()->SetActive();
+		features_.front()->SetActive();
 	};
 
 	void UpdateFeatures( void ){
