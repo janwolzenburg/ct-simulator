@@ -41,7 +41,7 @@ class Fl_Selector : public Fl_Group{
 	 * @param h Height
 	 * @param label Label
 	*/
-	Fl_Selector( int x, int y, int w, int h, const char* label );
+	Fl_Selector( int x, int y, int w, int h, const char* label = 0L);
 
 	/*!
 	 * @brief Get selected item
