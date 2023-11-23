@@ -143,7 +143,10 @@ class Ray : public Line{
 	 * @brief Scale specturm linearly
 	 * @param factor Factor
 	*/
-	void ScaleSpectrumEvenly( const double factor ){ properties_.energy_spectrum_.ScaleEvenly( factor ); };
+	void ScaleSpectrumEvenly( const double factor ){ 
+		properties_.energy_spectrum_.ScaleEvenly( factor );
+		properties_.simple_intensity_ *= factor;
+	};
 
 	/*!
 	 * @brief Get the mean energy of spectrum

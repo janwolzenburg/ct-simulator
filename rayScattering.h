@@ -49,7 +49,7 @@ class RayScattering{
 	 * @param location Point where the scattering happens
 	 * @return True when scattered
 	*/
-	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const Point3D location ) const;
+	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const double attenuation_factor, const Point3D location ) const;
 
 	/*!
 	 * @brief Get a random angle to given energy
@@ -69,6 +69,8 @@ class RayScattering{
 
 	UnitVector3D scattering_plane_normal_;	/*!< Rotation normal for scattered rays*/
  };
+
+
 
 /*!
  * @brief Class to store precomputed cross sections of electrons which scatter photons
