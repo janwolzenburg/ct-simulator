@@ -270,7 +270,7 @@
     <ClInclude Include="modelViewProperties.h">
       <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
-    <ClInclude Include="modelCreator.h">
+    <ClInclude Include="fl_ModelCreator.h">
       <Filter>Headerdateien\15 Program\02 GUI\02 Windows</Filter>
     </ClInclude>
     <ClInclude Include="dataGrid.hpp">
