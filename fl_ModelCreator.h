@@ -17,9 +17,11 @@
 #include "FL/Fl_Button.H"
 #include "FL/Fl_Int_Input.H"
 #include "FL/Fl_Float_Input.H"
-#include "FL/Fl_Toggle_Round_Button.H"
+#include "FL/Fl_Toggle_Button.H"
+#include "FL/Fl_Multiline_Output.H"
 #include "fl_BoundInput.h"
 #include "Fl_Selector.h"
+#include "fl_ProgressWindow.h"
 #include "widgets.h"
 
 #include <memory>
@@ -27,9 +29,10 @@ using std::unique_ptr;
 #include <array>
 using std::array;
 
-//#include "programState.h"
 #include "model.h"
 #include "callbackFunction.h"
+#include "fileChooser.h"
+#include "persistingObject.h"
 
 
 
@@ -40,22 +43,32 @@ using std::array;
 class Fl_ModelFeature : public Fl_Group{
 
 	public:
+
+	enum Shape{
+		Sphere,
+		Cube
+	};
+
+	static const std::map<Shape, string> shape_names;
+
+	static Shape GetShapeEnum( const string shape_string );
 	
 	Fl_ModelFeature( int x, int y, int w, int h, const char* label = 0L ) :
 		Fl_Group{ x, y, w, h, label },
 		active_button_{				X( *this, .025 ),						Y( *this, .125 ),		H( *this, .75 ),		H( *this, .75 ) },
-
-		special_property_input_{	hOff( active_button_ ) + 10,			Y( *this, .1 ),			W( *this, .175 ),		H( *this, .8 ) },
-		x_positon_input_{			hOff( special_property_input_ ) + 30,	Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "x: " },
-		y_positon_input_{			hOff( x_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "y: " },
-		z_positon_input_{			hOff( y_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "z: " },
-		size_input_{				hOff( z_positon_input_ ) + 50,			Y( *this, 0.05 ),		W( *this, .1 ),			H( *this, .9 ), "Size: " },
-		shape_input_{				hOff( size_input_ ) + 10,				Y( *this, 0.05 ),		W( *this, .175 ),		H( *this, .9 ), "" }
-	
+		special_property_input_{	hOff( active_button_ ) + 10,			Y( *this, .1 ),			W( *this, .15 ),		H( *this, .8 ) },
+		value_input_{				hOff( special_property_input_ ) + 30,	Y( *this, 0.05 ),		W( *this, .105 ),			H( *this, .9 ), "µ: " },
+		x_positon_input_{			hOff( value_input_ ) + 30,				Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "x: " },
+		y_positon_input_{			hOff( x_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "y: " },
+		z_positon_input_{			hOff( y_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "z: " },
+		size_input_{				hOff( z_positon_input_ ) + 50,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "Size: " },
+		shape_input_{				hOff( size_input_ ) + 20,				Y( *this, 0.125 ),		W( *this, .125 ),		H( *this, .75 ) },
+		is_visible_( true )
 	{
 		Fl_Group::add( active_button_ );		
 		active_button_.color( FL_DARK_RED, FL_DARK_GREEN );
 		active_button_.tooltip( "Activate feature.");
+
 
 
 		Fl_Group::add( special_property_input_ );
@@ -67,6 +80,11 @@ class Fl_ModelFeature : public Fl_Group{
 		special_property_input_.SetCurrentElement( VoxelData::special_property_names.at( VoxelData::SpecialProperty::None ) );
 		special_property_input_.tooltip( "Select if the model feature has a special property.");
 		
+		Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
+		value_input_.copy_tooltip( string{ "Attenuation coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
+		value_input_.SetProperties( 0., 100., 5, None );
+		value_input_.value( mu_water );
+
 		Fl_Group::add( x_positon_input_ ); Fl_Group::add( y_positon_input_ ); Fl_Group::add( z_positon_input_ );
 		x_positon_input_.align( FL_ALIGN_LEFT ); x_positon_input_.SetProperties( .001, 1000., 3, None );
 		y_positon_input_.align( FL_ALIGN_LEFT ); y_positon_input_.SetProperties( .001, 1000., 3, None );
@@ -81,36 +99,95 @@ class Fl_ModelFeature : public Fl_Group{
 		
 
 		Fl_Group::add( shape_input_ );
-		vector<string> shape_names{ "Sphere", "Cube"};
-		
-		shape_input_.AssignElements( shape_names );
-		shape_input_.SetCurrentElement( "Sphere" );
+
+		vector<string> shape_names_string;
+		for( auto& el : shape_names ) shape_names_string.push_back( el.second );
+
+		shape_input_.AssignElements( shape_names_string );
+		shape_input_.SetCurrentElement( shape_names.at( Shape::Sphere ) );
 		shape_input_.tooltip( "Select shape of feature.");
 
 	};
 
 	void callback( Fl_Callback* callback_function, void* p ){
+
+
 		active_button_.callback( callback_function, p );
 		special_property_input_.callback( callback_function, p );
+		value_input_.callback( callback_function, p );
 		x_positon_input_.callback( callback_function, p );
 		y_positon_input_.callback( callback_function, p );
 		z_positon_input_.callback( callback_function, p );
 		size_input_.callback( callback_function, p );
 		shape_input_.callback( callback_function, p );
+
 	};
+
+	
 
 	bool IsActive( void ) const{ return static_cast<bool>( active_button_.value() ); };
 
+	Shape GetShape( void ) const{ return GetShapeEnum( string{ shape_input_.current_element() } ); };
+
+	Tuple3D GetCenter( void ) const{ return { x_positon_input_.value(), y_positon_input_.value(), z_positon_input_.value() }; };
+
+	double GetSize( void ) const{ return size_input_.value(); };
+
+	VoxelData::SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
+
+	double GetValue( void ) const{ return value_input_.value(); };
+
+	void SetActive( void ){
+
+		active_button_.value( 1 );
+		ShowFields();
+
+	}
+
+	void HideFields( void ){
+
+		
+		if( !is_visible_ ) return;
+
+		special_property_input_.hide();
+		value_input_.hide();
+		x_positon_input_.hide();
+		y_positon_input_.hide();
+		z_positon_input_.hide();
+		size_input_.hide();
+		shape_input_.hide();
+
+		is_visible_ = false;
+	};
+
+	void ShowFields( void ){
+
+		
+		if( is_visible_ ) return;
+
+		special_property_input_.show();
+		value_input_.show();
+		x_positon_input_.show();
+		y_positon_input_.show();
+		z_positon_input_.show();
+		size_input_.show();
+		shape_input_.show();
+		
+		is_visible_ = true;
+	};
 
 	private:
 
 	Fl_Toggle_Button active_button_;
 	Fl_Selector special_property_input_;
+	Fl_BoundInput<Fl_Float_Input, double> value_input_;
 	Fl_BoundInput<Fl_Float_Input, double> x_positon_input_;
 	Fl_BoundInput<Fl_Float_Input, double> y_positon_input_;
 	Fl_BoundInput<Fl_Float_Input, double> z_positon_input_;
 	Fl_BoundInput<Fl_Float_Input, double> size_input_;
 	Fl_Selector shape_input_;
+
+	bool is_visible_;
  };
 
 
@@ -134,17 +211,17 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_ModelCreator( int w, int h, const char* label ) :
 		Fl_Window{ w, h, label },
 		
-		model_size_group_{		X( *this, .05 ),				Y( *this, .075 ),				W( *this, .2 ),					H( *this, .9 ),				"Model size" },
-		model_size_x_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .05 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
-		model_size_y_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .125 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
-		model_size_z_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .20 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
-		voxel_size_x_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-		voxel_size_y_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-		voxel_size_z_input_{	X( model_size_group_, .50 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-		name_input_{			X( model_size_group_, .50 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
+		model_size_group_{		X( *this, .015 ),				Y( *this, .075 ),				W( *this, .25 ),				H( *this, .9 ),				"Model size" },
+		model_size_x_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .05 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
+		model_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .125 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
+		model_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .20 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
+		voxel_size_x_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
+		voxel_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
+		voxel_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
+		name_input_{			X( model_size_group_, .450 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
 		store_size_button_{		X( model_size_group_, .2 ),		Y( model_size_group_, .7 ),		W( model_size_group_, .6 ),		H( model_size_group_, .075 ),	"Store size" },
 
-		features_group_{		X( *this, .25 ),				Y( *this, .075 ),				W( *this, .7 ),					H( *this, .9 ),				"Model features" },
+		features_group_{		X( *this, .275 ),				Y( *this, .075 ),				W( *this, .71 ),					H( *this, .9 ),				"Model features" },
 		background_input_{		X( features_group_, .2 ),		Y( features_group_, .05 ),		W( features_group_, .2 ),		H( features_group_, .05 ),		"Background in 1/mm" },
 		information_{			X( features_group_, .5 ),		Y( features_group_, .05 ),		W( features_group_, .45 ),		H( features_group_, .15 ),		"" },
 		build_button_{			X( features_group_, .15 ),		Y( features_group_, .15 ),		W( features_group_, .2 ),		H( features_group_, .05 ),		"Build model" },
@@ -158,7 +235,8 @@ class Fl_ModelCreator : public Fl_Window{
 		voxel_size_{ 1., 1., 1. },
 		background_attenuation_( mu_water )
 	{
-
+	
+		Fl_Window::resizable( *this );
 		Fl_Window::add( model_size_group_ );
 		model_size_group_.labelsize( 30 );
 
@@ -214,7 +292,7 @@ class Fl_ModelCreator : public Fl_Window{
 		for( size_t feature_index = 0; feature_index < num_features; feature_index++ ){
 
 			features_.emplace_back( std::make_unique<Fl_ModelFeature>(
-									X( features_group_, .1 ),		Y( features_group_, .25 + feature_index * ( h_feature + 0.02 ) ),		W( features_group_, .85 ),		H( features_group_, h_feature )
+									X( features_group_, .075 ),		Y( features_group_, .25 + feature_index * ( h_feature + 0.02 ) ),		W( features_group_, .85 ),		H( features_group_, h_feature )
 								) );
 
 			Fl_ModelFeature& feature = *features_.back();
@@ -230,6 +308,16 @@ class Fl_ModelCreator : public Fl_Window{
 	
 		
 		features_group_.deactivate();
+
+		bool first = true;
+		for( auto& feature_ptr : features_ ){
+			if( first ){
+				first = false;
+				continue;
+			}
+			
+			feature_ptr->HideFields();
+		}
 
 	};
 
@@ -287,7 +375,7 @@ class Fl_ModelCreator : public Fl_Window{
 		model_size_group_.deactivate();
 		
 		features_group_.activate();
-		
+		features_.begin()->get()->SetActive();
 	};
 
 	void UpdateFeatures( void ){
@@ -297,17 +385,92 @@ class Fl_ModelCreator : public Fl_Window{
 			background_attenuation_ = background_input_.value();
 		}
 
+		for( auto& feature_ptr : features_ ){
+			
+			if( feature_ptr->IsActive() )
+				feature_ptr->ShowFields();
+			else
+				feature_ptr->HideFields();
+		}
+
 	};
 
 	void BuildModel( void ){
 
-		Model model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_ };
+		unique_ptr<Fl_Progress_Window> progress_window = std::make_unique<Fl_Progress_Window>( this, 12, 1, "Progress");
+
+		deactivate();
+
+		PersistingObject<Model> model{ Model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_attenuation_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
+
+		
+
+		for( size_t x = 0; x < model.size().x; x++ ){
+			progress_window->ChangeLineText( 0, string{ "Builing model slice " + to_string( x + 1) + " of " + to_string( model.size().x ) } );
+
+			for( size_t y = 0; y < model.size().y; y++ ){
+				for( size_t z = 0; z < model.size().z; z++ ){
+
+					const Point3D point( Tuple3D( static_cast<double>( x ) * voxel_size_.x , static_cast<double>( y ) * voxel_size_.y , static_cast<double>( z ) * voxel_size_.z ), model.coordinate_system() );
+
+					// Check active features
+					for( auto& feature_ptr : features_ ){
+						
+						auto& feature = *feature_ptr;
+
+						// Skip if not active
+						if( !feature.IsActive() ) continue;
 
 
+						const Point3D center{ feature.GetCenter(), model.coordinate_system() };
+						const double size = feature.GetSize();
+						const double value = feature.GetValue();
+						const VoxelData::SpecialProperty special_property = feature.GetProperty();
+
+						// Check if current point is inside feature
+						bool has_feature = false;
+						switch( feature.GetShape() ){
+
+							case Fl_ModelFeature::Shape::Sphere:
+
+								if( ( center - point ).length() <= size/2. )
+									has_feature = true;
+							break;
 
 
+							case Fl_ModelFeature::Shape::Cube:
+								if( point.X() <= center.X() + size / 2. && point.X() >= center.X() - size / 2.  &&
+									point.Y() <= center.Y() + size / 2. && point.Y() >= center.Y() - size / 2.  &&
+									point.Z() <= center.Z() + size / 2. && point.Z() >= center.Z() - size / 2.  )
+									has_feature = true;
 
+							break;
 
+						}
+
+						if( has_feature ){
+							model.SetVoxelData( VoxelData{ value, reference_energy_for_mu_eV, special_property }, Index3D{ x, y, z } );
+						}
+
+					}
+				}
+			}
+		}
+
+		delete progress_window.release();
+
+		FileChooser model_export{ "Export model", "*.model", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE };
+		
+		path export_path  = model_export.ChooseFile();
+		
+		if( export_path.empty() ) return;
+
+		if( export_path.extension() != ".model" )
+		export_path += ".model";
+
+		model.Save( export_path, true );
+
+		this->hide();
 	}
 
 };
