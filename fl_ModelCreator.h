@@ -439,9 +439,9 @@ class Fl_ModelCreator : public Fl_Window{
 
 
 							case Fl_ModelFeature::Shape::Cube:
-								if( point.X() <= center.X() + size / 2. && point.X() >= center.X() - size / 2.  &&
-									point.Y() <= center.Y() + size / 2. && point.Y() >= center.Y() - size / 2.  &&
-									point.Z() <= center.Z() + size / 2. && point.Z() >= center.Z() - size / 2.  )
+								if( point.X() < center.X() + size / 2. && point.X() >= center.X() - size / 2.  &&
+									point.Y() < center.Y() + size / 2. && point.Y() >= center.Y() - size / 2.  &&
+									point.Z() < center.Z() + size / 2. && point.Z() >= center.Z() - size / 2.  )
 									has_feature = true;
 
 							break;
@@ -451,6 +451,7 @@ class Fl_ModelCreator : public Fl_Window{
 						if( has_feature ){
 							model.SetVoxelData( VoxelData{ value, reference_energy_for_mu_eV, special_property }, Index3D{ x, y, z } );
 						}
+						
 
 					}
 				}
