@@ -8,15 +8,15 @@
  *********************************************************************/
 
 
- /*********************************************************************
+/*********************************************************************
 	Includes
- *********************************************************************/
+*********************************************************************/
 
- #include <FL/Fl_Widget.H>
- #include <FL/Fl_Group.H>
+#include <FL/Fl_Widget.H>
 
- #include <optional>
- using std::optional;
+ 
+#include <optional>
+using std::optional;
 
 #include "grayscaleImage.h"
 #include "colorImage.h"
@@ -105,8 +105,16 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	*/
 	void resize( int x, int y, int w, int h ) override;
 
+	/*!
+	 * @brief Get size of scaled image
+	 * @return Width and height of scaled image
+	*/
 	Index2D GetImageSize( void ) const{ return {grayscale_image_scaled_.width(), grayscale_image_scaled_.height() }; };
 
+	/*!
+	 * @brief Get size of original image 
+	 * @return Width and height of original image
+	*/
 	Index2D GetOriginalImageSize( void ) const{ return {grayscale_image_.width(), grayscale_image_.height() }; };
 
 
@@ -131,49 +139,4 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	 * @brief Update and redraw image when size changed
 	*/
 	void Update( void );
-};
-
-
-class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
-
-	public:
-
-	Fl_GrayscaleImageWithAxis( int x, int y, int w, int h, const char* label = 0L );
-
-	int x( void )const { return Fl_Group::x(); };
-
-	int y( void )const { return Fl_Group::y(); };
-
-	int w( void )const { return Fl_Group::w(); };
-
-	int h( void )const { return Fl_Group::h(); };
-
-	void SetAxisLabel( const pair<string, string> label );
-
-	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size );
-
-	/*!
-	 * @brief Draw the image
-	*/
-	void draw( void ) override;
-	
-	/*!
-	 * @brief Get value for given x and y coordinate
-	 * @param x Local x coordinate
-	 * @param y Local y coordinate
-	 * @return Raw and color value when x and y are inside image
-	
-	*/
-	optional<pair<double, RGB>> GetValue( int x, int y ) const{ 
-		return Fl_GrayscaleImage::GetValue( x - axis_space_ / 2, y - axis_space_ / 2); };
-
-
-	private:
-
-	constexpr static int axis_space_ = 30;
-	
-	pair<string, string> axis_label_;
-	Tuple2D image_start_;
-	Tuple2D pixel_size_;
-
 };

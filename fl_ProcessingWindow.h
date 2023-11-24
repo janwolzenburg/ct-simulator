@@ -91,12 +91,24 @@ class Fl_ProcessingWindow : public Fl_Window{
 	*/
 	void FilterAndReconstructImage( void );
 
+	/*!
+	 * @brief Update backprojected image
+	*/
 	void UpdateImage( void );
 
+	/*!
+	 * @brief Handle change of Houndsfield Unit calibration value
+	*/
 	void HandleMUChange( void );
 
+	/*!
+	 * @brief Export the filtered projections
+	*/
 	void ExportFilteredProjections( void );
 
+	/*!
+	 * @brief Export the backprojection image 
+	*/
 	void ExportBackprojections( void );
 
  };

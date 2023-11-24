@@ -82,23 +82,21 @@ class Compton_Cross_Section{
 	static constexpr double energy_start_eV = 20000;
 	static constexpr double energy_end_eV = 200000;
 	static constexpr double desired_energy_resolution = 1000;
+	
+	static Compton_Cross_Section& GetInstance( void );
+
 
 	Compton_Cross_Section( const Compton_Cross_Section& ) = delete;
 	
 	Compton_Cross_Section& operator=( const Compton_Cross_Section& ) = delete;
 	
-	static Compton_Cross_Section& GetInstance( void ){
-		static Compton_Cross_Section instance;
-		return instance;
-	}
+	/*!
+	 * @brief Get compton cross section for photon with given energy
+	 * @param energy Energy of photon
+	 * @return Cross section in mm^2
+	*/
+	double GetCrossSection( const double energy ) const;
 
-	double GetCrossSection( const double energy ) const{
-		
-		const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - energy_start_eV ) / energy_resolution_ + 0.5 ) );
-		if( energy_index >= number_of_energies_  ) return cross_sections_.back().y;
-
-		return cross_sections_.at( energy_index ).y;
-	}
 
 	private:
 	
@@ -106,32 +104,9 @@ class Compton_Cross_Section{
 	double energy_resolution_;			/*!< Resolution of energies*/
 	vector<Tuple2D> cross_sections_;	/*!< Vector with energies in eV and corresponding cross sections in mm^2 */
 
-	Compton_Cross_Section( void ) : 
-		number_of_energies_( static_cast<size_t>( ( ( energy_end_eV - energy_start_eV ) / desired_energy_resolution ) ) + 1 ),
-		energy_resolution_( ( energy_end_eV - energy_start_eV ) / static_cast<double>( number_of_energies_ - 1 ) ),
-		cross_sections_( number_of_energies_, Tuple2D{} )
-	{
-		
-		for( size_t current_energy_index = 0; current_energy_index < number_of_energies_; current_energy_index++ ){
-			
-			const double energy_eV = ( energy_start_eV + static_cast<double>( current_energy_index ) * energy_resolution_ );
-			const double reduced_energy = energy_eV / reduced_energy_divisor_eV;
-			const double e = reduced_energy;
-
-			const double cross_section = 2. * PI * pow( r_e_mm, 2. ) * 
-										( 
-											( 
-												( ( 1. + e ) / pow( e, 2. ) ) * 
-												( 2. * ( 1. + e ) / ( 1. + 2. * pow( e, 2. ) ) - log( 1. + 2 * e ) / e ) 
-											) + 
-											log( 1. + 2. * e ) / ( 2. * e ) -
-											( 1. + 3. * e ) / pow( 1. + 2. * e, 2. )
-										);
-
-			cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, cross_section };
-
-		}
-	}
-
+	/*!
+	 * @brief Constructor
+	*/
+	Compton_Cross_Section( void );
 
  };

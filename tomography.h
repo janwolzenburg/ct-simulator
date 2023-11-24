@@ -46,6 +46,7 @@ class TomographyProperties{
 	 * @param max_scattering_occurrences Maximum amount of loops, when rays are scattered. How often can a single ray be scattered
 	 * @param scatter_propability Approximate propability that a Ray is scattered once when transmitted through whole model
 	 * @param use_simple_attenuation Use simple or energy dependant attaenuation
+	 * @param scattered_ray_attenuation_factor Factor to scale the scattered rays energies by
 	*/
 	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, const bool use_simple_attenuation, const double scattered_ray_attenuation_factor );
 	
@@ -69,7 +70,7 @@ class TomographyProperties{
 	size_t max_scattering_occurrences;		/*!< Max. amount each rays can be scattered*/
 	double scatter_propability_correction;	/*!< Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
 	bool use_simple_attenuation;			/*!< Flag for using simple attenuation*/
-	double scattered_ray_attenuation_factor;
+	double scattered_ray_attenuation_factor;/*!< Factor to scale the scattered rays energies by*/
 
 };
 

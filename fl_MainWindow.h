@@ -56,7 +56,11 @@ class Fl_MainWindow : public Fl_Window{
 	*/
 	void SetResetAtExit( void );
 
+	/*!
+	 * @brief Create a  model
+	*/
 	void CreateModel( void );
+
 
 	public:
 
@@ -73,7 +77,7 @@ class Fl_MainWindow : public Fl_Window{
 
 	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;	/*!< Callback to reset program state at exit*/
 	CallbackFunction<Fl_MainWindow> import_projections_callback_;	/*!< Callback to import projections*/
-	CallbackFunction<Fl_MainWindow> create_model_callback_;	/*!< Callback to create model*/
+	CallbackFunction<Fl_MainWindow> create_model_callback_;			/*!< Callback to create model*/
 
-	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;
+	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;	/*!< Storage for creator windows*/
 };

@@ -96,8 +96,17 @@ class ProjectionsProperties{
 	*/
 	size_t number_of_frames_to_fill( void ) const{ return number_of_frames_to_fill_; };
 
+	/*!
+	 * @brief Get mean energy of tube used for this projections
+	 * @return Mean energy in eV
+	*/
 	double tube_mean_energy( void ) const{ return tube_mean_energy_; };
-
+	
+	/*!
+	 * @brief Set mean energy of tube used for this projections
+	 * @param New mean energy in eV
+	 * @return Mean energy in eV
+	*/
 	double tube_mean_energy( const double energy ){ return tube_mean_energy_ = energy ; };
 
 

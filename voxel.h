@@ -53,7 +53,7 @@ class VoxelData{
 		Undefined =		0b00000010
 	};
 
-	static const std::map<SpecialProperty, string> special_property_names;
+	static const std::map<SpecialProperty, string> special_property_names;	/*!< Names of enumerated properties*/
 	
 	/*!
 	 * @brief Get enumeration from string

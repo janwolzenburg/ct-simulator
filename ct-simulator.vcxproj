@@ -167,6 +167,7 @@
     <ClInclude Include="coordinates.h" />
     <ClInclude Include="coordinateSystemTree.fwd.h" />
     <ClInclude Include="coordinateSystemTree.h" />
+    <ClInclude Include="fl_GrayscaleImageWithAxis.h" />
     <ClInclude Include="fl_ModelCreator.h" />
     <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
     <ClCompile Include="coordinateSystemTree.cpp" />
+    <ClCompile Include="fl_GrayscaleImageWithAxis.cpp" />
     <ClCompile Include="fl_ModelCreator.cpp" />
     <ClCompile Include="modelViewProperties.cpp" />
     <ClCompile Include="backprojection.cpp" />

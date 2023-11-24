@@ -116,6 +116,10 @@ class EnergySpectrum {
 	*/
 	void ScaleEvenly( const double factor );
 
+	/*!
+	 * @brief Get mean compton cross section of photons in spectrum
+	 * @return Mean compton cross section in mm^2
+	*/
 	double GetMeanComptonCrossSection( void ) const;
 
 

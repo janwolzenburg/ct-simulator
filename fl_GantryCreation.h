@@ -82,7 +82,7 @@ class Fl_GantryCreation : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> voltage_input_;	/*!< Tube voltage*/
 	Fl_BoundInput<Fl_Float_Input, double> current_input_;	/*!< Tube current*/
 	Fl_Selector anode_material_input_;		/*!< Anode material*/
-	Fl_Toggle_Button toggle_filter_button_;	/*!< Toggle Al-Filter*/
+	Fl_Toggle_Button toggle_filter_button_;	/*!< Toggle Filter*/
 	Fl_BoundInput<Fl_Float_Input, double> filter_cutoff_input;		/*!< Filter cut of energy*/
 	Fl_BoundInput<Fl_Float_Input, double> filter_gradient_input;	/*!< Filter strength*/
 	Fl_Plot<LinePlot> spectrum_plot_;		/*!< Plot of tube sepctrum*/
@@ -98,12 +98,12 @@ class Fl_GantryCreation : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> maximum_ray_angle_input_;			/*!< Maximum angle when structure is enabled*/
 	Fl_Plot<Geometryplot> detector_plot_;									/*!< Plot for detector geometry*/
 
-	Fl_MainWindow& main_window_;
+	Fl_MainWindow& main_window_;	/*!< Reference to main window*/
 
 	PersistingObject<XRayTubeProperties> tube_properties_;						/*!< xRay tube attributes*/
 	PersistingObject<ProjectionsProperties> projections_properties_;			/*!< Parameter in radon space affecting the detector*/
 	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< Parameter only dependent on the physical properties_ od detector*/
 	Gantry gantry_;		/*!< Instance of the gantry constructed from tube and detector parameter*/
 
-	CallbackFunction<Fl_GantryCreation> update_gantry_callback_;
+	CallbackFunction<Fl_GantryCreation> update_gantry_callback_;	/*!< Callback for gantry update*/
 };

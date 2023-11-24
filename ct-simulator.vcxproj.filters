@@ -372,6 +372,9 @@
     <ClInclude Include="generelMath.hpp">
       <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
+    <ClInclude Include="fl_GrayscaleImageWithAxis.h">
+      <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -544,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="fl_ModelCreator.cpp">
       <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="fl_GrayscaleImageWithAxis.cpp">
+      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

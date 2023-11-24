@@ -182,7 +182,11 @@ class Ray : public Line{
 	 * @param distance_traveled Distance the Ray is inside voxel
 	*/
 	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
-
+	
+	/*!
+	 * @brief Get mean compton cross section of photons in spectrum
+	 * @return Mean compton cross section in mm^2
+	*/
 	double GetMeanComptonCrossSection( void ) const{ return properties_.energy_spectrum_.GetMeanComptonCrossSection(); };
 
 	/*!

@@ -43,6 +43,11 @@ class Backprojection : private DataGrid<> {
 	*/
 	Backprojection( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
 
+	/*!
+	 * @brief Constructor from serialized data
+	 * @param binary_data Reference to vector with binary data
+	 * @param current_byte Iterator to start of data in vector
+	*/
 	Backprojection( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
 	DataGrid<>{ binary_data, current_byte }{};
 
@@ -50,9 +55,13 @@ class Backprojection : private DataGrid<> {
 	 * @brief Get gridded data
 	 * @return Gridded data
 	*/
-	 DataGrid<> getGrid( void ) const{ return static_cast<DataGrid<>>( *this ); };
+	DataGrid<> getGrid( void ) const{ return static_cast<DataGrid<>>( *this ); };
 
-	 size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
+	/*!
+	 * @brief Serialize this object
+	 * @param binary_data Reference to vector where data will be appended
+	*/
+	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 
 	 private:

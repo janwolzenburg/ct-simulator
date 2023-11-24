@@ -15,7 +15,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Hor_Value_Slider.H>
 #include <FL/Fl_Box.H>
-#include "fl_GrayscaleImage.h"
+#include "fl_GrayscaleImageWithAxis.h"
 
 
  /*********************************************************************
@@ -105,17 +105,25 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	*/
 	void SetValueTip( const string tooltip_text );
 
+	/*!
+	 * @brief Set axis label
+	 * @param label x and y label
+	*/
 	void Setlabel( const pair<string, string> label ){ image_widget_.SetAxisLabel( label ); };
 
-	
+	/*!
+	 * @brief Set axis tics
+	 * @param pixel_start Start of tics
+	 * @param pixel_size Amount of tics
+	*/
 	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size ){ image_widget_.SetAxis( pixel_start, pixel_size ); };
 
 
 	private:
 
 	Fl_GrayscaleImageWithAxis image_widget_;	/*!< The image widget*/
-	Fl_Hor_Value_Slider lower_bound_;	/*!< Low bound*/
-	Fl_Hor_Value_Slider upper_bound_;	/*!< High bound*/
+	Fl_Hor_Value_Slider lower_bound_;			/*!< Low bound*/
+	Fl_Hor_Value_Slider upper_bound_;			/*!< High bound*/
 			
 	Fl_Box current_value_text_;			/*!< Output for common factor*/
 	Fl_Box current_value_tip_;			/*!< Output for common factor*/

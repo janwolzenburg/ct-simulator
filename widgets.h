@@ -42,7 +42,10 @@ template<class C, std::enable_if_t<std::is_base_of_v< Fl_Widget, C >, bool> = fa
 int hOff( const C& parent );
 
 
- struct PixelCoordinates{
+/*!
+ * @brief Storage of x and y pixel coordinates
+*/
+struct PixelCoordinates{
 
 	PixelCoordinates( const int x, const int y ) : 
 		x( x ), y( y ){};
@@ -55,6 +58,6 @@ int hOff( const C& parent );
 
 	int x;
 	int y;
- };
+};
 
 #include "widgets.hpp"

@@ -64,10 +64,22 @@ class Projections : private DataGrid<> {
 	*/
 	DataGrid<> data( void ) const{ return static_cast<DataGrid<>>( *this ); };
 	
+	/*!
+	 * @brief Get start of projections
+	 * @return Smallest angle and distance
+	*/
 	GridCoordinates start( void ) const{ return DataGrid<>::start(); };
 
+	/*!
+	 * @brief Get resolution
+	 * @return Angle and distance resolution
+	*/
 	GridCoordinates resolution( void ) const{ return DataGrid<>::resolution(); };
 
+	/*!
+	 * @brief Get projection properties
+	 * @return Properties of projections
+	*/
 	ProjectionsProperties properties( void ) const{ return properties_; };
 	
 	/*!
@@ -82,9 +94,19 @@ class Projections : private DataGrid<> {
 	*/
 	void AssignData( const RadonPoint radon_point );
 
+	/*!
+	 * @brief Get mean energy of tube used for this projections
+	 * @return Mean energy in eV
+	*/
 	double tube_mean_energy( void ) const{ return properties_.tube_mean_energy(); };
 
+	/*!
+	 * @brief Set mean energy of tube used for this projections
+	 * @param New mean energy in eV
+	 * @return Mean energy in eV
+	*/
 	double tube_mean_energy( const double energy ){ return properties_.tube_mean_energy( energy ); };
+
 
 	private:
 
