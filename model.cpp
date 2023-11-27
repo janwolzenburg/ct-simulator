@@ -298,7 +298,8 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
 			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
-				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, tomoParameter.scattered_ray_attenuation_factor, currentPntOnRay ) ){
+				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay ) ){
+					modelRay.ScaleSpectrumEvenly( tomoParameter.scattered_ray_attenuation_factor );
 					return modelRay;
 				}
 			}

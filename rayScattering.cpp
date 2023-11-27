@@ -62,7 +62,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const double attenuation_factor, const Point3D newOrigin ) const{
+bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const Point3D newOrigin ) const{
 
 
 	// Check if ray is scattered
@@ -86,14 +86,6 @@ bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double
 	
 	// Scattering angle
 	const double angle = GetRandomAngle( ray_energy_eV );
-	
-	// Calculate anergy loss
-	
-	const double energy_after_scatter = 1. / ( Per_me_c2_eV * ( 1. - cos( angle ) ) + 1. / ray_energy_eV );
-	const double relative_energy_loss = energy_after_scatter / ray_energy_eV;
-
-	// Scale spectrum according to energy loss
-	r.ScaleSpectrumEvenly( attenuation_factor * relative_energy_loss );
 
 	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
 	r.SetOrigin( newOrigin );

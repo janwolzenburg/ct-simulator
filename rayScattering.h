@@ -49,7 +49,7 @@ class RayScattering{
 	 * @param location Point where the scattering happens
 	 * @return True when scattered
 	*/
-	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const double attenuation_factor, const Point3D location ) const;
+	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const Point3D location ) const;
 
 	/*!
 	 * @brief Get a random angle to given energy
