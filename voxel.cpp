@@ -45,7 +45,7 @@ VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_str
 }
 
 VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty specProperty ) :
-	absorption_( absorption_at_energy * pow( energy / reference_energy_for_mu_eV, 3. ) ),
+	absorption_( absorption_at_energy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. ) ),
 	specialProperties_( specProperty )
 {}
 
