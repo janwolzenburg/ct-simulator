@@ -21,7 +21,7 @@ constexpr double min_detetector_arc_angle_rad = 2. * PI * ( 40. / 360. );	/*!< M
 constexpr double default_ray_step_size_mm = 5e-2;							/*!< Stepsize during Ray iteration in Ray direction vector's unit*/
 constexpr double default_scatter_propability_correction = 0.05;				/*!< Correction factor for scatter propability*/
 
-constexpr size_t default_max_radiation_loops = 16;							/*!< How often can a Ray be scattered*/
+constexpr size_t default_max_radiation_loops = 4;							/*!< How often can a Ray be scattered*/
 
 constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!< Default maximum arc_angle between ray and pixel normal allowed by anti scattering structure*/
 
