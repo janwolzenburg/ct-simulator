@@ -3,7 +3,3 @@ TODO: verify scattering angles and propability
 
 
 TODO: Check file Heads
-
-
-Precomputation for presentation
-//DICOM converter
