@@ -51,7 +51,7 @@ GrayscaleImage::GrayscaleImage( const DataGrid<VoxelData>& source, const bool no
 {
 	for( size_t c = 0; c < width_; c++ ){
 		for( size_t r = 0; r < height_; r++ ){
-			raw_data_.at( c + r * width_ ) = source.operator()( GridIndex{ c, r } ).GetAttenuationAtReferenceEnergy();
+			raw_data_.at( c + r * width_ ) = source.operator()( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy();
 		}
 	}
 	

@@ -87,8 +87,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
 
-	mu_water_input_.tooltip( "Enter attenuation coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
-	hu_mu_selection_button_.tooltip("Switch between view of attenuation coefficient and Houndsfield Units. Least are calculated by the entered value.");
+	mu_water_input_.tooltip( "Enter absorption coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
+	hu_mu_selection_button_.tooltip("Switch between view of absorption coefficient and Houndsfield Units. Least are calculated by the entered value.");
 
 	projections_image_.align( FL_ALIGN_TOP );
 	filtered_projections_image_.align( FL_ALIGN_TOP );
@@ -184,11 +184,11 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 		
 			double current_value = raw_image_data.GetData( GridIndex{ column_index, row_index } );
 
-			// Correct if simple attenuation is not used
+			// Correct if simple absorption is not used
 			if( projections_.properties().tube_mean_energy() >= 0 ){
 
 				raw_image_data.SetData( GridIndex{ column_index, row_index }, 
-							VoxelData::GetAttenuationAtReferenceEnergy( 
+							VoxelData::GetAbsorptionAtReferenceEnergy( 
 								current_value, 
 								projections_.properties().tube_mean_energy() ) );
 			}

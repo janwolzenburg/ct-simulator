@@ -68,7 +68,7 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 			const GridIndex pixel( c, r );
 			const VoxelData& data_ = modGrid.operator()( pixel );
 
-			grayscale_image_.SetData( pixel, data_.GetAttenuationAtReferenceEnergy() );
+			grayscale_image_.SetData( pixel, data_.GetAbsorptionAtReferenceEnergy() );
 			
 			if( data_.HasSpecialProperty() ){
 				

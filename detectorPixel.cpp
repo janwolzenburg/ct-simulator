@@ -24,7 +24,7 @@
 	DetectorPixel implementation
 */
 
-optional<double> DetectorPixel::GetDetectedLineIntegral( const bool use_simple_attenuation, const size_t expected_ray_hits ) const{
+optional<double> DetectorPixel::GetDetectedLineIntegral( const bool use_simple_absorption, const size_t expected_ray_hits ) const{
 
 	double start_intensity = 0.;
 	double sum_of_end_intensity = 0.;
@@ -53,7 +53,7 @@ optional<double> DetectorPixel::GetDetectedLineIntegral( const bool use_simple_a
 	const double line_integral_spectrum = ForceToMin( log( start_intensity * static_cast<double>( expected_ray_hits ) / sum_of_end_intensity ), 0. );
 	const double line_integral_simple= ForceToMin( log( 1.* static_cast<double>( expected_ray_hits ) / sum_of_simple_end_intensity ), 0. );
 
-	return !use_simple_attenuation ? line_integral_spectrum : line_integral_simple;
+	return !use_simple_absorption ? line_integral_spectrum : line_integral_simple;
 }
 
 DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{

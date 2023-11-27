@@ -261,7 +261,7 @@ void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod,
 		for( size_t iY = 0; iY < mod.number_of_voxel_3D().y; iY++ ){
 			for( size_t iZ = 0; iZ < mod.number_of_voxel_3D().z; iZ++ ){
 				Voxel voxel = mod.GetVoxel( Index3D{ iX, iY, iZ } );
-				if( voxel.data().GetAttenuationAtReferenceEnergy() >= static_cast<double>( threshold ) ){
+				if( voxel.data().GetAbsorptionAtReferenceEnergy() >= static_cast<double>( threshold ) ){
 					addSingleObject( axis, "voxel(" + to_string( iX ) + "," + to_string( iY ) + "," + to_string( iZ ) + ")", voxel.GetCenter(), voxel_data_ );
 				}
 			}

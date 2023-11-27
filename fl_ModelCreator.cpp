@@ -59,7 +59,7 @@ Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label 
 	special_property_input_.tooltip( "Select if the model feature has a special property.");
 		
 	Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
-	value_input_.copy_tooltip( string{ "Attenuation coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
+	value_input_.copy_tooltip( string{ "Absorption coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
 	value_input_.SetProperties( 0., 100., 5, None );
 	value_input_.value( mu_water );
 
@@ -159,7 +159,7 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 
 	model_size_{ 3, 3, 3 },
 	voxel_size_{ 1., 1., 1. },
-	background_attenuation_( mu_water )
+	background_absorption_( mu_water )
 {
 	
 	Fl_Window::resizable( *this );
@@ -208,8 +208,8 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 
 	features_group_.add( background_input_ );
 	background_input_.SetProperties( 0., 100., 5, None );
-	background_input_.copy_tooltip( string{ "Background of model. The attenuation coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1." }.c_str() );
-	background_input_.value( background_attenuation_ );
+	background_input_.copy_tooltip( string{ "Background of model. The absorption coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1." }.c_str() );
+	background_input_.value( background_absorption_ );
 		
 	features_group_.add( information_ );
 	information_.value("Add features as you like. Feature have center coordinates\nwith respect to model's origin at one corner.\nFeatures can have a special property and different\nshapes and sizes.");
@@ -272,8 +272,8 @@ void Fl_ModelCreator::StoreModelSize( void ){
 void Fl_ModelCreator::UpdateFeatures( void ){
 		
 	// Backgrouund changed
-	if( background_attenuation_ != background_input_.value() ){
-		background_attenuation_ = background_input_.value();
+	if( background_absorption_ != background_input_.value() ){
+		background_absorption_ = background_input_.value();
 	}
 
 	for( auto& feature_ptr : features_ ){
@@ -292,7 +292,7 @@ void Fl_ModelCreator::BuildModel( void ){
 
 	deactivate();
 
-	PersistingObject<Model> model{ Model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_attenuation_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
+	PersistingObject<Model> model{ Model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_absorption_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
 
 		
 

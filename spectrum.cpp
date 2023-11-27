@@ -107,12 +107,12 @@ void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 	}
 }
 
-void EnergySpectrum::Attenuate( const VoxelData& voxel_data, const double distance ){
+void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double distance ){
 	
 	double k;
 
 	for( auto& data_point: photonflow_per_energy_ ){
-		k = voxel_data.GetAttenuationAtEnergy( data_point.x );
+		k = voxel_data.GetAbsorptionAtEnergy( data_point.x );
 		data_point.y *= exp( -k * distance );
 	}
 }

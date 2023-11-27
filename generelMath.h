@@ -53,7 +53,7 @@ constexpr double change_energy_for_constant_mu = 49e3;
 
 constexpr double avogadro_1Permol = 6.0221367e23;				/*!< Avogardo's constant in 1/mol*/
 
-constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Conversion factor from cross section to attenuation coefficiant for water in 1 / mm^3*/
+constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Conversion factor from cross section to absorption coefficiant for water in 1 / mm^3*/
 				 1.	*	// g/cm^3
 				 avogadro_1Permol /
 				 18. * 1e-3; // cm^3/mm^3

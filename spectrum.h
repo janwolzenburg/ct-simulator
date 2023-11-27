@@ -108,7 +108,7 @@ class EnergySpectrum {
 	 * @param voxel_data Voxel data
 	 * @param distance Distance traveled in voxel
 	*/
-	void Attenuate( const VoxelData& voxel_data, const double distance );
+	void GetAbsorped( const VoxelData& voxel_data, const double distance );
 
 	/*!
 	 * @brief Scale this spectrum energy indipendent
