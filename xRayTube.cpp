@@ -138,7 +138,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 	// Write frequency and power values to spectrum
 	emitted_spectrum_ = EnergySpectrum{ energy_spectrum };
-
+	radiation_power_W_ = emitted_spectrum_.GetTotalPower();
 }
 
 void XRayTube::UpdateProperties( const XRayTubeProperties tube_properties ){

@@ -80,12 +80,12 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 
 	maximum_scatterings_input_.bounds(0, 100);
 	maximum_scatterings_input_.step( 1. );
-	scattering_propability_factor_input_.bounds( 1, 1000 );
-	scattering_propability_factor_input_.step( 1. );
-	scattering_propability_factor_input_.lstep( 100. );
+	scattering_propability_factor_input_.bounds( 0., 100 );
+	scattering_propability_factor_input_.step( .5 );
+	scattering_propability_factor_input_.lstep( 10. );
 	scattering_absorption_factor_input_.bounds( .0, 100. );
-	scattering_absorption_factor_input_.step( 0.2 );
-	scattering_absorption_factor_input_.lstep( .5 );
+	scattering_absorption_factor_input_.step( .5 );
+	scattering_absorption_factor_input_.lstep( 10. );
 
 	maximum_scatterings_input_.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scattering_propability_factor_input_.tooltip( "Correction factor in % for scattering propability. More scattering with higher value." );

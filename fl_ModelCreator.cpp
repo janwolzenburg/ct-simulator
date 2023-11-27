@@ -31,7 +31,7 @@
 }
 
 
-Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label = 0L ) :
+Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
 	active_button_{				X( *this, .025 ),						Y( *this, .125 ),		H( *this, .75 ),		H( *this, .75 ) },
 	special_property_input_{	hOff( active_button_ ) + 10,			Y( *this, .1 ),			W( *this, .15 ),		H( *this, .8 ) },

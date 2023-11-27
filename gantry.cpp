@@ -71,7 +71,8 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 									XRayDetector& rayDetector, mutex& detectorMutex ){
 
 	size_t currentRayIndex;
-	Ray currentRay, returnedRay;
+	Ray currentRay;
+	pair<Ray, vector<Ray>> returned_rays;
 
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
@@ -88,24 +89,14 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		currentRay =  rays.at( currentRayIndex );
 
 		// Transmit Ray through model
-		returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
+		returned_rays = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
 
-		// Is the Ray outside the model. If not the ray has been scattered
-		if( !radModel.IsPointInside( returnedRay.origin() ) ){
-			rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
-		}
-		else{
+		rayDetector.DetectRay( cref( returned_rays.first ), ref( detectorMutex ) );
 		
-			iterationMutex.lock();
-			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
-			iterationMutex.unlock();
+		iterationMutex.lock();
+		raysForNextIteration.insert( raysForNextIteration.end(), returned_rays.second.begin(), returned_rays.second.end() );									// Add Ray for next iteration
+		iterationMutex.unlock();
 
-			if( repeat_transmission_after_scattering ){
-				// Ray has been scattered. Repeat transmission but disable scattering this time
-				returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ), true ) );
-				rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
-			}
-		}
 	}
 
 	return;
@@ -146,7 +137,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
 														cref( rayScatterAngles ), cref( rays ),
 														currentLoop == 0,

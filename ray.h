@@ -9,13 +9,14 @@
  
 
 
- /*********************************************************************
+/*********************************************************************
 	Includes
- *********************************************************************/
+*********************************************************************/
 
- #include "line.h"
- #include "voxel.h"
- #include "spectrum.h"
+#include "line.h"
+#include "voxel.h"
+#include "spectrum.h"
+#include "rayScattering.h"
 
 
 
@@ -152,7 +153,7 @@ class Ray : public Line{
 	 * @brief Get the mean energy of spectrum
 	 * @return Mean energy
 	*/
-	double GetMeanEnergyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
+	//double GetMeanEnergyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
 
 	/*!
 	 * @brief Increment the voxel hit count
@@ -187,7 +188,7 @@ class Ray : public Line{
 	 * @brief Get mean compton cross section of photons in spectrum
 	 * @return Mean compton cross section in mm^2
 	*/
-	double GetMeanComptonCrossSection( void ) const{ return properties_.energy_spectrum_.GetMeanComptonCrossSection(); };
+	//double GetMeanComptonCrossSection( void ) const{ return properties_.energy_spectrum_.GetMeanComptonCrossSection(); };
 
 	/*!
 	 * @brief Convert Ray components to different coordinate system
@@ -224,6 +225,7 @@ class Ray : public Line{
 	*/
 	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
+	vector<Ray> Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const double scattered_ray_attenuation, const Point3D newOrigin );
 
 	private:
 

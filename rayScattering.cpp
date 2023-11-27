@@ -62,39 +62,6 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const Point3D newOrigin ) const{
-
-
-	// Check if ray is scattered
-
-	// Calculate compton cross-section
-	const double ray_energy_eV = r.GetMeanEnergyOfSpectrum();
-	const double compton_cross_section = r.GetMeanComptonCrossSection();
-
-	// Get the "attenuatuion coefficient" and the "propability"
-	const double electron_density = electron_density_water_1Permm3 * voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
-
-	const double coefficient_1Permm = electron_density * compton_cross_section;
-
-	const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
-
-	// Scattering happened?
-	if( !integer_random_number_generator.DidARandomEventHappen( scatter_propability * propability_correction ) ) return false;
-
-	
-	// Ray is scattered
-	
-	// Scattering angle
-	const double angle = GetRandomAngle( ray_energy_eV );
-
-	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
-	r.SetOrigin( newOrigin );
-	r.SetDirection( newDirection );
-
-	return true;
-
-}
-
 double RayScattering::GetRandomAngle( const double energy ) const{
 
 	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );

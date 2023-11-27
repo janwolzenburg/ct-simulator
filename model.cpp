@@ -194,7 +194,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
+pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
 
 	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
 
@@ -202,7 +202,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	const RayVoxelIntersection modelIsect{ GetModelVoxel(), modelRay };
 
 	//const rayVox_Intersection_Result rayEntrance = modelIsect.entrance_;
-	if( !modelIsect.entrance_.intersection_exists_ ) return modelRay;			// Return if Ray does not intersect model
+	if( !modelIsect.entrance_.intersection_exists_ ) return { modelRay, {} };			// Return if Ray does not intersect model
 
 
 	// Iteration through model
@@ -213,12 +213,14 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 	// Go a tiny step further down the Ray from intersection point with model and test if inside
 	// Return when the point on the Ray is not inside the model meaning that the Ray just barely hit the model
-	if( !IsPointInside( modelRay.GetPoint( currentRayStep ) ) ) return modelRay;
+	if( !IsPointInside( modelRay.GetPoint( currentRayStep ) ) ) return { modelRay, {} };
 
 
 	// Current point on the Ray
 	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
+	vector<Ray> scattered_rays;
+	bool ray_was_scattered = false;
 
 	// Iterate through model while current point is inside model
 	while( IsPointInside( currentPntOnRay ) ){
@@ -297,11 +299,9 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
-			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
-				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, currentPntOnRay ) ){
-					modelRay.ScaleSpectrumEvenly( tomoParameter.scattered_ray_absorption_factor );
-					return modelRay;
-				}
+			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) && !ray_was_scattered ){
+				scattered_rays = std::move( modelRay.Scatter( scatteringProperties, current_voxel_data, distance, tomoParameter.scatter_propability_correction, tomoParameter.scattered_ray_absorption_factor, currentPntOnRay ) );
+				if( scattered_rays.size() > 0 ) ray_was_scattered = true;
 			}
 		}
 	}
@@ -310,7 +310,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	modelRay.origin( currentPntOnRay );
 
 	//cout << endl << endl;
-	return modelRay;
+	return { std::move( modelRay ), scattered_rays };
 }
 
 bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){

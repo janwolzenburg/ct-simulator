@@ -106,7 +106,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
-			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_absorption, gantry.tube().number_of_rays_per_pixel() );
+			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_absorption, gantry.tube().number_of_rays_per_pixel(), gantry.tube().GetEmittedBeamPower() / ( static_cast<double>( detectionPixel.size() ) * static_cast<double>( gantry.tube().number_of_rays_per_pixel() ) ) );
 			
 			// If no value no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
