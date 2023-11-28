@@ -299,7 +299,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
 			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
-				const vector<Ray> scattered_rays = std::move( modelRay.Scatter( scatteringProperties, current_voxel_data, distance, tomoParameter.scatter_propability_correction, tomoParameter.scattered_ray_absorption_factor, currentPntOnRay ) );
+				const vector<Ray> scattered_rays = std::move( modelRay.Scatter( scatteringProperties, current_voxel_data, distance, tomoParameter, currentPntOnRay ) );
 				all_scattered_rays.insert( all_scattered_rays.end(), make_move_iterator( scattered_rays.begin() ), make_move_iterator( scattered_rays.end() ) );
 			}
 		}

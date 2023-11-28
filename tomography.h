@@ -71,6 +71,7 @@ class TomographyProperties{
 	double scatter_propability_correction;	/*!< Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
 	bool use_simple_absorption;			/*!< Flag for using simple absorption*/
 	double scattered_ray_absorption_factor;/*!< Factor to scale the scattered rays energies by*/
+	double mean_energy_of_tube_;
 
 };
 

@@ -36,6 +36,7 @@ EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
 
 	if( photonflow_per_energy_.size() == 1 ){
 		mean_energy_ = photonflow_per_energy_.front().x;
+		mean_energy_valid_ = true;
 		return;
 	}
 

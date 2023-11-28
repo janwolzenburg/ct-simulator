@@ -17,6 +17,7 @@
 #include "voxel.h"
 #include "spectrum.h"
 #include "rayScattering.h"
+#include "tomography.fwd.h"
 
 
 
@@ -225,7 +226,7 @@ class Ray : public Line{
 	*/
 	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
-	vector<Ray> Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const double scattered_ray_attenuation, const Point3D newOrigin );
+	vector<Ray> Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin);
 
 	private:
 

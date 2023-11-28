@@ -59,7 +59,6 @@ constexpr double electron_density_water_1Permm3 =				/*!< Electron density or Co
 				 avogadro_1Permol /
 				 18. * 1e-3; // mass of one mol cm^3/mm^3
 
-constexpr size_t bins_per_energy = 16;		/*!< When scattering: Into how many bins should the photons with the same energy be divided into*/
 
 inline std::ostream& math_error_out = std::cerr;					/*!< Outstream for errors */
 inline std::ostream& standard_out = std::cout;						/*!< Standard out stream */
