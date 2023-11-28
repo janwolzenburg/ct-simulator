@@ -113,8 +113,6 @@ void Ray::SetDirection( const UnitVector3D new_direction ){
 
 vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const double scattered_ray_attenuation, const Point3D newOrigin ){
 
-	const size_t bins_per_energy = 8;
-
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
 
 	vector<Ray> scattered_rays;
@@ -126,7 +124,6 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		double& photons = spectrum_point.y;
 
 		const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
-		//const double coefficient_1Permm = 0.0112 * pow( energy / 1000., -0.125 ) * coefficient_factor;
 		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
@@ -152,13 +149,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
 
-
-				//properties_.energy_spectrum_.ScaleEnergy( energy, 1. - bin_fraction );
-				//properties_.simple_intensity_ -= new_properties.simple_intensity_;
-
 			}
 		}
-
 	}
 
 	return scattered_rays;
