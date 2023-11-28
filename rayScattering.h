@@ -66,23 +66,23 @@ class RayScattering{
 /*!
  * @brief Class to store precomputed cross sections of electrons which scatter photons
 */
-class Compton_Cross_Section{
+class ScatteringCrossSection{
 
 	public:
 	
-	static constexpr double energy_start_eV = 20000;
+	static constexpr double energy_start_eV = 1000;
 	static constexpr double energy_end_eV = 200000;
 	static constexpr double desired_energy_resolution = 1000;
 	
-	static Compton_Cross_Section& GetInstance( void );
+	static ScatteringCrossSection& GetInstance( void );
 
 
-	Compton_Cross_Section( const Compton_Cross_Section& ) = delete;
+	ScatteringCrossSection( const ScatteringCrossSection& ) = delete;
 	
-	Compton_Cross_Section& operator=( const Compton_Cross_Section& ) = delete;
+	ScatteringCrossSection& operator=( const ScatteringCrossSection& ) = delete;
 	
 	/*!
-	 * @brief Get compton cross section for photon with given energy
+	 * @brief Get cross section for photon with given energy
 	 * @param energy Energy of photon
 	 * @return Cross section in mm^2
 	*/
@@ -98,6 +98,6 @@ class Compton_Cross_Section{
 	/*!
 	 * @brief Constructor
 	*/
-	Compton_Cross_Section( void );
+	ScatteringCrossSection( void );
 
  };

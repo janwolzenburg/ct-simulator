@@ -125,8 +125,9 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		const double energy = spectrum_point.x;
 		double& photons = spectrum_point.y;
 
-		//const double cross_section_mm = Compton_Cross_Section::GetInstance().GetCrossSection( energy );
-		const double coefficient_1Permm = 0.0112 * pow( energy / 1000., -0.125 ) * coefficient_factor;
+		const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
+		//const double coefficient_1Permm = 0.0112 * pow( energy / 1000., -0.125 ) * coefficient_factor;
+		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
 		const double photons_per_bin = scattered_ray_attenuation * photons / static_cast<double>( bins_per_energy );
@@ -152,8 +153,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
 
 
-				properties_.energy_spectrum_.ScaleEnergy( energy, 1. - bin_fraction );
-				properties_.simple_intensity_ -= new_properties.simple_intensity_;
+				//properties_.energy_spectrum_.ScaleEnergy( energy, 1. - bin_fraction );
+				//properties_.simple_intensity_ -= new_properties.simple_intensity_;
 
 			}
 		}

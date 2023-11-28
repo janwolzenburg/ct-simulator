@@ -70,12 +70,12 @@ double RayScattering::GetRandomAngle( const double energy ) const{
 
 }
 
-Compton_Cross_Section& Compton_Cross_Section::GetInstance( void ){
-	static Compton_Cross_Section instance;
+ScatteringCrossSection& ScatteringCrossSection::GetInstance( void ){
+	static ScatteringCrossSection instance;
 	return instance;
 }
 
-double Compton_Cross_Section::GetCrossSection( const double energy ) const{
+double ScatteringCrossSection::GetCrossSection( const double energy ) const{
 		
 	const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - energy_start_eV ) / energy_resolution_ + 0.5 ) );
 	if( energy_index >= number_of_energies_  ) return cross_sections_.back().y;
@@ -83,7 +83,7 @@ double Compton_Cross_Section::GetCrossSection( const double energy ) const{
 	return cross_sections_.at( energy_index ).y;
 }
 
-Compton_Cross_Section::Compton_Cross_Section( void ) : 
+ScatteringCrossSection::ScatteringCrossSection( void ) : 
 	number_of_energies_( static_cast<size_t>( ( ( energy_end_eV - energy_start_eV ) / desired_energy_resolution ) ) + 1 ),
 	energy_resolution_( ( energy_end_eV - energy_start_eV ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	cross_sections_( number_of_energies_, Tuple2D{} )
@@ -98,12 +98,13 @@ Compton_Cross_Section::Compton_Cross_Section( void ) :
 		const double cross_section = 2. * PI * pow( r_e_mm, 2. ) * 
 									( 
 										( 
-											( ( 1. + e ) / pow( e, 2. ) ) * 
-											( 2. * ( 1. + e ) / ( 1. + 2. * pow( e, 2. ) ) - log( 1. + 2 * e ) / e ) 
+											( 1. + e ) / pow( e, 2. ) * 
+											( 2. * ( 1. + e ) / ( 1. + 2. * e ) - log( 1. + 2 * e ) / e ) 
 										) + 
 										log( 1. + 2. * e ) / ( 2. * e ) -
 										( 1. + 3. * e ) / pow( 1. + 2. * e, 2. )
 									);
+
 
 		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, cross_section };
 
