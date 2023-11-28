@@ -94,7 +94,7 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		rayDetector.DetectRay( cref( returned_rays.first ), ref( detectorMutex ) );
 		
 		iterationMutex.lock();
-		raysForNextIteration.insert( raysForNextIteration.end(), returned_rays.second.begin(), returned_rays.second.end() );									// Add Ray for next iteration
+		raysForNextIteration.insert( raysForNextIteration.end(), make_move_iterator( returned_rays.second.begin() ), make_move_iterator( returned_rays.second.end() ) );									// Add Ray for next iteration
 		iterationMutex.unlock();
 
 	}
@@ -137,7 +137,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
+		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
 														cref( rayScatterAngles ), cref( rays ),
 														currentLoop == 0,
