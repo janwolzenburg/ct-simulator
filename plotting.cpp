@@ -198,48 +198,49 @@ string getObjectString<DataGrid<>>( const DataGrid<> data_, const bool image ){
 }
 
 template<>
-void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string voxel_data_, const double length ){
+void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string data, const double length ){
 
 	for( const Line l : lines ){
-		addSingleObject( axis, name, l, voxel_data_, length );
+		addSingleObject( axis, name, l, data, length );
 	}
 
 }
 
 template<>
-void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string voxel_data_, const double length) {
+void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string data, const double length) {
 
 	for (const Ray r : rays) {
-		addSingleObject(axis, name, Line{ r }, voxel_data_, length);
+		addSingleObject(axis, name, Line{ r }, data, length);
 	}
 
 }
 
 template<>
-void addObject<vector<DetectorPixel>, double>( ofstream& axis, const string name, const vector<DetectorPixel> allPixels, const string voxel_data_, const double alpha ){
+void addObject<vector<DetectorPixel>, double>( ofstream& axis, const string name, const vector<DetectorPixel> allPixels, const string data, const double alpha ){
+	int number = 0;
 	for( const DetectorPixel singlePx : allPixels ){
-		addSingleObject( axis, name, BoundedSurface{ singlePx }, voxel_data_, alpha );
+		addSingleObject( axis, name+to_string(number++), BoundedSurface{singlePx}, data, alpha);
 	}
 }
 
 template<>
-void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string voxel_data_, const double alpha ){
+void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string data, const double alpha ){
 	for( const BoundedSurface surface : surfaces ){
-		addSingleObject( axis, name, surface, voxel_data_, alpha );
+		addSingleObject( axis, name, surface, data, alpha );
 	}
 }
 
 template<>
-void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gantry, const string voxel_data_, const int specifiers ){
+void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gantry, const string data, const int specifiers ){
 
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
-		addSingleObject( axis, name + "Center", gantry.GetCenter(), voxel_data_ );
+		addSingleObject( axis, name + "Center", gantry.GetCenter(), data );
 
 	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		addObject( axis, name + "Beams", gantry.tube().GetEmittedBeam( gantry.pixel_array(),  gantry.detector().properties().detector_focus_distance ), voxel_data_, gantry.detector().properties().detector_focus_distance );
+		addObject( axis, name + "Beams", gantry.tube().GetEmittedBeam( gantry.pixel_array(),  gantry.detector().properties().detector_focus_distance ), data, gantry.detector().properties().detector_focus_distance );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
-		addObject( axis, name + "DetectorSurfaces", gantry.pixel_array(), voxel_data_, .2 );
+		addObject( axis, name + "DetectorSurfaces", gantry.pixel_array(), data, .2 );
 
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_NORMALS ){
 		vector<Line> pixelNormals;
@@ -248,7 +249,7 @@ void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gan
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 1.05 *  gantry.detector().properties().detector_focus_distance );
+		addObject( axis, name + "DetectorNormals", pixelNormals, data, 1.05 *  gantry.detector().properties().detector_focus_distance );
 	}
 
 }

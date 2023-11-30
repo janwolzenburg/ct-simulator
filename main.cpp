@@ -6,10 +6,11 @@
  * @date   December 2022
  *********************************************************************/
 
-#include <iostream>
-using std::cerr;  using std::endl; using std::cout;
+ 
+#define VERIFY
 
-#include <type_traits>
+#ifndef VERIFY
+
 #include <memory>
 using std::unique_ptr;
 
@@ -49,3 +50,18 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 	return 0;
 	
 }
+
+#else
+
+#include "verifyDevice.h"
+
+int main( void ){
+
+	BuildTestDetector();
+	TestRadonCoordinates();
+
+	return 0;
+
+}
+
+#endif
