@@ -172,6 +172,8 @@
     <ClInclude Include="programState.fwd.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
     <ClInclude Include="backprojection.h" />
+    <ClInclude Include="verificationParameter.h" />
+    <ClInclude Include="verifyDevice.h" />
     <ClInclude Include="xRayDetector.h" />
     <ClInclude Include="detectorProperties.h" />
     <ClInclude Include="detectorPixel.h" />
@@ -253,6 +255,7 @@
     <ClCompile Include="fl_ModelCreator.cpp" />
     <ClCompile Include="modelViewProperties.cpp" />
     <ClCompile Include="backprojection.cpp" />
+    <ClCompile Include="verifyDevice.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />
     <ClCompile Include="detectorPixel.cpp" />

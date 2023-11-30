@@ -231,8 +231,8 @@ void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gan
 	if( specifiers & GANTRY_SPECIFIERS::ORIGIN )
 		addSingleObject( axis, name + "Center", gantry.GetCenter(), voxel_data_ );
 
-	//if( specifiers & GANTRY_SPECIFIERS::BEAMS )
-		//addObject( axis, name + "Beams", gantry.getBeam( 1. ), voxel_data_, 2.*gantry.Radius() );
+	if( specifiers & GANTRY_SPECIFIERS::BEAMS )
+		addObject( axis, name + "Beams", gantry.tube().GetEmittedBeam( gantry.pixel_array(),  gantry.detector().properties().detector_focus_distance ), voxel_data_, gantry.detector().properties().detector_focus_distance );
 	
 	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_SURFACES )
 		addObject( axis, name + "DetectorSurfaces", gantry.pixel_array(), voxel_data_, .2 );
@@ -244,7 +244,7 @@ void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gan
 			pixelNormals.push_back( currentPixel.NormalLine() );
 		}
 
-		//addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 2.1 * gantry.Radius() );
+		addObject( axis, name + "DetectorNormals", pixelNormals, voxel_data_, 1.05 *  gantry.detector().properties().detector_focus_distance );
 	}
 
 }

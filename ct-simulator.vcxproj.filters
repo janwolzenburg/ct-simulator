@@ -37,9 +37,6 @@
     <Filter Include="Headerdateien\15 Program">
       <UniqueIdentifier>{c765e23e-e59f-4de5-9781-951a1dc3e1c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\01 Tests">
-      <UniqueIdentifier>{acc740f8-c147-4e5e-9b45-462141e3c3e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\15 Program\01 Elements">
       <UniqueIdentifier>{4494f7c9-b674-455a-b3e9-5f7eb7a516c5}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="Headerdateien\15 Program\02 GUI\02 Windows">
       <UniqueIdentifier>{d28de2e5-78c0-42ae-92f0-fae8fe5cb3ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\01 Tests">
-      <UniqueIdentifier>{dd3e19e0-5cdc-46ad-8238-74425d78229f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Headerdateien\12 Physics\01 Linear algebra">
       <UniqueIdentifier>{123198b1-3557-4140-9a87-9a26f5100a33}</UniqueIdentifier>
@@ -112,6 +106,12 @@
     <Filter Include="Quelldateien\15 Program\01 Elements">
       <UniqueIdentifier>{cc49d4f4-8f2b-4edf-ba2d-a77ee16627d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\01 Verification">
+      <UniqueIdentifier>{acc740f8-c147-4e5e-9b45-462141e3c3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\01 Verification">
+      <UniqueIdentifier>{dd3e19e0-5cdc-46ad-8238-74425d78229f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generel.h">
@@ -152,12 +152,6 @@
     </ClInclude>
     <ClInclude Include="coordinates.h">
       <Filter>Headerdateien\12 Physics\01 Linear algebra\Cartesian</Filter>
-    </ClInclude>
-    <ClInclude Include="plotting.h">
-      <Filter>Headerdateien\11 Generel</Filter>
-    </ClInclude>
-    <ClInclude Include="plotting.hpp">
-      <Filter>Quelldateien\11 Generel</Filter>
     </ClInclude>
     <ClInclude Include="simulation.h">
       <Filter>Headerdateien\11 Generel</Filter>
@@ -289,22 +283,22 @@
       <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
     <ClInclude Include="test_processing.h">
-      <Filter>Headerdateien\01 Tests</Filter>
+      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="test_device.h">
-      <Filter>Headerdateien\01 Tests</Filter>
+      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="test_all.h">
-      <Filter>Headerdateien\01 Tests</Filter>
+      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="test_rays.h">
-      <Filter>Headerdateien\01 Tests</Filter>
+      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Headerdateien\12 Physics\02 Model</Filter>
     </ClInclude>
     <ClInclude Include="test_model.h">
-      <Filter>Headerdateien\01 Tests</Filter>
+      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\00 Forward Declerations</Filter>
@@ -375,6 +369,18 @@
     <ClInclude Include="fl_GrayscaleImageWithAxis.h">
       <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="plotting.hpp">
+      <Filter>Quelldateien\01 Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="plotting.h">
+      <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="verifyDevice.h">
+      <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="verificationParameter.h">
+      <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -415,9 +421,6 @@
     </ClCompile>
     <ClCompile Include="coordinates.cpp">
       <Filter>Quelldateien\12 Physics\01 Linear algebra\Cartesian</Filter>
-    </ClCompile>
-    <ClCompile Include="plotting.cpp">
-      <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="intersections.cpp">
       <Filter>Quelldateien\12 Physics\01 Linear algebra</Filter>
@@ -516,16 +519,16 @@
       <Filter>Quelldateien\13 Device</Filter>
     </ClCompile>
     <ClCompile Include="test_device.cpp">
-      <Filter>Quelldateien\01 Tests</Filter>
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="tests_linear_algebra.cpp">
-      <Filter>Quelldateien\01 Tests</Filter>
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="test_model.cpp">
-      <Filter>Quelldateien\01 Tests</Filter>
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="test_rays.cpp">
-      <Filter>Quelldateien\01 Tests</Filter>
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="propabilityDistribution.cpp">
       <Filter>Quelldateien\12 Physics\03 Rays</Filter>
@@ -543,13 +546,19 @@
       <Filter>Quelldateien\11 Generel</Filter>
     </ClCompile>
     <ClCompile Include="test_processing.cpp">
-      <Filter>Quelldateien\01 Tests</Filter>
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="fl_ModelCreator.cpp">
       <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>
     <ClCompile Include="fl_GrayscaleImageWithAxis.cpp">
       <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="plotting.cpp">
+      <Filter>Quelldateien\01 Verification</Filter>
+    </ClCompile>
+    <ClCompile Include="verifyDevice.cpp">
+      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
