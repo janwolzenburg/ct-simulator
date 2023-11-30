@@ -38,7 +38,7 @@ ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, con
 	measuring_field_size_( ForcePositive( measuring_field_size ) ),
 	angles_resolution_( PI / static_cast<double>( number_of_projections_ ) ),
 	distances_resolution_( measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 ) ),
-	number_of_frames_to_fill_( 2 *  number_of_projections_ - number_of_distances_ + 2 ),
+	number_of_frames_to_fill_( number_of_projections_ + number_of_distances_ - 1 ),
 	tube_mean_energy_( reference_energy_for_mu_eV )
 {
 
@@ -56,7 +56,7 @@ ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, con
 	if( newNumberPointsRow != number_of_distances_ ){
 		number_of_distances_ = ForceToMin( ForceEven( newNumberPointsRow ), static_cast<size_t>( 3 ) );
 		distances_resolution_ = measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 );
-		number_of_frames_to_fill_ = 2 * number_of_projections_ - number_of_distances_ + 1;
+		number_of_frames_to_fill_ = number_of_projections_ + number_of_distances_ - 1;
 	}
 }
 
