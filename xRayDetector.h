@@ -38,10 +38,10 @@ class XRayDetector{
 	/*!
 	 * @brief Constructor
 	 * @param coordinate_system Coordinate system
-	 * @param radon_properties Radon parameter
-	 * @param physical_properties Parameter indipendent of radon parameter
+	 * @param projections_properties Projection properties
+	 * @param physical_properties Parameter indipendent of projection properties
 	*/
-	XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
 	 * @brief Get all detector pixel
