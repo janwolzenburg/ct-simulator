@@ -13,6 +13,7 @@ diagnoseSession/
 stateStorage/
 tests/
 models/
+verification/
 *.model
 
 # User-specific files (MonoDevelop/Xamarin Studio)
