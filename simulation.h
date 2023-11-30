@@ -29,3 +29,5 @@ constexpr size_t number_of_scatter_angles = 127;							/*!< Amount of discrete a
 constexpr size_t number_of_energies_for_scattering = 64;					/*!< Amount of energies used */
 
 constexpr size_t bins_per_energy = 16;		/*!< When scattering: Into how many bins should the photons with the same energy be divided into*/
+
+constexpr double scattered_ray_intensity_factor = 0.1;	/*!< Additional factor to apply to the simple intensity of scattered ray. Used to make real and simple result look similar. */

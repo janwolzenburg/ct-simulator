@@ -118,41 +118,12 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 	vector<Ray> scattered_rays;
 
-	if( tomography_properties.use_simple_absorption ){
-
-		const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( tomography_properties.mean_energy_of_tube_ );
-		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
-		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
-		const double fraction = tomography_properties.scattered_ray_absorption_factor * 0.3 / static_cast<double>( properties_.energy_spectrum_.data().size() * bins_per_energy );
-
-		for( size_t i = 0; i < properties_.energy_spectrum_.data().size() * bins_per_energy; i++ ){
-			
-			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction * 0.2 ) ){
-				
-				const double angle = scattering_information.GetRandomAngle( tomography_properties.mean_energy_of_tube_ );
-				const UnitVector3D newDirection = direction_.RotateConstant( scattering_information.scattering_plane_normal(), angle );
-				
-				EnergySpectrum new_spectrum{ this->properties_.energy_spectrum_.GetEvenlyScaled( fraction ) };
-				RayProperties new_properties{ new_spectrum };
-				new_properties.voxel_hits_ = properties_.voxel_hits_;
-				new_properties.simple_intensity_ = properties_.simple_intensity_ * fraction;
-				new_properties.initial_power_ = new_spectrum.GetTotalPower();
-
-
-				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
-			
-			}
-		}
-
-		return scattered_rays;
-
-	}
 
 	// Iterate energies in spectrum
-	for( auto& spectrum_point : properties_.energy_spectrum_.data() ){
+	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
-		const double energy = spectrum_point.x;
-		double& photons = spectrum_point.y;
+		//const double energy = spectrum_point.x;
+		//const double photons = spectrum_point.y;
 
 		// No photons at current energy
 		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
@@ -162,7 +133,6 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
 		const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * photons / static_cast<double>( bins_per_energy );
-		//const double bin_fraction = 1. / static_cast<double>( bins_per_energy );
 		const double power_in_bin = energy * photons_per_bin;
 		const double power_fraction = power_in_bin / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
 
@@ -170,19 +140,16 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
+				const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
+																				scattering_information.GetRandomAngle( energy ));
+					
 				const EnergySpectrum new_spectrum{ VectorPair{ { energy }, { photons_per_bin } } }; 
-				
-				const double angle = scattering_information.GetRandomAngle( energy );
-				const UnitVector3D newDirection = direction_.RotateConstant( scattering_information.scattering_plane_normal(), angle );
-				
 				RayProperties new_properties{ new_spectrum };
 				new_properties.voxel_hits_ = properties_.voxel_hits_;
-				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction;
+				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
 				new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
-
 				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
-
 			}
 		}
 	}

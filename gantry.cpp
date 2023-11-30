@@ -133,9 +133,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	
 		
 		// Adjust scattering propability because only some scattered rays would reach detector
-		tomography_properties.scatter_propability_correction *= 2. / PI * atan( this->detector_.properties().row_width / ( 2. *  this->detector_.properties().detector_focus_distance / 2. ) );
-
-		//tomography_properties.scattered_ray_absorption_factor *= 1e-1;
+		tomography_properties.scatter_propability_correction *=  atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance ) / PI;
 
 		tomography_properties.mean_energy_of_tube_ = this->tube_.GetMeanEnergy();
 
