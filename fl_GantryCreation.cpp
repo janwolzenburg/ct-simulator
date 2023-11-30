@@ -129,7 +129,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_angles_input_.align( FL_ALIGN_TOP ); number_of_distances_input_.align( FL_ALIGN_TOP ); distance_range_input_.align( FL_ALIGN_TOP );
 
 		number_of_angles_input_.SetProperties( 3, 10000, 0 );
-		number_of_angles_input_.value( projections_properties_.number_of_angles() );
+		number_of_angles_input_.value( projections_properties_.number_of_projections() );
 
 		number_of_distances_input_.SetProperties( 4, 10000, 0, Input_Constraints::Even );
 		number_of_distances_input_.value( projections_properties_.number_of_distances() );
@@ -204,7 +204,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		
 
 		number_of_distances_input_.value( projections_properties_.number_of_distances() );
-		number_of_angles_input_.value( projections_properties_.number_of_angles() );
+		number_of_angles_input_.value( projections_properties_.number_of_projections() );
 
 
 	

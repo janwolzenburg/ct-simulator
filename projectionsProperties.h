@@ -24,11 +24,11 @@ class ProjectionsProperties{
 	public:
 	/*!
 	 * @brief Constructor
-	 * @param number_of_angles Amount of angles
+	 * @param number_of_projections Amount of projections
 	 * @param number_of_distances Amount of distances
 	 * @param measuring_field_size Distance range
 	*/
-	ProjectionsProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size );
+	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, const double measuring_field_size );
 
 	/*!
 	 * @brief Default constructor
@@ -49,10 +49,10 @@ class ProjectionsProperties{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get number of angles
-	 * @return Number of angles
+	 * @brief Get number of projections
+	 * @return Number of projections
 	*/
-	size_t number_of_angles( void ) const{ return number_of_angles_; };
+	size_t number_of_projections( void ) const{ return number_of_projections_; };
 
 	/*!
 	 * @brief Get number of distances
@@ -64,7 +64,7 @@ class ProjectionsProperties{
 	 * @brief Get transformation size
 	 * @return Size of radon transformation
 	*/
-	GridIndex GetTransformationSize( void ) const{ return GridIndex{ number_of_angles_, number_of_distances_ }; };
+	GridIndex GetTransformationSize( void ) const{ return GridIndex{ number_of_projections_, number_of_distances_ }; };
 
 	/*!
 	 * @brief Get size of measuring field
@@ -112,7 +112,7 @@ class ProjectionsProperties{
 
 	private:
 
-	size_t number_of_angles_;				/*!< Number of angles. Is the number of projections*/
+	size_t number_of_projections_;			/*!< Number of angles. Is the number of projections*/
 	size_t number_of_distances_;			/*!< Number of distances. Is the number of point in one projection*/
 	double measuring_field_size_;			/*!< Measuring field in mm*/
 

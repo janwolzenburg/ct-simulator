@@ -163,7 +163,7 @@ void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection
 		string informationString = "";
 
 
-		informationString += "Sinogramgröße:      " + ToString( projection_properties.number_of_angles() ) + " x " + ToString( projection_properties.number_of_distances() ) + '\n';
+		informationString += "Sinogramgröße:      " + ToString( projection_properties.number_of_projections() ) + " x " + ToString( projection_properties.number_of_distances() ) + '\n';
 		informationString += "Sinogramauflösung:  " + ToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
 		informationString += "Gantryrotationen:   " + ToString( projection_properties.number_of_frames_to_fill() ) + '\n';
 		informationString += "Detektorwinkel:	  " + ToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
