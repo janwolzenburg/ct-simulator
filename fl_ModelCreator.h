@@ -112,8 +112,8 @@ class Fl_ModelFeature : public Fl_Group{
 	VoxelData::SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
 
 	/*!
-	 * @brief Get attenuation of feature
-	 * @return Attenuation at reference energy
+	 * @brief Get absorption of feature
+	 * @return Absorption at reference energy
 	*/
 	double GetValue( void ) const{ return value_input_.value(); };
 
@@ -139,7 +139,7 @@ class Fl_ModelFeature : public Fl_Group{
 
 	Fl_Toggle_Button active_button_;		/*!< Button to activate feature*/
 	Fl_Selector special_property_input_;	/*!< Selector for special property*/
-	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< Attenuation in 1/mm at reference energy*/
+	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< Absorption in 1/mm at reference energy*/
 	Fl_BoundInput<Fl_Float_Input, double> x_positon_input_;	/*!< x position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> y_positon_input_;	/*!< y position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> z_positon_input_;	/*!< z position in mm*/
@@ -185,7 +185,7 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_Button store_size_button_;	/*!< Button to store size and continue*/
 	
 	Fl_Group features_group_;	/*!< Group for all features and model properties*/
-	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< Attenuation value of background*/
+	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< Absorption value of background*/
 	Fl_Multiline_Output information_;							/*!< Information about features*/
 	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< All the features*/
 	Fl_Button build_button_;									/*!< Button for building model*/
@@ -199,7 +199,7 @@ class Fl_ModelCreator : public Fl_Window{
 	Tuple3D voxel_size_;		/*!< Voxel size in mm*/
 	string name_;				/*!< Name of model*/
 
-	double background_attenuation_;	/*!< Value of background attenuation*/
+	double background_absorption_;	/*!< Value of background absorption*/
 
 
 	/*!

@@ -32,25 +32,26 @@ TomographyProperties::TomographyProperties( void ) :
 	scattering_enabled( true ),
 	max_scattering_occurrences( default_max_radiation_loops ),
 	scatter_propability_correction( default_scatter_propability_correction ),
-	use_simple_attenuation( true ),
-	scattered_ray_attenuation_factor( 0.01 )
+	use_simple_absorption( true ),
+	scattered_ray_absorption_factor( 0.25 ),
+	mean_energy_of_tube_( 80000. )
 
 {}
 
-TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const bool use_simple_attenuation, const double scattered_ray_attenuation_factor ) :
+TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, const bool use_simple_absorption, const double scattered_ray_absorption_factor ) :
 	scattering_enabled( scattering_ ),
 	max_scattering_occurrences( maxRadiationLoops_ ),
 	scatter_propability_correction( scatterPropability_ ),
-	use_simple_attenuation( use_simple_attenuation ),
-	scattered_ray_attenuation_factor( scattered_ray_attenuation_factor )
+	use_simple_absorption( use_simple_absorption ),
+	scattered_ray_absorption_factor( scattered_ray_absorption_factor )
 {}
 
 TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, it) ),
 	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
 	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
-	use_simple_attenuation( DeSerializeBuildIn<bool>(true, binary_data, it) ),
-	scattered_ray_attenuation_factor( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) )
+	use_simple_absorption( DeSerializeBuildIn<bool>(true, binary_data, it) ),
+	scattered_ray_absorption_factor( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) )
 
 {
 }
@@ -61,8 +62,8 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
 	num_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
 	num_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
-	num_bytes += SerializeBuildIn<bool>( use_simple_attenuation, binary_data );
-	num_bytes += SerializeBuildIn<double>( scattered_ray_attenuation_factor, binary_data );
+	num_bytes += SerializeBuildIn<bool>( use_simple_absorption, binary_data );
+	num_bytes += SerializeBuildIn<double>( scattered_ray_absorption_factor, binary_data );
 
 
 	return num_bytes;
@@ -106,7 +107,7 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 			// Get Coordinates for pixel
 			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
 
-			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_attenuation, gantry.tube().number_of_rays_per_pixel() );
+			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_absorption, gantry.tube().number_of_rays_per_pixel(), gantry.tube().GetEmittedBeamPower() / ( static_cast<double>( detectionPixel.size() ) * static_cast<double>( gantry.tube().number_of_rays_per_pixel() ) ) );
 			
 			// If no value no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value

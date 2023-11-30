@@ -71,7 +71,8 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 									XRayDetector& rayDetector, mutex& detectorMutex ){
 
 	size_t currentRayIndex;
-	Ray currentRay, returnedRay;
+	Ray currentRay;
+	pair<Ray, vector<Ray>> returned_rays;
 
 	// Loop while rays are left
 	while( sharedCurrentRayIndex < rays.size() ){
@@ -88,24 +89,14 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		currentRay =  rays.at( currentRayIndex );
 
 		// Transmit Ray through model
-		returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
+		returned_rays = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
 
-		// Is the Ray outside the model. If not the ray has been scattered
-		if( !radModel.IsPointInside( returnedRay.origin() ) ){
-			rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
-		}
-		else{
+		rayDetector.DetectRay( cref( returned_rays.first ), ref( detectorMutex ) );
 		
-			iterationMutex.lock();
-			raysForNextIteration.push_back( returnedRay );									// Add Ray for next iteration
-			iterationMutex.unlock();
+		iterationMutex.lock();
+		raysForNextIteration.insert( raysForNextIteration.end(), make_move_iterator( returned_rays.second.begin() ), make_move_iterator( returned_rays.second.end() ) );									// Add Ray for next iteration
+		iterationMutex.unlock();
 
-			if( repeat_transmission_after_scattering ){
-				// Ray has been scattered. Repeat transmission but disable scattering this time
-				returnedRay = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ), true ) );
-				rayDetector.DetectRay( cref( returnedRay ), ref( detectorMutex ) );
-			}
-		}
 	}
 
 	return;
@@ -141,6 +132,11 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		// No scattering in last iteration
 		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	
 		
+		// Adjust scattering propability because only some scattered rays would reach detector
+		tomography_properties.scatter_propability_correction *=  atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance ) / PI;
+
+		tomography_properties.mean_energy_of_tube_ = this->tube_.GetMeanEnergy();
+
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 		sharedCurrentRayIndex = 0;										// Reset current ray index
 

@@ -49,8 +49,8 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
 	voxel_data_( number_of_voxel_, defaultData ),
 	coordinate_system_( coordinate_system ),
-	min_attenuation_( defaultData.GetAttenuationAtReferenceEnergy() ),
-	max_attenuation_( defaultData.GetAttenuationAtReferenceEnergy() ),
+	min_absorption_( defaultData.GetAbsorptionAtReferenceEnergy() ),
+	max_absorption_( defaultData.GetAbsorptionAtReferenceEnergy() ),
 	name_( name_ )
 {
 	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
@@ -66,8 +66,8 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
 	voxel_data_( number_of_voxel_, VoxelData{} ),
 	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
-	min_attenuation_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	max_attenuation_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
+	min_absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
+	max_absorption_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
 	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) )
 {
 	
@@ -163,8 +163,8 @@ bool Model::SetVoxelData( const VoxelData newData, const Index3D indices ){
 
 	this->operator()( indices ) = newData;
 
-	if( newData.GetAttenuationAtReferenceEnergy() < min_attenuation_ ) min_attenuation_ =  newData.GetAttenuationAtReferenceEnergy();
-	if( newData.GetAttenuationAtReferenceEnergy() > max_attenuation_ ) max_attenuation_ = newData.GetAttenuationAtReferenceEnergy() ;
+	if( newData.GetAbsorptionAtReferenceEnergy() < min_absorption_ ) min_absorption_ =  newData.GetAbsorptionAtReferenceEnergy();
+	if( newData.GetAbsorptionAtReferenceEnergy() > max_absorption_ ) max_absorption_ = newData.GetAbsorptionAtReferenceEnergy() ;
 
 	return true;
 }
@@ -194,7 +194,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
+pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
 
 	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
 
@@ -202,7 +202,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	const RayVoxelIntersection modelIsect{ GetModelVoxel(), modelRay };
 
 	//const rayVox_Intersection_Result rayEntrance = modelIsect.entrance_;
-	if( !modelIsect.entrance_.intersection_exists_ ) return modelRay;			// Return if Ray does not intersect model
+	if( !modelIsect.entrance_.intersection_exists_ ) return { modelRay, {} };			// Return if Ray does not intersect model
 
 
 	// Iteration through model
@@ -213,12 +213,13 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 	// Go a tiny step further down the Ray from intersection point with model and test if inside
 	// Return when the point on the Ray is not inside the model meaning that the Ray just barely hit the model
-	if( !IsPointInside( modelRay.GetPoint( currentRayStep ) ) ) return modelRay;
+	if( !IsPointInside( modelRay.GetPoint( currentRayStep ) ) ) return { modelRay, {} };
 
 
 	// Current point on the Ray
 	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
+	vector<Ray> all_scattered_rays;
 
 	// Iterate through model while current point is inside model
 	while( IsPointInside( currentPntOnRay ) ){
@@ -298,9 +299,8 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
 			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
-				if( scatteringProperties.ScatterRay( modelRay, current_voxel_data, distance, tomoParameter.scatter_propability_correction, tomoParameter.scattered_ray_attenuation_factor, currentPntOnRay ) ){
-					return modelRay;
-				}
+				const vector<Ray> scattered_rays = std::move( modelRay.Scatter( scatteringProperties, current_voxel_data, distance, tomoParameter, currentPntOnRay ) );
+				all_scattered_rays.insert( all_scattered_rays.end(), make_move_iterator( scattered_rays.begin() ), make_move_iterator( scattered_rays.end() ) );
 			}
 		}
 	}
@@ -309,7 +309,7 @@ Ray Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParamet
 	modelRay.origin( currentPntOnRay );
 
 	//cout << endl << endl;
-	return modelRay;
+	return { std::move( modelRay ), all_scattered_rays };
 }
 
 bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
@@ -346,7 +346,7 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	expectedSize += sizeof( number_of_voxel_3D_ );
 	expectedSize += sizeof( voxel_size_ );
 	expectedSize += sizeof( CoordinateSystem );
-	expectedSize += 2* sizeof( min_attenuation_ );
+	expectedSize += 2* sizeof( min_absorption_ );
 	expectedSize += name_.size() + 1;
 	expectedSize += number_of_voxel_ * sizeof( voxel_data_.front() );
 
@@ -356,8 +356,8 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
 	num_bytes += voxel_size_.Serialize( binary_data );
 	num_bytes += coordinate_system_->Serialize( binary_data );
-	num_bytes += SerializeBuildIn<double>( min_attenuation_, binary_data );
-	num_bytes += SerializeBuildIn<double>( max_attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<double>( min_absorption_, binary_data );
+	num_bytes += SerializeBuildIn<double>( max_absorption_, binary_data );
 	num_bytes += SerializeBuildIn<string>( name_, binary_data );
 
 	
@@ -517,7 +517,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 			currentData = largeSlice.GetData( coords );
 
 			if( currentData.HasSpecificProperty( VoxelData::Undefined ) )
-				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAttenuationAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
+				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
 			else
 				slice.SetData( coords, currentData );
 		}

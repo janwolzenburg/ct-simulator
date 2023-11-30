@@ -13,8 +13,8 @@
  *********************************************************************/
 
 #include "generel.h"
+#include "vector3D.h"
 #include "propabilityDistribution.h"
-#include "ray.h"
 
 
 
@@ -41,22 +41,13 @@ class RayScattering{
 	RayScattering( const size_t number_of_angles, const NumberRange energy_range, const size_t number_of_energies, const UnitVector3D scatter_plane_normal );
 
 	/*!
-	 * @brief Scatter given Ray
-	 * @param ray Ray to scatter
-	 * @param voxel_data Voxel properties of voxel the ray is inside
-	 * @param distance_traveled Distance the ray traveled in voxel in mm
-	 * @param propability_correction Correction factor for scattering propability
-	 * @param location Point where the scattering happens
-	 * @return True when scattered
-	*/
-	bool ScatterRay( Ray& ray, const VoxelData voxel_data, const double distance_traveled, const double propability_correction, const double attenuation_factor, const Point3D location ) const;
-
-	/*!
 	 * @brief Get a random angle to given energy
 	 * @param energy Mean energy of Ray
 	 * @return Random angöe
 	*/
 	double GetRandomAngle( const double energy_eV ) const;
+
+	UnitVector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
 
 
 	private:
@@ -75,23 +66,23 @@ class RayScattering{
 /*!
  * @brief Class to store precomputed cross sections of electrons which scatter photons
 */
-class Compton_Cross_Section{
+class ScatteringCrossSection{
 
 	public:
 	
-	static constexpr double energy_start_eV = 20000;
+	static constexpr double energy_start_eV = 1000;
 	static constexpr double energy_end_eV = 200000;
 	static constexpr double desired_energy_resolution = 1000;
 	
-	static Compton_Cross_Section& GetInstance( void );
+	static ScatteringCrossSection& GetInstance( void );
 
 
-	Compton_Cross_Section( const Compton_Cross_Section& ) = delete;
+	ScatteringCrossSection( const ScatteringCrossSection& ) = delete;
 	
-	Compton_Cross_Section& operator=( const Compton_Cross_Section& ) = delete;
+	ScatteringCrossSection& operator=( const ScatteringCrossSection& ) = delete;
 	
 	/*!
-	 * @brief Get compton cross section for photon with given energy
+	 * @brief Get cross section for photon with given energy
 	 * @param energy Energy of photon
 	 * @return Cross section in mm^2
 	*/
@@ -107,6 +98,6 @@ class Compton_Cross_Section{
 	/*!
 	 * @brief Constructor
 	*/
-	Compton_Cross_Section( void );
+	ScatteringCrossSection( void );
 
  };

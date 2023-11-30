@@ -123,7 +123,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
-	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same attenuation as water.\nAt 10 it beheaves like real iron.");
+	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 10 it beheaves like real iron.");
 
 	// Set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
@@ -138,7 +138,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	
 	if( IsModelLoaded() ){
 		UpdateModel();
-		model_slice_image_.SetSliderBounds( model_.attenuationRange() );
+		model_slice_image_.SetSliderBounds( model_.absorptionRange() );
 		model_slice_image_.ChangeSliderValues( properties_.contrast );
 	}
 }
@@ -272,7 +272,7 @@ void Fl_ModelView::LoadModel( void ){
 		return;
 	}
 
-	model_slice_image_.SetSliderBounds( model_.attenuationRange() );
+	model_slice_image_.SetSliderBounds( model_.absorptionRange() );
 	properties_.contrast = model_slice_image_.GetContrast();
 
 	ResetModel();

@@ -11,7 +11,8 @@
 	Includes
  *********************************************************************/
 #include "ray.h"
-
+#include "simulation.h"
+#include "tomography.h"
 
 /*********************************************************************
    Implementations
@@ -23,8 +24,8 @@
 */
 
 void RayProperties::AttenuateSpectrum( const VoxelData& voxelData, const double distance ){
-	energy_spectrum_.Attenuate( voxelData, distance );
-	simple_intensity_ *= exp( -voxelData.GetAttenuationAtReferenceEnergy() * distance );
+	energy_spectrum_.GetAbsorped( voxelData, distance );
+	simple_intensity_ *= exp( -voxelData.GetAbsorptionAtReferenceEnergy() * distance );
 }
 
 
@@ -108,4 +109,51 @@ void Ray::SetDirection( const UnitVector3D new_direction ){
 	}
 	
 	direction_ = new_direction;
+}
+
+
+vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin ){
+
+	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
+
+	vector<Ray> scattered_rays;
+
+
+	// Iterate energies in spectrum
+	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
+		
+		//const double energy = spectrum_point.x;
+		//const double photons = spectrum_point.y;
+
+		// No photons at current energy
+		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
+
+		const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
+		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
+		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
+
+		const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * photons / static_cast<double>( bins_per_energy );
+		const double power_in_bin = energy * photons_per_bin;
+		const double power_fraction = power_in_bin / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
+
+		for( size_t bin = 0; bin < bins_per_energy; bin++ ){
+
+			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction ) ){
+
+				const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
+																				scattering_information.GetRandomAngle( energy ));
+					
+				const EnergySpectrum new_spectrum{ VectorPair{ { energy }, { photons_per_bin } } }; 
+				RayProperties new_properties{ new_spectrum };
+				new_properties.voxel_hits_ = properties_.voxel_hits_;
+				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
+				new_properties.initial_power_ = new_spectrum.GetTotalPower();
+
+				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
+			}
+		}
+	}
+
+	return scattered_rays;
+
 }

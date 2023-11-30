@@ -108,7 +108,7 @@ class EnergySpectrum {
 	 * @param voxel_data Voxel data
 	 * @param distance Distance traveled in voxel
 	*/
-	void Attenuate( const VoxelData& voxel_data, const double distance );
+	void GetAbsorped( const VoxelData& voxel_data, const double distance );
 
 	/*!
 	 * @brief Scale this spectrum energy indipendent
@@ -120,7 +120,9 @@ class EnergySpectrum {
 	 * @brief Get mean compton cross section of photons in spectrum
 	 * @return Mean compton cross section in mm^2
 	*/
-	double GetMeanComptonCrossSection( void ) const;
+	//double GetMeanComptonCrossSection( void ) const;
+
+	void ScaleEnergy( const double energy, const double factor );
 
 
 	private:

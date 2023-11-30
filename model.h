@@ -100,10 +100,10 @@ class Model : public MathematicalObject{
 	CoordinateSystem* coordinate_system( void ) const{ return coordinate_system_; };
 
 	/*!
-	 * @brief Get range of attenuation in model
-	 * @return Range of attenuation
+	 * @brief Get range of absorption in model
+	 * @return Range of absorption
 	*/
-	NumberRange attenuationRange( void ) const{ return NumberRange{ min_attenuation_, max_attenuation_ + ( min_attenuation_ == max_attenuation_ ) ? min_attenuation_ + 1e-18 : 0. }; };
+	NumberRange absorptionRange( void ) const{ return NumberRange{ min_absorption_, max_absorption_ + ( min_absorption_ == max_absorption_ ) ? min_absorption_ + 1e-18 : 0. }; };
 
 	/*!
 	 * @brief Get model name_
@@ -196,9 +196,9 @@ class Model : public MathematicalObject{
 	 * @param tomography_parameter Simulation parameter used in ray tracing
 	 * @param scattering_properties Information for ray scattering
 	 * @param disable_scattering Flag to override eneabled scattering in tomography_properties
-	 * @return Ray that has been scattered or left the model
+	 * @return Rays that has been scattered or left the model
 	*/
-	Ray TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties, const bool disable_scattering = false ) const;
+	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties, const bool disable_scattering = false ) const;
 
 	/*!
 	 * @brief Crop model
@@ -234,8 +234,8 @@ class Model : public MathematicalObject{
 	size_t number_of_voxel_;					/*!< Absolute amount of voxels in model*/
 	vector<VoxelData> voxel_data_;				/*!< Voxel data*/
 	CoordinateSystem* coordinate_system_;		/*!< Coordinate system*/
-	double min_attenuation_;					/*!< Attenuation minimum in model*/
-	double max_attenuation_;					/*!< Attenuation maximum in model*/			
+	double min_absorption_;					/*!< Absorption minimum in model*/
+	double max_absorption_;					/*!< Absorption maximum in model*/			
 	string name_;								/*!< Model name*/
 
 

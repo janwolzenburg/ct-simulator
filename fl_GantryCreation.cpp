@@ -180,8 +180,9 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 }
 
 void Fl_GantryCreation::SetDistances( const double max_corner_distance ){
-	detector_focus_distance_input_.value( ceil( 2.75 * ( max_corner_distance ) ) );
 	distance_range_input_.value( ceil( 2.5 * ( max_corner_distance ) ) );
+	detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 100000., 0);
+	detector_focus_distance_input_.value( ceil( 2.75 * ( max_corner_distance ) ) );
 
 	UpdateGantry();
 }
@@ -191,8 +192,6 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 		Fl_Group::window()->deactivate();
 
-		
-		detector_focus_distance_input_.SetProperties( distance_range_input_.value(), 10000., 0 );
 		tube_properties_ = XRayTubeProperties{	voltage_input_.value(), current_input_.value(), XRayTubeProperties::GetMaterialEnum( anode_material_input_.current_element() ), 
 												static_cast<size_t>( number_of_rays_per_pixel_input_.value() ), static_cast<bool>( toggle_filter_button_.value() ),
 												filter_cutoff_input.value(), filter_gradient_input.value() };

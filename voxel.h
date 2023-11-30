@@ -63,19 +63,19 @@ class VoxelData{
 	static SpecialProperty GetPropertyEnum( const string property_string );
 
 	/*!
-	 * @brief Get the attenuation at reference energy
-	 * @param attenuationAtEnergy Attenuation at given energy
+	 * @brief Get the absorption at reference energy
+	 * @param absorptionAtEnergy Absorption at given energy
 	 * @param energy Energy
-	 * @return Attenuation coefficient
+	 * @return Absorption coefficient
 	*/
-	static double GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy );
+	static double GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy );
 
 	/*!
 	 * @brief Constructor
-	 * @param attenuation_at_energy Attenuation coefficient at given energy
+	 * @param absorption_at_energy Absorption coefficient at given energy
 	 * @param energy_eV Energy in eV
 	*/
-	VoxelData( const double attenuation_at_energy, const double energy_eV, const SpecialProperty = None );
+	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty = None );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -87,7 +87,7 @@ class VoxelData{
 	/*!
 	 * @brief Default constructor
 	*/
-	VoxelData( void ) : attenuation_( -1 ), specialProperties_( Undefined ){};
+	VoxelData( void ) : absorption_( -1 ), specialProperties_( Undefined ){};
 
 	/*!
 	 * @brief Serialize this object
@@ -98,14 +98,14 @@ class VoxelData{
 	/*!
 	 * @brief Comparison
 	 * @param d2 Second voxel data
-	 * @return True when attenuation of left operand is smaller than right's
+	 * @return True when absorption of left operand is smaller than right's
 	*/
-	bool operator<( const VoxelData& d2 ) const{ return this->attenuation_ < d2.attenuation_; };
+	bool operator<( const VoxelData& d2 ) const{ return this->absorption_ < d2.absorption_; };
 
 	/*!
 	 * @brief Comparison
 	 * @param d2 Second voxel data
-	 * @return True when attenuation of left operand is greater than right's
+	 * @return True when absorption of left operand is greater than right's
 	*/
 	bool operator>( const VoxelData& d2 ) const{ return !operator<( d2 ); };
 
@@ -122,17 +122,17 @@ class VoxelData{
 	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
 
 	/*!
-	 * @brief Get the attenuation_ at given energy
+	 * @brief Get the absorption_ at given energy
 	 * @param energy_eV Energy in eV
-	 * @return Attenuation at given energy
+	 * @return Absorption at given energy
 	*/
-	double GetAttenuationAtEnergy( const double energy_eV ) const;
+	double GetAbsorptionAtEnergy( const double energy_eV ) const;
 
 	/*!
-	 * @brief Get attenuation_ at reference energy
-	 * @return Attenuation at reference energy 
+	 * @brief Get absorption_ at reference energy
+	 * @return Absorption at reference energy 
 	*/
-	double GetAttenuationAtReferenceEnergy( void ) const{ return attenuation_; };
+	double GetAbsorptionAtReferenceEnergy( void ) const{ return absorption_; };
 
 	/*!
 	 * @brief Check if there is a special property
@@ -158,7 +158,7 @@ class VoxelData{
 
 	static double artefact_impact_factor_;			/*!< Factor for altering metal artefact strength*/
 
-	double attenuation_	= -1;						/*!< Absorption coefficient at reference Energy*/
+	double absorption_	= -1;						/*!< Absorption coefficient at reference Energy*/
 	SpecialPropertyEnumType specialProperties_;		/*!< Special properties in voxel*/
 
 

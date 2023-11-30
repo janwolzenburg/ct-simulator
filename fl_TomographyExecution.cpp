@@ -30,9 +30,9 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	properties_title_{			X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, 0. ),	W( tomography_properties_group_, 1. ),	H( tomography_properties_group_, .05 ), "Parameter" },
 	maximum_scatterings_input_{		X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
 	scattering_propability_factor_input_{	X( tomography_properties_group_, .5 ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Propability factor" },
-	scattering_attenuation_factor_input_{X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Attenuation factor"  },
+	scattering_absorption_factor_input_{X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor"  },
 	disable_scattering_button_{		X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
-	use_simple_attenuation_button_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple attenuation" },
+	use_simple_absorption_button_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
 
 	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
@@ -67,46 +67,46 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	tomography_properties_group_.add( maximum_scatterings_input_ );
 	tomography_properties_group_.add( scattering_propability_factor_input_ );
 	tomography_properties_group_.add( disable_scattering_button_ );
-	tomography_properties_group_.add( use_simple_attenuation_button_ );
+	tomography_properties_group_.add( use_simple_absorption_button_ );
 	tomography_properties_group_.add( information_ );
-	tomography_properties_group_.add( scattering_attenuation_factor_input_ );
+	tomography_properties_group_.add( scattering_absorption_factor_input_ );
 
 
 	properties_title_.box( FL_NO_BOX ); properties_title_.align( FL_ALIGN_CENTER ); properties_title_.labelsize( 20 );
 
 	maximum_scatterings_input_.align( FL_ALIGN_TOP );
 	scattering_propability_factor_input_.align( FL_ALIGN_TOP );
-	scattering_attenuation_factor_input_.align( FL_ALIGN_TOP );
+	scattering_absorption_factor_input_.align( FL_ALIGN_TOP );
 
 	maximum_scatterings_input_.bounds(0, 100);
 	maximum_scatterings_input_.step( 1. );
-	scattering_propability_factor_input_.bounds( 1, 1000 );
-	scattering_propability_factor_input_.step( 1. );
-	scattering_propability_factor_input_.lstep( 100. );
-	scattering_attenuation_factor_input_.bounds( .0, 1. );
-	scattering_attenuation_factor_input_.step( 0.001 );
-	scattering_attenuation_factor_input_.lstep( .01 );
+	scattering_propability_factor_input_.bounds( 0., 100 );
+	scattering_propability_factor_input_.step( .5 );
+	scattering_propability_factor_input_.lstep( 10. );
+	scattering_absorption_factor_input_.bounds( .0, 100. );
+	scattering_absorption_factor_input_.step( .5 );
+	scattering_absorption_factor_input_.lstep( 10. );
 
 	maximum_scatterings_input_.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scattering_propability_factor_input_.tooltip( "Correction factor in % for scattering propability. More scattering with higher value." );
-	scattering_attenuation_factor_input_.tooltip( "Factor to apply to the ray attenuation when it is scattered." );
+	scattering_absorption_factor_input_.tooltip( "Factor to scale a ray's energy when it is scattered. In %" );
 	disable_scattering_button_.tooltip( "Enable or disable scattering." );
-	use_simple_attenuation_button_.tooltip( "If enabled \"simple\" attenuation is active which is not energy dependent." );
+	use_simple_absorption_button_.tooltip( "If enabled \"simple\" absorption is active which is not energy dependent." );
 
 	maximum_scatterings_input_.value( static_cast<double>( tomography_properties_.max_scattering_occurrences ) );
-	scattering_propability_factor_input_.value( tomography_properties_.scatter_propability_correction*100 );
-	scattering_attenuation_factor_input_.value( tomography_properties_.scattered_ray_attenuation_factor );
+	scattering_propability_factor_input_.value( tomography_properties_.scatter_propability_correction*100. );
+	scattering_absorption_factor_input_.value( tomography_properties_.scattered_ray_absorption_factor*100. );
 	disable_scattering_button_.value( static_cast<int>( tomography_properties_.scattering_enabled ) );
-	use_simple_attenuation_button_.value( static_cast<int>( tomography_properties_.use_simple_attenuation ) );
+	use_simple_absorption_button_.value( static_cast<int>( tomography_properties_.use_simple_absorption ) );
 	disable_scattering_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
-	use_simple_attenuation_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
+	use_simple_absorption_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
 	maximum_scatterings_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 
 	scattering_propability_factor_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
-	scattering_attenuation_factor_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
+	scattering_absorption_factor_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 	disable_scattering_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
-	use_simple_attenuation_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
+	use_simple_absorption_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 
 	information_.align( FL_ALIGN_TOP );
 
@@ -126,7 +126,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	projections_ = projections;
 
-	if( tomography_properties_.use_simple_attenuation ){
+	if( tomography_properties_.use_simple_absorption ){
 		projections_.tube_mean_energy( -1. );
 	}
 
@@ -138,7 +138,7 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 
 
 void Fl_TomographyExecution::UpdateProperties( void ){
-		tomography_properties_ = TomographyProperties{ static_cast<bool>( disable_scattering_button_.value() ), static_cast<size_t>( maximum_scatterings_input_.value() ), scattering_propability_factor_input_.value()/100., static_cast<bool>( use_simple_attenuation_button_.value() ), scattering_attenuation_factor_input_.value()};
+		tomography_properties_ = TomographyProperties{ static_cast<bool>( disable_scattering_button_.value() ), static_cast<size_t>( maximum_scatterings_input_.value() ), scattering_propability_factor_input_.value()/100., static_cast<bool>( use_simple_absorption_button_.value() ), scattering_absorption_factor_input_.value()/100.};
 }
 
 void Fl_TomographyExecution::DoTomography( void ){

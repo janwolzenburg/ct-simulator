@@ -44,24 +44,24 @@ VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_str
 
 }
 
-VoxelData::VoxelData( const double attenuationAtFrequency, const double frequency, const SpecialProperty specProperty ) :
-	attenuation_( attenuationAtFrequency * pow( frequency / reference_energy_for_mu_eV, 3. ) ),
+VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty specProperty ) :
+	absorption_( absorption_at_energy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. ) ),
 	specialProperties_( specProperty )
 {}
 
 VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	attenuation_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
+	absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
 	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( SpecialProperty::Undefined, binary_data, it ) )
 {}
 
-double VoxelData::GetAttenuationAtEnergy( const double energy ) const{
+double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
 
-	// iron attenuation is approx. 0.15 1/mm at 100 keV
+	// iron absorption is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
 		return artefact_impact_factor_ * mu_iron * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 	}
 
-	return attenuation_ * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
+	return absorption_ * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 
 }
 
@@ -74,14 +74,14 @@ void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<double>( attenuation_, binary_data );
+	num_bytes += SerializeBuildIn<double>( absorption_, binary_data );
 	num_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
 	return num_bytes;
 }
 
-double VoxelData::GetAttenuationAtReferenceEnergy( const double attenuationAtEnergy, const double energy ){
+double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy ){
 
-	return attenuationAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. );
+	return absorptionAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. );
 	
 }
 
@@ -128,7 +128,7 @@ string Voxel::ToString( unsigned int newline_tabulators ) const{
 
 	str += "o=" + newLine + origin_corner_.ToString( newline_tabulators + 1 );
 	str += "size=" + string( tempCharArr );
-	str += newLine + "data=" + std::to_string( data_.GetAttenuationAtReferenceEnergy() );
+	str += newLine + "data=" + std::to_string( data_.GetAbsorptionAtReferenceEnergy() );
 	str += newLine + "face[0]=" + newLine + faces[ 0 ].ToString( newline_tabulators + 1 );
 	str += newLine + "face[1]=" + newLine + faces[ 1 ].ToString( newline_tabulators + 1 );
 	str += newLine + "face[2]=" + newLine + faces[ 2 ].ToString( newline_tabulators + 1 );

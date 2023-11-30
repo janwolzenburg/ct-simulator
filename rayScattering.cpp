@@ -62,47 +62,6 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 };
 
-bool RayScattering::ScatterRay( Ray& r, const VoxelData voxel_data, const double distance_traveled_mm, const double propability_correction, const double attenuation_factor, const Point3D newOrigin ) const{
-
-
-	// Check if ray is scattered
-
-	// Calculate compton cross-section
-	const double ray_energy_eV = r.GetMeanEnergyOfSpectrum();
-	const double compton_cross_section = r.GetMeanComptonCrossSection();
-
-	// Get the "attenuatuion coefficient" and the "propability"
-	const double electron_density = electron_density_water_1Permm3 * voxel_data.GetAttenuationAtReferenceEnergy() / mu_water;
-
-	const double coefficient_1Permm = electron_density * compton_cross_section;
-
-	const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
-
-	// Scattering happened?
-	if( !integer_random_number_generator.DidARandomEventHappen( scatter_propability * propability_correction ) ) return false;
-
-	
-	// Ray is scattered
-	
-	// Scattering angle
-	const double angle = GetRandomAngle( ray_energy_eV );
-	
-	// Calculate anergy loss
-	
-	const double energy_after_scatter = 1. / ( Per_me_c2_eV * ( 1. - cos( angle ) ) + 1. / ray_energy_eV );
-	const double relative_energy_loss = energy_after_scatter / ray_energy_eV;
-
-	// Scale spectrum according to energy loss
-	r.ScaleSpectrumEvenly( attenuation_factor * relative_energy_loss );
-
-	const UnitVector3D newDirection = r.direction().RotateConstant( scattering_plane_normal_, angle );
-	r.SetOrigin( newOrigin );
-	r.SetDirection( newDirection );
-
-	return true;
-
-}
-
 double RayScattering::GetRandomAngle( const double energy ) const{
 
 	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );
@@ -111,12 +70,12 @@ double RayScattering::GetRandomAngle( const double energy ) const{
 
 }
 
-Compton_Cross_Section& Compton_Cross_Section::GetInstance( void ){
-	static Compton_Cross_Section instance;
+ScatteringCrossSection& ScatteringCrossSection::GetInstance( void ){
+	static ScatteringCrossSection instance;
 	return instance;
 }
 
-double Compton_Cross_Section::GetCrossSection( const double energy ) const{
+double ScatteringCrossSection::GetCrossSection( const double energy ) const{
 		
 	const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - energy_start_eV ) / energy_resolution_ + 0.5 ) );
 	if( energy_index >= number_of_energies_  ) return cross_sections_.back().y;
@@ -124,7 +83,7 @@ double Compton_Cross_Section::GetCrossSection( const double energy ) const{
 	return cross_sections_.at( energy_index ).y;
 }
 
-Compton_Cross_Section::Compton_Cross_Section( void ) : 
+ScatteringCrossSection::ScatteringCrossSection( void ) : 
 	number_of_energies_( static_cast<size_t>( ( ( energy_end_eV - energy_start_eV ) / desired_energy_resolution ) ) + 1 ),
 	energy_resolution_( ( energy_end_eV - energy_start_eV ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	cross_sections_( number_of_energies_, Tuple2D{} )
@@ -139,12 +98,13 @@ Compton_Cross_Section::Compton_Cross_Section( void ) :
 		const double cross_section = 2. * PI * pow( r_e_mm, 2. ) * 
 									( 
 										( 
-											( ( 1. + e ) / pow( e, 2. ) ) * 
-											( 2. * ( 1. + e ) / ( 1. + 2. * pow( e, 2. ) ) - log( 1. + 2 * e ) / e ) 
+											( 1. + e ) / pow( e, 2. ) * 
+											( 2. * ( 1. + e ) / ( 1. + 2. * e ) - log( 1. + 2 * e ) / e ) 
 										) + 
 										log( 1. + 2. * e ) / ( 2. * e ) -
 										( 1. + 3. * e ) / pow( 1. + 2. * e, 2. )
 									);
+
 
 		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, cross_section };
 
