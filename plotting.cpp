@@ -25,6 +25,10 @@
 ofstream openAxis( path file_name, const bool reset ){
 	ofstream outFile;
 
+	if( file_name.empty() ) return outFile;
+
+	if( file_name.extension() != ".axis" )
+	file_name += ".axis";
 
 	if( reset ) outFile.open( file_name, std::ios::out | std::ios::trunc );
 	else outFile.open( file_name, std::ios::out | std::ios::app );
