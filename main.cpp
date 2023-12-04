@@ -59,6 +59,8 @@ int main( void ){
 
 	BuildTestDetector();
 	TestRadonCoordinates();
+	TestSpectrum();
+	TestBeamCreation();
 
 	return 0;
 

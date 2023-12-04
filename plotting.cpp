@@ -251,9 +251,19 @@ void addObject<Gantry, int>( ofstream& axis, const string name, const Gantry gan
 
 		addObject( axis, name + "DetectorNormals", pixelNormals, data, 1.05 *  gantry.detector().properties().detector_focus_distance );
 	}
+	
+	if( specifiers & GANTRY_SPECIFIERS::DETECTOR_CORNERS ){
 
+		//addSingleObject( axis, "Corner", gantry.pixel_array().back().GetPoint(gantry.pixel_array().back().parameter_1_min(), gantry.pixel_array().back().parameter_2_max()), "b");
+
+		for( DetectorPixel currentPixel : gantry.pixel_array() ){
+
+			addSingleObject( axis, "Corner", currentPixel.GetPoint( currentPixel.parameter_1_max(), currentPixel.parameter_2_max() ), "b");
+			addSingleObject( axis, "Corner", currentPixel.GetPoint( currentPixel.parameter_1_min(), currentPixel.parameter_2_max() ), "b");
+		}
+	
+	}
 }
-
 
 template<>
 void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod, std::string voxel_data_, double threshold ){
