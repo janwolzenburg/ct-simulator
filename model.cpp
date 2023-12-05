@@ -221,7 +221,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 
 	#ifdef TRANSMISSION_TRACKING
 	if( !IsPointInside( modelRay.origin() ) ){
-		modelRay.ray_tracing().tracing_steps.emplace_back( false, modelIsect.entrance_.line_parameter_, GetModelVoxel().data(), modelRay.origin(), modelIsect.entrance_.intersection_point_, modelRay.properties().simple_intensity());
+		modelRay.ray_tracing().tracing_steps.emplace_back( false, modelIsect.entrance_.line_parameter_, GetModelVoxel().data(), modelRay.origin(), modelIsect.entrance_.intersection_point_, modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower());
 	}
 	#endif
 
@@ -301,7 +301,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 			modelRay.IncrementHitCounter();
 
 			#ifdef TRANSMISSION_TRACKING
-			modelRay.ray_tracing().tracing_steps.emplace_back( true, distance, current_voxel_data, currentPntOnRay, modelRay.GetPointFast( currentRayStep ), modelRay.properties().simple_intensity() );
+			modelRay.ray_tracing().tracing_steps.emplace_back( true, distance, current_voxel_data, currentPntOnRay, modelRay.GetPointFast( currentRayStep ), modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower() );
 			#endif
 
 			currentRayStep += distance + default_ray_step_size_mm;				// New Step on Ray
@@ -319,7 +319,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 	modelRay.origin( currentPntOnRay );
 
 	#ifdef TRANSMISSION_TRACKING
-	modelRay.ray_tracing().tracing_steps.emplace_back( false, -1, GetModelVoxel().data(), currentPntOnRay, currentPntOnRay, modelRay.properties().simple_intensity() );
+	modelRay.ray_tracing().tracing_steps.emplace_back( false, -1, GetModelVoxel().data(), currentPntOnRay, currentPntOnRay, modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower() );
 	#endif
 
 	//cout << endl << endl;
@@ -461,21 +461,35 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 }
 
-DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridIndex number_of_points ) const{
-
-	// Distance between corners furthest away from each other
-	const double cornerDistance = sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
-	// Worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
-
+DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridIndex number_of_points, const optional<GridCoordinates> forced_resolution ) const{
 
 	// Surface in model's system
 	const Surface localSurface = sliceLocation.ConvertTo( coordinate_system_ );
 	 
+	 GridCoordinates sliceStart;
+	 GridCoordinates sliceEnd;
+	 GridCoordinates sliceResolution;
 
-	size_t Mmax_number_of_points = Max( number_of_points.c, number_of_points.r );
-	GridCoordinates sliceStart( -cornerDistance, -cornerDistance );
-	GridCoordinates sliceEnd( cornerDistance, cornerDistance );
-	GridCoordinates sliceResolution( ( sliceEnd.c - sliceStart.c ) / Mmax_number_of_points / 4., ( sliceEnd.r - sliceStart.r ) / Mmax_number_of_points / 4.  );
+	if( !forced_resolution.has_value() ){
+		// Distance between corners furthest away from each other
+		double cornerDistance = size_.x + size_.y + size_.z; //sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
+		// Worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
+
+		size_t Mmax_number_of_points = Max( number_of_points.c, number_of_points.r );
+		sliceStart = { - cornerDistance / 2., -cornerDistance / 2. };
+		sliceEnd = { cornerDistance / 2., cornerDistance / 2. };
+		sliceResolution = { ( sliceEnd.c - sliceStart.c ) / Mmax_number_of_points / 4., ( sliceEnd.r - sliceStart.r ) / Mmax_number_of_points / 4. };
+
+	}
+	else{
+
+		sliceResolution = forced_resolution.value();
+		sliceStart = {	- ( static_cast<double>( number_of_points.c ) * sliceResolution.c ) / 2.,
+						- ( static_cast<double>( number_of_points.r ) * sliceResolution.r ) / 2. };
+		sliceEnd = {	  ( static_cast<double>( number_of_points.c ) * sliceResolution.c ) / 2.,
+						  ( static_cast<double>( number_of_points.r ) * sliceResolution.r ) / 2. };
+	}
+
 
 	DataGrid<VoxelData> largeSlice{ NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() };
 

@@ -12,6 +12,8 @@
 	Includes
  *********************************************************************/
 #include <algorithm>
+#include <optional>
+using std::optional;
 
 #include "generel.h"
 #include "generelMath.h"
@@ -131,7 +133,7 @@ class Model : public MathematicalObject{
 	*/
 	bool AreCoordinatesValid( const Tuple3D coordinates ) const{
 		return coordinates.x >= 0 && coordinates.y >= 0 && coordinates.z >= 0 &&
-			coordinates.x < size_.x && coordinates.y < size_.y && coordinates.z < size_.z; };
+			coordinates.x <= size_.x && coordinates.y <= size_.y && coordinates.z <= size_.z; };
 
 	/*!
 	 * @brief Checks if local point is inside model
@@ -213,9 +215,10 @@ class Model : public MathematicalObject{
 	 * @brief Get slice through model
 	 * @param slice_location Where to slice
 	 * @param number_of_points Amount of points along the slice axis
+	 * @param forced_resolution Force a resolution
 	 * @return Grid with slice
 	*/
-	DataGrid<VoxelData> GetSlice( const Surface slice_location, const GridIndex number_of_points ) const; 
+	DataGrid<VoxelData> GetSlice( const Surface slice_location, const GridIndex number_of_points, const optional<GridCoordinates> forced_resolution = optional<GridCoordinates>{} ) const;
 
 	/*!
 	 * @brief Alter special properties in the specified sphere

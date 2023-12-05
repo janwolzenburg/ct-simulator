@@ -36,7 +36,8 @@ class RayTrace{
 		VoxelData data;
 		Point3D entrance;
 		Point3D exit;
-		double currentIntensity;
+		double current_simple_intensity;
+		double current_intensity;
 	};
 
 	public:

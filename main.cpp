@@ -7,7 +7,7 @@
  *********************************************************************/
 
  
-//#define VERIFY
+#define VERIFY
 
 #ifndef VERIFY
 
@@ -62,6 +62,8 @@ int main( void ){
 	TestRadonCoordinates();
 	TestSpectrum();
 	TestBeamCreation();
+
+	VerifyTransmission();
 
 	return 0;
 
