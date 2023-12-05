@@ -76,7 +76,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 	fl_measure( axis_label_.second.c_str(), label_width, label_height );
 	fl_draw( axis_label_.second.c_str(), y_axis_tip.x - label_width / 2, y_axis_tip.y - 5);
 
-	const int number_of_tics = 6;
+	const int number_of_tics = 7;
 	for( int i = 0; i < number_of_tics; i++ ){
 
 		const double x_axis_tic = axis_tics_start_.x + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().x - 1 ) / static_cast<double>( number_of_tics - 1 ) * ( pixel_size_.x );
