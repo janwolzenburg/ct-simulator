@@ -381,6 +381,9 @@
     <ClInclude Include="verificationParameter.h">
       <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
+    <ClInclude Include="verifyTransmission.h">
+      <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -558,6 +561,12 @@
       <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="verifyDevice.cpp">
+      <Filter>Quelldateien\01 Verification</Filter>
+    </ClCompile>
+    <ClCompile Include="verifyTransmission.cpp">
+      <Filter>Quelldateien\01 Verification</Filter>
+    </ClCompile>
+    <ClCompile Include="verificationParameter.cpp">
       <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
   </ItemGroup>

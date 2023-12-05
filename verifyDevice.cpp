@@ -163,7 +163,7 @@ void TestBeamCreation( void ){
 
 	ProjectionsProperties projections_properties{ number_of_projections*7/4, number_of_pixel, measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 3, false, 20000., -3.5 };
+	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 3, false, 20000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 

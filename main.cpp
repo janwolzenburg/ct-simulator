@@ -7,7 +7,7 @@
  *********************************************************************/
 
  
-#define VERIFY
+//#define VERIFY
 
 #ifndef VERIFY
 
@@ -54,6 +54,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 #else
 
 #include "verifyDevice.h"
+#include "verifyTransmission.h"
 
 int main( void ){
 
