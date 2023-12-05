@@ -64,6 +64,7 @@ int main( void ){
 	TestBeamCreation();
 
 	VerifyTransmission();
+	VerifyHardening();
 
 	return 0;
 
