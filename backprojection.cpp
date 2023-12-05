@@ -109,7 +109,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 	// Computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < 1; threadIdx++ ){
+	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 		threads.emplace_back( ReconstructImageColumn, ref( current_angle_index ), ref( current_angle_index_mutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
 	}
 
