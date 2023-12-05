@@ -235,11 +235,11 @@ class Model : public MathematicalObject{
 	Tuple3D voxel_size_;						/*!< Voxelsize in each dimension in mm*/
 	Tuple3D size_;								/*!< Size of complete model in mm*/
 	size_t number_of_voxel_;					/*!< Absolute amount of voxels in model*/
-	vector<VoxelData> voxel_data_;				/*!< Voxel data*/
 	CoordinateSystem* coordinate_system_;		/*!< Coordinate system*/
 	double min_absorption_;					/*!< Absorption minimum in model*/
 	double max_absorption_;					/*!< Absorption maximum in model*/			
 	string name_;								/*!< Model name*/
+	vector<VoxelData> voxel_data_;				/*!< Voxel data*/
 
 
 	private:

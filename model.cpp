@@ -47,11 +47,11 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 			static_cast<double>( number_of_voxel_3D_.y ) * voxel_size_.y,
 			static_cast<double>( number_of_voxel_3D_.z ) * voxel_size_.z } ,
 	number_of_voxel_( number_of_voxel_3D_.x * number_of_voxel_3D_.y * number_of_voxel_3D_.z ),
-	voxel_data_( number_of_voxel_, defaultData ),
 	coordinate_system_( coordinate_system ),
 	min_absorption_( defaultData.GetAbsorptionAtReferenceEnergy() ),
 	max_absorption_( defaultData.GetAbsorptionAtReferenceEnergy() ),
-	name_( name_ )
+	name_( name_ ),
+	voxel_data_( number_of_voxel_, defaultData )
 {
 	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
 }
@@ -64,11 +64,11 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 			static_cast<double>( number_of_voxel_3D_.y ) * voxel_size_.y,
 			static_cast<double>( number_of_voxel_3D_.z ) * voxel_size_.z } ,
 	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
-	voxel_data_( number_of_voxel_, VoxelData{} ),
 	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
 	min_absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
 	max_absorption_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
-	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) )
+	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) ),
+	voxel_data_( number_of_voxel_, VoxelData{} )
 {
 	
 	if( number_of_voxel_ * sizeof( VoxelData ) == static_cast<size_t>( binary_data.end() - it ) ){
