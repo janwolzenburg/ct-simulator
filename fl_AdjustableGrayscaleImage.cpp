@@ -180,7 +180,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 		}
 	}
 	else{
-		tenth_power_low = 4;
+		tenth_power_low = 12;
 	}
 
 	int tenth_power_high = 0;
@@ -194,10 +194,14 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 		}
 	}
 	else{
-		tenth_power_high = 4;
+		tenth_power_high = 12;
 	}
 
-	common_power_ = Min( tenth_power_low, tenth_power_high );
+	if( !IsNearlyEqual( high, 0., 1e-9, ComparisonMode::Absolute ) && !IsNearlyEqual( low, 0., 1e-9, ComparisonMode::Absolute ) ){
+		common_power_ = 1;
+	}
+	else
+		common_power_ = Min( tenth_power_low, tenth_power_high );
 
 	common_factor_text_.copy_label( string{ "x10^" + to_string( -common_power_ ) }.c_str() );
 
