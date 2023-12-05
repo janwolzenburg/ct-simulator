@@ -24,6 +24,27 @@
   /*********************************************************************
 	Definitions
  *********************************************************************/
+#ifdef TRANSMISSION_TRACKING
+
+class RayTrace{
+	
+	public:
+
+	struct TracingStep{
+		bool inside_model;
+		double distance;
+		VoxelData data;
+		Point3D entrance;
+		Point3D exit;
+		double currentIntensity;
+	};
+
+	public:
+	
+	vector<TracingStep> tracing_steps;
+};
+
+#endif
 
 /*!
  * @brief Class for Ray properties_
@@ -97,6 +118,11 @@ class RayProperties{
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
 	double simple_intensity_;				/*!< Current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
 
+	#ifdef TRANSMISSION_TRACKING
+	public:
+	RayTrace ray_tracing;
+
+	#endif
 };
 
 
@@ -151,12 +177,6 @@ class Ray : public Line{
 	};
 
 	/*!
-	 * @brief Get the mean energy of spectrum
-	 * @return Mean energy
-	*/
-	//double GetMeanEnergyOfSpectrum( void ){ return properties_.energy_spectrum_.mean_energy(); };
-
-	/*!
 	 * @brief Increment the voxel hit count
 	*/
 	void IncrementHitCounter( void ){ properties_.voxel_hits_++; };
@@ -185,12 +205,6 @@ class Ray : public Line{
 	*/
 	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
 	
-	/*!
-	 * @brief Get mean compton cross section of photons in spectrum
-	 * @return Mean compton cross section in mm^2
-	*/
-	//double GetMeanComptonCrossSection( void ) const{ return properties_.energy_spectrum_.GetMeanComptonCrossSection(); };
-
 	/*!
 	 * @brief Convert Ray components to different coordinate system
 	 * @param target_coordinate_system Target system
@@ -226,9 +240,24 @@ class Ray : public Line{
 	*/
 	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
+	/*!
+	 * @brief Scatter this ray
+	 * @param scattering_information Scattering properties 
+	 * @param voxel_data Voxel data
+	 * @param distance_traveled_mm Distance traveled in voxel
+	 * @param tomography_properties Properties of tomogrpahy
+	 * @param newOrigin Point where sattering occured
+	 * @return Vector with scattered rays
+	*/
 	vector<Ray> Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin);
 
 	private:
 
 	RayProperties properties_;			/*!< Properties of Ray*/
+
+
+	#ifdef TRANSMISSION_TRACKING
+	public:
+	RayTrace& ray_tracing( void ){ return properties_.ray_tracing; };
+	#endif
 };

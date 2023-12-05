@@ -156,7 +156,7 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-bool XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
+bool XRayDetector::DetectRay( Ray& r, mutex& allPixelLock ){
 
 	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
 
@@ -189,6 +189,12 @@ bool XRayDetector::DetectRay( const Ray& r, mutex& allPixelLock ){
 				allPixelLock.lock();
 				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties to pixel
 				allPixelLock.unlock();
+				
+				#ifdef TRANSMISSION_TRACKING 
+				r.ray_tracing().tracing_steps.back().exit = pixelHit.intersection_point_;
+				r.ray_tracing().tracing_steps.back().distance = (pixelHit.intersection_point_ - r.ray_tracing().tracing_steps.back().entrance).length();
+				#endif
+
 			}
 
 			// Only one pixel can intersect with Ray

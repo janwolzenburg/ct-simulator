@@ -219,6 +219,12 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 	// Current point on the Ray
 	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
 
+	#ifdef TRANSMISSION_TRACKING
+	if( !IsPointInside( modelRay.origin() ) ){
+		modelRay.ray_tracing().tracing_steps.emplace_back( false, modelIsect.entrance_.line_parameter_, GetModelVoxel().data(), modelRay.origin(), modelIsect.entrance_.intersection_point_, modelRay.properties().simple_intensity());
+	}
+	#endif
+
 	vector<Ray> all_scattered_rays;
 
 	// Iterate through model while current point is inside model
@@ -294,6 +300,10 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 			modelRay.UpdateProperties( current_voxel_data, distance );
 			modelRay.IncrementHitCounter();
 
+			#ifdef TRANSMISSION_TRACKING
+			modelRay.ray_tracing().tracing_steps.emplace_back( true, distance, current_voxel_data, currentPntOnRay, modelRay.GetPointFast( currentRayStep ), modelRay.properties().simple_intensity() );
+			#endif
+
 			currentRayStep += distance + default_ray_step_size_mm;				// New Step on Ray
 			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
 
@@ -307,6 +317,10 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProp
 
 	// New origin "outside" the model to return
 	modelRay.origin( currentPntOnRay );
+
+	#ifdef TRANSMISSION_TRACKING
+	modelRay.ray_tracing().tracing_steps.emplace_back( false, -1, GetModelVoxel().data(), currentPntOnRay, currentPntOnRay, modelRay.properties().simple_intensity() );
+	#endif
 
 	//cout << endl << endl;
 	return { std::move( modelRay ), all_scattered_rays };
