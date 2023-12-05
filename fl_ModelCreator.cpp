@@ -12,7 +12,7 @@
  *********************************************************************/
 
  #include "fl_ModelCreator.h"
-
+ #include "FL/Fl.H"
 
  const std::map<Fl_ModelFeature::Shape, string> Fl_ModelFeature::shape_names{
 	{ Sphere,	"Sphere" },
@@ -298,7 +298,7 @@ void Fl_ModelCreator::BuildModel( void ){
 
 	for( size_t x = 0; x < model.size().x; x++ ){
 		progress_window->ChangeLineText( 0, string{ "Builing model slice " + to_string( x + 1) + " of " + to_string( model.size().x ) } );
-
+		Fl::check(); 
 		for( size_t y = 0; y < model.size().y; y++ ){
 			for( size_t z = 0; z < model.size().z; z++ ){
 
@@ -330,9 +330,9 @@ void Fl_ModelCreator::BuildModel( void ){
 
 
 						case Fl_ModelFeature::Shape::Cube:
-							if( point.X() < center.X() + size / 2. && point.X() >= center.X() - size / 2.  &&
-								point.Y() < center.Y() + size / 2. && point.Y() >= center.Y() - size / 2.  &&
-								point.Z() < center.Z() + size / 2. && point.Z() >= center.Z() - size / 2.  )
+							if( point.X() < center.X() + size / 2. && point.X() >= center.X() - size / 2. &&
+								point.Y() < center.Y() + size / 2. && point.Y() >= center.Y() - size / 2. &&
+								point.Z() < center.Z() + size / 2. && point.Z() >= center.Z() - size / 2.   )
 								has_feature = true;
 
 						break;
