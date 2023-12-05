@@ -7,7 +7,7 @@
 #include "gantry.h"
 #include "tomography.h"
 
-void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis, ofstream& delta_axis ){
+void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis, ofstream& delta_axis, bool add_inout ){
 
 	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, true );
 
@@ -48,7 +48,8 @@ void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomogr
 			deltas.emplace_back( current_step, -log( intensity_values.back().y / (intensity_values.end() - 2)->y ) / step.distance );
 		}
 
-		addSingleObject( axis, "InOut", step.entrance, "m" );
+		if( add_inout )
+			addSingleObject( axis, "InOut", step.entrance, "m" );
 
 		simple_intensity_values.emplace_back( current_step, step.current_simple_intensity );
 		intensity_values.emplace_back( current_step, step.current_intensity );
@@ -131,7 +132,7 @@ void VerifyTransmission( void ){
 	auto simple_delta_axis = openAxis( GetPath( "test_transmission_simple_intensity_delta" ), true );
 	auto delta_axis = openAxis( GetPath( "test_transmission_intensity_delta" ), true );
 
-	TransmitAndDraw( model, ray, tomography_properties, ray_scattering, axis, simple_intensities_axis, intensities_axis, simple_delta_axis, delta_axis );
+	TransmitAndDraw( model, ray, tomography_properties, ray_scattering, axis, simple_intensities_axis, intensities_axis, simple_delta_axis, delta_axis, true );
 	
 	closeAxis( simple_intensities_axis );
 	closeAxis( intensities_axis );
@@ -151,7 +152,7 @@ path model_path{ "./verification only water.model" };
 
 
 	ProjectionsProperties projections_properties{ number_of_projections, 12, 200 };
-	PhysicalDetectorProperties physical_detector_properties{ 25., projections_properties.measuring_field_size()*1.75 };
+	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
@@ -167,7 +168,7 @@ path model_path{ "./verification only water.model" };
 	auto slice = model.GetSlice( slice_surface, GridIndex{ model.number_of_voxel_3D().x, model.number_of_voxel_3D().y }, GridCoordinates{ model.voxel_size().x, model.voxel_size().y } );
 	
 	
-	auto axis = openAxis( GetPath( "test_transmission" ), true );
+	auto axis = openAxis( GetPath( "test_hardening" ), true );
 	
 	for( size_t c = 0; c < slice.size().c; c++ ){
 		for( size_t r = 0; r < slice.size().r; r++ ){
@@ -193,8 +194,7 @@ path model_path{ "./verification only water.model" };
 		addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
 	}
 
-	Ray ray = rays.at( 0 );
-	addSingleObject( axis, "Ray", ray, "g", gantry.detector().properties().detector_focus_distance);
+	
 	
 	ofstream simple_intensities_axis;// = openAxis( GetPath( "test_transmission_simple_intensity" ), true );
 	ofstream intensities_axis;// = openAxis( GetPath( "test_transmission_intensity" ), true );
@@ -209,15 +209,17 @@ path model_path{ "./verification only water.model" };
 
 	
 
-		TransmitAndDraw( model, ray, tomography_properties, ray_scattering, axis, simple_intensities_axis, intensities_axis, simple_delta_axis, delta_axis );
+		Ray ray = rays.at( 2*i );
+		addSingleObject( axis, "Ray", ray, "g", gantry.detector().properties().detector_focus_distance);
+
+		TransmitAndDraw( model, ray, tomography_properties, ray_scattering, axis, simple_intensities_axis, intensities_axis, simple_delta_axis, delta_axis, false );
 		
 		closeAxis( simple_intensities_axis );
 		closeAxis( intensities_axis );
 		closeAxis( simple_delta_axis );
 		closeAxis( delta_axis );
-		closeAxis( axis );
 	}
 
 
-
+	closeAxis( axis );
 }
