@@ -484,10 +484,10 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	else{
 
 		sliceResolution = forced_resolution.value();
-		sliceStart = {	- ( static_cast<double>( number_of_points.c ) * sliceResolution.c ) / 2.,
-						- ( static_cast<double>( number_of_points.r ) * sliceResolution.r ) / 2. };
-		sliceEnd = {	  ( static_cast<double>( number_of_points.c ) * sliceResolution.c ) / 2.,
-						  ( static_cast<double>( number_of_points.r ) * sliceResolution.r ) / 2. };
+		sliceStart = {	- ( static_cast<double>( number_of_points.c - 1) * sliceResolution.c ) / 2.,
+						- ( static_cast<double>( number_of_points.r - 1) * sliceResolution.r ) / 2. };
+		sliceEnd = {	  ( static_cast<double>( number_of_points.c - 1) * sliceResolution.c ) / 2.,
+						  ( static_cast<double>( number_of_points.r - 1) * sliceResolution.r ) / 2. };
 	}
 
 
