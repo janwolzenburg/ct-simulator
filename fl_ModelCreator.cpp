@@ -302,7 +302,7 @@ void Fl_ModelCreator::BuildModel( void ){
 		for( size_t y = 0; y < model.size().y; y++ ){
 			for( size_t z = 0; z < model.size().z; z++ ){
 
-				const Point3D point( Tuple3D( static_cast<double>( x ) * voxel_size_.x , static_cast<double>( y ) * voxel_size_.y , static_cast<double>( z ) * voxel_size_.z ), model.coordinate_system() );
+				const Point3D point( Tuple3D( (static_cast<double>( x ) + 0.5) * voxel_size_.x , (static_cast<double>( y ) + 0.5) * voxel_size_.y , (static_cast<double>( z ) + 0.5) * voxel_size_.z ), model.coordinate_system() );
 
 				// Check active features
 				for( auto& feature_ptr : features_ ){
