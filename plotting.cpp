@@ -40,6 +40,19 @@ void closeAxis( ofstream& axis ){
 	axis.close();
 }
 
+
+string ReplaceSpace( const string text ){
+
+	string new_text;
+
+	for( char character : text ){
+		if( character != ' ' ) new_text.push_back( character );
+		else new_text.push_back( '_' );
+	}
+
+	return new_text;
+}
+
 template<>
 string getObjectString<Point3D>( const Point3D p ){
 

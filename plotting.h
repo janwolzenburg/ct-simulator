@@ -58,5 +58,6 @@ void addSingleObject( ofstream& axis, const string name, const C object, const s
 template<class C, typename T>
 void addObject(ofstream& axis, const string name, const C object, const string data, const T additional);
 
+string ReplaceSpace( const string text );
 
 #include "plotting.hpp"

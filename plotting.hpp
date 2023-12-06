@@ -23,7 +23,7 @@
 template<class C>
 void addSingleObject<C>( ofstream& axis, const string name, const C object ){
 
-	axis << name;
+	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString( object ) << '\n';
 
 }
@@ -31,7 +31,7 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object ){
 template<class C>
 void addSingleObject<C>( ofstream& axis, const string name, const C object, const string data ){
 
-	axis << name;
+	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString( object ) << ' ' << data << '\n';
 
 }
@@ -40,7 +40,7 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object, cons
 template<class C, typename T>
 void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string data, const T additional) {
 
-	axis << name;
+	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString(object, additional) << ' ' << data << '\n';
 
 }
