@@ -197,7 +197,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 		tenth_power_high = 12;
 	}
 
-	if( !IsNearlyEqual( high, 0., 1e-9, ComparisonMode::Absolute ) && !IsNearlyEqual( low, 0., 1e-9, ComparisonMode::Absolute ) ){
+	if( IsNearlyEqual( high, 0., 1e-9, ComparisonMode::Absolute ) && IsNearlyEqual( low, 0., 1e-9, ComparisonMode::Absolute ) ){
 		common_power_ = 1;
 	}
 	else
