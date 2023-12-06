@@ -33,8 +33,8 @@ const string ProjectionsProperties::FILE_PREAMBLE{ "Ver02RADONPARAMETER_FILE_PRE
 */
 
 ProjectionsProperties::ProjectionsProperties( const size_t number_of_angles, const size_t number_of_distances, const double measuring_field_size ) :
-	number_of_projections_( ForceToMin( number_of_angles, static_cast<size_t>( 8 ) ) ),
-	number_of_distances_( ForceToMin( ForceEven( number_of_distances ), static_cast<size_t>( 4 ) ) ),
+	number_of_projections_( ForceToMin( number_of_angles, static_cast<size_t>( 4 ) ) ),
+	number_of_distances_( ForceToMin( ForceEven( number_of_distances ), static_cast<size_t>( 2 ) ) ),
 	measuring_field_size_( ForcePositive( measuring_field_size ) ),
 	angles_resolution_( PI / static_cast<double>( number_of_projections_ ) ),
 	distances_resolution_( measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 ) ),
