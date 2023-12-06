@@ -107,7 +107,7 @@ void VerifyTransmission( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, 0, slice.resolution().c, 0, slice.resolution().r};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/.2, slice.resolution().r/.2};
 
 
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
@@ -141,22 +141,18 @@ void VerifyTransmission( void ){
 	closeAxis( axis );
 }
 
-
 void VerifyHardening( void ){
-path model_path{ "./verification only water.model" };
-
-	PersistingObject<Model> model{ Model{}, model_path, true };
 	
+	path model_path{ "./verification only water.model" };
+	PersistingObject<Model> model{ Model{}, model_path, true };
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
-
 
 	ProjectionsProperties projections_properties{ number_of_projections, 12, 200 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
-
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
@@ -182,11 +178,8 @@ path model_path{ "./verification only water.model" };
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, 0, slice.resolution().c, 0, slice.resolution().r};
-
-
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/.2, slice.resolution().r/.2};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
-
 		}
 	}
 
@@ -221,5 +214,103 @@ path model_path{ "./verification only water.model" };
 	}
 
 
+	closeAxis( axis );
+}
+
+void VerifyScattering( void ){
+
+	path model_path{ "./verification only water.model" };
+	PersistingObject<Model> model{ Model{}, model_path, true };
+	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
+	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
+
+	ProjectionsProperties projections_properties{8, 4, 100 };
+	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
+	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+
+	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
+	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
+
+	RayScattering ray_scattering{ number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), number_of_energies_for_scattering, gantry_system->GetEz() };
+
+	TomographyProperties tomography_properties{ true, 1, 1., true, 1. };
+
+	Surface slice_surface{ gantry.coordinate_system()->GetEx(), gantry.coordinate_system()->GetEy(), gantry.coordinate_system()->GetOriginPoint() };
+	auto slice = model.GetSlice( slice_surface, GridIndex{ model.number_of_voxel_3D().x, model.number_of_voxel_3D().y }, GridCoordinates{ model.voxel_size().x, model.voxel_size().y } );
+	
+	auto axis = openAxis( GetPath( "test_scattering" ), true );
+	
+	for( size_t c = 0; c < slice.size().c; c++ ){
+		for( size_t r = 0; r < slice.size().r; r++ ){
+			
+			const double range = slice.max_value().GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy();
+			double value;
+			if( range == 0 ){
+				value = 1.;
+			}
+			else
+				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
+							range;
+		
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
+		}
+	}
+	
+	Ray ray = rays.at( 0 );
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
+	addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
+
+	
+	
+		
+	for( auto scattered_ray : returned_rays.second ){
+
+		addSingleObject( axis, "Scattered ray", scattered_ray, "g", gantry.detector().properties().detector_focus_distance );
+
+
+	}
+
+	vector<ofstream> angles_axis;
+	const int num_energies = 2;
+
+	for( int i = 0; i < num_energies; i++ ){
+		angles_axis.emplace_back( std::move( openAxis( GetPath( string{"test_scattering_angles_e_"} + to_string( i + 1 ) ), true ) ) );
+	}
+
+	vector<double> energies = CreateLinearSpace( 20000., 140000., num_energies );
+	
+	array<VectorPair, num_energies> angles;
+	for( auto& angles_element : angles ){
+
+		angles_element = VectorPair{ CreateLinearSpace( 0, PI, number_of_scatter_angles / 2), vector<double>( number_of_scatter_angles / 2, 0. ) };
+
+	}
+	
+	double angle_resolution = angles.at(0).first.at(1) - angles.at(0).first.at(0);
+
+	for( int i = 0; i < 50000; i++ ){
+
+		for( int e_i = 0; e_i < num_energies; e_i++ ){
+			
+			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ) ) );
+			
+			size_t angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
+			
+			angles.at(e_i).second.at( ForceToMax( angle_index, angles.at(e_i).second.size() - 1 ) )++;
+		}
+
+	}
+
+	for( int e_i = 0; e_i < num_energies; e_i++ ){
+		addSingleObject( angles_axis.at(e_i), "Angles", ConvertToTuple(angles.at(e_i)), "$\\varphi$ in rad;$N$;Dots");
+		
+		closeAxis( angles_axis.at(e_i) );
+	}
+
+
+
+	
 	closeAxis( axis );
 }

@@ -117,13 +117,12 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
 
 	vector<Ray> scattered_rays;
+	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 
 
 	// Iterate energies in spectrum
 	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
-		//const double energy = spectrum_point.x;
-		//const double photons = spectrum_point.y;
 
 		// No photons at current energy
 		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
@@ -140,13 +139,17 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
+				const double angle = scattering_information.GetRandomAngle( energy );
 				const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
-																				scattering_information.GetRandomAngle( energy ));
-					
-				const EnergySpectrum new_spectrum{ VectorPair{ { energy }, { photons_per_bin } } }; 
+																				angle );
+				
+				const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
+				const double energy_fraction = new_energy / energy;
+
+				const EnergySpectrum new_spectrum{ VectorPair{ { new_energy }, { photons_per_bin } } }; 
 				RayProperties new_properties{ new_spectrum };
 				new_properties.voxel_hits_ = properties_.voxel_hits_;
-				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
+				new_properties.simple_intensity_ = properties_.simple_intensity_ * energy_fraction * scattered_ray_intensity_factor;
 				new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
 				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );

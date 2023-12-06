@@ -65,6 +65,7 @@ int main( void ){
 
 	VerifyTransmission();
 	VerifyHardening();
+	VerifyScattering();
 
 	return 0;
 

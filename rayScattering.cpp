@@ -43,7 +43,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 		const double a = currentEnergy / me_c2_eV;
 	
 		// Iterate all angles
-		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount - 1; currentAngleIndex++ ){
+		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount; currentAngleIndex++ ){
 
 			const double t = -PI + static_cast<double>( currentAngleIndex ) * angleResolution;
 
@@ -64,7 +64,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 double RayScattering::GetRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() );
+	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() - 1 );
 	
 	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber();
 
