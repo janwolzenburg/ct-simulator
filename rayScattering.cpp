@@ -52,6 +52,9 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 
 			pseudoDistribution.emplace_back( t, pseudoProbability );
 
+			if( currentAngleIndex == ( anglesAmount - 1 ) / 2 ) 
+				pseudoDistribution.emplace_back( t, pseudoProbability );
+
 		}
 
 		scattering_angle_distributions_.emplace_back( currentEnergy, PropabilityDistribution{ pseudoDistribution, max_number_of_bins } );
@@ -95,7 +98,7 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 		const double reduced_energy = energy_eV / reduced_energy_divisor_eV;
 		const double e = reduced_energy;
 
-		const double cross_section = 2. * PI * pow( r_e_mm, 2. ) * 
+		const double collision_cross_section = 2. * PI * pow( r_e_mm, 2. ) * 
 									( 
 										( 
 											( 1. + e ) / pow( e, 2. ) * 
@@ -105,8 +108,16 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 										( 1. + 3. * e ) / pow( 1. + 2. * e, 2. )
 									);
 
+		// Flügge S.264
+		const double scattering_cross_section =	PI * pow( r_e_mm, 2. ) * 
+												( 
+													log( 1. + 2. * e ) / pow( e, 3. ) + 
+														( 2. * ( 1. + e ) * ( 2. * pow( e, 2. ) - 2. * e - 1. ) ) / 
+														( pow( e, 2. ) * pow( 1. + 2. * e, 2. ) ) + 
+													( 8. * pow( e, 2. ) ) / ( 3. * pow( 1. + 2. * e, 3. ) )
+												);
 
-		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, cross_section };
+		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, scattering_cross_section };
 
 	}
 }

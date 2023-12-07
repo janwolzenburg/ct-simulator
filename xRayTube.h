@@ -187,7 +187,7 @@ class XRayTube{
 
 	private:
 	
-	static constexpr size_t number_of_points_in_spectrum_ = 24;		/*!< Amount of discrete datapoints in spectrum*/
+	static constexpr size_t number_of_points_in_spectrum_ = 64;		/*!< Amount of discrete datapoints in spectrum*/
 
 	CoordinateSystem* coordinate_system_;	/*!< Coordinate system of tube*/
 
