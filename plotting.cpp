@@ -110,10 +110,21 @@ string getObjectString<BoundedSurface, double>(const BoundedSurface s, const dou
 
 }
 
-template<>
-string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data_ ){
 
-	string str = "plot ";
+
+template<>
+string getObjectString<vector<Tuple2D>, int>( const vector<Tuple2D> data_, const int type ){
+	
+	string str;
+	switch( type ){
+		default:
+		case 0:
+			str = "plot "; break;
+		case 1:
+			str = "polar "; break;
+		case 2:
+			str = "loglog "; break;
+	}
 
 	for( auto valIt = data_.cbegin(); valIt < data_.cend(); valIt++ ){
 		str += to_string( valIt->x );
@@ -131,6 +142,13 @@ string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data_ ){
 
 	
 	return str;
+
+}
+
+template<>
+string getObjectString<vector<Tuple2D>>( const vector<Tuple2D> data_ ){
+
+	return getObjectString<vector<Tuple2D>, int>( data_, 0 );
 
 }
 

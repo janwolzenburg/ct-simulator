@@ -41,6 +41,6 @@ template<class C, typename T>
 void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string data, const T additional) {
 
 	axis << ReplaceSpace(name);
-	axis << ": " << getObjectString(object, additional) << ' ' << data << '\n';
+	axis << ": " << getObjectString<C, T>(object, additional) << ' ' << data << '\n';
 
 }

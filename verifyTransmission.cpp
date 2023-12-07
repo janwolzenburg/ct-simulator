@@ -107,7 +107,7 @@ void VerifyTransmission( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/.2, slice.resolution().r/.2};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 
 
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
@@ -122,7 +122,7 @@ void VerifyTransmission( void ){
 	Ray ray = rays.at( 0 );
 	addSingleObject( axis, "Ray", ray, "g", gantry.detector().properties().detector_focus_distance);
 	
-	RayScattering ray_scattering{ 32, {1000., 200000.}, 32,  gantry_system->GetEz() };
+	RayScattering ray_scattering{ number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz() };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 	
 	
@@ -157,7 +157,7 @@ void VerifyHardening( void ){
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
 	
-	RayScattering ray_scattering{ 32, {1000., 200000.}, 32,  gantry_system->GetEz() };
+	RayScattering ray_scattering{ number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz() };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 
 	Surface slice_surface{ gantry.coordinate_system()->GetEx(), gantry.coordinate_system()->GetEy(), gantry.coordinate_system()->GetOriginPoint() };
@@ -178,7 +178,7 @@ void VerifyHardening( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/.2, slice.resolution().r/.2};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
 		}
 	}
@@ -226,7 +226,7 @@ void VerifyScattering( void ){
 
 	ProjectionsProperties projections_properties{8, 4, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	XRayTubeProperties tube_properties{ 200000, 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
@@ -258,19 +258,59 @@ void VerifyScattering( void ){
 		}
 	}
 	
+
 	Ray ray = rays.at( 0 );
+	
+	DetectorPixel pixel{ BoundedSurface{ ray.direction().GetCoordinateSystem()->GetEz(), ray.direction().GetCoordinateSystem()->GetEz() ^ ray.direction(),
+										 ray.GetPoint( gantry.detector().properties().detector_focus_distance ),
+										 -1.,1.,-1.,1. } };
+
+	addSingleObject( axis, "Pixel", static_cast<BoundedSurface>( pixel ), "g", .5 );
+
+	const RayPixelIntersection pixelHit{ ray, pixel };
+		if( pixelHit.intersection_exists_ ){
+			pixel.AddDetectedRayProperties( ray.properties() );
+		}
+
 	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
 	addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
 
-	
-	
-		
+
+
 	for( auto scattered_ray : returned_rays.second ){
-
 		addSingleObject( axis, "Scattered ray", scattered_ray, "g", gantry.detector().properties().detector_focus_distance );
+	}
 
+	
+	closeAxis( axis );
+
+	double scattered_rays_power_sum = 0;
+	double mu_times_d_sum = 0.;
+
+	size_t ray_iterations = 1000; size_t num_scattered_rays = 0;
+	for( auto it = 0; it < ray_iterations; it++ ){
+
+		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
+
+		for( auto scattered_ray : returned_rays_loc.second ){
+			
+			num_scattered_rays++;
+
+			if( IsNearlyEqual( scattered_ray.direction().GetAngle( ray.direction() ), 0., 1.e-3, Relative ) )
+				continue;
+
+			scattered_rays_power_sum +=  scattered_ray.properties().energy_spectrum().GetTotalPower();
+			double fraction = scattered_ray.properties().energy_spectrum().GetTotalPower() / ray.properties().start_intensity();
+			mu_times_d_sum += -log( fraction );
+		}
 
 	}
+	
+	double mean_scattered_ray_power = scattered_rays_power_sum / num_scattered_rays;
+	double mu_times_d = mu_times_d_sum / num_scattered_rays ;
+
+
+	// 0.06 vs 0.015: Becaus main ray's energy is not attenuated and larger chunks are scattered
 
 	vector<ofstream> angles_axis;
 	const int num_energies = 2;
@@ -279,18 +319,19 @@ void VerifyScattering( void ){
 		angles_axis.emplace_back( std::move( openAxis( GetPath( string{"test_scattering_angles_e_"} + to_string( i + 1 ) ), true ) ) );
 	}
 
-	vector<double> energies = CreateLinearSpace( 20000., 140000., num_energies );
+	vector<double> energies = CreateLinearSpace( 10000., 210000., num_energies );
 	
 	array<VectorPair, num_energies> angles;
 	for( auto& angles_element : angles ){
 
-		angles_element = VectorPair{ CreateLinearSpace( 0, PI, number_of_scatter_angles / 2), vector<double>( number_of_scatter_angles / 2, 0. ) };
+		angles_element = VectorPair{ CreateLinearSpace( 0., PI, ( number_of_scatter_angles + 1) / 2) , vector<double>( (number_of_scatter_angles + 1) / 2, 0. ) };
 
 	}
 	
 	double angle_resolution = angles.at(0).first.at(1) - angles.at(0).first.at(0);
 
-	for( int i = 0; i < 50000; i++ ){
+	size_t num_iterations = 100000;
+	for( int i = 0; i < num_iterations; i++ ){
 
 		for( int e_i = 0; e_i < num_energies; e_i++ ){
 			
@@ -303,8 +344,16 @@ void VerifyScattering( void ){
 
 	}
 
+	for( auto& angles_element : angles ){
+
+		for( auto& angle : angles_element.second )
+			angle /= num_iterations * 0.01;
+
+	}
+
 	for( int e_i = 0; e_i < num_energies; e_i++ ){
-		addSingleObject( angles_axis.at(e_i), "Angles", ConvertToTuple(angles.at(e_i)), "$\\varphi$ in rad;$N$;Dots");
+		
+		addSingleObject( angles_axis.at(e_i), "Angles", ConvertToTuple(angles.at(e_i)), ";;Dots", 1 );
 		
 		closeAxis( angles_axis.at(e_i) );
 	}
@@ -312,5 +361,39 @@ void VerifyScattering( void ){
 
 
 	
-	closeAxis( axis );
+	vector<Tuple2D> scatterings( 200, Tuple2D{1., 0.} );
+	for( auto e_i = 0; e_i < scatterings.size(); e_i++ ){
+		scatterings.at( e_i ).x = 10000. + static_cast<double>( e_i ) * ( 210000.-10000. ) / static_cast<double>( scatterings.size() - 1 );
+	}
+	
+	const double coefficient_factor = 1.;
+
+	const size_t iterations = 100000;
+	for( size_t i = 0; i < iterations; i++ ){
+
+
+		for( auto& [energy, number] : scatterings ){
+
+			const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
+			const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
+			const double scatter_propability = 1. - exp( -coefficient_1Permm * 1. );
+
+
+			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability  ) )
+				number++;
+		}
+
+	}
+
+	for( auto& [energy, number] : scatterings ){
+		number /= static_cast<double>( iterations );
+		number = -log( 1. - number ) * 1.e27 / 100. / coefficient_factor / electron_density_water_1Permm3;
+	}
+
+	auto propability_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
+
+	
+	addSingleObject( propability_axis, "Propability", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
+
+	closeAxis( propability_axis );
 }
