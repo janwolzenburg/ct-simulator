@@ -290,26 +290,40 @@ void VerifyScattering( void ){
 		attenuation = 0.;
 	}
 
-	double scattered_rays_power_sum = 0;
-	double mu_times_d_sum = 0.;
 
 	size_t ray_iterations = 1000; size_t num_scattered_rays = 0;
 	for( auto it = 0; it < ray_iterations; it++ ){
 
 		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
 
-		
-		
 		for( auto& [energy, attenuation] : attenuations ){
-			returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow()
+			double photon_flow = returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow( energy );
+		
+			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );
+		
 		}
 	}
-	
-	double mean_scattered_ray_power = scattered_rays_power_sum / num_scattered_rays;
-	double mu_times_d = mu_times_d_sum / num_scattered_rays ;
 
+	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
 
-	// 0.06 vs 0.015: Becaus main ray's energy is not attenuated and larger chunks are scattered
+	double distance = 0.;
+	for( auto step : returned_rays_loc.first.properties().ray_tracing.tracing_steps ){
+		if( step.data.GetAbsorptionAtReferenceEnergy() > 0.00001 )
+			distance += step.distance;
+	}
+
+	for( auto& [energy, attenuation] : attenuations ){
+		
+			attenuation /= ray_iterations;
+			attenuation /= distance;
+			attenuation *= 10. / 0.998;
+		
+	}
+
+	auto attenuation_axis = openAxis( GetPath( string{"test_scattering_attenuation"} ), true );
+	addSingleObject( attenuation_axis, "Attenuation", attenuations, "$E$ in eV;$\\mu_s\\cdot\\rho^{-1}$ in cm$^2\\cdot$ g$^{-1}$;Dots", 2);
+	closeAxis( attenuation_axis );
+
 
 	vector<ofstream> angles_axis;
 	const int num_energies = 2;

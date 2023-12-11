@@ -67,7 +67,7 @@ class RayProperties{
 		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
 		simple_intensity_( 1. )
 		#ifdef TRANSMISSION_TRACKING
-		,only_scattering_spectrum( spectrum )
+		,only_scattering_spectrum( energy_spectrum_ )
 		#endif
 		{};
 
@@ -75,7 +75,11 @@ class RayProperties{
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ) {};
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. )
+		#ifdef TRANSMISSION_TRACKING
+		,only_scattering_spectrum( energy_spectrum_ )
+		#endif
+	{};
 	
 	/*!
 	 * @brief Get copy of energy spectrum
