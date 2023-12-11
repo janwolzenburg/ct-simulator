@@ -65,7 +65,11 @@ class RayProperties{
 	*/
 	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0 ) :
 		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
-		simple_intensity_( 1. ){};
+		simple_intensity_( 1. )
+		#ifdef TRANSMISSION_TRACKING
+		,only_scattering_spectrum( spectrum )
+		#endif
+		{};
 
 	/*!
 	 * @brief Default constructor
@@ -122,6 +126,7 @@ class RayProperties{
 	#ifdef TRANSMISSION_TRACKING
 	public:
 	RayTrace ray_tracing;
+	EnergySpectrum only_scattering_spectrum;
 
 	#endif
 };

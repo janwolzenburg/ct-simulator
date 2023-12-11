@@ -143,16 +143,20 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
 																				angle );
 				
-				const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
-				const double energy_fraction = new_energy / energy;
+				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
+				const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
+				
 				const EnergySpectrum new_spectrum{ VectorPair{ { new_energy }, { photons_per_bin } } }; 
 				RayProperties new_properties{ new_spectrum };
 				new_properties.voxel_hits_ = properties_.voxel_hits_;
-				new_properties.simple_intensity_ = properties_.simple_intensity_ * energy_fraction * scattered_ray_intensity_factor;
+				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
 				new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
 				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
+
+				properties_.energy_spectrum_.ScaleEnergy( energy, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
+				properties_.only_scattering_spectrum.ScaleEnergy( energy, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
 			}
 		}
 	}
