@@ -21,6 +21,7 @@ using std::for_each;
 #include "generelMath.h"
 #include "rayScattering.h"
 
+
 /*********************************************************************
    Implementations
 *********************************************************************/
@@ -131,6 +132,16 @@ void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double dist
 }
 
 
+
+size_t EnergySpectrum::GetEnergyIndex( double energy ) const{
+	
+	energy = ForceRange( energy, photonflow_per_energy_.front().x, photonflow_per_energy_.back().x );
+
+	size_t energy_index = static_cast<size_t>( floor( ( energy - photonflow_per_energy_.front().x ) / energy_resolution_ + 0.5 ) );
+
+	return energy_index;
+}
+
 void EnergySpectrum::ScaleEnergy( double energy, const double factor ){
 
 	if( photonflow_per_energy_.size() == 0 ) return;
@@ -139,11 +150,12 @@ void EnergySpectrum::ScaleEnergy( double energy, const double factor ){
 		return;
 	}
 
-	energy = ForceRange( energy, photonflow_per_energy_.front().x, photonflow_per_energy_.back().x );
 
-	size_t energy_index = static_cast<size_t>( floor( ( energy - photonflow_per_energy_.front().x ) / energy_resolution_ + 0.5 ) );
+	photonflow_per_energy_.at( GetEnergyIndex( energy ) ).y *= factor;
 
-	if( energy_index >= photonflow_per_energy_.size() ) energy_index = photonflow_per_energy_.size() - 1;
-	photonflow_per_energy_.at( energy_index ).y *= factor;
+}
 
+
+double EnergySpectrum::GetPhotonflow( const double energy ) const{
+	return photonflow_per_energy_.at( GetEnergyIndex( energy ) ).y;
 }

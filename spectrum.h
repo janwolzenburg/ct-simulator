@@ -98,6 +98,20 @@ class EnergySpectrum {
 	double GetMaxEnergy( void ) const{ return photonflow_per_energy_.back().x; };
 
 	/*!
+	 * @brief Get photonflow for energy
+	 * @param energy Energy
+	 * @return Photonflow for given energy
+	*/
+	double GetPhotonflow( const double energy ) const;
+
+	/*!
+	 * @brief Get index of energy
+	 * @param energy Energy
+	 * @return Index of energy in data
+	*/
+	size_t GetEnergyIndex( double energy ) const;
+
+	/*!
 	 * @brief Modify spectrum
 	 * @param modification_function Function taking reference to spectrum point to modify
 	*/
@@ -117,13 +131,13 @@ class EnergySpectrum {
 	void ScaleEvenly( const double factor );
 
 	/*!
-	 * @brief Get mean compton cross section of photons in spectrum
-	 * @return Mean compton cross section in mm^2
+	 * @brief Scale specific photonflow
+	 * @param energy Energy
+	 * @param factor Factor to scale with
 	*/
-	//double GetMeanComptonCrossSection( void ) const;
-
 	void ScaleEnergy( const double energy, const double factor );
 
+	double GetPhotonflor( const double energy ) const;
 
 	private:
 
