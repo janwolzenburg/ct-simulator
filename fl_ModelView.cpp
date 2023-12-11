@@ -137,9 +137,9 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	
 	if( IsModelLoaded() ){
-		UpdateModel();
 		model_slice_image_.SetSliderBounds( model_.absorptionRange() );
 		model_slice_image_.ChangeSliderValues( properties_.contrast );
+		UpdateModel();
 	}
 }
 
