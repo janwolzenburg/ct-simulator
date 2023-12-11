@@ -25,7 +25,7 @@ constexpr size_t default_max_radiation_loops = 1;							/*!< How often can a Ray
 
 constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!< Default maximum arc_angle between ray and pixel normal allowed by anti scattering structure*/
 
-constexpr size_t number_of_scatter_angles = 255;							/*!< Amount of discrete angles available for scattering - should be odd to include 0°*/
+constexpr size_t number_of_scatter_angles = 511;							/*!< Amount of discrete angles available for scattering - should be odd to include 0°*/
 constexpr size_t number_of_energies_for_scattering = 64;					/*!< Amount of energies used */
 
 constexpr size_t bins_per_energy = 16;		/*!< When scattering: Into how many bins should the photons with the same energy be divided into*/
