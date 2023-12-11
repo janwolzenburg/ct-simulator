@@ -45,9 +45,15 @@ VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_str
 }
 
 VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty specProperty ) :
-	absorption_( absorption_at_energy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. ) ),
+	absorption_( -1. ),
 	specialProperties_( specProperty )
-{}
+{
+
+	if( energy < change_energy_for_constant_mu )
+		absorption_ = absorption_at_energy * pow( ( energy ) / change_energy_for_constant_mu, 3. );
+	else
+		absorption_ = absorption_at_energy;
+}
 
 VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
 	absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
@@ -58,10 +64,10 @@ double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
 
 	// iron absorption is approx. 0.15 1/mm at 100 keV
 	if( HasSpecificProperty( Metal ) ){
-		return artefact_impact_factor_ * mu_iron * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
+		return artefact_impact_factor_ * mu_iron * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 	}
 
-	return absorption_ * pow( reference_energy_for_mu_eV / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
+	return absorption_ * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 
 }
 
@@ -81,7 +87,7 @@ size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 
 double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy ){
 
-	return absorptionAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / reference_energy_for_mu_eV, 3. );
+	return absorptionAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / change_energy_for_constant_mu, 3. );
 	
 }
 
