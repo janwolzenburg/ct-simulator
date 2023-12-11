@@ -86,12 +86,13 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 {
 
 	// 
-	VectorPair energy_spectrum{ CreateLinearSpace( 1., max_photon_energy_eV_, number_of_points_in_spectrum_), 
+	VectorPair energy_spectrum{ CreateLinearSpace( 10000., max_photon_energy_eV_, number_of_points_in_spectrum_), 
 								vector<double>( number_of_points_in_spectrum_, 0. ) };
 
 
 	
 	const double bremsGradient = -1;		
+	const double min_photons = 10000.;
 
 	// Fill value vector
 	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
@@ -99,7 +100,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 									// Gradient of brems spectrum
 		
 		// Bremsspectrum dominates
-		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt ) * ( -bremsGradient );
+		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + min_photons ) * ( -bremsGradient );
 	}
 
 	double complete_power = 0.;
@@ -122,16 +123,19 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 			
 			const size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
 			
-			if( *energyIt <= properties_.filter_cut_of_energy ){
-				energy_spectrum.second.at( curIdx ) = 0.;
-				continue;
-			}
+			
 
 			const double filterGradient = -properties_.filter_gradient * bremsGradient * correctionFactor;		// Gradient of filter spectrum
 
 			// Filter dominates
 			if ( *energyIt < changeEnergy ) {
-				energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy ) * filterGradient;
+
+				if( *energyIt < properties_.filter_cut_of_energy ){
+					energy_spectrum.second.at( curIdx ) = 0.5 * min_photons + *energyIt * ( 0.5 * min_photons / properties_.filter_cut_of_energy );
+				}
+				else{
+					energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy + min_photons) * filterGradient;
+				}
 			}
 		}
 	}
