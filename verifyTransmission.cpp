@@ -284,6 +284,12 @@ void VerifyScattering( void ){
 	
 	closeAxis( axis );
 
+
+	vector<Tuple2D> attenuations = ray.properties().energy_spectrum().data();
+	for( auto& [energy, attenuation] : attenuations ){
+		attenuation = 0.;
+	}
+
 	double scattered_rays_power_sum = 0;
 	double mu_times_d_sum = 0.;
 
@@ -292,18 +298,11 @@ void VerifyScattering( void ){
 
 		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
 
-		for( auto scattered_ray : returned_rays_loc.second ){
-			
-			num_scattered_rays++;
-
-			if( IsNearlyEqual( scattered_ray.direction().GetAngle( ray.direction() ), 0., 1.e-3, Relative ) )
-				continue;
-
-			scattered_rays_power_sum +=  scattered_ray.properties().energy_spectrum().GetTotalPower();
-			double fraction = scattered_ray.properties().energy_spectrum().GetTotalPower() / ray.properties().start_intensity();
-			mu_times_d_sum += -log( fraction );
+		
+		
+		for( auto& [energy, attenuation] : attenuations ){
+			returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow()
 		}
-
 	}
 	
 	double mean_scattered_ray_power = scattered_rays_power_sum / num_scattered_rays;
@@ -323,9 +322,7 @@ void VerifyScattering( void ){
 	
 	array<VectorPair, num_energies> angles;
 	for( auto& angles_element : angles ){
-
 		angles_element = VectorPair{ CreateLinearSpace( 0., PI, ( number_of_scatter_angles + 1) / 2) , vector<double>( (number_of_scatter_angles + 1) / 2, 0. ) };
-
 	}
 	
 	double angle_resolution = angles.at(0).first.at(1) - angles.at(0).first.at(0);
@@ -336,34 +333,28 @@ void VerifyScattering( void ){
 		for( int e_i = 0; e_i < num_energies; e_i++ ){
 			
 			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ) ) );
-			
 			size_t angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
-			
 			angles.at(e_i).second.at( ForceToMax( angle_index, angles.at(e_i).second.size() - 1 ) )++;
 		}
 
 	}
 
 	for( auto& angles_element : angles ){
-
 		for( auto& angle : angles_element.second )
 			angle /= num_iterations * 0.01;
-
 	}
 
 	for( int e_i = 0; e_i < num_energies; e_i++ ){
-		
 		addSingleObject( angles_axis.at(e_i), "Angles", ConvertToTuple(angles.at(e_i)), ";;Dots", 1 );
-		
 		closeAxis( angles_axis.at(e_i) );
 	}
 
 
 
 	
-	vector<Tuple2D> scatterings( 200, Tuple2D{1., 0.} );
+	vector<Tuple2D> scatterings = ray.properties().energy_spectrum().data();
 	for( auto e_i = 0; e_i < scatterings.size(); e_i++ ){
-		scatterings.at( e_i ).x = 10000. + static_cast<double>( e_i ) * ( 210000.-10000. ) / static_cast<double>( scatterings.size() - 1 );
+		scatterings.at( e_i ).y = 0.;
 	}
 	
 	const double coefficient_factor = 1.;
@@ -378,7 +369,6 @@ void VerifyScattering( void ){
 			const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
 			const double scatter_propability = 1. - exp( -coefficient_1Permm * 1. );
 
-
 			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability  ) )
 				number++;
 		}
@@ -391,9 +381,6 @@ void VerifyScattering( void ){
 	}
 
 	auto propability_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
-
-	
 	addSingleObject( propability_axis, "Propability", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
-
 	closeAxis( propability_axis );
 }

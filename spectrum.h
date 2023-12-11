@@ -137,7 +137,6 @@ class EnergySpectrum {
 	*/
 	void ScaleEnergy( const double energy, const double factor );
 
-	double GetPhotonflor( const double energy ) const;
 
 	private:
 
