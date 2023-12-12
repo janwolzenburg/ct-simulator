@@ -153,6 +153,9 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				// Increment count of scattering for current energy and angle
 				scattered_angles.at( angle_index ).at( energy_index )++;
 
+				//properties_.energy_spectrum_.ScaleEnergy( energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
+				//properties_.only_scattering_spectrum.ScaleEnergy( energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
+
 			}
 		}
 
@@ -179,7 +182,10 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		for( auto number_of_scattered_bins : scattered_energies ){
 
 			// Continue if no scattering happened
-			if( number_of_scattered_bins == 0 ) continue;
+			if( number_of_scattered_bins == 0 ){
+				energy_index++;
+				continue;
+			}
 
 			// Get current energy value
 			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
@@ -192,15 +198,15 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 											properties_.energy_spectrum_.data().at( energy_index ).y / static_cast<double>( bins_per_energy );
 			
 			// Sum power
-			power_sum += energy * photons_per_bin;
+			power_sum += number_of_scattered_bins * energy * photons_per_bin;
 			
 			new_energies.first.push_back( new_energy );
 			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
 		
-			properties_.energy_spectrum_.ScaleEnergy(energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>(bins_per_energy));
-			properties_.only_scattering_spectrum.ScaleEnergy(energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>(bins_per_energy));
+			//properties_.energy_spectrum_.ScaleEnergy(energy_index,  pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) ) );
+			//properties_.only_scattering_spectrum.ScaleEnergy(energy_index,  pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) ) );
 
-			energy_scalars.at( energy_index ) *= 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy );
+			energy_scalars.at( energy_index ) *= pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) );
 			energy_index++;
 		}
 
@@ -219,8 +225,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	energy_index = 0;
 	for( const auto& energy_scalar : energy_scalars ){
 
-		//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
-		//properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
+		properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 		energy_index++;
 	}
 
