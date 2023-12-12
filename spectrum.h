@@ -33,7 +33,7 @@ class EnergySpectrum {
 	 * @brief Default constructor
 	*/
 	EnergySpectrum(void) :
-		energy_resolution_( 1. ), mean_energy_( 0. ), mean_energy_valid_( false )
+		mean_energy_( 0. ), mean_energy_valid_( false )
 	{};
 
 	/*!
@@ -47,12 +47,6 @@ class EnergySpectrum {
 	 * @return Vector of points
 	*/
 	vector<Tuple2D> data( void ) const{ return photonflow_per_energy_; };
-
-	/*!
-	 * @brief Get the energy resolution
-	 * @return Energy resolution
-	*/
-	double energy_resolution( void ) const{ return energy_resolution_; };
 
 	/*!
 	 * @brief Get mean energy
@@ -98,6 +92,12 @@ class EnergySpectrum {
 	double GetMaxEnergy( void ) const{ return photonflow_per_energy_.back().x; };
 
 	/*!
+	 * @brief Get number of discrete energies in spectrum
+	 * @return Number of energies
+	*/
+	size_t GetNumberOfEnergies( void ) const{ return photonflow_per_energy_.size(); };
+
+	/*!
 	 * @brief Get photonflow for energy
 	 * @param energy Energy
 	 * @return Photonflow for given energy
@@ -109,7 +109,14 @@ class EnergySpectrum {
 	 * @param energy Energy
 	 * @return Index of energy in data
 	*/
-	size_t GetEnergyIndex( double energy ) const;
+	size_t GetEnergyIndex( const double energy ) const;
+
+	/*!
+	 * @brief Get energy value at index
+	 * @param index Index of energy
+	 * @return Energy value at index
+	*/
+	double GetEnergy( const size_t index ) const;
 
 	/*!
 	 * @brief Modify spectrum
@@ -132,6 +139,13 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief Scale specific photonflow
+	 * @param energy_index Energy index
+	 * @param factor Factor to scale with
+	*/
+	void ScaleEnergy( const size_t energy_index, const double factor );
+
+	/*!
+	 * @brief Scale specific photonflow
 	 * @param energy Energy
 	 * @param factor Factor to scale with
 	*/
@@ -141,7 +155,6 @@ class EnergySpectrum {
 	private:
 
 	vector<Tuple2D> photonflow_per_energy_;		/*!< 2D data sorted by energy. x is energy. y is the number of photons per second with energy in the interval dE */
-	double energy_resolution_;	/*!< Resolution of energies in spectrum*/
 	double mean_energy_;		/*!< Mean energy of spectrum*/
 	bool mean_energy_valid_;	/*!< Flag to track whether mean energy is valid*/
 

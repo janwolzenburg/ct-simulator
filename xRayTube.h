@@ -35,6 +35,8 @@ constexpr double efficiancy_constant_PerV = 1.1E-9;			// efficiancy constant for
 */
 class XRayTubeProperties {
 	
+	friend class XRayTube;
+
 	public:
 
 	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
@@ -72,7 +74,8 @@ class XRayTubeProperties {
 						const bool has_filter, const double filter_cut_of_energy, const double filter_strength ) :
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
 		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
-		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) )
+		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) ),
+		spectral_energy_resolution( ( anode_voltage_V - minimum_energy ) / static_cast<double>( number_of_points_in_spectrum_ - 1 ) )
 	{};
 
 	/*!
@@ -102,6 +105,13 @@ class XRayTubeProperties {
 	bool has_filter_;					/*!< Flag for Al-Filter*/
 	double filter_cut_of_energy;		/*!< Energy under which all radiating is absorbed by filter*/
 	double filter_gradient;				/*!< Gradient of filter*/
+	double spectral_energy_resolution;	/*!< Resolution of equally spaced spectrum*/
+
+	
+	private:
+	static constexpr size_t number_of_points_in_spectrum_ = 64;		/*!< Amount of discrete datapoints in spectrum*/
+
+
 };
 
 
@@ -164,7 +174,7 @@ class XRayTube{
 	 * @brief Get the energy resolution of spectrum
 	 * @return Energy resolution of spectrum
 	*/
-	double GetSpectralEnergyResolution( void ) const{ return emitted_spectrum_.energy_resolution(); };
+	double GetSpectralEnergyResolution( void ) const{ return properties_.spectral_energy_resolution; };
 
 	/*!
 	 * @brief Get the spectrum points
@@ -187,8 +197,6 @@ class XRayTube{
 
 	private:
 	
-	static constexpr size_t number_of_points_in_spectrum_ = 64;		/*!< Amount of discrete datapoints in spectrum*/
-
 	CoordinateSystem* coordinate_system_;	/*!< Coordinate system of tube*/
 
 	XRayTubeProperties properties_;			/*!< Tube properties*/

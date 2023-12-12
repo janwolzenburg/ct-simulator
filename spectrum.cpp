@@ -41,18 +41,6 @@ EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
 		return;
 	}
 
-	energy_resolution_ = photonflow_per_energy_.at( 1 ).x - photonflow_per_energy_.at( 0 ).x;
-
-	// Check consistency of energy
-	for( auto dataIt = photonflow_per_energy_.cbegin() + 1; dataIt < photonflow_per_energy_.cend(); dataIt++ ){
-
-		double diff = dataIt->x - ( dataIt - 1 )->x;
-
-		if( !IsNearlyEqual( energy_resolution_, diff, .005, ComparisonMode::Relative ) ){
-			cerr << "Spectrum must have energies equally spaced!" << endl;
-		}
-	}
-
 	UpdateMeanEnergy();
 }
 
@@ -133,17 +121,31 @@ void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double dist
 
 
 
-size_t EnergySpectrum::GetEnergyIndex( double energy ) const{
+size_t EnergySpectrum::GetEnergyIndex( double energy_to_search ) const{
 	
-	energy = ForceRange( energy, photonflow_per_energy_.front().x, photonflow_per_energy_.back().x );
+	double min_difference = INFINITY;
+	size_t energy_index = 0, current_energy_index = 0;
 
-	size_t energy_index = static_cast<size_t>( floor( ( energy - photonflow_per_energy_.front().x ) / energy_resolution_ + 0.5 ) );
+	for( const auto& [energy, photonfloy] : photonflow_per_energy_ ){
+		const double difference = abs( energy - energy_to_search );
+		if( difference < min_difference ){
+			min_difference = difference;
+			energy_index = current_energy_index;
+		}
+		current_energy_index++;
+	}
 
 	return energy_index;
 }
 
 void EnergySpectrum::ScaleEnergy( double energy, const double factor ){
 
+	ScaleEnergy( GetEnergyIndex( energy ), factor );
+
+}
+
+void EnergySpectrum::ScaleEnergy( const size_t energy_index, const double factor ){
+	
 	if( photonflow_per_energy_.size() == 0 ) return;
 	if( photonflow_per_energy_.size() == 1 ){
 		photonflow_per_energy_.front().y *= factor;
@@ -151,10 +153,15 @@ void EnergySpectrum::ScaleEnergy( double energy, const double factor ){
 	}
 
 
-	photonflow_per_energy_.at( GetEnergyIndex( energy ) ).y *= factor;
-
+	photonflow_per_energy_.at( energy_index ).y *= factor;
 }
 
+double EnergySpectrum::GetEnergy( const size_t index ) const{
+	if( index > photonflow_per_energy_.size() - 1 ) return 0.;
+	
+	return photonflow_per_energy_.at( index ).x;
+
+}
 
 double EnergySpectrum::GetPhotonflow( const double energy ) const{
 	return photonflow_per_energy_.at( GetEnergyIndex( energy ) ).y;
