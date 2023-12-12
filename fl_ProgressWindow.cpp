@@ -11,7 +11,7 @@
 
 
 Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label ) :
-	Fl_Window( number_of_character_per_line_ * textSize + 2*padding_, static_cast<int>( ForceToMin( numLines, (unsigned int) 1 ) * textSize ) + 2*padding_, label ),
+	Fl_Window( number_of_character_per_line_ * textSize + 2*padding_, static_cast<int>( ForceToMin( numLines, (unsigned int) 1 ) * textSize + 5 ) + 2*padding_, label ),
 	number_of_lines_( ForceToMin( numLines, (unsigned int ) 1 ) ),
 	text_output_( padding_, padding_, Fl_Window::w() - 2*padding_, Fl_Window::h()-2*padding_ ),
 	line_texts_( numLines ),
@@ -23,6 +23,9 @@ Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned
 						parent->y() + parent->h() / 2 - Fl_Window::h() / 2 );
 
 	Fl_Window::show();
+
+	text_output_.textsize( textSize );
+
 }
 
 void Fl_Progress_Window::ChangeLineText( const unsigned int lineNumber, const string newText){ 

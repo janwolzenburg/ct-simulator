@@ -145,7 +145,7 @@ void Fl_TomographyExecution::DoTomography( void ){
 
 		main_window_.deactivate();
 
-		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 20, 5, "Radiation progress"};
+		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 16, 2, "Radiation progress"};
 		
 
 		tomography_ = Tomography{ tomography_properties_ };

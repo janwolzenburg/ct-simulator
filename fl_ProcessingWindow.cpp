@@ -121,7 +121,7 @@ void Fl_ProcessingWindow::FilterAndReconstructImage( void ){
 
 	this->deactivate();
 
-	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 20, 5, "Processing progress"};
+	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 16, 2, "Processing progress"};
 
 	filtered_projections_ = std::move( FilteredProjections{ projections_, BackprojectionFilter::GetType( filter_type_selector_.current_element() ), processingProgressWindow } );
 

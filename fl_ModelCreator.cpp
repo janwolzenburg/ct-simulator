@@ -288,7 +288,7 @@ void Fl_ModelCreator::UpdateFeatures( void ){
 
 void Fl_ModelCreator::BuildModel( void ){
 
-	unique_ptr<Fl_Progress_Window> progress_window = std::make_unique<Fl_Progress_Window>( this, 12, 1, "Progress");
+	unique_ptr<Fl_Progress_Window> progress_window = std::make_unique<Fl_Progress_Window>( this, 16, 1, "Progress");
 
 	deactivate();
 
