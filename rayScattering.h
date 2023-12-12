@@ -59,7 +59,6 @@ class RayScattering{
 	*/
 	double GetRandomAngle( const double energy_eV ) const;
 
-	vector<double> GetPossibleAngles( void ) const;
 
 	private:
 
