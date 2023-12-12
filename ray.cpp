@@ -117,10 +117,14 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
 
 	vector<Ray> scattered_rays;
+	// Skip if scattering is inpropable
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 
+	// Number of angles available for scattering
 	const size_t number_of_angles = static_cast<size_t>( 2. * PI / scattering_information.angle_resolution() ) + 1;
-	vector<vector<size_t>> scattered_angles( number_of_angles, vector<size_t>(  properties_.energy_spectrum_.GetNumberOfEnergies(), 0) );
+	
+	// For each angle store a vector with the amount each energy in spectrum is scattered 
+	vector<vector<size_t>> scattered_angles( number_of_angles, vector<size_t>(  properties_.energy_spectrum_.GetNumberOfEnergies(), 0 ) );
 
 	size_t energy_index = 0;
 	// Iterate energies in spectrum
@@ -137,10 +141,16 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
+				// Angle
 				const double angle = ForceRange( scattering_information.GetRandomAngle( energy ), -PI, PI );			
+				
+				// If angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
+				// Get index of random scattering angle
 				const size_t angle_index = static_cast<size_t>( ( angle + PI ) /  scattering_information.angle_resolution() );
+				
+				// Increment count of scattering for current energy and angle
 				scattered_angles.at( angle_index ).at( energy_index )++;
 
 			}
@@ -149,34 +159,47 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		energy_index++;
 	}
 
-	
+	// Vector to store factors for attenuating this ray
 	vector<double> energy_scalars( properties_.energy_spectrum_.GetNumberOfEnergies(), 1. );
 
+	// Iterate all scatterings
 	size_t angle_index = 0;
 	for( const auto& scattered_energies : scattered_angles ){
 		
+		// Get angle from angle index
 		const double angle = -PI + static_cast<double>( angle_index ) *  scattering_information.angle_resolution();
 		const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
 																			angle );
 
-		VectorPair new_energies{};
-		double power_sum = 0.;
+		VectorPair new_energies{};		// Vector pair for spectrum of scattered ray
+		double power_sum = 0.;			// Sum of power of all scattered rays
 
+		// Iterate all energy bins that were scattered in current direction
 		size_t energy_index = 0;
 		for( auto number_of_scattered_bins : scattered_energies ){
 
+			// Continue if no scattering happened
 			if( number_of_scattered_bins == 0 ) continue;
 
+			// Get current energy value
 			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
+			
+			// Calculate scattered photons energy via compton-wavelength
 			const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 
+			// Calculate the amount of photons in this energies bins
 			const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * 
 											properties_.energy_spectrum_.data().at( energy_index ).y / static_cast<double>( bins_per_energy );
+			
+			// Sum power
 			power_sum += energy * photons_per_bin;
 			
 			new_energies.first.push_back( new_energy );
 			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
 		
+			properties_.energy_spectrum_.ScaleEnergy(energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>(bins_per_energy));
+			properties_.only_scattering_spectrum.ScaleEnergy(energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>(bins_per_energy));
+
 			energy_scalars.at( energy_index ) *= 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy );
 			energy_index++;
 		}
@@ -196,8 +219,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	energy_index = 0;
 	for( const auto& energy_scalar : energy_scalars ){
 
-		properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
-		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
+		//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+		//properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 		energy_index++;
 	}
 
