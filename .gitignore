@@ -370,3 +370,4 @@ FodyWeavers.xsd
 *.sinogram
 *.backprojection
 *.filteredprojections
+/enc_temp_folder/*
