@@ -91,8 +91,8 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 
 
 	
-	const double bremsGradient = -1;		
-	const double min_photons = 10000.;
+	const double bremsGradient = -1;
+	const double energy_resolution = energy_spectrum.first.at( 1 ) - energy_spectrum.first.at( 0 );
 
 	// Fill value vector
 	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
@@ -100,7 +100,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 									// Gradient of brems spectrum
 		
 		// Bremsspectrum dominates
-		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + min_photons ) * ( -bremsGradient );
+		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + energy_resolution ) * ( -bremsGradient );
 	}
 
 	double complete_power = 0.;
@@ -131,10 +131,10 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 			if ( *energyIt < changeEnergy ) {
 
 				if( *energyIt < properties_.filter_cut_of_energy ){
-					energy_spectrum.second.at( curIdx ) = 0.5 * min_photons + *energyIt * ( 0.5 * min_photons / properties_.filter_cut_of_energy );
+					energy_spectrum.second.at( curIdx ) = 0.5 * energy_resolution * ( *energyIt + properties_.filter_cut_of_energy ) * ( 1 / properties_.filter_cut_of_energy ) * filterGradient;
 				}
 				else{
-					energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy + min_photons) * filterGradient;
+					energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy + energy_resolution) * filterGradient;
 				}
 			}
 		}
