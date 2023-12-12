@@ -191,8 +191,10 @@ bool XRayDetector::DetectRay( Ray& r, mutex& allPixelLock ){
 				allPixelLock.unlock();
 				
 				#ifdef TRANSMISSION_TRACKING 
-				r.ray_tracing().tracing_steps.back().exit = pixelHit.intersection_point_;
-				r.ray_tracing().tracing_steps.back().distance = (pixelHit.intersection_point_ - r.ray_tracing().tracing_steps.back().entrance).length();
+				if( !r.ray_tracing().tracing_steps.empty() ){
+					r.ray_tracing().tracing_steps.back().exit = pixelHit.intersection_point_;
+					r.ray_tracing().tracing_steps.back().distance = (pixelHit.intersection_point_ - r.ray_tracing().tracing_steps.back().entrance).length();
+				}
 				#endif
 
 			}
