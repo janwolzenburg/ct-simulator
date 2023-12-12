@@ -21,16 +21,12 @@
 
 
 RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const UnitVector3D scatteredNormal_ ) :
-	//angleResolution( Fmax( Fpos( angleResolution_ ), PI ) ),
 	number_of_energies_( ForcePositive( energyAmount_ ) ),
+	angle_resolution_( ( 2. * PI ) / static_cast<double>( anglesAmount - 1 ) ),
 	energy_range_( energyRange_ ),
 	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	scattering_plane_normal_( scatteredNormal_ )
 {
-	
-	// GetResolution of angles
-	const double angleResolution = ( 2. * PI ) / static_cast<double>( anglesAmount - 1 );
-
 	// Iterate all frequencies
 	for( size_t currentEnergyIndex = 0; currentEnergyIndex < number_of_energies_; currentEnergyIndex++ ){
 
@@ -45,7 +41,7 @@ RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energ
 		// Iterate all angles
 		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount; currentAngleIndex++ ){
 
-			const double t = -PI + static_cast<double>( currentAngleIndex ) * angleResolution;
+			const double t = -PI + static_cast<double>( currentAngleIndex ) * angle_resolution_;
 
 			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );

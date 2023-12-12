@@ -119,11 +119,13 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	vector<Ray> scattered_rays;
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 
+	const size_t number_of_angles = static_cast<size_t>( 2. * PI / scattering_information.angle_resolution() ) + 1;
+	vector<vector<size_t>> scattered_angles( number_of_angles, vector<size_t>(  properties_.energy_spectrum_.GetNumberOfEnergies(), 0) );
 
+	size_t energy_index = 0;
 	// Iterate energies in spectrum
 	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
-
 		// No photons at current energy
 		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
 
@@ -131,35 +133,76 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
-		const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * photons / static_cast<double>( bins_per_energy );
-		const double power_in_bin = energy * photons_per_bin;
-		const double power_fraction = power_in_bin / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
-
 		for( size_t bin = 0; bin < bins_per_energy; bin++ ){
 
 			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
-				const double angle = scattering_information.GetRandomAngle( energy );
-				const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
-																				angle );
-				
+				const double angle = ForceRange( scattering_information.GetRandomAngle( energy ), -PI, PI );			
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
-				const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
-				
-				const EnergySpectrum new_spectrum{ VectorPair{ { new_energy }, { photons_per_bin } } }; 
-				RayProperties new_properties{ new_spectrum };
-				new_properties.voxel_hits_ = properties_.voxel_hits_;
-				new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
-				new_properties.initial_power_ = new_spectrum.GetTotalPower();
+				const size_t angle_index = static_cast<size_t>( ( angle + PI ) /  scattering_information.angle_resolution() );
+				scattered_angles.at( angle_index ).at( energy_index )++;
 
-				scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
-
-				properties_.energy_spectrum_.ScaleEnergy( energy, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
-				properties_.only_scattering_spectrum.ScaleEnergy( energy, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
 			}
 		}
+
+		energy_index++;
 	}
+
+	
+	vector<double> energy_scalars( properties_.energy_spectrum_.GetNumberOfEnergies(), 1. );
+
+	size_t angle_index = 0;
+	for( const auto& scattered_energies : scattered_angles ){
+		
+		const double angle = -PI + static_cast<double>( angle_index ) *  scattering_information.angle_resolution();
+		const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
+																			angle );
+
+		VectorPair new_energies{};
+		double power_sum = 0.;
+
+		size_t energy_index = 0;
+		for( auto number_of_scattered_bins : scattered_energies ){
+
+			if( number_of_scattered_bins == 0 ) continue;
+
+			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
+			const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
+
+			const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * 
+											properties_.energy_spectrum_.data().at( energy_index ).y / static_cast<double>( bins_per_energy );
+			power_sum += energy * photons_per_bin;
+			
+			new_energies.first.push_back( new_energy );
+			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
+		
+			energy_scalars.at( energy_index ) *= 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy );
+			energy_index++;
+		}
+
+		const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
+		const EnergySpectrum new_spectrum{ new_energies }; 
+		RayProperties new_properties{ new_spectrum };
+		new_properties.voxel_hits_ = properties_.voxel_hits_;
+		new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
+		new_properties.initial_power_ = new_spectrum.GetTotalPower();
+
+		scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
+
+		angle_index++;
+	}
+
+	energy_index = 0;
+	for( const auto& energy_scalar : energy_scalars ){
+
+		properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
+		energy_index++;
+	}
+
+				
+
 
 	return scattered_rays;
 

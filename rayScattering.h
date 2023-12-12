@@ -41,18 +41,30 @@ class RayScattering{
 	RayScattering( const size_t number_of_angles, const NumberRange energy_range, const size_t number_of_energies, const UnitVector3D scatter_plane_normal );
 
 	/*!
+	 * @brief Get scattering plane normal
+	 * @return Plane normal
+	*/
+	UnitVector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
+
+	/*!
+	 * @brief Get angle resolution
+	 * @return Resolution in rad
+	*/
+	double angle_resolution( void ) const{ return angle_resolution_; };
+
+	/*!
 	 * @brief Get a random angle to given energy
 	 * @param energy Mean energy of Ray
 	 * @return Random angöe
 	*/
 	double GetRandomAngle( const double energy_eV ) const;
 
-	UnitVector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
-
+	vector<double> GetPossibleAngles( void ) const;
 
 	private:
 
 	size_t number_of_energies_;				/*!< Amount of energies*/
+	double angle_resolution_;				/*!< Angle resolution*/
 	NumberRange energy_range_;				/*!< Range of energies*/
 	double energy_resolution_;				/*!< Energy resolution*/
 
