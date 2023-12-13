@@ -153,9 +153,6 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				// Increment count of scattering for current energy and angle
 				scattered_angles.at( angle_index ).at( energy_index )++;
 
-				//properties_.energy_spectrum_.ScaleEnergy( energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
-				//properties_.only_scattering_spectrum.ScaleEnergy( energy_index, 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ) );
-
 			}
 		}
 
@@ -179,6 +176,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 		// Iterate all energy bins that were scattered in current direction
 		size_t energy_index = 0;
+		bool current_angle_has_ray_with_nonzero_energies = false;
 		for( auto number_of_scattered_bins : scattered_energies ){
 
 			// Continue if no scattering happened
@@ -186,6 +184,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				energy_index++;
 				continue;
 			}
+
+			current_angle_has_ray_with_nonzero_energies = true;
 
 			// Get current energy value
 			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
@@ -203,21 +203,21 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 			new_energies.first.push_back( new_energy );
 			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
 		
-			//properties_.energy_spectrum_.ScaleEnergy(energy_index,  pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) ) );
-			//properties_.only_scattering_spectrum.ScaleEnergy(energy_index,  pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) ) );
-
 			energy_scalars.at( energy_index ) *= pow( 1. - tomography_properties.scattered_ray_absorption_factor / static_cast<double>( bins_per_energy ), static_cast<double>( number_of_scattered_bins ) );
 			energy_index++;
 		}
 
-		const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
-		const EnergySpectrum new_spectrum{ new_energies }; 
-		RayProperties new_properties{ new_spectrum };
-		new_properties.voxel_hits_ = properties_.voxel_hits_;
-		new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
-		new_properties.initial_power_ = new_spectrum.GetTotalPower();
+		if( current_angle_has_ray_with_nonzero_energies ){
 
-		scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
+			const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
+			const EnergySpectrum new_spectrum{ new_energies }; 
+			RayProperties new_properties{ new_spectrum };
+			new_properties.voxel_hits_ = properties_.voxel_hits_;
+			new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
+			new_properties.initial_power_ = new_spectrum.GetTotalPower();
+
+			scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
+		}
 
 		angle_index++;
 	}
@@ -229,9 +229,6 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 		energy_index++;
 	}
-
-				
-
 
 	return scattered_rays;
 
