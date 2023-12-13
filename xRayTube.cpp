@@ -101,7 +101,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 									// Gradient of brems spectrum
 		
 		// Bremsspectrum dominates
-		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + energy_resolution ) * ( -bremsGradient );
+		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + 2 * energy_resolution ) * ( -bremsGradient );
 	}
 
 	double complete_power = 0.;
