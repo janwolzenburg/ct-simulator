@@ -45,7 +45,7 @@ XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<
 	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) ),
 	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, it ) ),
 	filter_gradient( DeSerializeBuildIn<double>( 10., binary_data, it ) ),
-	spectral_energy_resolution( ( anode_voltage_V - minimum_energy ) / static_cast<double>( number_of_points_in_spectrum_ - 1 ) )
+	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_points_in_spectrum_ - 1 ) )
 {}
 
 
@@ -83,12 +83,12 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubePro
 	properties_( tube_properties ),
 	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( properties_.anode_material ).second ) ),
 	radiation_power_W_( efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * properties_.anode_current_A * pow( properties_.anode_voltage_V, 2 ) ),
-	max_photon_energy_eV_( properties_.anode_voltage_V )
+	max_photon_energy_eV_( ForceToMax( properties_.anode_voltage_V, maximum_energy_in_tube_spectrum ) )
 {
 
 	// 
-	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy, max_photon_energy_eV_, properties_.number_of_points_in_spectrum_), 
-								vector<double>( properties_.number_of_points_in_spectrum_, 0. ) };
+	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, max_photon_energy_eV_, number_of_points_in_tube_spectrum_ ), 
+								vector<double>( number_of_points_in_tube_spectrum_, 0. ) };
 
 
 	

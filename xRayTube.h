@@ -75,7 +75,7 @@ class XRayTubeProperties {
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
 		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
 		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) ),
-		spectral_energy_resolution( ( anode_voltage_V - minimum_energy ) / static_cast<double>( number_of_points_in_spectrum_ - 1 ) )
+		spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_points_in_tube_spectrum_ - 1 ) )
 	{};
 
 	/*!
@@ -106,10 +106,6 @@ class XRayTubeProperties {
 	double filter_cut_of_energy;		/*!< Energy under which all radiating is absorbed by filter*/
 	double filter_gradient;				/*!< Gradient of filter*/
 	double spectral_energy_resolution;	/*!< Resolution of equally spaced spectrum*/
-
-	
-	private:
-	static constexpr size_t number_of_points_in_spectrum_ = 64;		/*!< Amount of discrete datapoints in spectrum*/
 
 
 };

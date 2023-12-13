@@ -226,7 +226,7 @@ void VerifyScattering( void ){
 
 	ProjectionsProperties projections_properties{8, 4, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
-	XRayTubeProperties tube_properties{ 200000, 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
+	XRayTubeProperties tube_properties{ 210000, 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };

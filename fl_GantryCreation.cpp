@@ -76,7 +76,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 		voltage_input_.align( FL_ALIGN_TOP ); current_input_.align( FL_ALIGN_TOP ); anode_material_input_.align( FL_ALIGN_TOP );
 
-		voltage_input_.SetProperties( 20000., 200000., 0 );
+		voltage_input_.SetProperties( 20000., maximum_energy_in_tube_spectrum, 0 );
 		current_input_.SetProperties( .001, 10., 3 );
 
 		filter_cutoff_input.SetProperties( 0., 120000., 0 );
