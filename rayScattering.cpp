@@ -20,12 +20,14 @@
 *********************************************************************/
 
 
-RayScattering::RayScattering( const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, const UnitVector3D scatteredNormal_ ) :
+RayScattering::RayScattering(	const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, 
+								const UnitVector3D scatteredNormal_, const double max_angle_to_lie_in_plane ) :
 	number_of_energies_( ForcePositive( energyAmount_ ) ),
 	angle_resolution_( ( 2. * PI ) / static_cast<double>( anglesAmount - 1 ) ),
 	energy_range_( energyRange_ ),
 	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / static_cast<double>( number_of_energies_ - 1 ) ),
-	scattering_plane_normal_( scatteredNormal_ )
+	scattering_plane_normal_( scatteredNormal_ ),
+	max_angle_to_lie_in_plane_( max_angle_to_lie_in_plane )
 {
 	// Iterate all frequencies
 	for( size_t currentEnergyIndex = 0; currentEnergyIndex < number_of_energies_; currentEnergyIndex++ ){

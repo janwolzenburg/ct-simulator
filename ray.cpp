@@ -210,8 +210,11 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 			energy_index++;
 		}
 
-		if( current_angle_has_ray_with_nonzero_energies ){
-
+		// Create scattered ray only if is has energy is could reach the detector
+		if( current_angle_has_ray_with_nonzero_energies && 
+		    scattering_information.scattering_plane_normal().GetAngle( newDirection ) >= PI / 2. - scattering_information.max_angle_to_lie_in_plane() && 
+			scattering_information.scattering_plane_normal().GetAngle( newDirection ) <= PI / 2. + scattering_information.max_angle_to_lie_in_plane() ){
+			
 			const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
 			const EnergySpectrum new_spectrum{ new_energies }; 
 			RayProperties new_properties{ new_spectrum };

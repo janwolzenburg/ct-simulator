@@ -37,8 +37,10 @@ class RayScattering{
 	 * @param energy_range How large is the energy range to calculate propabilities for
 	 * @param number_of_energies For how many energies should  the probabilities be calculated
 	 * @param scatter_plane_normal Normal of the plane in which rays are scattered
+	 * @param max_angle_to_lie_in_plane Maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded
 	*/
-	RayScattering( const size_t number_of_angles, const NumberRange energy_range, const size_t number_of_energies, const UnitVector3D scatter_plane_normal );
+	RayScattering(	const size_t number_of_angles, const NumberRange energy_range, const size_t number_of_energies, 
+					const UnitVector3D scatter_plane_normal, const double max_angle_to_lie_in_plane );
 
 	/*!
 	 * @brief Get scattering plane normal
@@ -51,6 +53,8 @@ class RayScattering{
 	 * @return Resolution in rad
 	*/
 	double angle_resolution( void ) const{ return angle_resolution_; };
+
+	double max_angle_to_lie_in_plane( void ) const{ return max_angle_to_lie_in_plane_; };
 
 	/*!
 	 * @brief Get a random angle to given energy
@@ -70,6 +74,8 @@ class RayScattering{
 	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!< Vector with energies and the correspondeing angle distribution*/
 
 	UnitVector3D scattering_plane_normal_;	/*!< Rotation normal for scattered rays*/
+ 
+	double max_angle_to_lie_in_plane_;		/*!< Maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded*/
  };
 
 
