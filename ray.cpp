@@ -215,7 +215,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 			
 			const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
 			EnergySpectrum new_spectrum{ new_energies }; 
-			
+
 			// Discard scattered ray when its angle to the scattering plane is too large meaning it would not hit the detector
 			if( !integer_random_number_generator.DidARandomEventHappen( 
 				2. * scattering_information.max_angle_to_lie_in_plane() / PI ) )

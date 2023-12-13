@@ -200,7 +200,7 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		projections_properties_ = ProjectionsProperties{ number_of_angles_input_.value(), number_of_distances_input_.value(), distance_range_input_.value() };
 		projections_properties_.tube_mean_energy( gantry_.tube().GetMeanEnergy() );
 		
-		physical_detector_properties_ = PhysicalDetectorProperties{ 5., detector_focus_distance_input_.value(), static_cast<bool>( scattering_structure_input_.value() ), maximum_ray_angle_input_.value() / 360. * 2. * PI };
+		physical_detector_properties_ = PhysicalDetectorProperties{ 2., detector_focus_distance_input_.value(), static_cast<bool>( scattering_structure_input_.value() ), maximum_ray_angle_input_.value() / 360. * 2. * PI };
 		
 
 		number_of_distances_input_.value( projections_properties_.number_of_distances() );
