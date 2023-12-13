@@ -28,7 +28,7 @@ constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * P
 
 constexpr size_t number_of_points_in_tube_spectrum_ = 128;		/*!< Amount of discrete datapoints in spectrum*/
 
-constexpr size_t number_of_scatter_angles = 127;								/*!< Amount of discrete angles available for scattering - should be odd to include 0°*/
+constexpr size_t number_of_scatter_angles = 31;								/*!< Amount of discrete angles available for scattering - should be odd to include 0°*/
 constexpr size_t number_of_energies_for_scattering = 128;					/*!< Amount of energies used */
 
 constexpr size_t bins_per_energy = 32;		/*!< When scattering: Into how many bins should the photons with the same energy be divided into*/

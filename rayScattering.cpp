@@ -76,21 +76,21 @@ ScatteringCrossSection& ScatteringCrossSection::GetInstance( void ){
 
 double ScatteringCrossSection::GetCrossSection( const double energy ) const{
 		
-	const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - energy_start_eV ) / energy_resolution_ + 0.5 ) );
+	const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - minimum_energy_in_tube_spectrum ) / energy_resolution_ + 0.5 ) );
 	if( energy_index >= number_of_energies_  ) return cross_sections_.back().y;
 
 	return cross_sections_.at( energy_index ).y;
 }
 
 ScatteringCrossSection::ScatteringCrossSection( void ) : 
-	number_of_energies_( static_cast<size_t>( ( ( energy_end_eV - energy_start_eV ) / desired_energy_resolution ) ) + 1 ),
-	energy_resolution_( ( energy_end_eV - energy_start_eV ) / static_cast<double>( number_of_energies_ - 1 ) ),
+	number_of_energies_( static_cast<size_t>( ( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / desired_energy_resolution ) ) + 1 ),
+	energy_resolution_( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	cross_sections_( number_of_energies_, Tuple2D{} )
 {
 		
 	for( size_t current_energy_index = 0; current_energy_index < number_of_energies_; current_energy_index++ ){
 			
-		const double energy_eV = ( energy_start_eV + static_cast<double>( current_energy_index ) * energy_resolution_ );
+		const double energy_eV = ( minimum_energy_in_tube_spectrum + static_cast<double>( current_energy_index ) * energy_resolution_ );
 		const double reduced_energy = energy_eV / reduced_energy_divisor_eV;
 		const double e = reduced_energy;
 

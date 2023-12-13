@@ -81,8 +81,6 @@ class ScatteringCrossSection{
 
 	public:
 	
-	static constexpr double energy_start_eV = minimum_energy_in_tube_spectrum;
-	static constexpr double energy_end_eV = maximum_energy_in_tube_spectrum;
 	static constexpr double desired_energy_resolution = 1000;
 	
 	static ScatteringCrossSection& GetInstance( void );
