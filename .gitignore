@@ -371,3 +371,4 @@ FodyWeavers.xsd
 *.backprojection
 *.filteredprojections
 /enc_temp_folder/*
+*.bak
