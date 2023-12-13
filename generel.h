@@ -43,7 +43,11 @@ static microseconds start_tic;
 	Definitions
  *********************************************************************/
 
+ //#define VERIFY
+
+ #ifdef VERIFY
  #define TRANSMISSION_TRACKING
+ #endif
 
 
 /*!

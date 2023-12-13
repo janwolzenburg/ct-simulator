@@ -9,6 +9,8 @@
 
 void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis, ofstream& delta_axis, bool add_inout ){
 
+	#ifdef TRANSMISSION_TRACKING
+
 	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, true );
 
 	vector<Tuple2D> simple_intensity_values;
@@ -68,10 +70,13 @@ void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomogr
 
 	addSingleObject( simple_delta_axis, "SimpleIntensityDelta", simple_deltas, "$d$ in mm;ln$(I\\cdot I_0^{-1})\\cdot\\Delta d^{-1}$ in mm$^{-1}$;Step" );
 	addSingleObject( delta_axis, "IntensityDelta", deltas, "$d$ in mm;ln$(I\\cdot I_0^{-1})\\cdot\\Delta d^{-1}$ in mm$^{-1}$;Step" );
+
+	#endif
 }
 
 void VerifyTransmission( void ){
 
+	#ifdef TRANSMISSION_TRACKING
 	path model_path{ "./verification.model" };
 
 	PersistingObject<Model> model{ Model{}, model_path, true };
@@ -215,9 +220,12 @@ void VerifyHardening( void ){
 
 
 	closeAxis( axis );
+	#endif
 }
 
 void VerifyScattering( void ){
+
+	#ifdef TRANSMISSION_TRACKING
 
 	path model_path{ "./verification only water.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
@@ -425,4 +433,6 @@ void VerifyScattering( void ){
 	auto propability_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
 	addSingleObject( propability_axis, "Propability", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
 	closeAxis( propability_axis );
+
+	#endif
 }
