@@ -89,7 +89,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	// Labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
-	model_slice_image_.SetValueTip( "µ at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
+	model_slice_image_.SetValueTip( "µ_a at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
 	model_slice_image_.Setlabel( { "x in mm", " y in mm" } ); 
 
 	// Hide image initially

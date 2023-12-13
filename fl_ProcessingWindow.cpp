@@ -36,7 +36,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	
 	processing_properties_group_{	X( *this, .025 ),			Y( *this, 0.9 ),			W( *this, .45 ),			H( *this, .1  ) },
 	hu_mu_selection_button_{        X( processing_properties_group_, 0. ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .275 ), "Enable HU" },
-	mu_water_input_{				X( processing_properties_group_, .3 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .25 ), "µ water" },
+	mu_water_input_{				X( processing_properties_group_, .3 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .25 ), "µ_0 water" },
 
 	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .35 ), "Filtered projections"},
 	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .41 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
@@ -87,7 +87,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
 
-	mu_water_input_.tooltip( "Enter absorption coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
+	mu_water_input_.tooltip( "Enter attenuation coefficient for water given by backprojected image.\nHover with mouse over a region with water and enter value.\nLook out for the exponent!");
 	hu_mu_selection_button_.tooltip("Switch between view of absorption coefficient and Houndsfield Units. Least are calculated by the entered value.");
 
 	projections_image_.align( FL_ALIGN_TOP );
@@ -202,7 +202,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 				
 			}
 			else{
-				reconstructed_image_.SetValueTip( "µ in mm^-1" );
+				reconstructed_image_.SetValueTip( "µ_0 in mm^-1" );
 			}
 
 		}
