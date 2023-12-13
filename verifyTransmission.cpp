@@ -262,7 +262,7 @@ void VerifyScattering( void ){
 	Ray ray = rays.at( 0 );
 	
 	DetectorPixel pixel{ BoundedSurface{ ray.direction().GetCoordinateSystem()->GetEz(), ray.direction().GetCoordinateSystem()->GetEz() ^ ray.direction(),
-										 ray.GetPoint( gantry.detector().properties().detector_focus_distance ),
+										 ray.GetPoint( 1.5*gantry.detector().properties().detector_focus_distance ),
 										 -1.,1.,-1.,1. } };
 
 	addSingleObject( axis, "Pixel", static_cast<BoundedSurface>( pixel ), "g", .5 );
@@ -273,35 +273,46 @@ void VerifyScattering( void ){
 		}
 
 	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
-	addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
+	addSingleObject( axis, "Ray", ray, "r", 1.5*gantry.detector().properties().detector_focus_distance );
 
 
 
 	for( auto scattered_ray : returned_rays.second ){
-		addSingleObject( axis, "Scattered ray", scattered_ray, "g", gantry.detector().properties().detector_focus_distance );
+		addSingleObject( axis, "Scattered ray", scattered_ray, "g", 0.75*gantry.detector().properties().detector_focus_distance );
 	}
 
 	
 	closeAxis( axis );
 
 
-	vector<Tuple2D> attenuations = ray.properties().energy_spectrum().data();
-	for( auto& [energy, attenuation] : attenuations ){
+	vector<Tuple2D> scattering_attenuations = ray.properties().energy_spectrum().data();
+	for( auto& [energy, attenuation] : scattering_attenuations ){
 		attenuation = 0.;
 	}
 
+	vector<Tuple2D> absorption_and_scattering_attenuations = scattering_attenuations;
+	vector<Tuple2D> absorption_attenuations = scattering_attenuations;
 
-	size_t ray_iterations = 1000; size_t num_scattered_rays = 0;
+	size_t ray_iterations = 100; size_t num_scattered_rays = 0;
 	for( auto it = 0; it < ray_iterations; it++ ){
 
 		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
 
-		for( auto& [energy, attenuation] : attenuations ){
-			double photon_flow = returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow( energy );
-		
-			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );
-		
+		for( auto& [energy, attenuation] : scattering_attenuations ){
+			double photon_flow = returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow( energy );		
+			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );		
 		}
+
+		for( auto& [energy, attenuation] : absorption_and_scattering_attenuations ){
+			double photon_flow = returned_rays_loc.first.properties().energy_spectrum().GetPhotonflow(energy);
+			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );		
+		}
+		
+		for( auto& [energy, attenuation] : absorption_attenuations ){
+			double photon_flow = returned_rays_loc.first.properties().only_absorption_spectrum.GetPhotonflow(energy);
+			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );		
+		}
+
 	}
 
 	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, false );
@@ -312,18 +323,35 @@ void VerifyScattering( void ){
 			distance += step.distance;
 	}
 
-	for( auto& [energy, attenuation] : attenuations ){
-		
+	for( auto& [energy, attenuation] : scattering_attenuations ){		
 			attenuation /= ray_iterations;
 			attenuation /= distance;
 			attenuation *= 10. / 0.998;
-		
 	}
 
-	auto attenuation_axis = openAxis( GetPath( string{"test_scattering_attenuation"} ), true );
-	addSingleObject( attenuation_axis, "Attenuation", attenuations, "$E$ in eV;$\\mu_s\\cdot\\rho^{-1}$ in cm$^2\\cdot$ g$^{-1}$;Dots", 2);
-	closeAxis( attenuation_axis );
+	for( auto& [energy, attenuation] : absorption_and_scattering_attenuations ){		
+			attenuation /= ray_iterations;
+			attenuation /= distance;
+			attenuation *= 10. / 0.998;
+	}
 
+	for( auto& [energy, attenuation] : absorption_attenuations ){		
+			attenuation /= ray_iterations;
+			attenuation /= distance;
+			attenuation *= 10. / 0.998;
+	}
+
+	auto scattering_attenuation_axis = openAxis( GetPath( string{"test_scattering_attenuation"} ), true );
+	addSingleObject( scattering_attenuation_axis, "Attenuation", scattering_attenuations, "$E$ in eV;cm$^2\\cdot$ g$^{-1}$;Dots", 2);
+	closeAxis( scattering_attenuation_axis );//\\mu_s\\cdot\\rho^{-1}$
+
+	auto absorption_attenuation_axis = openAxis( GetPath( string{"test_absorption_attenuation"} ), true );
+	addSingleObject( absorption_attenuation_axis, "Attenuation", absorption_attenuations, "$E$ in eV;cm$^2\\cdot$ g$^{-1}$;Dots", 2);
+	closeAxis( absorption_attenuation_axis );
+
+	auto complete_attenuation_axis = openAxis( GetPath( string{"test_complete_attenuation"} ), true );
+	addSingleObject( complete_attenuation_axis, "Attenuation", absorption_and_scattering_attenuations, "$E$ in eV;cm$^2\\cdot$ g$^{-1}$;Dots", 2);
+	closeAxis( complete_attenuation_axis );
 
 	vector<ofstream> angles_axis;
 	const int num_energies = 2;

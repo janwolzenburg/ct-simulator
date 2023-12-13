@@ -68,6 +68,7 @@ class RayProperties{
 		simple_intensity_( 1. )
 		#ifdef TRANSMISSION_TRACKING
 		,only_scattering_spectrum( energy_spectrum_ )
+		,only_absorption_spectrum( energy_spectrum_ )
 		#endif
 		{};
 
@@ -78,6 +79,7 @@ class RayProperties{
 		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. )
 		#ifdef TRANSMISSION_TRACKING
 		,only_scattering_spectrum( energy_spectrum_ )
+		,only_absorption_spectrum( energy_spectrum_ )
 		#endif
 	{};
 	
@@ -131,6 +133,7 @@ class RayProperties{
 	public:
 	RayTrace ray_tracing;
 	EnergySpectrum only_scattering_spectrum;
+	EnergySpectrum only_absorption_spectrum;
 
 	#endif
 };
