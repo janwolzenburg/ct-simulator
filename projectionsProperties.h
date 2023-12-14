@@ -27,15 +27,14 @@ class ProjectionsProperties{
 	 * @param number_of_projections Amount of projections
 	 * @param number_of_distances Amount of distances
 	 * @param measuring_field_size Distance range
-	 * @param Name for identification
 	*/
 	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, 
-							const double measuring_field_size, const string name );
+							const double measuring_field_size );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ProjectionsProperties( void ): ProjectionsProperties{ 59, 26, 500., "Unnamed" }{};
+	ProjectionsProperties( void ): ProjectionsProperties{ 59, 26, 500. }{};
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -87,12 +86,6 @@ class ProjectionsProperties{
 	double distances_resolution( void ) const { return distances_resolution_; };
 
 	/*!
-	 * @brief Get name
-	 * @return The name
-	*/
-	string name( void ) const{ return name_; };
-
-	/*!
 	 * @brief Get transformation resolution
 	 * @return Transformation resolution
 	*/
@@ -103,19 +96,6 @@ class ProjectionsProperties{
 	 * @return The number of frames necessary to complete radon transformation. Is the amount of small rotations by the angle resolution of gantry
 	*/
 	size_t number_of_frames_to_fill( void ) const{ return number_of_frames_to_fill_; };
-
-	/*!
-	 * @brief Get mean energy of tube used for this projections
-	 * @return Mean energy in eV
-	*/
-	double tube_mean_energy( void ) const{ return tube_mean_energy_; };
-	
-	/*!
-	 * @brief Set mean energy of tube used for this projections
-	 * @param New mean energy in eV
-	 * @return Mean energy in eV
-	*/
-	double tube_mean_energy( const double energy ){ return tube_mean_energy_ = energy ; };
 
 
 	private:
@@ -128,7 +108,4 @@ class ProjectionsProperties{
 	double distances_resolution_;			/*!< Distance resolution*/
 	size_t number_of_frames_to_fill_;		/*!< Amount of frames to fill sinogram*/
 
-	double tube_mean_energy_;				/*!< Mean energy of tube*/
-
-	string name_;
 };

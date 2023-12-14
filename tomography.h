@@ -47,8 +47,11 @@ class TomographyProperties{
 	 * @param scatter_propability Approximate propability that a Ray is scattered once when transmitted through whole model
 	 * @param use_simple_absorption Use simple or energy dependant attaenuation
 	 * @param scattered_ray_absorption_factor Factor to scale the scattered rays energies by
+	 * @param name Name for identification
 	*/
-	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, const bool use_simple_absorption, const double scattered_ray_absorption_factor );
+	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
+						  const bool use_simple_absorption, const double scattered_ray_absorption_factor,
+						  const string name = "Unnamed" );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -69,10 +72,10 @@ class TomographyProperties{
 	bool scattering_enabled;				/*!< Enable scattering*/
 	size_t max_scattering_occurrences;		/*!< Max. amount each rays can be scattered*/
 	double scatter_propability_correction;	/*!< Correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
-	bool use_simple_absorption;			/*!< Flag for using simple absorption*/
-	double scattered_ray_absorption_factor;/*!< Factor to scale the scattered rays energies by*/
-	double mean_energy_of_tube_;
-
+	bool use_simple_absorption;				/*!< Flag for using simple absorption*/
+	double scattered_ray_absorption_factor;	/*!< Factor to scale the scattered rays energies by*/
+	double mean_energy_of_tube;			/*!< Mean energy of tube when radiated*/
+	string name;							/*!< Name for identifiaction*/
 };
 
 
@@ -109,6 +112,7 @@ class Tomography{
 	*/
 	Projections RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
+	
 
 	private:
 

@@ -37,8 +37,9 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
 	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
-	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
-	export_projections_button_{			X( control_group_, .55 ), Y( control_group_, .1 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
+	name_input_{				X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .6 ), H( control_group_, .4 ), "Name" },			
+	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
+	export_projections_button_{	X( control_group_, .55 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
 
 	
 	main_window_( main_window ),
@@ -111,12 +112,16 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	information_.align( FL_ALIGN_TOP );
 
 	Fl_Group::add( control_group_ );
-
+	
+	control_group_.add( name_input_ );
 	control_group_.add( record_slice_button_ );
 	control_group_.add( export_projections_button_ );
+	name_input_.tooltip("Give a name to identify this recording.");
+	name_input_.maximum_size( 32 );
 
 	export_projections_button_.deactivate();
 
+	name_input_.callback(  CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_  );
 	record_slice_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &record_slice_callback_ );
 	export_projections_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &export_projections_callback_ );
 
@@ -127,18 +132,23 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	projections_ = projections;
 
 	if( tomography_properties_.use_simple_absorption ){
-		projections_.tube_mean_energy( -1. );
+		tomography_properties_.mean_energy_of_tube = -1.;
 	}
 
 	export_projections_button_.activate();
 
-	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
+	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_, tomography_properties_ );
 	processing_windows_.push_back( std::move( ptr ) );
 }
 
 
 void Fl_TomographyExecution::UpdateProperties( void ){
-		tomography_properties_ = TomographyProperties{ static_cast<bool>( disable_scattering_button_.value() ), static_cast<size_t>( maximum_scatterings_input_.value() ), scattering_propability_factor_input_.value()/100., static_cast<bool>( use_simple_absorption_button_.value() ), scattering_absorption_factor_input_.value()/100.};
+		tomography_properties_ = TomographyProperties{	static_cast<bool>( disable_scattering_button_.value() ), 
+														static_cast<size_t>( maximum_scatterings_input_.value() ), 
+														scattering_propability_factor_input_.value()/100., 
+														static_cast<bool>( use_simple_absorption_button_.value() ), 
+														scattering_absorption_factor_input_.value()/100.,
+														name_input_.value() };
 }
 
 void Fl_TomographyExecution::DoTomography( void ){
@@ -147,7 +157,7 @@ void Fl_TomographyExecution::DoTomography( void ){
 
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 16, 2, "Radiation progress"};
 		
-
+		tomography_properties_.mean_energy_of_tube =  main_window_.gantry_creation_.gantry().tube().GetMeanEnergy();
 		tomography_ = Tomography{ tomography_properties_ };
 
 		if( radiationProgressWindow != nullptr ){

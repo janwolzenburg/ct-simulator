@@ -81,6 +81,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	Fl_Multiline_Output information_;				/*!< Information about tomography*/
 	
 	Fl_Group control_group_;						/*!< Group for control elements*/
+	Fl_Input name_input_;							/*!< input for identifiaction name*/
 	Fl_Button record_slice_button_;					/*!< Start button for radiation*/
 	Fl_Button export_projections_button_;			/*!< Export button for projections*/
 	

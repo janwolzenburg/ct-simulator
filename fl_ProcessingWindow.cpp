@@ -25,7 +25,8 @@
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_filteredProjections_file_chooser_{ FileChooser{ "Export", "*.filteredprojections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportFilteredProjections.chooser" };
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_image_chooser_{ FileChooser{ "Export", "*.backprojection", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportBackprojection.chooser" };
 
-Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections projections ) :
+Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections projections, 
+										  const TomographyProperties tomography_properties ) :
 	Fl_Window{ w, h, label },
 	
 	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .45 ), "Projections"},
@@ -44,6 +45,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	export_image_button_{			X( *this, .525 ),			Y( *this, 0.960 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
 	
 	projections_( projections ),
+	tomography_properties_( tomography_properties ),
 	filtered_projections_{ FilteredProjections{}, "saved.filteredprojections", true },
 	backprojection_{ Backprojection{}, "saved.backprojection", true },
 
@@ -54,7 +56,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	export_image_callback_{ *this, &Fl_ProcessingWindow::ExportBackprojections }
 
 {
-	Fl_Window::copy_label( string{ string{ label } + ": " + projections.properties().name()}.c_str() );
+	Fl_Window::copy_label( string{ string{ label } + ": " + tomography_properties_.name }.c_str() );
 
 	Fl_Window::add( filter_group_ );
 	Fl_Window::add( projections_image_ );
@@ -185,12 +187,12 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 			double current_value = raw_image_data.GetData( GridIndex{ column_index, row_index } );
 
 			// Correct if simple absorption is not used
-			if( projections_.properties().tube_mean_energy() >= 0 ){
+			if( tomography_properties_.mean_energy_of_tube >= 0 ){
 
 				raw_image_data.SetData( GridIndex{ column_index, row_index }, 
 							VoxelData::GetAbsorptionAtReferenceEnergy( 
 								current_value, 
-								projections_.properties().tube_mean_energy() ) );
+								tomography_properties_.mean_energy_of_tube ) );
 			}
 			
 			if( static_cast<bool>( hu_mu_selection_button_.value() ) ){

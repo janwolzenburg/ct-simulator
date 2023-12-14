@@ -94,19 +94,6 @@ class Projections : private DataGrid<> {
 	*/
 	void AssignData( const RadonPoint radon_point );
 
-	/*!
-	 * @brief Get mean energy of tube used for this projections
-	 * @return Mean energy in eV
-	*/
-	double tube_mean_energy( void ) const{ return properties_.tube_mean_energy(); };
-
-	/*!
-	 * @brief Set mean energy of tube used for this projections
-	 * @param New mean energy in eV
-	 * @return Mean energy in eV
-	*/
-	double tube_mean_energy( const double energy ){ return properties_.tube_mean_energy( energy ); };
-
 
 	private:
 

@@ -28,6 +28,7 @@
 #include "backprojection.h"
 #include "widgets.h"
 #include "callbackFunction.h"
+#include "tomography.h"
 
 
  /*********************************************************************
@@ -48,8 +49,9 @@ class Fl_ProcessingWindow : public Fl_Window{
 	 * @param w Width
 	 * @param h Height
 	 * @param projections Projections the window will process
+	 * @param tomography_properties proeprties used for this recording
 	*/
-	Fl_ProcessingWindow( int w, int h, const char* label, Projections projections );
+	Fl_ProcessingWindow( int w, int h, const char* label, Projections projections, TomographyProperties tomography_properties );
 
 	
 	private:
@@ -70,9 +72,10 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
 	Fl_Button export_image_button_;								/*!< Export button for image*/
 
-	Projections projections_;
-	PersistingObject<FilteredProjections> filtered_projections_;					/*!< Current filtered projections*/
-	PersistingObject<Backprojection> backprojection_;								/*!< Current image reconstructed from filtered projections*/
+	Projections projections_;										/*!< Projection data and properties*/
+	TomographyProperties tomography_properties_;					/*!< Properties used for this recording*/
+	PersistingObject<FilteredProjections> filtered_projections_;	/*!< Current filtered projections*/
+	PersistingObject<Backprojection> backprojection_;				/*!< Current image reconstructed from filtered projections*/
 
 	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
 	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/

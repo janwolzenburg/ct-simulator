@@ -35,8 +35,7 @@ bool test_radonTransform( void ){
 
 	ProjectionsProperties radonParameter{
 											125, 41,
-											500,
-		"Name"
+											500
 	};
 
 	Projections test_Sinogram{ radonParameter };
@@ -188,8 +187,7 @@ bool test_serialisation( void ){
 
 	ProjectionsProperties radonParameter{
 											8, 8,
-											500,
-		"Name"
+											500
 	};
 
 	Projections testSinogram{ radonParameter };

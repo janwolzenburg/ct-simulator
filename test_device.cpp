@@ -32,8 +32,7 @@ XRayDetector getTestDetector( void ){
 	// 500mm measure field
 	ProjectionsProperties radonParameter{
 		63, 21,
-		500,
-		"Name"
+		500
 	};
 
 	PhysicalDetectorProperties indipendentParameter{
@@ -420,8 +419,7 @@ Gantry getTestGantry( const GridIndex sinogramSize, const size_t raysPerPixel ){
 	ProjectionsProperties radonParameter{
 		sinogramSize.c,
 		sinogramSize.r,
-		500,
-		"Name"
+		500
 	};
 
 	PhysicalDetectorProperties indipendentParameter{

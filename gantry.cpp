@@ -135,7 +135,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		// Adjust scattering propability because only some scattered rays would reach detector
 		tomography_properties.scatter_propability_correction *= 1.;// atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance ) / PI;
 
-		tomography_properties.mean_energy_of_tube_ = this->tube_.GetMeanEnergy();
+		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();
 
 		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
 		sharedCurrentRayIndex = 0;										// Reset current ray index
