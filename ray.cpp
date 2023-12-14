@@ -129,8 +129,10 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	// For each angle store a vector with the amount each energy in spectrum is scattered 
 	vector<vector<size_t>> scattered_angles( number_of_angles, vector<size_t>(  properties_.energy_spectrum_.GetNumberOfEnergies(), 0 ) );
 
-	size_t energy_index = 0;
+	size_t scattered_bins_sum = 0;
+
 	// Iterate energies in spectrum
+	size_t energy_index = 0;
 	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
 		// No photons at current energy
@@ -155,12 +157,21 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				
 				// Increment count of scattering for current energy and angle
 				scattered_angles.at( angle_index ).at( energy_index )++;
-
+				scattered_bins_sum++;
 			}
 		}
 
 		energy_index++;
 	}
+
+	// Attenuation coefficient at reference energy
+	const double cross_section_at_reference_energy_mm = ScatteringCrossSection::GetInstance().GetCrossSection( reference_energy_for_mu_eV );
+	const double coefficient_at_reference_energy_1Permm = cross_section_at_reference_energy_mm * electron_density_water_1Permm3 * coefficient_factor;
+	const double simple_fraction = exp( -distance_traveled_mm * coefficient_at_reference_energy_1Permm  );
+
+	// Attenuate simple intensity
+	properties_.simple_intensity_ *= simple_fraction;
+
 
 	// Vector to store factors for attenuating this ray
 	vector<double> energy_scalars( properties_.energy_spectrum_.GetNumberOfEnergies(), 1. );
@@ -175,7 +186,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 																			angle );
 
 		VectorPair new_energies{};		// Vector pair for spectrum of scattered ray
-		double power_sum = 0.;			// Sum of power of all scattered rays
+		
+		size_t scattered_bins_for_current_angle = 0;
 
 		// Iterate all energy bins that were scattered in current direction
 		size_t energy_index = 0;
@@ -187,6 +199,8 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 				energy_index++;
 				continue;
 			}
+
+			scattered_bins_for_current_angle += number_of_scattered_bins;
 
 			current_angle_has_ray_with_nonzero_energies = true;
 
@@ -200,9 +214,6 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 			const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * 
 											properties_.energy_spectrum_.data().at( energy_index ).y / static_cast<double>( bins_per_energy );
 			
-			// Sum power
-			power_sum += number_of_scattered_bins * energy * photons_per_bin;
-			
 			new_energies.first.push_back( new_energy );
 			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
 		
@@ -213,17 +224,18 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		// Create scattered ray only if is has energy
 		if( current_angle_has_ray_with_nonzero_energies ){
 			
-			const double power_fraction = power_sum / properties_.energy_spectrum_.GetTotalPowerIn_eVPerSecond();
 			EnergySpectrum new_spectrum{ new_energies }; 
 
 			// Discard scattered ray when its angle to the scattering plane is too large meaning it would not hit the detector
 			if( !integer_random_number_generator.DidARandomEventHappen( 
 				2. * scattering_information.max_angle_to_lie_in_plane() / PI ) )
 				continue;
+			
+			const double scattered_bins_fraction = static_cast<double>( scattered_bins_for_current_angle ) / static_cast<double>( scattered_bins_sum );
 
 			RayProperties new_properties{ new_spectrum };
 			new_properties.voxel_hits_ = properties_.voxel_hits_;
-			new_properties.simple_intensity_ = properties_.simple_intensity_ * power_fraction * scattered_ray_intensity_factor;
+			new_properties.simple_intensity_ = properties_.simple_intensity_ * scattered_bins_fraction * simple_fraction;
 			new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
 			scattered_rays.emplace_back( newDirection, newOrigin, new_properties );

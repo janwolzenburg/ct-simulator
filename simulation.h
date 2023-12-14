@@ -35,4 +35,4 @@ constexpr size_t bins_per_energy = 32;		/*!< When scattering: Into how many bins
 constexpr double minimum_energy_in_tube_spectrum = 10000.;
 constexpr double maximum_energy_in_tube_spectrum = 210000.;
 
-constexpr double scattered_ray_intensity_factor = 0.1;	/*!< Additional factor to apply to the simple intensity of scattered ray. Used to make real and simple result look similar. Foun empirically*/
+//constexpr double scattered_ray_intensity_factor = 0.1;	/*!< Additional factor to apply to the simple intensity of scattered ray. Used to make real and simple result look similar. Foun empirically*/
