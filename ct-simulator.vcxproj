@@ -175,6 +175,7 @@
     <ClInclude Include="backprojection.h" />
     <ClInclude Include="verificationParameter.h" />
     <ClInclude Include="verifyDevice.h" />
+    <ClInclude Include="verifyprocessing.h" />
     <ClInclude Include="verifyTransmission.h" />
     <ClInclude Include="xRayDetector.h" />
     <ClInclude Include="detectorProperties.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="backprojection.cpp" />
     <ClCompile Include="verificationParameter.cpp" />
     <ClCompile Include="verifyDevice.cpp" />
+    <ClCompile Include="verifyProcessing.cpp" />
     <ClCompile Include="verifyTransmission.cpp" />
     <ClCompile Include="xRayDetector.cpp" />
     <ClCompile Include="detectorProperties.cpp" />

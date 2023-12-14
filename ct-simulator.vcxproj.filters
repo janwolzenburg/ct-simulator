@@ -387,6 +387,9 @@
     <ClInclude Include="projections.fwd.h">
       <Filter>Headerdateien\00 Forward Declerations</Filter>
     </ClInclude>
+    <ClInclude Include="verifyprocessing.h">
+      <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -570,6 +573,9 @@
       <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="verificationParameter.cpp">
+      <Filter>Quelldateien\01 Verification</Filter>
+    </ClCompile>
+    <ClCompile Include="verifyProcessing.cpp">
       <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
   </ItemGroup>
