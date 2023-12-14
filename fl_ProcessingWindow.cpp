@@ -100,7 +100,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	processing_properties_group_.add( mu_water_input_ );
 	processing_properties_group_.add( hu_mu_selection_button_ );
 	mu_water_input_.SetProperties( 0., 10., 7 );
-	mu_water_input_.value( absorption_water_Per_mm );
+	mu_water_input_.value(  tomography_properties_.scattering_enabled ? attenuation_water_Per_mm : absorption_water_Per_mm );
 	mu_water_input_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_input_changed_callback_ );
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
@@ -203,7 +203,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 			double current_value = raw_image_data.GetData( GridIndex{ column_index, row_index } );
 
 			// Correct if simple absorption is not used
-			if( tomography_properties_.mean_energy_of_tube >= 0 ){
+			if( !tomography_properties_.use_simple_absorption ){
 
 				raw_image_data.SetData( GridIndex{ column_index, row_index }, 
 							VoxelData::GetAbsorptionAtReferenceEnergy( 
