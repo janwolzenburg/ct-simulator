@@ -33,7 +33,7 @@ TomographyProperties::TomographyProperties( void ) :
 	max_scattering_occurrences( default_max_radiation_loops ),
 	scatter_propability_correction( default_scatter_propability_correction ),
 	use_simple_absorption( true ),
-	scattered_ray_absorption_factor( 0.25 ),
+	scattered_ray_absorption_factor( 1. ),
 	mean_energy_of_tube( reference_energy_for_mu_eV ),
 	name( "Unnamed" ),
 	filter_active( false )
