@@ -52,7 +52,7 @@ class TomographyProperties{
 	*/
 	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
 						  const bool use_simple_absorption, const double scattered_ray_absorption_factor,
-						  const string name = "Unnamed", const bool filter_active );
+						  const string name = "Unnamed", const bool filter_active = false );
 	
 	/*!
 	 * @brief Constructor from serialized data

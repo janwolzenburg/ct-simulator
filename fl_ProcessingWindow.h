@@ -58,6 +58,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 
 	Fl_AdjustableGrayscaleImage projections_image_;				/*!< Widget for sinogram display*/
 	
+	Fl_Multiline_Output information_output_;
+
 	Fl_Group filter_group_;										/*!< Group for filter*/
 	Fl_Selector filter_type_selector_;							/*!< Filter selector*/
 	Fl_Plot<DotPlot> filter_plot_;								/*!< Filter plot*/
