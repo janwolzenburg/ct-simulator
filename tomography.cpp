@@ -139,8 +139,10 @@ optional<Projections> Tomography::RecordSlice( const ProjectionsProperties radon
 
 		Fl::check();
 
-		if( !progressWindow->visible() ){
-			return {};
+		if( progressWindow != nullptr ){
+			if( !progressWindow->visible() ){
+				return {};
+			}
 		}
 	}
 
