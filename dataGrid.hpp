@@ -66,6 +66,11 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 	resolution_( GridCoordinates{ binary_data, it } )
 {
 
+	if( size.c > maximum_vector_size || size.r > maximum_vector_size ){
+		size = { 0, 0 };
+		return;
+	}
+
 		FillVectors( D() );
 
 		if constexpr( std::is_fundamental_v<D> ){
@@ -95,7 +100,6 @@ void DataGrid<D>::FillVectors( const D defaultValue ){
 
 	resolution_.c = ForcePositive( resolution_.c );
 	resolution_.r = ForcePositive( resolution_.r );
-
 
 	// Fill axis
 	column_points_ = CreateLinearSpace( start_.c, start_.c + static_cast<double>( size_.c - 1 ) * resolution_.c, size_.c );

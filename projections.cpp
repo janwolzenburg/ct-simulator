@@ -28,7 +28,7 @@
 */
 
 
-const string Projections::FILE_PREAMBLE{ "Ver01RADON_TRANSFORMED_FILE_PREAMBLE" };
+const string Projections::FILE_PREAMBLE{ "Ver02RADON_TRANSFORMED_FILE_PREAMBLE" };
 
 Projections::Projections( void ) :
 	DataGrid<>{}

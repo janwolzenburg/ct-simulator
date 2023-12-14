@@ -123,12 +123,18 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 	// Instance to return
 	vector<vector<GridCoordinates>> vec;
 
+	if( amount_sub_vectors > maximum_vector_size )
+		return vec;
+
 	// Loop fo amount of sub vectors
 	for( size_t i = 0; i < amount_sub_vectors; i++ ){
 
 		// Amount of elements in sub vector
 		size_t numElements = DeSerializeBuildIn<size_t>( 0, binary_data, it );
 		
+		if( numElements > maximum_vector_size )
+		return vec;
+
 		// Initialise sub vector
 		vector<GridCoordinates> subVec( numElements, GridCoordinates( 0., 0. ) );
 
