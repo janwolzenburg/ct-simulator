@@ -30,6 +30,9 @@ void VerifyFilteredprojections( void ){
 
 	optional<Projections> projections = tomography.RecordSlice( projections_properties, gantry, model, 0. );
 
+	auto proj_axis = openAxis( "verify_projections_projection_image", true );
+
+	addSingleObject( proj_axis, "ProjectionImage", projections.value().data(), "Angle;Distance;ln$(I_0/I)$;", true);
 
 
 }
