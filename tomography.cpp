@@ -85,7 +85,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 
 
-Projections Tomography::RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+optional<Projections> Tomography::RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
@@ -139,6 +139,9 @@ Projections Tomography::RecordSlice( const ProjectionsProperties radon_propertie
 
 		Fl::check();
 
+		if( !progressWindow->visible() ){
+			return {};
+		}
 	}
 
 	return sinogram;

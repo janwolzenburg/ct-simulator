@@ -163,8 +163,11 @@ void Fl_TomographyExecution::DoTomography( void ){
 		tomography_ = Tomography{ tomography_properties_ };
 
 		if( radiationProgressWindow != nullptr ){
-			Projections new_projections = tomography_.RecordSlice( main_window_.gantry_creation_.projections_properties(), main_window_.gantry_creation_.gantry(), main_window_.model_view_.model(), 0, radiationProgressWindow);
-			AssignProjections( std::move( new_projections ) );
+			optional<Projections> new_projections = tomography_.RecordSlice( main_window_.gantry_creation_.projections_properties(), main_window_.gantry_creation_.gantry(), main_window_.model_view_.model(), 0, radiationProgressWindow);
+			
+			if( new_projections.has_value() ){
+				AssignProjections( std::move( new_projections.value() ) );
+			}
 			delete radiationProgressWindow;
 		}
 

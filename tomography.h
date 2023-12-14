@@ -110,9 +110,9 @@ class Tomography{
 	 * @param model Model to slice
 	 * @param z_position z-positon of slice
 	 * @param progress_window Window to show progress
-	 * @return The sinogram
+	 * @return The sinogram when process was not terminated
 	*/
-	Projections RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
+	optional<Projections> RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
 	
 
