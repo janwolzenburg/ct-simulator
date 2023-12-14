@@ -66,31 +66,30 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 	resolution_( GridCoordinates{ binary_data, it } )
 {
 
-	if( size.c > maximum_vector_size || size.r > maximum_vector_size ){
-		size = { 0, 0 };
-		return;
+	if( size_.c > maximum_vector_size || size_.r > maximum_vector_size ){
+		size_ = { 0, 0 };return;
 	}
 
-		FillVectors( D() );
+	FillVectors( D() );
 
-		if constexpr( std::is_fundamental_v<D> ){
-			min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
-			max_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
-		}
-		else{
+	if constexpr( std::is_fundamental_v<D> ){
+		min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
+		max_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
+	}
+	else{
 
-			min_value_ = D{ binary_data, it };
-			max_value_ = D{ binary_data, it };
-		}
+		min_value_ = D{ binary_data, it };
+		max_value_ = D{ binary_data, it };
+	}
 
-		for( vector<D>& column : data_ ){
-			for( D& rowData : column ){
-				if constexpr( std::is_fundamental_v<D> )
-					rowData = DeSerializeBuildIn<D>( D{}, binary_data, it );
-				else
-					rowData = D{ binary_data, it };
-			}
+	for( vector<D>& column : data_ ){
+		for( D& rowData : column ){
+			if constexpr( std::is_fundamental_v<D> )
+				rowData = DeSerializeBuildIn<D>( D{}, binary_data, it );
+			else
+				rowData = D{ binary_data, it };
 		}
+	}
 }
 
 template<class D>
