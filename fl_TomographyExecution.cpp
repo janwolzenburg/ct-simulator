@@ -37,7 +37,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
 	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
-	name_input_{				X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .6 ), H( control_group_, .4 ), "Name" },			
+	name_input_{				X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .9 ), H( control_group_, .4 ), "Name" },			
 	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
 	export_projections_button_{	X( control_group_, .55 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
 
@@ -117,7 +117,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	control_group_.add( record_slice_button_ );
 	control_group_.add( export_projections_button_ );
 	name_input_.tooltip("Give a name to identify this recording.");
-	name_input_.maximum_size( 32 );
+	name_input_.maximum_size( 40 );
 
 	export_projections_button_.deactivate();
 
@@ -158,6 +158,8 @@ void Fl_TomographyExecution::DoTomography( void ){
 		Fl_Progress_Window* radiationProgressWindow = new Fl_Progress_Window{ (Fl_Window*) window(), 16, 2, "Radiation progress"};
 		
 		tomography_properties_.mean_energy_of_tube =  main_window_.gantry_creation_.gantry().tube().GetMeanEnergy();
+		tomography_properties_.filter_active =  main_window_.gantry_creation_.gantry().tube().properties().has_filter_;
+
 		tomography_ = Tomography{ tomography_properties_ };
 
 		if( radiationProgressWindow != nullptr ){

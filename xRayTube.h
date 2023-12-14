@@ -173,6 +173,12 @@ class XRayTube{
 	double GetSpectralEnergyResolution( void ) const{ return properties_.spectral_energy_resolution; };
 
 	/*!
+	 * @brief Get tube properties
+	 * @return Properties
+	*/
+	XRayTubeProperties properties( void ) const{ return properties_; };
+
+	/*!
 	 * @brief Get the spectrum points
 	 * @return The spectrum points
 	*/

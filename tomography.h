@@ -48,10 +48,11 @@ class TomographyProperties{
 	 * @param use_simple_absorption Use simple or energy dependant attaenuation
 	 * @param scattered_ray_absorption_factor Factor to scale the scattered rays energies by
 	 * @param name Name for identification
+	 * @param filter_active Flag for active tube filter
 	*/
 	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
 						  const bool use_simple_absorption, const double scattered_ray_absorption_factor,
-						  const string name = "Unnamed" );
+						  const string name = "Unnamed", const bool filter_active );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -76,6 +77,7 @@ class TomographyProperties{
 	double scattered_ray_absorption_factor;	/*!< Factor to scale the scattered rays energies by*/
 	double mean_energy_of_tube;			/*!< Mean energy of tube when radiated*/
 	string name;							/*!< Name for identifiaction*/
+	bool filter_active;
 };
 
 
