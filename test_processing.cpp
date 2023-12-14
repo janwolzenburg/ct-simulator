@@ -38,7 +38,7 @@ bool test_radonTransform( void ){
 											500
 	};
 
-	Projections test_Sinogram{ radonParameter };
+	Projections test_Sinogram{ radonParameter, TomographyProperties{} };
 
 	ofstream ax1 = openAxis( path( "./test_radonTransform.txt" ), true );
 
@@ -190,7 +190,7 @@ bool test_serialisation( void ){
 											500
 	};
 
-	Projections testSinogram{ radonParameter };
+	Projections testSinogram{ radonParameter, TomographyProperties{} };
 
 	for( size_t col = 0; col < testSinogram.data().size().c; col++ ){
 		for( size_t row = 0; row < testSinogram.data().size().r; row++ ){

@@ -17,7 +17,7 @@
 #include "generel.h"
 #include "gantry.h"
 #include "model.h"
-#include "projections.h"
+#include "projections.fwd.h"
 
 #include "fl_ProgressWindow.h"
 

@@ -49,9 +49,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 	 * @param w Width
 	 * @param h Height
 	 * @param projections Projections the window will process
-	 * @param tomography_properties proeprties used for this recording
 	*/
-	Fl_ProcessingWindow( int w, int h, const char* label, Projections projections, TomographyProperties tomography_properties );
+	Fl_ProcessingWindow( int w, int h, const char* label, Projections projections );
 
 	
 	private:
@@ -75,7 +74,6 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_Button export_image_button_;								/*!< Export button for image*/
 
 	Projections projections_;										/*!< Projection data and properties*/
-	TomographyProperties tomography_properties_;					/*!< Properties used for this recording*/
 	PersistingObject<FilteredProjections> filtered_projections_;	/*!< Current filtered projections*/
 	PersistingObject<Backprojection> backprojection_;				/*!< Current image reconstructed from filtered projections*/
 

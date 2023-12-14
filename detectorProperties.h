@@ -14,7 +14,7 @@
 
 #include "generel.h"
 #include "generelMath.h"
-#include "projectionsProperties.h"
+#include "projections.fwd.h"
 #include "serialization.h"
 #include "simulation.h"
 

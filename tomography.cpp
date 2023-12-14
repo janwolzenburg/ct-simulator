@@ -19,6 +19,7 @@
 #include "coordinateSystemTree.h"
 #include "simulation.h"
 #include "serialization.h"
+#include "projections.h"
 
 
 /*********************************************************************
@@ -96,10 +97,9 @@ optional<Projections> Tomography::RecordSlice( const ProjectionsProperties radon
 
 	// Assign gantry csys-data to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
-	//this->radon_coordinate_system_->Rotate( this->radon_coordinate_system_->GetEz(), radon_properties.angles_resolution() / 2. );
 
 	// Create sinogram 
-	Projections sinogram{ radon_properties };
+	Projections sinogram{ radon_properties, properties_ };
 
 	// Radiate the model for each frame
 	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){

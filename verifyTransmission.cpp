@@ -6,6 +6,7 @@
 #include "persistingObject.h"
 #include "gantry.h"
 #include "tomography.h"
+#include "projectionsProperties.h"
 
 void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis, ofstream& delta_axis, bool add_inout ){
 

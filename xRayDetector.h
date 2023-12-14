@@ -19,7 +19,7 @@ using std::vector;
 #include "generelMath.h"
 #include "detectorPixel.h"
 #include "detectorProperties.h"
-
+#include "projections.fwd.h"
 
 
 /*********************************************************************

@@ -19,6 +19,7 @@ using std::cref;
 #include "coordinateSystemTree.h"
 #include "tomography.h"
 #include "simulation.h"
+#include "projectionsProperties.h"
 
 
 /*********************************************************************

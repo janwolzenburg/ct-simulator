@@ -44,7 +44,7 @@ void TestRadonCoordinates( void ){
 
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 
-	Projections projections{ projections_properties };
+	Projections projections{ projections_properties, TomographyProperties{} };
 	int frames = 1;
 
 	vector<RadonPoint> radon_points;

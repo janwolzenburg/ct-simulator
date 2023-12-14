@@ -17,6 +17,7 @@
 #include "dataGrid.h"
 #include "projectionsProperties.h"
 #include "radonCoordinates.h"
+#include "tomography.h"
 
 
 
@@ -42,8 +43,9 @@ class Projections : private DataGrid<> {
 	/*!
 	 * @brief Constructor
 	 * @param properties Transformation properties
+	 * @param tomography_properties Properties of tomography used to get these projections
 	*/
-	Projections( const ProjectionsProperties properties );
+	Projections( const ProjectionsProperties properties, const TomographyProperties tomography_properties );
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -83,6 +85,12 @@ class Projections : private DataGrid<> {
 	ProjectionsProperties properties( void ) const{ return properties_; };
 	
 	/*!
+	 * @brief Get tomography properties used for these projections
+	 * @return Tomography properties
+	*/
+	TomographyProperties tomography_properties( void ) const;
+
+	/*!
 	 * @brief Assign data at index 
 	 * @param data Data to assign
 	*/
@@ -98,5 +106,6 @@ class Projections : private DataGrid<> {
 	private:
 
 	ProjectionsProperties properties_;				/*!< proeprties of projection*/
+	TomographyProperties tomography_properties_;	/*!< Tomography properties used*/
 	vector<vector<GridCoordinates>> grid_errors_;	/*!< Grid errors when interpolating*/
 };

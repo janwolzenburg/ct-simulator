@@ -384,6 +384,9 @@
     <ClInclude Include="verifyTransmission.h">
       <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
+    <ClInclude Include="projections.fwd.h">
+      <Filter>Headerdateien\00 Forward Declerations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -16,6 +16,7 @@
 #include "projections.h"
 #include "generelMath.h"
 #include "serialization.h"
+#include "tomography.h"
 
 
 
@@ -28,7 +29,7 @@
 */
 
 
-const string Projections::FILE_PREAMBLE{ "Ver02RADON_TRANSFORMED_FILE_PREAMBLE" };
+const string Projections::FILE_PREAMBLE{ "Ver03RADON_TRANSFORMED_FILE_PREAMBLE" };
 
 Projections::Projections( void ) :
 	DataGrid<>{}
@@ -36,13 +37,13 @@ Projections::Projections( void ) :
 	grid_errors_ = vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) );
 }
 
-Projections::Projections( const ProjectionsProperties properties ) :
+Projections::Projections( const ProjectionsProperties properties, const TomographyProperties tomography_properties ) :
 	DataGrid<>{		properties.GetTransformationSize(),
 				GridCoordinates{ properties.angles_resolution() / 2.,
 								 -( static_cast<double>( properties.number_of_distances() - 1 ) * properties.distances_resolution() ) / 2.},
 				properties.GetTransformationResolution() },
 	properties_( properties ),
-
+	tomography_properties_( tomography_properties ),
 	grid_errors_( vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) ) )
 {}
 
@@ -62,11 +63,16 @@ void Projections::AssignData( const RadonPoint dataPoint ){
 }
 
 
+TomographyProperties Projections::tomography_properties( void ) const{ 
+	return tomography_properties_; 
+};
+
 size_t Projections::Serialize( vector<char>& binary_data ) const{
 	size_t num_bytes = 0;
 
 	num_bytes += DataGrid<>::Serialize( binary_data );
 	num_bytes += properties_.Serialize( binary_data );
+	num_bytes += tomography_properties_.Serialize( binary_data );
 	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
 	return num_bytes;
 }
@@ -75,5 +81,6 @@ size_t Projections::Serialize( vector<char>& binary_data ) const{
 Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
 	DataGrid<>{ binary_data, it },
 	properties_{ binary_data, it },
+	tomography_properties_{ binary_data, it },
 	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, it ) )
 {}

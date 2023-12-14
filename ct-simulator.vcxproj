@@ -170,6 +170,7 @@
     <ClInclude Include="fl_GrayscaleImageWithAxis.h" />
     <ClInclude Include="fl_ModelCreator.h" />
     <ClInclude Include="programState.fwd.h" />
+    <ClInclude Include="projections.fwd.h" />
     <ClInclude Include="propabilityDistribution.fwd.h" />
     <ClInclude Include="backprojection.h" />
     <ClInclude Include="verificationParameter.h" />

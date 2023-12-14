@@ -31,6 +31,7 @@
 #include "callbackFunction.h"
 #include "gantry.h"
 #include "xRayTube.h"
+#include "projectionsProperties.h"
 
 /*!
  * @brief Class for a GUI element for gantry creation
