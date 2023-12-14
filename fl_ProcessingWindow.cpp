@@ -54,6 +54,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	export_image_callback_{ *this, &Fl_ProcessingWindow::ExportBackprojections }
 
 {
+	Fl_Window::copy_label( string{ string{ label } + ": " + projections.properties().name()}.c_str() );
+
 	Fl_Window::add( filter_group_ );
 	Fl_Window::add( projections_image_ );
 	Fl_Window::add( filtered_projections_image_ );
@@ -63,8 +65,6 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	Fl_Window::add( processing_properties_group_ );
 	Fl_Window::resizable( *this );
 	
-
-
 
 	filter_group_.add( filter_plot_ );
 	filter_group_.add( filter_type_selector_ );

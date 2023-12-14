@@ -8,7 +8,7 @@
 
 void BuildTestDetector( void ){
 
-	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size, "Test"};
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	
 	CoordinateSystem* detector_system = GlobalSystem()->CreateCopy("Detector system");
@@ -35,7 +35,7 @@ void BuildTestDetector( void ){
 void TestRadonCoordinates( void ){
 
 
-	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size, "Test Radon Coordiantes" };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
 
@@ -161,7 +161,7 @@ void TestSpectrum( void ){
 
 void TestBeamCreation( void ){
 
-	ProjectionsProperties projections_properties{ number_of_projections*7/4, number_of_pixel, measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections*7/4, number_of_pixel, measurefield_size, "Test beam Creation" };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 3, false, 20000., 3.5 };
 

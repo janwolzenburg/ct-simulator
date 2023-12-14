@@ -27,13 +27,15 @@ class ProjectionsProperties{
 	 * @param number_of_projections Amount of projections
 	 * @param number_of_distances Amount of distances
 	 * @param measuring_field_size Distance range
+	 * @param Name for identification
 	*/
-	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, const double measuring_field_size );
+	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, 
+							const double measuring_field_size, const string name );
 
 	/*!
 	 * @brief Default constructor
 	*/
-	ProjectionsProperties( void ): ProjectionsProperties{ 59, 26, 500. } {};
+	ProjectionsProperties( void ): ProjectionsProperties{ 59, 26, 500., "Unnamed" }{};
 
 	/*!
 	 * @brief Constructor from serialized data
@@ -85,6 +87,12 @@ class ProjectionsProperties{
 	double distances_resolution( void ) const { return distances_resolution_; };
 
 	/*!
+	 * @brief Get name
+	 * @return The name
+	*/
+	string name( void ) const{ return name_; };
+
+	/*!
 	 * @brief Get transformation resolution
 	 * @return Transformation resolution
 	*/
@@ -121,4 +129,6 @@ class ProjectionsProperties{
 	size_t number_of_frames_to_fill_;		/*!< Amount of frames to fill sinogram*/
 
 	double tube_mean_energy_;				/*!< Mean energy of tube*/
+
+	string name_;
 };

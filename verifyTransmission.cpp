@@ -85,7 +85,7 @@ void VerifyTransmission( void ){
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 
-	ProjectionsProperties projections_properties{ number_of_projections, 12, 1.1 * sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. ))};
+	ProjectionsProperties projections_properties{ number_of_projections, 12, 1.1 * sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. )), "Verify transmission"};
 	PhysicalDetectorProperties physical_detector_properties{ 25., projections_properties.measuring_field_size()*1.75 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
@@ -153,7 +153,7 @@ void VerifyHardening( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{ number_of_projections, 12, 200 };
+	ProjectionsProperties projections_properties{ number_of_projections, 12, 200, "Verify hardening"};
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
@@ -232,7 +232,7 @@ void VerifyScattering( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{8, 4, 100 };
+	ProjectionsProperties projections_properties{8, 4, 100, "Verify scattering"};
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 210000, 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
 
