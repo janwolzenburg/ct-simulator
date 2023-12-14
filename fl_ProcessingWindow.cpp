@@ -31,21 +31,22 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	
 	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .35 ), "Projections"},
 	
-	information_output_{			X( *this, .2 ),			Y( *this, .4),			W( *this, .25 ),			H( *this, .225 ), "Information"}, 
+	information_output_{			X( *this, .1 ),			Y( *this, .4),			W( *this, .35 ),			H( *this, .225 ), "Information"}, 
 
 	filter_group_{					X( *this, .025 ),			Y( *this, 0.7 ),			W( *this, .45 ),			H( *this, .2  ) },
 	filter_type_selector_{			X( filter_group_, 0. ),		Y( filter_group_, 0. ),		W( filter_group_, .3 ),		H( filter_group_, .175 ), "Filter type" },
 	filter_plot_{					X( filter_group_, 0.375 ),	Y( filter_group_, 0. ),	W( filter_group_, .6 ),		H( filter_group_, 1. ), "Filter" },
 	
-	processing_properties_group_{	X( *this, .025 ),			Y( *this, 0.95 ),			W( *this, .45 ),			H( *this, .05  ) },
-	hu_mu_selection_button_{        X( processing_properties_group_, 0. ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .55 ), "Enable HU" },
-	mu_water_input_{				X( processing_properties_group_, .3 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .2 ),		H( processing_properties_group_, .5 ), "µ_0 water" },
-
-	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .35 ), "Filtered projections"},
-	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .4 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
-	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.45 ),		W( *this, .45 ),			H( *this, .5 ), "Backprojection"},
-	export_image_button_{			X( *this, .525 ),			Y( *this, 0.960 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
 	
+	filtered_projections_image_{		X( *this, .525 ),			Y( *this, .03 ),			W( *this, .45 ),			H( *this, .35 ), "Filtered projections"},
+	export_filteredProjections_button_{ X( *this, .525 ),			Y( *this, .39 ),			W( *this, .08 ),			H( *this, .03 ), "Export"},
+	reconstructed_image_{			X( *this, .525 ),			Y( *this, 0.45 ),		W( *this, .45 ),			H( *this, .5 ), "Backprojection"},
+	export_image_button_{			X( *this, .525 ),			Y( *this, 0.96 ),		W( *this, .08 ),			H( *this, .03 ), "Export"},
+	processing_properties_group_{	X( *this, .65 ),			Y( *this, 0.96 ),		W( *this, .275 ),			H( *this, .03  ) },
+	hu_mu_selection_button_{        X( processing_properties_group_, .1 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .3 ),		H( processing_properties_group_, 1. ), "Enable HU" },
+	mu_water_input_{				X( processing_properties_group_, .6 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .3 ),		H( processing_properties_group_, 1. ), "µ_0 water" },
+
+
 	projections_( projections ),
 	tomography_properties_( tomography_properties ),
 	filtered_projections_{ FilteredProjections{}, "saved.filteredprojections", true },
@@ -70,15 +71,17 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	Fl_Window::add( processing_properties_group_ );
 	Fl_Window::resizable( *this );
 	
+	information_output_.textfont( FL_COURIER );
 	information_output_.value(	string{
+									"Name:                               " + tomography_properties_.name + '\n' +
 									"Sinogramgröße:                      " + ToString( projections_.properties().number_of_projections()) + " x " + ToString(projections_.properties().number_of_distances()) + '\n' +
 									"Sinogramauflösung:                  " + ToString( projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
 									"Röntgenfilter:                      " + (tomography_properties_.filter_active == true ? "ja" : "nein") + '\n' + 
 									"Mittlere Röhrenenergie:             " + ToString(tomography_properties_.mean_energy_of_tube) + " keV" + '\n' +
-									"Energieabhängige Schwächung:        " + (tomography_properties_.use_simple_absorption == false ? "ja" : "nein") + '\n' +
+									"Energieabhängige Schwächung:        " + (tomography_properties_.use_simple_absorption == false ? "ja" : "nein") + '\n' + '\n' +
 									"Streuung aktiviert:                 " + (tomography_properties_.scattering_enabled == true ? "ja" : "nein") + '\n' +
-									"Faktor für Streuwahrscheinlichkeit: " + ToString( tomography_properties_.scatter_propability_correction / 100, 1 ) + "%" + '\n' +
-									"Faktor für Streuintensität:         " + ToString( tomography_properties_.scattered_ray_absorption_factor / 100, 1 ) + "%" + '\n'
+									"Faktor für Streuwahrscheinlichkeit: " + ToString( tomography_properties_.scatter_propability_correction * 100., 1 ) + "%" + '\n' +
+									"Faktor für Streuintensität:         " + ToString( tomography_properties_.scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n'
 								}.c_str() );
 
 	filter_group_.add( filter_plot_ );
