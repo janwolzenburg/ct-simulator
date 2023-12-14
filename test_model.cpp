@@ -32,15 +32,15 @@ Model getTestModel( const CoordinateSystem* const parent, const size_t res ){
 
 	//double kWater = 0.01611970000;
 
-	VoxelData bgData = { mu_water, reference_energy_for_mu_eV };
+	VoxelData bgData = { absorption_water_Per_mm, reference_energy_for_mu_eV };
 
 	Point3D sp1_center = { Tuple3D{ 120, 120, 200 }, mod.coordinate_system() };
 	double sp1_radius = 60;
-	VoxelData sp1_data = { mu_bone, reference_energy_for_mu_eV };
+	VoxelData sp1_data = { absorption_bone_Per_mm, reference_energy_for_mu_eV };
 
 	Point3D sp2_center = { Tuple3D{ 280, 280, 200 }, mod.coordinate_system() };
 	double sp2_radius = 70;
-	VoxelData sp2_data = { mu_lung, reference_energy_for_mu_eV };
+	VoxelData sp2_data = { absorption_lung_Per_mm, reference_energy_for_mu_eV };
 
 
 	Point3D artifact{ Tuple3D{ 250, 200, 200}, mod.coordinate_system() };

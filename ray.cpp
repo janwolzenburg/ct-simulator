@@ -117,7 +117,7 @@ void Ray::SetDirection( const UnitVector3D new_direction ){
 
 vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin ){
 
-	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / mu_water;
+	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / absorption_water_Per_mm;
 
 	vector<Ray> scattered_rays;
 	// Skip if scattering is inpropable

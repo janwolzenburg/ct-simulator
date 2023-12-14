@@ -61,7 +61,7 @@ Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label 
 	Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
 	value_input_.copy_tooltip( string{ "Absorption coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
 	value_input_.SetProperties( 0., 100., 5, None );
-	value_input_.value( mu_water );
+	value_input_.value( absorption_water_Per_mm );
 
 	Fl_Group::add( x_positon_input_ ); Fl_Group::add( y_positon_input_ ); Fl_Group::add( z_positon_input_ );
 	x_positon_input_.align( FL_ALIGN_LEFT ); x_positon_input_.SetProperties( .001, 1000., 3, None );
@@ -159,7 +159,7 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 
 	model_size_{ 3, 3, 3 },
 	voxel_size_{ 1., 1., 1. },
-	background_absorption_( mu_water )
+	background_absorption_( absorption_water_Per_mm )
 {
 	
 	Fl_Window::resizable( *this );

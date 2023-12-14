@@ -43,11 +43,14 @@ constexpr double r_e_mm = 2.8179403262e-12;						/*!< Electron radius in mm*/
 constexpr double reduced_energy_divisor_eV = 510998.95;			/*!< Divisor in reduced energy calculation m_e * c^2*/
 
 constexpr double reference_energy_for_mu_eV = 100000.;
-constexpr double mu_water = 3e-2 * 0.997 / 10.;					/*!< Absorption Water in 1 / mm for 100keV*/
+constexpr double absorption_water_Per_mm = 3e-2 * 0.997 / 10.;					/*!< Absorption Water in 1 / mm for 100keV*/
 constexpr double mu_air = 0.;
-constexpr double mu_bone = mu_water * 1.33;
-constexpr double mu_lung = mu_water * 0.8;
-constexpr double mu_iron = 0.156;
+constexpr double absorption_bone_Per_mm = absorption_water_Per_mm * 1.33;
+constexpr double absorption_lung_Per_mm = absorption_water_Per_mm * 0.8;
+constexpr double absorption_iron_Per_mm = 0.156;
+
+constexpr double attenuation_water_Per_mm = 0.153 / 10;
+
 
 constexpr double change_energy_for_constant_mu = 52e3;
 

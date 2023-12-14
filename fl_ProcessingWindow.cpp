@@ -82,7 +82,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	processing_properties_group_.add( mu_water_input_ );
 	processing_properties_group_.add( hu_mu_selection_button_ );
 	mu_water_input_.SetProperties( 0., 10., 7 );
-	mu_water_input_.value( mu_water );
+	mu_water_input_.value( absorption_water_Per_mm );
 	mu_water_input_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_input_changed_callback_ );
 	hu_mu_selection_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	hu_mu_selection_button_.callback( CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &hu_mu_selection_changed_callback_ );
