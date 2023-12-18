@@ -362,5 +362,5 @@ void Fl_ModelCreator::BuildModel( void ){
 
 	model.Save( export_path, true );
 
-	this->hide();
+	activate();
 }
