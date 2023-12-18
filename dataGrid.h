@@ -149,6 +149,8 @@ class DataGrid{
 	*/
 	D GetData( const GridCoordinates coordinates ) const{ return this->GetData( GetIndex( coordinates ) ); };
 
+	DataGrid<double> GetDoubleGrid( void ) const;
+
 	/*!
 	 * @brief Set Element data
 	 * @param index Index of element

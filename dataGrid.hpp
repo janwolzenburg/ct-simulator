@@ -158,6 +158,33 @@ GridCoordinates DataGrid<D>::GetCoordinates( const GridIndex index ) const{
 }
 
 template<class D>
+DataGrid<double> DataGrid<D>::GetDoubleGrid( void ) const{
+
+	DataGrid<double> double_grid{ size_, start_, resolution_, 0. };
+
+	for( size_t column_index = 0; column_index < size_.c; column_index++ ){
+		for( size_t row_index = 0; row_index < size_.r; row_index++ ){
+
+			GridIndex grid_index{ column_index, row_index };
+
+			if constexpr( std::is_arithmetic_v<D> ){
+				double_grid.SetData( grid_index, 
+									 static_cast<D>( this->GetData( grid_index ) ) );
+			}
+			else if constexpr( std::is_same_v<D, VoxelData> ){
+			
+				double_grid.SetData( grid_index, 
+									 this->GetData( grid_index ).GetAbsorptionAtEnergy( reference_energy_for_mu_eV ) );
+			
+			}
+		}
+	}
+
+	return double_grid;
+
+}
+
+template<class D>
 void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 
 	if constexpr( std::is_arithmetic_v<D> ){
