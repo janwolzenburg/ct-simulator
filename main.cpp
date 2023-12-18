@@ -6,7 +6,7 @@
  * @date   December 2022
  *********************************************************************/
 
- #include "generel.h"
+#include "generel.h"
 
 #ifndef VERIFY
 
