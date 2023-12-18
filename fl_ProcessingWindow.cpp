@@ -225,7 +225,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 	}
 
 	reconstructed_image_.AssignImage( std::move( GrayscaleImage{ std::move( raw_image_data ), true } ) );
-	reconstructed_image_.SetAxis( { raw_image_data.start().c, raw_image_data.start().r }, {raw_image_data.resolution().c, raw_image_data.resolution().r} );
+	reconstructed_image_.SetAxis( { raw_image_data.start().c, -raw_image_data.start().r }, {raw_image_data.resolution().c, -raw_image_data.resolution().r} );
 
 }
 
