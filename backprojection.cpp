@@ -58,7 +58,7 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 		const double sin_angle = sin( angle );
 
 		for( size_t column_index = 0; column_index < number_of_distances; column_index++ ){
-			const double x = static_cast<double>( static_cast<signed long long>( column_index ) - static_cast<signed long long>( number_of_distances ) / 2 ) * distance_resolution;		// x value on image
+			//const double x = static_cast<double>( static_cast<signed long long>( column_index ) - static_cast<signed long long>( number_of_distances ) / 2 ) * distance_resolution;		// x value on image
 			const double column_coordinate = image.GetColCoordinate( column_index );
 
 			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){
@@ -68,9 +68,10 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 				const double t = column_coordinate * cos_angle + row_coordinate * sin_angle;	// Current "distance" or magnitude in polar Coordinates
 
 				const double projectionValue = projections.GetValue( angle_index, t );
-				const double new_value = ( image.GetData( GridIndex{ column_index, row_index } ) + projectionValue * PI / static_cast<double>( number_of_angles ) );
+				double new_value = projectionValue * PI / static_cast<double>( number_of_angles );
 				
 				imageMutex.lock();
+				new_value += image.GetData( GridIndex{ column_index, row_index } );
 				image.SetData( GridIndex{ column_index, row_index }, new_value );
 				imageMutex.unlock();
 			}
