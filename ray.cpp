@@ -182,8 +182,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 		
 		// Get angle from angle index
 		const double angle = -PI + static_cast<double>( angle_index ) *  scattering_information.angle_resolution();
-		const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
-																			angle );
+		
 
 		VectorPair new_energies{};		// Vector pair for spectrum of scattered ray
 		
@@ -228,9 +227,12 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 
 			// Discard scattered ray when its angle to the scattering plane is too large meaning it would not hit the detector
 			if( !integer_random_number_generator.DidARandomEventHappen( 
-				2. * scattering_information.max_angle_to_lie_in_plane() / PI ) )
+				2. * scattering_information.max_angle_to_lie_in_plane() / PI ) ){
+				
+				angle_index++;
 				continue;
-			
+			}
+
 			const double scattered_bins_fraction = static_cast<double>( scattered_bins_for_current_angle ) / static_cast<double>( scattered_bins_sum );
 
 			RayProperties new_properties{ new_spectrum };
@@ -238,11 +240,15 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 			new_properties.simple_intensity_ = properties_.simple_intensity_ * scattered_bins_fraction * simple_fraction;
 			new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
+			const UnitVector3D newDirection = direction_.RotateConstant(	scattering_information.scattering_plane_normal(),
+																			angle );
+
 			scattered_rays.emplace_back( newDirection, newOrigin, new_properties );
 		}
 
 		angle_index++;
 	}
+
 
 	energy_index = 0;
 	for( const auto& energy_scalar : energy_scalars ){
