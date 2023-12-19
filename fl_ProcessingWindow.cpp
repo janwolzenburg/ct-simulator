@@ -153,8 +153,8 @@ void Fl_ProcessingWindow::FilterAndReconstructImage( void ){
 	projections_image_.AssignImage( std::move( GrayscaleImage{ projections_.data(), true } ) );
 	filtered_projections_image_.AssignImage( std::move( GrayscaleImage{ filtered_projections_.data_grid(), true } ) );
 
-	projections_image_.SetAxis( { projections_.start().c, projections_.start().r }, {projections_.resolution().c, projections_.resolution().r} );
-	filtered_projections_image_.SetAxis( { filtered_projections_.start().c, filtered_projections_.start().r }, {filtered_projections_.resolution().c, filtered_projections_.resolution().r} );
+	projections_image_.SetAxis( { projections_.start().c, projections_.start().r }, {projections_.resolution().c, projections_.resolution().r}, { 7, 4 });
+	filtered_projections_image_.SetAxis( { filtered_projections_.start().c, filtered_projections_.start().r }, {filtered_projections_.resolution().c, filtered_projections_.resolution().r}, {7, 4});
 
 	backprojection_ = std::move( Backprojection{ filtered_projections_, processingProgressWindow } );
 
@@ -225,7 +225,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 	}
 
 	reconstructed_image_.AssignImage( std::move( GrayscaleImage{ std::move( raw_image_data ), true } ) );
-	reconstructed_image_.SetAxis( { raw_image_data.start().c, -raw_image_data.start().r }, {raw_image_data.resolution().c, -raw_image_data.resolution().r} );
+	reconstructed_image_.SetAxis( { raw_image_data.start().c, -raw_image_data.start().r }, {raw_image_data.resolution().c, -raw_image_data.resolution().r}, { 7, 7 });
 
 }
 

@@ -378,7 +378,7 @@ void Fl_ModelView::UpdateModel( void ){
 		properties_.contrast = model_slice_image_.GetContrast();
 	}
 
-	model_slice_image_.SetAxis( { model_slice_.start().c, -model_slice_.start().r }, { model_slice_.resolution().c, -model_slice_.resolution().r});
+	model_slice_image_.SetAxis( { model_slice_.start().c, -model_slice_.start().r }, { model_slice_.resolution().c, -model_slice_.resolution().r}, {7,7});
 	model_slice_image_.show(); loading_status_.hide(); model_information_.show();
 	model_movement_group_.show();
 

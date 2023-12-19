@@ -37,10 +37,11 @@ void Fl_GrayscaleImageWithAxis::SetAxisLabel( const pair<string, string> label )
 
 }
 
-void Fl_GrayscaleImageWithAxis::SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size ){
+void Fl_GrayscaleImageWithAxis::SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics ){
 		
 	axis_tics_start_ = pixel_start;
 	pixel_size_ = pixel_size;
+	number_of_tics_ = number_of_tics;
 }
 
 	
@@ -76,10 +77,10 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 	fl_measure( axis_label_.second.c_str(), label_width, label_height );
 	fl_draw( axis_label_.second.c_str(), y_axis_tip.x - label_width / 2, y_axis_tip.y - 5);
 
-	const int number_of_tics = 7;
-	for( int i = 0; i < number_of_tics; i++ ){
+	//const int number_of_tics = 7;
+	for( int i = 0; i < number_of_tics_.x; i++ ){
 
-		const double x_axis_tic = axis_tics_start_.x + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().x - 1 ) / static_cast<double>( number_of_tics - 1 ) * ( pixel_size_.x );
+		const double x_axis_tic = axis_tics_start_.x + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().x - 1 ) / static_cast<double>( number_of_tics_.x - 1 ) * ( pixel_size_.x );
 		
 		int digits_befor_comma = 0;
 		for( double divided_tic = x_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
@@ -87,24 +88,28 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 
 		string number_string = ToString( x_axis_tic, 3 - digits_befor_comma );
 			
-		PixelCoordinates tic_position{ axis_origin.x + axis_space_ / 2 + i * ( x_axis_tip.x - axis_origin.x - axis_space_ ) / (number_of_tics - 1),  axis_origin.y };
+		PixelCoordinates tic_position{ axis_origin.x + axis_space_ / 2 + i * ( x_axis_tip.x - axis_origin.x - axis_space_ ) / ( static_cast<int>( number_of_tics_.x ) - 1),  axis_origin.y };
 			
 		int x,y;
 		fl_measure( number_string.c_str(), x, y );
 		fl_draw(number_string.c_str(), tic_position.x - x/2, tic_position.y + 25 );
 		fl_line( tic_position.x, tic_position.y + 8, tic_position.x, tic_position.y - 8 );
-	
-		const double y_axis_tic = axis_tics_start_.y + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().y - 1 ) / static_cast<double>( number_of_tics - 1 ) * ( pixel_size_.y );
+	}
+
+	for( int i = 0; i < number_of_tics_.y; i++ ){
+		const double y_axis_tic = axis_tics_start_.y + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().y - 1 ) / static_cast<double>( number_of_tics_.y - 1 ) * ( pixel_size_.y );
 		
-		digits_befor_comma = 0;
+		int digits_befor_comma = 0;
 		for( double divided_tic = y_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
 			digits_befor_comma++;
 
-		number_string = ToString( y_axis_tic, 3 - digits_befor_comma );
-			
-		tic_position.x = axis_origin.x;
-		tic_position.y = axis_origin.y - axis_space_ / 2 - i * ( axis_origin.y - y_axis_tip.y - axis_space_ ) / (number_of_tics - 1);
-			
+		string number_string = ToString( y_axis_tic, 3 - digits_befor_comma );
+		
+		PixelCoordinates tic_position{
+			axis_origin.x,
+			axis_origin.y - axis_space_ / 2 - i * ( axis_origin.y - y_axis_tip.y - axis_space_ ) / (static_cast<int>( number_of_tics_.y ) - 1) };
+		
+		int x,y;
 		fl_measure( number_string.c_str(), x, y );
 		fl_draw( 90, number_string.c_str(), tic_position.x - 25, tic_position.y + y/2 );
 		fl_line( tic_position.x - 8, tic_position.y, tic_position.x + 8, tic_position.y);

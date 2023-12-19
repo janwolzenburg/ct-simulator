@@ -62,7 +62,7 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	 * @param pixel_start Start of tics
 	 * @param pixel_size Amount of tics
 	*/
-	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size );
+	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics );
 
 	/*!
 	 * @brief Draw the image
@@ -86,5 +86,5 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	pair<string, string> axis_label_;		/*!< Label of axis*/
 	Tuple2D axis_tics_start_;	/*!< Start value of tics*/
 	Tuple2D pixel_size_;		/*!< What is one pixel's size in reality*/
-
+	Index2D number_of_tics_;
 };
