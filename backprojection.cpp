@@ -89,7 +89,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 {
 
 	const double distance_range =  ( projections.size().r - 1 ) * projections.resolution().r ;
-	const double side_length = distance_range / sqrt ( 2 );
+	const double side_length = distance_range;// / sqrt ( 2 );
 	const GridCoordinates image_start{ -side_length / 2., -side_length / 2.  };
 
 
