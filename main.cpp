@@ -67,8 +67,8 @@ int main( void ){
 	//VerifyHardening();
 	//VerifyScattering();
 
-	VerifyFilteredprojections();
-
+	//VerifyFilteredprojections();
+	VerifyCupping();
 	return 0;
 
 }
