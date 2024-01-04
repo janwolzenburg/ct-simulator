@@ -89,7 +89,7 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 	energy_resolution_( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	cross_sections_( number_of_energies_, Tuple2D{} )
 {
-		
+	auto cross_sections_collision = cross_sections_;
 	for( size_t current_energy_index = 0; current_energy_index < number_of_energies_; current_energy_index++ ){
 			
 		const double energy_eV = ( minimum_energy_in_tube_spectrum + static_cast<double>( current_energy_index ) * energy_resolution_ );
@@ -115,7 +115,7 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 													( 8. * pow( e, 2. ) ) / ( 3. * pow( 1. + 2. * e, 3. ) )
 												);
 
-		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, scattering_cross_section };
-
+		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, collision_cross_section };
+		//cross_sections_collision.at( current_energy_index ) = Tuple2D{ energy_eV, collision_cross_section };
 	}
 }
