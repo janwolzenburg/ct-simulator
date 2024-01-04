@@ -253,7 +253,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information, const Vox
 	energy_index = 0;
 	for( const auto& energy_scalar : energy_scalars ){
 
-		properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+		//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
 		#ifdef TRANSMISSION_TRACKING
 		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 		#endif
