@@ -34,9 +34,9 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 	// Define variables for easy access
 	
 	const size_t nT = size().c;		// Number of angles
-	const size_t nD = size().r;		// Number of distances
+	const size_t N_s = size().r;		// Number of distances
 
-	const double dD = resolution().r;	// Distance resolution
+	const double D_s = resolution().r;	// Distance resolution
 	
 
 	// Local copy of projection data_
@@ -49,22 +49,22 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 			progress->ChangeLineText( 0, "Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
 
 		// Iterate all distances
-		for( size_t n = 0; n < nD; n++ ){
+		for( size_t l = 0; l < N_s; l++ ){
 			if( filter_.type() == BackprojectionFilter::TYPE::constant ){
-				this->SetData( GridIndex{ t, n }, projectionsData.GetData( GridIndex{ t, n } ) );
+				this->SetData( GridIndex{ t, l }, projectionsData.GetData( GridIndex{ t, l } ) );
 				continue;
 			}
 
 			// Convolute filter with with projections
 			double convolutionResult = 0;
 
-			for( signed long long k = filter_.points_range().start(); k <= filter_.points_range().end(); k++ ){
+			for( signed long long m = filter_.points_range().start(); m <= filter_.points_range().end(); m++ ){
 
 				// Index of current row in projection data
-				signed long long projection_row_index = static_cast<signed long long>( n ) - k;
+				signed long long projection_row_index = static_cast<signed long long>( l ) - m;
 				
 				// Index out of bounds of input data -> add nothing is like padding input data with zero/
-				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( nD ) ){
+				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( N_s ) ){
 					continue;
 				}
 
@@ -72,13 +72,13 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 				const double P_T = projectionsData.GetData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
 
 				// filter value
-				const double h_n = filter_( k );
+				const double h_n = filter_( m );
 
 				// Multiply
 				convolutionResult += h_n * P_T;
 			}
-			convolutionResult *= dD;
-			this->SetData( GridIndex{ t, n }, convolutionResult );
+			convolutionResult *= D_s;
+			this->SetData( GridIndex{ t, l }, convolutionResult );
 
 		}
 		Fl::check();
