@@ -372,3 +372,5 @@ FodyWeavers.xsd
 *.filteredprojections
 /enc_temp_folder/*
 *.bak
+/html
+/latex
