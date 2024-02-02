@@ -582,4 +582,7 @@
   <ItemGroup>
     <Text Include="notes.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Klassendiagram.cd" />
+  </ItemGroup>
 </Project>

@@ -323,6 +323,9 @@
   <ItemGroup>
     <Text Include="notes.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Klassendiagram.cd" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
