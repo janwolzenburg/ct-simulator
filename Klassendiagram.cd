@@ -2,14 +2,12 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
   <Class Name="Coordinates" Collapsed="true">
     <Position X="3" Y="2" Width="1.5" />
+    <Members>
+      <Field Name="coordinate_system_" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.229" Y="0.065" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAIEAAAAAQQAIAAAACAAAAIgAAAAAAA=</HashCode>
       <FileName>coordinates.h</FileName>
@@ -18,17 +16,16 @@
       <Field Name="coordinate_system_" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="CoordinateSystem" Collapsed="true">
-    <Position X="6.25" Y="2" Width="2.25" />
+  <Class Name="CoordinateSystem" Collapsed="true" HideInheritanceLine="true">
+    <Position X="7.25" Y="8.25" Width="1.75" />
+    <Members>
+      <Field Name="parent_" Hidden="true" />
+    </Members>
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="parent_" Type="CoordinateSystem">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.028" Y="0.293" />
-      </MemberNameLabel>
-    </AssociationLine>
+    <InheritanceLine Type="PrimitiveCoordinateSystem" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAIAogCIgADAAABEAAAAAAAWEDAgIAAQAJAEAAAIIIA=</HashCode>
       <FileName>coordinateSystem.h</FileName>
@@ -83,8 +80,9 @@
       <FileName>primitiveVector3.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Vector3D" Collapsed="true">
+  <Class Name="Vector3D" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Coordinates" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>QAACAAAgAAAACAIEBMIAIQ8gUAAAACAAAgQgAgAoYAM=</HashCode>
       <FileName>vector3D.h</FileName>
@@ -125,13 +123,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Line" Collapsed="true">
-    <Position X="0.75" Y="4.5" Width="1.5" />
+    <Position X="0.75" Y="5.5" Width="1.5" />
     <AssociationLine Name="direction_" Type="UnitVector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="1.75" Y="4.5" />
+        <Point X="1.75" Y="5.5" />
         <Point X="1.75" Y="4.164" />
         <Point X="1.979" Y="4.164" Type="JumpStart" />
-        <Point X="2.146" Y="4.164" Type="JumpEnd" />
+        <Point X="2.145" Y="4.164" Type="JumpEnd" />
         <Point X="5.562" Y="4.164" />
         <Point X="5.562" Y="3.941" />
       </Path>
@@ -208,12 +206,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="RayProperties" Collapsed="true">
-    <Position X="2.5" Y="5.5" Width="1.5" />
-    <AssociationLine Name="energy_spectrum_" Type="EnergySpectrum">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-1.353" Y="0.249" />
-      </MemberNameLabel>
-    </AssociationLine>
+    <Position X="2.5" Y="6.5" Width="1.5" />
+    <Members>
+      <Field Name="energy_spectrum_" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAAAAgAAQAAAAkIAABAAAAgAIAABQAQAACEAAAAAAAA=</HashCode>
       <FileName>ray.h</FileName>
@@ -223,21 +219,19 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ray" Collapsed="true">
-    <Position X="0.75" Y="5.5" Width="1.5" />
+    <Position X="0.75" Y="6.5" Width="1.5" />
     <InheritanceLine Type="Line">
       <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="0.11" Y="0.06" Height="0.182" Width="0.525" />
+        <Position X="0.081" Y="0.052" Height="0.182" Width="0.5" />
       </InheritanceModifierLabel>
     </InheritanceLine>
-    <AssociationLine Name="properties_" Type="RayProperties" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="properties_" Type="RayProperties" ManuallyRouted="true">
       <Path>
-        <Point X="1.5" Y="6.191" />
-        <Point X="1.5" Y="6.441" />
-        <Point X="2.812" Y="6.441" />
-        <Point X="2.812" Y="6.062" />
+        <Point X="2.25" Y="6.781" />
+        <Point X="2.5" Y="6.781" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.413" Y="0.408" />
+        <Position X="0.463" Y="0.177" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -249,7 +243,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="EnergySpectrum" Collapsed="true">
-    <Position X="2.5" Y="6.75" Width="1.5" />
+    <Position X="2.75" Y="10.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAYAAAAAAAAAwCAAEAAAAgACAAAAQAJUASBAAAAQA=</HashCode>
       <FileName>spectrum.h</FileName>
@@ -259,12 +253,108 @@
     <Position X="6" Y="6.5" Width="1.5" />
     <InheritanceLine Type="BoundedSurface">
       <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="0.092" Y="0.05" Height="0.182" Width="0.5" />
+        <Position X="0.11" Y="0.06" Height="0.182" Width="0.502" />
       </InheritanceModifierLabel>
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AACAAAAAAACAAAAAIAAAAgAAAAAAAGAAAIAAAAAAAAA=</HashCode>
       <FileName>detectorPixel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XRayDetector" Collapsed="true">
+    <Position X="10" Y="9.25" Width="1.5" />
+    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.378" Y="0.052" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="properties_" Type="DetectorProperties">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.099" Y="0.126" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAACAAAAAAAACAQAAAAAQQgAAAAIAAAIAAAIAAAA=</HashCode>
+      <FileName>xRayDetector.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="coordinate_system_" />
+      <Field Name="properties_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="XRayTubeProperties" Collapsed="true">
+    <Position X="4.5" Y="10.25" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="XRayTubeProperties::Material" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>xRayTube.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQAAAAUAAICEQAAAAABAAAAAgCAQAAAAAAACAABAAAA=</HashCode>
+      <FileName>xRayTube.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="XRayTube" Collapsed="true">
+    <Position X="4.5" Y="9.25" Width="1.5" />
+    <AssociationLine Name="emitted_spectrum_" Type="EnergySpectrum">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.94" Y="0.787" Height="0.182" Width="1.389" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.646" Y="0.068" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="properties_" Type="XRayTubeProperties">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.98" Y="0.149" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAEAAaAQAAAAAAEAEAQAiAQgAAAAAAAAIJABEAAAA=</HashCode>
+      <FileName>xRayTube.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="properties_" />
+      <Field Name="emitted_spectrum_" />
+      <Field Name="coordinate_system_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Gantry" Collapsed="true">
+    <Position X="7.25" Y="9.25" Width="1.5" />
+    <AssociationLine Name="tube_" Type="XRayTube">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.315" Y="0.076" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.615" Y="0.068" Height="0.182" Width="1.519" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="detector_" Type="XRayDetector">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.22" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAAAQAAESAAAAAAAAIAARAAAAAAIAAEAAgQA=</HashCode>
+      <FileName>gantry.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="detector_" />
+      <Field Name="tube_" />
+      <Field Name="coordinate_system_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DetectorProperties" Collapsed="true">
+    <Position X="9.75" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIgAAAAEAAAAAAAAAAAEAAAABAEAAAAAAAAAI=</HashCode>
+      <FileName>detectorProperties.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
