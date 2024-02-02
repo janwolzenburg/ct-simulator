@@ -1,5 +1,5 @@
 /*********************************************************************
- * @file   vec3D3D.cpp
+ * @file   vector3D.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -128,7 +128,7 @@ MathematicalObject::MathError Vector3D::Scale( const double scalar ){
 	// Scale each component
 	PrimitiveVector3::Scale( scalar );
 
-	// Update vec3Dtors length
+	// Update vectors length
 	return UpdateLength();
 }
 
@@ -159,7 +159,7 @@ MathematicalObject::MathError Vector3D::AddToZ( const double z_ ){
 };
 
 double Vector3D::GetAngle( const Vector3D v2 ) const{
-	// Check if one vec3Dtor has length zero
+	// Check if one vector has length zero
 	if( IsNearlyEqualDistance( length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return 0.;
 
 	const double scalarProduct = ( ( *this ) * v2 );
@@ -172,7 +172,7 @@ double Vector3D::GetAngle( const Vector3D v2 ) const{
 }
 
 bool Vector3D::IsOrthogonal( const Vector3D v2 ) const{
-	// One vec3Dtor has no length?
+	// One vector has no length?
 	if( IsNearlyEqualDistance( this->length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return false;
 
 	// Check dot product

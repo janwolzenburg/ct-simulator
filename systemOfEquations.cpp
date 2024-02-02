@@ -203,59 +203,53 @@ MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple2D v
 
 SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 
-	SystemOfEquationsSolution sol( number_of_variables_ );			// Create solution instance
+	SystemOfEquationsSolution solution( number_of_variables_ );	// Create solution instance
 
 	// System filled with coefficients?
-	if( !IsPopulated() ) return sol;
+	if( !IsPopulated() ) return solution;
 
 	// Get size of coefficient matrix 
-	size_t rows = number_of_rows(); size_t cols = number_of_columns();
+	size_t rows = number_of_rows(); size_t columns = number_of_columns();
 
-
-	GridIndex topC{};									// Top-left corner of submatrix						
-	GridIndex botC{ rows - 1, rows - 1 };				// Bottom-right corner of submatrix			
-
-	GridIndex maxIndx;							// Indices of maximum in submatrix
-	double maxVal;							// Value of maximum in submatrix
-
-
+	GridIndex top_corner{};							// Top-left corner of submatrix						
+	GridIndex bottom_corner{ rows - 1, rows - 1 };	// Bottom-right corner of submatrix			
+	GridIndex index_of_maximum;						// Indices of maximum in submatrix
+	double maximum_value;							// Value of maximum in submatrix
 
 	// Matrix with variable indices
-	vector<unsigned int> varIdx( number_of_variables_ );
-	for( unsigned int i = 0; i < number_of_variables_; i++ ) varIdx.at( i ) = i;
+	vector<unsigned int> variable_indices( number_of_variables_ );
+	for( unsigned int i = 0; i < number_of_variables_; i++ ) variable_indices.at( i ) = i;
 
 	// Iterate all rows to create echelon form of matrix
 	for( size_t k = 0; k < rows; k++ ){
 
 		// Top-left corner changes each iteration
-		topC.r = k; topC.c = k;
+		top_corner.r = k; top_corner.c = k;
 
-		// Search maximum absolute value in quadratic submatrix from (k, k) to (rows - 1, rows - 1)
-		maxIndx = FindMaximum( topC, botC );
+		// Search maximum absolutionute value in quadratic submatrix from (k, k) to (rows - 1, rows - 1)
+		index_of_maximum = FindMaximum( top_corner, bottom_corner );
 
 		// Get value
-		maxVal = ( *this )( maxIndx );
+		maximum_value = ( *this )( index_of_maximum );
 
-		// Return if maximum is zero -> no solution
-		if( IsNearlyEqualDistance( maxVal, 0. ) ) return sol;
-
+		// Return if maximum is zero -> no solutionution
+		if( IsNearlyEqualDistance( maximum_value, 0. ) ) return solution;
 
 		// Swap rows and columns to bring the cell with maximum value to (k,k)
-		if( maxIndx.r != k ) SwapRows( maxIndx.r, k );
-		if( maxIndx.c != k ){
-			SwapColumns( maxIndx.c, k );
+		if( index_of_maximum.r != k ) SwapRows( index_of_maximum.r, k );
+		if( index_of_maximum.c != k ){
+			SwapColumns( index_of_maximum.c, k );
 
 			// Variable in columns swapped
-			unsigned int temp = varIdx.at( k );
-			varIdx.at( k ) = varIdx.at( maxIndx.c );
-			varIdx.at( maxIndx.c ) = temp;
+			unsigned int temp = variable_indices.at( k );
+			variable_indices.at( k ) = variable_indices.at( index_of_maximum.c );
+			variable_indices.at( index_of_maximum.c ) = temp;
 		}
 
-		ScaleRow( k, 1 / maxVal );			// Scale k-row by reciprocal of (k, k) value
+		ScaleRow( k, 1 / maximum_value );			// Scale k-row by reciprocal of (k, k) value
 
 		// Substract k-row from k+1 to n-row to eliminate cells
 		for( size_t row = k + 1; row < rows; row++ ){
-
 			// Target cell not zero?
 			if( !IsNearlyEqualDistance( ( *this )( k, row ), 0. ) ){
 				ScaleRow( row, 1 / ( *this )( k, row ) );		// Make (row, k) to one by scaling row with reciprocal
@@ -264,39 +258,29 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 		}
 	}
 
-
 	// Eliminate remaining cells 'above' the diagonal
-
 	// Iterate  coefficient columns 
-	for( size_t c = cols - 2; c > 0; c-- ){
-
+	for( size_t c = columns - 2; c > 0; c-- ){
 		// Iterate rows above diagonal
 		for( size_t r = 0; r < c; r++ ){
-
 			// Current cell not already zero?
 			if( !IsNearlyEqualDistance( ( *this )( c, r ), 0 ) ){
-
 				// Calculate result column cell as if current cell is being eliminated 
-				( *this )( cols - 1, r ) -= ( ( *this )( cols - 1, c ) * ( *this )( c, r ) );
+				( *this )( columns - 1, r ) -= ( ( *this )( columns - 1, c ) * ( *this )( c, r ) );
 			}
 		}
 	}
 
-
-	size_t varsIndx;
+	size_t variable_index;
 	// Copy result column entries to var-array
 	for( size_t i = 0; i < rows; i++ ){
-
-		varsIndx = varIdx.at( i );		// Index for swapped variable
-
+		variable_index = variable_indices.at( i );		// Index for swapped variable
 		// Check if index is in allowed range
-		if( varsIndx < sol.number_of_variables() ) sol.SetVariableValue( varsIndx, ( *this )( cols - 1, i ) );
-		else return sol;
+		if( variable_index < solution.number_of_variables() ) solution.SetVariableValue( variable_index, ( *this )( columns - 1, i ) );
+		else return solution;
 	}
-
-	sol.solution_found( true );
-	return sol;
-
+	solution.solution_found( true );
+	return solution;
 }
 
 

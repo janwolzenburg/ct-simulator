@@ -109,7 +109,7 @@ void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosP
 
 MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n, const double phi ){
 	// Steps for rotation:
-	// 1: rotate around z axis to tilt rot. axis into x-z plane
+	// 1: rotate around z axis to tilt rot. axis into x-z plane (Could also rotate into y-z plane an rotate around x-axis in next step)
 	// 2: rotate around y-axis to align rot. axis with z-axis
 	// 3. rotate this PrimitiveVector3 by phi around z-axis
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
@@ -151,10 +151,8 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 
 	// Counter-clockwise z-axis rotation of this vector by Phi
 	this->RotateAroundZAxis( sinPhi, cosPhi );
-
 	// Counter-clockwise y-axis rotation of this vector by Gamma to reverse step 2
 	this->RotateAroundYAxis( sinGam, cosGam );
-
 
 	if( d > 0 ){
 		// Counter-clockwise z-axis rotation of this vector by Theta to reverse step 1
@@ -162,4 +160,3 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 	}
 	return MathError::Ok;
 }
-

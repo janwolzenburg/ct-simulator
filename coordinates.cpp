@@ -33,10 +33,10 @@ string Coordinates::ToString( const unsigned int newline_tabulators ) const{
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	char tempCharArr[ 64 ] = { 0 };
-	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
+	char tempory_coordinatesharArr[ 64 ] = { 0 };
+	snprintf( tempory_coordinatesharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
 
-	str += newLine + tempCharArr;
+	str += newLine + tempory_coordinatesharArr;
 	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( coordinate_system_ ) );
 
 	return str;
@@ -61,7 +61,7 @@ Coordinates Coordinates::operator+ ( const Coordinates coords ) const{
 }
 
 Coordinates Coordinates::operator- ( const Coordinates coords ) const{
-	// Add converted Coordinates' components to this componentes
+	// Add converted coordinates' components to this componentes
 	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator-( coords.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
@@ -83,15 +83,13 @@ Coordinates Coordinates::operator/ ( const double divisor ) const{
 
 Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 	
-	Coordinates tempC{ Tuple3D{ x, y, z }, this->coordinate_system_ };
+	Coordinates tempory_coordinates{ Tuple3D{ x, y, z }, this->coordinate_system_ };
 
-	if( this->HasSameSystem( target_coordinate_system ) ) return tempC;
+	if( this->HasSameSystem( target_coordinate_system ) ) return tempory_coordinates;
 
-	// Loop until Coordinates are in context of global system
-	while( !tempC.coordinate_system_->IsGlobal() ){
-		tempC = tempC.ConvertToParentSystem();
-	}
-
+	// Loop until coordinates are in context of global system
+	while( !tempory_coordinates.coordinate_system_->IsGlobal() ){
+		tempory_coordinates = tempory_coordinates.ConvertToParentSystem(); }
 
 	// Target system is not global system
 	if( !target_coordinate_system->IsGlobal() ){
@@ -102,13 +100,13 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordin
 		if( path.size() > 0 ){
 			// Iterate each coordinate system in path
 			for( vector<const CoordinateSystem*>::const_iterator cur_coordinate_systemIt = path.begin(); cur_coordinate_systemIt < path.end(); cur_coordinate_systemIt++ ){
-				tempC = tempC.ConvertToChildSystem( *cur_coordinate_systemIt );
+				tempory_coordinates = tempory_coordinates.ConvertToChildSystem( *cur_coordinate_systemIt );
 			}
 		}
 
-		tempC = tempC.ConvertToChildSystem( target_coordinate_system );
+		tempory_coordinates = tempory_coordinates.ConvertToChildSystem( target_coordinate_system );
 	}
-	return tempC;
+	return tempory_coordinates;
 }
 
 Coordinates Coordinates::ConvertToParentSystem( void ) const{

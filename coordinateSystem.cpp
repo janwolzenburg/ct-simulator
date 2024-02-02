@@ -79,7 +79,7 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 
 	if( this->IsGlobal() ) return path;
 
-	const CoordinateSystem *cur_cSys = this->parent_;	// Start with parent_ of this system
+	const CoordinateSystem *cur_cSys = this->parent_;	// Start with parent of this system
 
 	// Loop while current coordinate system is not the global system
 	while( !cur_cSys->IsGlobal() ){
@@ -87,7 +87,7 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 		cur_cSys = cur_cSys->parent_;
 	}
 
-	// Reverse order to get path of coordinate systems_ traverse
+	// Reverse order to get path of coordinate systems traverse
 	std::reverse( path.begin(), path.end() );
 
 	return path;
