@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Coordinates" Collapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.229" Y="0.065" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAIEAAAAAQQAIAAAACAAAAIgAAAAAAA=</HashCode>
+      <FileName>coordinates.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="coordinate_system_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="CoordinateSystem" Collapsed="true">
+    <Position X="6.25" Y="2" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="parent_" Type="CoordinateSystem">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.028" Y="0.293" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAogCIgADAAABEAAAAAAAWEDAgIAAQAJAEAAAIIIA=</HashCode>
+      <FileName>coordinateSystem.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="parent_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PrimitiveCoordinateSystem" Collapsed="true">
+    <Position X="6.25" Y="0.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="origin_" Type="PrimitiveVector3">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.607" Y="0.852" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ex_" Type="PrimitiveVector3">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.639" Y="0.003" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ey_" Type="PrimitiveVector3">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.646" Y="-0.006" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ez_" Type="PrimitiveVector3">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.851" Y="-0.469" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAEAAAQAAAAECAAAAAIAAAEAAABAgA=</HashCode>
+      <FileName>primitiveCoordinateSystem.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="origin_" />
+      <Field Name="ex_" />
+      <Field Name="ey_" />
+      <Field Name="ez_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PrimitiveVector3" Collapsed="true">
+    <Position X="3" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEBAIAAQgAEAAAAAAAAgRgAgAAAAA=</HashCode>
+      <FileName>primitiveVector3.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector3D" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAgAAAACAIEBMIAIQ8gUAAAACAAAgQgAgAoYAM=</HashCode>
+      <FileName>vector3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitVector3D" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Vector3D">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.124" Y="0.055" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAgAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>vector3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Point3D" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <InheritanceLine Type="Vector3D">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.179" Y="0.073" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAIAAAAAAAEAAAAAAcgAAAAACAAAAAAAAAgAAA=</HashCode>
+      <FileName>vector3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tuple3D">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Line" Collapsed="true">
+    <Position X="0.75" Y="4.5" Width="1.5" />
+    <AssociationLine Name="direction_" Type="UnitVector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.75" Y="4.5" />
+        <Point X="1.75" Y="4.164" />
+        <Point X="1.979" Y="4.164" Type="JumpStart" />
+        <Point X="2.146" Y="4.164" Type="JumpEnd" />
+        <Point X="5.562" Y="4.164" />
+        <Point X="5.562" Y="3.941" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.258" Y="-0.011" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="origin_" Type="Point3D">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.022" Y="0.209" Height="0.182" Width="0.722" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>SAAAIQBAAAAAJAAEAAAAAIAAAAAAACAAAEAAAAAhAAg=</HashCode>
+      <FileName>line.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="direction_" />
+      <Field Name="origin_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Surface" Collapsed="true">
+    <Position X="6" Y="4.5" Width="1.5" />
+    <AssociationLine Name="direction_1_" Type="UnitVector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.375" Y="4.5" />
+        <Point X="7.375" Y="3.75" />
+        <Point X="6.75" Y="3.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.078" Y="0.064" Height="0.182" Width="1.025" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="direction_2_" Type="UnitVector3D" FixedToPoint="true">
+      <Path>
+        <Point X="6.312" Y="4.5" />
+        <Point X="6.312" Y="3.941" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.005" Y="0.095" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="origin_" Type="Point3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.188" Y="4.5" />
+        <Point X="6.188" Y="4.378" />
+        <Point X="2.062" Y="4.378" />
+        <Point X="2.062" Y="3.941" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-3.077" Y="0.488" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAAAIAAAAACAABAEAAAAAAAEACIAAGAAAAAAAAABAAA=</HashCode>
+      <FileName>surface.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="direction_1_" />
+      <Field Name="direction_2_" />
+      <Field Name="origin_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BoundedSurface" Collapsed="true">
+    <Position X="6" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="Surface">
+      <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.052" Y="0.06" Height="0.182" Width="0.5" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ABAAEAAACEAAAAAMAAAAAABAICAAAGAAAAAAAIAEAAA=</HashCode>
+      <FileName>surface.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RayProperties" Collapsed="true">
+    <Position X="2.5" Y="5.5" Width="1.5" />
+    <AssociationLine Name="energy_spectrum_" Type="EnergySpectrum">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.353" Y="0.249" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAQAAAAkIAABAAAAgAIAABQAQAACEAAAAAAAA=</HashCode>
+      <FileName>ray.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="energy_spectrum_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ray" Collapsed="true">
+    <Position X="0.75" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="Line">
+      <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.11" Y="0.06" Height="0.182" Width="0.525" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <AssociationLine Name="properties_" Type="RayProperties" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.5" Y="6.191" />
+        <Point X="1.5" Y="6.441" />
+        <Point X="2.812" Y="6.441" />
+        <Point X="2.812" Y="6.062" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.413" Y="0.408" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAJAAUAAQQAADAAIAAAAAIABYgAAACAAAACAAAAgAAA=</HashCode>
+      <FileName>ray.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="properties_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EnergySpectrum" Collapsed="true">
+    <Position X="2.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAYAAAAAAAAAwCAAEAAAAgACAAAAQAJUASBAAAAQA=</HashCode>
+      <FileName>spectrum.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DetectorPixel" Collapsed="true">
+    <Position X="6" Y="6.5" Width="1.5" />
+    <InheritanceLine Type="BoundedSurface">
+      <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.092" Y="0.05" Height="0.182" Width="0.5" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAACAAAAAIAAAAgAAAAAAAGAAAIAAAAAAAAA=</HashCode>
+      <FileName>detectorPixel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
