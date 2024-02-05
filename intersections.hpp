@@ -37,48 +37,45 @@ template<class L, class S>
 LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L line, const S surface ) :
 	intersection_exists_( false )
 {
-	PrimitiveVector3 surfaceO;
-	PrimitiveVector3 surfaceR1;
-	PrimitiveVector3 surfaceR2;
-	PrimitiveVector3 lineR = line.direction().GetComponents();
-	PrimitiveVector3 lineO = line.origin().GetComponents();
+	// Primitve vectors without coordinate system context
+	PrimitiveVector3 surface_origin, surface_direction_1, surface_direction_2;
+	PrimitiveVector3 line_direction = line.direction().GetComponents();
+	PrimitiveVector3 line_origin = line.origin().GetComponents();
 
 	// Same system?
 	if( line.direction().GetCoordinateSystem() == surface.direction_1().GetCoordinateSystem() ){
-		surfaceO = surface.origin().GetComponents();
-		surfaceR1 = surface.direction_1().GetComponents();
-		surfaceR2 = surface.direction_2().GetComponents();
+		// Simply get components
+		surface_origin = surface.origin().GetComponents();
+		surface_direction_1 = surface.direction_1().GetComponents();
+		surface_direction_2 = surface.direction_2().GetComponents();
 	}
 	else{
-		surfaceO = surface.origin().GetComponents( line.direction() );
-		surfaceR1 = surface.direction_1().GetComponents( line.direction() );
-		surfaceR2 = surface.direction_2().GetComponents( line.direction() );
+		// Convert surface vectors to line's coordinate system
+		surface_origin = surface.origin().GetComponents( line.direction() );
+		surface_direction_1 = surface.direction_1().GetComponents( line.direction() );
+		surface_direction_2 = surface.direction_2().GetComponents( line.direction() );
 	}
 
-	// Create system of equations with three variables
-	SystemOfEquations sys( 3 );
-	sys.PopulateColumn( surfaceR1 );
-	sys.PopulateColumn( surfaceR2 );
-	sys.PopulateColumn( -lineR );
-	sys.PopulateColumn( lineO - surfaceO );
+	// Create system of equations with three variables and populate
+	// a*v_1 +  b*v_2 - c*v = u_line - u_surface
+	SystemOfEquations system_of_equations( 3 );
+	system_of_equations.PopulateColumn( surface_direction_1 );
+	system_of_equations.PopulateColumn( surface_direction_2 );
+	system_of_equations.PopulateColumn( -line_direction );
+	system_of_equations.PopulateColumn( line_origin - surface_origin );
 
 	// Solve system
-	SystemOfEquationsSolution sysSol = sys.Solve();
+	SystemOfEquationsSolution solution = system_of_equations.Solve();
 
 	// No solution found
-	if( !sysSol.solution_found() ){
-		return;
-	}
-
+	if( !solution.solution_found() ) return;
+	
 	// Copy result
 	intersection_exists_ = true;							// Solution found
 	line_parameter_ = sysSol.GetVariableValue( 2 );			// Line parameter
-
 	surface_parameter_1_ = sysSol.GetVariableValue( 0 );	// Surface parameter A
 	surface_parameter_2_ = sysSol.GetVariableValue( 1 );	// Surface parameter B
-
 	intersection_point_ = line.GetPoint( line_parameter_ );	// Point of intersection
-
 
 	// Surface parameters outside allowed bounds of surface
 	if( !surface.AreParametersInBounds( surface_parameter_1_, surface_parameter_2_ ) ) intersection_exists_ = false;
