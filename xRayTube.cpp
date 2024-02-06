@@ -78,64 +78,86 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	tube implementation
 */
 
-XRayTube::XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties tube_properties ) :
+XRayTube::XRayTube( CoordinateSystem* const coordinate_system, 
+					const XRayTubeProperties tube_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_( tube_properties ),
-	anode_material_atomic_number_( ForcePositive( XRayTubeProperties::materials.at( properties_.anode_material ).second ) ),
-	radiation_power_W_( efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * properties_.anode_current_A * pow( properties_.anode_voltage_V, 2 ) ),
-	max_photon_energy_eV_( ForceToMax( properties_.anode_voltage_V, maximum_energy_in_tube_spectrum ) )
+	anode_material_atomic_number_( ForcePositive( 
+		XRayTubeProperties::materials.at( properties_.anode_material ).second ) ),
+	radiation_power_W_( 
+		efficiancy_constant_PerV * static_cast<double>( anode_material_atomic_number_ ) * 
+		properties_.anode_current_A * pow( properties_.anode_voltage_V, 2 ) ),
+	max_photon_energy_eV_( ForceToMax( 
+		properties_.anode_voltage_V, maximum_energy_in_tube_spectrum ) )
 {
 
-	// 
-	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, max_photon_energy_eV_, number_of_points_in_tube_spectrum_ ), 
+	// Prepare empty spectrum. First vector holds the frequencies, 
+	// second holds the photonflow in an arbitrary unit
+	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, 
+									max_photon_energy_eV_, 
+									number_of_points_in_tube_spectrum_ ), 
 								vector<double>( number_of_points_in_tube_spectrum_, 0. ) };
-
-
 	
-	const double bremsGradient = -1;
-	const double energy_resolution = energy_spectrum.first.at( 1 ) - energy_spectrum.first.at( 0 );
+	// Gradient
+	const double gradient = -1;
+	const double energy_resolution = energy_spectrum.first.at( 1 ) - 
+									 energy_spectrum.first.at( 0 );
 
-	// Fill value vector
-	for (auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++) {
-		size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
-									// Gradient of brems spectrum
+	// Fill value vector with values
+	for( auto energy_it = energy_spectrum.first.begin(); 
+		 energy_it < energy_spectrum.first.end(); energy_it++) {
 		
-		// Bremsspectrum dominates
-		energy_spectrum.second.at(curIdx) = ( energy_spectrum.first.back() - *energyIt + 2 * energy_resolution ) * ( -bremsGradient );
+		// Current index
+		size_t energy_index = energy_it - energy_spectrum.first.begin();
+		energy_spectrum.second.at(energy_index) = 
+			( energy_spectrum.first.back() - *energy_it + 2 * energy_resolution ) * 
+			( -gradient );
 	}
 
 	double complete_power = 0.;
-	for( size_t energy_index = 0; energy_index < energy_spectrum.first.size(); energy_index++ ){
-
-		complete_power += energy_spectrum.first.at( energy_index ) * energy_spectrum.second.at( energy_index );
-
+	for( size_t energy_index = 0; 
+		 energy_index < energy_spectrum.first.size(); energy_index++ ){
+		
+		// Cumulate power
+		complete_power += energy_spectrum.first.at( energy_index ) * 
+						  energy_spectrum.second.at( energy_index );
 	}
+	
+	// Only the shape of the spectrum is correct
+	// This is the factor to scale the spectrum by
+	const double correction_factor = radiation_power_W_ / complete_power / J_Per_eV;
+	Scale( energy_spectrum.second, correction_factor );		// Scale by factor
 
-	double correctionFactor = radiation_power_W_ / complete_power / J_Per_eV;
-
-	// Correct values for sums to match
-	Scale( energy_spectrum.second, correctionFactor );
-
+	// Apply hardening filter
 	if( properties_.has_filter_ ){
 		// Frequency to which the filter dominates spectral behavious
-		double changeEnergy = properties_.filter_cut_of_energy +  ( energy_spectrum.first.back() - properties_.filter_cut_of_energy ) / ( 1. +  properties_.filter_gradient );
+		const double change_energy = 
+			properties_.filter_cut_of_energy + 
+			 ( energy_spectrum.first.back() - properties_.filter_cut_of_energy ) / 
+			 ( 1. +  properties_.filter_gradient );
+			 
+		// Gradient of filter spectrum		 
+		const double filter_gradient = -properties_.filter_gradient * 
+										gradient * correction_factor;		
 
-		for ( auto energyIt = energy_spectrum.first.begin(); energyIt < energy_spectrum.first.end(); energyIt++ ) {
+		for( auto energy_it = energy_spectrum.first.begin(); 
+			 energy_it < energy_spectrum.first.end(); energy_it++ ) {
+				 
+			// Current index
+			const size_t energy_index = energy_it - energy_spectrum.first.begin();	
 			
-			const size_t curIdx = energyIt - energy_spectrum.first.begin();	// Current index
-			
-			
-
-			const double filterGradient = -properties_.filter_gradient * bremsGradient * correctionFactor;		// Gradient of filter spectrum
-
-			// Filter dominates
-			if ( *energyIt < changeEnergy ) {
-
-				if( *energyIt < properties_.filter_cut_of_energy ){
-					energy_spectrum.second.at( curIdx ) = 0.5 * energy_resolution * ( *energyIt + properties_.filter_cut_of_energy ) * ( 1 / properties_.filter_cut_of_energy ) * filterGradient;
+			// If filter dominates weaken the photonflow
+			if ( *energy_it < change_energy ) {
+				if( *energy_it < properties_.filter_cut_of_energy ){
+					energy_spectrum.second.at( energy_index ) = 
+						0.5 * energy_resolution * 
+						( *energy_it + properties_.filter_cut_of_energy ) *
+						( 1 / properties_.filter_cut_of_energy ) * filter_gradient;
 				}
 				else{
-					energy_spectrum.second.at( curIdx ) = ( *energyIt - properties_.filter_cut_of_energy + energy_resolution) * filterGradient;
+					energy_spectrum.second.at( energy_index ) = 
+						( *energy_it - properties_.filter_cut_of_energy + energy_resolution) * 
+						filter_gradient;
 				}
 			}
 		}
@@ -150,12 +172,12 @@ void XRayTube::UpdateProperties( const XRayTubeProperties tube_properties ){
 	*this = XRayTube{ coordinate_system_, tube_properties };
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel, const double detector_focus_distance ) const{
+vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detector_pixel, const double detector_focus_distance ) const{
 
-	const size_t numRays = properties_.number_of_rays_per_pixel_ * detectorPixel.size();
+	const size_t number_of_rays = properties_.number_of_rays_per_pixel_ * detector_pixel.size();
 
 	// Split spectrum into the Ray spectra
-	const EnergySpectrum raySpectrum = emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( numRays ) );
+	const EnergySpectrum single_ray_spectrum = emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( number_of_rays ) );
 
 	// Vector with rays
 	vector<Ray> rays;
@@ -163,40 +185,39 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detectorPixel,
 	size_t pixel_index = 0;
 
 	// Iterate all pixel
-	for( const DetectorPixel currentPixel : detectorPixel ){
+	for( const DetectorPixel current_pixel : detector_pixel ){
 		
 		// Properties of created rays for this pixel
-		const RayProperties beamProperties{ raySpectrum, pixel_index++ };
+		const RayProperties ray_properties{ single_ray_spectrum, pixel_index++ };
 
-		// Get points on the edge of pixel
+		// Get points on the edge of pixel, the line between them and their distance
+		const Point3D edge_point_1 = current_pixel.GetPoint( current_pixel.parameter_1_min(), 0);
+		const Point3D edge_point_2 = current_pixel.GetPoint( current_pixel.parameter_1_max(), 0 );
+		const Line connection_line{ edge_point_2 - edge_point_1, edge_point_1 };
+		const double edge_distance = ( edge_point_2 - edge_point_1 ).length();
 
-		const Point3D pMin = currentPixel.GetPoint( currentPixel.parameter_1_min(), 0);		// Point on "minimum" edge
-		const Point3D pMax = currentPixel.GetPoint( currentPixel.parameter_1_max(), 0 );	// Point on "maximum" edge
-		const Line connectionLine{ pMax - pMin, pMin };						// Line connection the edge points
-
-		const double edgeDistance = ( pMax - pMin ).length();								// Distance between edge points
-		const double rayOriginDistanceDelta = edgeDistance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );	// Offset of Ray origins on pixel
+		// Distance on the pixel between rays which hit the pixel
+		const double distance_delta = edge_distance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );
 
 		// Iterate all rays hitting current pixel
-		for( size_t currentRayIndex = 0; currentRayIndex < properties_.number_of_rays_per_pixel_; currentRayIndex++ ){
+		for( size_t ray_index = 0; ray_index < properties_.number_of_rays_per_pixel_; ray_index++ ){
 			
-			// Offset of current Ray origin_
-			const double currentOffset = static_cast<double>( currentRayIndex + 1 ) * rayOriginDistanceDelta;
+			// Offset of current Ray origin
+			const double offset = static_cast<double>( ray_index + 1 ) * distance_delta;
 
 			// Current Ray origin_
-			const Point3D currentOrigin = connectionLine.GetPoint( currentOffset );
+			const Point3D ray_origin_on_pixel = connection_line.GetPoint( offset );
 
 			// Tempory Line pointing from pixel to tube
-			const Line tempLine{ currentPixel.GetNormal().ConvertTo( coordinate_system_ ), currentOrigin.ConvertTo( coordinate_system_ ) };
+			const Line line_to_tube{ current_pixel.GetNormal().ConvertTo( coordinate_system_ ), ray_origin_on_pixel.ConvertTo( coordinate_system_ ) };
 
 			// Origin of Ray with specific distance to pixel
-			const Point3D rayOrigin = tempLine.GetPoint( detector_focus_distance );
+			const Point3D ray_origin = line_to_tube.GetPoint( detector_focus_distance );
 
 			// Add Ray in tube's coordinate system to vector
-			rays.emplace_back( -tempLine.direction(), rayOrigin, beamProperties );
+			rays.emplace_back( -line_to_tube.direction(), ray_origin, ray_properties );
 
 		}
-
 	}
 
 	return rays;
