@@ -91,7 +91,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 		properties_.anode_voltage_V, maximum_energy_in_tube_spectrum ) )
 {
 
-	// Prepare empty spectrum. First vector holds the frequencies, 
+	// Prepare empty spectrum. First vector holds the energies, 
 	// second holds the photonflow in an arbitrary unit
 	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, 
 									max_photon_energy_eV_, 
@@ -99,7 +99,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 								vector<double>( number_of_points_in_tube_spectrum_, 0. ) };
 	
 	// Gradient
-	const double gradient = -1;
+	const double gradient = -1.;
 	const double energy_resolution = energy_spectrum.first.at( 1 ) - 
 									 energy_spectrum.first.at( 0 );
 
@@ -130,7 +130,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 
 	// Apply hardening filter
 	if( properties_.has_filter_ ){
-		// Frequency to which the filter dominates spectral behavious
+		// Energy to which the filter dominates spectral behavious
 		const double change_energy = 
 			properties_.filter_cut_of_energy + 
 			 ( energy_spectrum.first.back() - properties_.filter_cut_of_energy ) / 
@@ -163,7 +163,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 		}
 	}
 
-	// Write frequency and power values to spectrum
+	// Write energy and power values to spectrum
 	emitted_spectrum_ = EnergySpectrum{ energy_spectrum };
 	radiation_power_W_ = emitted_spectrum_.GetTotalPower();
 }
@@ -172,12 +172,16 @@ void XRayTube::UpdateProperties( const XRayTubeProperties tube_properties ){
 	*this = XRayTube{ coordinate_system_, tube_properties };
 }
 
-vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detector_pixel, const double detector_focus_distance ) const{
+vector<Ray> XRayTube::GetEmittedBeam( 
+	const vector<DetectorPixel> detector_pixel, 
+	const double detector_focus_distance ) const{
 
-	const size_t number_of_rays = properties_.number_of_rays_per_pixel_ * detector_pixel.size();
+	const size_t number_of_rays = 
+		properties_.number_of_rays_per_pixel_ * detector_pixel.size();
 
 	// Split spectrum into the Ray spectra
-	const EnergySpectrum single_ray_spectrum = emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( number_of_rays ) );
+	const EnergySpectrum single_ray_spectrum = 
+		emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( number_of_rays ) );
 
 	// Vector with rays
 	vector<Ray> rays;
@@ -191,16 +195,20 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detector_pixel
 		const RayProperties ray_properties{ single_ray_spectrum, pixel_index++ };
 
 		// Get points on the edge of pixel, the line between them and their distance
-		const Point3D edge_point_1 = current_pixel.GetPoint( current_pixel.parameter_1_min(), 0);
-		const Point3D edge_point_2 = current_pixel.GetPoint( current_pixel.parameter_1_max(), 0 );
+		const Point3D edge_point_1 = 
+			current_pixel.GetPoint( current_pixel.parameter_1_min(), 0);
+		const Point3D edge_point_2 = 
+			current_pixel.GetPoint( current_pixel.parameter_1_max(), 0 );
 		const Line connection_line{ edge_point_2 - edge_point_1, edge_point_1 };
 		const double edge_distance = ( edge_point_2 - edge_point_1 ).length();
 
 		// Distance on the pixel between rays which hit the pixel
-		const double distance_delta = edge_distance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );
+		const double distance_delta = 
+			edge_distance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );
 
 		// Iterate all rays hitting current pixel
-		for( size_t ray_index = 0; ray_index < properties_.number_of_rays_per_pixel_; ray_index++ ){
+		for( size_t ray_index = 0; 
+			 ray_index < properties_.number_of_rays_per_pixel_; ray_index++ ){
 			
 			// Offset of current Ray origin
 			const double offset = static_cast<double>( ray_index + 1 ) * distance_delta;
@@ -209,7 +217,9 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detector_pixel
 			const Point3D ray_origin_on_pixel = connection_line.GetPoint( offset );
 
 			// Tempory Line pointing from pixel to tube
-			const Line line_to_tube{ current_pixel.GetNormal().ConvertTo( coordinate_system_ ), ray_origin_on_pixel.ConvertTo( coordinate_system_ ) };
+			const Line line_to_tube{ 
+				current_pixel.GetNormal().ConvertTo( coordinate_system_ ), 
+				ray_origin_on_pixel.ConvertTo( coordinate_system_ ) };
 
 			// Origin of Ray with specific distance to pixel
 			const Point3D ray_origin = line_to_tube.GetPoint( detector_focus_distance );
