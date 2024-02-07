@@ -179,7 +179,7 @@ vector<Ray> XRayTube::GetEmittedBeam(
 	const size_t number_of_rays = 
 		properties_.number_of_rays_per_pixel_ * detector_pixel.size();
 
-	// Split spectrum into the Ray spectra
+	// Split spectrum into the ray spectra
 	const EnergySpectrum single_ray_spectrum = 
 		emitted_spectrum_.GetEvenlyScaled( 1. / static_cast<double>( number_of_rays ) );
 

@@ -26,10 +26,12 @@ bool IsNearlyEqual( const double a, const double b, const double tolerance, cons
 	// Fast comparison
 	if( a == b ) return true;
 
+	// Absolute comparison
 	if( mode == Absolute ){
 		return std::abs( a - b ) < tolerance;
 	}
 
+	// Relative comparison
 	return RelativeDeviation( a, b ) < tolerance;
 }
 
