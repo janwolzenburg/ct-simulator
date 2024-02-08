@@ -23,121 +23,125 @@
 *********************************************************************/
 
 
-XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties radonParameter, const PhysicalDetectorProperties physical_properties ) :
+XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, 
+							const ProjectionsProperties radonParameter, 
+							const PhysicalDetectorProperties physical_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_{ radonParameter, physical_properties }
 {
 
 	// Important parameter
-	const size_t nDistance = properties_.number_of_pixel.c;									// Amount of distances or pixel
-	const double distanceRange = static_cast<double>( nDistance - 1 ) * radonParameter.distances_resolution();	// Covered field of measure
+	const size_t number_of_distances = properties_.number_of_pixel.c;				// Amount of distances or pixel
+	const double distance_range = static_cast<double>( number_of_distances - 1 ) * 
+								  radonParameter.distances_resolution();	// Covered field of measure
 
-	const double deltaTheta = radonParameter.angles_resolution();		// Angle resolution
-	const double deltaDistance = radonParameter.distances_resolution();	// Distance resolution
+	const double delta_theta = radonParameter.angles_resolution();		// Angle resolution
+	const double delta_distance = radonParameter.distances_resolution();	// Distance resolution
 
-	const double detector_focus_distance = properties_.detector_focus_distance / 2.;		// Distance from middle pixel to origin_
+	// Distance from middle pixel to origin
+	const double detector_focus_distance = properties_.detector_focus_distance / 2.;		
 
 	// Important vectors
-	const UnitVector3D middleNormalVector = coordinate_system_->GetEy();					// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotationVector = coordinate_system_->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D middle_normal_vector = coordinate_system_->GetEy();	// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D rotation_vector = coordinate_system_->GetEz();		// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
 	// Persistent variables
-	Line previousNormal;			// GetCenterNormal of previous pixel
-	double previousPixelSize;		// Size of previous pixel
+	Line previous_pixel_normal;			// Get normal of previous pixel
+	double previous_pixel_size;		// Size of previous pixel
 
 
 	// Iterate through half of pixel normals. Second half is created by symmetry
 	// Normals will be created inside to outside
-	for( size_t currentIndex = 0; currentIndex < nDistance / 2; currentIndex++ ){
+	for( size_t pixel_index = 0; pixel_index < number_of_distances / 2; pixel_index++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotationAngle = ( static_cast<double>( currentIndex ) + 0.5 ) * deltaTheta;
+		const double rotation_angle = ( static_cast<double>( pixel_index ) + 0.5 ) * delta_theta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
-		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
+		const UnitVector3D normal_vector = middle_normal_vector.RotateConstant( rotation_vector, rotation_angle );
 
 
 		// Find a point with the distance corresponding to distance in sinogram
 		// The point's origin vector must be perpendicular to the current normal vector
 
 		// The lot is perpendicular to the current normal vector and it lies in xy-plane
-		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
+		const UnitVector3D normal_lot = rotation_vector ^ normal_vector;
 
 		// Distance from origin to normal. Is the distance in the sinogram
-		const double currentDistance = distanceRange / 2. - ( static_cast<double>( nDistance ) / 2. - static_cast<double>( currentIndex ) - 1 ) * deltaDistance;
+		const double current_distance = distance_range / 2. - ( static_cast<double>( number_of_distances ) / 2. - static_cast<double>( pixel_index ) - 1 ) * delta_distance;
 															
-		// Point which lies on the current normal and has the correct distance from the origin_ 
-		const Point3D normalPoint = Vector3D{ normalLot } * currentDistance;
+		// Point which lies on the current normal and has the correct distance from the origin
+		const Point3D lot_end_point = Vector3D{ normal_lot } * current_distance;
 
 		// The current normal 
-		const Line currentNormal{ currentNormalVector, normalPoint };
+		const Line normal{ normal_vector, lot_end_point };
 
-		Point3D currentPixelOrigin;		// Origin of current pixel
-		double currentPixelSize;		// Size of current pixel
+		Point3D pixel_origin;		// Origin of current pixel
+		double pixel_size;		// Size of current pixel
 
 
 		// "Middle" normal
-		if( currentIndex == 0 ){
+		if( pixel_index == 0 ){
 			// This is the starting point
-			currentPixelOrigin = currentNormal.GetPoint( detector_focus_distance );
+			pixel_origin = normal.GetPoint( detector_focus_distance );
 
 			// First pixel size so that the neighbooring pixel intersects at half angle
-			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detector_focus_distance + currentDistance / tan( deltaTheta / 2. ) );
+			pixel_size = 2 * tan( delta_theta / 2. ) * ( detector_focus_distance + current_distance / tan( delta_theta / 2. ) );
 
 		}
 		else{
 			// Intersection point of pixel
-			const Point3D pixelIntersection = previousNormal.origin() + ( previousNormal.direction() ^ rotationVector ) * previousPixelSize / 2.;
+			const Point3D intersection = previous_pixel_normal.origin() + ( previous_pixel_normal.direction() ^ rotation_vector ) * previous_pixel_size / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
-			const Vector3D pixelIntersectionLot = currentNormal.GetLot( pixelIntersection );
+			const Vector3D intersection_lot = normal.GetLot( intersection );
 
 			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
-			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
+			pixel_origin = intersection + intersection_lot;
 
 			// Pixel size is double the lot length
-			currentPixelSize = 2 * pixelIntersectionLot.length();
+			pixel_size = 2 * intersection_lot.length();
 		}
 
 		// Create current pixel normal pointing to center
-		const Line pixelNormal{ -currentNormalVector, currentPixelOrigin };
+		const Line pixel_normal{ -normal_vector, pixel_origin };
 
 		// Store for next pixel
-		previousNormal = pixelNormal;
-		previousPixelSize = currentPixelSize;
+		previous_pixel_normal = pixel_normal;
+		previous_pixel_size = pixel_size;
 
 		// Vector perpendicualr to the normal pointing to the next pixel
-		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
+		const UnitVector3D surface_vector = -pixel_normal.direction() ^ rotation_vector;
 
 		// Add pixel
 		pixel_array_.emplace_back(  BoundedSurface{ 
-								currentSurfaceVector,
-								rotationVector,
-								pixelNormal.origin(),
-								-currentPixelSize / 2,
-								currentPixelSize / 2,
+								surface_vector,
+								rotation_vector,
+								pixel_normal.origin(),
+								-pixel_size / 2,
+								pixel_size / 2,
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
 
 		// Mirror current normal around y-axis
 		const Line mirroredPixelNormal{
-			pixelNormal.direction().NegateXComponent(),
-			pixelNormal.origin().NegateXComponent()
+			pixel_normal.direction().NegateXComponent(),
+			pixel_normal.origin().NegateXComponent()
 		};
 
 		// Add mirrored pixel
-		const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
+		const UnitVector3D mirrored_surface_vector = -mirroredPixelNormal.direction() ^ rotation_vector;
 		pixel_array_.emplace_back(	BoundedSurface{ 
-								mirroredSurfaceVector,
-								rotationVector,
+								mirrored_surface_vector,
+								rotation_vector,
 								mirroredPixelNormal.origin(),
-								-currentPixelSize / 2,
-								currentPixelSize / 2,
+								-pixel_size / 2,
+								pixel_size / 2,
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
 
-		RadonCoordinates radon_coords { this->coordinate_system_, pixelNormal };
+		RadonCoordinates radon_coords { this->coordinate_system_, pixel_normal };
 
 	}
 

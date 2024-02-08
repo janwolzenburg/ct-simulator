@@ -99,8 +99,8 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordin
 		// Target system is not the global system
 		if( path.size() > 0 ){
 			// Iterate each coordinate system in path
-			for( vector<const CoordinateSystem*>::const_iterator cur_coordinate_systemIt = path.begin(); cur_coordinate_systemIt < path.end(); cur_coordinate_systemIt++ ){
-				tempory_coordinates = tempory_coordinates.ConvertToChildSystem( *cur_coordinate_systemIt );
+			for( vector<const CoordinateSystem*>::const_iterator cur_coordinate_system_it = path.begin(); cur_coordinate_system_it < path.end(); cur_coordinate_system_it++ ){
+				tempory_coordinates = tempory_coordinates.ConvertToChildSystem( *cur_coordinate_system_it );
 			}
 		}
 

@@ -63,7 +63,7 @@ void PrimitiveVector3::Scale( const double scalar ){
 MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
 	// New length
-	double len = this->GetLength();
+	const double len = this->GetLength();
 
 	// Length must not by zero
 	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length!" );
@@ -72,7 +72,7 @@ MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 	if( IsNearlyEqualDistance( len, 1 ) ) return MathError::Ok;
 
 	// Calculate scaling factor as reciprocal of length
-	double lenRec = 1 / len;
+	const double lenRec = 1 / len;
 
 	// Scale and return error code
 	Scale( lenRec );
@@ -107,7 +107,7 @@ void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosP
 	x = x_; y = y_; z = z_;
 }
 
-MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n, const double phi ){
+MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 rotation_vector, const double rotation_angle ){
 	// Steps for rotation:
 	// 1: rotate around z axis to tilt rot. axis into x-z plane (Could also rotate into y-z plane an rotate around x-axis in next step)
 	// 2: rotate around y-axis to align rot. axis with z-axis
@@ -115,48 +115,48 @@ MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 n
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( IsNearlyEqualDistance( n.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
+	if( IsNearlyEqualDistance( rotation_vector.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
 
 	// Create copy and Normalise
-	PrimitiveVector3 nCpy{ n };
-	nCpy.Normalise();
+	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
+	rotation_vector_copy.Normalise();
 
-	double d = sqrt( pow( nCpy.x, 2 ) + pow( nCpy.y, 2 ) );		// Length of the axis projection on x-y plane
+	double projection_length = sqrt( pow( rotation_vector_copy.x, 2 ) + pow( rotation_vector_copy.y, 2 ) );		// Length of the axis projection on x-y plane
 	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculation square root!" );		// Check error flag
 
-	double sinThe = 0, cosThe = 1;								// Sine and cosine of angle Theta (angle between rot. axis projection onto x-y plane and x axis)
+	double sin_theta = 0, cos_theta = 1;	// Sine and cosine of angle Theta (angle between rotation axis projection onto x-y plane and x-axis)
 
-	// Avoid division by zero. d = 0 means rot. axis is parallel to z
-	if( d > 0 ){
-		sinThe = nCpy.y / d;		// Sine of the angle Theta
-		cosThe = nCpy.x / d;		// Cosine of the angle Theta
+	// Avoid division by zero. d = 0 means rotation axis is parallel to z-axis
+	if( projection_length > 0 ){
+		sin_theta = rotation_vector_copy.y / projection_length;		// Sine of the angle Theta
+		cos_theta = rotation_vector_copy.x / projection_length;		// Cosine of the angle Theta
 
 		// Clockwise rotation of rotation axis and this vector around z-axis to align rotation axis to x-z plane
-		nCpy.RotateAroundZAxis( -sinThe, cosThe );
-		this->RotateAroundZAxis( -sinThe, cosThe );
+		rotation_vector_copy.RotateAroundZAxis( -sin_theta, cos_theta );
+		this->RotateAroundZAxis( -sin_theta, cos_theta );
 	}
 
 	// Gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
-	double sinGam = d;				// Rotation axis vector has been normalised - sine of Gamma is d / 1
-	double cosGam = nCpy.z;			// Cosine is just the z-component of vector n_z / 1
+	const double sin_gamma = projection_length;				// Rotation axis vector has been normalised - sine of gamma is d / 1
+	const double cos_gamma = rotation_vector_copy.z;			// Cosine is just the z-component of vector n_z / 1
 
 	// Clockwise rotation of this vector around y-axis
-	this->RotateAroundYAxis( -sinGam, cosGam );
+	this->RotateAroundYAxis( -sin_gamma, cos_gamma );
 
 	// The axis rotation vector is now aligned with the z-axis
 
 	// Sine and cosine of angle to rotate around
-	double sinPhi = sin( phi );
-	double cosPhi = cos( phi );
+	const double sin_angle = sin( rotation_angle );
+	const double cos_angle = cos( rotation_angle );
 
-	// Counter-clockwise z-axis rotation of this vector by Phi
-	this->RotateAroundZAxis( sinPhi, cosPhi );
-	// Counter-clockwise y-axis rotation of this vector by Gamma to reverse step 2
-	this->RotateAroundYAxis( sinGam, cosGam );
+	// Counter-clockwise z-axis rotation of this vector by rotation angle
+	this->RotateAroundZAxis( sin_angle, cos_angle );
+	// Counter-clockwise y-axis rotation of this vector by gamma to reverse step 2
+	this->RotateAroundYAxis( sin_gamma, cos_gamma );
 
-	if( d > 0 ){
-		// Counter-clockwise z-axis rotation of this vector by Theta to reverse step 1
-		this->RotateAroundZAxis( sinThe, cosThe );
+	if( projection_length > 0 ){
+		// Counter-clockwise z-axis rotation of this vector by theta to reverse step 1
+		this->RotateAroundZAxis( sin_theta, cos_theta );
 	}
 	return MathError::Ok;
 }
