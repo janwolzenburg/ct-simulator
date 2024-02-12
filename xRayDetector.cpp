@@ -24,30 +24,32 @@
 
 
 XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, 
-							const ProjectionsProperties radonParameter, 
+							const ProjectionsProperties projection_properties, 
 							const PhysicalDetectorProperties physical_properties ) :
 	coordinate_system_( coordinate_system ),
-	properties_{ radonParameter, physical_properties }
+	properties_{ projection_properties, physical_properties }
 {
-
-	// Important parameter
-	const size_t number_of_distances = properties_.number_of_pixel.c;				// Amount of distances or pixel
+	// Amount of distances or pixel
+	const size_t number_of_distances = properties_.number_of_pixel.c;		
+	// Measure field
 	const double distance_range = static_cast<double>( number_of_distances - 1 ) * 
-								  radonParameter.distances_resolution();	// Covered field of measure
-
-	const double delta_theta = radonParameter.angles_resolution();		// Angle resolution
-	const double delta_distance = radonParameter.distances_resolution();	// Distance resolution
+								  projection_properties.distances_resolution();	
+	//Angle resolution
+	const double delta_theta = projection_properties.angles_resolution();			
+	// Distance resolution
+	const double delta_distance = projection_properties.distances_resolution();
 
 	// Distance from middle pixel to origin
 	const double detector_focus_distance = properties_.detector_focus_distance / 2.;		
 
-	// Important vectors
-	const UnitVector3D middle_normal_vector = coordinate_system_->GetEy();	// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotation_vector = coordinate_system_->GetEz();		// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	// y-axis of coordinate system is the middle normal vector
+	const UnitVector3D middle_normal_vector = coordinate_system_->GetEy();
+	// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D rotation_vector = coordinate_system_->GetEz();		
 
 
 	// Persistent variables
-	Line previous_pixel_normal;			// Get normal of previous pixel
+	Line previous_pixel_normal;		// Get normal of previous pixel
 	double previous_pixel_size;		// Size of previous pixel
 
 
@@ -59,7 +61,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		const double rotation_angle = ( static_cast<double>( pixel_index ) + 0.5 ) * delta_theta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
-		const UnitVector3D normal_vector = middle_normal_vector.RotateConstant( rotation_vector, rotation_angle );
+		const UnitVector3D normal_vector = 
+			middle_normal_vector.RotateConstant( rotation_vector, rotation_angle );
 
 
 		// Find a point with the distance corresponding to distance in sinogram
@@ -69,7 +72,9 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		const UnitVector3D normal_lot = rotation_vector ^ normal_vector;
 
 		// Distance from origin to normal. Is the distance in the sinogram
-		const double current_distance = distance_range / 2. - ( static_cast<double>( number_of_distances ) / 2. - static_cast<double>( pixel_index ) - 1 ) * delta_distance;
+		const double current_distance = distance_range / 2. - 
+			( static_cast<double>( number_of_distances ) / 2. 
+			  - static_cast<double>( pixel_index ) - 1 ) * delta_distance;
 															
 		// Point which lies on the current normal and has the correct distance from the origin
 		const Point3D lot_end_point = Vector3D{ normal_lot } * current_distance;
@@ -77,9 +82,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		// The current normal 
 		const Line normal{ normal_vector, lot_end_point };
 
-		Point3D pixel_origin;		// Origin of current pixel
+		Point3D pixel_origin;	// Origin of current pixel
 		double pixel_size;		// Size of current pixel
-
 
 		// "Middle" normal
 		if( pixel_index == 0 ){
@@ -87,12 +91,14 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 			pixel_origin = normal.GetPoint( detector_focus_distance );
 
 			// First pixel size so that the neighbooring pixel intersects at half angle
-			pixel_size = 2 * tan( delta_theta / 2. ) * ( detector_focus_distance + current_distance / tan( delta_theta / 2. ) );
+			pixel_size = 2 * tan( delta_theta / 2. ) * 
+				( detector_focus_distance + current_distance / tan( delta_theta / 2. ) );
 
 		}
 		else{
 			// Intersection point of pixel
-			const Point3D intersection = previous_pixel_normal.origin() + ( previous_pixel_normal.direction() ^ rotation_vector ) * previous_pixel_size / 2.;
+			const Point3D intersection = previous_pixel_normal.origin() + 
+				( previous_pixel_normal.direction() ^ rotation_vector ) * previous_pixel_size / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
 			const Vector3D intersection_lot = normal.GetLot( intersection );
@@ -116,11 +122,9 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 
 		// Add pixel
 		pixel_array_.emplace_back(  BoundedSurface{ 
-								surface_vector,
-								rotation_vector,
+								surface_vector, rotation_vector,
 								pixel_normal.origin(),
-								-pixel_size / 2,
-								pixel_size / 2,
+								-pixel_size / 2, pixel_size / 2,
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
 
@@ -133,15 +137,13 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		// Add mirrored pixel
 		const UnitVector3D mirrored_surface_vector = -mirroredPixelNormal.direction() ^ rotation_vector;
 		pixel_array_.emplace_back(	BoundedSurface{ 
-								mirrored_surface_vector,
-								rotation_vector,
+								mirrored_surface_vector, rotation_vector,
 								mirroredPixelNormal.origin(),
-								-pixel_size / 2,
-								pixel_size / 2,
+								-pixel_size / 2, pixel_size / 2,
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
 
-		RadonCoordinates radon_coords { this->coordinate_system_, pixel_normal };
+		
 
 	}
 
@@ -169,7 +171,7 @@ bool XRayDetector::DetectRay( Ray& r, mutex& allPixelLock ){
 	// Iterate all pixel indices. But start with the most likely pixel
 	for( size_t counter = 0; counter < pixel_array_.size() + 1; counter++ ){
 	
-		// Not first iteration: index is counter - 1 becaus first iteration was the most likely pixel
+		// Not first iteration: index is counter - 1 because first iteration was the most likely pixel
 		if( counter != 0 ){
 			pixelIdx = counter - 1;
 
@@ -187,7 +189,7 @@ bool XRayDetector::DetectRay( Ray& r, mutex& allPixelLock ){
 		// Do they intersect?
 		if( pixelHit.intersection_exists_ ){
 			
-			// If has_anti_scattering_structure and angle allowed by structure
+			// If detector has anti scattering structure and angle allowed by structure
 			
 			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
 				allPixelLock.lock();
