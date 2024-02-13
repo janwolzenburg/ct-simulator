@@ -123,32 +123,34 @@ bool Model::IsPointInside( const Point3D p ) const{
 	return AreCoordinatesValid( p.GetComponents( coordinate_system_ ) );
 }
 
-Index3D Model::GetVoxelIndices( const Tuple3D locCoords ) const{
-	if( locCoords.x < 0 || locCoords.y < 0 || locCoords.z < 0 ){
-		CheckForAndOutputError( MathError::Input, "Only positive Coordinates allowed in model!" );
+Index3D Model::GetVoxelIndices( const Tuple3D local_coordinates ) const{
+
+	if( local_coordinates.x < 0 || local_coordinates.y < 0 || 
+			local_coordinates.z < 0 ){
+		CheckForAndOutputError( MathError::Input, 
+			"Only positive Coordinates allowed in model!" );
 		return Index3D{ 0, 0, 0 };
 	}
 
 	Index3D indices{
-		static_cast<size_t>( locCoords.x / voxel_size_.x ),
-		static_cast<size_t>( locCoords.y / voxel_size_.y ),
-		static_cast<size_t>( locCoords.z / voxel_size_.z )
+		static_cast<size_t>( local_coordinates.x / voxel_size_.x ),
+		static_cast<size_t>( local_coordinates.y / voxel_size_.y ),
+		static_cast<size_t>( local_coordinates.z / voxel_size_.z )
 	};
 
 
-	// Supress checkErr when index is exactly on the edge
+	// Supress error when index is exactly on the edge
 	if( indices.x == number_of_voxel_3D_.x ) indices.x = number_of_voxel_3D_.x - 1;
 	if( indices.y == number_of_voxel_3D_.y ) indices.y = number_of_voxel_3D_.y - 1;
 	if( indices.z == number_of_voxel_3D_.z ) indices.z = number_of_voxel_3D_.z - 1;
 
-	if( !AreIndicesValid( indices ) ){
+	// Are indices too big?
+	if( !AreIndicesValid( indices ) )
 		CheckForAndOutputError( MathError::Input, "Coordinates exceed model size!" );
-	}
 
 	indices.x = ForceToMax( indices.x, number_of_voxel_3D_.x - 1 );
 	indices.y = ForceToMax( indices.y, number_of_voxel_3D_.y - 1 );
 	indices.z = ForceToMax( indices.z, number_of_voxel_3D_.z - 1 );
-
 
 	return indices;
 }

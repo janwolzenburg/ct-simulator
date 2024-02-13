@@ -162,53 +162,56 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-bool XRayDetector::DetectRay( Ray& r, mutex& allPixelLock ){
+bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
 
-	const size_t expected_pixel_index = r.properties().expected_detector_pixel_index();
+	const size_t expected_pixel_index = ray.properties().expected_detector_pixel_index();
 
-	size_t pixelIdx = expected_pixel_index;
+	size_t pixel_index = expected_pixel_index;
 
 	// Iterate all pixel indices. But start with the most likely pixel
 	for( size_t counter = 0; counter < pixel_array_.size() + 1; counter++ ){
 	
 		// Not first iteration: index is counter - 1 because first iteration was the most likely pixel
 		if( counter != 0 ){
-			pixelIdx = counter - 1;
+			pixel_index = counter - 1;
 
 			// Skip detection if expected index would be tested again
-			if( pixelIdx == expected_pixel_index )
+			if( pixel_index == expected_pixel_index )
 				continue;
 		}
 
 		// Converted pixel
-		const DetectorPixel& currentPixel = converted_pixel_array_.at( pixelIdx );
+		const DetectorPixel& current_pixel = converted_pixel_array_.at( pixel_index );
 
 		// Check for intersection of Ray with current pixel
-		const RayPixelIntersection pixelHit{ r, currentPixel };
+		const RayPixelIntersection pixel_hit{ ray, current_pixel };
 
 		// Do they intersect?
-		if( pixelHit.intersection_exists_ ){
+		if( pixel_hit.intersection_exists_ ){
 			
 			// If detector has anti scattering structure and angle allowed by structure
 			
-			if( !properties_.has_anti_scattering_structure || ( PI / 2. - r.GetAngle( currentPixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
-				allPixelLock.lock();
-				pixel_array_.at( pixelIdx ).AddDetectedRayProperties( r.properties() );		// Add detected Ray properties to pixel
-				allPixelLock.unlock();
+			if( !properties_.has_anti_scattering_structure || 
+					( PI / 2. - ray.GetAngle( current_pixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
+				
+				// Add detected Ray properties to pixel
+				pixel_array_lock.lock();
+				pixel_array_.at( pixel_index ).AddDetectedRayProperties( ray.properties() );		
+				pixel_array_lock.unlock();
 				
 				#ifdef TRANSMISSION_TRACKING 
-				if( !r.ray_tracing().tracing_steps.empty() ){
-					r.ray_tracing().tracing_steps.back().exit = pixelHit.intersection_point_;
-					r.ray_tracing().tracing_steps.back().distance = (pixelHit.intersection_point_ - r.ray_tracing().tracing_steps.back().entrance).length();
+				if( !ray.ray_tracing().tracing_steps.empty() ){
+					ray.ray_tracing().tracing_steps.back().exit = pixel_hit.intersection_point_;
+					ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ - 
+					ray.ray_tracing().tracing_steps.back().entrance).length();
 				}
 				#endif
 
 			}
 
-			// Only one pixel can intersect with Ray
+			// Only one pixel can intersect with ray -> return
 			return true;
 		}
-
 	}
 
 	return false;

@@ -50,7 +50,7 @@ class VoxelData{
 	enum SpecialProperty : SpecialPropertyEnumType{
 		None =			0b00000000,
 		Metal =			0b00000001,
-		Undefined =		0b00000010
+		Undefined =	0b00000010
 	};
 
 	static const std::map<SpecialProperty, string> special_property_names;	/*!< Names of enumerated properties*/
@@ -158,11 +158,8 @@ class VoxelData{
 
 	static double artefact_impact_factor_;			/*!< Factor for altering metal artefact strength*/
 
-	double absorption_	= -1;						/*!< Absorption coefficient at reference Energy*/
-	SpecialPropertyEnumType specialProperties_;		/*!< Special properties in voxel*/
-
-
-
+	double absorption_	= -1;										/*!< Absorption coefficient at reference Energy*/
+	SpecialPropertyEnumType specialProperties_;	/*!< Special properties in voxel*/
 
 };
 #pragma pack(pop)
@@ -181,14 +178,14 @@ class Voxel : public MathematicalObject{
 	 */
 	enum class Face : unsigned char{
 		Begin,
-		YZ_Xp = Begin,		/*!< Y-Z plane at positive x*/
+		YZ_Xp = Begin,/*!< Y-Z plane at positive x*/
 		XZ_Yp,				/*!< X-Z plane at positive y*/
 		XY_Zp,				/*!< X-Y plane at positive z*/
 		XY_Zm,				/*!< X-Y plane at negative x*/
 		XZ_Ym,				/*!< X-Z plane at negative y*/
 		YZ_Xm,				/*!< Y-Z plane at negative z*/
 		End,
-		Invalid = End		/*!< Invalid face x*/
+		Invalid = End	/*!< Invalid face x*/
 	};
 
 	/*!

@@ -267,7 +267,8 @@ class Model : public MathematicalObject{
 	 * @param indices 3D indides
 	 * @return One dimensional index
 	*/
-	size_t GetDataIndex( const Index3D indices ) const{ return number_of_voxel_3D_.x * number_of_voxel_3D_.y * indices.z + number_of_voxel_3D_.x * indices.y + indices.x; };
+	size_t GetDataIndex( const Index3D indices ) const{ 
+		return number_of_voxel_3D_.x * number_of_voxel_3D_.y * indices.z + number_of_voxel_3D_.x * indices.y + indices.x; };
 
 	/*!
 	 * @brief Element access
