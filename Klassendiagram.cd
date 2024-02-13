@@ -17,7 +17,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="CoordinateSystem" Collapsed="true" HideInheritanceLine="true">
-    <Position X="6" Y="8.75" Width="1.75" />
+    <Position X="14.25" Y="11.25" Width="1.75" />
     <Members>
       <Field Name="parent_" Hidden="true" />
     </Members>
@@ -70,11 +70,12 @@
       <Field Name="ez_" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="PrimitiveVector3" Collapsed="true">
+  <Class Name="PrimitiveVector3" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
+    <InheritanceLine Type="Tuple3D" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEBAIAAQgAEAAAAAAAAgRgAgAAAAA=</HashCode>
       <FileName>primitiveVector3.h</FileName>
@@ -100,20 +101,16 @@
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Point3D" Collapsed="true">
-    <Position X="0.75" Y="3.25" Width="1.5" />
-    <InheritanceLine Type="Vector3D">
-      <InheritanceModifierLabel ManuallyPlaced="true">
-        <Position X="0.179" Y="0.073" />
-      </InheritanceModifierLabel>
-    </InheritanceLine>
+  <Class Name="Point3D" Collapsed="true" HideInheritanceLine="true">
+    <Position X="17" Y="13.25" Width="1.5" />
+    <InheritanceLine Type="Vector3D" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAACAAAIAAAAAAAEAAAAAAcgAAAAACAAAAAAAAAgAAA=</HashCode>
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Tuple3D">
-    <Position X="0.75" Y="0.5" Width="1.5" />
+  <Class Name="Tuple3D" Collapsed="true">
+    <Position X="11.75" Y="13.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -139,6 +136,9 @@
   </Class>
   <Class Name="Surface" Collapsed="true">
     <Position X="6" Y="4.5" Width="1.5" />
+    <Members>
+      <Field Name="origin_" Hidden="true" />
+    </Members>
     <AssociationLine Name="direction_1_" Type="UnitVector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.375" Y="4.5" />
@@ -156,17 +156,6 @@
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-1.005" Y="0.095" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="origin_" Type="Point3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="6.188" Y="4.5" />
-        <Point X="6.188" Y="4.378" />
-        <Point X="2.062" Y="4.378" />
-        <Point X="2.062" Y="3.941" />
-      </Path>
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-3.077" Y="0.488" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -267,7 +256,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="XRayTubeProperties" Collapsed="true">
-    <Position X="4.75" Y="11.25" Width="1.75" />
+    <Position X="1.25" Y="9.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AQAAAAUAAICEQAAAAABAAAAAgCAQAAAAAAACAABAAAA=</HashCode>
       <FileName>xRayTube.h</FileName>
@@ -276,14 +265,10 @@
   <Class Name="XRayTube" Collapsed="true">
     <Position X="3.75" Y="9.75" Width="1.5" />
     <Members>
+      <Field Name="coordinate_system_" Hidden="true" />
       <Field Name="emitted_spectrum_" Hidden="true" />
       <Field Name="properties_" Hidden="true" />
     </Members>
-    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.132" Y="0.058" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAIAEAAaAQAAAAAAEAEAQAiAQgAAAAAAAAIJABEAAAA=</HashCode>
       <FileName>xRayTube.h</FileName>
@@ -297,13 +282,9 @@
   <Class Name="Gantry" Collapsed="true">
     <Position X="6" Y="9.75" Width="1.75" />
     <Members>
+      <Field Name="coordinate_system_" Hidden="true" />
       <Field Name="detector_" Hidden="true" />
     </Members>
-    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem">
-      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="-1.594" Y="0.068" Height="0.182" Width="1.519" />
-      </MemberNameLabel>
-    </AssociationLine>
     <AssociationLine Name="tube_" Type="XRayTube">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.076" Y="0.071" />
@@ -333,11 +314,155 @@
       <FileName>projectionsProperties.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Model" Collapsed="true">
+    <Position X="11.75" Y="12.25" Width="1.5" />
+    <AssociationLine Name="coordinate_system_" Type="CoordinateSystem" FixedFromPoint="true">
+      <Path>
+        <Point X="12.812" Y="12.25" />
+        <Point X="12.812" Y="11.596" />
+        <Point X="14.25" Y="11.596" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.36" Y="0.1" Height="0.182" Width="1.786" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="number_of_voxel_3D_" Type="Index3D" FixedToPoint="true">
+      <Path>
+        <Point X="12.188" Y="12.25" />
+        <Point X="12.188" Y="11.812" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.12" Y="0.12" Height="0.182" Width="1.661" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="size_" Type="Tuple3D">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.06" Y="0.06" Height="0.182" Width="0.66" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="voxel_size_" Type="Tuple3D">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.031" Y="0.06" Height="0.182" Width="0.939" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ICgBAAEIABBCABAEEIAhDAhAETgEAgAAEDoAAAEAoEA=</HashCode>
+      <FileName>model.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="coordinate_system_" />
+      <Field Name="size_" />
+      <Field Name="voxel_size_" />
+      <Field Name="number_of_voxel_3D_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="VoxelData" Collapsed="true">
+    <Position X="14.25" Y="12.25" Width="1.5" />
+    <NestedTypes>
+      <Typedef Name="VoxelData::SpecialPropertyEnumType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>voxel.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Typedef>
+      <Enum Name="VoxelData::SpecialProperty" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>voxel.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAggAAAAAAQQEAAgYAQCAAAAAAAAAgAAMAAAA=</HashCode>
+      <FileName>voxel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Voxel" Collapsed="true">
+    <Position X="14.25" Y="13.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="Voxel::Face" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>voxel.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="origin_corner_" Type="Point3D">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.09" Y="-0.23" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="size_" Type="Tuple3D">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.21" Y="-0.25" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="data_" Type="VoxelData">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.911" Y="0.14" Height="0.182" Width="0.78" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAAAAIAAAAAAQAAEAIAQAADAIAAAAAAAAAAQAAAQAAQ=</HashCode>
+      <FileName>voxel.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="size_" />
+      <Field Name="data_" />
+      <Field Name="origin_corner_" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Index3D" Collapsed="true">
+    <Position X="11" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAQAAACAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GridIndex" Collapsed="true">
+    <Position X="21.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAACAAAACAAAABAAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GridCoordinates" Collapsed="true">
+    <Position X="19.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIACAAAACAAAABAAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NaturalNumberRange" Collapsed="true">
+    <Position X="19.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAABAAgAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NumberRange" Collapsed="true">
+    <Position X="21.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAABEAgAIAAAAAAACAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Class>
   <Struct Name="PhysicalDetectorProperties" Collapsed="true">
     <Position X="8.75" Y="7.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAEIgAAAAEAAAAQAAAAAACAAAAAAAAAAAAAAAAI=</HashCode>
       <FileName>detectorProperties.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Index2D" Collapsed="true">
+    <Position X="19.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tuple2D" Collapsed="true">
+    <Position X="21.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>generel.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Font Name="Segoe UI" Size="9" />
