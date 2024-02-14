@@ -62,9 +62,9 @@ VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_itera
 
 double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
 
-	// iron absorption is approx. 0.15 1/mm at 100 keV
+	// titan absorption is approx. 0.0135 1/mm above 110 keV
 	if( HasSpecificProperty( Metal ) ){
-		return artefact_impact_factor_ * absorption_iron_Per_mm * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
+		return artefact_impact_factor_ * absorption_titan_Per_mm * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 	}
 
 	return absorption_ * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
@@ -75,7 +75,7 @@ void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
 
 	// impact factor from 0 to 10 should map from mu_water / mu_iron to 1.
 
-	artefact_impact_factor_ = ForceToMin( artefact_impact_factor * ( 1 - absorption_water_Per_mm / absorption_iron_Per_mm ) / 10. + absorption_water_Per_mm / absorption_iron_Per_mm, 0. );
+	artefact_impact_factor_ = ForceToMin( artefact_impact_factor * ( 1 - absorption_water_Per_mm / absorption_titan_Per_mm ) / 10. + absorption_water_Per_mm / absorption_titan_Per_mm, 0. );
 }
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
