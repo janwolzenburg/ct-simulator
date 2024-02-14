@@ -47,7 +47,7 @@ constexpr double absorption_water_Per_mm = 3e-2 * 0.997 / 10.;					/*!< Absorpti
 constexpr double mu_air = 0.;
 constexpr double absorption_bone_Per_mm = absorption_water_Per_mm * 1.33;
 constexpr double absorption_lung_Per_mm = absorption_water_Per_mm * 0.8;
-constexpr double absorption_iron_Per_mm = 0.156;
+constexpr double absorption_titan_Per_mm = 0.0135;
 
 constexpr double attenuation_water_Per_mm = 0.153 / 10;
 
