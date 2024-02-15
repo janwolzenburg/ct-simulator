@@ -196,136 +196,186 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& tRay, const TomographyProperties& tomoParameter, const RayScattering& scatteringProperties, const bool disable_scattering ) const{
+pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray, 
+																					 const TomographyProperties& tomography_properties, 
+																					 const RayScattering& scattering_properties, 
+																					 const bool disable_scattering ) const{
 
-	Ray modelRay = std::move( tRay.ConvertTo( this->coordinate_system_ ) );					// Current Ray in model's coordinate system
+	// Current ray in model's coordinate system
+	Ray local_ray = std::move( ray.ConvertTo( this->coordinate_system_ ) );					
 
-	// Find entrance_ in model
-	const RayVoxelIntersection modelIsect{ GetModelVoxel(), modelRay };
+	// Find entrance inside model
+	const RayVoxelIntersection model_intersection{ GetModelVoxel(), local_ray };
 
-	//const rayVox_Intersection_Result rayEntrance = modelIsect.entrance_;
-	if( !modelIsect.entrance_.intersection_exists_ ) return { modelRay, {} };			// Return if Ray does not intersect model
+	// Return if Ray does not intersect model
+	if( !model_intersection.entrance_.intersection_exists_ ) return { local_ray, {} };		
 
 
 	// Iteration through model
-	/* ---------------------------------------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------------------- */
 
-	double currentRayStep = modelIsect.entrance_.line_parameter_ + default_ray_step_size_mm;		// Ray parameter at model entrance_
-	const double lengthInModel = modelIsect.exit_.line_parameter_ - modelIsect.entrance_.line_parameter_;
+	// Ray parameter at model entrance plus a tiny bit
+	double current_ray_step = model_intersection.entrance_.line_parameter_ + 
+														default_ray_step_size_mm;
 
-	// Go a tiny step further down the Ray from intersection point with model and test if inside
-	// Return when the point on the Ray is not inside the model meaning that the Ray just barely hit the model
-	if( !IsPointInside( modelRay.GetPoint( currentRayStep ) ) ) return { modelRay, {} };
+	// Return when the point on the ray is not inside the model meaning that the ray 
+	// just barely hit the model
+	if( !IsPointInside( local_ray.GetPoint( current_ray_step ) ) ) 
+		return { local_ray, {} };
 
-
-	// Current point on the Ray
-	Point3D currentPntOnRay = std::move( modelRay.GetPoint( currentRayStep ) );		// Point of model entrance_
+	// Current point on the ray is model entrance
+	Point3D current_point_on_ray = std::move( local_ray.GetPoint( current_ray_step ) );
 
 	#ifdef TRANSMISSION_TRACKING
-	if( !IsPointInside( modelRay.origin() ) ){
-		modelRay.ray_tracing().tracing_steps.emplace_back( false, modelIsect.entrance_.line_parameter_, GetModelVoxel().data(), modelRay.origin(), modelIsect.entrance_.intersection_point_, modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower());
+	if( !IsPointInside( local_ray.origin() ) ){
+		local_ray.ray_tracing().tracing_steps.emplace_back( false, 
+			model_intersection.entrance_.line_parameter_, GetModelVoxel().data(), 
+			local_ray.origin(), model_intersection.entrance_.intersection_point_, 
+			local_ray.properties().simple_intensity(), 
+			local_ray.properties().energy_spectrum().GetTotalPower());
 	}
 	#endif
 
-	vector<Ray> all_scattered_rays;
+	vector<Ray> all_scattered_rays;	// Vector for all scattered rays
 
 	// Iterate through model while current point is inside model
-	while( IsPointInside( currentPntOnRay ) ){
+	while( IsPointInside( current_point_on_ray ) ){
 
-		const Index3D currentVoxelIndices = GetVoxelIndices( currentPntOnRay );		// Indices of current voxel
+		// Indices of current voxel
+		const Index3D current_voxel_indices = GetVoxelIndices( current_point_on_ray );		
 
-		const array<bool, ToUnderlying( Voxel::Face::End )> possibleFaces = std::move( modelRay.GetPossibleVoxelExits() );		// The possible exit_ faces
+		// The possible exit faces of current voxel
+		const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
+			std::move( local_ray.GetPossibleVoxelExits() );		
 
-		double rayParameter = INFINITY;		// The smallest Ray parameter
+		double distance_to_exit = INFINITY;		// The smallest ray parameter
 
-		// Iterate all possible faces and get the Ray parameter at intersection
-		for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
+		// Iterate all possible faces and get the ray parameter at intersection
+		for( Voxel::Face current_face = Voxel::Face::Begin; 
+			   current_face < Voxel::Face::End; ++current_face ){
 
-			double currentRayParameter = INFINITY;			// Set to infinity 
-			double planePosistion;							// Position of current face
+			// Distance to the current face. Will become finite if exit found
+			double distance_to_current_face = INFINITY;			
+			double exit_face_position;											// Face position along one axis
 
-			// Switch faces
-			switch( currentFace ){
+			// Switch faces. Check only the possible faces
+			switch( current_face ){
 
 				case Voxel::Face::YZ_Xp:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) + 1. ) * this->voxel_size_.x;		// Position of positive yz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();		// Ray parameter at intersection
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) + 1. ) *
+															 this->voxel_size_.x;		// Position of positive yz-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) /
+																		 local_ray.direction().X();
 					break;
 
 				case Voxel::Face::YZ_Xm:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.x ) ) * this->voxel_size_.x;		// Position of negative yz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.X() ) / modelRay.direction().X();
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) ) * 
+															 this->voxel_size_.x;		// Position of negative yz-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) / 
+																		 local_ray.direction().X();
 					break;
 
 				case Voxel::Face::XZ_Yp:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.y ) + 1. ) * this->voxel_size_.y;		// Position of positive xz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) + 1. ) * 
+															 this->voxel_size_.y;		// Position of positive xz-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
+																		 local_ray.direction().Y();
 					break;
 
 				case Voxel::Face::XZ_Ym:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.y )     ) * this->voxel_size_.y;		// Position of negative xz-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Y() ) / modelRay.direction().Y();
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) ) * 
+															 this->voxel_size_.y;		// Position of negative xz-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
+																		 local_ray.direction().Y();
 					break;
 
 				case Voxel::Face::XY_Zp:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.z ) + 1. ) * this->voxel_size_.z;		// Position of positive xy-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.z ) + 1. ) * 
+															 this->voxel_size_.z;		// Position of positive xy-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 
+																		 local_ray.direction().Z();
 					break;
 
 				case Voxel::Face::XY_Zm:
-					if( possibleFaces.at( ToUnderlying( currentFace ) ) == false ) break;
-					planePosistion = ( static_cast<double>( currentVoxelIndices.z )   ) * this->voxel_size_.z;		// Position of negative xy-plane
-					currentRayParameter = ( planePosistion - currentPntOnRay.Z() ) / modelRay.direction().Z();
+					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					exit_face_position = ( static_cast<double>( current_voxel_indices.z )   ) * 
+															 this->voxel_size_.z;		// Position of negative xy-plane
+					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 
+																		 local_ray.direction().Z();
 					break;
 
 				default: break;
 			}
 
-			// Set smallest Ray parameter
-			if( currentRayParameter < rayParameter ) rayParameter = currentRayParameter;
+			// There may be more than one intersectiones with the unbounded faces
+			// The intersected face with the smallest distance from current point along the ray
+			// is the exit face
+			if( distance_to_current_face < distance_to_exit ) 
+				distance_to_exit = distance_to_current_face;
 
 		}
 		
-		// Exit found
-		if( rayParameter < INFINITY ){
+		// If exit found
+		if( distance_to_exit < INFINITY ){
 
-			const double distance = rayParameter;		// The distance is the rayParameter
+			// The distance traveled in this voxel
+			const double distance_in_voxel = distance_to_exit;		
 
-			const VoxelData current_voxel_data = this->GetVoxelData( currentVoxelIndices );
+			// The current voxel's properties
+			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
 
 			// Update Ray properties whith distance travelled in current voxel
-			modelRay.UpdateProperties( current_voxel_data, distance );
-			modelRay.IncrementHitCounter();
+			local_ray.UpdateProperties( current_voxel_data, distance_in_voxel );
+			local_ray.IncrementHitCounter();
 
 			#ifdef TRANSMISSION_TRACKING
-			modelRay.ray_tracing().tracing_steps.emplace_back( true, distance, current_voxel_data, currentPntOnRay, modelRay.GetPointFast( currentRayStep ), modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower() );
+			local_ray.ray_tracing().tracing_steps.emplace_back( true, 
+					distance_in_voxel, current_voxel_data, current_point_on_ray, 
+					local_ray.GetPointFast( current_ray_step ), 
+					local_ray.properties().simple_intensity(), 
+					local_ray.properties().energy_spectrum().GetTotalPower() );
 			#endif
 
-			currentRayStep += distance + default_ray_step_size_mm;				// New Step on Ray
-			currentPntOnRay = std::move( modelRay.GetPointFast( currentRayStep ) );	// New point on Ray
+			// New ray parameter is just a tiny step outside the current
+			current_ray_step += distance_in_voxel + default_ray_step_size_mm;				
+
+			// The new point on the ray
+			current_point_on_ray = std::move( local_ray.GetPointFast( current_ray_step ) );
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
-			if( tomoParameter.scattering_enabled && !disable_scattering && IsPointInside( currentPntOnRay ) ){
-				const vector<Ray> scattered_rays = std::move( modelRay.Scatter( scatteringProperties, current_voxel_data, distance, tomoParameter, currentPntOnRay ) );
-				all_scattered_rays.insert( all_scattered_rays.end(), make_move_iterator( scattered_rays.begin() ), make_move_iterator( scattered_rays.end() ) );
+			if( tomography_properties.scattering_enabled && !disable_scattering && IsPointInside( current_point_on_ray ) ){
+				// Scatter the ray
+				const vector<Ray> scattered_rays = std::move( local_ray.Scatter( 
+						scattering_properties, current_voxel_data, distance_in_voxel, 
+						tomography_properties, current_point_on_ray ) );
+
+				// Append scattered rays
+				all_scattered_rays.insert( all_scattered_rays.end(), 
+						make_move_iterator( scattered_rays.begin() ), 
+						make_move_iterator( scattered_rays.end() ) );
 			}
 		}
 	}
 
-	// New origin "outside" the model to return
-	modelRay.origin( currentPntOnRay );
+	// Ray is now outside the model
+	/* ------------------------------------------------------------------------------- */
+
+	// New origin of ray "outside" the model
+	local_ray.origin( current_point_on_ray );
 
 	#ifdef TRANSMISSION_TRACKING
-	modelRay.ray_tracing().tracing_steps.emplace_back( false, -1, GetModelVoxel().data(), currentPntOnRay, currentPntOnRay, modelRay.properties().simple_intensity(), modelRay.properties().energy_spectrum().GetTotalPower() );
+	local_ray.ray_tracing().tracing_steps.emplace_back( false, 
+		-1, GetModelVoxel().data(), current_point_on_ray, current_point_on_ray, 
+		local_ray.properties().simple_intensity(), 
+		local_ray.properties().energy_spectrum().GetTotalPower() );
 	#endif
 
-	//cout << endl << endl;
-	return { std::move( modelRay ), all_scattered_rays };
+	return { local_ray, all_scattered_rays };
 }
 
 bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
