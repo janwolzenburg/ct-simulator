@@ -26,52 +26,52 @@
 	RayVoxelIntersection
 */
 
-RayVoxelIntersection::RayVoxelIntersection( const Voxel v_, const Ray r_ )
+RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 {
-	// Components of Ray trajectory in voxel coordinate system
-	Tuple3D comps = r_.direction().GetComponents( v_.origin_corner() );
-	bool facePossible = true;
+	// Components of ray trajectory in voxel coordinate system
+	const Tuple3D local_ray_direction = ray.direction().GetComponents( voxel.origin_corner() );
+	bool face_possible = true;
 
 	// Find Entrance
 
 	using Face = Voxel::Face;
 
-	// Ray origin_ inside voxel
-	if(  v_.Contains( r_.origin() ) ){
+	// Ray origin inside voxel
+	if(  voxel.Contains( ray.origin() ) ){
 		entrance_.intersection_exists_ = true;
 		entrance_.line_parameter_ = 0;
-		entrance_.intersection_point_ = r_.origin();
+		entrance_.intersection_point_ = ray.origin();
 		entrance_face_ = Face::Invalid;
 	}
 	else{
 
 		// Iterate all faces
 		for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
-			facePossible = true;
+			face_possible = true;
 
-			// Check if face can be an entrance_ face of the tRay
+			// Check if face can be an entrance face of the ray
 			switch( i ){
 				case Face::YZ_Xp:
-				if( comps.x >= 0 ) facePossible = false; break;
+				if( local_ray_direction.x >= 0 ) face_possible = false; break;
 				case Face::YZ_Xm:
-				if( comps.x <= 0 ) facePossible = false; break;
+				if( local_ray_direction.x <= 0 ) face_possible = false; break;
 
 				case Face::XZ_Yp:
-				if( comps.y >= 0 ) facePossible = false; break;
+				if( local_ray_direction.y >= 0 ) face_possible = false; break;
 				case Face::XZ_Ym:
-				if( comps.y <= 0 ) facePossible = false; break;
+				if( local_ray_direction.y <= 0 ) face_possible = false; break;
 
 				case Face::XY_Zp:
-				if( comps.z >= 0 ) facePossible = false; break;
+				if( local_ray_direction.z >= 0 ) face_possible = false; break;
 				case Face::XY_Zm:
-				if( comps.z <= 0 ) facePossible = false; break;
+				if( local_ray_direction.z <= 0 ) face_possible = false; break;
 
 				default: break;
 			}
 
-			if( facePossible ){
-				// Check  if tRay intersects current face
-				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.GetFace( i ) };
+			if( face_possible ){
+				// Check  if ray intersects current face
+				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ ray, voxel.GetFace( i ) };
 				if( entrance_.intersection_exists_ ){
 					entrance_face_ = i; break;
 				}
@@ -80,34 +80,34 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel v_, const Ray r_ )
 	}
 
 
-	// Find exit_
+	// Find exit
 
 	for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
-		facePossible = true;
+		face_possible = true;
 
-		// Check if face can be an exit_ face of the tRay
+		// Check if face can be an exit face of the ray
 		switch( i ){
 			case Face::YZ_Xp:
-			if( comps.x <= 0 ) facePossible = false; break;
+			if( local_ray_direction.x <= 0 ) face_possible = false; break;
 			case Face::YZ_Xm:
-			if( comps.x >= 0 ) facePossible = false; break;
+			if( local_ray_direction.x >= 0 ) face_possible = false; break;
 
 			case Face::XZ_Yp:
-			if( comps.y <= 0 ) facePossible = false; break;
+			if( local_ray_direction.y <= 0 ) face_possible = false; break;
 			case Face::XZ_Ym:
-			if( comps.y >= 0 ) facePossible = false; break;
+			if( local_ray_direction.y >= 0 ) face_possible = false; break;
 
 			case Face::XY_Zp:
-			if( comps.z <= 0 ) facePossible = false; break;
+			if( local_ray_direction.z <= 0 ) face_possible = false; break;
 			case Face::XY_Zm:
-			if( comps.z >= 0 ) facePossible = false; break;
+			if( local_ray_direction.z >= 0 ) face_possible = false; break;
 
 			default: break;
 		}
 
-		if( facePossible ){
-			// Check  if tRay intersects current face
-			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ r_, v_.GetFace( i ) };
+		if( face_possible ){
+			// Check  if ray intersects current face
+			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ ray, voxel.GetFace( i ) };
 			if( exit_.intersection_exists_ ){
 				exit_face_ = i; break;
 			}

@@ -77,7 +77,7 @@ class RayVoxelIntersection {
 	 * @param v_ Voxel
 	 * @param r_ Ray
 	*/
-	RayVoxelIntersection( const Voxel voxel, const Ray r_ );
+	RayVoxelIntersection( const Voxel& voxel, const Ray& ray );
 
 
 	Voxel::Face entrance_face_;										/*!< Entrance face*/
