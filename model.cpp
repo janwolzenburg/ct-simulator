@@ -238,16 +238,15 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 
 	vector<Ray> all_scattered_rays;	// Vector for all scattered rays
 
+	// The possible exit faces of voxel
+	const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
+		std::move( local_ray.GetPossibleVoxelExits() );
+
 	// Iterate through model while current point is inside model
 	while( IsPointInside( current_point_on_ray ) ){
 
 		// Indices of current voxel
-		const Index3D current_voxel_indices = GetVoxelIndices( current_point_on_ray );		
-
-		// The possible exit faces of current voxel
-		const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
-			std::move( local_ray.GetPossibleVoxelExits() );		
-
+		const Index3D current_voxel_indices = GetVoxelIndices( current_point_on_ray );				
 		double distance_to_exit = INFINITY;		// The smallest ray parameter
 
 		// Iterate all possible faces and get the ray parameter at intersection
