@@ -63,35 +63,38 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 	array<bool, ToUnderlying( Voxel::Face::End )> face_possiblities{ false };
 
 	// Iterate all faces of voxel
-	for( Voxel::Face currentFace = Voxel::Face::Begin; currentFace < Voxel::Face::End; ++currentFace ){
+	for( Voxel::Face currentFace = Voxel::Face::Begin; 
+			 currentFace < Voxel::Face::End; ++currentFace ){
 
 		bool possible = false;
 
-		// Check if face can be an exit_ face of the tRay
+		// Check if face can be an exit face of the ray
 		switch( currentFace ){
 			case Voxel::Face::YZ_Xp:
-				if( direction_.X() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.X() > 0 ) 
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::YZ_Xm:
-				if( direction_.X() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.X() < 0 ) 
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XZ_Yp:
-				if( direction_.Y() > 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.Y() > 0 ) 
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XZ_Ym:
-				if( direction_.Y() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.Y() < 0 )
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XY_Zp:
-				if( direction_.Z() > 0  )face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.Z() > 0  )
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XY_Zm:
-				if( direction_.Z() < 0 ) face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+				if( direction_.Z() < 0 ) 
+					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
 
 			default: break;
 		}
-
-
-
 	}
 		return face_possiblities;
-
 }
 
 	
