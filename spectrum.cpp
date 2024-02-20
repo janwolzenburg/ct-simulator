@@ -109,11 +109,11 @@ void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 
 void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double distance ){
 	
-	double k;
+	double coefficient;
 
-	for( auto& data_point: photonflow_per_energy_ ){
-		k = voxel_data.GetAbsorptionAtEnergy( data_point.x );
-		data_point.y *= exp( -k * distance );
+	for( auto& photonflow: photonflow_per_energy_ ){
+		coefficient = voxel_data.GetAbsorptionAtEnergy( photonflow.x );
+		photonflow.y *= exp( -coefficient * distance );
 	}
 
 	mean_energy_valid_ = false;

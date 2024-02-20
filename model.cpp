@@ -322,8 +322,9 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 		// If exit found
 		if( distance_to_exit < INFINITY ){
 
-			// The distance traveled in this voxel
-			const double distance_in_voxel = distance_to_exit;		
+			// The distance traveled in this voxel. Add step size, because ray origin is
+			// this amount inside the voxel
+			const double distance_in_voxel = distance_to_exit + default_ray_step_size_mm;		
 
 			// The current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
@@ -340,8 +341,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 					local_ray.properties().energy_spectrum().GetTotalPower() );
 			#endif
 
-			// New ray parameter is just a tiny step outside the current
-			current_ray_step += distance_in_voxel + default_ray_step_size_mm;				
+			// New ray parameter the distance travelled in this voxel
+			current_ray_step += distance_in_voxel;				
 
 			// The new point on the ray
 			current_point_on_ray = std::move( local_ray.GetPointFast( current_ray_step ) );
