@@ -54,7 +54,7 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 
 	const unsigned int random_integer = GetRandomNumber();
 
-	if( random_integer >= distribution_.min() && random_integer <= distribution_.min() + event_interval ) return true;
+	if( random_integer >= distribution_.min() && random_integer < distribution_.min() + event_interval ) return true;
 
 	return false;
 }
