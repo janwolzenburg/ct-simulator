@@ -65,7 +65,7 @@ RayScattering::RayScattering(	const size_t anglesAmount, const NumberRange energ
 
 double RayScattering::GetRandomAngle( const double energy ) const{
 
-	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() ) ) / energy_resolution_ + 0.5 ), scattering_angle_distributions_.size() - 1 );
+	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() )  / energy_resolution_ + 0.5 ) ), scattering_angle_distributions_.size() - 1 );
 	
 	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber();
 
@@ -78,7 +78,9 @@ ScatteringCrossSection& ScatteringCrossSection::GetInstance( void ){
 
 double ScatteringCrossSection::GetCrossSection( const double energy ) const{
 		
-	const size_t energy_index = static_cast<size_t>( floor( ForcePositive( energy - minimum_energy_in_tube_spectrum ) / energy_resolution_ + 0.5 ) );
+	const size_t energy_index = static_cast<size_t>( floor( 
+		ForcePositive( energy - minimum_energy_in_tube_spectrum ) / 
+		energy_resolution_ + 0.5 ) );
 	if( energy_index >= number_of_energies_  ) return cross_sections_.back().y;
 
 	return cross_sections_.at( energy_index ).y;
@@ -106,16 +108,6 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 										( 1. + 3. * e ) / pow( 1. + 2. * e, 2. )
 									);
 
-		// Flügge S.264
-		const double scattering_cross_section =	PI * pow( r_e_mm, 2. ) * 
-												( 
-													log( 1. + 2. * e ) / pow( e, 3. ) + 
-														( 2. * ( 1. + e ) * ( 2. * pow( e, 2. ) - 2. * e - 1. ) ) / 
-														( pow( e, 2. ) * pow( 1. + 2. * e, 2. ) ) + 
-													( 8. * pow( e, 2. ) ) / ( 3. * pow( 1. + 2. * e, 3. ) )
-												);
-
 		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, collision_cross_section };
-		//cross_sections_collision.at( current_energy_index ) = Tuple2D{ energy_eV, collision_cross_section };
 	}
 }
