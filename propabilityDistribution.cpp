@@ -46,21 +46,17 @@ unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 	return randomNumber;
 }
 
-bool RandomNumberGenerator::DidARandomEventHappen( const double eventPropability ){
+bool RandomNumberGenerator::DidARandomEventHappen( const double event_propability ){
 
-	const unsigned int numberInterval = distribution_.max() - distribution_.min();
-	
-	const double singleValuePropability = 1. /  ( static_cast<double>( numberInterval ) + 1. );
+	const unsigned int interval = distribution_.max() - distribution_.min() + 1;
+	const double single_value_propability = 1. / static_cast<double>( interval );
+	const unsigned int event_interval = static_cast<unsigned int>( event_propability / single_value_propability );
 
-	const unsigned int eventIntervalSize = (unsigned int) (eventPropability / singleValuePropability);
+	const unsigned int random_integer = GetRandomNumber();
 
-	const unsigned int randomInteger = GetRandomNumber();
-
-
-	if( randomInteger >= distribution_.min() && randomInteger <= distribution_.min() + eventIntervalSize ) return true;
+	if( random_integer >= distribution_.min() && random_integer <= distribution_.min() + event_interval ) return true;
 
 	return false;
-
 }
 
 
@@ -72,33 +68,33 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double eventPropability
 PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution, const size_t max_number_of_bins ) :
 	distribution_( Normalise( distribution ) )
 {
-	const double bin_amount_scaling = 4.;		// Factor for the number of bins. When it is greater, smaller properties can appearin the uniform propability
+	const double bin_amount_scaling = 4.;		// Factor for the number of bins. When it is greater, smaller properties can appear in the uniform propability
 
 	// Sort distribution by x value ( variate of distribution )
 	std::sort( distribution_.begin(), distribution_.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
 
 
 	// Sorted distribution by propability
-	vector<Tuple2D> sortedDistribution = distribution_;
+	vector<Tuple2D> sorted_distribution = distribution_;
 
 	// Get the smallest probability
-	std::sort( sortedDistribution.begin(), sortedDistribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
-	double smallestPropability = sortedDistribution.front().y;
+	std::sort( sorted_distribution.begin(), sorted_distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
+	double smallest_propability = sorted_distribution.front().y;
 
-	// Check against maximum number_of_pixel of bins
-	if( 1. / smallestPropability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) 
-		smallestPropability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
+	// Check against maximum number of bins
+	if( 1. / smallest_propability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) 
+		smallest_propability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
 
 	// Insert amount corrensponding to probability into uniform distribution
 	for( const Tuple2D& currentValue : distribution_ ){
 
-		const double currentProbabilty = currentValue.y;
+		const double current_probabilty = currentValue.y;
 
 		// How many elements of current value to add to vector. The factor 4 is used
-		const size_t currentBinAmount = static_cast<size_t>( floor( bin_amount_scaling * currentProbabilty / smallestPropability + 0.5 ) );
+		const size_t current_bin_amount = static_cast<size_t>( floor( bin_amount_scaling * current_probabilty / smallest_propability + 0.5 ) );
 
 		// Insert into vector
-		uniform_propabilities_.insert( uniform_propabilities_.end(), currentBinAmount, currentValue.x );
+		uniform_propabilities_.insert( uniform_propabilities_.end(), current_bin_amount, currentValue.x );
 
 	}
 }
