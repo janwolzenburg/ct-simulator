@@ -136,7 +136,8 @@ class Gantry{
 	 * @param detector_mutexMutex for the detector Object
 	*/
 	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties& tomography_properties, 
-										const RayScattering& scatter_angles,	const vector<Ray>& rays, 
+										RayScattering& rayScatterAngles, 
+										mutex& scattering_properties_mutex,	const vector<Ray>& rays, 
 										const bool repeat_transmission_after_scattering,
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,

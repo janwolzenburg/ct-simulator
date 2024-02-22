@@ -72,9 +72,9 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L line, const S su
 	
 	// Copy result
 	intersection_exists_ = true;							// Solution found
-	line_parameter_ = sysSol.GetVariableValue( 2 );			// Line parameter
-	surface_parameter_1_ = sysSol.GetVariableValue( 0 );	// Surface parameter A
-	surface_parameter_2_ = sysSol.GetVariableValue( 1 );	// Surface parameter B
+	line_parameter_ = solution.GetVariableValue( 2 );			// Line parameter
+	surface_parameter_1_ = solution.GetVariableValue( 0 );	// Surface parameter A
+	surface_parameter_2_ = solution.GetVariableValue( 1 );	// Surface parameter B
 	intersection_point_ = line.GetPoint( line_parameter_ );	// Point of intersection
 
 	// Surface parameters outside allowed bounds of surface

@@ -352,7 +352,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 			if( tomography_properties.scattering_enabled && !disable_scattering && IsPointInside( current_point_on_ray ) ){
 				// Scatter the ray
 				const vector<Ray> scattered_rays = std::move( local_ray.Scatter( 
-						scattering_properties, current_voxel_data, distance_in_voxel, 
+						scattering_properties, scattering_properties_mutex,
+						current_voxel_data, distance_in_voxel, 
 						tomography_properties, current_point_on_ray ) );
 
 				// Append scattered rays

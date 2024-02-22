@@ -65,7 +65,9 @@ void Gantry::TranslateInZDirection( const double distance ){
 }
 
 void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties& tomoParameter, 
-									const RayScattering& rayScatterAngles, const vector<Ray>& rays, 
+									RayScattering& rayScatterAngles, 
+									mutex& scattering_properties_mutex,
+									const vector<Ray>& rays, 
 									const bool repeat_transmission_after_scattering,
 									size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
 									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
@@ -90,7 +92,7 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 		currentRay =  rays.at( currentRayIndex );
 
 		// Transmit Ray through model
-		returned_rays = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), cref( rayScatterAngles ) ) );
+		returned_rays = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), ref( rayScatterAngles ), ref( scattering_properties_mutex ) ) );
 
 		rayDetector.DetectRay( ref( returned_rays.first ), ref( detectorMutex ) );
 
@@ -126,6 +128,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	mutex rayIndexMutex;				// Mutex for Ray index
 	mutex raysForNextIterationMutex;	// Mutex for vector of rays for next iteration
 	mutex detectorMutex;				// Mutex for detector
+	mutex scatterMutex;
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t currentLoop = 0; currentLoop <= tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
@@ -146,7 +149,9 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
 			
 			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
-														cref( scattering_information ), cref( rays ),
+														ref( scattering_information ), 
+														ref( scatterMutex ),
+														cref( rays ),
 														currentLoop == 0,
 														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
 														ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
