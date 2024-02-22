@@ -65,9 +65,26 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 	propabilityDistribution implementation
 */
 
-PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution, const size_t max_number_of_bins ) :
-	distribution_( Normalise( distribution ) )
+PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution ) : //, const size_t max_number_of_bins ) :
+	//distribution_( Normalise( distribution ) ), // Ensure that sum of values is one
+	values_( distribution.size(), 0. )
 {
+
+	// Vector with weights of variates
+	vector<double> weights( distribution.size(), 0. );
+
+	// Get values and weight from distribution
+	for( size_t value_index = 0; value_index < distribution.size(); value_index++ ){
+	
+		values_.at( value_index ) = distribution.at( value_index ).x;
+		weights.at( value_index ) = distribution.at( value_index ).y;
+
+	}
+
+	// Build distribution from weights
+	distribution_ = std::discrete_distribution<unsigned int>( weights.begin(), weights.end() );
+
+	/*
 	const double bin_amount_scaling = 4.;		// Factor for the number of bins. When it is greater, smaller properties can appear in the uniform propability
 
 	// Sort distribution by x value ( variate of distribution )
@@ -96,12 +113,15 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 		// Insert into vector
 		uniform_propabilities_.insert( uniform_propabilities_.end(), current_bin_amount, currentValue.x );
 
-	}
+	}*/
 }
 
-double PropabilityDistribution::GetRandomNumber( void ) const{
+double PropabilityDistribution::GetRandomNumber( void ){
 	
-	size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
-	if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
-	return uniform_propabilities_.at( randomIndex );
+	//size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
+	//if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
+	//return uniform_propabilities_.at( randomIndex );
+
+	return distribution_( integer_random_number_generator.generator() );
+
 }
