@@ -122,6 +122,6 @@ double PropabilityDistribution::GetRandomNumber( void ){
 	//if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
 	//return uniform_propabilities_.at( randomIndex );
 
-	return distribution_( integer_random_number_generator.generator() );
+	return values_.at( distribution_( integer_random_number_generator.generator() ) );
 
 }

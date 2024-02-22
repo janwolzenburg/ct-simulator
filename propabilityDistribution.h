@@ -76,7 +76,6 @@ class PropabilityDistribution{
 	/*!
 	 * @brief Constructor
 	 * @param distribution Pseudo distribution. Sum of y values must not be equal to one
-	 * @param max_number_of_bins Maximum amount of bins to put the distribution in. Low number may exclude low propabilites
 	*/
 	PropabilityDistribution( const vector<Tuple2D> distribution );//, const size_t max_number_of_bins );
 
