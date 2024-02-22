@@ -200,7 +200,8 @@ class Model : public MathematicalObject{
 	 * @param disable_scattering Flag to override eneabled scattering in tomography_properties
 	 * @return Rays that has been scattered or left the model
 	*/
-	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties, const bool disable_scattering = false ) const;
+	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, RayScattering& scattering_properties, 
+																					 mutex& scattering_properties_mutex, const bool disable_scattering = false ) const;
 
 	/*!
 	 * @brief Crop model

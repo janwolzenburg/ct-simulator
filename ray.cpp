@@ -118,7 +118,8 @@ void Ray::SetDirection( const UnitVector3D new_direction ){
 }
 
 
-vector<Ray> Ray::Scatter( const RayScattering& scattering_information, 
+vector<Ray> Ray::Scatter( RayScattering& scattering_information, 
+													mutex& scattering_properties_mutex,
 													const VoxelData voxel_data, 
 													const double distance_traveled_mm, 
 													const TomographyProperties tomography_properties, 
@@ -166,7 +167,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information,
 					scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
 				// Random angle
-				const double angle = ForceRange( scattering_information.GetRandomAngle( energy ), -PI, PI );			
+				const double angle = ForceRange( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ), -PI, PI );			
 				
 				// If angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
@@ -241,13 +242,22 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information,
 											properties_.energy_spectrum_.data().at( energy_index ).y / 
 												static_cast<double>( bins_per_energy );
 			
-			new_energies.first.push_back( new_energy );
-			new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
-		
+			// Scalers for energies in incoming ray. Only accounts for energy lost to new rays without
+			// considering der angle dependent energy loss (Compton-Aporption). This is because the 
+			// Compton-Absorption is already accounted for in the absorption routine
 			energy_scalars.at( energy_index ) *= 
 				pow( 1. - tomography_properties.scattered_ray_absorption_factor / 
 					static_cast<double>( bins_per_energy ), 
 				static_cast<double>( number_of_scattered_bins ) );
+
+			// Check if this bin is scattered inside the scattering plane 
+			if( abs( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ) ) <= scattering_information.max_angle_to_lie_in_plane() ){
+				// Add bin to new ray			
+				new_energies.first.push_back( new_energy );
+				new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
+			}
+
+
 			energy_index++;
 		}
 
@@ -258,12 +268,13 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information,
 
 			// Discard scattered ray when its angle to the scattering plane is
 			// too large meaning it would not hit the detector
-			if( !integer_random_number_generator.DidARandomEventHappen( 
-				2. * scattering_information.max_angle_to_lie_in_plane() / PI ) ){
+			//if( !integer_random_number_generator.DidARandomEventHappen( 
+			//	2. * scattering_information.max_angle_to_lie_in_plane() / PI ) ){
+			//if( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ) )
 				
-				angle_index++;
-				continue;
-			}
+			//	angle_index++;
+			//	continue;
+			//}
 
 			// Use complete amount of scattered bins to take scattering into account of simple intensity
 			const double scattered_bins_fraction = 

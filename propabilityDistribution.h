@@ -82,7 +82,7 @@ class PropabilityDistribution{
 	/*!
 	 * @brief Get a random value according to distribution
 	*/
-	double GetRandomNumber( void );
+	double GetRandomNumber( mutex& scattering_properties_mutex );
 
 
 	private:

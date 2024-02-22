@@ -198,7 +198,8 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 
 pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray, 
 																					 const TomographyProperties& tomography_properties, 
-																					 const RayScattering& scattering_properties, 
+																					 RayScattering& scattering_properties, 
+																					 mutex& scattering_properties_mutex,
 																					 const bool disable_scattering ) const{
 
 	// Current ray in model's coordinate system

@@ -54,14 +54,14 @@ class RayScattering{
 	*/
 	double angle_resolution( void ) const{ return angle_resolution_; };
 
-	double max_angle_to_lie_in_plane( void ) const{ return max_angle_to_lie_in_plane_; };
+	double max_angle_to_lie_in_plane( void ) const{ return max_angle_to_lie_in_scatter_plane_; };
 
 	/*!
 	 * @brief Get a random angle to given energy
 	 * @param energy Mean energy of Ray
 	 * @return Random angöe
 	*/
-	double GetRandomAngle( const double energy_eV ) const;
+	double GetRandomAngle( const double energy_eV,  mutex& scattering_properties_mutex );
 
 
 	private:
@@ -75,7 +75,7 @@ class RayScattering{
 
 	UnitVector3D scattering_plane_normal_;	/*!< Rotation normal for scattered rays*/
  
-	double max_angle_to_lie_in_plane_;		/*!< Maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded*/
+	double max_angle_to_lie_in_scatter_plane_;		/*!< Maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded*/
  };
 
 

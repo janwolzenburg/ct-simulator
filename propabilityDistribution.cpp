@@ -116,12 +116,15 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	}*/
 }
 
-double PropabilityDistribution::GetRandomNumber( void ){
+double PropabilityDistribution::GetRandomNumber(  mutex& scattering_properties_mutex ){
 	
 	//size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
 	//if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
 	//return uniform_propabilities_.at( randomIndex );
 
-	return values_.at( distribution_( integer_random_number_generator.generator() ) );
+	scattering_properties_mutex.lock();
+	double value =  values_.at( distribution_( integer_random_number_generator.generator() ) );
+	scattering_properties_mutex.unlock();
+	return value;
 
 }

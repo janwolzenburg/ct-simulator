@@ -20,54 +20,53 @@
 *********************************************************************/
 
 
-RayScattering::RayScattering(	const size_t anglesAmount, const NumberRange energyRange_, const size_t energyAmount_, 
-								const UnitVector3D scatteredNormal_, const double max_angle_to_lie_in_plane ) :
-	number_of_energies_( ForcePositive( energyAmount_ ) ),
-	angle_resolution_( ( 2. * PI ) / static_cast<double>( anglesAmount - 1 ) ),
-	energy_range_( energyRange_ ),
+RayScattering::RayScattering(	const size_t number_of_angles, 
+															const NumberRange energy_range, 
+															const size_t number_of_energies, 
+															const UnitVector3D scattering_normal, 
+															const double maximum_angle_to_lie_in_scatter_plane ) :
+	number_of_energies_( ForcePositive( number_of_energies ) ),
+	angle_resolution_( ( 2. * PI ) / static_cast<double>( number_of_angles - 1 ) ),
+	energy_range_( energy_range ),
 	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / static_cast<double>( number_of_energies_ - 1 ) ),
-	scattering_plane_normal_( scatteredNormal_ ),
-	max_angle_to_lie_in_plane_( max_angle_to_lie_in_plane )
+	scattering_plane_normal_( scattering_normal ),
+	max_angle_to_lie_in_scatter_plane_( maximum_angle_to_lie_in_scatter_plane )
 {
 	// Iterate all frequencies
-	for( size_t currentEnergyIndex = 0; currentEnergyIndex < number_of_energies_; currentEnergyIndex++ ){
+	for( size_t energy_index = 0; energy_index < number_of_energies_; energy_index++ ){
 
-		const double currentEnergy = energy_range_.start() + static_cast<double>( currentEnergyIndex ) * energy_resolution_;
+		const double energy = energy_range_.start() + static_cast<double>( energy_index ) * energy_resolution_;
 
 		// Calculate pseudo propability distribution
-		vector<Tuple2D> pseudoDistribution;
+		vector<Tuple2D> pseudo_distribution;
 
 		// Initial photon energy
-		const double a = currentEnergy / me_c2_eV;
+		const double a = energy / me_c2_eV;
 	
 		// Iterate all angles
-		for( size_t currentAngleIndex = 0; currentAngleIndex < anglesAmount; currentAngleIndex++ ){
-
-			const double t = -PI + static_cast<double>( currentAngleIndex ) * angle_resolution_;
-
+		for( size_t angle_index = 0; angle_index < number_of_angles; angle_index++ ){
+			
+			const double angle = -PI + static_cast<double>( angle_index ) * angle_resolution_;
+			const double t = angle;
 			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
 
-			pseudoDistribution.emplace_back( t, pseudoProbability );
+			pseudo_distribution.emplace_back( t, pseudoProbability );
 
-			if( currentAngleIndex == ( anglesAmount - 1 ) / 2 ) 
-				pseudoDistribution.emplace_back( t, pseudoProbability );
+			if( angle_index == ( number_of_angles - 1 ) / 2 ) 
+				pseudo_distribution.emplace_back( t, pseudoProbability );
 
 		}
-
-		scattering_angle_distributions_.emplace_back( currentEnergy, PropabilityDistribution{ pseudoDistribution, max_number_of_bins } );
-
-
+		scattering_angle_distributions_.emplace_back( energy, PropabilityDistribution{ pseudo_distribution } );
+	
 	}
+}
 
-
-};
-
-double RayScattering::GetRandomAngle( const double energy ) const{
+double RayScattering::GetRandomAngle( const double energy, mutex& scattering_properties_mutex ){
 
 	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() )  / energy_resolution_ + 0.5 ) ), scattering_angle_distributions_.size() - 1 );
-	
-	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber();
+
+	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber( scattering_properties_mutex );
 
 }
 
