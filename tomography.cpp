@@ -85,66 +85,74 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 }
 
 
-
-optional<Projections> Tomography::RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& Model, const double zPosition, Fl_Progress_Window* progressWindow ){
+optional<Projections> Tomography::RecordSlice( 
+	const ProjectionsProperties projection_properties, Gantry gantry, 
+	const Model& model, const double z_position, Fl_Progress_Window* progress_window ){
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
 
 	// Translate Gantry
-	if( zPosition != 0. )
-		gantry.TranslateInZDirection( zPosition );
+	if( z_position != 0. )
+		gantry.TranslateInZDirection( z_position );
 
-	// Assign gantry csys-data to radon coordinate system
+	// Assign gantry coordinate-system's unit-vectors to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
 
-	// Create sinogram 
-	Projections sinogram{ radon_properties, properties_ };
+	// Create projections 
+	Projections projections{ projection_properties, properties_ };
 
 	// Radiate the model for each frame
-	for( size_t currentFrame = 0; currentFrame < radon_properties.number_of_frames_to_fill(); currentFrame++ ){
+	for( size_t frame_index = 0; frame_index < projection_properties.number_of_frames_to_fill(); frame_index++ ){
 		
-		if( progressWindow != nullptr ) 
-			progressWindow->ChangeLineText( 0, "Radiating frame " + ToString( currentFrame ) + " of " + ToString( radon_properties.number_of_frames_to_fill() ) );
+		if( progress_window != nullptr ) 
+			progress_window->ChangeLineText( 0, "Radiating frame " + 
+				ToString( frame_index ) + " of " + 
+				ToString( projection_properties.number_of_frames_to_fill() ) );
 
 		// Radiate
-		gantry.RadiateModel( Model, properties_ );
+		gantry.RadiateModel( model, properties_ );
 
 		// Get the detection result
-		const vector<DetectorPixel> detectionPixel = gantry.pixel_array();
-
+		const vector<DetectorPixel> pixel_array = std::move( gantry.pixel_array() );
 
 		// Iterate all pixel
-		for( const DetectorPixel& currentPixel : detectionPixel ){
+		for( const DetectorPixel& pixel : pixel_array ){
 
 			// Get Coordinates for pixel
-			const RadonCoordinates newRadonCoordinates{ this->radon_coordinate_system_, currentPixel.NormalLine() };
+			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, pixel.NormalLine() };
 
-			optional<double> line_integral = currentPixel.GetDetectedLineIntegral( properties_.use_simple_absorption, gantry.tube().number_of_rays_per_pixel(), gantry.tube().GetEmittedBeamPower() / ( static_cast<double>( detectionPixel.size() ) * static_cast<double>( gantry.tube().number_of_rays_per_pixel() ) ) );
+			optional<double> line_integral = pixel.GetDetectedLineIntegral( 
+												properties_.use_simple_absorption, 
+												gantry.tube().number_of_rays_per_pixel(), 
+												gantry.tube().GetEmittedBeamPower() / 
+												( static_cast<double>( pixel_array.size() ) * 
+													static_cast<double>( gantry.tube().number_of_rays_per_pixel() ) 
+												) );
 			
 			// If no value no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
 			if( !line_integral.has_value() ){
 				line_integral = 25.; // Is like ray's energy is 1 / 100000000000 of its start energy 
 			}
+
 			// Get the radon point
-			const RadonPoint newRadonPoint{ newRadonCoordinates, line_integral.value() };
+			const RadonPoint radon_point{ radon_coordinates, line_integral.value() };
 
 			// Assign the data to sinogram
-			sinogram.AssignData( newRadonPoint );
+			projections.AssignData( radon_point );
 		}
 		
 		// Rotate gantry
-		gantry.RotateCounterClockwise( radon_properties.angles_resolution() );
+		gantry.RotateCounterClockwise( projection_properties.angles_resolution() );
 
 		Fl::check();
 
-		if( progressWindow != nullptr ){
-			if( !progressWindow->visible() ){
+		if( progress_window != nullptr ){
+			if( !progress_window->visible() )
 				return {};
-			}
 		}
 	}
 
-	return sinogram;
+	return projections;
 }
