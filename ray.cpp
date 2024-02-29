@@ -26,7 +26,7 @@
 void RayProperties::AttenuateSpectrum( const VoxelData& voxel_data, const double distance ){
 	energy_spectrum_.GetAbsorped( voxel_data, distance );
 	#ifdef TRANSMISSION_TRACKING
-	only_absorption_spectrum.GetAbsorped( voxelData, distance );
+	only_absorption_spectrum.GetAbsorped( voxel_data, distance );
 	#endif
 	simple_intensity_ *= exp( -voxel_data.GetAbsorptionAtEnergy( reference_energy_for_mu_eV ) * distance );
 }
