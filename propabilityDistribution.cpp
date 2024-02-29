@@ -29,7 +29,8 @@
 	randomNumberGenerator implementation
 */
 
-RandomNumberGenerator integer_random_number_generator{ 0, UINT32_MAX };
+// Minus one is important!
+RandomNumberGenerator integer_random_number_generator{ 0, UINT32_MAX - 1 };
 
 RandomNumberGenerator::RandomNumberGenerator( const unsigned int minValue, const unsigned int maxValue ) :
 	generator_{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() },
