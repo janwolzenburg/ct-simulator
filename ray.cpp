@@ -218,6 +218,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		// Iterate all energy bins that were scattered in current direction
 		size_t energy_index = 0;
 		bool current_angle_has_ray_with_nonzero_energies = false;
+
 		for( const auto& number_of_scattered_bins : scattered_energies ){
 
 			// Continue if no scattering for this energy happened
@@ -228,8 +229,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 			// Accumulate number of bins over all energies
 			scattered_bins_for_current_angle += number_of_scattered_bins;
-
-			current_angle_has_ray_with_nonzero_energies = true;
 
 			// Get current energy value
 			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
@@ -254,7 +253,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			if( abs( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ) ) <= scattering_information.max_angle_to_lie_in_plane() ){
 				// Add bin to new ray			
 				new_energies.first.push_back( new_energy );
-				new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );
+				new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );		
+				current_angle_has_ray_with_nonzero_energies = true;
 			}
 
 
