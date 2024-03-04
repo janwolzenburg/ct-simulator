@@ -79,6 +79,6 @@ class Backprojection : private DataGrid<> {
 	static void ReconstructImageColumn(	size_t& current_x_index,				mutex& current_x_index_mutex, 
 										Backprojection& reconstructed_image,	mutex& reconstructed_image_mutex, 
 										Fl_Progress_Window* progress_window,	mutex& progress_window_mutex, 
-										const FilteredProjections filtered_projections );
+										const FilteredProjections& filtered_projections );
 
 };

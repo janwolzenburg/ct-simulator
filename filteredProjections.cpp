@@ -26,59 +26,75 @@ using std::cref;
 
 const string FilteredProjections::FILE_PREAMBLE{ "FILTEREDPROJECTIONS_FILE_PREAMBLE" };
 
-FilteredProjections::FilteredProjections( const Projections projections, const BackprojectionFilter::TYPE filterType, Fl_Progress_Window* progress ) :
-	DataGrid{ projections.data().size(), projections.data().start(), projections.data().resolution(), 0. },		// Data grids have equal size
-	filter_{ NaturalNumberRange{ -( signed long long ) size().r + 1, ( signed long long ) size().r - 1 }, resolution().r, filterType }
+FilteredProjections::FilteredProjections( 
+																	const Projections& projections, 
+																	const BackprojectionFilter::TYPE filter_type, 
+																	Fl_Progress_Window* progress_window ) :
+
+	DataGrid{ projections.data().size(), projections.data().start(), 
+						projections.data().resolution(), 0. },
+	filter_{ NaturalNumberRange{ -static_cast<signed long long>( size().r + 1 ), 
+																static_cast<signed long long>( size().r - 1 ) }, 
+																resolution().r, filter_type }
 {
+	const size_t number_of_angles = size().c;			// Number of angles
+	const size_t number_of_distances = size().r;	// Number of distances
 
-	// Define variables for easy access
-	
-	const size_t nT = size().c;		// Number of angles
-	const size_t N_s = size().r;		// Number of distances
-
-	const double D_s = resolution().r;	// Distance resolution
+	const double distance_resolution = resolution().r;	// Distance resolution
 	
 
-	// Local copy of projection data_
-	const DataGrid<> projectionsData = projections.data();
+	// Local copy of projection data
+	const DataGrid<> projections_data = std::move( projections.data() );
 
-	// Iterate all thetas
-	for( size_t t = 0; t < nT; t++ ){
+	// Iterate all angles
+	for( size_t angle_index = 0; angle_index < number_of_angles; angle_index++ ){
 
-		if( progress != nullptr )
-			progress->ChangeLineText( 0, "Filtering angle " + ToString( t + 1 ) + " of " + ToString( nT ) );
+		if( progress_window != nullptr )
+			progress_window->ChangeLineText( 0, "Filtering angle " 
+																					+ ToString( angle_index + 1 )
+																				  + " of " + ToString( number_of_angles ) );
 
 		// Iterate all distances
-		for( size_t l = 0; l < N_s; l++ ){
+		for( size_t distance_index = 0; 
+								distance_index < number_of_distances; 
+								distance_index++ ){
+
 			if( filter_.type() == BackprojectionFilter::TYPE::constant ){
-				this->SetData( GridIndex{ t, l }, projectionsData.GetData( GridIndex{ t, l } ) );
+				this->SetData( 
+					GridIndex{ angle_index, distance_index }, 
+					projections_data.GetData( GridIndex{ angle_index, distance_index } ) );
 				continue;
 			}
 
 			// Convolute filter with with projections
-			double convolutionResult = 0;
+			double convolution_sum = 0;
 
-			for( signed long long m = filter_.points_range().start(); m <= filter_.points_range().end(); m++ ){
+			for( signed long long kernel_index = filter_.points_range().start(); 
+														kernel_index <= filter_.points_range().end(); 
+														kernel_index++ ){
 
 				// Index of current row in projection data
-				signed long long projection_row_index = static_cast<signed long long>( l ) - m;
+				signed long long projection_row_index = 
+					static_cast<signed long long>( distance_index ) - kernel_index;
 				
-				// Index out of bounds of input data -> add nothing is like padding input data with zero/
-				if( projection_row_index < 0 || projection_row_index >= static_cast<signed long long>( N_s ) ){
+				// Index out of bounds of input data -> add nothing is like padding input data with zero
+				if( projection_row_index < 0 || 
+						projection_row_index >= static_cast<signed long long>( number_of_distances ) ){
 					continue;
 				}
 
 				// projection data
-				const double P_T = projectionsData.GetData( GridIndex{ t, static_cast<size_t>( projection_row_index ) } );
+				const double projection_value = projections_data.GetData( 
+					GridIndex{ angle_index, static_cast<size_t>( projection_row_index ) } );
 
 				// filter value
-				const double h_n = filter_( m );
+				const double kernel_value = filter_( kernel_index );
 
 				// Multiply
-				convolutionResult += h_n * P_T;
+				convolution_sum += kernel_value * projection_value;
 			}
-			convolutionResult *= D_s;
-			this->SetData( GridIndex{ t, l }, convolutionResult );
+			convolution_sum *= distance_resolution;
+			this->SetData( GridIndex{ angle_index, distance_index }, convolution_sum );
 
 		}
 		Fl::check();
@@ -87,31 +103,36 @@ FilteredProjections::FilteredProjections( const Projections projections, const B
 }
 
 
-double FilteredProjections::GetValue( const size_t angleIdx, const double distance ) const{
+double FilteredProjections::GetValue( const size_t angle_index, 
+																			const double distance ) const{
 
+	const double distance_resolution = resolution().r;	// Distance resolution
+	const size_t number_of_distances = size().r;				// Number of distances
 
-	const double dD = resolution().r;	// Distance resolution
-	const size_t nD = size().r;			// Number of distances
+	// Exact "index" of distance. Ideally we want to get the value at this index
+	const double exact_index = ForceRange( 
+								distance / distance_resolution 
+								+ static_cast<double>( number_of_distances - 1 ) / 2.,
+								0., static_cast<double>( number_of_distances ) - 1. );		
 
-	double exactDistanceIdx = distance / dD + static_cast<double>( nD - 1 ) / 2.;		// Exact "index" of distance
-
-	// Index must be in bounds
-	exactDistanceIdx = ForceRange( exactDistanceIdx, 0., static_cast<double>( nD ) - 1.);
-
-	// If the exact index is a whole number_of_pixel
-	if( IsNearlyEqualDistance( round( exactDistanceIdx ), exactDistanceIdx ) ){
+	// If the exact index is a whole number skip interpolation
+	if( IsNearlyEqualDistance( round( exact_index ), exact_index ) ){
 		// Return value at distance index
-		return this->operator()( GridIndex{ angleIdx, static_cast<size_t>( exactDistanceIdx ) } );
+		return this->operator()( GridIndex{ angle_index, static_cast<size_t>( exact_index ) } );
 	}
 
 	// Interpolate
-	const size_t distanceIdxFloor = static_cast<size_t>( floor( exactDistanceIdx ) );		// Lower index
-	const size_t distanceIdxCeil = static_cast<size_t>( ceil( exactDistanceIdx ) );			// Upper index
+	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );		// Lower index
+	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );			// Upper index
 
-	const double valueAtFloor = this->operator()( GridIndex{ angleIdx, distanceIdxFloor } );	// Value at floor index
-	const double valueAtCeil = this->operator()( GridIndex{ angleIdx, distanceIdxCeil } );	// Value at ceil index
+	const double value_floor = this->operator()( 
+		GridIndex{ angle_index, index_floor } );	// Value at floor index
+	const double value_ceil  = this->operator()( 
+		GridIndex{ angle_index, index_ceil } );	// Value at ceil index
 
 	// Return the interpolated value
-	return valueAtFloor + ( valueAtCeil - valueAtFloor ) / static_cast<double>( distanceIdxCeil - distanceIdxFloor ) * ( exactDistanceIdx - static_cast<double>( distanceIdxFloor ) );
+	return value_floor + ( value_ceil - value_floor ) 
+										   / static_cast<double>( index_ceil - index_floor ) 
+											 * ( exact_index - static_cast<double>( index_floor ) );
 
 }

@@ -44,7 +44,7 @@ class FilteredProjections : private DataGrid<> {
 	 * @param filter_type Type of filter to apply
 	 * @param progress_window FL window to track progress
 	*/
-	FilteredProjections( const Projections projections, const BackprojectionFilter::TYPE filter_type, Fl_Progress_Window* progress_window = nullptr );
+	FilteredProjections( const Projections& projections, const BackprojectionFilter::TYPE filter_type, Fl_Progress_Window* progress_window = nullptr );
 	
 	FilteredProjections( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
 	DataGrid<>{ binary_data, current_byte }{};

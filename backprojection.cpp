@@ -26,16 +26,17 @@ using std::cref;
 
 const string Backprojection::FILE_PREAMBLE{ "BACKPROJECTION_FILE_PREAMBLE" };
 
-void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex& current_angle_index_mutex, Backprojection& image, 
-											mutex& imageMutex, Fl_Progress_Window* progress, mutex& progressMutex, 
-											const FilteredProjections projections ){
+void Backprojection::ReconstructImageColumn(	
+										 size_t& current_angle_index, mutex& current_angle_index_mutex, 
+										 Backprojection& image, mutex& image_mutex, 
+										 Fl_Progress_Window* progress, mutex& progress_mutex, 
+										 const FilteredProjections& projections ){
 
-	const size_t number_of_distances = image.size().r;				// Number of distances
-	const double distance_resolution = image.resolution().r;		// Distance resolution
+	const size_t number_of_distances = image.size().r;			// Number of distances
+	const double distance_resolution = image.resolution().r;// Distance resolution
 
-	const size_t number_of_angles = projections.size().c;			// Number of angles
-	const double angle_resolution = projections.resolution().c;		// Angle resolution
-
+	const size_t number_of_angles = projections.size().c;				// Number of angles
+	const double angle_resolution = projections.resolution().c;	// Angle resolution
 
 	while( current_angle_index < number_of_angles ){
 
@@ -48,40 +49,47 @@ void Backprojection::ReconstructImageColumn(	size_t& current_angle_index, mutex&
 		if( angle_index >= number_of_angles ) break;
 
 		if( progress != nullptr ){
-			progressMutex.lock();
-			progress->ChangeLineText( 1, "Backprojection projection " + ToString( angle_index + 1 ) + " of " + ToString( number_of_angles ) );
-			progressMutex.unlock();
+			progress_mutex.lock();
+			progress->ChangeLineText( 1, "Backprojection projection " 
+																	 + ToString( angle_index + 1 ) + " of " 
+																	 + ToString( number_of_angles ) );
+			progress_mutex.unlock();
 		}
-		
-		const double angle = static_cast<double>( angle_index ) * angle_resolution + angle_resolution / 2.;			// Current angle value
+
+		// Current angle value
+		const double angle = static_cast<double>( angle_index ) 
+												 * angle_resolution + angle_resolution / 2.;			
 		const double cos_angle = cos( angle );
 		const double sin_angle = sin( angle );
 
+		// Iterate image columns
 		for( size_t column_index = 0; column_index < number_of_distances; column_index++ ){
-			//const double x = static_cast<double>( static_cast<signed long long>( column_index ) - static_cast<signed long long>( number_of_distances ) / 2 ) * distance_resolution;		// x value on image
 			const double column_coordinate = image.GetColCoordinate( column_index );
 
+			// iterate image rows
 			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){
-				
-				//const double row_coordinate = static_cast<double>( static_cast<signed long long>( row_index ) - static_cast<signed long long>( number_of_distances ) / 2 + 1 ) * distance_resolution;		// y value on image
 				const double row_coordinate = image.GetRowCoordinate( row_index );
-				const double t = column_coordinate * cos_angle + row_coordinate * sin_angle;	// Current "distance" or magnitude in polar Coordinates
-
-				const double projectionValue = projections.GetValue( angle_index, t );
-				double new_value = projectionValue * PI / static_cast<double>( number_of_angles );
 				
-				imageMutex.lock();
+				// Pixel's "distance" or magnitude in polar Coordinates
+				const double s = column_coordinate * cos_angle + row_coordinate * sin_angle;	
+
+				// Projection value for given angle and distance
+				const double projection_value = projections.GetValue( angle_index, s );
+				
+				// Value to add to pixel value
+				double new_value = projection_value * PI / static_cast<double>( number_of_angles );
+				
+				image_mutex.lock();
 				new_value += image.GetData( GridIndex{ column_index, row_index } );
 				image.SetData( GridIndex{ column_index, row_index }, new_value );
-				imageMutex.unlock();
+				image_mutex.unlock();
 			}
 		}
 
-		progressMutex.lock();
+		progress_mutex.lock();
 		Fl::check(); 
-		progressMutex.unlock();
+		progress_mutex.unlock();
 	}
-
 }
 
 
@@ -92,11 +100,8 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 	const double side_length = distance_range;// / sqrt ( 2 );
 	const GridCoordinates image_start{ -side_length / 2., -side_length / 2.  };
 
-
-	double image_resolution = projections.resolution().r;
-
-	const size_t number_of_pixel = ForceEven( static_cast<size_t>( 2.* floor( ( side_length / image_resolution + 1 ) ) ) );
-	image_resolution = side_length / ( number_of_pixel - 1 );
+	const size_t number_of_pixel = static_cast<size_t>( 2.* floor( ( side_length / projections.resolution().r + 1 ) ) );
+	const double image_resolution = side_length / ( number_of_pixel - 1 );
 	
 	const GridIndex image_size{ number_of_pixel, number_of_pixel };
 
