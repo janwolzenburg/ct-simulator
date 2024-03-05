@@ -132,7 +132,6 @@ double FilteredProjections::GetValue( const size_t angle_index,
 
 	// Return the interpolated value
 	return value_floor + ( value_ceil - value_floor ) 
-										   / static_cast<double>( index_ceil - index_floor ) 
 											 * ( exact_index - static_cast<double>( index_floor ) );
 
 }
