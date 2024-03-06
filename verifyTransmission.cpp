@@ -123,14 +123,14 @@ void VerifyTransmission( void ){
 		}
 	}
 
-	for( auto ray : rays ){
+	for( const auto& ray : rays ){
 		addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
 	}
 
 	Ray ray = rays.at( 0 );
 	addSingleObject( axis, "Ray", ray, "g", gantry.detector().properties().detector_focus_distance);
 	
-	RayScattering ray_scattering{ number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 	
 	
@@ -165,7 +165,7 @@ void VerifyHardening( void ){
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
 	
-	RayScattering ray_scattering{ number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 
 	Surface slice_surface{ gantry.coordinate_system()->GetEx(), gantry.coordinate_system()->GetEy(), gantry.coordinate_system()->GetOriginPoint() };
@@ -191,7 +191,7 @@ void VerifyHardening( void ){
 		}
 	}
 
-	for( auto ray : rays ){
+	for( const auto& ray : rays ){
 		addSingleObject( axis, "Ray", ray, "r", gantry.detector().properties().detector_focus_distance );
 	}
 
@@ -246,7 +246,7 @@ void VerifyScattering( void ){
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
-	RayScattering ray_scattering{ number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), number_of_energies_for_scattering, gantry_system->GetEz(), atan( gantry.detector().properties().row_width / gantry.detector().properties().detector_focus_distance )};
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, gantry_system->GetEz(), atan( gantry.detector().properties().row_width / gantry.detector().properties().detector_focus_distance )};
 
 	TomographyProperties tomography_properties{ true, 1, 1., true, 1. };
 
@@ -291,7 +291,7 @@ void VerifyScattering( void ){
 
 
 
-	for( auto scattered_ray : returned_rays.second ){
+	for( const auto& scattered_ray : returned_rays.second ){
 		addSingleObject( axis, "Scattered ray", scattered_ray, "g", 0.75*gantry.detector().properties().detector_focus_distance );
 	}
 
@@ -332,7 +332,7 @@ void VerifyScattering( void ){
 	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
 
 	double distance = 0.;
-	for( auto step : returned_rays_loc.first.properties().ray_tracing.tracing_steps ){
+	for( const auto& step : returned_rays_loc.first.properties().ray_tracing.tracing_steps ){
 		if( step.data.GetAbsorptionAtReferenceEnergy() > 0.00001 )
 			distance += step.distance;
 	}
@@ -378,7 +378,7 @@ void VerifyScattering( void ){
 	
 	array<VectorPair, num_energies> angles;
 	for( auto& angles_element : angles ){
-		angles_element = VectorPair{ CreateLinearSpace( 0., PI, ( number_of_scatter_angles + 1) / 2) , vector<double>( (number_of_scatter_angles + 1) / 2, 0. ) };
+		angles_element = VectorPair{ CreateLinearSpace( 0., PI, ( simulation_properties.number_of_scatter_angles + 1) / 2) , vector<double>( (simulation_properties.number_of_scatter_angles + 1) / 2, 0. ) };
 	}
 	
 	double angle_resolution = angles.at(0).first.at(1) - angles.at(0).first.at(0);

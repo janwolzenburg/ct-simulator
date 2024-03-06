@@ -27,7 +27,7 @@
 *********************************************************************/
 
 
-const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver05" };
+const string TomographyProperties::FILE_PREAMBLE{ "TOMO_PARAMETER_FILE_PREAMBLE_Ver06" };
 
 TomographyProperties::TomographyProperties( void ) :
 	scattering_enabled( true ),
@@ -37,13 +37,14 @@ TomographyProperties::TomographyProperties( void ) :
 	scattered_ray_absorption_factor( 1. ),
 	mean_energy_of_tube( reference_energy_for_mu_eV ),
 	name( "Unnamed" ),
-	filter_active( false )
+	filter_active( false ),
+	simulation_quality( 9 )
 
 {}
 
 TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, 
 											const bool use_simple_absorption, const double scattered_ray_absorption_factor,
-											const string identifiaction_name, const bool tube_filter_active ) :
+											const string identifiaction_name, const bool tube_filter_active, const size_t simulation_quality_ ) :
 	scattering_enabled( scattering_ ),
 	max_scattering_occurrences( maxRadiationLoops_ ),
 	scatter_propability_correction( scatterPropability_ ),
@@ -51,7 +52,8 @@ TomographyProperties::TomographyProperties( const bool scattering_, const size_t
 	scattered_ray_absorption_factor( scattered_ray_absorption_factor ),
 	mean_energy_of_tube( reference_energy_for_mu_eV ),
 	name( identifiaction_name ),
-	filter_active( tube_filter_active )
+	filter_active( tube_filter_active ),
+	simulation_quality( simulation_quality_ )
 {}
 
 TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
@@ -62,7 +64,8 @@ TomographyProperties::TomographyProperties( const vector<char>& binary_data, vec
 	scattered_ray_absorption_factor( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
 	mean_energy_of_tube( DeSerializeBuildIn<double>( reference_energy_for_mu_eV, binary_data, it ) ),
 	name( DeSerializeBuildIn<string>( "Unnamed", binary_data, it ) ),
-	filter_active( DeSerializeBuildIn<bool>(false, binary_data, it) )
+	filter_active( DeSerializeBuildIn<bool>(false, binary_data, it) ),
+	simulation_quality( DeSerializeBuildIn<size_t>(9, binary_data, it) )
 
 {
 }
@@ -78,6 +81,7 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 	num_bytes += SerializeBuildIn<double>( mean_energy_of_tube, binary_data );
 	num_bytes += SerializeBuildIn<string>( name, binary_data );
 	num_bytes += SerializeBuildIn<bool>( filter_active, binary_data );
+	num_bytes += SerializeBuildIn<size_t>( simulation_quality, binary_data );
 
 
 	return num_bytes;
@@ -88,6 +92,9 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 optional<Projections> Tomography::RecordSlice( 
 	const ProjectionsProperties projection_properties, Gantry gantry, 
 	const Model& model, const double z_position, Fl_Progress_Window* progress_window ){
+
+	// Update simulation properties
+	simulation_properties = SimulationProperties{ properties_.simulation_quality };
 
 	// Reset gantry to its initial position
 	gantry.ResetGantry();

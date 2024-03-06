@@ -160,7 +160,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
 		// Iterate through energy bins
-		for( size_t bin = 0; bin < bins_per_energy; bin++ ){
+		for( size_t bin = 0; bin < simulation_properties.bins_per_energy; bin++ ){
 
 			// Does scattering happen?
 			if( integer_random_number_generator.DidARandomEventHappen( 
@@ -239,14 +239,14 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			// Calculate the amount of photons in this energies bins
 			const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * 
 											properties_.energy_spectrum_.data().at( energy_index ).y / 
-												static_cast<double>( bins_per_energy );
+												static_cast<double>( simulation_properties.bins_per_energy );
 			
 			// Scalers for energies in incoming ray. Only accounts for energy lost to new rays without
 			// considering der angle dependent energy loss (Compton-Aporption). This is because the 
 			// Compton-Absorption is already accounted for in the absorption routine
 			energy_scalars.at( energy_index ) *= 
 				pow( 1. - tomography_properties.scattered_ray_absorption_factor / 
-					static_cast<double>( bins_per_energy ), 
+					static_cast<double>( simulation_properties.bins_per_energy ), 
 				static_cast<double>( number_of_scattered_bins ) );
 
 			// Check if this bin is scattered inside the scattering plane 

@@ -52,7 +52,7 @@ class TomographyProperties{
 	*/
 	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
 						  const bool use_simple_absorption, const double scattered_ray_absorption_factor,
-						  const string name = "Unnamed", const bool filter_active = false );
+						  const string name = "Unnamed", const bool filter_active = false, const size_t simulation_quality = 9 );
 	
 	/*!
 	 * @brief Constructor from serialized data
@@ -78,6 +78,7 @@ class TomographyProperties{
 	double mean_energy_of_tube;			/*!< Mean energy of tube when radiated*/
 	string name;							/*!< Name for identifiaction*/
 	bool filter_active;
+	size_t simulation_quality;
 };
 
 

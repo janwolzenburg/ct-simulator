@@ -217,7 +217,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 
 	// Ray parameter at model entrance plus a tiny bit
 	double current_ray_step = model_intersection.entrance_.line_parameter_ + 
-														default_ray_step_size_mm;
+														simulation_properties.ray_step_size_mm;
 
 	// Return when the point on the ray is not inside the model meaning that the ray 
 	// just barely hit the model
@@ -325,7 +325,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 
 			// The distance traveled in this voxel. Add step size, because ray origin is
 			// this amount inside the voxel
-			const double distance_in_voxel = distance_to_exit + default_ray_step_size_mm;		
+			const double distance_in_voxel = distance_to_exit + simulation_properties.ray_step_size_mm;		
 
 			// The current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );

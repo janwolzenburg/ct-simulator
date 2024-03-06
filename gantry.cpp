@@ -120,7 +120,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	// Scattered rays should lie in the same plane as the detector 
 	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
-	RayScattering scattering_information{ number_of_scatter_angles, tube_.GetEmittedEnergyRange(), number_of_energies_for_scattering, coordinate_system_->GetEz(), 
+	RayScattering scattering_information{ simulation_properties.number_of_scatter_angles, tube_.GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, coordinate_system_->GetEz(), 
 		atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance )};
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel

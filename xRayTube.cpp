@@ -45,7 +45,7 @@ XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<
 	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) ),
 	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, it ) ),
 	filter_gradient( DeSerializeBuildIn<double>( 10., binary_data, it ) ),
-	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_points_in_tube_spectrum_ - 1 ) )
+	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_tube_spectrum_ - 1 ) )
 {}
 
 
@@ -95,8 +95,8 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 	// second holds the photonflow in an arbitrary unit
 	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, 
 									max_photon_energy_eV_, 
-									number_of_points_in_tube_spectrum_ ), 
-								vector<double>( number_of_points_in_tube_spectrum_, 0. ) };
+									simulation_properties.number_of_points_in_tube_spectrum_ ), 
+								vector<double>( simulation_properties.number_of_points_in_tube_spectrum_, 0. ) };
 	
 	// Gradient
 	const double gradient = -1.;

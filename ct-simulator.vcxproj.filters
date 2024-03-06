@@ -578,6 +578,9 @@
     <ClCompile Include="verifyProcessing.cpp">
       <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
+    <ClCompile Include="simulation.cpp">
+      <Filter>Quelldateien\11 Generel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

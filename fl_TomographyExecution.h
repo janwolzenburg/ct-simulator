@@ -78,6 +78,8 @@ class Fl_TomographyExecution : public Fl_Group{
 	Fl_Counter scattering_absorption_factor_input_;
 	Fl_Toggle_Button use_simple_absorption_button_;/*!< Simple or "real" absorption*/
 
+	Fl_Counter simulation_quality_input_;	/*!<input for simulation quality*/
+
 	Fl_Multiline_Output information_;				/*!< Information about tomography*/
 	
 	Fl_Group control_group_;						/*!< Group for control elements*/

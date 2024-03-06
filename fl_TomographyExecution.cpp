@@ -33,8 +33,8 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	scattering_absorption_factor_input_{X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor"  },
 	disable_scattering_button_{		X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
 	use_simple_absorption_button_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
-
-	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
+	simulation_quality_input_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
+	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
 	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
 	name_input_{				X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .9 ), H( control_group_, .4 ), "Name" },			
@@ -69,6 +69,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	tomography_properties_group_.add( scattering_propability_factor_input_ );
 	tomography_properties_group_.add( disable_scattering_button_ );
 	tomography_properties_group_.add( use_simple_absorption_button_ );
+	tomography_properties_group_.add( simulation_quality_input_ );
 	tomography_properties_group_.add( information_ );
 	tomography_properties_group_.add( scattering_absorption_factor_input_ );
 
@@ -78,6 +79,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	maximum_scatterings_input_.align( FL_ALIGN_TOP );
 	scattering_propability_factor_input_.align( FL_ALIGN_TOP );
 	scattering_absorption_factor_input_.align( FL_ALIGN_TOP );
+	simulation_quality_input_.align( FL_ALIGN_TOP );
 
 	maximum_scatterings_input_.bounds(0, 100);
 	maximum_scatterings_input_.step( 1. );
@@ -87,12 +89,15 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	scattering_absorption_factor_input_.bounds( .0, 100. );
 	scattering_absorption_factor_input_.step( .5 );
 	scattering_absorption_factor_input_.lstep( 10. );
+	
+
 
 	maximum_scatterings_input_.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scattering_propability_factor_input_.tooltip( "Correction factor in % for scattering propability. More scattering with higher value." );
 	scattering_absorption_factor_input_.tooltip( "Factor to scale a ray's energy when it is scattered. In %" );
 	disable_scattering_button_.tooltip( "Enable or disable scattering." );
 	use_simple_absorption_button_.tooltip( "If enabled \"simple\" absorption is active which is not energy dependent." );
+	simulation_quality_input_.tooltip( "Change quality of simulation. Low number is faster but not as realistic." );
 
 	maximum_scatterings_input_.value( static_cast<double>( tomography_properties_.max_scattering_occurrences ) );
 	scattering_propability_factor_input_.value( tomography_properties_.scatter_propability_correction*100. );
@@ -102,12 +107,18 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	disable_scattering_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	use_simple_absorption_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
+	simulation_quality_input_.bounds( 1., 20. );
+	simulation_quality_input_.step( 1. );
+	simulation_quality_input_.lstep( 5. );
+	simulation_quality_input_.value( static_cast<double>( tomography_properties_.simulation_quality ) );
+
 	maximum_scatterings_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 
 	scattering_propability_factor_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 	scattering_absorption_factor_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 	disable_scattering_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 	use_simple_absorption_button_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
+	simulation_quality_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 
 	information_.align( FL_ALIGN_TOP );
 
@@ -148,7 +159,8 @@ void Fl_TomographyExecution::UpdateProperties( void ){
 														scattering_propability_factor_input_.value()/100., 
 														static_cast<bool>( use_simple_absorption_button_.value() ), 
 														scattering_absorption_factor_input_.value()/100.,
-														name_input_.value() };
+														name_input_.value(),main_window_.gantry_creation_.gantry().tube().properties().has_filter_,
+														static_cast<size_t>( simulation_quality_input_.value() ) };
 }
 
 void Fl_TomographyExecution::DoTomography( void ){
