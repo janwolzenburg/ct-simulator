@@ -34,7 +34,7 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( void ) :
 {}
 
 template<class L, class S>
-LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L line, const S surface ) :
+LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& surface ) :
 	intersection_exists_( false )
 {
 	// Primitve vectors without coordinate system context

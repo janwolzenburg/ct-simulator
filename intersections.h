@@ -42,7 +42,7 @@ class LineSurfaceIntersection : public MathematicalObject{
 	/*!
 	 * @brief Default constructor
 	*/
-	LineSurfaceIntersection( const L line, const S surface );
+	LineSurfaceIntersection( const L& line, const S& surface );
 
 	/*!
 	 * @brief Default constructor
