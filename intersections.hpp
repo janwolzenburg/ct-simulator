@@ -43,7 +43,8 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L line, const S su
 	PrimitiveVector3 line_origin = line.origin().GetComponents();
 
 	// Same system?
-	if( line.direction().GetCoordinateSystem() == surface.direction_1().GetCoordinateSystem() ){
+	if( line.direction().GetCoordinateSystem() == 
+		  surface.direction_1().GetCoordinateSystem() ){
 		// Simply get components
 		surface_origin = surface.origin().GetComponents();
 		surface_direction_1 = surface.direction_1().GetComponents();
@@ -78,8 +79,9 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L line, const S su
 	intersection_point_ = line.GetPoint( line_parameter_ );	// Point of intersection
 
 	// Surface parameters outside allowed bounds of surface
-	if( !surface.AreParametersInBounds( surface_parameter_1_, surface_parameter_2_ ) ) intersection_exists_ = false;
-	if( !line.IsParameterInBounds( line_parameter_ ) ) intersection_exists_ = false;
+	if( !surface.AreParametersInBounds( surface_parameter_1_, surface_parameter_2_ ) || 
+			!line.IsParameterInBounds( line_parameter_ ) ) 
+		intersection_exists_ = false;
 
 };
 

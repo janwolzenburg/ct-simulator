@@ -77,7 +77,8 @@ FilteredProjections::FilteredProjections(
 				signed long long projection_row_index = 
 					static_cast<signed long long>( distance_index ) - kernel_index;
 				
-				// Index out of bounds of input data -> add nothing is like padding input data with zero
+				// Index out of bounds of input data -> 
+				// add nothing is like padding input data with zero
 				if( projection_row_index < 0 || 
 						projection_row_index >= static_cast<signed long long>( number_of_distances ) ){
 					continue;
@@ -118,12 +119,12 @@ double FilteredProjections::GetValue( const size_t angle_index,
 	// If the exact index is a whole number skip interpolation
 	if( IsNearlyEqualDistance( round( exact_index ), exact_index ) ){
 		// Return value at distance index
-		return this->operator()( GridIndex{ angle_index, static_cast<size_t>( exact_index ) } );
+		return (*this)( GridIndex{ angle_index, static_cast<size_t>( exact_index ) } );
 	}
 
 	// Interpolate
-	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );		// Lower index
-	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );			// Upper index
+	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );	// Lower index
+	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );	// Upper index
 
 	const double value_floor = this->operator()( 
 		GridIndex{ angle_index, index_floor } );	// Value at floor index

@@ -226,7 +226,8 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 		// Top-left corner changes each iteration
 		top_corner.r = k; top_corner.c = k;
 
-		// Search maximum absolutionute value in quadratic submatrix from (k, k) to (rows - 1, rows - 1)
+		// Search maximum absolutionute value in quadratic submatrix
+		// from (k, k) to (rows - 1, rows - 1)
 		index_of_maximum = FindMaximum( top_corner, bottom_corner );
 
 		// Get value
@@ -252,7 +253,8 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 		for( size_t row = k + 1; row < rows; row++ ){
 			// Target cell not zero?
 			if( !IsNearlyEqualDistance( ( *this )( k, row ), 0. ) ){
-				ScaleRow( row, 1 / ( *this )( k, row ) );		// Make (row, k) to one by scaling row with reciprocal
+				// Make (row, k) to one by scaling row with reciprocal
+				ScaleRow( row, 1 / ( *this )( k, row ) );		
 				SubstractRows( k, row );						// Substract k-row from row
 			}
 		}
@@ -276,8 +278,10 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 	for( size_t i = 0; i < rows; i++ ){
 		variable_index = variable_indices.at( i );		// Index for swapped variable
 		// Check if index is in allowed range
-		if( variable_index < solution.number_of_variables() ) solution.SetVariableValue( variable_index, ( *this )( columns - 1, i ) );
-		else return solution;
+		if( variable_index < solution.number_of_variables() ) 
+			solution.SetVariableValue( variable_index, ( *this )( columns - 1, i ) );
+		else 
+			return solution;
 	}
 	solution.solution_found( true );
 	return solution;

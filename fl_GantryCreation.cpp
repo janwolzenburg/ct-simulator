@@ -157,7 +157,7 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		detector_focus_distance_input_.value( physical_detector_properties_.detector_focus_distance );
 
 		maximum_ray_angle_input_.SetProperties( .1, 60., 2 );
-		maximum_ray_angle_input_.value( physical_detector_properties_.max_ray_angle_allowed_by_structure / 2. / PI * 360. );
+		maximum_ray_angle_input_.value( physical_detector_properties_.max_angle_allowed_by_structure / 2. / PI * 360. );
 
 		scattering_structure_input_.value( static_cast<int>( physical_detector_properties_.has_anti_scattering_structure ) );
 		scattering_structure_input_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );

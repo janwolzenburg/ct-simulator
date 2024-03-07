@@ -64,41 +64,46 @@ void Gantry::TranslateInZDirection( const double distance ){
 	this->coordinate_system_->Translate( coordinate_system_->GetEz() * distance );
 }
 
-void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProperties& tomoParameter, 
-									RayScattering& rayScatterAngles, 
-									mutex& scattering_properties_mutex,
-									const vector<Ray>& rays, 
-									const bool repeat_transmission_after_scattering,
-									size_t& sharedCurrentRayIndex, mutex& currentRayIndexMutex,
-									vector<Ray>& raysForNextIteration, mutex& iterationMutex,
-									XRayDetector& rayDetector, mutex& detectorMutex ){
+void Gantry::TransmitRaysThreaded(	
+									const Model& model, const TomographyProperties& tomography_properties,
+									RayScattering& ray_scattering, mutex& scattering_properties_mutex,
+									const vector<Ray>& rays, const bool repeat_transmission_after_scattering,
+									size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
+									vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
+									XRayDetector& detector, mutex& detector_mutex ){
 
-	size_t currentRayIndex;
-	Ray currentRay;
-	pair<Ray, vector<Ray>> returned_rays;
+	size_t local_ray_index;
+	Ray current_ray;
+	pair<Ray, vector<Ray>> rays_to_return;
 
 	// Loop while rays are left
-	while( sharedCurrentRayIndex < rays.size() ){
+	while( shared_current_ray_index < rays.size() ){
 
 		// Get the Ray which should be transmitted next and increment index
-		currentRayIndexMutex.lock();
-		currentRayIndex = sharedCurrentRayIndex++;
-		currentRayIndexMutex.unlock();
+		current_ray_index_mutex.lock();
+		local_ray_index = shared_current_ray_index++;
+		current_ray_index_mutex.unlock();
 
 		// No more rays left
-		if( currentRayIndex >= rays.size() ) break;
+		if( local_ray_index >= rays.size() ) break;
 
 		// Get current ray
-		currentRay =  rays.at( currentRayIndex );
+		current_ray =  rays.at( local_ray_index );
 
 		// Transmit Ray through model
-		returned_rays = std::move( radModel.TransmitRay( cref( currentRay ), cref( tomoParameter ), ref( rayScatterAngles ), ref( scattering_properties_mutex ) ) );
+		rays_to_return = std::move( model.TransmitRay( 
+																				cref( current_ray ), cref( tomography_properties ), 
+																				ref( ray_scattering ), 
+																				ref( scattering_properties_mutex ) ) );
 
-		rayDetector.DetectRay( ref( returned_rays.first ), ref( detectorMutex ) );
-
-		iterationMutex.lock();
-		raysForNextIteration.insert( raysForNextIteration.end(), make_move_iterator( returned_rays.second.begin() ), make_move_iterator( returned_rays.second.end() ) );									// Add Ray for next iteration
-		iterationMutex.unlock();
+		detector.DetectRay( ref( rays_to_return.first ), ref( detector_mutex ) );
+		
+		// Add Ray for next iteration
+		rays_for_next_iteration_mutex.lock();
+		rays_for_next_iteration.insert( rays_for_next_iteration.end(), 
+																		make_move_iterator( rays_to_return.second.begin() ), 
+																		make_move_iterator( rays_to_return.second.end() ) );									
+		rays_for_next_iteration_mutex.unlock();
 
 	}
 
@@ -107,65 +112,79 @@ void Gantry::TransmitRaysThreaded(	const Model& radModel, const TomographyProper
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
-	vector<Ray> rays = std::move( tube_.GetEmittedBeam( detector_.pixel_array(), detector_.properties().detector_focus_distance ) );		// Current rays. Start with rays from source
+// Current rays. Start with rays from source
+	vector<Ray> rays = std::move( tube_.GetEmittedBeam( 
+																				detector_.pixel_array(), 
+																				detector_.properties().detector_focus_distance ) );		
 	
 	// Convert rays to model coordinate system
-	for( Ray& currentRay : rays ){
-		currentRay = std::move( currentRay.ConvertTo( model.coordinate_system() ) );
+	for( Ray& current_ray : rays ){
+		current_ray = std::move( current_ray.ConvertTo( model.coordinate_system() ) );
 	}
 	
 	// Convert pixel
 	detector_.ConvertPixelArray( model.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
-	const UnitVector3D scatteringRotationNormal = this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
+	const UnitVector3D scattering_rotation_axis = 
+		this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
-	RayScattering scattering_information{ simulation_properties.number_of_scatter_angles, tube_.GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, coordinate_system_->GetEz(), 
-		atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance )};
+	RayScattering scattering_information{ 
+		simulation_properties.number_of_scatter_angles, 
+		tube_.GetEmittedEnergyRange(), 
+		simulation_properties.number_of_energies_for_scattering, 
+		coordinate_system_->GetEz(), 
+		atan( this->detector_.properties().row_width / 
+					this->detector_.properties().detector_focus_distance ) };
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
-	size_t sharedCurrentRayIndex = 0;		// Index of next Ray to iterate
-	mutex rayIndexMutex;				// Mutex for Ray index
-	mutex raysForNextIterationMutex;	// Mutex for vector of rays for next iteration
-	mutex detectorMutex;				// Mutex for detector
-	mutex scatterMutex;
+	size_t shared_current_ray_index = 0;	// Index of next Ray to iterate
+	mutex current_ray_index_mutex;				// Mutex for Ray index
+	mutex rays_for_next_iteration_mutex;	// Mutex for vector of rays for next iteration
+	mutex detector_mutex;									// Mutex for detector
+	mutex scattering_mutex;								// Mutex for scattering
 
 	// Loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t currentLoop = 0; currentLoop <= tomography_properties.max_scattering_occurrences && rays.size() > 0; currentLoop++ ){
+	for( size_t current_loop = 0; 
+							current_loop <= tomography_properties.max_scattering_occurrences && 
+														 rays.size() > 0; 
+							current_loop++ ){
 
 		// No scattering in last iteration
-		tomography_properties.scattering_enabled = currentLoop < tomography_properties.max_scattering_occurrences && tomography_properties.scattering_enabled;	
+		tomography_properties.scattering_enabled = 
+			current_loop < tomography_properties.max_scattering_occurrences && 
+			tomography_properties.scattering_enabled;	
 		
-		// Adjust scattering propability because only some scattered rays would reach detector
-		//tomography_properties.scatter_propability_correction *= 1.;// atan( this->detector_.properties().row_width / this->detector_.properties().detector_focus_distance ) / PI;
-
+		// Store for information output
 		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();
 
-		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
-		sharedCurrentRayIndex = 0;										// Reset current ray index
+		vector<Ray> rays_for_next_iteration;						// Rays to process in the next iteration
+		shared_current_ray_index = 0;										// Reset current ray index
 
 		// Start threads
 		vector<std::thread> threads;
-		for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+		for( size_t thread_index = 0; 
+								thread_index < std::thread::hardware_concurrency(); thread_index++ ){
 			
-			threads.emplace_back( TransmitRaysThreaded,	cref( model ), cref( tomography_properties ), 
-														ref( scattering_information ), 
-														ref( scatterMutex ),
-														cref( rays ),
-														currentLoop == 0,
-														ref( sharedCurrentRayIndex ), ref( rayIndexMutex ), 
-														ref( raysForNextIteration ), ref( raysForNextIterationMutex ),
-														ref( detector_ ), ref( detectorMutex ) );
+			threads.emplace_back( TransmitRaysThreaded,	
+														cref( model ), cref( tomography_properties ), 
+														ref( scattering_information ), ref( scattering_mutex ),
+														cref( rays ), current_loop == 0,
+														ref( shared_current_ray_index ), 
+														ref( current_ray_index_mutex ), ref( rays_for_next_iteration ), 
+														ref( rays_for_next_iteration_mutex ),
+														ref( detector_ ), ref( detector_mutex ) );
 
-			if( threadIdx == 0 ) first_thread_id = threads.back().get_id();
+			// For debugging
+			if( thread_index == 0 ) first_thread_id = threads.back().get_id();
 		}
 
 		// Wait for threads to finish
 		for( std::thread& currentThread : threads ) currentThread.join();
 
 		// Copy rays to vector
-		rays = std::move( raysForNextIteration );
+		rays = std::move( rays_for_next_iteration );
 
 	}
 

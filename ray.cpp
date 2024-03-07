@@ -157,7 +157,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		const double coefficient_1Permm = cross_section_mm * 
 																			electron_density_water_1Permm3 * 
 																			coefficient_factor;
-		const double scatter_propability = 1. - exp( -coefficient_1Permm * distance_traveled_mm );
+		const double scatter_propability = 
+			1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
 		// Iterate through energy bins
 		for( size_t bin = 0; bin < simulation_properties.bins_per_energy; bin++ ){
@@ -167,7 +168,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 					scatter_propability * tomography_properties.scatter_propability_correction ) ){
 
 				// Random angle
-				const double angle = ForceRange( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ), -PI, PI );			
+				const double angle = ForceRange( scattering_information.GetRandomAngle( 
+																					energy, scattering_properties_mutex ), -PI, PI );		
 				
 				// If angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
@@ -189,7 +191,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	const double cross_section_at_reference_energy_mm = 
 		ScatteringCrossSection::GetInstance().GetCrossSection( reference_energy_for_mu_eV );
 	const double coefficient_at_reference_energy_1Permm = 
-		cross_section_at_reference_energy_mm * electron_density_water_1Permm3 * coefficient_factor;
+		cross_section_at_reference_energy_mm * electron_density_water_1Permm3 * 
+		coefficient_factor;
 	const double simple_fraction = exp( -distance_traveled_mm * 
 																	coefficient_at_reference_energy_1Permm  );
 
@@ -234,23 +237,26 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			const double energy = properties_.energy_spectrum_.GetEnergy( energy_index );
 			
 			// Calculate scattered photons energy via compton-wavelength
-			const double new_energy = 1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
+			const double new_energy = 1. / 
+																( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 
 			// Calculate the amount of photons in this energies bins
 			const double photons_per_bin = tomography_properties.scattered_ray_absorption_factor * 
 											properties_.energy_spectrum_.data().at( energy_index ).y / 
-												static_cast<double>( simulation_properties.bins_per_energy );
+											static_cast<double>( simulation_properties.bins_per_energy );
 			
 			// Scalers for energies in incoming ray. Only accounts for energy lost to new rays without
-			// considering der angle dependent energy loss (Compton-Aporption). This is because the 
-			// Compton-Absorption is already accounted for in the absorption routine
+			// considering der angle dependent energy loss (Compton-Aporption). This is because 
+			// the compton-absorption is already accounted for in the absorption routine
 			energy_scalars.at( energy_index ) *= 
 				pow( 1. - tomography_properties.scattered_ray_absorption_factor / 
 					static_cast<double>( simulation_properties.bins_per_energy ), 
 				static_cast<double>( number_of_scattered_bins ) );
 
 			// Check if this bin is scattered inside the scattering plane 
-			if( abs( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ) ) <= scattering_information.max_angle_to_lie_in_plane() ){
+			if( abs( scattering_information.GetRandomAngle( 
+																				energy, scattering_properties_mutex ) ) <= 
+				  scattering_information.max_angle_to_lie_in_plane() ){
 				// Add bin to new ray			
 				new_energies.first.push_back( new_energy );
 				new_energies.second.push_back( number_of_scattered_bins * photons_per_bin );		
@@ -266,17 +272,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			
 			EnergySpectrum new_spectrum{ new_energies }; 
 
-			// Discard scattered ray when its angle to the scattering plane is
-			// too large meaning it would not hit the detector
-			//if( !integer_random_number_generator.DidARandomEventHappen( 
-			//	2. * scattering_information.max_angle_to_lie_in_plane() / PI ) ){
-			//if( scattering_information.GetRandomAngle( energy, scattering_properties_mutex ) )
-				
-			//	angle_index++;
-			//	continue;
-			//}
-
-			// Use complete amount of scattered bins to take scattering into account of simple intensity
+			// Use complete amount of scattered bins to take scattering into account of 
+			// simple intensity
 			const double scattered_bins_fraction = 
 					static_cast<double>( scattered_bins_for_current_angle ) / 
 					static_cast<double>( scattered_bins_sum );

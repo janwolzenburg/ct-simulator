@@ -107,38 +107,51 @@ void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosP
 	x = x_; y = y_; z = z_;
 }
 
-MathematicalObject::MathError PrimitiveVector3::Rotate( const PrimitiveVector3 rotation_vector, const double rotation_angle ){
+MathematicalObject::MathError PrimitiveVector3::Rotate( 
+																const PrimitiveVector3 rotation_vector, 
+																const double rotation_angle ){
 	// Steps for rotation:
-	// 1: rotate around z axis to tilt rot. axis into x-z plane (Could also rotate into y-z plane an rotate around x-axis in next step)
+	// 1: rotate around z axis to tilt rot. axis into x-z plane 
+	//		Could also rotate into y-z plane an rotate around x-axis in next step
 	// 2: rotate around y-axis to align rot. axis with z-axis
 	// 3. rotate this PrimitiveVector3 by phi around z-axis
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
-	if( IsNearlyEqualDistance( rotation_vector.GetLength(), 0 ) ) return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
+	if( IsNearlyEqualDistance( rotation_vector.GetLength(), 0 ) ) 
+		return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
 
 	// Create copy and Normalise
 	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
 	rotation_vector_copy.Normalise();
-
-	double projection_length = sqrt( pow( rotation_vector_copy.x, 2 ) + pow( rotation_vector_copy.y, 2 ) );		// Length of the axis projection on x-y plane
-	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculation square root!" );		// Check error flag
-
-	double sin_theta = 0, cos_theta = 1;	// Sine and cosine of angle Theta (angle between rotation axis projection onto x-y plane and x-axis)
+	
+	// Length of the axis projection on x-y plane
+	const double projection_length = sqrt( pow( rotation_vector_copy.x, 2 ) 
+																			 + pow( rotation_vector_copy.y, 2 ) );		
+	// Error doing square root?
+	if( errno != 0 ) 
+		return CheckForAndOutputError( MathError::General, "Error calculation square root!" );	
+	
+	// Sine and cosine of angle theta:
+	// angle between rotation axis projection onto x-y plane and x-axis
+	double sin_theta = 0, cos_theta = 1;	
 
 	// Avoid division by zero. d = 0 means rotation axis is parallel to z-axis
 	if( projection_length > 0 ){
-		sin_theta = rotation_vector_copy.y / projection_length;		// Sine of the angle Theta
-		cos_theta = rotation_vector_copy.x / projection_length;		// Cosine of the angle Theta
+		sin_theta = rotation_vector_copy.y / projection_length;	// Sine of the angle Theta
+		cos_theta = rotation_vector_copy.x / projection_length;	// Cosine of the angle Theta
 
-		// Clockwise rotation of rotation axis and this vector around z-axis to align rotation axis to x-z plane
+		// Clockwise rotation of rotation axis and this vector around z-axis 
+		// to align rotation axis to x-z plane
 		rotation_vector_copy.RotateAroundZAxis( -sin_theta, cos_theta );
 		this->RotateAroundZAxis( -sin_theta, cos_theta );
 	}
 
 	// Gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
-	const double sin_gamma = projection_length;				// Rotation axis vector has been normalised - sine of gamma is d / 1
-	const double cos_gamma = rotation_vector_copy.z;			// Cosine is just the z-component of vector n_z / 1
+	// Rotation vector has been normalised - sine of gamma is length / 1
+	// Cosine is just the z-component of rotation vector
+	const double sin_gamma = projection_length;				
+	const double cos_gamma = rotation_vector_copy.z;	
 
 	// Clockwise rotation of this vector around y-axis
 	this->RotateAroundYAxis( -sin_gamma, cos_gamma );

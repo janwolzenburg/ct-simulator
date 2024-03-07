@@ -110,7 +110,9 @@ optional<Projections> Tomography::RecordSlice(
 	Projections projections{ projection_properties, properties_ };
 
 	// Radiate the model for each frame
-	for( size_t frame_index = 0; frame_index < projection_properties.number_of_frames_to_fill(); frame_index++ ){
+	for( size_t frame_index = 0; 
+							frame_index < projection_properties.number_of_frames_to_fill();			 
+							frame_index++ ){
 		
 		if( progress_window != nullptr ) 
 			progress_window->ChangeLineText( 0, "Radiating frame " + 
@@ -127,20 +129,21 @@ optional<Projections> Tomography::RecordSlice(
 		for( const DetectorPixel& pixel : pixel_array ){
 
 			// Get Coordinates for pixel
-			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, pixel.NormalLine() };
+			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, 
+																								pixel.NormalLine() };
 
 			optional<double> line_integral = pixel.GetDetectedLineIntegral( 
 												properties_.use_simple_absorption, 
 												gantry.tube().number_of_rays_per_pixel(), 
 												gantry.tube().GetEmittedBeamPower() / 
 												( static_cast<double>( pixel_array.size() ) * 
-													static_cast<double>( gantry.tube().number_of_rays_per_pixel() ) 
+													static_cast<double>( gantry.tube().number_of_rays_per_pixel() )
 												) );
 			
 			// If no value no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
 			if( !line_integral.has_value() ){
-				line_integral = 25.; // Is like ray's energy is 1 / 100000000000 of its start energy 
+				line_integral = 25.; // Is like ray's energy is 1 / 10^11 of its start energy
 			}
 
 			// Get the radon point

@@ -81,7 +81,8 @@ Coordinates Coordinates::operator/ ( const double divisor ) const{
 	return Coordinates{ this->PrimitiveVector3::operator/( divisor ), this->coordinate_system_ };
 }
 
-Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
+Coordinates Coordinates::ConvertTo( const CoordinateSystem* 
+																		const target_coordinate_system ) const{
 	
 	Coordinates tempory_coordinates{ Tuple3D{ x, y, z }, this->coordinate_system_ };
 
@@ -99,12 +100,15 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem* const target_coordin
 		// Target system is not the global system
 		if( path.size() > 0 ){
 			// Iterate each coordinate system in path
-			for( vector<const CoordinateSystem*>::const_iterator cur_coordinate_system_it = path.begin(); cur_coordinate_system_it < path.end(); cur_coordinate_system_it++ ){
-				tempory_coordinates = tempory_coordinates.ConvertToChildSystem( *cur_coordinate_system_it );
+			for( auto cur_coordinate_system_it = path.cbegin(); 
+								cur_coordinate_system_it < path.cend(); cur_coordinate_system_it++ ){
+				tempory_coordinates = 
+					tempory_coordinates.ConvertToChildSystem( *cur_coordinate_system_it );
 			}
 		}
 
-		tempory_coordinates = tempory_coordinates.ConvertToChildSystem( target_coordinate_system );
+		tempory_coordinates = 
+			tempory_coordinates.ConvertToChildSystem( target_coordinate_system );
 	}
 	return tempory_coordinates;
 }

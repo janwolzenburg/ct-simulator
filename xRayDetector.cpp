@@ -44,7 +44,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 
 	// y-axis of coordinate system is the middle normal vector
 	const UnitVector3D middle_normal_vector = coordinate_system_->GetEy();
-	// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	// Pixel normals should lie in xy-plane
+	// The middle normal vector will be rotated around this vector
 	const UnitVector3D rotation_vector = coordinate_system_->GetEz();		
 
 
@@ -58,7 +59,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 	for( size_t pixel_index = 0; pixel_index < number_of_distances / 2; pixel_index++ ){
 
 		// Angle to rotate the middle normal vector by
-		const double rotation_angle = ( static_cast<double>( pixel_index ) + 0.5 ) * delta_theta;
+		const double rotation_angle = ( static_cast<double>( pixel_index ) + 0.5 ) 
+																	* delta_theta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D normal_vector = 
@@ -100,10 +102,12 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 			const Point3D intersection = previous_pixel_normal.origin() + 
 				( previous_pixel_normal.direction() ^ rotation_vector ) * previous_pixel_size / 2.;
 
-			// Lot vector from current normal to intersection point. Vector is pointing to the normal
+			// Lot vector from current normal to intersection point
+			// Vector is pointing to the normal
 			const Vector3D intersection_lot = normal.GetLot( intersection );
 
-			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
+			// Get the pixel normal's origin_ which lies on the shortest Line connection the 
+			// intersection with current normal
 			pixel_origin = intersection + intersection_lot;
 
 			// Pixel size is double the lot length
@@ -135,7 +139,8 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		};
 
 		// Add mirrored pixel
-		const UnitVector3D mirrored_surface_vector = -mirroredPixelNormal.direction() ^ rotation_vector;
+		const UnitVector3D mirrored_surface_vector = - mirroredPixelNormal.direction() 
+																								 ^ rotation_vector;
 		pixel_array_.emplace_back(	BoundedSurface{ 
 								mirrored_surface_vector, rotation_vector,
 								mirroredPixelNormal.origin(),
@@ -192,21 +197,21 @@ bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
 			// If detector has anti scattering structure and angle allowed by structure
 			
 			if( !properties_.has_anti_scattering_structure || 
-					( PI / 2. - ray.GetAngle( current_pixel ) ) <= properties_.max_ray_angle_allowed_by_structure ){
+					( PI / 2. - ray.GetAngle( current_pixel ) ) <= 
+					properties_.max_angle_allowed_by_structure ){
 				
 				// Add detected Ray properties to pixel
 				pixel_array_lock.lock();
 				pixel_array_.at( pixel_index ).AddDetectedRayProperties( ray.properties() );		
 				pixel_array_lock.unlock();
 				
-				#ifdef TRANSMISSION_TRACKING 
+				#ifdef TRANSMISSION_TRACKING // Only enabled for verification
 				if( !ray.ray_tracing().tracing_steps.empty() ){
 					ray.ray_tracing().tracing_steps.back().exit = pixel_hit.intersection_point_;
-					ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ - 
-					ray.ray_tracing().tracing_steps.back().entrance).length();
+					ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ 
+					- ray.ray_tracing().tracing_steps.back().entrance).length();
 				}
 				#endif
-
 			}
 
 			// Only one pixel can intersect with ray -> return

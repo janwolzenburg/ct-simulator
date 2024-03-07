@@ -22,7 +22,8 @@
  *********************************************************************/
 
 
-bool IsNearlyEqual( const double a, const double b, const double tolerance, const ComparisonMode mode ){
+bool IsNearlyEqual( const double a, const double b, 
+										const double tolerance, const ComparisonMode mode ){
 	// Fast comparison
 	if( a == b ) return true;
 

@@ -28,14 +28,16 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 	number_of_energies_( ForcePositive( number_of_energies ) ),
 	angle_resolution_( ( 2. * PI ) / static_cast<double>( number_of_angles - 1 ) ),
 	energy_range_( energy_range ),
-	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / static_cast<double>( number_of_energies_ - 1 ) ),
+	energy_resolution_( ( energy_range_.end() - energy_range_.start() ) / 
+											static_cast<double>( number_of_energies_ - 1 ) ),
 	scattering_plane_normal_( scattering_normal ),
 	max_angle_to_lie_in_scatter_plane_( maximum_angle_to_lie_in_scatter_plane )
 {
 	// Iterate all frequencies
 	for( size_t energy_index = 0; energy_index < number_of_energies_; energy_index++ ){
 
-		const double energy = energy_range_.start() + static_cast<double>( energy_index ) * energy_resolution_;
+		const double energy = energy_range_.start() + 
+													static_cast<double>( energy_index ) * energy_resolution_;
 
 		// Calculate pseudo propability distribution
 		vector<Tuple2D> pseudo_distribution;
@@ -48,8 +50,13 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 			
 			const double angle = -PI + static_cast<double>( angle_index ) * angle_resolution_;
 			const double t = angle;
-			const double pseudoProbability = ( 1. + pow( cos( t ), 2 ) ) / ( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
-				( 1. + ( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / ( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) );
+			const double pseudoProbability = 
+				( 1. + pow( cos( t ), 2 ) ) / 
+				( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
+				( 1. + 
+					( pow( a, 2 ) * pow( 1. - cos( t ), 2 ) ) / 
+					( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) 
+				);
 
 			pseudo_distribution.emplace_back( t, pseudoProbability );
 
@@ -57,7 +64,8 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 				pseudo_distribution.emplace_back( t, pseudoProbability );
 
 		}
-		scattering_angle_distributions_.emplace_back( energy, PropabilityDistribution{ pseudo_distribution } );
+		scattering_angle_distributions_.emplace_back( energy, 
+																			PropabilityDistribution{ pseudo_distribution } );
 	
 	}
 }

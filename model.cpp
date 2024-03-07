@@ -196,11 +196,12 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 	return voxel;
 }
 
-pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray, 
-																					 const TomographyProperties& tomography_properties, 
-																					 RayScattering& scattering_properties, 
-																					 mutex& scattering_properties_mutex,
-																					 const bool disable_scattering ) const{
+pair<Ray, vector<Ray>> Model::TransmitRay( 
+																const Ray& ray, 
+																const TomographyProperties& tomography_properties,
+																RayScattering& scattering_properties, 
+																mutex& scattering_properties_mutex,
+																const bool disable_scattering ) const{
 
 	// Current ray in model's coordinate system
 	Ray local_ray = std::move( ray.ConvertTo( this->coordinate_system_ ) );					
@@ -325,7 +326,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 
 			// The distance traveled in this voxel. Add step size, because ray origin is
 			// this amount inside the voxel
-			const double distance_in_voxel = distance_to_exit + simulation_properties.ray_step_size_mm;		
+			const double distance_in_voxel = distance_to_exit 
+																		 + simulation_properties.ray_step_size_mm;		
 
 			// The current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
@@ -349,7 +351,9 @@ pair<Ray, vector<Ray>> Model::TransmitRay( const Ray& ray,
 			current_point_on_ray = std::move( local_ray.GetPointFast( current_ray_step ) );
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
-			if( tomography_properties.scattering_enabled && !disable_scattering && IsPointInside( current_point_on_ray ) ){
+			if( tomography_properties.scattering_enabled && 
+				  !disable_scattering && 
+					IsPointInside( current_point_on_ray ) ){
 				// Scatter the ray
 				const vector<Ray> scattered_rays = std::move( local_ray.Scatter( 
 						scattering_properties, scattering_properties_mutex,

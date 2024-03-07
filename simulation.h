@@ -37,9 +37,9 @@ class SimulationProperties{
 	static const string FILE_PREAMBLE; 
 	size_t quality;
 	double ray_step_size_mm;										/*!< Stepsize during Ray iteration in Ray direction vector's unit*/
-	size_t number_of_points_in_tube_spectrum_;		/*!< Amount of discrete datapoints in spectrum*/
+	size_t number_of_points_in_spectrum_;				/*!< Amount of discrete datapoints in spectrum*/
 	size_t number_of_energies_for_scattering;		/*!< Amount of discrete angles available for scattering - should be odd to include 0°*/
-	size_t number_of_scatter_angles;							/*!< Amount of energies used */
+	size_t number_of_scatter_angles;						/*!< Amount of energies used */
 	size_t bins_per_energy;											/*!< When scattering: Into how many bins should the photons with the same energy be divided into*/
 
 	SimulationProperties( size_t simulation_quality );

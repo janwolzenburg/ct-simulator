@@ -51,11 +51,14 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 
 	const unsigned int interval = distribution_.max() - distribution_.min() + 1;
 	const double single_value_propability = 1. / static_cast<double>( interval );
-	const unsigned int event_interval = static_cast<unsigned int>( event_propability / single_value_propability );
+	const unsigned int event_interval = 
+		static_cast<unsigned int>( event_propability / single_value_propability );
 
 	const unsigned int random_integer = GetRandomNumber();
 
-	if( random_integer >= distribution_.min() && random_integer < distribution_.min() + event_interval ) return true;
+	if( random_integer >= distribution_.min() && 
+			random_integer < distribution_.min() + event_interval ) 
+		return true;
 
 	return false;
 }
