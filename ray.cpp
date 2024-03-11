@@ -146,10 +146,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	vector<Ray> scattered_rays;
 	// Skip if scattering is really inpropable
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
-
-	// Number of discrete scatter angles
-	const size_t number_of_angles = 
-		static_cast<size_t>( 2. * PI / scattering_information.angle_resolution() ) + 1;
 	
 
 	vector<pair<double, pair<double, double>>> scattered_angles_linear;
@@ -212,14 +208,16 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			// the compton-absorption is already accounted for in the absorption routine
 			const double energy_scalar = 1. - tomography_properties.scattered_ray_absorption_factor / 
 																		static_cast<double>( simulation_properties.bins_per_energy );
-			//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+			properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
 			#ifdef TRANSMISSION_TRACKING
 			properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 			#endif
 			
 			scattered_bins_sum++;
+			
 		}
 
+		energy_index++;
 	}
 
 	// No ray scattered in scattering plane -> return empty
