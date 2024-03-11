@@ -24,12 +24,12 @@ SimulationProperties simulation_properties{ 9 };
 const string SimulationProperties::FILE_PREAMBLE{ "SimulationProperties_FILE_PREAMBLE" };
 
 SimulationProperties::SimulationProperties( const size_t simulation_quality ) :
-quality( ForceRange( simulation_quality, 0ull, 19ull) ),
+quality( ForceRange( simulation_quality, 0ull, 29ull) ),
 	ray_step_size_mm( 1e-2 / ( 4. * static_cast<double>( quality + 1 ) ) ),
 	number_of_points_in_spectrum_( 8 + 3 * quality / 2),
 	number_of_energies_for_scattering( 16 * ( quality + 1 ) ),
-	number_of_scatter_angles( ForceOdd( 16 + 4 * quality ) ),
-	bins_per_energy( 2 + static_cast<size_t>( static_cast<double>( quality ) * 1.75 ) )
+	number_of_scatter_angles( ForceOdd( 16 + 2 * quality ) ),
+	bins_per_energy( 2 + 3 * static_cast<size_t>( static_cast<double>( quality ) ) / 2 )
 {
 }
 

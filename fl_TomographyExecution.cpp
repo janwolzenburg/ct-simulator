@@ -107,7 +107,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	disable_scattering_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 	use_simple_absorption_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-	simulation_quality_input_.bounds( 1., 20. );
+	simulation_quality_input_.bounds( 1., 30. );
 	simulation_quality_input_.step( 1. );
 	simulation_quality_input_.lstep( 5. );
 	simulation_quality_input_.value( static_cast<double>( tomography_properties_.simulation_quality ) );
