@@ -188,31 +188,32 @@ bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
 		// Converted pixel
 		const DetectorPixel& current_pixel = converted_pixel_array_.at( pixel_index );
 
+		// Check if ray hit anti scattering structure hit is possible
+		// If detector has anti scattering structure and angle not allowed by structure
+		// Goto next pixel
+		if( properties_.has_anti_scattering_structure || 
+					( PI / 2. - ray.GetAngle( current_pixel ) ) <= 
+					properties_.max_angle_allowed_by_structure )
+			continue;
+
 		// Check for intersection of Ray with current pixel
 		const RayPixelIntersection pixel_hit{ ray, current_pixel };
 
 		// Do they intersect?
 		if( pixel_hit.intersection_exists_ ){
-			
-			// If detector has anti scattering structure and angle allowed by structure
-			
-			if( !properties_.has_anti_scattering_structure || 
-					( PI / 2. - ray.GetAngle( current_pixel ) ) <= 
-					properties_.max_angle_allowed_by_structure ){
+	
+			// Add detected Ray properties to pixel
+			pixel_array_lock.lock();
+			pixel_array_.at( pixel_index ).AddDetectedRayProperties( ray.properties() );		
+			pixel_array_lock.unlock();
 				
-				// Add detected Ray properties to pixel
-				pixel_array_lock.lock();
-				pixel_array_.at( pixel_index ).AddDetectedRayProperties( ray.properties() );		
-				pixel_array_lock.unlock();
-				
-				#ifdef TRANSMISSION_TRACKING // Only enabled for verification
-				if( !ray.ray_tracing().tracing_steps.empty() ){
-					ray.ray_tracing().tracing_steps.back().exit = pixel_hit.intersection_point_;
-					ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ 
-					- ray.ray_tracing().tracing_steps.back().entrance).length();
-				}
-				#endif
+			#ifdef TRANSMISSION_TRACKING // Only enabled for verification
+			if( !ray.ray_tracing().tracing_steps.empty() ){
+				ray.ray_tracing().tracing_steps.back().exit = pixel_hit.intersection_point_;
+				ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ 
+				- ray.ray_tracing().tracing_steps.back().entrance).length();
 			}
+			#endif
 
 			// Only one pixel can intersect with ray -> return
 			return true;

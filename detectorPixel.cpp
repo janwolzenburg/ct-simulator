@@ -65,7 +65,7 @@ DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSy
 	RayPixelIntersection implementation
 */
 
-RayPixelIntersection::RayPixelIntersection( const Ray r, const DetectorPixel px ) :
+RayPixelIntersection::RayPixelIntersection( const Ray& r, const DetectorPixel& px ) :
 	LineSurfaceIntersection<Ray, DetectorPixel>{ r, px },
 	ray_properties( r.properties() )
 {}

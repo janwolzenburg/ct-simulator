@@ -108,7 +108,7 @@ class RayPixelIntersection : public LineSurfaceIntersection<Ray, DetectorPixel>{
 	 * @param ray Ray
 	 * @param pixel Pixel
 	*/
-	RayPixelIntersection( const Ray ray, const DetectorPixel pixel );
+	RayPixelIntersection( const Ray& ray, const DetectorPixel& pixel );
 
 
 	RayProperties ray_properties;	/*!< Properties of detected ray*/
