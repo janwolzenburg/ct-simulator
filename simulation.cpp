@@ -25,11 +25,11 @@ const string SimulationProperties::FILE_PREAMBLE{ "SimulationProperties_FILE_PRE
 
 SimulationProperties::SimulationProperties( const size_t simulation_quality ) :
 quality( ForceRange( simulation_quality, 0ull, 19ull) ),
-	ray_step_size_mm( 1e-2 / ( 4. * static_cast<double>( simulation_quality + 1 ) ) ),
-	number_of_points_in_spectrum_( 8 + 2 * simulation_quality ),
-	number_of_energies_for_scattering( 16 * ( simulation_quality + 1 ) ),
-	number_of_scatter_angles( ForceOdd( 16 + 4 * simulation_quality ) ),
-	bins_per_energy( 2 + static_cast<size_t>( static_cast<double>( simulation_quality ) * 1.75 ) )
+	ray_step_size_mm( 1e-2 / ( 4. * static_cast<double>( quality + 1 ) ) ),
+	number_of_points_in_spectrum_( 8 + 3 * quality / 2),
+	number_of_energies_for_scattering( 16 * ( quality + 1 ) ),
+	number_of_scatter_angles( ForceOdd( 16 + 4 * quality ) ),
+	bins_per_energy( 2 + static_cast<size_t>( static_cast<double>( quality ) * 1.75 ) )
 {
 }
 
