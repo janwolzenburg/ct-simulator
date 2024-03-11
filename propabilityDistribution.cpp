@@ -69,9 +69,9 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 	propabilityDistribution implementation
 */
 
-PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution ) : //, const size_t max_number_of_bins ) :
-	//distribution_( Normalise( distribution ) ), // Ensure that sum of values is one
-	values_( distribution.size(), 0. )
+PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribution ) :	
+	values_( distribution.size(), 0. ),
+	generator_{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() }		
 {
 
 	// Vector with weights of variates
@@ -88,47 +88,13 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	// Build distribution from weights
 	distribution_ = std::discrete_distribution<unsigned int>( weights.begin(), weights.end() );
 
-	/*
-	const double bin_amount_scaling = 4.;		// Factor for the number of bins. When it is greater, smaller properties can appear in the uniform propability
-
-	// Sort distribution by x value ( variate of distribution )
-	std::sort( distribution_.begin(), distribution_.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.x < b.x; } );
-
-
-	// Sorted distribution by propability
-	vector<Tuple2D> sorted_distribution = distribution_;
-
-	// Get the smallest probability
-	std::sort( sorted_distribution.begin(), sorted_distribution.end(), [] ( const Tuple2D& a, const Tuple2D& b ){ return a.y < b.y; } );
-	double smallest_propability = sorted_distribution.front().y;
-
-	// Check against maximum number of bins
-	if( 1. / smallest_propability > bin_amount_scaling * static_cast<double>( max_number_of_bins ) ) 
-		smallest_propability = 1. / ( bin_amount_scaling * static_cast<double>( max_number_of_bins ) );
-
-	// Insert amount corrensponding to probability into uniform distribution
-	for( const Tuple2D& currentValue : distribution_ ){
-
-		const double current_probabilty = currentValue.y;
-
-		// How many elements of current value to add to vector. The factor 4 is used
-		const size_t current_bin_amount = static_cast<size_t>( floor( bin_amount_scaling * current_probabilty / smallest_propability + 0.5 ) );
-
-		// Insert into vector
-		uniform_propabilities_.insert( uniform_propabilities_.end(), current_bin_amount, currentValue.x );
-
-	}*/
 }
 
-double PropabilityDistribution::GetRandomNumber(  mutex& scattering_properties_mutex ){
-	
-	//size_t randomIndex = integer_random_number_generator.GetRandomNumber() % uniform_propabilities_.size();
-	//if( randomIndex >= uniform_propabilities_.size() ) randomIndex = uniform_propabilities_.size() - 1;
-	//return uniform_propabilities_.at( randomIndex );
+double PropabilityDistribution::GetRandomNumber(  mutex& distribution_mutex ){
 
-	scattering_properties_mutex.lock();
-	double value =  values_.at( distribution_( integer_random_number_generator.generator() ) );
-	scattering_properties_mutex.unlock();
+	distribution_mutex.lock();
+	double value =  values_.at( distribution_( generator_ ) );
+	distribution_mutex.unlock();
 	return value;
 
 }

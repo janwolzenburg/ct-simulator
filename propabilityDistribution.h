@@ -45,8 +45,6 @@ class RandomNumberGenerator{
 	*/
 	unsigned int GetRandomNumber( void );
 
-	std::default_random_engine& generator( void ){ return generator_; };
-
 	/*!
 	 * @brief Check if an event with given propability "happened"
 	 * @param event_propability Event propabilitx 
@@ -57,7 +55,7 @@ class RandomNumberGenerator{
 
 	private:
 
-	std::default_random_engine generator_;							/*!< Generator*/
+	std::ranlux48  generator_;							/*!< Generator*/
 	std::uniform_int_distribution<unsigned int> distribution_;		/*!< Uniform distribution*/
 	mutex mutex_;													/*!< Mutex for thread safety*/
 
@@ -86,11 +84,9 @@ class PropabilityDistribution{
 
 
 	private:
-
-	//vector<Tuple2D> distribution_;						/*!< Distribution*/
-	//vector<double> uniform_propabilities_;		/*!< Vector with values from distribution sorted according to their propability*/
 	
 	vector<double> values_;
+	std::ranlux48  generator_;							/*!< Generator*/
 	std::discrete_distribution<unsigned int> distribution_;
 
 };
