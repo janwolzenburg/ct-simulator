@@ -19,7 +19,7 @@
    Implementations
 *********************************************************************/
 
-SimulationProperties simulation_properties{ 9 };
+SimulationProperties simulation_properties{ 20 };
 
 const string SimulationProperties::FILE_PREAMBLE{ "SimulationProperties_FILE_PREAMBLE" };
 
