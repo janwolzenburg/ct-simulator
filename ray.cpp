@@ -157,10 +157,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	// Vector to store factors for attenuating this ray
 	vector<double> energy_scalars( properties_.energy_spectrum_.GetNumberOfEnergies(), 1. );
 
-	// For each angle store a vector with the amount of each energy in spectrum is scattered 
-	//vector<vector<size_t>> scattered_angles( number_of_angles, 
-		//vector<size_t>(  properties_.energy_spectrum_.GetNumberOfEnergies(), 0 ) );
-
 	// Number of scatteres bins over all energies
 	size_t scattered_bins_sum = 0;
 
@@ -187,50 +183,43 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			if( !integer_random_number_generator.DidARandomEventHappen( 
 					scatter_propability * tomography_properties.scatter_propability_correction ) )
 				continue;
-
-				// Random angle
+			
+			// Check if angle is scattered inside scattering plane
+			if( abs( scattering_information.GetRandomAngle( 
+																energy, scattering_properties_mutex ) ) <= 
+																scattering_information.max_angle_to_lie_in_plane() ){
+			
+				// Random angle inside scattering plane
 				const double angle = ForceRange( scattering_information.GetRandomAngle( 
-																					energy, scattering_properties_mutex ), -PI, PI );		
+																				energy, scattering_properties_mutex ), -PI, PI );		
 				
 				// If angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
-				// Get index of random angle
-				const size_t angle_index = static_cast<size_t>( ( angle + PI ) / 
-																		 scattering_information.angle_resolution() );
-				
-				// Increment count of scattering for current energy and angle
-				//scattered_angles.at( angle_index ).at( energy_index )++;
-				
-				// Check if angle is scattered inside scattering plane
-				if( abs( scattering_information.GetRandomAngle( 
-																	energy, scattering_properties_mutex ) ) <= 
-																	scattering_information.max_angle_to_lie_in_plane() ){
+				// Calculate scattered photons energy via compton-wavelength
+				const double new_energy = 1. / 
+															( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 					
-					// Calculate scattered photons energy via compton-wavelength
-					const double new_energy = 1. / 
-																( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
-					
-					// New photonflow
-					const double new_photonflow = tomography_properties.scattered_ray_absorption_factor * 
-											properties_.energy_spectrum_.data().at( energy_index ).y / 
-											static_cast<double>( simulation_properties.bins_per_energy );
+				// New photonflow
+				const double new_photonflow = tomography_properties.scattered_ray_absorption_factor * 
+										photons / static_cast<double>( simulation_properties.bins_per_energy );
 
-					scattered_angles_linear.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
-				}
+				scattered_angles_linear.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
+			}
 
-				// Scalers for energies in incoming ray. Only accounts for energy lost to new rays without
-				// considering der angle dependent energy loss (Compton-Aporption). This is because 
-				// the compton-absorption is already accounted for in the absorption routine
-				energy_scalars.at( energy_index ) *= 
-				1. - tomography_properties.scattered_ray_absorption_factor / 
-					static_cast<double>( simulation_properties.bins_per_energy );
-
-				scattered_bins_sum++;
-
+			// Scaler for energy in incoming ray. Only accounts for energy lost to new rays without
+			// considering der angle dependent energy loss (Compton-Aporption). This is because 
+			// the compton-absorption is already accounted for in the absorption routine
+			const double energy_scalar = 1. - tomography_properties.scattered_ray_absorption_factor / 
+																		static_cast<double>( simulation_properties.bins_per_energy );
+			//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
+			#ifdef TRANSMISSION_TRACKING
+			properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
+			#endif
+			
+			scattered_bins_sum++;
 		}
-		// Next energy 
-		energy_index++;
+
 	}
 
 	// No ray scattered in scattering plane -> return empty
@@ -321,16 +310,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		// Remember previous angle
 		previous_angle = angle;
 	
-	}
-
-	energy_index = 0;
-	for( const auto& energy_scalar : energy_scalars ){
-
-		//properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
-		#ifdef TRANSMISSION_TRACKING
-		properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
-		#endif
-		energy_index++;
 	}
 
 	return scattered_rays;
