@@ -191,8 +191,8 @@ bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
 		// Check if ray hit anti scattering structure hit is possible
 		// If detector has anti scattering structure and angle not allowed by structure
 		// Goto next pixel
-		if( properties_.has_anti_scattering_structure || 
-					( PI / 2. - ray.GetAngle( current_pixel ) ) <= 
+		if( properties_.has_anti_scattering_structure && 
+					( PI / 2. - ray.GetAngle( current_pixel ) ) > 
 					properties_.max_angle_allowed_by_structure )
 			continue;
 
