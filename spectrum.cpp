@@ -26,10 +26,17 @@ using std::for_each;
    Implementations
 *********************************************************************/
 
-EnergySpectrum::EnergySpectrum( const VectorPair energy_quantaties ) :
-	photonflow_per_energy_( ConvertToTuple( energy_quantaties ) ),
-	mean_energy_valid_( false )
+EnergySpectrum::EnergySpectrum( const VectorPair& energy_quantaties ) :
+	EnergySpectrum{ ConvertToTuple( energy_quantaties ) }
 {
+	
+}
+
+
+EnergySpectrum::EnergySpectrum( const vector<Tuple2D>& energy_quantaties ) :
+	photonflow_per_energy_( energy_quantaties ),
+	mean_energy_valid_( false ){
+
 	if( photonflow_per_energy_.size() == 0 ) return;
 
 	// Sort data by x value

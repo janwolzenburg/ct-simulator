@@ -40,7 +40,13 @@ class EnergySpectrum {
 	 * @brief Constructor
 	 * @param energy_quantaties Energy values and their occurrences in spectrum
 	*/
-	EnergySpectrum( const VectorPair energy_quantaties );
+	EnergySpectrum( const VectorPair& energy_quantaties );
+
+	/*!
+	 * @brief Constructr
+	 * @param energy_quantaties  Energy values and their occurrences in spectrum
+	 */
+	EnergySpectrum( const vector<Tuple2D>& energy_quantaties );
 
 	/*!
 	 * @brief Get raw data
