@@ -148,10 +148,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 	
 
-	vector<pair<double, pair<double, double>>> scattered_angles_linear;
-
-	// Vector to store factors for attenuating this ray
-	vector<double> energy_scalars( properties_.energy_spectrum_.GetNumberOfEnergies(), 1. );
+	vector<pair<double, pair<double, double>>> scattered_angles;
 
 	// Number of scatteres bins over all energies
 	size_t scattered_bins_sum = 0;
@@ -200,7 +197,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 				const double new_photonflow = tomography_properties.scattered_ray_absorption_factor * 
 										photons / static_cast<double>( simulation_properties.bins_per_energy );
 
-				scattered_angles_linear.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
+				scattered_angles.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
 			}
 
 			// Scaler for energy in incoming ray. Only accounts for energy lost to new rays without
@@ -221,11 +218,11 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	}
 
 	// No ray scattered in scattering plane -> return empty
-	if( scattered_angles_linear.size() == 0 )
+	if( scattered_angles.size() == 0 )
 		return {};
 
 	// Sort scattered angles
-	std::sort( scattered_angles_linear.begin(), scattered_angles_linear.end(), []( const auto& a, const auto& b ){ return a.first > b.first; } );
+	std::sort( scattered_angles.begin(), scattered_angles.end(), []( const auto& a, const auto& b ){ return a.first > b.first; } );
 
 	double previous_angle = -1.;	// Angle currently handled
 	size_t scattered_bins_for_current_angle = 0;
@@ -234,10 +231,10 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	vector<Tuple2D> spectral_photonflows;
 
 	// Iterate through sorted angles
-	for( size_t angle_index = 0; angle_index < scattered_angles_linear.size(); angle_index++ ){
-		const double angle = scattered_angles_linear.at( angle_index ).first;
-		const double energy = scattered_angles_linear.at( angle_index ).second.first;
-		const double photonflow = scattered_angles_linear.at( angle_index ).second.second;
+	for( size_t angle_index = 0; angle_index < scattered_angles.size(); angle_index++ ){
+		const double angle = scattered_angles.at( angle_index ).first;
+		const double energy = scattered_angles.at( angle_index ).second.first;
+		const double photonflow = scattered_angles.at( angle_index ).second.second;
 
 		// Angle already in spectrum or first angle
 		if( previous_angle == angle || angle_index == 0 ){
@@ -266,9 +263,9 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		bool build_ray = false;
 		
 		// At least one angle left
-		if( angle_index < scattered_angles_linear.size() - 1 ){
+		if( angle_index < scattered_angles.size() - 1 ){
 			// Next ray has different angle
-			if( scattered_angles_linear.at( angle_index + 1 ).first != angle )
+			if( scattered_angles.at( angle_index + 1 ).first != angle )
 				build_ray = true;
 		}
 		else
