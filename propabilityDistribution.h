@@ -55,7 +55,7 @@ class RandomNumberGenerator{
 
 	private:
 
-	std::ranlux48  generator_;							/*!< Generator*/
+	std::ranlux24_base   generator_;							/*!< Generator*/
 	std::uniform_int_distribution<unsigned int> distribution_;		/*!< Uniform distribution*/
 	mutex mutex_;													/*!< Mutex for thread safety*/
 
@@ -86,7 +86,7 @@ class PropabilityDistribution{
 	private:
 	
 	vector<double> values_;
-	std::ranlux48  generator_;							/*!< Generator*/
+	std::ranlux24_base   generator_;							/*!< Generator*/
 	std::discrete_distribution<unsigned int> distribution_;
 
 };
