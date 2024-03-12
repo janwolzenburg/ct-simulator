@@ -107,3 +107,11 @@ double GetMaxElement( const vector<vector<double>>& vec );
  * @return Minimum value
 */
 double GetMinElement( const vector<vector<double>>& vec );
+
+/*! 
+ * @brief Add two tuples. When x-value match it adds the y-values. Otherwise a new x-value is created
+ * @param vector_1 Vector 1  
+ * @param vector_2 Vector 1
+ * @return Sum of vectors
+*/
+vector<Tuple2D> AddTuple2D( const vector<Tuple2D>& vector_1, const vector<Tuple2D>& vector_2 );

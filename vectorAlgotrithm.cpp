@@ -138,3 +138,40 @@ double GetMaxElement( const vector<vector<double>>& v ){
 	return GetMaxElement( maxima );
 
 }
+
+
+
+vector<Tuple2D> AddTuple2D( const vector<Tuple2D>& vector_1, const vector<Tuple2D>& vector_2 ){
+
+	vector<Tuple2D> vector_sum = vector_1;
+	std::sort( vector_sum.begin(), vector_sum.end(), []( auto t_1, auto t_2 ){ return t_1.x < t_2.x; } );
+
+	for( const auto& [x, y] : vector_2 ){
+
+		bool altered = false;
+
+		for( auto current_element = vector_sum.begin(); current_element < vector_sum.end(); current_element++ ){
+			// Exact match
+			if( IsNearlyEqual( x, current_element->x, 0.001, ComparisonMode::Relative ) ){
+				current_element->y += y;		// Add y-value
+				altered = true;
+				break;
+			}
+
+			if( x < current_element->x ){
+				vector_sum.insert( current_element, { x, y } );
+				altered = true;
+				break;
+			}
+		}
+
+		if( !altered ){
+			vector_sum.insert( vector_sum.end(), { x, y} );
+		}
+
+
+	}
+
+	return vector_sum;
+
+}
