@@ -135,7 +135,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		simulation_properties.number_of_energies_for_scattering, 
 		coordinate_system_->GetEz(), 
 		atan( this->detector_.properties().row_width / 
-					this->detector_.properties().detector_focus_distance ) };
+					this->detector_.properties().detector_focus_distance / 2 ) };
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
