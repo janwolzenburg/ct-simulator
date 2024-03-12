@@ -259,6 +259,9 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 			scattered_bins_for_current_angle++;
 		}
+		else{
+			spectral_photonflows.emplace_back( energy, photonflow );
+		}
 		
 		bool build_ray = false;
 		
@@ -268,7 +271,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			if( scattered_angles.at( angle_index + 1 ).first != angle )
 				build_ray = true;
 		}
-		else
+		// Last angle
+		else if( angle_index == scattered_angles.size() - 1 )
 			build_ray = true;
 
 		// Build scattered ray. When angle is finished or last element is reached
