@@ -246,7 +246,8 @@ void VerifyScattering( void ){
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
-	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, gantry_system->GetEz(), atan( gantry.detector().properties().row_width / gantry.detector().properties().detector_focus_distance )};
+	simulation_properties.number_of_scatter_angles = 47;
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, gantry_system->GetEz(), atan( gantry.detector().properties().row_width / gantry.detector().properties().detector_focus_distance / 2 )};
 
 	TomographyProperties tomography_properties{ true, 1, 1., true, 1. };
 
@@ -307,7 +308,13 @@ void VerifyScattering( void ){
 	vector<Tuple2D> absorption_and_scattering_attenuations = scattering_attenuations;
 	vector<Tuple2D> absorption_attenuations = scattering_attenuations;
 
-	size_t ray_iterations = 100; size_t num_scattered_rays = 0;
+	
+	const double initial_power = ray.properties().energy_spectrum().GetTotalPowerIn_eVPerSecond();
+	vector<Tuple2D> initial_spectrum = ray.properties().energy_spectrum().data();
+	vector<double> scattering_angles = CreateLinearSpace( 0, PI, ( simulation_properties.number_of_scatter_angles + 1 ) / 2 );
+	vector<vector<Tuple2D>> angle_spectra( ( simulation_properties.number_of_scatter_angles + 1 ) / 2 ,vector<Tuple2D>( 0, Tuple2D{} ) );
+
+	size_t ray_iterations = 500; size_t num_scattered_rays = 0;
 	for( auto it = 0; it < ray_iterations; it++ ){
 
 		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
@@ -327,7 +334,55 @@ void VerifyScattering( void ){
 			attenuation += -log( photon_flow / ray.properties().energy_spectrum().GetPhotonflow( energy ) );		
 		}
 
+		
+		for( const auto& scattered_ray : returned_rays_loc.second ){
+
+			const double angle = ray.direction().GetAngle( scattered_ray.direction() );
+			const size_t angle_index = GetClosestElementIndex( scattering_angles, angle );
+
+			angle_spectra.at( angle_index ) = std::move( AddTuple2D( angle_spectra.at( angle_index ), scattered_ray.properties().energy_spectrum().data() ) );
+
+		}
+
 	}
+
+	vector<Tuple2D> power_fractions( angle_spectra.size(), Tuple2D{} );
+
+	size_t angle_index = 0;
+	for( auto angle_spectrum : angle_spectra ){
+		ScaleYValues( angle_spectrum, 1. / ray_iterations );
+		power_fractions.at( angle_index ).x = scattering_angles.at( angle_index );
+
+		double angle_spectrum_power = 0.;
+		for( const auto& [x, y] : angle_spectrum ){
+			angle_spectrum_power += x*y; 
+		}
+
+		power_fractions.at( angle_index ).y = angle_spectrum_power / initial_power * 100;
+		angle_index++;
+	}
+
+	auto initial_spectrum_axis = openAxis( GetPath( string{"initial_spectrum"} ), true );
+	addSingleObject( initial_spectrum_axis, "Initial Spectrum", ray.properties().energy_spectrum().data(), "$E$ in eV;n in $1/\\text{s}$;Dots", 2);
+	closeAxis( initial_spectrum_axis );
+
+	auto angle_power_fractions = openAxis( GetPath( string{"angle_power_fractions"} ), true );
+	addSingleObject( angle_power_fractions, "Power fraction",power_fractions, ";;Dots", 1);
+	closeAxis( angle_power_fractions );
+
+	/*
+	auto single_angle_0_spectrum_axis = openAxis( GetPath( string{"single_angle_0_spectrum"} ), true );
+	addSingleObject( single_angle_0_spectrum_axis, "Single angle 0 Spectrum", angle_spectra.at( 2 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
+	closeAxis( single_angle_0_spectrum_axis );
+
+	auto single_angle_1_spectrum_axis = openAxis( GetPath( string{"single_angle_1_spectrum"} ), true );
+	addSingleObject( single_angle_1_spectrum_axis, "Single angle 1 Spectrum", angle_spectra.at( 4 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
+	closeAxis( single_angle_1_spectrum_axis );
+
+	auto single_angle_2_spectrum_axis = openAxis( GetPath( string{"single_angle_2_spectrum"} ), true );
+	addSingleObject( single_angle_2_spectrum_axis, "Single angle 2 Spectrum", angle_spectra.at( 6 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
+	closeAxis( single_angle_2_spectrum_axis );
+	*/
 
 	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
 
