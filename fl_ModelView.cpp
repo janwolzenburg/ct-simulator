@@ -109,7 +109,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	x_rotation_.range( -180., 180. );		x_rotation_.step( 1., 10. );
 	y_rotation_.range( -180., 180. );		y_rotation_.step( 1., 10. );
 	z_position_.range( -500., 500. );		z_position_.step( 1., 10. );
-	artefact_impact_.range( 0. , 10. );		artefact_impact_.step( 0.01, 0.1 );
+	artefact_impact_.range( 0. , 10. );		artefact_impact_.step( 0.1, 1. );
 
 	// Labelsizes
 	x_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( x_rotation_.h() ) ) );
@@ -123,7 +123,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
-	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 10 it beheaves like real iron.");
+	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 10 it beheaves like titan.");
 
 	// Set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
