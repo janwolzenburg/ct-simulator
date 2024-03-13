@@ -58,14 +58,14 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 int main( void ){
 
-	BuildTestDetector();
-	TestBeamCreation();
-	TestRadonCoordinates();
-	TestSpectrum();
+	//BuildTestDetector();
+	//TestBeamCreation();
+	//TestRadonCoordinates();
+	//TestSpectrum();
 
 	//VerifyTransmission();
 	//VerifyHardening();
-	//VerifyScattering();
+	VerifyScattering();
 
 	//VerifyFilteredprojections();
 	//VerifyCupping();

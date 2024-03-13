@@ -34,16 +34,14 @@ class RandomNumberGenerator{
 	
 	/*!
 	 * @brief Constructor
-	 * @param min_value Minimum value
-	 * @param max_value Maximum value
 	*/
-	RandomNumberGenerator( const unsigned int min_value, const unsigned int max_value );
+	RandomNumberGenerator( void );
 
 	/*!
-	 * @brief Get a random number_of_pixel
+	 * @brief Get a random number
 	 * @return Random integer
 	*/
-	unsigned int GetRandomNumber( void );
+	unsigned long long int GetRandomNumber( void );
 
 	/*!
 	 * @brief Check if an event with given propability "happened"
@@ -55,10 +53,11 @@ class RandomNumberGenerator{
 
 	private:
 
-	std::ranlux24_base   generator_;							/*!< Generator*/
-	std::uniform_int_distribution<unsigned int> distribution_;		/*!< Uniform distribution*/
+	unsigned long long int generator_state_[2];
+	//std::subtract_with_carry_engine<unsigned int, 24, 10, 12>   generator_;							/*!< Generator*/
+	//std::uniform_int_distribution<unsigned long long int> distribution_;		/*!< Uniform distribution*/
 	mutex mutex_;													/*!< Mutex for thread safety*/
-
+	
 };
 
 
