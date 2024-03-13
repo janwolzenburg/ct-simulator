@@ -37,7 +37,7 @@ void TestRadonCoordinates( void ){
 
 	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	CoordinateSystem* radon_system = GlobalSystem()->CreateCopy("Radon system");
@@ -54,8 +54,8 @@ void TestRadonCoordinates( void ){
 	}
 
 	auto axis = openAxis( GetPath( "test_radon_coordinates_1" ), true );
-	addSingleObject( axis, "RadonPoint", projections.data(), "$\\Theta$ in rad;$s$ in mm;Status;Circ", false );
-	addSingleObject( axis, "HitRadonPoint1", radon_points, "$\\Theta$ in rad;$s$ in mm;Status;Dots" );
+	addSingleObject( axis, "RadonPoint", projections.data(), "$\\theta$ in rad;$s$ in mm;Status;Circ", false );
+	addSingleObject( axis, "HitRadonPoint1", radon_points, "$\\theta$ in rad;$s$ in mm;Status;Dots" );
 	closeAxis( axis );
 
 
@@ -70,8 +70,8 @@ void TestRadonCoordinates( void ){
 	}
 
 	axis = openAxis( GetPath( "test_radon_coordinates_2" ), true );
-	addSingleObject( axis, "RadonPoint", projections.data(), "$\\Theta$ in rad;$s$ in mm;Status;Circ", false );	
-	addSingleObject( axis, "HitRadonPoint2", radon_points, "$\\Theta$ in rad;$s$ in mm;Status;Dots" );
+	addSingleObject( axis, "RadonPoint", projections.data(), "$\\theta$ in rad;$s$ in mm;Status;Circ", false );	
+	addSingleObject( axis, "HitRadonPoint2", radon_points, "$\\theta$ in rad;$s$ in mm;Status;Dots" );
 	closeAxis( axis ); 
 
 	
@@ -87,8 +87,8 @@ void TestRadonCoordinates( void ){
 
 	
 	axis = openAxis( GetPath( "test_radon_coordinates_3" ), true );
-	addSingleObject( axis, "RadonPoint", projections.data(), "$\\Theta$ in rad;$s$ in mm;Status;Circ", false );
-	addSingleObject( axis, "HitRadonPoint3", radon_points, "$\\Theta$ in rad;$s$ in mm;Status;Dots" );
+	addSingleObject( axis, "RadonPoint", projections.data(), "$\\theta$ in rad;$s$ in mm;Status;Circ", false );
+	addSingleObject( axis, "HitRadonPoint3", radon_points, "$\\theta$ in rad;$s$ in mm;Status;Dots" );
 	closeAxis( axis ); 
 
 	
@@ -103,8 +103,8 @@ void TestRadonCoordinates( void ){
 	}
 
 	axis = openAxis( GetPath( "test_radon_coordinates_4" ), true );
-	addSingleObject( axis, "RadonPoint", projections.data(), "$\\Theta$ in rad;$s$ in mm;Status;Circ", false );
-	addSingleObject( axis, "HitRadonPoint4", radon_points, "$\\Theta$ in rad;$s$ in mm;Status;Dots" );
+	addSingleObject( axis, "RadonPoint", projections.data(), "$\\theta$ in rad;$s$ in mm;Status;Circ", false );
+	addSingleObject( axis, "HitRadonPoint4", radon_points, "$\\theta$ in rad;$s$ in mm;Status;Dots" );
 	closeAxis( axis );  
 
 }
@@ -113,7 +113,7 @@ void TestRadonCoordinates( void ){
 void TestSpectrum( void ){
 
 
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Thungsten, 1, false, 16000., 3.5 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Thungsten, 1, false, 16000., 3.5 };
 	
 	CoordinateSystem* tube_system = GlobalSystem()->CreateCopy("Tube system");
 	
@@ -135,7 +135,7 @@ void TestSpectrum( void ){
 	closeAxis( axis );  
 
 
-	XRayTubeProperties tube_properties_filter{ 120000., 0.2, XRayTubeProperties::Thungsten, 1, true, 16000., 3.5 };
+	XRayTubeProperties tube_properties_filter{ 140000., 0.4, XRayTubeProperties::Thungsten, 1, true, 16000., 3.5 };
 	
 	CoordinateSystem* tube_system_filter = GlobalSystem()->CreateCopy("Tube with filter system");
 	
@@ -161,9 +161,9 @@ void TestSpectrum( void ){
 
 void TestBeamCreation( void ){
 
-	ProjectionsProperties projections_properties{ number_of_projections*7/4, number_of_pixel, measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 3, false, 20000., 3.5 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 3, false, 20000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 

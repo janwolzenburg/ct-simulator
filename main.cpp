@@ -55,18 +55,17 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 #include "verifyDevice.h"
 #include "verifyTransmission.h"
 #include "verifyprocessing.h"
-#include "verifyTransmission.h"
 
 int main( void ){
 
-	//BuildTestDetector();
-	//TestRadonCoordinates();
-	//TestSpectrum();
-	//TestBeamCreation();
+	BuildTestDetector();
+	TestBeamCreation();
+	TestRadonCoordinates();
+	TestSpectrum();
 
 	//VerifyTransmission();
 	//VerifyHardening();
-	VerifyScattering();
+	//VerifyScattering();
 
 	//VerifyFilteredprojections();
 	//VerifyCupping();
