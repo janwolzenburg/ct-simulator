@@ -79,7 +79,18 @@ class XRayDetector{
 	 * @param pixel_mutex Mutex for multi threaded access to pixel array
 	 * @return True when ray hit the detector
 	*/
+	#ifdef TRANSMISSION_TRACKING
 	bool DetectRay( Ray& ray, mutex& pixel_array_mutex );
+	#else
+	bool DetectRay( const Ray& ray, mutex& pixel_array_mutex );
+	#endif
+
+	/*!
+	 * @brief Check if ray is detectable
+	 * @param ray Ray to check. Expected pixel index is adjusted
+	 * @return True when ray can reach the detector
+	 */
+	bool TryDetection( Ray& ray ) const;
 
 
 	private:
@@ -89,6 +100,8 @@ class XRayDetector{
 	vector<DetectorPixel> converted_pixel_array_;	/*!< Pixel in different coordinate system*/
 
 	DetectorProperties properties_;					/*!< Properties*/
+
+	optional<size_t> GetHitPixelIndex( const Ray& ray ) const;
 
 };
 

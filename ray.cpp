@@ -235,6 +235,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		const double angle = scattered_angles.at( angle_index ).first;
 		const double energy = scattered_angles.at( angle_index ).second.first;
 		const double photonflow = scattered_angles.at( angle_index ).second.second;
+		scattered_bins_for_current_angle++;
 
 		// Angle already in spectrum or first angle
 		if( previous_angle == angle || angle_index == 0 ){
@@ -256,8 +257,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			else{
 				spectral_photonflows.at( energy_index ).y += photonflow;
 			}
-
-			scattered_bins_for_current_angle++;
 		}
 		else{
 			spectral_photonflows.emplace_back( energy, photonflow );
@@ -313,4 +312,10 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 	return scattered_rays;
 
+}
+
+
+void Ray::SetExpectedPixelIndex( const size_t pixel_index, const bool definitely_hits ){
+	properties_.expected_detector_pixel_index_ = pixel_index;
+	properties_.definitely_hits_expected_pixel_ = definitely_hits;
 }

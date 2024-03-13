@@ -63,9 +63,9 @@ class RayProperties{
 	 * @param spectrum Ray spectrum
 	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
 	*/
-	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0 ) :
+	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0, const bool definitely_hits_expected_pixel = false ) :
 		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
-		simple_intensity_( 1. )
+		simple_intensity_( 1. ), definitely_hits_expected_pixel_( definitely_hits_expected_pixel )
 		#ifdef TRANSMISSION_TRACKING
 		,only_scattering_spectrum( energy_spectrum_ )
 		,only_absorption_spectrum( energy_spectrum_ )
@@ -76,7 +76,8 @@ class RayProperties{
 	 * @brief Default constructor
 	*/
 	RayProperties( void ) :
-		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. )
+		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ),
+		definitely_hits_expected_pixel_( false )
 		#ifdef TRANSMISSION_TRACKING
 		,only_scattering_spectrum( energy_spectrum_ )
 		,only_absorption_spectrum( energy_spectrum_ )
@@ -100,6 +101,12 @@ class RayProperties{
 	 * @return Index of detector pixel
 	*/
 	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
+
+	/*!
+	 * @brief Get whether this ray's expected pixel index is definitely
+	 * @return True when the stored pixel will definitely be hit
+	 */
+	bool definitely_hits_expected_pixel( void ) const{ return definitely_hits_expected_pixel_; };
 
 	/*!
 	 * @brief Get the intensity if ray is attenuated after lampert beer's model without energy dependence. Start value is 1.
@@ -128,6 +135,7 @@ class RayProperties{
 	double initial_power_;					/*!< Intensity before radiation in watts*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
 	double simple_intensity_;				/*!< Current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
+	bool definitely_hits_expected_pixel_;	/*!< Flag to indicate that this ray definitely hits the expected ray*/
 
 	#ifdef TRANSMISSION_TRACKING
 	public:
@@ -263,6 +271,14 @@ class Ray : public Line{
 	 * @return Vector with scattered rays
 	*/
 	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin);
+
+	/*!
+	 * @brief Set expected pixel index
+	 * @param pixel_index The pixel index
+	 * @param definitely_hits Indication whether given pixel is definitely hit
+	 */
+	void SetExpectedPixelIndex( const size_t pixel_index, const bool definitely_hits );
+
 
 	private:
 

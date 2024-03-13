@@ -178,14 +178,28 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 			// For debugging
 			if( thread_index == 0 ) first_thread_id = threads.back().get_id();
+
 		}
 
 		// Wait for threads to finish
 		for( std::thread& currentThread : threads ) currentThread.join();
 
-		// Copy rays to vector
-		rays = std::move( rays_for_next_iteration );
-
+		// Check if this is last iteration and delete rays which can not be detected
+		if( current_loop == tomography_properties.max_scattering_occurrences - 1 ){
+			rays.clear();
+			
+			// Check each ray
+			for( auto& ray : rays_for_next_iteration ){
+				// Detection possible. Ray's expected pixel index is updated in TryDetection
+				if( detector_.TryDetection( ray ) ){
+					rays.emplace_back( std::move( ray ) );	// Only rays which can be detected are in the next iteration
+				}
+			}
+		}
+		else{
+			// Copy every ray
+			rays = std::move( rays_for_next_iteration );
+		}
 	}
 
 

@@ -167,9 +167,13 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
+optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 
 	const size_t expected_pixel_index = ray.properties().expected_detector_pixel_index();
+
+	if( ray.properties().definitely_hits_expected_pixel() ){
+		return expected_pixel_index;
+	}
 
 	size_t pixel_index = expected_pixel_index;
 
@@ -201,28 +205,51 @@ bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_lock ){
 
 		// Do they intersect?
 		if( pixel_hit.intersection_exists_ ){
-	
-			// Add detected Ray properties to pixel
-			pixel_array_lock.lock();
-			pixel_array_.at( pixel_index ).AddDetectedRayProperties( ray.properties() );		
-			pixel_array_lock.unlock();
-				
-			#ifdef TRANSMISSION_TRACKING // Only enabled for verification
-			if( !ray.ray_tracing().tracing_steps.empty() ){
-				ray.ray_tracing().tracing_steps.back().exit = pixel_hit.intersection_point_;
-				ray.ray_tracing().tracing_steps.back().distance = (pixel_hit.intersection_point_ 
-				- ray.ray_tracing().tracing_steps.back().entrance).length();
-			}
-			#endif
-
-			// Only one pixel can intersect with ray -> return
-			return true;
+			return pixel_index;
 		}
 	}
 
-	return false;
+	return {};
+
 }
 
+#ifdef TRANSMISSION_TRACKING
+bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_mutex ){
+#else
+bool XRayDetector::DetectRay( const Ray& ray, mutex& pixel_array_mutex ){
+#endif
+
+	optional<size_t> pixel_index = GetHitPixelIndex( ray );
+
+	if( pixel_index.has_value() ){
+		pixel_array_mutex.lock();
+		pixel_array_.at( pixel_index.value() ).AddDetectedRayProperties( ray.properties() );		
+		pixel_array_mutex.unlock();
+		
+		#ifdef TRANSMISSION_TRACKING // Only enabled for verification
+		Point3D intersection_point = RayPixelIntersection{ ray, pixel_array_.at( pixel_index.value() )}.intersection_point_;
+		if( !ray.ray_tracing().tracing_steps.empty() ){
+			ray.ray_tracing().tracing_steps.back().exit = intersection_point;
+			ray.ray_tracing().tracing_steps.back().distance = (intersection_point
+			- ray.ray_tracing().tracing_steps.back().entrance).length();
+		}
+		#endif
+	}
+
+	return pixel_index.has_value();
+}
+
+
+bool XRayDetector::TryDetection( Ray& ray ) const{
+	optional<size_t> pixel_index = GetHitPixelIndex( ray );
+	
+	if( pixel_index.has_value() ){
+		ray.SetExpectedPixelIndex( pixel_index.value(), true );
+	}
+
+	return pixel_index.has_value();
+
+}
 
 void XRayDetector::ConvertPixelArray( const CoordinateSystem* const targetCSys ){
 

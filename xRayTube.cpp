@@ -192,7 +192,7 @@ vector<Ray> XRayTube::GetEmittedBeam(
 	for( const DetectorPixel current_pixel : detector_pixel ){
 		
 		// Properties of created rays for this pixel
-		const RayProperties ray_properties{ single_ray_spectrum, pixel_index++ };
+		const RayProperties ray_properties{ single_ray_spectrum, pixel_index++, true };
 
 		// Get points on the edge of pixel, the line between them and their distance
 		const Point3D edge_point_1 = 
