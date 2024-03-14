@@ -68,11 +68,11 @@ void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomogr
 	simple_intensity_values.emplace_back( current_step, simple_intensity_values.back().y );
 	intensity_values.emplace_back( current_step, intensity_values.back().y );
 
-	addSingleObject( simple_intensities_axis, "SimpleIntensity", simple_intensity_values, "$d$ in mm;$I$;Step" );
-	addSingleObject( intensities_axis, "Intensity", intensity_values, "$d$ in mm;$I$ in W;Step");
+	addSingleObject( simple_intensities_axis, "SimpleIntensity", simple_intensity_values, "$d$ in mm;$J$;Step" );
+	addSingleObject( intensities_axis, "Intensity", intensity_values, "$d$ in mm;$J$ in W;Step");
 
-	addSingleObject( simple_delta_axis, "SimpleIntensityDelta", simple_deltas, "$d$ in mm;ln$(I\\cdot I_0^{-1})\\cdot\\Delta d^{-1}$ in mm$^{-1}$;Step" );
-	addSingleObject( delta_axis, "IntensityDelta", deltas, "$d$ in mm;ln$(I\\cdot I_0^{-1})\\cdot\\Delta d^{-1}$ in mm$^{-1}$;Step" );
+	addSingleObject( simple_delta_axis, "SimpleIntensityDelta", simple_deltas, "$d$ in mm;ln$(JJ_0^{-1})\\Delta d^{-1}$ in mm$^{-1}$;Step" );
+	addSingleObject( delta_axis, "IntensityDelta", deltas, "$d$ in mm;ln$(J J_0^{-1})\\Delta d^{-1}$ in mm$^{-1}$;Step" );
 
 	#endif
 }
@@ -88,9 +88,9 @@ void VerifyTransmission( void ){
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 
-	ProjectionsProperties projections_properties{ number_of_projections, 12, 1.1 * sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. )) };
-	PhysicalDetectorProperties physical_detector_properties{ 25., projections_properties.measuring_field_size()*1.75 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 400 };
+	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 
@@ -156,9 +156,9 @@ void VerifyHardening( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{ number_of_projections, 12, 200 };
-	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
-	XRayTubeProperties tube_properties{ 120000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
+	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
@@ -238,9 +238,9 @@ void VerifyScattering( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{8, 4, 100 };
+	ProjectionsProperties projections_properties{number_of_projections, number_of_pixel, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
-	XRayTubeProperties tube_properties{ 210000, 0.2, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
+	XRayTubeProperties tube_properties{ 210000, 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
