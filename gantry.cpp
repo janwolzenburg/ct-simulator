@@ -67,7 +67,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 void Gantry::TransmitRaysThreaded(	
 									const Model& model, const TomographyProperties& tomography_properties,
 									RayScattering& ray_scattering, mutex& scattering_properties_mutex,
-									const vector<Ray>& rays, const bool repeat_transmission_after_scattering,
+									const vector<Ray>& rays, const bool second_to_last_iteration,
 									size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
 									vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
 									XRayDetector& detector, mutex& detector_mutex ){
@@ -98,13 +98,33 @@ void Gantry::TransmitRaysThreaded(
 
 		detector.DetectRay( ref( rays_to_return.first ), ref( detector_mutex ) );
 		
-		// Add Ray for next iteration
-		rays_for_next_iteration_mutex.lock();
-		rays_for_next_iteration.insert( rays_for_next_iteration.end(), 
-																		make_move_iterator( rays_to_return.second.begin() ), 
-																		make_move_iterator( rays_to_return.second.end() ) );									
-		rays_for_next_iteration_mutex.unlock();
+		if( rays_to_return.second.empty() ){
+			continue;
+		}
 
+		// Check if this is last iteration and delete rays which can not be detected
+		if( second_to_last_iteration ){
+			
+			// Check each ray
+			for( auto& ray : rays_to_return.second ){
+				// Detection possible. Ray's expected pixel index is updated in TryDetection
+				if( detector.TryDetection( ray ) ){
+					// Only rays which can be detected are in the next iteration
+					rays_for_next_iteration_mutex.lock();
+					rays_for_next_iteration.emplace_back( std::move( ray ) );									
+					rays_for_next_iteration_mutex.unlock();
+				}
+			}
+		}
+		else{
+			// Add all rays for next iteration
+			rays_for_next_iteration_mutex.lock();
+			rays_for_next_iteration.insert( rays_for_next_iteration.end(), 
+																			make_move_iterator( rays_to_return.second.begin() ), 
+																			make_move_iterator( rays_to_return.second.end() ) );									
+			rays_for_next_iteration_mutex.unlock();
+		}
+	
 	}
 
 	return;
@@ -156,6 +176,8 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 			current_loop < tomography_properties.max_scattering_occurrences && 
 			tomography_properties.scattering_enabled;	
 		
+		const bool second_to_last_iteration = ( current_loop == tomography_properties.max_scattering_occurrences - 1 );
+
 		// Store for information output
 		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();
 
@@ -170,7 +192,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 			threads.emplace_back( TransmitRaysThreaded,	
 														cref( model ), cref( tomography_properties ), 
 														ref( scattering_information ), ref( scattering_mutex ),
-														cref( rays ), current_loop == 0,
+														cref( rays ),  second_to_last_iteration,
 														ref( shared_current_ray_index ), 
 														ref( current_ray_index_mutex ), ref( rays_for_next_iteration ), 
 														ref( rays_for_next_iteration_mutex ),
@@ -183,23 +205,9 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		// Wait for threads to finish
 		for( std::thread& currentThread : threads ) currentThread.join();
+		
+		rays = std::move( rays_for_next_iteration );
 
-		// Check if this is last iteration and delete rays which can not be detected
-		if( current_loop == tomography_properties.max_scattering_occurrences - 1 ){
-			rays.clear();
-			
-			// Check each ray
-			for( auto& ray : rays_for_next_iteration ){
-				// Detection possible. Ray's expected pixel index is updated in TryDetection
-				if( detector_.TryDetection( ray ) ){
-					rays.emplace_back( std::move( ray ) );	// Only rays which can be detected are in the next iteration
-				}
-			}
-		}
-		else{
-			// Copy every ray
-			rays = std::move( rays_for_next_iteration );
-		}
 	}
 
 

@@ -127,7 +127,7 @@ class Gantry{
 	 * @param tomography_properties Properties of tomography
 	 * @param rayScatterAngles Reference to object with information about Ray scattering
 	 * @param rays Reference to vector with rays to transmit
-	 * @param repeat_transmission_after_scattering Flag to enable re-transmission of ray, when it has been scattered
+	 * @param second_to_last_iteration Flag to indicate that this is the last iteration
 	 * @param current_ray_index Index of the next Ray in vector to transmit. Will be changed at each call
 	 * @param current_ray_index_mutex Mutex instance for Ray index
 	 * @param rays_for_next_iteration Reference to vector which hold the rays for the next iteration
@@ -137,8 +137,7 @@ class Gantry{
 	*/
 	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties& tomography_properties, 
 										RayScattering& rayScatterAngles, 
-										mutex& scattering_properties_mutex,	const vector<Ray>& rays, 
-										const bool repeat_transmission_after_scattering,
+										mutex& scattering_properties_mutex,	const vector<Ray>& rays, const bool second_to_last_iteration,
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
 										XRayDetector& detector,					mutex& detector_mutex );
