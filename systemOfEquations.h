@@ -124,7 +124,7 @@ class Matrix : public MathematicalObject{
 	MathError SubstractRows( const size_t row_1, const size_t row_2 );
 
 	
-	private:
+	protected:
 
 	
 	size_t number_of_columns_;	/*!< Columns*/
