@@ -45,12 +45,6 @@ RandomNumberGenerator::RandomNumberGenerator( void ) :
 
 unsigned long long int RandomNumberGenerator::GetRandomNumber( void ){
 
-	/*
-	mutex_.lock();
-	const unsigned int randomNumber = distribution_(generator_);
-	mutex_.unlock();
-	*/
-
 	// Algorithm from https://prng.di.unimi.it/xoroshiro128starstar.c
 	const unsigned long long int s0 = generator_state_[0];
 	unsigned long long int s1 = generator_state_[1];
