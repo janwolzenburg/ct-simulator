@@ -85,7 +85,7 @@ class PropabilityDistribution{
 	private:
 	
 	vector<double> values_;
-	std::ranlux24_base   generator_;							/*!< Generator*/
+	std::minstd_rand generator_;							/*!< Generator*/
 	std::discrete_distribution<unsigned int> distribution_;
 
 };
