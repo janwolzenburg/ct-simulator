@@ -90,7 +90,7 @@ void VerifyTransmission( void ){
 
 	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 400 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
-	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 
@@ -156,9 +156,9 @@ void VerifyHardening( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 1.1*measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
-	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
@@ -240,7 +240,7 @@ void VerifyScattering( void ){
 
 	ProjectionsProperties projections_properties{number_of_projections, number_of_pixel, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
-	XRayTubeProperties tube_properties{ 210000, 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 5000., 4 };
+	XRayTubeProperties tube_properties{ 210000, 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
