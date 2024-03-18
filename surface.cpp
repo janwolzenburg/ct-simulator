@@ -31,12 +31,15 @@
 Surface::Surface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p )
 	: direction_1_( v1 ),
 	direction_2_( v2 ),
-	origin_( p ){
+	origin_( p ),
+	normal_( direction_1_ ^ direction_2_ )
+{
 	
 	if( !direction_1_.HasSameSystem( origin_ ) || !direction_2_.HasSameSystem( origin_ ) ||
 		!direction_1_.HasSameSystem( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Surface origin_ and trajectories must be defined in the same coordinate system!" );
 
 	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Trajectory vectors must be orthogonal!" );
+
 };
 
 Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator& it, CoordinateSystem* cSys )
@@ -47,6 +50,7 @@ Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator&
 
 	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Trajectory vectors must be orthogonal!" );
 
+	normal_ = direction_1_ ^ direction_2_;
 }
 
 Surface::Surface( void ) : 
@@ -65,7 +69,7 @@ string Surface::ToString( const unsigned int newline_tabulators ) const{
 }
 
 Surface Surface::ConvertTo( const CoordinateSystem* const coordinate_system ) const{
-	return Surface( direction_1_.ConvertTo( coordinate_system ), direction_2_.ConvertTo( coordinate_system ), origin_.ConvertTo( coordinate_system ) );
+	return Surface{ direction_1_.ConvertTo(coordinate_system), direction_2_.ConvertTo(coordinate_system), origin_.ConvertTo(coordinate_system) };
 }
 
 size_t Surface::Serialize( vector<char>& binary_data ) const{

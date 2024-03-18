@@ -93,7 +93,7 @@ class Surface : public MathematicalObject{
 	 * @brief Get surface normal by cross product
 	 * @return Surface normal
 	*/
-	UnitVector3D GetNormal( void ) const{ return direction_1_ ^ direction_2_; };
+	UnitVector3D GetNormal( void ) const{ return normal_; };
 
 	/*!
 	 * @brief Convert surface to different coordinate system
@@ -114,7 +114,9 @@ class Surface : public MathematicalObject{
 	protected:
 	UnitVector3D  direction_1_;			/*!< First direction vector*/
 	UnitVector3D  direction_2_;			/*!< Second direction vector*/
-	Point3D  origin_;					/*!< Origin*/
+	Point3D  origin_;								/*!< Origin*/
+	UnitVector3D normal_;						/*!< The surfaces normal*/
+
 };
 
 
