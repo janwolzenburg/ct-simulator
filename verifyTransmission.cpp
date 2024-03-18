@@ -156,7 +156,7 @@ void VerifyHardening( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 1.1*measurefield_size };
+	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 1.275*measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
@@ -196,11 +196,12 @@ void VerifyHardening( void ){
 	}
 
 	
-	ofstream mean_energy_axis;
+	ofstream mean_energy_axis = openAxis( GetPath( "MeanEnergy"), true);
+	ofstream single_intensity_axis = openAxis( GetPath( "single_intensity"), true);
 	mutex dummy_mutex;
 
 	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, dummy_mutex, true);
-	vector<Tuple2D> mean_energies;
+	vector<Tuple2D> mean_energies, intensities;
 	
 
 	double current_step = 0.;
@@ -213,11 +214,13 @@ void VerifyHardening( void ){
 		if( !step.inside_model ) continue;
 
 		mean_energies.emplace_back( current_step, step.spectrum.mean_energy() );
-		
+		intensities.emplace_back( current_step, step.spectrum.GetTotalPower() );
 		current_step += step.distance;
 	}
 	
-	addSingleObject( mean_energy_axis, "MeanEnergy", mean_energies, "$d$ in mm;$E$ in eV;Step" );
+	addSingleObject( mean_energy_axis, "MeanEnergy", mean_energies, "$d$ in mm;$\\overline{E}$ in eV;Step" );
+	addSingleObject( single_intensity_axis, "Intensity", intensities, "$d$ in mm;$J$ in W;Step");
+
 
 	ofstream simple_intensities_axis;// = openAxis( GetPath( "test_transmission_simple_intensity" ), true );
 	ofstream intensities_axis;// = openAxis( GetPath( "test_transmission_intensity" ), true );
@@ -245,6 +248,7 @@ void VerifyHardening( void ){
 	}
 
 	closeAxis( mean_energy_axis );
+	closeAxis( single_intensity_axis );
 	closeAxis( axis );
 	#endif
 }
