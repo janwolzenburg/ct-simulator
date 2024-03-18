@@ -234,7 +234,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			model_intersection.entrance_.line_parameter_, GetModelVoxel().data(), 
 			local_ray.origin(), model_intersection.entrance_.intersection_point_, 
 			local_ray.properties().simple_intensity(), 
-			local_ray.properties().energy_spectrum().GetTotalPower());
+			local_ray.properties().energy_spectrum().GetTotalPower(),
+			local_ray.properties().energy_spectrum() );
 	}
 	#endif
 
@@ -341,7 +342,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					distance_in_voxel, current_voxel_data, current_point_on_ray, 
 					local_ray.GetPointFast( current_ray_step ), 
 					local_ray.properties().simple_intensity(), 
-					local_ray.properties().energy_spectrum().GetTotalPower() );
+					local_ray.properties().energy_spectrum().GetTotalPower(),
+					local_ray.properties().energy_spectrum() );
 			#endif
 
 			// New ray parameter the distance travelled in this voxel
@@ -378,7 +380,8 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	local_ray.ray_tracing().tracing_steps.emplace_back( false, 
 		-1, GetModelVoxel().data(), current_point_on_ray, current_point_on_ray, 
 		local_ray.properties().simple_intensity(), 
-		local_ray.properties().energy_spectrum().GetTotalPower() );
+		local_ray.properties().energy_spectrum().GetTotalPower(),
+		local_ray.properties().energy_spectrum() );
 	#endif
 
 	return { local_ray, all_scattered_rays };

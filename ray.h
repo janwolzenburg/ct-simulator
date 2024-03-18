@@ -38,6 +38,7 @@ class RayTrace{
 		Point3D exit;
 		double current_simple_intensity;
 		double current_intensity;
+		EnergySpectrum spectrum;
 	};
 
 	public:

@@ -133,13 +133,13 @@ void VerifyTransmission( void ){
 	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 	
-	
-	
+
+
 	auto simple_intensities_axis = openAxis( GetPath( "test_transmission_simple_intensity" ), true );
 	auto intensities_axis = openAxis( GetPath( "test_transmission_intensity" ), true );
 	auto simple_delta_axis = openAxis( GetPath( "test_transmission_simple_intensity_delta" ), true );
 	auto delta_axis = openAxis( GetPath( "test_transmission_intensity_delta" ), true );
-
+	
 	TransmitAndDraw( model, ray, tomography_properties, ray_scattering, axis, simple_intensities_axis, intensities_axis, simple_delta_axis, delta_axis, true );
 	
 	closeAxis( simple_intensities_axis );
@@ -196,7 +196,29 @@ void VerifyHardening( void ){
 	}
 
 	
+	ofstream mean_energy_axis;
+	mutex dummy_mutex;
+
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, dummy_mutex, true);
+	vector<Tuple2D> mean_energies;
 	
+
+	double current_step = 0.;
+
+	Ray transmitted_ray = returned_rays.first;
+	bool first = true;
+
+	for( RayTrace::TracingStep step : transmitted_ray.properties().ray_tracing.tracing_steps ){
+
+		if( !step.inside_model ) continue;
+
+		mean_energies.emplace_back( current_step, step.spectrum.mean_energy() );
+		
+		current_step += step.distance;
+	}
+	
+	addSingleObject( mean_energy_axis, "MeanEnergy", mean_energies, "$d$ in mm;$E$ in eV;Step" );
+
 	ofstream simple_intensities_axis;// = openAxis( GetPath( "test_transmission_simple_intensity" ), true );
 	ofstream intensities_axis;// = openAxis( GetPath( "test_transmission_intensity" ), true );
 	ofstream simple_delta_axis;// = openAxis( GetPath( "test_transmission_simple_intensity_delta" ), true );
@@ -219,9 +241,10 @@ void VerifyHardening( void ){
 		closeAxis( intensities_axis );
 		closeAxis( simple_delta_axis );
 		closeAxis( delta_axis );
+
 	}
 
-
+	closeAxis( mean_energy_axis );
 	closeAxis( axis );
 	#endif
 }
