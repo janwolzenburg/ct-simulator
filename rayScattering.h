@@ -102,7 +102,12 @@ class ScatteringCrossSection{
 	 * @return Cross section in mm^2
 	*/
 	double GetCrossSection( const double energy ) const;
-
+	
+	/*!
+	 * @brief Get all possible cross sections
+	 * @return All possible cross sections
+	 */
+	vector<double> GetCrossSections( void ) const;
 
 	private:
 	

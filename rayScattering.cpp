@@ -118,3 +118,12 @@ ScatteringCrossSection::ScatteringCrossSection( void ) :
 		cross_sections_.at( current_energy_index ) = Tuple2D{ energy_eV, collision_cross_section };
 	}
 }
+
+vector<double> ScatteringCrossSection::GetCrossSections( void ) const{
+	vector<double> cross_sections;
+	for( const auto& single_cross_section : cross_sections_ ){
+		cross_sections.push_back( single_cross_section.y );
+	}
+
+	return cross_sections;
+}
