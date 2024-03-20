@@ -64,8 +64,9 @@ int main( void ){
 	//TestSpectrum();
 
 	//VerifyTransmission();
-	VerifyHardening();
-	//VerifyScattering();
+	//VerifyHardening();
+	VerifyScattering();
+	//verifyRNG();
 
 	//VerifyFilteredprojections();
 	//VerifyCupping();

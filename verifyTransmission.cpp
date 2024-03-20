@@ -130,7 +130,7 @@ void VerifyTransmission( void ){
 	Ray ray = rays.at( 0 );
 	addSingleObject( axis, "Ray", ray, "g", gantry.detector().properties().detector_focus_distance);
 	
-	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 210000.}, 32,  gantry_system->GetEz(), PI / 2. };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0. };
 	
 
@@ -265,6 +265,8 @@ void VerifyScattering( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
+	simulation_properties.number_of_points_in_spectrum_ = 128;
+	simulation_properties.bins_per_energy = 16;
 	ProjectionsProperties projections_properties{number_of_projections, number_of_pixel, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 210000, 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
@@ -273,10 +275,11 @@ void VerifyScattering( void ){
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
-	simulation_properties.number_of_scatter_angles = 47;
+	simulation_properties.number_of_scatter_angles = 63;
+	simulation_properties.number_of_energies_for_scattering = 1000;
 	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles,  gantry.tube().GetEmittedEnergyRange(), simulation_properties.number_of_energies_for_scattering, gantry_system->GetEz(), atan( gantry.detector().properties().row_width / gantry.detector().properties().detector_focus_distance / 2 )};
 
-	TomographyProperties tomography_properties{ true, 1, 1., true, 1. };
+	TomographyProperties tomography_properties{ true, 1, 1., true, 1., "", false, 49 };
 
 	Surface slice_surface{ gantry.coordinate_system()->GetEx(), gantry.coordinate_system()->GetEy(), gantry.coordinate_system()->GetOriginPoint() };
 	auto slice = model.GetSlice( slice_surface, GridIndex{ model.number_of_voxel_3D().x, model.number_of_voxel_3D().y }, GridCoordinates{ model.voxel_size().x, model.voxel_size().y } );
@@ -492,36 +495,73 @@ void VerifyScattering( void ){
 
 	
 	vector<Tuple2D> scatterings = ray.properties().energy_spectrum().data();
+
 	for( auto e_i = 0; e_i < scatterings.size(); e_i++ ){
 		scatterings.at( e_i ).y = 0.;
 	}
 	
+	
 	const double coefficient_factor = 1.;
-
 	const size_t iterations = 100000;
-	for( size_t i = 0; i < iterations; i++ ){
 
+	for( auto& [energy, number] : scatterings ){
 
-		for( auto& [energy, number] : scatterings ){
+		const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
+		const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
+		const double scatter_propability = 1. - exp( -coefficient_1Permm * 1. );
 
-			const double cross_section_mm = ScatteringCrossSection::GetInstance().GetCrossSection( energy );
-			const double coefficient_1Permm = cross_section_mm * electron_density_water_1Permm3 * coefficient_factor;
-			const double scatter_propability = 1. - exp( -coefficient_1Permm * 1. );
-
-			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability  ) )
+		for( size_t i = 0; i < iterations; i++ ){
+			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability  ) ){
 				number++;
+			}
 		}
-
 	}
+
+	//auto propability_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
+	//addSingleObject( propability_axis, "Propability", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
+	//closeAxis( propability_axis );
+
 
 	for( auto& [energy, number] : scatterings ){
 		number /= static_cast<double>( iterations );
 		number = -log( 1. - number ) * 1.e27 / 100. / coefficient_factor / electron_density_water_1Permm3;
 	}
 
-	auto propability_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
-	addSingleObject( propability_axis, "Propability", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
-	closeAxis( propability_axis );
+	auto cross_section_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
+	addSingleObject( cross_section_axis, "Cross section", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
+	closeAxis( cross_section_axis );
+
+
 
 	#endif
+}
+
+void verifyRNG( void ){
+	auto generator_axis  = openAxis( GetPath( string{"test_rng"} ), true );
+	
+	vector<Tuple2D> probabilities;
+	size_t num_props = 10000;
+	const int iterations = 100000;
+
+	double propabiltiy = 0.;
+	size_t i = 0;
+
+	for( size_t i = 0; i < num_props; i++ ){
+
+		propabiltiy = (pow( 500., static_cast<double>( i ) / num_props ) - 1.) / (500. - 1.) / 10.;
+
+		int counter = 0;
+
+		for( int j = 0; j < iterations; j++ ){
+			if( integer_random_number_generator.DidARandomEventHappen( propabiltiy  ) )
+				counter++;
+		}
+
+		probabilities.emplace_back(propabiltiy, static_cast<double>(counter) / iterations );
+
+	}
+
+	addSingleObject( generator_axis, "Propability histogram", probabilities, "$p$;$p$ Generator;Dots", 2);
+	
+	closeAxis( generator_axis );
 }
