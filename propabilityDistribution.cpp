@@ -43,7 +43,7 @@ RandomNumberGenerator::RandomNumberGenerator( void ) :
 
 }
 
-unsigned long long int RandomNumberGenerator::GetRandomNumber( void ){
+unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 
 	// Algorithm from https://prng.di.unimi.it/xoroshiro128starstar.c
 	const unsigned long long int s0 = generator_state_[0];
@@ -60,18 +60,18 @@ unsigned long long int RandomNumberGenerator::GetRandomNumber( void ){
 	mutex_.unlock();
 
 
-	return result;
+	return static_cast<unsigned int>( result & 0x00000000FFFFFFFF );
 
 }
 
 bool RandomNumberGenerator::DidARandomEventHappen( const double event_propability ){
 
-	const unsigned long long int interval = UINT64_MAX;
+	const unsigned int interval = UINT32_MAX;
 	const double single_value_propability = 1. / static_cast<double>( interval );
-	const unsigned long long int event_interval = 
-		static_cast<unsigned long long int>( event_propability / single_value_propability );
+	const unsigned int event_interval = 
+		static_cast<unsigned int>( event_propability / single_value_propability );
 
-	const unsigned long long int random_integer = GetRandomNumber();
+	const unsigned int random_integer = GetRandomNumber();
 
 	if( random_integer < event_interval ) 
 		return true;

@@ -41,7 +41,7 @@ class RandomNumberGenerator{
 	 * @brief Get a random number
 	 * @return Random integer
 	*/
-	unsigned long long int GetRandomNumber( void );
+	unsigned int GetRandomNumber( void );
 
 	/*!
 	 * @brief Check if an event with given propability "happened"
