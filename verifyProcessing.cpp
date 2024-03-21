@@ -20,14 +20,14 @@ void VerifyFilteredprojections( void ){
 	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	ProjectionsProperties projections_properties{ 4*number_of_projections, 4*number_of_pixel, sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. ) ) };
+	ProjectionsProperties projections_properties{ 6*number_of_projections, 6*number_of_pixel, sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. ) ) };
 	PhysicalDetectorProperties physical_detector_properties{ .5, projections_properties.measuring_field_size() * 1.1, false };
-	XRayTubeProperties tube_properties{ 160000., 0.2, XRayTubeProperties::Material::Thungsten, 1, true, 5000., 4 };
+	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
 	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 
-	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {1000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
+	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {10000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };
 	TomographyProperties tomography_properties{ false, 1, 0., true, 0., };
 
 	Tomography tomography{ tomography_properties };
@@ -38,7 +38,7 @@ void VerifyFilteredprojections( void ){
 	
 
 	auto slice_axis = openAxis(  GetPath("phantom_slice_image"), true );
-	string format{ to_string(slice.start().c) + "," + to_string(slice.GetEnd().c) + ";" + to_string(slice.start().r) + "," + to_string(slice.GetEnd().c) + ";$x$ in mm;$y$ in mm;$\\mu_a$ in mm$^{-1}$"};
+	string format{ to_string(slice.start().c) + "," + to_string(slice.GetEnd().c) + ";" + to_string(slice.start().r) + "," + to_string(slice.GetEnd().c) + ";$x$ in mm;$y$ in mm;$\\mu_\\mathrm{abs}$ in mm$^{-1}$"};
 	addSingleObject( slice_axis, "PhantomSliceImage", slice.GetDoubleGrid(), format, true);
 	
 	
@@ -100,7 +100,7 @@ void VerifyFilteredprojections( void ){
 	//--------------------------------------------------------------------------------------------------
 	auto proj_axis = openAxis(  GetPath("verify_projections_projection_image"), true );
 
-	format = string{  to_string(projections.data().start().c) + "," + to_string(projections.data().GetEnd().c) + ";" + to_string(projections.data().start().r) + "," + to_string(projections.data().GetEnd().r) + ";$\\Theta$ in rad;$s$ in mm;ln$(I_0/I)$" };
+	format = string{  to_string(projections.data().start().c) + "," + to_string(projections.data().GetEnd().c) + ";" + to_string(projections.data().start().r) + "," + to_string(projections.data().GetEnd().r) + ";$\\theta$ in rad;$s$ in mm;ln$(J_0/J)$" };
 	addSingleObject( proj_axis, "ProjectionImage", projections.data(), format, true);
 	
 	vector<Tuple2D> single_angle_line{ { angle, projections.data().start().r }, { angle, projections.data().GetEnd().r } };
@@ -116,14 +116,14 @@ void VerifyFilteredprojections( void ){
 		single_projection.push_back( projections.data().GetData( GridCoordinates{ angle, distances.at( s_index ) } ) );
 	}
 
-	addSingleObject( single_proj_axis, "SingleProjection", ConvertToTuple( VectorPair{ distances, single_projection }), 
-					 "$s$ in mm;ln$(I_0/I)$;" );
+	addSingleObject( single_proj_axis, "SingleProjection", ConvertToTuple( VectorPair{ single_projection, distances }), 
+					 "ln$(J_0/J)$;$s$ in mm;" );
 
 
 	FilteredProjections filtered_projections{ projections, BackprojectionFilter::TYPE::ramLak};
 	auto filt_proj_axis = openAxis(  GetPath("verify_projections_filt_projection_image"), true );
 
-	format = string{  to_string(filtered_projections.start().c) + "," + to_string(filtered_projections.data_grid().GetEnd().c) + ";" + to_string(filtered_projections.start().r) + "," + to_string(filtered_projections.data_grid().GetEnd().r) + ";$\\Theta$ in rad;$s$ in mm;$\\tilde{p_\\Theta}(s)$" };
+	format = string{  to_string(filtered_projections.start().c) + "," + to_string(filtered_projections.data_grid().GetEnd().c) + ";" + to_string(filtered_projections.start().r) + "," + to_string(filtered_projections.data_grid().GetEnd().r) + ";$\\theta$ in rad;$s$ in mm;$\\tilde{p_\\theta}(s)$" };
 	addSingleObject( filt_proj_axis, "FiltProjectionImage", filtered_projections.data_grid(), format, true);
 	single_angle_line = vector<Tuple2D>{ { angle, filtered_projections.start().r }, { angle, filtered_projections.data_grid().GetEnd().r } };
 	addSingleObject( filt_proj_axis, "FiltProjections", single_angle_line, ";;;b--" );
@@ -138,8 +138,8 @@ void VerifyFilteredprojections( void ){
 		single_filt_projection.push_back( filtered_projections.data_grid().GetData(GridCoordinates{angle, distances.at(s_index)}));
 	}
 
-	addSingleObject( single_filt_proj_axis, "SingleFiltProjection", ConvertToTuple( VectorPair{ distances, single_filt_projection }), 
-					 "$s$ in mm;$\\tilde{p_\\Theta}(s)$;" );
+	addSingleObject( single_filt_proj_axis, "SingleFiltProjection", ConvertToTuple( VectorPair{ single_filt_projection, distances }), 
+					 "$\\tilde{p_\\theta}(s)$;$s$ in mm;" );
 
 
 	
@@ -148,7 +148,7 @@ void VerifyFilteredprojections( void ){
 
 	auto backproj_axis = openAxis(  GetPath("verify_projections_backprojection_image"), true );
 
-	format = string{  to_string(backprojection.getGrid().start().c) + "," + to_string(backprojection.getGrid().GetEnd().c) + ";" + to_string(backprojection.getGrid().start().r) + "," + to_string(backprojection.getGrid().GetEnd().r) + ";$x$ in mm;$y$ in mm;$\\mu_0$ in mm$^{-1}$"};
+	format = string{  to_string(backprojection.getGrid().start().c) + "," + to_string(backprojection.getGrid().GetEnd().c) + ";" + to_string(backprojection.getGrid().start().r) + "," + to_string(backprojection.getGrid().GetEnd().r) + ";$x$ in mm;$y$ in mm;$\\mu$ in mm$^{-1}$"};
 	addSingleObject( backproj_axis, "BackProjectionImage", backprojection.getGrid(), format, true);
 
 
@@ -159,7 +159,7 @@ void VerifyFilteredprojections( void ){
 
 	auto nofilt_backproj_axis = openAxis(  GetPath("verify_projections_backprojection_nofilt_image"), true );
 
-	format = string{  to_string(backprojection_nofilt.getGrid().start().c) + "," + to_string(backprojection_nofilt.getGrid().GetEnd().c) + ";" + to_string(backprojection_nofilt.getGrid().start().r) + "," + to_string(backprojection_nofilt.getGrid().GetEnd().r) + ";$x$ in mm;$y$ in mm;$\\mu_0$ in mm$^{-1}$"};
+	format = string{  to_string(backprojection_nofilt.getGrid().start().c) + "," + to_string(backprojection_nofilt.getGrid().GetEnd().c) + ";" + to_string(backprojection_nofilt.getGrid().start().r) + "," + to_string(backprojection_nofilt.getGrid().GetEnd().r) + ";$x$ in mm;$y$ in mm;$\\mu$ in mm$^{-1}$"};
 	addSingleObject( nofilt_backproj_axis, "NoFiltBackProjectionImage", backprojection_nofilt.getGrid(), format, true);
 
 

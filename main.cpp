@@ -65,10 +65,10 @@ int main( void ){
 
 	//VerifyTransmission();
 	//VerifyHardening();
-	VerifyScattering();
+	//VerifyScattering();
 	//verifyRNG();
 
-	//VerifyFilteredprojections();
+	VerifyFilteredprojections();
 	//VerifyCupping();
 	return 0;
 

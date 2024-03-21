@@ -400,19 +400,7 @@ void VerifyScattering( void ){
 	addSingleObject( angle_power_fractions, "Power fraction",power_fractions, ";;Dots", 1);
 	closeAxis( angle_power_fractions );
 
-	/*
-	auto single_angle_0_spectrum_axis = openAxis( GetPath( string{"single_angle_0_spectrum"} ), true );
-	addSingleObject( single_angle_0_spectrum_axis, "Single angle 0 Spectrum", angle_spectra.at( 2 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
-	closeAxis( single_angle_0_spectrum_axis );
 
-	auto single_angle_1_spectrum_axis = openAxis( GetPath( string{"single_angle_1_spectrum"} ), true );
-	addSingleObject( single_angle_1_spectrum_axis, "Single angle 1 Spectrum", angle_spectra.at( 4 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
-	closeAxis( single_angle_1_spectrum_axis );
-
-	auto single_angle_2_spectrum_axis = openAxis( GetPath( string{"single_angle_2_spectrum"} ), true );
-	addSingleObject( single_angle_2_spectrum_axis, "Single angle 2 Spectrum", angle_spectra.at( 6 * angle_spectra.size() / 7 ), "$E$ in eV;n in $1/$s$;Dots", 1);
-	closeAxis( single_angle_2_spectrum_axis );
-	*/
 
 	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
 
@@ -528,7 +516,7 @@ void VerifyScattering( void ){
 	}
 
 	auto cross_section_axis = openAxis( GetPath( string{"test_scattering_propability"} ), true );
-	addSingleObject( cross_section_axis, "Cross section", scatterings, "$E$ in eV;$\\sigma_s$ in $10^{-27}$ cm$^2$;Dots", 2);
+	addSingleObject( cross_section_axis, "Cross section", scatterings, "$E$ in eV;$\\sigma_\\mathrm{K}$ in $10^{-27}$ cm$^2$;Dots", 2);
 	closeAxis( cross_section_axis );
 
 
