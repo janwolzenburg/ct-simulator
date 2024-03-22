@@ -114,7 +114,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 	// 1: rotate around z axis to tilt rot. axis into x-z plane 
 	//		Could also rotate into y-z plane an rotate around x-axis in next step
 	// 2: rotate around y-axis to align rot. axis with z-axis
-	// 3. rotate this PrimitiveVector3 by phi around z-axis
+	// 3. rotate this primitive vector by phi around z-axis
 	// 4. Undo previous rotation steps 1 and 2 in reverse order
 
 	// n must have direction
@@ -129,8 +129,8 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 	const double projection_length = sqrt( pow( rotation_vector_copy.x, 2 ) 
 																			 + pow( rotation_vector_copy.y, 2 ) );		
 	// error doing square root?
-	if( errno != 0 ) 
-		return CheckForAndOutputError( MathError::General, "Error calculation square root!" );	
+	if (errno != 0)
+		return CheckForAndOutputError(MathError::General, "Error calculation square root!");
 	
 	// sine and cosine of angle theta:
 	// angle between rotation axis projection onto x-y plane and x-axis

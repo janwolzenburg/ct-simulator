@@ -175,10 +175,11 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 
 	size_t pixel_index = expected_pixel_index;
 
-	// iterate all pixel indices. But start with the most likely pixel
+	// iterate all pixel indices. but start with the most likely pixel
 	for( size_t counter = 0; counter < pixel_array_.size() + 1; counter++ ){
 	
-		// not first iteration: index is counter - 1 because first iteration was the most likely pixel
+		// not first iteration: index is counter - 1 because first iteration was the 
+		// most likely pixel
 		if( counter != 0 ){
 			pixel_index = counter - 1;
 
@@ -198,7 +199,7 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 					properties_.max_angle_allowed_by_structure )
 			continue;
 
-		// check for intersection of Ray with current pixel
+		// check for intersection of ray with current pixel
 		const RayPixelIntersection pixel_hit{ ray, current_pixel };
 
 		// do they intersect?

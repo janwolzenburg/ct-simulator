@@ -211,8 +211,8 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 	// get size of coefficient matrix 
 	const size_t rows = number_of_rows(); const size_t columns = number_of_columns();
 
-	GridIndex top_corner{};													// top-left corner of submatrix						
-	GridIndex bottom_corner{ rows - 1, rows - 1 };	// bottom-right corner of submatrix			
+	GridIndex top_corner{};													// top-left corner of submatrix
+	GridIndex bottom_corner{ rows - 1, rows - 1 };	// bottom-right corner of submatrix
 	GridIndex index_of_maximum;											// indices of maximum in submatrix
 	double maximum_value;														// value of maximum in submatrix
 
