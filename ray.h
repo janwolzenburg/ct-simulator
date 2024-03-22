@@ -271,7 +271,7 @@ class Ray : public Line{
 	 * @param newOrigin Point where sattering occured
 	 * @return Vector with scattered rays
 	*/
-	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData voxel_data, const double distance_traveled_mm, const TomographyProperties tomography_properties, const Point3D newOrigin);
+	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData& voxel_data, const double distance_traveled_mm, const TomographyProperties& tomography_properties, const Point3D& newOrigin);
 
 	/*!
 	 * @brief Set expected pixel index

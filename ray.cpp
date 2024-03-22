@@ -121,10 +121,10 @@ void Ray::SetDirection( const UnitVector3D new_direction ){
 
 vector<Ray> Ray::Scatter( RayScattering& scattering_information, 
 													mutex& scattering_properties_mutex,
-													const VoxelData voxel_data, 
+													const VoxelData& voxel_data, 
 													const double distance_traveled_mm, 
-													const TomographyProperties tomography_properties, 
-													const Point3D new_origin ){
+													const TomographyProperties& tomography_properties, 
+													const Point3D& new_origin ){
 
 	// voxel's absorption with respect to water's absorption
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / 
