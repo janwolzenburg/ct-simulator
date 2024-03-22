@@ -191,7 +191,7 @@ void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 		min_value_ = (std::numeric_limits<D>::max)(); // additional () needed to stop macro expansion of min() and max()!!!
 		max_value_ = (std::numeric_limits<D>::min)();
 	}
-	// Special for own VoxelData class
+	// special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
 		min_value_ = VoxelData{ INFINITY, 1., VoxelData::Undefined };
 		max_value_ = VoxelData{ -INFINITY, 1., VoxelData::Undefined };
@@ -207,7 +207,7 @@ bool DataGrid<D>::SetData( const GridIndex index, const D newValue ){
 		if( newValue < min_value_ ) min_value_ = newValue;
 		if( newValue > max_value_ ) max_value_ = newValue;
 	}
-	// Special for own VoxelData class
+	// special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
 		if( newValue < min_value_ && !newValue.HasSpecificProperty( VoxelData::Undefined ) ) min_value_ = newValue;
 		if( newValue > max_value_ && !newValue.HasSpecificProperty( VoxelData::Undefined ) ) max_value_ = newValue;

@@ -45,14 +45,14 @@ ProjectionsProperties::ProjectionsProperties(	const size_t number_of_angles, con
 	// check angle
 	double currentAngle = static_cast<double>( number_of_distances_ - 1 ) * angles_resolution_;
 
-	// Store current number_of_pixel of distances 
+	// store current number_of_pixel of distances 
 	size_t newNumberPointsRow = number_of_distances_;
 
 	// detector angle exceeds maximum or minimum
 	if( currentAngle > max_detetector_arc_angle_rad ) newNumberPointsRow = static_cast<size_t>( floor( max_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
 	if( currentAngle < min_detetector_arc_angle_rad ) newNumberPointsRow = static_cast<size_t>( ceil( min_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
 
-	// Recalculate if number_of_pixel of point changed
+	// recalculate if number_of_pixel of point changed
 	if( newNumberPointsRow != number_of_distances_ ){
 		number_of_distances_ = ForceToMin( ForceEven( newNumberPointsRow ), static_cast<size_t>( 3 ) );
 		distances_resolution_ = measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 );

@@ -32,7 +32,7 @@ bool IsNearlyEqual( const double a, const double b,
 		return std::abs( a - b ) < tolerance;
 	}
 
-	// Relative comparison
+	// relative comparison
 	return RelativeDeviation( a, b ) < tolerance;
 }
 
@@ -49,7 +49,7 @@ bool IsNearlyEqualDistance( const double a, const double b ){
 MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const MathError code ) const{
 	// errorcode is not "OK"?
 	if( code != MathError::Ok ){
-		// Write to error stream
+		// write to error stream
 		math_error_out << '\n' << GetErrorString( code ) << " from " << typeid( *this ).name() << '\n';
 	}
 
@@ -87,7 +87,7 @@ std::string MathematicalObject::GetErrorString( const MathError code ) const{
 }
 
 void MathematicalObject::Dump( std::ostream& output, const std::string objName ) const{
-	// Write type, name and data to outstream
+	// write type, name and data to outstream
 
 	output << typeid( *this ).name() << ' ' << objName << '\n' << this->ToString() << '\n' << '\n';
 }

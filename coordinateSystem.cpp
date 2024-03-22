@@ -79,7 +79,7 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 
 	if( this->IsGlobal() ) return path;
 
-	const CoordinateSystem *cur_cSys = this->parent_;	// Start with parent of this system
+	const CoordinateSystem *cur_cSys = this->parent_;	// start with parent of this system
 
 	// loop while current coordinate system is not the global system
 	while( !cur_cSys->IsGlobal() ){
@@ -87,7 +87,7 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 		cur_cSys = cur_cSys->parent_;
 	}
 
-	// Reverse order to get path of coordinate systems traverse
+	// reverse order to get path of coordinate systems traverse
 	std::reverse( path.begin(), path.end() );
 
 	return path;
@@ -179,13 +179,13 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const Line l, const doub
 	MathError tErr = MathError::Ok;
 	MathError errCode = MathError::Ok;
 
-	// Rotate coordinate system's unit vectors
+	// rotate coordinate system's unit vectors
 	if( ( tErr = Rotate( l.direction(), phi ) ) != MathError::Ok ) errCode = tErr;
 
 	// move rotation center to origin_ of rotation axis
 	Translate( -l.origin() );
 
-	// Rotate position vector of origin_ around rotation axis
+	// rotate position vector of origin_ around rotation axis
 	if( ( tErr = origin_.Rotate( l.direction().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
 
 	// translate back

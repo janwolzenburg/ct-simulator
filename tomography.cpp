@@ -93,10 +93,10 @@ optional<Projections> Tomography::RecordSlice(
 	const ProjectionsProperties projection_properties, Gantry gantry, 
 	const Model& model, const double z_position, Fl_Progress_Window* progress_window ){
 
-	// Update simulation properties
+	// update simulation properties
 	simulation_properties = SimulationProperties{ properties_.simulation_quality };
 
-	// Reset gantry to its initial position
+	// reset gantry to its initial position
 	gantry.ResetGantry();
 
 	// translate Gantry
@@ -109,7 +109,7 @@ optional<Projections> Tomography::RecordSlice(
 	// create projections 
 	Projections projections{ projection_properties, properties_ };
 
-	// Radiate the model for each frame
+	// radiate the model for each frame
 	for( size_t frame_index = 0; 
 							frame_index < projection_properties.number_of_frames_to_fill();			 
 							frame_index++ ){
@@ -119,7 +119,7 @@ optional<Projections> Tomography::RecordSlice(
 				ToString( frame_index ) + " of " + 
 				ToString( projection_properties.number_of_frames_to_fill() ) );
 
-		// Radiate
+		// radiate
 		gantry.RadiateModel( model, properties_ );
 
 		// get the detection result
@@ -141,7 +141,7 @@ optional<Projections> Tomography::RecordSlice(
 												) );
 			
 			// if no value no ray was detected by pixel: line_integral would be infinite.
-			// Set it to a high value
+			// set it to a high value
 			if( !line_integral.has_value() ){
 				line_integral = 25.; // is like ray's energy is 1 / 10^11 of its start energy
 			}
@@ -153,7 +153,7 @@ optional<Projections> Tomography::RecordSlice(
 			projections.AssignData( radon_point );
 		}
 		
-		// Rotate gantry
+		// rotate gantry
 		gantry.RotateCounterClockwise( projection_properties.angles_resolution() );
 
 		Fl::check();

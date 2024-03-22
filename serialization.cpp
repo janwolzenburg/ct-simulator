@@ -70,7 +70,7 @@ size_t SerializeBuildIn<vector<vector<GridCoordinates>>>( const vector<vector<Gr
 		// amount of elements in current sub vector
 		i += SerializeBuildIn<size_t>( subVec.size(), binary_data );
 		
-		// Serialize each element
+		// serialize each element
 		for( const GridCoordinates& value : subVec ){
 			i +=value.Serialize( binary_data );
 		}
@@ -103,12 +103,12 @@ size_t DeSerializeBuildIn<string>( string& value, string default_value, const ve
 
 	// end reached before termination
 	if( *it != '\0' ){
-		// Set to default value
+		// set to default value
 		value = default_value;
 		return value.size();
 	}
 
-	// Skip '\0' so the iterator is pointing to next data_
+	// skip '\0' so the iterator is pointing to next data_
 	if( it < binary_data.end() ) it++;
 
 	return i;
@@ -154,7 +154,7 @@ bool ExportSerialized( const path file_path, const vector<char>& binary_data ){
 
 	if( file_path.empty() ) return false;
 
-	// Storage directory when it does not exist
+	// storage directory when it does not exist
 	if( !std::filesystem::exists( file_path.parent_path()  )) std::filesystem::create_directory( file_path.parent_path() );
 
 	return ExportSerialized( file_path.string(), binary_data );
@@ -170,7 +170,7 @@ bool ExportSerialized( const string file_name, const vector<char>& binary_data )
 	outFile.open( file_name, std::ios::trunc | std::ios::binary );
 	if( outFile.fail() ) return false;
 
-	// Write data_
+	// write data_
 	outFile.write( (char*) binary_data.data(), binary_data.size() );
 	
 	if( outFile.fail() ) return false;
@@ -203,7 +203,7 @@ vector<char> ImportSerialized( const string file_name ){
 		return vector<char>();
 	}
 
-	// Write to binary data_
+	// write to binary data_
 	vector<char> binary_data{ dArray, dArray + file_size };
 
 	delete[] dArray;
@@ -216,7 +216,7 @@ vector<char> ImportSerialized( const string file_name ){
 bool ValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& it ){
 	string readPreamble;
 	
-	// Read file preamble
+	// read file preamble
 	DeSerializeBuildIn<string>( readPreamble, string{}, binary_data, it );
 
 	// compare

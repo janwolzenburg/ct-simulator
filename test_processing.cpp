@@ -88,7 +88,7 @@ bool test_detector_to_sinogram( void ){
 		closeAxis( ax1 );
 
 
-		// Rotate gantry
+		// rotate gantry
 		testGantry.rotateCounterClockwise( radonParameter.resolution.c );
 	}
 

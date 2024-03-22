@@ -74,7 +74,7 @@ MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 	// calculate scaling factor as reciprocal of length
 	const double lenRec = 1 / len;
 
-	// Scale and return error code
+	// scale and return error code
 	Scale( lenRec );
 
 	return MathError::Ok;
@@ -110,7 +110,7 @@ void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosP
 MathematicalObject::MathError PrimitiveVector3::Rotate( 
 																const PrimitiveVector3 rotation_vector, 
 																const double rotation_angle ){
-	// Steps for rotation:
+	// steps for rotation:
 	// 1: rotate around z axis to tilt rot. axis into x-z plane 
 	//		Could also rotate into y-z plane an rotate around x-axis in next step
 	// 2: rotate around y-axis to align rot. axis with z-axis
@@ -132,13 +132,13 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 	if( errno != 0 ) 
 		return CheckForAndOutputError( MathError::General, "Error calculation square root!" );	
 	
-	// Sine and cosine of angle theta:
+	// sine and cosine of angle theta:
 	// angle between rotation axis projection onto x-y plane and x-axis
 	double sin_theta = 0, cos_theta = 1;	
 
 	// avoid division by zero. d = 0 means rotation axis is parallel to z-axis
 	if( projection_length > 0 ){
-		sin_theta = rotation_vector_copy.y / projection_length;	// Sine of the angle Theta
+		sin_theta = rotation_vector_copy.y / projection_length;	// sine of the angle Theta
 		cos_theta = rotation_vector_copy.x / projection_length;	// cosine of the angle Theta
 
 		// clockwise rotation of rotation axis and this vector around z-axis 
@@ -148,7 +148,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 	}
 
 	// gamma is the angle between the rotation axis (aligned to x-z plane) and the z-axis
-	// Rotation vector has been normalised - sine of gamma is length / 1
+	// rotation vector has been normalised - sine of gamma is length / 1
 	// cosine is just the z-component of rotation vector
 	const double sin_gamma = projection_length;				
 	const double cos_gamma = rotation_vector_copy.z;	
@@ -158,7 +158,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 
 	// the axis rotation vector is now aligned with the z-axis
 
-	// Sine and cosine of angle to rotate around
+	// sine and cosine of angle to rotate around
 	const double sin_angle = sin( rotation_angle );
 	const double cos_angle = cos( rotation_angle );
 

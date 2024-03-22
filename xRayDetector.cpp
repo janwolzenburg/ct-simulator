@@ -51,7 +51,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 
 	// persistent variables
 	Line previous_pixel_normal;		// get normal of previous pixel
-	double previous_pixel_size;		// Size of previous pixel
+	double previous_pixel_size;		// size of previous pixel
 
 
 	// iterate through half of pixel normals. Second half is created by symmetry
@@ -85,7 +85,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		const Line normal{ normal_vector, lot_end_point };
 
 		Point3D pixel_origin;	// origin of current pixel
-		double pixel_size;		// Size of current pixel
+		double pixel_size;		// size of current pixel
 
 		// "middle" normal
 		if( pixel_index == 0 ){
@@ -117,7 +117,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		// create current pixel normal pointing to center
 		const Line pixel_normal{ -normal_vector, pixel_origin };
 
-		// Store for next pixel
+		// store for next pixel
 		previous_pixel_normal = pixel_normal;
 		previous_pixel_size = pixel_size;
 
@@ -182,7 +182,7 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 		if( counter != 0 ){
 			pixel_index = counter - 1;
 
-			// Skip detection if expected index would be tested again
+			// skip detection if expected index would be tested again
 			if( pixel_index == expected_pixel_index )
 				continue;
 		}

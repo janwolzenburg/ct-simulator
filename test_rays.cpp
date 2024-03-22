@@ -95,7 +95,7 @@ bool test_ray_scattering(void){
 
 
 		//const bool enableScattering = currentLoop < maxRadiationLoopsTest - 1;	// no scattering in last iteration
-		vector<Ray> raysForNextIteration;								// Rays to process in the next iteration
+		vector<Ray> raysForNextIteration;								// rays to process in the next iteration
 
 		for( const Ray r : rays ){
 

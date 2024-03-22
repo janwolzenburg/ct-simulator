@@ -36,7 +36,7 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 
 	using Face = Voxel::Face;
 
-	// Ray origin inside voxel
+	// ray origin inside voxel
 	if(  voxel.Contains( ray.origin() ) ){
 		entrance_.intersection_exists_ = true;
 		entrance_.line_parameter_ = 0;

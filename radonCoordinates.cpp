@@ -34,7 +34,7 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 	Vector3D lot = projectedLine.GetLot( cSys->GetOriginPoint() );
 
 
-	// Ray intersects origin_
+	// ray intersects origin_
 	if( IsNearlyEqualDistance( lot.length(), 0. ) ){
 		// lot vector only for angle calculation
 		lot = projectedLine.direction() ^ cSys->GetEz();

@@ -114,7 +114,7 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem*
 }
 
 Coordinates Coordinates::ConvertToParentSystem( void ) const{
-	// Return this Coordinates if this' coordinate system is the global system
+	// return this Coordinates if this' coordinate system is the global system
 	if( this->coordinate_system_->IsGlobal() ) return *this;
 
 	// values of Coordinates in parent_ coordinate system
@@ -128,7 +128,7 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 	// error when child's parent_ system is not this system
 	if( !this->HasSameSystem( child_coordinate_system->parent() ) ) CheckForAndOutputError( MathError::Input, "parent of child system is not this system!" );
 
-	SystemOfEquations tEqnSys( 3 );		// System of equation to Solve for x,y and z in local coordinate system
+	SystemOfEquations tEqnSys( 3 );		// system of equation to Solve for x,y and z in local coordinate system
 
 	// poulate columns of system of equations
 	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ex() );
@@ -137,9 +137,9 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 
 	tEqnSys.PopulateColumn( (PrimitiveVector3) *this - child_coordinate_system->GetPrimitive().origin() );
 
-	// Solve
+	// solve
 	SystemOfEquationsSolution tEqnSysSol = tEqnSys.Solve();
 
-	// System solution are new Coordinates
+	// system solution are new Coordinates
 	return Coordinates{ Tuple3D{ tEqnSysSol.GetVariableValue( 0 ), tEqnSysSol.GetVariableValue( 1 ), tEqnSysSol.GetVariableValue( 2 ) }, child_coordinate_system };
 }

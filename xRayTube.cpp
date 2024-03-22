@@ -122,7 +122,7 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 	// only the shape of the spectrum is correct
 	// this is the factor to scale the spectrum by
 	const double correction_factor = radiation_power_W_ / complete_power / J_Per_eV;
-	Scale( energy_spectrum.second, correction_factor );		// Scale by factor
+	Scale( energy_spectrum.second, correction_factor );		// scale by factor
 
 	// apply hardening filter
 	if( properties_.has_filter_ ){

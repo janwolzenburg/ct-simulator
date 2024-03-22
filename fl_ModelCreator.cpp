@@ -309,7 +309,7 @@ void Fl_ModelCreator::BuildModel( void ){
 						
 					auto& feature = *feature_ptr;
 
-					// Skip if not active
+					// skip if not active
 					if( !feature.IsActive() ) continue;
 
 

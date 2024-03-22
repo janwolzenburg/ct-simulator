@@ -125,7 +125,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
 	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 10 it beheaves like titan.");
 
-	// Set values
+	// set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
 	y_rotation_.value( properties_.slice_plane.rotation_angle_y );
 	z_position_.value( properties_.slice_plane.position_z );
@@ -191,10 +191,10 @@ bool Fl_ModelView::MoveModel( double& targetXRot, double& targetYRot, double& ta
 		model_.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
 
-	// Return if succeeded
+	// return if succeeded
 	if( SliceModel() ) return true;
 	
-	// Revert changes
+	// revert changes
 	planeInstance = backupPlane;
 	model_.coordinate_system()->SetPrimitive( backupCSys );
 
@@ -292,19 +292,19 @@ void Fl_ModelView::LoadModel( void ){
 		for( size_t column_index = 0; column_index < model_slice_.size().c; column_index++ ){
 			const GridIndex grid_index{ column_index, row_index };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
-				top_corner = grid_index;																// Set index
+				top_corner = grid_index;																// set index
 				column_index = model_slice_.size().c; row_index = model_slice_.size().r;	// Break condition
 			}
 		}
 	}
 	
-	// Right side
+	// right side
 	GridIndex right_corner{ model_slice_.size().c - 1, 0 };
 	for( size_t column_index = model_slice_.size().c; column_index > 0; column_index-- ){
 		for( size_t row_index = 0; row_index < model_slice_.size().r; row_index++ ){
 			const GridIndex grid_index{ column_index - 1, row_index };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
-				right_corner = grid_index;																// Set index
+				right_corner = grid_index;																// set index
 				column_index = 1; row_index = model_slice_.size().r;								// Break condition
 			}
 		}
@@ -316,7 +316,7 @@ void Fl_ModelView::LoadModel( void ){
 		for( size_t column_index = model_slice_.size().c; column_index > 0; column_index-- ){
 			const GridIndex grid_index{ column_index - 1, row_index - 1 };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
-				bottom_corner = grid_index;																// Set index
+				bottom_corner = grid_index;																// set index
 				column_index = 1; row_index = 1;														// Break condition
 			}
 		}
@@ -328,7 +328,7 @@ void Fl_ModelView::LoadModel( void ){
 		for( size_t row_index = model_slice_.size().r; row_index > 0; row_index-- ){
 			const GridIndex grid_index{ column_index, row_index - 1 };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
-				left_corner = grid_index;																// Set index
+				left_corner = grid_index;																// set index
 				column_index = model_slice_.size().c; row_index = 1;								// Break condition
 			}
 		}
@@ -360,7 +360,7 @@ void Fl_ModelView::UpdateModel( void ){
 	this->window()->deactivate();
 
 
-	// Store in variable for moveModel function call
+	// store in variable for moveModel function call
 	double oldXRot = x_rotation_.value();
 	double oldYRot = y_rotation_.value();
 	double oldZTrans = z_position_.value();

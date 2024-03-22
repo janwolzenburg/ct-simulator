@@ -118,20 +118,20 @@ double FilteredProjections::GetValue( const size_t angle_index,
 
 	// if the exact index is a whole number skip interpolation
 	if( IsNearlyEqualDistance( round( exact_index ), exact_index ) ){
-		// Return value at distance index
+		// return value at distance index
 		return (*this)( GridIndex{ angle_index, static_cast<size_t>( exact_index ) } );
 	}
 
 	// interpolate
 	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );	// lower index
-	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );	// Upper index
+	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );	// upper index
 
 	const double value_floor = this->operator()( 
 		GridIndex{ angle_index, index_floor } );	// value at floor index
 	const double value_ceil  = this->operator()( 
 		GridIndex{ angle_index, index_ceil } );	// value at ceil index
 
-	// Return the interpolated value
+	// return the interpolated value
 	return value_floor + ( value_ceil - value_floor ) 
 											 * ( exact_index - static_cast<double>( index_floor ) );
 

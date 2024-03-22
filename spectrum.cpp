@@ -39,7 +39,7 @@ EnergySpectrum::EnergySpectrum( const vector<Tuple2D>& energy_quantaties ) :
 
 	if( photonflow_per_energy_.size() == 0 ) return;
 
-	// Sort data by x value
+	// sort data by x value
 	sort( photonflow_per_energy_.begin(), photonflow_per_energy_.end(), []( const Tuple2D& d1, const Tuple2D& d2) { return d1.x < d2.x; } );
 
 	if( photonflow_per_energy_.size() == 1 ){

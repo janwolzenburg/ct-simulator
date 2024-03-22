@@ -66,7 +66,7 @@ bool Vector3D::HasSameSystem( const Vector3D v ) const{
 
 Vector3D Vector3D::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 
-	if( this->coordinate_system_ == target_coordinate_system ) return *this;	// Same system return copy of this
+	if( this->coordinate_system_ == target_coordinate_system ) return *this;	// same system return copy of this
 
 	Coordinates tipCoords = this->Coordinates::ConvertTo( target_coordinate_system );
 	Point3D tipPoint{ tipCoords, target_coordinate_system };
@@ -113,7 +113,7 @@ double Vector3D::GetGlobalZ( void ) const{
 }
 
 MathematicalObject::MathError Vector3D::UpdateLength( void ){
-	// Reset error flag
+	// reset error flag
 	errno = 0;
 
 	// new length
@@ -125,10 +125,10 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 }
 
 MathematicalObject::MathError Vector3D::Scale( const double scalar ){
-	// Scale each component
+	// scale each component
 	PrimitiveVector3::Scale( scalar );
 
-	// Update vectors length
+	// update vectors length
 	return UpdateLength();
 }
 
@@ -139,7 +139,7 @@ MathematicalObject::MathError Vector3D::Normalise( void ){
 	if( ( tErr = PrimitiveVector3::Normalise() ) != MathError::Ok ) err = tErr;
 	if( ( tErr = UpdateLength() ) != MathError::Ok ) err = tErr;
 
-	// Scale and return error code
+	// scale and return error code
 	return err;
 }
 
@@ -167,7 +167,7 @@ double Vector3D::GetAngle( const Vector3D v2 ) const{
 
 	if( IsNearlyEqualDistance( scalarProduct, lengthMult ) ) return 0.;
 
-	// Return angle in radians
+	// return angle in radians
 	return acos( scalarProduct / lengthMult );
 }
 

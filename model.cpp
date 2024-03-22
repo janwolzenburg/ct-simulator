@@ -209,18 +209,18 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	// find entrance inside model
 	const RayVoxelIntersection model_intersection{ GetModelVoxel(), local_ray };
 
-	// Return if Ray does not intersect model
+	// return if Ray does not intersect model
 	if( !model_intersection.entrance_.intersection_exists_ ) return { local_ray, {} };		
 
 
 	// iteration through model
 	/* ------------------------------------------------------------------------------- */
 
-	// Ray parameter at model entrance plus a tiny bit
+	// ray parameter at model entrance plus a tiny bit
 	double current_ray_step = model_intersection.entrance_.line_parameter_ + 
 														simulation_properties.ray_step_size_mm;
 
-	// Return when the point on the ray is not inside the model meaning that the ray 
+	// return when the point on the ray is not inside the model meaning that the ray 
 	// just barely hit the model
 	if( !IsPointInside( local_ray.GetPoint( current_ray_step ) ) ) 
 		return { local_ray, {} };
@@ -260,7 +260,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			double distance_to_current_face = INFINITY;			
 			double exit_face_position;											// face position along one axis
 
-			// Switch faces. Check only the possible faces
+			// switch faces. Check only the possible faces
 			switch( current_face ){
 
 				case Voxel::Face::YZ_Xp:
@@ -333,7 +333,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			// the current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
 
-			// Update Ray properties whith distance travelled in current voxel
+			// update Ray properties whith distance travelled in current voxel
 			local_ray.UpdateProperties( current_voxel_data, distance_in_voxel );
 			local_ray.IncrementHitCounter();
 
@@ -352,11 +352,11 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			// the new point on the ray
 			current_point_on_ray = std::move( local_ray.GetPointFast( current_ray_step ) );
 
-			// Scattering. Only when enabled, not overriden and current point is inside model
+			// scattering. only when enabled, not overriden and current point is inside model
 			if( tomography_properties.scattering_enabled && 
 				  !disable_scattering && 
 					IsPointInside( current_point_on_ray ) ){
-				// Scatter the ray
+				// scatter the ray
 				const vector<Ray> scattered_rays = std::move( local_ray.Scatter( 
 						scattering_properties, scattering_properties_mutex,
 						current_voxel_data, distance_in_voxel, 
@@ -370,7 +370,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 		}
 	}
 
-	// Ray is now outside the model
+	// ray is now outside the model
 	/* ------------------------------------------------------------------------------- */
 
 	// new origin of ray "outside" the model
@@ -469,7 +469,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 			yIdx++;
 		}
 
-		//Unlock
+		// unlock
 		currentXMutex.unlock(); currentYMutex.unlock();
 
 
@@ -524,7 +524,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridIndex number_of_points, const optional<GridCoordinates> forced_resolution ) const{
 
-	// Surface in model's system
+	// surface in model's system
 	const Surface localSurface = sliceLocation.ConvertTo( coordinate_system_ );
 	 
 	 GridCoordinates sliceStart;
@@ -534,7 +534,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	if( !forced_resolution.has_value() ){
 		// distance between corners furthest away from each other
 		double cornerDistance = size_.x + size_.y + size_.z; //sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
-		// Worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
+		// worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
 
 		size_t Mmax_number_of_points = Max( number_of_points.c, number_of_points.r );
 		sliceStart = { - cornerDistance / 2., -cornerDistance / 2. };
@@ -554,7 +554,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 	DataGrid<VoxelData> largeSlice{ NumberRange( sliceStart.c, sliceEnd.c ), NumberRange( sliceStart.r, sliceEnd.r ), sliceResolution, VoxelData() };
 
-	// Update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
+	// update Slice start, end and resolution because grid is discrete and fits the end and resolution the its range
 	sliceStart = largeSlice.start();
 	sliceEnd = largeSlice.GetEnd();
 	sliceResolution = largeSlice.resolution();
@@ -590,7 +590,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 	}
 
-	// Write data to smaller grid
+	// write data to smaller grid
 	DataGrid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
 
 

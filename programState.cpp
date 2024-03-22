@@ -23,7 +23,7 @@
 	#define STATE_STORAGE ".\\stateStorage\\"
 #else
 	#define STATE_STORAGE  "./stateStorage/"
-#endif // WIN32
+#endif // wIN32
 
 
 ProgramState& PROGRAM_STATE( void ){
@@ -65,7 +65,7 @@ void ProgramState::DeleteStorageDirectory( void ){
 	// check if state storage directory erxists
 	if( !std::filesystem::is_directory( storage_path_ ) ) return;
 
-	// Remove all content
+	// remove all content
 	for( const auto& file : std::filesystem::directory_iterator( storage_path_ ) )
 		std::filesystem::remove_all( file.path() );
 }

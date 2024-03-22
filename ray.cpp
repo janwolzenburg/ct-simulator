@@ -144,7 +144,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	
 	
 	vector<Ray> scattered_rays;
-	// Skip if scattering is really inpropable
+	// skip if scattering is really inpropable
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 	
 
@@ -182,7 +182,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 																energy, scattering_properties_mutex ) ) <= 
 																scattering_information.max_angle_to_lie_in_plane() ){
 			
-				// Random angle inside scattering plane
+				// random angle inside scattering plane
 				const double angle = ForceRange( scattering_information.GetRandomAngle( 
 																				energy, scattering_properties_mutex ), -PI, PI );		
 				
@@ -200,7 +200,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 				scattered_angles.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
 			}
 
-			// Scaler for energy in incoming ray. Only accounts for energy lost to new rays without
+			// scaler for energy in incoming ray. Only accounts for energy lost to new rays without
 			// considering der angle dependent energy loss (Compton-Aporption). This is because 
 			// the compton-absorption is already accounted for in the absorption routine
 			const double energy_scalar = 1. - tomography_properties.scattered_ray_absorption_factor / 
@@ -221,7 +221,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	if( scattered_angles.size() == 0 )
 		return {};
 
-	// Sort scattered angles
+	// sort scattered angles
 	std::sort( scattered_angles.begin(), scattered_angles.end(), []( const auto& a, const auto& b ){ return a.first > b.first; } );
 
 	double previous_angle = -1.;	// angle currently handled
@@ -277,7 +277,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		// Build scattered ray. When angle is finished or last element is reached
 		if( build_ray ){
 
-			// Use complete amount of scattered bins to take scattering into account of 
+			// use complete amount of scattered bins to take scattering into account of 
 			// simple intensity
 			const double scattered_bins_fraction = 
 					static_cast<double>( scattered_bins_for_current_angle ) / 
@@ -297,7 +297,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 																			scattering_information.scattering_plane_normal(),
 																			angle );
 
-			// Save scattered ray																				
+			// save scattered ray																				
 			scattered_rays.emplace_back( new_direction, new_origin, new_properties );
 	
 
@@ -305,7 +305,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			spectral_photonflows.clear();	// clear spectrum
 		}
 		
-		// Remember previous angle
+		// remember previous angle
 		previous_angle = angle;
 	
 	}

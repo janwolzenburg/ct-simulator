@@ -98,24 +98,24 @@ bool test_nonUniformDetector( void ){
 	// iterate one "half" of normals
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
-		// Rotation GetAngle to rotate the middle normal by
+		// rotation GetAngle to rotate the middle normal by
 		const double rotationAngle = static_cast<double>( ( currentIndex ) * deltaTheta;
 
-		// Rotated normal
+		// rotated normal
 		const UnitVector3D currentNormalVec = middleNormalVec.RotateConstant( rotationAxis, rotationAngle );
 
 		//addSingleObject( ax1, "RotatedNormalVec", currentNormalVec, "g", coordinate_system_->Origin() );
 
 		// lot on normal perpendicualr to rotation axis
 		Vector3D normalLot =  rotationAxis ^ currentNormalVec;
-		normalLot.Normalise();	// Set length_ to one
+		normalLot.Normalise();	// set length_ to one
 
 		//addSingleObject( ax1, "NormalLot", normalLot, "g", coordinate_system_->Origin() );
 
 		// distance from origin_ to normal
 		const double currentDistance = distanceRange / 2 - static_cast<double>( ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
-		// Set lot length_ to distance
+		// set lot length_ to distance
 		normalLot.Scale( currentDistance );
 		//addSingleObject( ax1, "NormalLotScaled", normalLot, "g", coordinate_system_->Origin() );
 
@@ -268,7 +268,7 @@ bool test_modifiedDetector( void ){
 	vector<DetectorPixel> allPixel;
 
 	Line previousNormal;			// getCenterNormal of previous pixel
-	double previousPixelSize;		// Size of previous pixel
+	double previousPixelSize;		// size of previous pixel
 
 
 	// iterate through half of pixel normals. Second half is created by symmetry
@@ -330,7 +330,7 @@ bool test_modifiedDetector( void ){
 		// create current pixel normal pointing to center
 		const Line pixelNormal{ -currentNormalVector, currentPixelOrigin };
 
-		// Store for next pixel
+		// store for next pixel
 		previousNormal = pixelNormal;
 		previousPixelSize = currentPixelSize;
 

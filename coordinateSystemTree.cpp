@@ -69,7 +69,7 @@ CoordinateSystem* CoordinateSystemTree::AddSystem( const PrimitiveVector3 origin
 	// is the given parent_ valid in this tree
 	if( !IsValidTreeElement( parent_ ) ){
 		CheckForAndOutputError( MathError::Input, "parent is not part of tree!" );
-		parent_ = &( systems_.at( 1 ) );		// Set parent_ to global
+		parent_ = &( systems_.at( 1 ) );		// set parent_ to global
 	}
 
 	// add new system to tree

@@ -8,7 +8,7 @@ path GetPath( const string filename )
 		#define folder ".\\verification\\"
 	#else
 		#define folder  "./verification/"
-	#endif // WIN32
+	#endif // wIN32
 	
 	return path{ folder } / filename;
 

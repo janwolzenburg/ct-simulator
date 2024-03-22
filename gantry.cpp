@@ -145,7 +145,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	// convert pixel
 	detector_.ConvertPixelArray( model.coordinate_system() );
 
-	// Scattered rays should lie in the same plane as the detector 
+	// scattered rays should lie in the same plane as the detector 
 	const UnitVector3D scattering_rotation_axis = 
 		this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
@@ -157,7 +157,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		atan( this->detector_.properties().row_width / 
 					this->detector_.properties().detector_focus_distance / 2 ) };
 
-	detector_.ResetDetectedRayPorperties();								// Reset all pixel
+	detector_.ResetDetectedRayPorperties();								// reset all pixel
 
 	size_t shared_current_ray_index = 0;	// index of next Ray to iterate
 	mutex current_ray_index_mutex;				// mutex for Ray index
@@ -178,13 +178,13 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		
 		const bool second_to_last_iteration = ( current_loop == tomography_properties.max_scattering_occurrences - 1 );
 
-		// Store for information output
+		// store for information output
 		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();
 
-		vector<Ray> rays_for_next_iteration;						// Rays to process in the next iteration
-		shared_current_ray_index = 0;										// Reset current ray index
+		vector<Ray> rays_for_next_iteration;						// rays to process in the next iteration
+		shared_current_ray_index = 0;										// reset current ray index
 
-		// Start threads
+		// start threads
 		vector<std::thread> threads;
 		for( size_t thread_index = 0; 
 								thread_index < std::thread::hardware_concurrency(); thread_index++ ){
@@ -203,7 +203,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 		}
 
-		// Wait for threads to finish
+		// wait for threads to finish
 		for( std::thread& currentThread : threads ) currentThread.join();
 		
 		rays = std::move( rays_for_next_iteration );
@@ -216,10 +216,10 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 void Gantry::ResetGantry( void ){
 	
-	// Set to initial position
+	// set to initial position
 	coordinate_system_->SetPrimitive( initial_position_ );
 
-	// Reset detector
+	// reset detector
 	detector_.ResetDetectedRayPorperties();
 }
 

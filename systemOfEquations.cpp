@@ -73,7 +73,7 @@ MathematicalObject::MathError Matrix::SwapColumns( const size_t c1, const size_t
 	// iterate each row
 	for (size_t curR = 0; curR < number_of_rows_; curR++) {
 		tempVal = data_.at( number_of_columns_ * curR + c1 );				// temporary storage
-		data_.at( number_of_columns_ * curR + c1 ) = data_.at( number_of_columns_ * curR + c2 );		// Swap values
+		data_.at( number_of_columns_ * curR + c1 ) = data_.at( number_of_columns_ * curR + c2 );		// swap values
 		data_.at( number_of_columns_ * curR + c2 ) = tempVal;
 	}
 
@@ -88,7 +88,7 @@ MathematicalObject::MathError Matrix::SwapRows( const size_t r1, const size_t r2
 	// iterate each column
 	for (size_t curC = 0; curC < number_of_columns_; curC++) {
 		tempVal = data_.at( number_of_columns_ * r1 + curC );					// temporary storage
-		data_.at( number_of_columns_ * r1 + curC ) = data_.at( number_of_columns_ * r2 + curC ); // Swap values
+		data_.at( number_of_columns_ * r1 + curC ) = data_.at( number_of_columns_ * r2 + curC ); // swap values
 		data_.at( number_of_columns_ * r2 + curC ) = tempVal;
 	}
 
@@ -108,13 +108,13 @@ GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCor
 	// iterate elements in submatrix
 	for (size_t curR = topCorner.r; curR <= botCorner.r; curR++) {
 		for (size_t curC = topCorner.c; curC <= botCorner.c; curC++) {
-			// Read cell
+			// read cell
 			curVal = abs( data_.at( number_of_columns_ * curR + curC ) );
 
 			// absolute value in cell greater?
 			if (curVal > curMax) {
 				curMax = curVal;
-				curMaxIndx.r = curR;	// Store indices
+				curMaxIndx.r = curR;	// store indices
 				curMaxIndx.c = curC;
 			}
 		}
