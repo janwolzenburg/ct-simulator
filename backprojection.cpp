@@ -50,7 +50,7 @@ void Backprojection::ReconstructImageColumn(
 
 		if( progress != nullptr ){
 			progress_mutex.lock();
-			progress->ChangeLineText( 1, "Backprojection projection " 
+			progress->ChangeLineText( 1, "Backprojecting projection " 
 																	 + ToString( angle_index + 1 ) + " of " 
 																	 + ToString( number_of_angles ) );
 			progress_mutex.unlock();
