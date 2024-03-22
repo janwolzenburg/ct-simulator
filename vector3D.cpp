@@ -119,7 +119,7 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 	// New length
 	length_ = sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 
-	// Check error flag from sqrt()
+	// check error flag from sqrt()
 	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculating square root!" );
 	return MathError::Ok;
 }
@@ -159,7 +159,7 @@ MathematicalObject::MathError Vector3D::AddToZ( const double z_ ){
 };
 
 double Vector3D::GetAngle( const Vector3D v2 ) const{
-	// Check if one vector has length zero
+	// check if one vector has length zero
 	if( IsNearlyEqualDistance( length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return 0.;
 
 	const double scalarProduct = ( ( *this ) * v2 );
@@ -172,10 +172,10 @@ double Vector3D::GetAngle( const Vector3D v2 ) const{
 }
 
 bool Vector3D::IsOrthogonal( const Vector3D v2 ) const{
-	// One vector has no length?
+	// one vector has no length?
 	if( IsNearlyEqualDistance( this->length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return false;
 
-	// Check dot product
+	// check dot product
 	return IsNearlyEqualDistance( ( *this ) * v2, 0 );
 }
 

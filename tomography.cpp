@@ -99,14 +99,14 @@ optional<Projections> Tomography::RecordSlice(
 	// Reset gantry to its initial position
 	gantry.ResetGantry();
 
-	// Translate Gantry
+	// translate Gantry
 	if( z_position != 0. )
 		gantry.TranslateInZDirection( z_position );
 
-	// Assign gantry coordinate-system's unit-vectors to radon coordinate system
+	// assign gantry coordinate-system's unit-vectors to radon coordinate system
 	this->radon_coordinate_system_->CopyPrimitiveFrom( gantry.coordinate_system() );
 
-	// Create projections 
+	// create projections 
 	Projections projections{ projection_properties, properties_ };
 
 	// Radiate the model for each frame
@@ -122,13 +122,13 @@ optional<Projections> Tomography::RecordSlice(
 		// Radiate
 		gantry.RadiateModel( model, properties_ );
 
-		// Get the detection result
+		// get the detection result
 		const vector<DetectorPixel> pixel_array = std::move( gantry.pixel_array() );
 
-		// Iterate all pixel
+		// iterate all pixel
 		for( const DetectorPixel& pixel : pixel_array ){
 
-			// Get Coordinates for pixel
+			// get Coordinates for pixel
 			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, 
 																								pixel.NormalLine() };
 
@@ -140,16 +140,16 @@ optional<Projections> Tomography::RecordSlice(
 													static_cast<double>( gantry.tube().number_of_rays_per_pixel() )
 												) );
 			
-			// If no value no ray was detected by pixel: line_integral would be infinite.
+			// if no value no ray was detected by pixel: line_integral would be infinite.
 			// Set it to a high value
 			if( !line_integral.has_value() ){
-				line_integral = 25.; // Is like ray's energy is 1 / 10^11 of its start energy
+				line_integral = 25.; // is like ray's energy is 1 / 10^11 of its start energy
 			}
 
-			// Get the radon point
+			// get the radon point
 			const RadonPoint radon_point{ radon_coordinates, line_integral.value() };
 
-			// Assign the data to sinogram
+			// assign the data to sinogram
 			projections.AssignData( radon_point );
 		}
 		

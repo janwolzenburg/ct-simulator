@@ -100,11 +100,11 @@ void DataGrid<D>::FillVectors( const D defaultValue ){
 	resolution_.c = ForcePositive( resolution_.c );
 	resolution_.r = ForcePositive( resolution_.r );
 
-	// Fill axis
+	// fill axis
 	column_points_ = CreateLinearSpace( start_.c, start_.c + static_cast<double>( size_.c - 1 ) * resolution_.c, size_.c );
 	row_points_ = CreateLinearSpace( start_.r, start_.r + static_cast<double>( size_.r - 1 ) * resolution_.r, size_.r );
 
-	// Create data structure
+	// create data structure
 	data_ = vector<vector<D>>( size_.c, vector<D>( size_.r, defaultValue ) );
 }
 
@@ -120,14 +120,14 @@ template<class D>
 
 template<class D>
 D&  DataGrid<D>::operator()( const GridIndex index ){
-	// Check the index for validity
+	// check the index for validity
 	if( !IsIndexValid( index ) ) return data_.at( 0 ).at( 0 );
 	return data_.at( index.c ).at( index.r );
 }
 
 template<class D>
 D DataGrid<D>::operator()( const GridIndex index ) const{
-	// Check the index for validity
+	// check the index for validity
 	if( !IsIndexValid( index ) ) return data_.at( 0 ).at( 0 );
 	return data_.at( index.c ).at( index.r );
 }
@@ -188,7 +188,7 @@ template<class D>
 void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 
 	if constexpr( std::is_arithmetic_v<D> ){
-		min_value_ = (std::numeric_limits<D>::max)(); // Additional () needed to stop macro expansion of min() and max()!!!
+		min_value_ = (std::numeric_limits<D>::max)(); // additional () needed to stop macro expansion of min() and max()!!!
 		max_value_ = (std::numeric_limits<D>::min)();
 	}
 	// Special for own VoxelData class

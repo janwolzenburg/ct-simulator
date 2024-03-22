@@ -304,7 +304,7 @@ void Fl_ModelCreator::BuildModel( void ){
 
 				const Point3D point( Tuple3D( (static_cast<double>( x ) + 0.5) * voxel_size_.x , (static_cast<double>( y ) + 0.5) * voxel_size_.y , (static_cast<double>( z ) + 0.5) * voxel_size_.z ), model.coordinate_system() );
 
-				// Check active features
+				// check active features
 				for( auto& feature_ptr : features_ ){
 						
 					auto& feature = *feature_ptr;
@@ -318,7 +318,7 @@ void Fl_ModelCreator::BuildModel( void ){
 					const double value = feature.GetValue();
 					const VoxelData::SpecialProperty special_property = feature.GetProperty();
 
-					// Check if current point is inside feature
+					// check if current point is inside feature
 					bool has_feature = false;
 					switch( feature.GetShape() ){
 

@@ -51,7 +51,7 @@ string CoordinateSystem::ToString( const unsigned int newline_tabulators ) const
 
 
 CoordinateSystem* CoordinateSystem::CreateCopy( const string newName ) const{
-	// Only one global coordinate system allowed! Parent of copy will be global system
+	// only one global coordinate system allowed! Parent of copy will be global system
 	if (this->IsGlobal()) {
 		return CoordinateSystems().AddSystem(origin_, ex_, ey_, ez_, this, newName);
 	}
@@ -188,7 +188,7 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const Line l, const doub
 	// Rotate position vector of origin_ around rotation axis
 	if( ( tErr = origin_.Rotate( l.direction().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
 
-	// Translate back
+	// translate back
 	Translate( l.origin() );
 
 	return errCode;

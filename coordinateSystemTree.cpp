@@ -66,13 +66,13 @@ CoordinateSystemTree::CoordinateSystemTree( void ) :
 }
 
 CoordinateSystem* CoordinateSystemTree::AddSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const CoordinateSystem* parent_, const string name_ ){
-	// Is the given parent_ valid in this tree
+	// is the given parent_ valid in this tree
 	if( !IsValidTreeElement( parent_ ) ){
 		CheckForAndOutputError( MathError::Input, "parent is not part of tree!" );
 		parent_ = &( systems_.at( 1 ) );		// Set parent_ to global
 	}
 
-	// Add new system to tree
+	// add new system to tree
 	CoordinateSystem newSys{ origin_, ex_, ey_, ez_, parent_, name_ };
 	systems_.at( system_count_++ ) = newSys;
 

@@ -61,20 +61,20 @@ bool test_detector_to_sinogram( void ){
 	radonProperties radonParameter = testGantry.getDetectorParameter();
 	CoordinateSystem* radonCSys = testGantry.CSys()->CreateCopy( "Radon System" );
 
-	// Create sinogram 
+	// create sinogram 
 	radonTransformed sinogram{ radonParameter };
 
 	for( size_t currentFrame = 0; currentFrame < radonParameter.framesToFillSinogram; currentFrame++ ){
-		// Get the detection result
+		// get the detection result
 		vector<pixel> detectionPixel = testGantry.getPixel();
 
-		// Iterate all pixel
+		// iterate all pixel
 		for( pixel currentPixel : detectionPixel ){
-			// Get Coordinates for pixel
+			// get Coordinates for pixel
 			radonCoords newRadonCoordinates{ radonCSys, currentPixel.NormalLine() };
-			// Get the radon point
+			// get the radon point
 			radonPoint newRadonPoint{ newRadonCoordinates, 1. };
-			// Assign the data_ to sinogram
+			// assign the data_ to sinogram
 			sinogram.assignData( newRadonPoint );
 		}
 

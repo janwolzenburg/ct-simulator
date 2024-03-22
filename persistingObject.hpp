@@ -44,7 +44,7 @@ template< class C >
 bool PersistingObject<C>::Load( const path file_path ){
 
 
-	// Does the file exist?
+	// does the file exist?
 	if( !std::filesystem::exists( file_path ) ) return false;
 
 	// Load file

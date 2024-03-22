@@ -80,14 +80,14 @@ void Fl_Plot<plotType>::CalculateScaled( void ){
 	const double aspectRatioWidget = static_cast<double>( w() ) / static_cast<double>( h() );
 	const double aspectRatioImage = static_cast<double>( raw_image_->w() ) / static_cast<double>( raw_image_->h() );
 
-	// Fit image vertically
+	// fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){
 
 		scaledHeight = h();
 		scaledWidth = static_cast<int>( static_cast<double>( scaledHeight ) * aspectRatioImage );
 
 	}
-	// Fit image horizontally
+	// fit image horizontally
 	else{
 
 		scaledWidth = w();

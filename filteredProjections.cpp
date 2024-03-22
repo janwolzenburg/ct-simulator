@@ -40,13 +40,13 @@ FilteredProjections::FilteredProjections(
 	const size_t number_of_angles = size().c;			// Number of angles
 	const size_t number_of_distances = size().r;	// Number of distances
 
-	const double distance_resolution = resolution().r;	// Distance resolution
+	const double distance_resolution = resolution().r;	// distance resolution
 	
 
 	// Local copy of projection data
 	const DataGrid<> projections_data = std::move( projections.data() );
 
-	// Iterate all angles
+	// iterate all angles
 	for( size_t angle_index = 0; angle_index < number_of_angles; angle_index++ ){
 
 		if( progress_window != nullptr )
@@ -54,7 +54,7 @@ FilteredProjections::FilteredProjections(
 																					+ ToString( angle_index + 1 )
 																				  + " of " + ToString( number_of_angles ) );
 
-		// Iterate all distances
+		// iterate all distances
 		for( size_t distance_index = 0; 
 								distance_index < number_of_distances; 
 								distance_index++ ){
@@ -66,18 +66,18 @@ FilteredProjections::FilteredProjections(
 				continue;
 			}
 
-			// Convolute filter with with projections
+			// convolute filter with with projections
 			double convolution_sum = 0;
 
 			for( signed long long kernel_index = filter_.points_range().start(); 
 														kernel_index <= filter_.points_range().end(); 
 														kernel_index++ ){
 
-				// Index of current row in projection data
+				// index of current row in projection data
 				signed long long projection_row_index = 
 					static_cast<signed long long>( distance_index ) - kernel_index;
 				
-				// Index out of bounds of input data -> 
+				// index out of bounds of input data -> 
 				// add nothing is like padding input data with zero
 				if( projection_row_index < 0 || 
 						projection_row_index >= static_cast<signed long long>( number_of_distances ) ){
@@ -107,22 +107,22 @@ FilteredProjections::FilteredProjections(
 double FilteredProjections::GetValue( const size_t angle_index, 
 																			const double distance ) const{
 
-	const double distance_resolution = resolution().r;	// Distance resolution
+	const double distance_resolution = resolution().r;	// distance resolution
 	const size_t number_of_distances = size().r;				// Number of distances
 
-	// Exact "index" of distance. Ideally we want to get the value at this index
+	// exact "index" of distance. Ideally we want to get the value at this index
 	const double exact_index = ForceRange( 
 								distance / distance_resolution 
 								+ static_cast<double>( number_of_distances - 1 ) / 2.,
 								0., static_cast<double>( number_of_distances ) - 1. );		
 
-	// If the exact index is a whole number skip interpolation
+	// if the exact index is a whole number skip interpolation
 	if( IsNearlyEqualDistance( round( exact_index ), exact_index ) ){
 		// Return value at distance index
 		return (*this)( GridIndex{ angle_index, static_cast<size_t>( exact_index ) } );
 	}
 
-	// Interpolate
+	// interpolate
 	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );	// Lower index
 	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );	// Upper index
 

@@ -28,11 +28,11 @@
 
 RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 {
-	// Components of ray trajectory in voxel coordinate system
+	// components of ray trajectory in voxel coordinate system
 	const Tuple3D local_ray_direction = ray.direction().GetComponents( voxel.origin_corner() );
 	bool face_possible = true;
 
-	// Find Entrance
+	// find Entrance
 
 	using Face = Voxel::Face;
 
@@ -45,11 +45,11 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 	}
 	else{
 
-		// Iterate all faces
+		// iterate all faces
 		for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
 			face_possible = true;
 
-			// Check if face can be an entrance face of the ray
+			// check if face can be an entrance face of the ray
 			switch( i ){
 				case Face::YZ_Xp:
 				if( local_ray_direction.x >= 0 ) face_possible = false; break;
@@ -70,7 +70,7 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 			}
 
 			if( face_possible ){
-				// Check  if ray intersects current face
+				// check  if ray intersects current face
 				entrance_ = LineSurfaceIntersection<Ray, BoundedSurface>{ ray, voxel.GetFace( i ) };
 				if( entrance_.intersection_exists_ ){
 					entrance_face_ = i; break;
@@ -80,12 +80,12 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 	}
 
 
-	// Find exit
+	// find exit
 
 	for( Voxel::Face i = Face::Begin; i < Face::End; ++i ){
 		face_possible = true;
 
-		// Check if face can be an exit face of the ray
+		// check if face can be an exit face of the ray
 		switch( i ){
 			case Face::YZ_Xp:
 			if( local_ray_direction.x <= 0 ) face_possible = false; break;
@@ -106,7 +106,7 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 		}
 
 		if( face_possible ){
-			// Check  if ray intersects current face
+			// check  if ray intersects current face
 			exit_ = LineSurfaceIntersection<Ray, BoundedSurface>{ ray, voxel.GetFace( i ) };
 			if( exit_.intersection_exists_ ){
 				exit_face_ = i; break;

@@ -27,10 +27,10 @@
 RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Line l )
 
 {
-	// Project Ray on XY plane
+	// project Ray on XY plane
 	const Line projectedLine = l.ProjectOnXYPlane( cSys );
 
-	// Get perpendicualar to projected Ray through coordinate system's origin_
+	// get perpendicualar to projected Ray through coordinate system's origin_
 	Vector3D lot = projectedLine.GetLot( cSys->GetOriginPoint() );
 
 
@@ -56,7 +56,7 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 		}
 	}
 
-	// Calculate radon angle
+	// calculate radon angle
 
 	// y component is zero
 	if( IsNearlyEqualDistance( lot.Y(), 0 ) ) theta = 0;

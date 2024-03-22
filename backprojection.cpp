@@ -33,10 +33,10 @@ void Backprojection::ReconstructImageColumn(
 										 const FilteredProjections& projections ){
 
 	const size_t number_of_distances = image.size().r;			// Number of distances
-	const double distance_resolution = image.resolution().r;// Distance resolution
+	const double distance_resolution = image.resolution().r;// distance resolution
 
 	const size_t number_of_angles = projections.size().c;				// Number of angles
-	const double angle_resolution = projections.resolution().c;	// Angle resolution
+	const double angle_resolution = projections.resolution().c;	// angle resolution
 
 	while( current_angle_index < number_of_angles ){
 
@@ -56,13 +56,13 @@ void Backprojection::ReconstructImageColumn(
 			progress_mutex.unlock();
 		}
 
-		// Current angle value
+		// current angle value
 		const double angle = static_cast<double>( angle_index ) 
 												 * angle_resolution + angle_resolution / 2.;			
 		const double cos_angle = cos( angle );
 		const double sin_angle = sin( angle );
 
-		// Iterate image columns
+		// iterate image columns
 		for( size_t column_index = 0; column_index < number_of_distances; column_index++ ){
 			const double column_coordinate = image.GetColCoordinate( column_index );
 
@@ -70,10 +70,10 @@ void Backprojection::ReconstructImageColumn(
 			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){
 				const double row_coordinate = image.GetRowCoordinate( row_index );
 				
-				// Pixel's "distance" or magnitude in polar Coordinates
+				// pixel's "distance" or magnitude in polar Coordinates
 				const double s = column_coordinate * cos_angle + row_coordinate * sin_angle;	
 
-				// Projection value for given angle and distance
+				// projection value for given angle and distance
 				const double projection_value = projections.GetValue( angle_index, s );
 				
 				// Value to add to pixel value
@@ -112,7 +112,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 	size_t current_angle_index = 0; 
 	mutex current_angle_index_mutex, imageMutex, progressMutex;
 
-	// Computation in threads
+	// computation in threads
 	vector<std::thread> threads;
 
 	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){

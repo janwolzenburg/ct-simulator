@@ -33,19 +33,19 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 	scattering_plane_normal_( scattering_normal ),
 	max_angle_to_lie_in_scatter_plane_( maximum_angle_to_lie_in_scatter_plane )
 {
-	// Iterate all frequencies
+	// iterate all frequencies
 	for( size_t energy_index = 0; energy_index < number_of_energies_; energy_index++ ){
 
 		const double energy = energy_range_.start() + 
 													static_cast<double>( energy_index ) * energy_resolution_;
 
-		// Calculate pseudo propability distribution
+		// calculate pseudo propability distribution
 		vector<Tuple2D> pseudo_distribution;
 
-		// Initial photon energy
+		// initial photon energy
 		const double a = energy / me_c2_eV;
 	
-		// Iterate all angles
+		// iterate all angles
 		for( size_t angle_index = 0; angle_index < number_of_angles; angle_index++ ){
 			
 			const double angle = -PI + static_cast<double>( angle_index ) * angle_resolution_;

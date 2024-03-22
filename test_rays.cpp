@@ -117,7 +117,7 @@ bool test_ray_scattering(void){
 			
 		}
 
-		// Copy rays to vector
+		// copy rays to vector
 		rays = raysForNextIteration;
 
 	}

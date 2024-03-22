@@ -105,7 +105,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	model_movement_group_.add( z_position_ );
 	model_movement_group_.add( artefact_impact_ );
 
-	// Counter ranges
+	// counter ranges
 	x_rotation_.range( -180., 180. );		x_rotation_.step( 1., 10. );
 	y_rotation_.range( -180., 180. );		y_rotation_.step( 1., 10. );
 	z_position_.range( -500., 500. );		z_position_.step( 1., 10. );
@@ -118,7 +118,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	artefact_impact_.labelsize( static_cast<int>( .50 * static_cast<double>( artefact_impact_.h() ) ) );
 
 
-	// Callbacks for Counters and reset button
+	// callbacks for Counters and reset button
 	x_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
@@ -227,7 +227,7 @@ bool Fl_ModelView::SliceModel( void ){
 
 void Fl_ModelView::CenterModel( void ){
 
-	// Center model
+	// center model
 	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
 
 	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
@@ -284,9 +284,9 @@ void Fl_ModelView::LoadModel( void ){
 
 
 	
-	// Get necessary distance range
+	// get necessary distance range
 	
-	// Top side
+	// top side
 	GridIndex top_corner{ 0, 0 };
 	for( size_t row_index = 0; row_index < model_slice_.size().r; row_index++ ){
 		for( size_t column_index = 0; column_index < model_slice_.size().c; column_index++ ){

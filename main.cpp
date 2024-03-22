@@ -20,7 +20,7 @@ using std::unique_ptr;
 
 int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
-	// Create instance of program state
+	// create instance of program state
 	volatile ProgramState& program_state = PROGRAM_STATE();
 
 	Fl_Group::current( NULL );

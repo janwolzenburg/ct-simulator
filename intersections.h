@@ -32,7 +32,7 @@
 template<class L, class S>
 class LineSurfaceIntersection : public MathematicalObject{
 
-	// Assert base classes
+	// assert base classes
 	static_assert( std::is_base_of_v< Surface, S > );
 	static_assert( std::is_base_of_v< Line, L > );
 

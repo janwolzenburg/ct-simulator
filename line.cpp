@@ -77,7 +77,7 @@ double Line::GetLineParameter( const Point3D p, bool* const solution_found_ ) co
 
 double Line::GetAngle( const Surface s ) const{
 
-	// Angle between direction vector and surface normal
+	// angle between direction vector and surface normal
 	double arc_angle = direction_.GetAngle( s.GetNormal() );
 
 	return abs( PI / 2 - arc_angle );

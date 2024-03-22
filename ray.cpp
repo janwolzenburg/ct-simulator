@@ -52,7 +52,7 @@ Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
 
 void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
 	
-	// Implement here handling of new properties
+	// implement here handling of new properties
 	if(  !data_.HasSpecialProperty() ||
 		 data_.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
 		properties_.AttenuateSpectrum( data_, distance );
@@ -62,13 +62,13 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 
 	array<bool, ToUnderlying( Voxel::Face::End )> face_possiblities{ false };
 
-	// Iterate all faces of voxel
+	// iterate all faces of voxel
 	for( Voxel::Face currentFace = Voxel::Face::Begin; 
 			 currentFace < Voxel::Face::End; ++currentFace ){
 
 		bool possible = false;
 
-		// Check if face can be an exit face of the ray
+		// check if face can be an exit face of the ray
 		switch( currentFace ){
 			case Voxel::Face::YZ_Xp:
 				if( direction_.X() > 0 ) 
@@ -129,7 +129,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / 
 																		absorption_water_Per_mm;
 
-	// Attenuation coefficient at reference energy. For simple intensity
+	// attenuation coefficient at reference energy. For simple intensity
 	const double cross_section_at_reference_energy_mm = 
 		ScatteringCrossSection::GetInstance().GetCrossSection( reference_energy_for_mu_eV );
 	const double coefficient_at_reference_energy_1Permm = 
@@ -153,14 +153,14 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	// Number of scatteres bins over all energies
 	size_t scattered_bins_sum = 0;
 
-	// Iterate energies in spectrum
+	// iterate energies in spectrum
 	size_t energy_index = 0;
 	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
 		// No photons at current energy
 		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
 
-		// Calculate scattering propability from compton scattering cross section
+		// calculate scattering propability from compton scattering cross section
 		const double cross_section_mm = 
 			ScatteringCrossSection::GetInstance().GetCrossSection( energy );
 		const double coefficient_1Permm = cross_section_mm * 
@@ -169,15 +169,15 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		const double scatter_propability = 
 			1. - exp( -coefficient_1Permm * distance_traveled_mm );
 
-		// Iterate through energy bins
+		// iterate through energy bins
 		for( size_t bin = 0; bin < simulation_properties.bins_per_energy; bin++ ){
 
-			// Does scattering happen?
+			// does scattering happen?
 			if( !integer_random_number_generator.DidARandomEventHappen( 
 					scatter_propability * tomography_properties.scatter_propability_correction ) )
 				continue;
 			
-			// Check if angle is scattered inside scattering plane
+			// check if angle is scattered inside scattering plane
 			if( abs( scattering_information.GetRandomAngle( 
 																energy, scattering_properties_mutex ) ) <= 
 																scattering_information.max_angle_to_lie_in_plane() ){
@@ -186,10 +186,10 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 				const double angle = ForceRange( scattering_information.GetRandomAngle( 
 																				energy, scattering_properties_mutex ), -PI, PI );		
 				
-				// If angle is almost zero -> treat as if no scattering happened
+				// if angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
-				// Calculate scattered photons energy via compton-wavelength
+				// calculate scattered photons energy via compton-wavelength
 				const double new_energy = 1. / 
 															( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 					
@@ -224,33 +224,33 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	// Sort scattered angles
 	std::sort( scattered_angles.begin(), scattered_angles.end(), []( const auto& a, const auto& b ){ return a.first > b.first; } );
 
-	double previous_angle = -1.;	// Angle currently handled
+	double previous_angle = -1.;	// angle currently handled
 	size_t scattered_bins_for_current_angle = 0;
 
-	// Photonflows for scattered ray
+	// photonflows for scattered ray
 	vector<Tuple2D> spectral_photonflows;
 
-	// Iterate through sorted angles
+	// iterate through sorted angles
 	for( size_t angle_index = 0; angle_index < scattered_angles.size(); angle_index++ ){
 		const double angle = scattered_angles.at( angle_index ).first;
 		const double energy = scattered_angles.at( angle_index ).second.first;
 		const double photonflow = scattered_angles.at( angle_index ).second.second;
 		scattered_bins_for_current_angle++;
 
-		// Angle already in spectrum or first angle
+		// angle already in spectrum or first angle
 		if( previous_angle == angle || angle_index == 0 ){
 			
-			// Iterate through current spectrum
-			// Energy index tracks where to put add photonflow to
+			// iterate through current spectrum
+			// energy index tracks where to put add photonflow to
 			size_t energy_index = 0;
 			for(; energy_index < spectral_photonflows.size(); 
 																		energy_index++ ){
-				// Energy is in current spectrum
+				// energy is in current spectrum
 				if( energy == spectral_photonflows.at( energy_index ).x )
-					break;	// Current index is index of energy
+					break;	// current index is index of energy
 			}
 
-			// Energy is not in spectrum -> add
+			// energy is not in spectrum -> add
 			if( energy_index == spectral_photonflows.size() ){
 				spectral_photonflows.emplace_back( energy, photonflow );
 			}
@@ -264,7 +264,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		
 		bool build_ray = false;
 		
-		// At least one angle left
+		// at least one angle left
 		if( angle_index < scattered_angles.size() - 1 ){
 			// Next ray has different angle
 			if( scattered_angles.at( angle_index + 1 ).first != angle )
@@ -285,7 +285,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 			const EnergySpectrum new_spectrum{ spectral_photonflows }; 
 
-			// Create ray properties
+			// create ray properties
 			RayProperties new_properties{ new_spectrum };
 			new_properties.voxel_hits_ = properties_.voxel_hits_;
 			new_properties.simple_intensity_ = properties_.simple_intensity_ * 
@@ -302,7 +302,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	
 
 			scattered_bins_for_current_angle = 0;
-			spectral_photonflows.clear();	// Clear spectrum
+			spectral_photonflows.clear();	// clear spectrum
 		}
 		
 		// Remember previous angle

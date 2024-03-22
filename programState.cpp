@@ -56,13 +56,13 @@ ProgramState::~ProgramState( void ) {
 
 
 void ProgramState::CreateStorageDirectory( void ){
-	// Check if state storage directory erxists
+	// check if state storage directory erxists
 	if( !std::filesystem::is_directory( storage_path_ ) ) std::filesystem::create_directory( storage_path_ );
 }
 
 void ProgramState::DeleteStorageDirectory( void ){
 
-	// Check if state storage directory erxists
+	// check if state storage directory erxists
 	if( !std::filesystem::is_directory( storage_path_ ) ) return;
 
 	// Remove all content

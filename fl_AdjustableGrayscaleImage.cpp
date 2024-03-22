@@ -95,7 +95,7 @@ int Fl_AdjustableGrayscaleImage::handle( int event ){
 				x_widget_position = 0; y_widget_position = 0;
 			}
 	
-			// Curser position in widget
+			// curser position in widget
 			int x_position = ForceRange( Fl::event_x() - x_widget_position, 0, w() - 1 );
 			int y_position = ForceRange( Fl::event_y() - y_widget_position, 0, h() - 1 );
 

@@ -144,7 +144,7 @@ Index3D Model::GetVoxelIndices( const Tuple3D local_coordinates ) const{
 	if( indices.y == number_of_voxel_3D_.y ) indices.y = number_of_voxel_3D_.y - 1;
 	if( indices.z == number_of_voxel_3D_.z ) indices.z = number_of_voxel_3D_.z - 1;
 
-	// Are indices too big?
+	// are indices too big?
 	if( !AreIndicesValid( indices ) )
 		CheckForAndOutputError( MathError::Input, "Coordinates exceed model size!" );
 
@@ -190,7 +190,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 
 	Point3D voxOrigin{ Tuple3D{ static_cast<double>( indices.x ) * voxel_size_.x, static_cast<double>( indices.y ) * voxel_size_.y, static_cast<double>( indices.z ) * voxel_size_.z }, coordinate_system_ };
 
-	// Get voxel data and create voxel instance
+	// get voxel data and create voxel instance
 	Voxel voxel{ voxOrigin, voxel_size_, GetVoxelData( indices ) };
 
 	return voxel;
@@ -203,17 +203,17 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 																mutex& scattering_properties_mutex,
 																const bool disable_scattering ) const{
 
-	// Current ray in model's coordinate system
+	// current ray in model's coordinate system
 	Ray local_ray = std::move( ray.ConvertTo( this->coordinate_system_ ) );					
 
-	// Find entrance inside model
+	// find entrance inside model
 	const RayVoxelIntersection model_intersection{ GetModelVoxel(), local_ray };
 
 	// Return if Ray does not intersect model
 	if( !model_intersection.entrance_.intersection_exists_ ) return { local_ray, {} };		
 
 
-	// Iteration through model
+	// iteration through model
 	/* ------------------------------------------------------------------------------- */
 
 	// Ray parameter at model entrance plus a tiny bit
@@ -225,7 +225,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	if( !IsPointInside( local_ray.GetPoint( current_ray_step ) ) ) 
 		return { local_ray, {} };
 
-	// Current point on the ray is model entrance
+	// current point on the ray is model entrance
 	Point3D current_point_on_ray = std::move( local_ray.GetPoint( current_ray_step ) );
 
 	#ifdef TRANSMISSION_TRACKING
@@ -241,24 +241,24 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 
 	vector<Ray> all_scattered_rays;	// Vector for all scattered rays
 
-	// The possible exit faces of voxel
+	// the possible exit faces of voxel
 	const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
 		std::move( local_ray.GetPossibleVoxelExits() );
 
-	// Iterate through model while current point is inside model
+	// iterate through model while current point is inside model
 	while( IsPointInside( current_point_on_ray ) ){
 
-		// Indices of current voxel
+		// indices of current voxel
 		const Index3D current_voxel_indices = GetVoxelIndices( current_point_on_ray );				
-		double distance_to_exit = INFINITY;		// The smallest ray parameter
+		double distance_to_exit = INFINITY;		// the smallest ray parameter
 
-		// Iterate all possible faces and get the ray parameter at intersection
+		// iterate all possible faces and get the ray parameter at intersection
 		for( Voxel::Face current_face = Voxel::Face::Begin; 
 			   current_face < Voxel::Face::End; ++current_face ){
 
-			// Distance to the current face. Will become finite if exit found
+			// distance to the current face. Will become finite if exit found
 			double distance_to_current_face = INFINITY;			
-			double exit_face_position;											// Face position along one axis
+			double exit_face_position;											// face position along one axis
 
 			// Switch faces. Check only the possible faces
 			switch( current_face ){
@@ -266,7 +266,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::YZ_Xp:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) + 1. ) *
-															 this->voxel_size_.x;		// Position of positive yz-plane
+															 this->voxel_size_.x;		// position of positive yz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) /
 																		 local_ray.direction().X();
 					break;
@@ -274,7 +274,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::YZ_Xm:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) ) * 
-															 this->voxel_size_.x;		// Position of negative yz-plane
+															 this->voxel_size_.x;		// position of negative yz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) / 
 																		 local_ray.direction().X();
 					break;
@@ -282,7 +282,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::XZ_Yp:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) + 1. ) * 
-															 this->voxel_size_.y;		// Position of positive xz-plane
+															 this->voxel_size_.y;		// position of positive xz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
 																		 local_ray.direction().Y();
 					break;
@@ -290,7 +290,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::XZ_Ym:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) ) * 
-															 this->voxel_size_.y;		// Position of negative xz-plane
+															 this->voxel_size_.y;		// position of negative xz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
 																		 local_ray.direction().Y();
 					break;
@@ -298,7 +298,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::XY_Zp:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.z ) + 1. ) * 
-															 this->voxel_size_.z;		// Position of positive xy-plane
+															 this->voxel_size_.z;		// position of positive xy-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 
 																		 local_ray.direction().Z();
 					break;
@@ -306,7 +306,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				case Voxel::Face::XY_Zm:
 					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.z )   ) * 
-															 this->voxel_size_.z;		// Position of negative xy-plane
+															 this->voxel_size_.z;		// position of negative xy-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 
 																		 local_ray.direction().Z();
 					break;
@@ -314,23 +314,23 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				default: break;
 			}
 
-			// There may be more than one intersectiones with the unbounded faces
-			// The intersected face with the smallest distance from current point along the ray
+			// there may be more than one intersectiones with the unbounded faces
+			// the intersected face with the smallest distance from current point along the ray
 			// is the exit face
 			if( distance_to_current_face < distance_to_exit ) 
 				distance_to_exit = distance_to_current_face;
 
 		}
 		
-		// If exit found
+		// if exit found
 		if( distance_to_exit < INFINITY ){
 
-			// The distance traveled in this voxel. Add step size, because ray origin is
+			// the distance traveled in this voxel. Add step size, because ray origin is
 			// this amount inside the voxel
 			const double distance_in_voxel = distance_to_exit 
 																		 + simulation_properties.ray_step_size_mm;		
 
-			// The current voxel's properties
+			// the current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
 
 			// Update Ray properties whith distance travelled in current voxel
@@ -349,7 +349,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			// New ray parameter the distance travelled in this voxel
 			current_ray_step += distance_in_voxel;				
 
-			// The new point on the ray
+			// the new point on the ray
 			current_point_on_ray = std::move( local_ray.GetPointFast( current_ray_step ) );
 
 			// Scattering. Only when enabled, not overriden and current point is inside model
@@ -362,7 +362,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 						current_voxel_data, distance_in_voxel, 
 						tomography_properties, current_point_on_ray ) );
 
-				// Append scattered rays
+				// append scattered rays
 				all_scattered_rays.insert( all_scattered_rays.end(), 
 						make_move_iterator( scattered_rays.begin() ), 
 						make_move_iterator( scattered_rays.end() ) );
@@ -393,14 +393,14 @@ bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	Index3D minIdcs = GetVoxelIndices( minCoords );			// Minimum boundary indices
 	Index3D maxIdcs = GetVoxelIndices( maxCoords );			// Maximum boundary indices
 
-	// Parameters of cropped model
+	// parameters of cropped model
 	Index3D newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
 	// New model
 	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_, name_, VoxelData{} };
 
 
-	// Copy data to new model
+	// copy data to new model
 	for( size_t z = 0; z < newVoxNum3D.z; z++ ){
 		for( size_t y = 0; y < newVoxNum3D.y; y++ ){
 			for( size_t x = 0; x < newVoxNum3D.x; x++ ){
@@ -450,7 +450,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 									const Surface& slicePlane,
 									const Model& modelRef ){
 
-	// Iterate through all columns
+	// iterate through all columns
 	while( xIdx < slice.size().c ){
 
 		size_t localXIdx, localYIdx;
@@ -473,25 +473,25 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 		currentXMutex.unlock(); currentYMutex.unlock();
 
 
-		// Check 
+		// check 
 		if( localXIdx > slice.size().c - 1 || localYIdx > slice.size().r - 1 ) continue;
 		
-		// Grid indices
+		// grid indices
 		const GridIndex gridIndices( localXIdx, localYIdx );
 
-		// Get point on surface for current grid indices
+		// get point on surface for current grid indices
 		const GridCoordinates surfaceCoordinate = slice.GetCoordinates( gridIndices );
 		const Point3D currentPoint = slicePlane.GetPoint( surfaceCoordinate.c , surfaceCoordinate.r  );
 
 
-		// Are cooradinates defined in model?
+		// are cooradinates defined in model?
 		if( !modelRef.IsPointInside( currentPoint ) ){
 			slice.SetData( gridIndices, VoxelData( 0., 1., VoxelData::Undefined ) );
-			continue;	// Goto next iteration
+			continue;	// goto next iteration
 		}
 
 
-		// Check if current x and y values in plane are new real start/end
+		// check if current x and y values in plane are new real start/end
 
 		if( surfaceCoordinate.c < realStart.c ){
 			WriteThreadVar( realStart.c, surfaceCoordinate.c, realStartMutex );
@@ -509,10 +509,10 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 			WriteThreadVar( realEnd.r, surfaceCoordinate.r, realEndMutex );
 		}
 
-		// Current voxel value
+		// current voxel value
 		const VoxelData currentValue = modelRef.GetVoxelData( currentPoint );
 
-		// Add pixel Coordinates and pixel value to slice
+		// add pixel Coordinates and pixel value to slice
 		sliceMutex.lock();
 		slice.SetData( gridIndices, currentValue );
 		sliceMutex.unlock();
@@ -532,7 +532,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	 GridCoordinates sliceResolution;
 
 	if( !forced_resolution.has_value() ){
-		// Distance between corners furthest away from each other
+		// distance between corners furthest away from each other
 		double cornerDistance = size_.x + size_.y + size_.z; //sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
 		// Worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
 
@@ -571,7 +571,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	mutex realStartMutex, realEndMutex;
 
 
-	// Computation in threads
+	// computation in threads
 	vector<std::thread> threads;
 
 	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
@@ -583,9 +583,9 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 	for( std::thread& currentThread : threads ) currentThread.join();
 
-	// Check if restart and end have infinity in them
+	// check if restart and end have infinity in them
 	if( realStart.c == INFINITY || realStart.r == INFINITY || realEnd.c == -INFINITY || realEnd.r == -INFINITY ){
-		// This means that no model voxel is in slice
+		// this means that no model voxel is in slice
 		return DataGrid<VoxelData>{ GridIndex{ 0, 0 }, GridCoordinates{ 0., 0. }, GridCoordinates{ 1., 1. } };
 
 	}
@@ -594,7 +594,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	DataGrid<VoxelData> slice{ NumberRange{ realStart.c, realEnd.c }, NumberRange{ realStart.r, realEnd.r }, sliceResolution, VoxelData() };
 
 
-	// Iterate grid
+	// iterate grid
 	GridCoordinates coords;
 	VoxelData currentData;
 
@@ -619,13 +619,13 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius ){
 	
-	// Exit when coords invalid
+	// exit when coords invalid
 	if ( !IsPointInside( center ) ) return;
 	
-	// Center indices
+	// center indices
 	const Index3D centerIdx = GetVoxelIndices( center );
 
-	// Index distance from center in each dimension
+	// index distance from center in each dimension
 	Index3D indexDelta{
 		ForceToMax( static_cast<size_t>( ceil( radius / voxel_size_.x ) ), Min( centerIdx.x, number_of_voxel_3D_.x - centerIdx.x ) ),
 		ForceToMax( static_cast<size_t>( ceil( radius / voxel_size_.y ) ), Min( centerIdx.y, number_of_voxel_3D_.y - centerIdx.y ) ),

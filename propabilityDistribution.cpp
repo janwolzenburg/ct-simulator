@@ -45,7 +45,7 @@ RandomNumberGenerator::RandomNumberGenerator( void ) :
 
 unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 
-	// Algorithm from https://prng.di.unimi.it/xoroshiro128starstar.c
+	// algorithm from https://prng.di.unimi.it/xoroshiro128starstar.c
 	const unsigned long long int s0 = generator_state_[0];
 	unsigned long long int s1 = generator_state_[1];
 	const unsigned long long int result = std::rotl(s0 * 5, 7) * 9;
@@ -93,7 +93,7 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	// Vector with weights of variates
 	vector<double> weights( distribution.size(), 0. );
 
-	// Get values and weight from distribution
+	// get values and weight from distribution
 	for( size_t value_index = 0; value_index < distribution.size(); value_index++ ){
 	
 		values_.at( value_index ) = distribution.at( value_index ).x;

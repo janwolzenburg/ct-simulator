@@ -70,9 +70,9 @@ MathematicalObject::MathError Matrix::SwapColumns( const size_t c1, const size_t
 
 	double tempVal;
 
-	// Iterate each row
+	// iterate each row
 	for (size_t curR = 0; curR < number_of_rows_; curR++) {
-		tempVal = data_.at( number_of_columns_ * curR + c1 );				// Temporary storage
+		tempVal = data_.at( number_of_columns_ * curR + c1 );				// temporary storage
 		data_.at( number_of_columns_ * curR + c1 ) = data_.at( number_of_columns_ * curR + c2 );		// Swap values
 		data_.at( number_of_columns_ * curR + c2 ) = tempVal;
 	}
@@ -85,9 +85,9 @@ MathematicalObject::MathError Matrix::SwapRows( const size_t r1, const size_t r2
 
 	double tempVal;
 
-	// Iterate each column
+	// iterate each column
 	for (size_t curC = 0; curC < number_of_columns_; curC++) {
-		tempVal = data_.at( number_of_columns_ * r1 + curC );					// Temporary storage
+		tempVal = data_.at( number_of_columns_ * r1 + curC );					// temporary storage
 		data_.at( number_of_columns_ * r1 + curC ) = data_.at( number_of_columns_ * r2 + curC ); // Swap values
 		data_.at( number_of_columns_ * r2 + curC ) = tempVal;
 	}
@@ -105,13 +105,13 @@ GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCor
 		return curMaxIndx;
 	}
 
-	// Iterate elements in submatrix
+	// iterate elements in submatrix
 	for (size_t curR = topCorner.r; curR <= botCorner.r; curR++) {
 		for (size_t curC = topCorner.c; curC <= botCorner.c; curC++) {
 			// Read cell
 			curVal = abs( data_.at( number_of_columns_ * curR + curC ) );
 
-			// Absolute value in cell greater?
+			// absolute value in cell greater?
 			if (curVal > curMax) {
 				curMax = curVal;
 				curMaxIndx.r = curR;	// Store indices
@@ -125,7 +125,7 @@ GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCor
 
 MathematicalObject::MathError Matrix::ScaleRow( const size_t r, const double scalar ) {
 	if (r >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
-	// Iterate all columns
+	// iterate all columns
 	for (unsigned int c = 0; c < number_of_columns_; c++) {
 		data_.at( number_of_columns_ * r + c ) = data_.at( number_of_columns_ * r + c ) * scalar;
 	}
@@ -136,7 +136,7 @@ MathematicalObject::MathError Matrix::ScaleRow( const size_t r, const double sca
 MathematicalObject::MathError Matrix::SubstractRows( const size_t r1, const size_t r2 ) {
 	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
 
-	// Iterate all columns
+	// iterate all columns
 	for (size_t c = 0; c < number_of_columns_; c++) {
 		data_.at( number_of_columns_ * r2 + c ) = data_.at( number_of_columns_ * r2 + c ) - data_.at( number_of_columns_ * r1 + c );
 	}
@@ -176,10 +176,10 @@ std::string SystemOfEquations::ToString( const unsigned int newline_tabulators )
 
 MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple3D v ){
 
-	// For now only implemented with three variable_values_
+	// for now only implemented with three variable_values_
 	if( IsPopulated() || number_of_variables_ != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
 
-	// Assign vector values to matrix columns
+	// assign vector values to matrix columns
 	( *this )( currently_populated_columns_, 0 ) = v.x;
 	( *this )( currently_populated_columns_, 1 ) = v.y;
 	( *this )( currently_populated_columns_, 2 ) = v.z;
@@ -190,10 +190,10 @@ MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple3D v
 
 MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple2D v ){
 
-	// For now only implemented with three variable_values_
+	// for now only implemented with three variable_values_
 	if( IsPopulated() || number_of_variables_ != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
 
-	// Assign vector values to matrix columns
+	// assign vector values to matrix columns
 	( *this )( currently_populated_columns_, 0 ) = v.x;
 	( *this )( currently_populated_columns_, 1 ) = v.y;
 	currently_populated_columns_++;
@@ -203,7 +203,7 @@ MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple2D v
 
 SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 
-	SystemOfEquationsSolution solution( number_of_variables_ );	// Create solution instance
+	SystemOfEquationsSolution solution( number_of_variables_ );	// create solution instance
 
 	// system filled with coefficients?
 	if( !IsPopulated() ) return solution;

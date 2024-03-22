@@ -50,7 +50,7 @@ static microseconds start_tic;
  #endif
  //#define TRANSMISSION_TRACKING
  
- // Global variable to store a single thread id
+ // global variable to store a single thread id
  static std::thread::id first_thread_id;
 
  // maximum size of vectors -> used to check data validity when deserializing

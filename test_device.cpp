@@ -93,9 +93,9 @@ bool test_nonUniformDetector( void ){
 
 
 
-	vector<Line> pixelNormals( nDistance );							// All normals
+	vector<Line> pixelNormals( nDistance );							// all normals
 
-	// Iterate one "half" of normals
+	// iterate one "half" of normals
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// Rotation GetAngle to rotate the middle normal by
@@ -112,18 +112,18 @@ bool test_nonUniformDetector( void ){
 
 		//addSingleObject( ax1, "NormalLot", normalLot, "g", coordinate_system_->Origin() );
 
-		// Distance from origin_ to normal
+		// distance from origin_ to normal
 		const double currentDistance = distanceRange / 2 - static_cast<double>( ( ( nDistance - 1 ) / 2 - currentIndex ) * deltaDistance;
 
 		// Set lot length_ to distance
 		normalLot.Scale( currentDistance );
 		//addSingleObject( ax1, "NormalLotScaled", normalLot, "g", coordinate_system_->Origin() );
 
-		// Point on GetCenterNormal
+		// point on GetCenterNormal
 		const Point3D normalPoint{ normalLot };
 		//addSingleObject( ax1, "NormalPoint", normalPoint, "g" );
 
-		// Get point on pixel which lies on an arc with radius direction
+		// get point on pixel which lies on an arc with radius direction
 		const PrimitiveVector3 o = normalPoint.GetComponents();
 		const PrimitiveVector3 r = currentNormalVec.GetComponents();
 		const double R = arcRadius;
@@ -134,11 +134,11 @@ bool test_nonUniformDetector( void ){
 
 		const double lambda = -p / 2. + sqrt( pow( p / 2., 2. ) - q );
 
-		// The normal Line of current pixel
+		// the normal Line of current pixel
 		const Line currentNormal{ currentNormalVec, normalPoint };
 		//addSingleObject( ax1, "GetCenterNormal", currentNormal, "c", arcRadius );
 
-		// Point on Pixel
+		// point on Pixel
 		const Point3D pointOnPixel = currentNormal.GetPoint( lambda );
 		//addSingleObject( ax1, "PixelPoint", pointOnPixel, "c" );
 		
@@ -146,7 +146,7 @@ bool test_nonUniformDetector( void ){
 
 		
 
-		// Other side => flip x values
+		// other side => flip x values
 		if( currentIndex > 0 ){
 
 			pixelNormals.at( ( nDistance - 1 ) / 2 - currentIndex ) = pixelNormal;
@@ -258,46 +258,46 @@ bool test_modifiedDetector( void ){
 	const double deltaTheta = PI / static_cast<double>( nTheta - 1 );
 	const double deltaDistance = distanceRange / static_cast<double>( nDistance - 1 );
 
-	// Important vectors
+	// important vectors
 	const UnitVector3D middleNormalVector = cSys->GetEy();					// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D rotationVector = cSys->GetEz();						// Pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
+	const UnitVector3D rotationVector = cSys->GetEz();						// pixel normals should lie in xy-plane. The middle normal vector will be rotated around this vector
 
 
-	// All pixel normals
+	// all pixel normals
 
 	vector<DetectorPixel> allPixel;
 
-	Line previousNormal;			// GetCenterNormal of previous pixel
+	Line previousNormal;			// getCenterNormal of previous pixel
 	double previousPixelSize;		// Size of previous pixel
 
 
-	// Iterate through half of pixel normals. Second half is created by symmetry
+	// iterate through half of pixel normals. Second half is created by symmetry
 	// Normals will be created inside to outside
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
-		// Angle to rotate the middle normal vector by
+		// angle to rotate the middle normal vector by
 		const double rotationAngle = static_cast<double>( currentIndex ) * deltaTheta;
 
 		// Middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
-		// Find a point with the distance corresponding to distance in sinogram
-		// The point's origin_ vector must be perpendicular to the current normal vector
+		// find a point with the distance corresponding to distance in sinogram
+		// the point's origin_ vector must be perpendicular to the current normal vector
 
-		// The lot is perpendicular to the current normal vector and it lies in xy-plane
+		// the lot is perpendicular to the current normal vector and it lies in xy-plane
 		const UnitVector3D normalLot = rotationVector ^ currentNormalVector;
 
-		// Distance from origin_ to normal. Is the distance in the sinogram
+		// distance from origin_ to normal. Is the distance in the sinogram
 		const double currentDistance = distanceRange / 2. - ( static_cast<double>( nDistance - 1 ) / 2. - static_cast<double>( currentIndex ) ) * deltaDistance;
 
-		// Point which lies on the current normal and has the correct distance from the origin_ 
+		// point which lies on the current normal and has the correct distance from the origin_ 
 		const Point3D normalPoint = Vector3D{ normalLot } * currentDistance;
 
-		// The current normal 
+		// the current normal 
 		const Line currentNormal{ currentNormalVector, normalPoint };
 
-		// Index of normal in vector
+		// index of normal in vector
 		//const size_t currentNormalIndex = ( nDistance - 1 ) / 2 - currentIndex;
 
 		Point3D currentPixelOrigin;
@@ -306,28 +306,28 @@ bool test_modifiedDetector( void ){
 
 		// "Middle" normal
 		if( currentIndex == 0 ){
-			// This is the starting point
+			// this is the starting point
 			currentPixelOrigin = currentNormal.GetPoint( detectorCenterDistance );
 			
-			// First pixel size so that the neighbooring pixel intersects at half angle
+			// first pixel size so that the neighbooring pixel intersects at half angle
 			currentPixelSize = 2 * tan( deltaTheta / 2. ) * ( detectorCenterDistance + deltaDistance / sin( deltaTheta ) );
 
 		}
 		else{
-			// Intersection point of pixel
+			// intersection point of pixel
 			const Point3D pixelIntersection = previousNormal.origin() + ( previousNormal.direction() ^ rotationVector ) * previousPixelSize / 2.;
 
 			// Lot vector from current normal to intersection point. Vector is pointing to the normal
 			const Vector3D pixelIntersectionLot = currentNormal.GetLot( pixelIntersection );
 
-			// Get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
+			// get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
 			currentPixelOrigin = pixelIntersection + pixelIntersectionLot;
 
-			// Pixel size is double the lot length
+			// pixel size is double the lot length
 			currentPixelSize = 2 * pixelIntersectionLot.length();
 		}
 
-		// Create current pixel normal pointing to center
+		// create current pixel normal pointing to center
 		const Line pixelNormal{ -currentNormalVector, currentPixelOrigin };
 
 		// Store for next pixel
@@ -337,7 +337,7 @@ bool test_modifiedDetector( void ){
 		// Vector perpendicualr to the normal pointing to the next pixel
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
-		// Add pixel
+		// add pixel
 		allPixel.emplace_back( BoundedSurface{ 
 								currentSurfaceVector,
 							   rotationVector,
@@ -347,7 +347,7 @@ bool test_modifiedDetector( void ){
 							   -10,
 							   10 } );
 
-		// Add mirrored when not middle pixel
+		// add mirrored when not middle pixel
 		if( currentIndex > 0 ){
 
 			// Mirror current normal around y-axis
@@ -356,7 +356,7 @@ bool test_modifiedDetector( void ){
 				pixelNormal.origin().NegateXComponent()
 			};
 
-			// Add mirrored pixel
+			// add mirrored pixel
 			const UnitVector3D mirroredSurfaceVector = -mirroredPixelNormal.direction() ^ rotationVector;
 			allPixel.emplace_back( BoundedSurface{ mirroredSurfaceVector,
 								   rotationVector,

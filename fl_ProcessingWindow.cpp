@@ -200,7 +200,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 		
 			double current_value = raw_image_data.GetData( GridIndex{ column_index, row_index } );
 
-			// Correct if simple absorption is not used
+			// correct if simple absorption is not used
 			if( !projections_.tomography_properties().use_simple_absorption ){
 
 				raw_image_data.SetData( GridIndex{ column_index, row_index }, 

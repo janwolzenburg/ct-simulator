@@ -149,10 +149,10 @@ string Voxel::ToString( unsigned int newline_tabulators ) const{
 
 bool Voxel::Contains( const Point3D p ) const{
 
-	// Create copy of point in voxel's coordinate system
+	// create copy of point in voxel's coordinate system
 	Point3D pHere { p.ConvertTo( this->origin_corner() ) };
 
-	// Check all components
+	// check all components
 	return	origin_corner_.X() <= pHere.X() && pHere.X() <= origin_corner_.X() + size_.x &&
 			origin_corner_.Y() <= pHere.Y() && pHere.Y() <= origin_corner_.Y() + size_.y &&
 			origin_corner_.Z() <= pHere.Z() && pHere.Z() <= origin_corner_.Z() + size_.z;

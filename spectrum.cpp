@@ -99,7 +99,7 @@ void EnergySpectrum::UpdateMeanEnergy( void ){
 		return;
 	}
 
-	// Get the sum of products. In principle an "expected value"
+	// get the sum of products. In principle an "expected value"
 	const double expectedValue = GetTotalPowerIn_eVPerSecond();
 
 	mean_energy_ = expectedValue / GetSum();	

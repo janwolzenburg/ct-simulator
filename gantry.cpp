@@ -35,7 +35,7 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 	tube_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ }
 
 {
-	// Align detector - tube axis with x axis
+	// align detector - tube axis with x axis
 	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
 	coordinate_system_->SetPrimitive( xAxisAligned );
 
@@ -79,7 +79,7 @@ void Gantry::TransmitRaysThreaded(
 	// Loop while rays are left
 	while( shared_current_ray_index < rays.size() ){
 
-		// Get the Ray which should be transmitted next and increment index
+		// get the Ray which should be transmitted next and increment index
 		current_ray_index_mutex.lock();
 		local_ray_index = shared_current_ray_index++;
 		current_ray_index_mutex.unlock();
@@ -87,10 +87,10 @@ void Gantry::TransmitRaysThreaded(
 		// No more rays left
 		if( local_ray_index >= rays.size() ) break;
 
-		// Get current ray
+		// get current ray
 		current_ray =  rays.at( local_ray_index );
 
-		// Transmit Ray through model
+		// transmit Ray through model
 		rays_to_return = std::move( model.TransmitRay( 
 																				cref( current_ray ), cref( tomography_properties ), 
 																				ref( ray_scattering ), 
@@ -102,14 +102,14 @@ void Gantry::TransmitRaysThreaded(
 			continue;
 		}
 
-		// Check if this is last iteration and delete rays which can not be detected
+		// check if this is last iteration and delete rays which can not be detected
 		if( second_to_last_iteration ){
 			
-			// Check each ray
+			// check each ray
 			for( auto& ray : rays_to_return.second ){
-				// Detection possible. Ray's expected pixel index is updated in TryDetection
+				// detection possible. Ray's expected pixel index is updated in TryDetection
 				if( detector.TryDetection( ray ) ){
-					// Only rays which can be detected are in the next iteration
+					// only rays which can be detected are in the next iteration
 					rays_for_next_iteration_mutex.lock();
 					rays_for_next_iteration.emplace_back( std::move( ray ) );									
 					rays_for_next_iteration_mutex.unlock();
@@ -117,7 +117,7 @@ void Gantry::TransmitRaysThreaded(
 			}
 		}
 		else{
-			// Add all rays for next iteration
+			// add all rays for next iteration
 			rays_for_next_iteration_mutex.lock();
 			rays_for_next_iteration.insert( rays_for_next_iteration.end(), 
 																			make_move_iterator( rays_to_return.second.begin() ), 
@@ -132,17 +132,17 @@ void Gantry::TransmitRaysThreaded(
 
 void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
 
-// Current rays. Start with rays from source
+// current rays. Start with rays from source
 	vector<Ray> rays = std::move( tube_.GetEmittedBeam( 
 																				detector_.pixel_array(), 
 																				detector_.properties().detector_focus_distance ) );		
 	
-	// Convert rays to model coordinate system
+	// convert rays to model coordinate system
 	for( Ray& current_ray : rays ){
 		current_ray = std::move( current_ray.ConvertTo( model.coordinate_system() ) );
 	}
 	
-	// Convert pixel
+	// convert pixel
 	detector_.ConvertPixelArray( model.coordinate_system() );
 
 	// Scattered rays should lie in the same plane as the detector 
@@ -159,7 +159,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
-	size_t shared_current_ray_index = 0;	// Index of next Ray to iterate
+	size_t shared_current_ray_index = 0;	// index of next Ray to iterate
 	mutex current_ray_index_mutex;				// Mutex for Ray index
 	mutex rays_for_next_iteration_mutex;	// Mutex for vector of rays for next iteration
 	mutex detector_mutex;									// Mutex for detector
@@ -198,7 +198,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 														ref( rays_for_next_iteration_mutex ),
 														ref( detector_ ), ref( detector_mutex ) );
 
-			// For debugging
+			// for debugging
 			if( thread_index == 0 ) first_thread_id = threads.back().get_id();
 
 		}

@@ -24,10 +24,10 @@
 
 bool IsNearlyEqual( const double a, const double b, 
 										const double tolerance, const ComparisonMode mode ){
-	// Fast comparison
+	// fast comparison
 	if( a == b ) return true;
 
-	// Absolute comparison
+	// absolute comparison
 	if( mode == Absolute ){
 		return std::abs( a - b ) < tolerance;
 	}
@@ -47,7 +47,7 @@ bool IsNearlyEqualDistance( const double a, const double b ){
 
 
 MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const MathError code ) const{
-	// Errorcode is not "OK"?
+	// errorcode is not "OK"?
 	if( code != MathError::Ok ){
 		// Write to error stream
 		math_error_out << '\n' << GetErrorString( code ) << " from " << typeid( *this ).name() << '\n';
@@ -64,7 +64,7 @@ MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const 
 }
 
 std::string MathematicalObject::GetErrorString( const MathError code ) const{
-	// Convert error code to string
+	// convert error code to string
 	switch( code ){
 		case MathError::Ok:
 		return std::string( "No error" );

@@ -32,17 +32,17 @@ optional<double> DetectorPixel::GetDetectedLineIntegral(
 	double sum_of_end_intensity = 0.;
 	double sum_of_simple_end_intensity = 0.;
 
-	// Iterate all detected Ray properties
+	// iterate all detected Ray properties
 	for( const RayProperties& currentRay : detected_ray_properties_ ){
 		sum_of_end_intensity += currentRay.energy_spectrum_.GetTotalPower();
 		sum_of_simple_end_intensity += currentRay.simple_intensity();
 	}
 
-	// Check no rays were detected return empty
+	// check no rays were detected return empty
 	if( detected_ray_properties_.size() == 0)
 		return {};
 
-	// Calculate line inegral
+	// calculate line inegral
 	const double line_integral_spectrum = ForceToMin( 
 																					log( start_intensity * 
 																							 static_cast<double>( expected_ray_hits ) / 

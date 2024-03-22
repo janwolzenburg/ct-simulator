@@ -75,16 +75,16 @@ size_t GetClosestElementIndex( const vector<double>& vec, const double val ){
 
 	//!!! vec must be sorted!
 
-	// Iterator to element which is greater or equal to value
+	// iterator to element which is greater or equal to value
 	vector<double>::const_iterator it_geq = std::lower_bound( vec.cbegin(), vec.cend(), val );
 
-	// First element in vec is greater or equal => return index of first element
+	// first element in vec is greater or equal => return index of first element
 	if( it_geq == vec.cbegin() ) return 0;
 
 	// lower_bound return last if no element is found. Closest is then the last element
 	if( it_geq == vec.cend() - 1 ) return vec.size() - 1;
 
-	// Compare differences to value for two consecutive elements
+	// compare differences to value for two consecutive elements
 	if( std::abs( val - *it_geq ) > std::abs( val - *( it_geq - 1 ) ) ) return ( it_geq - vec.cbegin() ) - 1;
 
 	return it_geq - vec.cbegin();
@@ -151,9 +151,9 @@ vector<Tuple2D> AddTuple2D( const vector<Tuple2D>& vector_1, const vector<Tuple2
 		bool altered = false;
 
 		for( auto current_element = vector_sum.begin(); current_element < vector_sum.end(); current_element++ ){
-			// Exact match
+			// exact match
 			if( IsNearlyEqual( x, current_element->x, 0.001, ComparisonMode::Relative ) ){
-				current_element->y += y;		// Add y-value
+				current_element->y += y;		// add y-value
 				altered = true;
 				break;
 			}

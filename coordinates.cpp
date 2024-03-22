@@ -45,23 +45,23 @@ string Coordinates::ToString( const unsigned int newline_tabulators ) const{
 bool Coordinates::operator== ( const Coordinates coords ) const{
 	if( this->HasSameSystem( coords ) ) return this->PrimitiveVector3::operator==( coords );
 
-	// Convert both Coordinates to global system
+	// convert both Coordinates to global system
 	Coordinates globalCoords_1 = this->ConvertTo( GlobalSystem() );
 	Coordinates globalCoords_2 = coords.ConvertTo( GlobalSystem() );
 
-	// Compare components
+	// compare components
 	return globalCoords_1.PrimitiveVector3::operator==( globalCoords_2 );
 };
 
 Coordinates Coordinates::operator+ ( const Coordinates coords ) const{
-	// Add converted Coordinates' components to this componentes
+	// add converted Coordinates' components to this componentes
 	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator+( coords.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator- ( const Coordinates coords ) const{
-	// Add converted coordinates' components to this componentes
+	// add converted coordinates' components to this componentes
 	PrimitiveVector3 locCoords = this->PrimitiveVector3::operator-( coords.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
@@ -94,7 +94,7 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem*
 
 	// target system is not global system
 	if( !target_coordinate_system->IsGlobal() ){
-		// Find path from global system to target system
+		// find path from global system to target system
 		vector<const CoordinateSystem*> path = target_coordinate_system->GetPathFromGlobal();
 
 		// target system is not the global system
@@ -125,12 +125,12 @@ Coordinates Coordinates::ConvertToParentSystem( void ) const{
 }
 
 Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const child_coordinate_system ) const{
-	// Error when child's parent_ system is not this system
+	// error when child's parent_ system is not this system
 	if( !this->HasSameSystem( child_coordinate_system->parent() ) ) CheckForAndOutputError( MathError::Input, "parent of child system is not this system!" );
 
 	SystemOfEquations tEqnSys( 3 );		// System of equation to Solve for x,y and z in local coordinate system
 
-	// Poulate columns of system of equations
+	// poulate columns of system of equations
 	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ex() );
 	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ey() );
 	tEqnSys.PopulateColumn( child_coordinate_system->GetPrimitive().ez() );

@@ -42,7 +42,7 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 	sampling_interval_( samplingInterval_ ),
 	values_( number_of_points_, 0. )
 {
-	// Iterate over all whole numbers in range
+	// iterate over all whole numbers in range
 	for( signed long long n = points_range_.start(); n <= points_range_.end(); n++ ){
 
 		double kernelValue = 0.;
@@ -59,7 +59,7 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 
 			case BackprojectionFilter::ramLak:
 			{
-				// Conditions for filter calculation
+				// conditions for filter calculation
 				if( n == 0 )				kernelValue = 1. / ( 4. * pow( sampling_interval_, 2. ) );
 				else if( IsEven( n ) )		kernelValue = 0.;
 				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( static_cast<double>( n ), 2. ) );
@@ -78,7 +78,7 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 		this->SetValue( GetUnsignedIndex( n ), kernelValue );
 	}
 
-	// Crop kernel to relevant range
+	// crop kernel to relevant range
 	//const NaturalNumberRange new_range = GetRelevantRange();
 	//const size_t offset = new_range.start() - pointsRange_.start();
 	//points_range_ = new_range;

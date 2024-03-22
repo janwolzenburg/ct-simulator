@@ -127,12 +127,12 @@ void Fl_GrayscaleImage::CalculateScaled( void ){
 	const double aspectRatioWidget = static_cast<double>( w() ) / static_cast<double>( h() );
 	const double aspectRatioImage = static_cast<double>( grayscale_image_.width() ) / static_cast<double>( grayscale_image_.height() );
 
-	// Fit image vertically
+	// fit image vertically
 	if( aspectRatioWidget > aspectRatioImage ){
 		scaledHeight = static_cast<double>( h() );
 		scaledWidth = scaledHeight * aspectRatioImage;
 	}
-	// Fit image horizontally
+	// fit image horizontally
 	else{
 		scaledWidth = static_cast<double>( w() );
 		scaledHeight = scaledWidth / aspectRatioImage;

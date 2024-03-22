@@ -25,7 +25,7 @@
 
 
 /*
-	tubeParameter
+	XRayTubeProperties
 */
 
 const string XRayTubeProperties::FILE_PREAMBLE{ "Ver01TUBEPARAMETER_FILE_PREAMBLE" };
@@ -75,7 +75,7 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 
 
 /*
-	tube implementation
+	XRayTube implementation
 */
 
 XRayTube::XRayTube( CoordinateSystem* const coordinate_system, 
@@ -197,29 +197,29 @@ vector<Ray> XRayTube::GetEmittedBeam( const vector<DetectorPixel> detector_pixel
 		const Line connection_line{ edge_point_2 - edge_point_1, edge_point_1 };
 		const double edge_distance = ( edge_point_2 - edge_point_1 ).length();
 
-		// Distance on the pixel between rays which hit the pixel
+		// distance on the pixel between rays which hit the pixel
 		const double distance_delta = 
 			edge_distance / static_cast<double>( properties_.number_of_rays_per_pixel_ + 1 );
 
-		// Iterate all rays hitting current pixel
+		// iterate all rays hitting current pixel
 		for( size_t ray_index = 0; ray_index < properties_.number_of_rays_per_pixel_; 
 								ray_index++ ){
 			
-			// Offset of current ray origin
+			// offset of current ray origin
 			const double offset = static_cast<double>( ray_index + 1 ) * distance_delta;
 
-			// Current Ray origin
+			// current ray origin
 			const Point3D ray_origin_on_pixel = connection_line.GetPoint( offset );
 
-			// Tempory Line pointing from pixel to tube
+			// tempory Line pointing from pixel to tube
 			const Line line_to_tube{ 
 				current_pixel.GetNormal().ConvertTo( coordinate_system_ ), 
 				ray_origin_on_pixel.ConvertTo( coordinate_system_ ) };
 
-			// Origin of Ray with specific distance to pixel
+			// origin of ray with specific distance to pixel
 			const Point3D ray_origin = line_to_tube.GetPoint( detector_focus_distance );
 
-			// Add Ray in tube's coordinate system to vector
+			// add ray in tube's coordinate system to vector
 			rays.emplace_back( -line_to_tube.direction(), ray_origin, ray_properties );
 
 		}
