@@ -163,11 +163,11 @@ void Gantry::RadiateModel( const Model& model,
 
 	detector_.ResetDetectedRayPorperties(); // reset all pixel
 
-	size_t shared_current_ray_index = 0;	// index of next Ray to iterate
-	mutex current_ray_index_mutex;				// mutex for Ray index
-	mutex rays_for_next_iteration_mutex;	// mutex for vector of rays for next iteration
-	mutex detector_mutex;									// mutex for detector
-	mutex scattering_mutex;								// mutex for scattering
+	size_t shared_current_ray_index = 0;	// index of next ray to iterate
+	mutex current_ray_index_mutex;				// mutual exclusion for ray index
+	mutex rays_for_next_iteration_mutex;	// mutual exclusion for ray storage
+	mutex detector_mutex;									// mutual exclusion for detector
+	mutex scattering_mutex;								// mutual exclusion for scattering
 
 	// loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t current_loop = 0; 

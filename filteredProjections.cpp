@@ -103,7 +103,7 @@ FilteredProjections::FilteredProjections(
 }
 
 
-double FilteredProjections::GetValue( const size_t angle_index, 
+double FilteredProjections::GetValue( const size_t angle_index,
 																			const double distance ) const{
 
 	const double distance_resolution = resolution().r;	// distance resolution

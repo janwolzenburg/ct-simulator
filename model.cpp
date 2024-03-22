@@ -209,7 +209,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	// find entrance inside model
 	const RayVoxelIntersection model_intersection{ GetModelVoxel(), local_ray };
 
-	// return if Ray does not intersect model
+	// return if ray does not intersect model
 	if( !model_intersection.entrance_.intersection_exists_ ) return { local_ray, {} };		
 
 
@@ -260,7 +260,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			double distance_to_current_face = INFINITY;			
 			double exit_face_position;											// face position along one axis
 
-			// switch faces. Check only the possible faces
+			// switch faces. check only the possible faces
 			switch( current_face ){
 
 				case Voxel::Face::YZ_Xp:
@@ -333,7 +333,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			// the current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
 
-			// update Ray properties whith distance travelled in current voxel
+			// update ray's properties with distance traveled in current voxel
 			local_ray.UpdateProperties( current_voxel_data, distance_in_voxel );
 			local_ray.IncrementHitCounter();
 
