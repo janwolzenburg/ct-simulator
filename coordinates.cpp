@@ -88,18 +88,18 @@ Coordinates Coordinates::ConvertTo( const CoordinateSystem*
 
 	if( this->HasSameSystem( target_coordinate_system ) ) return tempory_coordinates;
 
-	// Loop until coordinates are in context of global system
+	// loop until coordinates are in context of global system
 	while( !tempory_coordinates.coordinate_system_->IsGlobal() ){
 		tempory_coordinates = tempory_coordinates.ConvertToParentSystem(); }
 
-	// Target system is not global system
+	// target system is not global system
 	if( !target_coordinate_system->IsGlobal() ){
 		// Find path from global system to target system
 		vector<const CoordinateSystem*> path = target_coordinate_system->GetPathFromGlobal();
 
-		// Target system is not the global system
+		// target system is not the global system
 		if( path.size() > 0 ){
-			// Iterate each coordinate system in path
+			// iterate each coordinate system in path
 			for( auto cur_coordinate_system_it = path.cbegin(); 
 								cur_coordinate_system_it < path.cend(); cur_coordinate_system_it++ ){
 				tempory_coordinates = 

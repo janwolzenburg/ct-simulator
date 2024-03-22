@@ -205,73 +205,73 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 
 	SystemOfEquationsSolution solution( number_of_variables_ );	// Create solution instance
 
-	// System filled with coefficients?
+	// system filled with coefficients?
 	if( !IsPopulated() ) return solution;
 
-	// Get size of coefficient matrix 
+	// get size of coefficient matrix 
 	const size_t rows = number_of_rows(); const size_t columns = number_of_columns();
 
-	GridIndex top_corner{};							// Top-left corner of submatrix						
-	GridIndex bottom_corner{ rows - 1, rows - 1 };	// Bottom-right corner of submatrix			
-	GridIndex index_of_maximum;						// Indices of maximum in submatrix
-	double maximum_value;							// Value of maximum in submatrix
+	GridIndex top_corner{};													// top-left corner of submatrix						
+	GridIndex bottom_corner{ rows - 1, rows - 1 };	// bottom-right corner of submatrix			
+	GridIndex index_of_maximum;											// indices of maximum in submatrix
+	double maximum_value;														// value of maximum in submatrix
 
-	// Matrix with variable indices
+	// matrix with variable indices
 	vector<unsigned int> variable_indices( number_of_variables_ );
 	for( unsigned int i = 0; i < number_of_variables_; i++ ) 
 		variable_indices.at( i ) = i;
 
-	// Iterate all rows to create echelon form of matrix
+	// iterate all rows to create echelon form of matrix
 	for( size_t k = 0; k < rows; k++ ){
 
-		// Top-left corner changes each iteration
+		// top-left corner changes each iteration
 		top_corner.r = k; top_corner.c = k;
 
-		// Search maximum absolutionute value in quadratic submatrix
+		// search maximum absolutionute value in quadratic submatrix
 		// from (k, k) to (rows - 1, rows - 1)
 		index_of_maximum = FindMaximum( top_corner, bottom_corner );
 
-		// Get value
-		maximum_value = data_.at( number_of_columns_ * index_of_maximum.r + index_of_maximum.c );
+		// get value
+		maximum_value = data_.at(number_of_columns_ * index_of_maximum.r + index_of_maximum.c);
 		
-		// Return if maximum is zero -> no solutionution
+		// return if maximum is zero -> no solutionution
 		if( IsNearlyEqualDistance( maximum_value, 0. ) ) return solution;
 
-		// Swap rows and columns to bring the cell with maximum value to (k,k)
+		// swap rows and columns to bring the cell with maximum value to (k,k)
 		if( index_of_maximum.r != k ) SwapRows( index_of_maximum.r, k );
 		if( index_of_maximum.c != k ){
 			SwapColumns( index_of_maximum.c, k );
 
-			// Variable in columns swapped
+			// variable in columns swapped
 			unsigned int temp = variable_indices.at( k );
 			variable_indices.at( k ) = variable_indices.at( index_of_maximum.c );
 			variable_indices.at( index_of_maximum.c ) = temp;
 		}
 
-		ScaleRow( k, 1 / maximum_value );			// Scale k-row by reciprocal of (k, k) value
+		ScaleRow( k, 1 / maximum_value );			// scale k-row by reciprocal of (k, k) value
 
-		// Substract k-row from k+1 to n-row to eliminate cells
+		// substract k-row from k+1 to n-row to eliminate cells
 		for( size_t row = k + 1; row < rows; row++ ){
 			const double cell_value = data_.at( number_of_columns_ * row + k );
-			// Target cell not zero?
+			// target cell not zero?
 			if( !IsNearlyEqualDistance( cell_value, 0. ) ){
-				// Make (row, k) to one by scaling row with reciprocal
+				// make (row, k) to one by scaling row with reciprocal
 				ScaleRow( row, 1 / cell_value );		
-				SubstractRows( k, row );						// Substract k-row from row
+				SubstractRows( k, row );						// substract k-row from row
 			}
 		}
 	}
 
-	// Eliminate remaining cells 'above' the diagonal
-	// Iterate  coefficient columns 
+	// eliminate remaining cells 'above' the diagonal
+	// iterate  coefficient columns 
 	for( size_t c = columns - 2; c > 0; c-- ){
 		
-		// Iterate rows above diagonal
+		// iterate rows above diagonal
 		for( size_t r = 0; r < c; r++ ){
 			const double cell_value = data_.at(number_of_columns_ * r + c );
-			// Current cell not already zero?
+			// current cell not already zero?
 			if( !IsNearlyEqualDistance( cell_value, 0 ) ){
-				// Calculate result column cell as if current cell is being eliminated 
+				// calculate result column cell as if current cell is being eliminated 
 				double& result_column_cell = data_.at( number_of_columns_ * r + ( columns - 1 ) );
 				const double current_cell = data_.at( number_of_columns_ * c + ( columns - 1 ) );
 				result_column_cell -= ( current_cell * cell_value );
@@ -280,12 +280,13 @@ SystemOfEquationsSolution SystemOfEquations::Solve( void ){
 	}
 
 	size_t variable_index;
-	// Copy result column entries to var-array
+	// copy result column entries to var-array
 	for( size_t i = 0; i < rows; i++ ){
-		variable_index = variable_indices.at( i );		// Index for swapped variable
-		// Check if index is in allowed range
+		variable_index = variable_indices.at( i );		// index for swapped variable
+		// check if index is in allowed range
 		if( variable_index < solution.number_of_variables() ) 
-			solution.SetVariableValue( variable_index, data_.at(number_of_columns_ * i + columns - 1 ) );
+			solution.SetVariableValue( variable_index, 
+																 data_.at(number_of_columns_ * i + columns - 1 ) );
 		else 
 			return solution;
 	}
