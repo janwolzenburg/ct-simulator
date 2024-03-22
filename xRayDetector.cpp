@@ -24,8 +24,8 @@
 
 
 XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system, 
-							const ProjectionsProperties projection_properties, 
-							const PhysicalDetectorProperties physical_properties ) :
+								const ProjectionsProperties projection_properties, 
+								const PhysicalDetectorProperties physical_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_{ projection_properties, physical_properties }
 {
@@ -106,7 +106,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 			// vector is pointing to the normal
 			const Vector3D intersection_lot = normal.GetLot( intersection );
 
-			// get the pixel normal's origin_ which lies on the shortest Line connection the 
+			// get the pixel normal's origin which lies on the shortest Line connection the 
 			// intersection with current normal
 			pixel_origin = intersection + intersection_lot;
 
@@ -147,8 +147,6 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 								-pixel_size / 2, pixel_size / 2,
 								-properties_.row_width / 2.,
 								properties_.row_width / 2. } );
-
-		
 
 	}
 
@@ -213,7 +211,7 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 
 }
 
-#ifdef TRANSMISSION_TRACKING
+#ifdef TRANSMISSION_TRACKING // only enabled for verification
 bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_mutex ){
 #else
 bool XRayDetector::DetectRay( const Ray& ray, mutex& pixel_array_mutex ){
@@ -227,7 +225,9 @@ bool XRayDetector::DetectRay( const Ray& ray, mutex& pixel_array_mutex ){
 		pixel_array_mutex.unlock();
 		
 		#ifdef TRANSMISSION_TRACKING // only enabled for verification
-		Point3D intersection_point = RayPixelIntersection{ ray, pixel_array_.at( pixel_index.value() )}.intersection_point_;
+		Point3D intersection_point = 
+			RayPixelIntersection{ ray, 
+														pixel_array_.at( pixel_index.value() ) }.intersection_point_;
 		if( !ray.ray_tracing().tracing_steps.empty() ){
 			ray.ray_tracing().tracing_steps.back().exit = intersection_point;
 			ray.ray_tracing().tracing_steps.back().distance = (intersection_point

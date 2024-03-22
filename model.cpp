@@ -139,7 +139,7 @@ Index3D Model::GetVoxelIndices( const Tuple3D local_coordinates ) const{
 	};
 
 
-	// Supress error when index is exactly on the edge
+	// surpress error when index is exactly on the edge
 	if( indices.x == number_of_voxel_3D_.x ) indices.x = number_of_voxel_3D_.x - 1;
 	if( indices.y == number_of_voxel_3D_.y ) indices.y = number_of_voxel_3D_.y - 1;
 	if( indices.z == number_of_voxel_3D_.z ) indices.z = number_of_voxel_3D_.z - 1;

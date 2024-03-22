@@ -79,7 +79,7 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 */
 
 XRayTube::XRayTube( CoordinateSystem* const coordinate_system, 
-					const XRayTubeProperties tube_properties ) :
+										const XRayTubeProperties tube_properties ) :
 	coordinate_system_( coordinate_system ),
 	properties_( tube_properties ),
 	anode_material_atomic_number_( ForcePositive( 
