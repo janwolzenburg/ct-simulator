@@ -94,7 +94,8 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 			default: break;
 		}
 	}
-		return face_possiblities;
+	
+	return face_possiblities;
 }
 
 	

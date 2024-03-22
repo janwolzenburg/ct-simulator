@@ -325,10 +325,10 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 		// if exit found
 		if( distance_to_exit < INFINITY ){
 
-			// the distance traveled in this voxel. Add step size, because ray origin is
+			// the distance traveled in this voxel. add step size, because ray origin is
 			// this amount inside the voxel
-			const double distance_in_voxel = distance_to_exit 
-																		 + simulation_properties.ray_step_size_mm;		
+			const double distance_in_voxel = distance_to_exit +
+																			 simulation_properties.ray_step_size_mm;		
 
 			// the current voxel's properties
 			const VoxelData current_voxel_data = this->GetVoxelData( current_voxel_indices );
@@ -356,16 +356,18 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			if( tomography_properties.scattering_enabled && 
 				  !disable_scattering && 
 					IsPointInside( current_point_on_ray ) ){
+
 				// scatter the ray
-				const vector<Ray> scattered_rays = std::move( local_ray.Scatter( 
-						scattering_properties, scattering_properties_mutex,
-						current_voxel_data, distance_in_voxel, 
-						tomography_properties, current_point_on_ray ) );
+				const vector<Ray> scattered_rays = std::move( 
+					local_ray.Scatter( 
+														 scattering_properties, scattering_properties_mutex,
+														 current_voxel_data, distance_in_voxel, 
+														 tomography_properties, current_point_on_ray ) );
 
 				// append scattered rays
 				all_scattered_rays.insert( all_scattered_rays.end(), 
-						make_move_iterator( scattered_rays.begin() ), 
-						make_move_iterator( scattered_rays.end() ) );
+																	 make_move_iterator( scattered_rays.begin() ), 
+																	 make_move_iterator( scattered_rays.end() ) );
 			}
 		}
 	}
