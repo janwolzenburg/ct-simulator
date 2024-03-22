@@ -101,7 +101,7 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 
 	}
 
-	// Build distribution from weights
+	// build distribution from weights
 	distribution_ = std::discrete_distribution<unsigned int>( weights.begin(), weights.end() );
 
 }

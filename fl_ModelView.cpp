@@ -293,7 +293,7 @@ void Fl_ModelView::LoadModel( void ){
 			const GridIndex grid_index{ column_index, row_index };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				top_corner = grid_index;																// set index
-				column_index = model_slice_.size().c; row_index = model_slice_.size().r;	// Break condition
+				column_index = model_slice_.size().c; row_index = model_slice_.size().r;	// break condition
 			}
 		}
 	}
@@ -305,19 +305,19 @@ void Fl_ModelView::LoadModel( void ){
 			const GridIndex grid_index{ column_index - 1, row_index };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				right_corner = grid_index;																// set index
-				column_index = 1; row_index = model_slice_.size().r;								// Break condition
+				column_index = 1; row_index = model_slice_.size().r;								// break condition
 			}
 		}
 	}
 	
-	// Bottom side
+	// bottom side
 	GridIndex bottom_corner{ model_slice_.size().c - 1, model_slice_.size().r - 1 };
 	for( size_t row_index = model_slice_.size().r; row_index > 0; row_index-- ){
 		for( size_t column_index = model_slice_.size().c; column_index > 0; column_index-- ){
 			const GridIndex grid_index{ column_index - 1, row_index - 1 };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				bottom_corner = grid_index;																// set index
-				column_index = 1; row_index = 1;														// Break condition
+				column_index = 1; row_index = 1;														// break condition
 			}
 		}
 	}
@@ -329,7 +329,7 @@ void Fl_ModelView::LoadModel( void ){
 			const GridIndex grid_index{ column_index, row_index - 1 };
 			if( !model_slice_.GetData( grid_index ).HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ){
 				left_corner = grid_index;																// set index
-				column_index = model_slice_.size().c; row_index = 1;								// Break condition
+				column_index = model_slice_.size().c; row_index = 1;								// break condition
 			}
 		}
 	}

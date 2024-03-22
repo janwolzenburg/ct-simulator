@@ -271,7 +271,7 @@ void Fl_ModelCreator::StoreModelSize( void ){
 
 void Fl_ModelCreator::UpdateFeatures( void ){
 		
-	// Backgrouund changed
+	// backgrouund changed
 	if( background_absorption_ != background_input_.value() ){
 		background_absorption_ = background_input_.value();
 	}

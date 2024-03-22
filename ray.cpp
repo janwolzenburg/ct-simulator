@@ -274,7 +274,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		else if( angle_index == scattered_angles.size() - 1 )
 			build_ray = true;
 
-		// Build scattered ray. When angle is finished or last element is reached
+		// build scattered ray. When angle is finished or last element is reached
 		if( build_ray ){
 
 			// use complete amount of scattered bins to take scattering into account of 
