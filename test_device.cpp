@@ -88,7 +88,7 @@ bool test_nonUniformDetector( void ){
 	const double deltaTheta = PI / static_cast<double>( ( nTheta - 1 );
 	const double deltaDistance = distanceRange / static_cast<double>( ( nDistance - 1 );
 
-	const UnitVector3D middleNormalVec = cSys->GetEy();			// Middle normal is the negative y axis
+	const UnitVector3D middleNormalVec = cSys->GetEy();			// middle normal is the negative y axis
 	const UnitVector3D rotationAxis = cSys->GetEz();			//Rotation axis is z axis
 
 
@@ -106,7 +106,7 @@ bool test_nonUniformDetector( void ){
 
 		//addSingleObject( ax1, "RotatedNormalVec", currentNormalVec, "g", coordinate_system_->Origin() );
 
-		// Lot on normal perpendicualr to rotation axis
+		// lot on normal perpendicualr to rotation axis
 		Vector3D normalLot =  rotationAxis ^ currentNormalVec;
 		normalLot.Normalise();	// Set length_ to one
 
@@ -161,7 +161,7 @@ bool test_nonUniformDetector( void ){
 
 		}
 		else{
-		// Middle normal
+		// middle normal
 			pixelNormals.at( ( nDistance - 1 ) / 2 ) = pixelNormal;
 		}
 	}
@@ -272,13 +272,13 @@ bool test_modifiedDetector( void ){
 
 
 	// iterate through half of pixel normals. Second half is created by symmetry
-	// Normals will be created inside to outside
+	// normals will be created inside to outside
 	for( size_t currentIndex = 0; currentIndex <= ( nDistance - 1 ) / 2; currentIndex++ ){
 
 		// angle to rotate the middle normal vector by
 		const double rotationAngle = static_cast<double>( currentIndex ) * deltaTheta;
 
-		// Middle normal vector rotation by rotation angle around rotation vector
+		// middle normal vector rotation by rotation angle around rotation vector
 		const UnitVector3D currentNormalVector = middleNormalVector.RotateConstant( rotationVector, rotationAngle );
 
 
@@ -317,7 +317,7 @@ bool test_modifiedDetector( void ){
 			// intersection point of pixel
 			const Point3D pixelIntersection = previousNormal.origin() + ( previousNormal.direction() ^ rotationVector ) * previousPixelSize / 2.;
 
-			// Lot vector from current normal to intersection point. Vector is pointing to the normal
+			// lot vector from current normal to intersection point. Vector is pointing to the normal
 			const Vector3D pixelIntersectionLot = currentNormal.GetLot( pixelIntersection );
 
 			// get the pixel normal's origin_ which lies on the shortest Line connection the intersection with current normal
@@ -334,7 +334,7 @@ bool test_modifiedDetector( void ){
 		previousNormal = pixelNormal;
 		previousPixelSize = currentPixelSize;
 
-		// Vector perpendicualr to the normal pointing to the next pixel
+		// vector perpendicualr to the normal pointing to the next pixel
 		const UnitVector3D currentSurfaceVector = -pixelNormal.direction() ^ rotationVector;
 
 		// add pixel
@@ -350,7 +350,7 @@ bool test_modifiedDetector( void ){
 		// add mirrored when not middle pixel
 		if( currentIndex > 0 ){
 
-			// Mirror current normal around y-axis
+			// mirror current normal around y-axis
 			const Line mirroredPixelNormal{
 				pixelNormal.direction().NegateXComponent(),
 				pixelNormal.origin().NegateXComponent()

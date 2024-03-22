@@ -37,7 +37,7 @@ using std::map;
 /*!
  * @brief Physical voxel data_
 */
-#pragma pack(push, 1)	// Memory alignment for serializing model data without serializing single voxel data 
+#pragma pack(push, 1)	// memory alignment for serializing model data without serializing single voxel data 
 class VoxelData{
 	
 	public:

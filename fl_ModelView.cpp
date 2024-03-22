@@ -62,7 +62,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	Fl_Group::add( head_group_ );
 
-	// Labelsize and callback
+	// labelsize and callback
 	head_group_.add( load_model_button_ );
 	load_model_button_.labelsize( static_cast<int>( .5 * static_cast<double>( load_model_button_.h() ) ) );
 	load_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &load_model_callback_ );
@@ -73,7 +73,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	//--------------------------- View ---------------------------//
 
-	// View group dictates resizing
+	// view group dictates resizing
 	Fl_Group::add_resizable( model_inspection_group_ );
 	model_inspection_group_.add( model_information_ );
 	model_inspection_group_.add( loading_status_ );
@@ -83,10 +83,10 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	reset_model_button_.labelsize( static_cast<int>( .6 * static_cast<double>( reset_model_button_.h() ) ) );
 	reset_model_button_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &reset_model_callback_ );
 
-	// Model data_
+	// model data_
 	model_information_.hide();
 
-	// Labelsize and box
+	// labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
 	model_slice_image_.SetValueTip( "µ_a at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
@@ -111,7 +111,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	z_position_.range( -500., 500. );		z_position_.step( 1., 10. );
 	artefact_impact_.range( 0. , 10. );		artefact_impact_.step( 0.1, 1. );
 
-	// Labelsizes
+	// labelsizes
 	x_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( x_rotation_.h() ) ) );
 	y_rotation_.labelsize( static_cast<int>( .50 * static_cast<double>( y_rotation_.h() ) ) );
 	z_position_.labelsize( static_cast<int>( .50 * static_cast<double>( z_position_.h() ) ) );
@@ -322,7 +322,7 @@ void Fl_ModelView::LoadModel( void ){
 		}
 	}
 
-	// Left side
+	// left side
 	GridIndex left_corner{ 0, model_slice_.size().r - 1 };
 	for( size_t column_index = 0; column_index < model_slice_.size().c; column_index++ ){
 		for( size_t row_index = model_slice_.size().r; row_index > 0; row_index-- ){
@@ -365,7 +365,7 @@ void Fl_ModelView::UpdateModel( void ){
 	double oldYRot = y_rotation_.value();
 	double oldZTrans = z_position_.value();
 
-	// Movement did not succeed?
+	// movement did not succeed?
 	if( !MoveModel( oldXRot, oldYRot, oldZTrans ) ){
 		// moveModel changes arguments to previous value
 		x_rotation_.value( oldXRot );
@@ -373,7 +373,7 @@ void Fl_ModelView::UpdateModel( void ){
 		z_position_.value( oldZTrans );
 	}
 	else{
-		// New assignment only necessary, when movement succeeded
+		// new assignment only necessary, when movement succeeded
 		model_slice_image_.AssignImage( model_slice_ );
 		properties_.contrast = model_slice_image_.GetContrast();
 	}

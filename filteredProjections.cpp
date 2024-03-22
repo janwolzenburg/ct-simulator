@@ -37,13 +37,13 @@ FilteredProjections::FilteredProjections(
 																static_cast<signed long long>( size().r - 1 ) }, 
 																resolution().r, filter_type }
 {
-	const size_t number_of_angles = size().c;			// Number of angles
-	const size_t number_of_distances = size().r;	// Number of distances
+	const size_t number_of_angles = size().c;			// number of angles
+	const size_t number_of_distances = size().r;	// number of distances
 
 	const double distance_resolution = resolution().r;	// distance resolution
 	
 
-	// Local copy of projection data
+	// local copy of projection data
 	const DataGrid<> projections_data = std::move( projections.data() );
 
 	// iterate all angles
@@ -91,7 +91,7 @@ FilteredProjections::FilteredProjections(
 				// filter value
 				const double kernel_value = filter_( kernel_index );
 
-				// Multiply
+				// multiply
 				convolution_sum += kernel_value * projection_value;
 			}
 			convolution_sum *= distance_resolution;
@@ -108,7 +108,7 @@ double FilteredProjections::GetValue( const size_t angle_index,
 																			const double distance ) const{
 
 	const double distance_resolution = resolution().r;	// distance resolution
-	const size_t number_of_distances = size().r;				// Number of distances
+	const size_t number_of_distances = size().r;				// number of distances
 
 	// exact "index" of distance. Ideally we want to get the value at this index
 	const double exact_index = ForceRange( 
@@ -123,13 +123,13 @@ double FilteredProjections::GetValue( const size_t angle_index,
 	}
 
 	// interpolate
-	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );	// Lower index
+	const size_t index_floor = static_cast<size_t>( floor( exact_index ) );	// lower index
 	const size_t index_ceil  = static_cast<size_t>( ceil( exact_index ) );	// Upper index
 
 	const double value_floor = this->operator()( 
-		GridIndex{ angle_index, index_floor } );	// Value at floor index
+		GridIndex{ angle_index, index_floor } );	// value at floor index
 	const double value_ceil  = this->operator()( 
-		GridIndex{ angle_index, index_ceil } );	// Value at ceil index
+		GridIndex{ angle_index, index_ceil } );	// value at ceil index
 
 	// Return the interpolated value
 	return value_floor + ( value_ceil - value_floor ) 

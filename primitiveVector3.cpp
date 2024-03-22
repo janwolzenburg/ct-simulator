@@ -62,10 +62,10 @@ void PrimitiveVector3::Scale( const double scalar ){
 
 MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
-	// New length
+	// new length
 	const double len = this->GetLength();
 
-	// Length must not by zero
+	// length must not by zero
 	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length!" );
 
 	// exit when length is already one
@@ -125,7 +125,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
 	rotation_vector_copy.Normalise();
 	
-	// Length of the axis projection on x-y plane
+	// length of the axis projection on x-y plane
 	const double projection_length = sqrt( pow( rotation_vector_copy.x, 2 ) 
 																			 + pow( rotation_vector_copy.y, 2 ) );		
 	// error doing square root?

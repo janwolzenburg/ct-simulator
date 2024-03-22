@@ -116,7 +116,7 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 	// Reset error flag
 	errno = 0;
 
-	// New length
+	// new length
 	length_ = sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 
 	// check error flag from sqrt()

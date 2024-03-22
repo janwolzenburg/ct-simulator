@@ -47,7 +47,7 @@ bool PersistingObject<C>::Load( const path file_path ){
 	// does the file exist?
 	if( !std::filesystem::exists( file_path ) ) return false;
 
-	// Load file
+	// load file
 	vector<char> binaryData = std::move( ImportSerialized( file_path ) );
 	vector<char>::iterator binaryDataIt = binaryData.begin();
 

@@ -38,7 +38,7 @@ BackprojectionFilter::TYPE BackprojectionFilter::GetType( const string searchStr
 BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const BackprojectionFilter::TYPE type_ ) :
 	type_( type_ ),
 	points_range_( pointsRange_ ),
-	number_of_points_( static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1 ), // N - 1 - (-N + 1) + 1 = 2N - 1
+	number_of_points_( static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1 ), // n - 1 - (-N + 1) + 1 = 2N - 1
 	sampling_interval_( samplingInterval_ ),
 	values_( number_of_points_, 0. )
 {

@@ -239,7 +239,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	}
 	#endif
 
-	vector<Ray> all_scattered_rays;	// Vector for all scattered rays
+	vector<Ray> all_scattered_rays;	// vector for all scattered rays
 
 	// the possible exit faces of voxel
 	const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
@@ -346,7 +346,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					local_ray.properties().energy_spectrum() );
 			#endif
 
-			// New ray parameter the distance travelled in this voxel
+			// new ray parameter the distance travelled in this voxel
 			current_ray_step += distance_in_voxel;				
 
 			// the new point on the ray
@@ -373,7 +373,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	// Ray is now outside the model
 	/* ------------------------------------------------------------------------------- */
 
-	// New origin of ray "outside" the model
+	// new origin of ray "outside" the model
 	local_ray.origin( current_point_on_ray );
 
 	#ifdef TRANSMISSION_TRACKING
@@ -390,13 +390,13 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 bool Model::Crop( const Tuple3D minCoords, const Tuple3D maxCoords ){
 	if( !AreCoordinatesValid( minCoords ) || !AreCoordinatesValid( maxCoords ) ) return false;
 
-	Index3D minIdcs = GetVoxelIndices( minCoords );			// Minimum boundary indices
-	Index3D maxIdcs = GetVoxelIndices( maxCoords );			// Maximum boundary indices
+	Index3D minIdcs = GetVoxelIndices( minCoords );			// minimum boundary indices
+	Index3D maxIdcs = GetVoxelIndices( maxCoords );			// maximum boundary indices
 
 	// parameters of cropped model
 	Index3D newVoxNum3D{ maxIdcs.x - minIdcs.x + 1, maxIdcs.y - minIdcs.y + 1, maxIdcs.z - minIdcs.z + 1 };
 
-	// New model
+	// new model
 	Model newModel{ coordinate_system_, newVoxNum3D, voxel_size_, name_, VoxelData{} };
 
 
@@ -455,7 +455,7 @@ void Model::SliceThreaded(	size_t& xIdx, mutex& currentXMutex, size_t& yIdx, mut
 
 		size_t localXIdx, localYIdx;
 
-		// Lock
+		// lock
 		currentXMutex.lock(); currentYMutex.lock();
 
 		localXIdx = xIdx;

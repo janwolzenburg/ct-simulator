@@ -49,7 +49,7 @@ CoordinateSystem* DummySystem( void );
 */
 class CoordinateSystemTree : public MathematicalObject{
 
-	 // Maximum amount of Coordinate systems_ in tree
+	 // maximum amount of Coordinate systems_ in tree
 	static constexpr size_t max_systems_in_tree = 64;
 
 	public:

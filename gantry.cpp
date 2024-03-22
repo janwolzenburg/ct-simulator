@@ -76,7 +76,7 @@ void Gantry::TransmitRaysThreaded(
 	Ray current_ray;
 	pair<Ray, vector<Ray>> rays_to_return;
 
-	// Loop while rays are left
+	// loop while rays are left
 	while( shared_current_ray_index < rays.size() ){
 
 		// get the Ray which should be transmitted next and increment index
@@ -84,7 +84,7 @@ void Gantry::TransmitRaysThreaded(
 		local_ray_index = shared_current_ray_index++;
 		current_ray_index_mutex.unlock();
 
-		// No more rays left
+		// no more rays left
 		if( local_ray_index >= rays.size() ) break;
 
 		// get current ray
@@ -160,18 +160,18 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 	detector_.ResetDetectedRayPorperties();								// Reset all pixel
 
 	size_t shared_current_ray_index = 0;	// index of next Ray to iterate
-	mutex current_ray_index_mutex;				// Mutex for Ray index
-	mutex rays_for_next_iteration_mutex;	// Mutex for vector of rays for next iteration
-	mutex detector_mutex;									// Mutex for detector
-	mutex scattering_mutex;								// Mutex for scattering
+	mutex current_ray_index_mutex;				// mutex for Ray index
+	mutex rays_for_next_iteration_mutex;	// mutex for vector of rays for next iteration
+	mutex detector_mutex;									// mutex for detector
+	mutex scattering_mutex;								// mutex for scattering
 
-	// Loop until maximum loop depth is reached or no more rays are left to transmit
+	// loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t current_loop = 0; 
 							current_loop <= tomography_properties.max_scattering_occurrences && 
 														 rays.size() > 0; 
 							current_loop++ ){
 
-		// No scattering in last iteration
+		// no scattering in last iteration
 		tomography_properties.scattering_enabled = 
 			current_loop < tomography_properties.max_scattering_occurrences && 
 			tomography_properties.scattering_enabled;	

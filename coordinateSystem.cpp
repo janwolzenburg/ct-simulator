@@ -81,7 +81,7 @@ vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) con
 
 	const CoordinateSystem *cur_cSys = this->parent_;	// Start with parent of this system
 
-	// Loop while current coordinate system is not the global system
+	// loop while current coordinate system is not the global system
 	while( !cur_cSys->IsGlobal() ){
 		path.push_back( cur_cSys );
 		cur_cSys = cur_cSys->parent_;
@@ -182,7 +182,7 @@ MathematicalObject::MathError CoordinateSystem::Rotate( const Line l, const doub
 	// Rotate coordinate system's unit vectors
 	if( ( tErr = Rotate( l.direction(), phi ) ) != MathError::Ok ) errCode = tErr;
 
-	// Move rotation center to origin_ of rotation axis
+	// move rotation center to origin_ of rotation axis
 	Translate( -l.origin() );
 
 	// Rotate position vector of origin_ around rotation axis

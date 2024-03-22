@@ -36,11 +36,11 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 
 	// Ray intersects origin_
 	if( IsNearlyEqualDistance( lot.length(), 0. ) ){
-		// Lot vector only for angle calculation
+		// lot vector only for angle calculation
 		lot = projectedLine.direction() ^ cSys->GetEz();
 		distance = 0.;
 	}
-	// No intersection -> distance from perpendicular
+	// no intersection -> distance from perpendicular
 	else{
 		// y component is zero
 		if( IsNearlyEqualDistance( lot.Y(), 0 ) ){

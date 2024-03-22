@@ -87,10 +87,10 @@ size_t DeSerializeBuildIn<string>( string& value, string default_value, const ve
 
 	size_t i = 0;
 
-	// Make sure string is empty
+	// make sure string is empty
 	value.clear();
 
-	// Loop while temrination character not read and the end has not been reached
+	// loop while temrination character not read and the end has not been reached
 	while( *it != '\0' && it < binary_data.end() ){
 		
 		// the current char
@@ -126,7 +126,7 @@ vector<vector<GridCoordinates>> DeSerialize<vector<vector<GridCoordinates>>>( co
 	if( amount_sub_vectors > maximum_vector_size )
 		return vec;
 
-	// Loop fo amount of sub vectors
+	// loop fo amount of sub vectors
 	for( size_t i = 0; i < amount_sub_vectors; i++ ){
 
 		// amount of elements in sub vector

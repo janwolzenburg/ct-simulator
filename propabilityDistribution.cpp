@@ -29,7 +29,7 @@
 	randomNumberGenerator implementation
 */
 
-// Minus one is important!
+// minus one is important!
 RandomNumberGenerator integer_random_number_generator{};
 
 RandomNumberGenerator::RandomNumberGenerator( void ) :
@@ -90,7 +90,7 @@ PropabilityDistribution::PropabilityDistribution( const vector<Tuple2D> distribu
 	generator_{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() }		
 {
 
-	// Vector with weights of variates
+	// vector with weights of variates
 	vector<double> weights( distribution.size(), 0. );
 
 	// get values and weight from distribution

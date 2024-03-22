@@ -32,10 +32,10 @@ void Backprojection::ReconstructImageColumn(
 										 Fl_Progress_Window* progress, mutex& progress_mutex, 
 										 const FilteredProjections& projections ){
 
-	const size_t number_of_distances = image.size().r;			// Number of distances
+	const size_t number_of_distances = image.size().r;			// number of distances
 	const double distance_resolution = image.resolution().r;// distance resolution
 
-	const size_t number_of_angles = projections.size().c;				// Number of angles
+	const size_t number_of_angles = projections.size().c;				// number of angles
 	const double angle_resolution = projections.resolution().c;	// angle resolution
 
 	while( current_angle_index < number_of_angles ){
@@ -76,7 +76,7 @@ void Backprojection::ReconstructImageColumn(
 				// projection value for given angle and distance
 				const double projection_value = projections.GetValue( angle_index, s );
 				
-				// Value to add to pixel value
+				// value to add to pixel value
 				double new_value = projection_value * PI / static_cast<double>( number_of_angles );
 				
 				image_mutex.lock();

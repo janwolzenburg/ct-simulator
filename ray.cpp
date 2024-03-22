@@ -125,7 +125,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 													const TomographyProperties tomography_properties, 
 													const Point3D new_origin ){
 
-	// Voxel's absorption with respect to water's absorption
+	// voxel's absorption with respect to water's absorption
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / 
 																		absorption_water_Per_mm;
 
@@ -150,14 +150,14 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 	vector<pair<double, pair<double, double>>> scattered_angles;
 
-	// Number of scatteres bins over all energies
+	// number of scatteres bins over all energies
 	size_t scattered_bins_sum = 0;
 
 	// iterate energies in spectrum
 	size_t energy_index = 0;
 	for( const auto& [ energy, photons ] : properties_.energy_spectrum_.data() ){
 		
-		// No photons at current energy
+		// no photons at current energy
 		if( IsNearlyEqual( photons, 0., 1e-6, Relative ) ) continue;
 
 		// calculate scattering propability from compton scattering cross section
@@ -193,7 +193,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 				const double new_energy = 1. / 
 															( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 					
-				// New photonflow
+				// new photonflow
 				const double new_photonflow = tomography_properties.scattered_ray_absorption_factor * 
 										photons / static_cast<double>( simulation_properties.bins_per_energy );
 
@@ -217,7 +217,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		energy_index++;
 	}
 
-	// No ray scattered in scattering plane -> return empty
+	// no ray scattered in scattering plane -> return empty
 	if( scattered_angles.size() == 0 )
 		return {};
 
@@ -266,11 +266,11 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		
 		// at least one angle left
 		if( angle_index < scattered_angles.size() - 1 ){
-			// Next ray has different angle
+			// next ray has different angle
 			if( scattered_angles.at( angle_index + 1 ).first != angle )
 				build_ray = true;
 		}
-		// Last angle
+		// last angle
 		else if( angle_index == scattered_angles.size() - 1 )
 			build_ray = true;
 

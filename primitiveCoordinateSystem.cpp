@@ -30,12 +30,12 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const PrimitiveVector3 ori
 	ey_( ey ),
 	ez_( ez )
 {
-	// Normalise vectors
+	// normalise vectors
 	ex_.Normalise();
 	ey_.Normalise();
 	ez_.Normalise();
 
-	// Vector have to be orthogonal to each other
+	// vector have to be orthogonal to each other
 	if( !IsNearlyEqualDistance( ex_ * ey_, 0 ) ||
 		!IsNearlyEqualDistance( ey_ * ez_, 0 ) ||
 		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "Unit axis must be orthogonal to each other!" );
@@ -47,12 +47,12 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary
 	ey_( DeSerialize<PrimitiveVector3>( binary_data, it ) ),
 	ez_( DeSerialize<PrimitiveVector3>( binary_data, it ) )
 {
-	// Normalise vectors
+	// normalise vectors
 	ex_.Normalise();
 	ey_.Normalise();
 	ez_.Normalise();
 
-	// Vector have to be orthogonal to each other
+	// vector have to be orthogonal to each other
 	if( !IsNearlyEqualDistance( ex_ * ey_, 0 ) ||
 		!IsNearlyEqualDistance( ey_ * ez_, 0 ) ||
 		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "Unit axis must be orthogonal to each other!" );

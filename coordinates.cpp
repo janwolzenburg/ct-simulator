@@ -117,7 +117,7 @@ Coordinates Coordinates::ConvertToParentSystem( void ) const{
 	// Return this Coordinates if this' coordinate system is the global system
 	if( this->coordinate_system_->IsGlobal() ) return *this;
 
-	// Values of Coordinates in parent_ coordinate system
+	// values of Coordinates in parent_ coordinate system
 	PrimitiveVector3 coordComps{ coordinate_system_->GetPrimitive().origin() + coordinate_system_->GetPrimitive().ex() * x + coordinate_system_->GetPrimitive().ey() * y + coordinate_system_->GetPrimitive().ez() * z };
 	Coordinates parentCoords{ coordComps, coordinate_system_->parent() };
 
