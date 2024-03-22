@@ -90,8 +90,10 @@ size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
 
 optional<Projections> Tomography::RecordSlice( 
-	const ProjectionsProperties projection_properties, Gantry gantry, 
-	const Model& model, const double z_position, Fl_Progress_Window* progress_window ){
+																		const ProjectionsProperties projection_properties, 
+																		Gantry gantry, const Model& model, 
+																		const double z_position,  
+																		Fl_Progress_Window* progress_window ){
 
 	// update simulation properties
 	simulation_properties = SimulationProperties{ properties_.simulation_quality };
@@ -99,7 +101,7 @@ optional<Projections> Tomography::RecordSlice(
 	// reset gantry to its initial position
 	gantry.ResetGantry();
 
-	// translate Gantry
+	// translate gantry
 	if( z_position != 0. )
 		gantry.TranslateInZDirection( z_position );
 
@@ -132,16 +134,15 @@ optional<Projections> Tomography::RecordSlice(
 			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, 
 																								pixel.NormalLine() };
 
-			optional<double> line_integral = pixel.GetDetectedLineIntegral( 
-												properties_.use_simple_absorption, 
-												gantry.tube().number_of_rays_per_pixel(), 
-												gantry.tube().GetEmittedBeamPower() / 
-												( static_cast<double>( pixel_array.size() ) * 
-													static_cast<double>( gantry.tube().number_of_rays_per_pixel() )
-												) );
+			optional<double> line_integral = 
+				pixel.GetProjectionValue( properties_.use_simple_absorption, 
+					gantry.tube().number_of_rays_per_pixel(), gantry.tube().GetEmittedBeamPower() /
+					( static_cast<double>( pixel_array.size() ) * 
+						static_cast<double>( gantry.tube().number_of_rays_per_pixel() )
+					) );
 			
-			// if no value no ray was detected by pixel: line_integral would be infinite.
-			// set it to a high value
+			// if no value no ray was detected by pixel, the line integral would be infinite.
+			// set it to a high value instead
 			if( !line_integral.has_value() ){
 				line_integral = 25.; // is like ray's energy is 1 / 10^11 of its start energy
 			}

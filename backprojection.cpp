@@ -57,8 +57,8 @@ void Backprojection::ReconstructImageColumn(
 		}
 
 		// current angle value
-		const double angle = static_cast<double>( angle_index ) 
-												 * angle_resolution + angle_resolution / 2.;			
+		const double angle = static_cast<double>( angle_index ) * angle_resolution + 
+																															angle_resolution / 2.;	
 		const double cos_angle = cos( angle );
 		const double sin_angle = sin( angle );
 
@@ -70,7 +70,7 @@ void Backprojection::ReconstructImageColumn(
 			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){
 				const double row_coordinate = image.GetRowCoordinate( row_index );
 				
-				// pixel's "distance" or magnitude in polar Coordinates
+				// pixel's "distance" or magnitude in polar coordinates
 				const double s = column_coordinate * cos_angle + row_coordinate * sin_angle;	
 
 				// projection value for given angle and distance

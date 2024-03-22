@@ -65,12 +65,12 @@ void Gantry::TranslateInZDirection( const double distance ){
 }
 
 void Gantry::TransmitRaysThreaded(	
-									const Model& model, const TomographyProperties& tomography_properties,
-									RayScattering& ray_scattering, mutex& scattering_properties_mutex,
-									const vector<Ray>& rays, const bool second_to_last_iteration,
-									size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
-									vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
-									XRayDetector& detector, mutex& detector_mutex ){
+						   const Model& model, const TomographyProperties& tomography_properties,
+							 RayScattering& ray_scattering, mutex& scattering_properties_mutex,
+							 const vector<Ray>& rays, const bool second_to_last_iteration,
+							 size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
+							 vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
+							 XRayDetector& detector, mutex& detector_mutex ){
 
 	size_t local_ray_index;
 	Ray current_ray;
@@ -79,7 +79,7 @@ void Gantry::TransmitRaysThreaded(
 	// loop while rays are left
 	while( shared_current_ray_index < rays.size() ){
 
-		// get the Ray which should be transmitted next and increment index
+		// get the ray which should be transmitted next and increment index
 		current_ray_index_mutex.lock();
 		local_ray_index = shared_current_ray_index++;
 		current_ray_index_mutex.unlock();
@@ -90,12 +90,13 @@ void Gantry::TransmitRaysThreaded(
 		// get current ray
 		current_ray =  rays.at( local_ray_index );
 
-		// transmit Ray through model
-		rays_to_return = std::move( model.TransmitRay( 
-																				cref( current_ray ), cref( tomography_properties ), 
-																				ref( ray_scattering ), 
-																				ref( scattering_properties_mutex ) ) );
+		// transmit ray through model
+		rays_to_return = std::move( 
+			model.TransmitRay( cref( current_ray ), cref( tomography_properties ), 
+												 ref( ray_scattering ), 
+												 ref( scattering_properties_mutex ) ) );
 
+		// detect the ray
 		detector.DetectRay( ref( rays_to_return.first ), ref( detector_mutex ) );
 		
 		if( rays_to_return.second.empty() ){
@@ -107,7 +108,7 @@ void Gantry::TransmitRaysThreaded(
 			
 			// check each ray
 			for( auto& ray : rays_to_return.second ){
-				// detection possible. Ray's expected pixel index is updated in TryDetection
+				// detection possible. ray's expected pixel index is updated in TryDetection()
 				if( detector.TryDetection( ray ) ){
 					// only rays which can be detected are in the next iteration
 					rays_for_next_iteration_mutex.lock();
@@ -119,9 +120,10 @@ void Gantry::TransmitRaysThreaded(
 		else{
 			// add all rays for next iteration
 			rays_for_next_iteration_mutex.lock();
-			rays_for_next_iteration.insert( rays_for_next_iteration.end(), 
-																			make_move_iterator( rays_to_return.second.begin() ), 
-																			make_move_iterator( rays_to_return.second.end() ) );									
+			rays_for_next_iteration.insert( 
+				rays_for_next_iteration.end(), 
+				make_move_iterator( rays_to_return.second.begin() ), 
+				make_move_iterator( rays_to_return.second.end() ) );									
 			rays_for_next_iteration_mutex.unlock();
 		}
 	
@@ -130,14 +132,16 @@ void Gantry::TransmitRaysThreaded(
 	return;
 }
 
-void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_properties ) {
+void Gantry::RadiateModel( const Model& model, 
+													 TomographyProperties tomography_properties ) {
 
-// current rays. Start with rays from source
-	vector<Ray> rays = std::move( tube_.GetEmittedBeam( 
-																				detector_.pixel_array(), 
-																				detector_.properties().detector_focus_distance ) );		
+	// current rays. start with rays from source
+	vector<Ray> rays = std::move( 
+		tube_.GetEmittedBeam( 
+			detector_.pixel_array(), 
+			detector_.properties().detector_focus_distance ) );		
 	
-	// convert rays to model coordinate system
+	// convert rays to model's coordinate system
 	for( Ray& current_ray : rays ){
 		current_ray = std::move( current_ray.ConvertTo( model.coordinate_system() ) );
 	}
@@ -157,7 +161,7 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		atan( this->detector_.properties().row_width / 
 					this->detector_.properties().detector_focus_distance / 2 ) };
 
-	detector_.ResetDetectedRayPorperties();								// reset all pixel
+	detector_.ResetDetectedRayPorperties(); // reset all pixel
 
 	size_t shared_current_ray_index = 0;	// index of next Ray to iterate
 	mutex current_ray_index_mutex;				// mutex for Ray index
@@ -176,19 +180,21 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 			current_loop < tomography_properties.max_scattering_occurrences && 
 			tomography_properties.scattering_enabled;	
 		
-		const bool second_to_last_iteration = ( current_loop == tomography_properties.max_scattering_occurrences - 1 );
+		const bool second_to_last_iteration = 
+			( current_loop == tomography_properties.max_scattering_occurrences - 1 );
 
 		// store for information output
 		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();
 
-		vector<Ray> rays_for_next_iteration;						// rays to process in the next iteration
-		shared_current_ray_index = 0;										// reset current ray index
+		vector<Ray> rays_for_next_iteration;				// rays to process in the next iteration
+		shared_current_ray_index = 0;								// reset current ray index
 
 		// start threads
 		vector<std::thread> threads;
 		for( size_t thread_index = 0; 
 								thread_index < std::thread::hardware_concurrency(); thread_index++ ){
 			
+			// transmit rays
 			threads.emplace_back( TransmitRaysThreaded,	
 														cref( model ), cref( tomography_properties ), 
 														ref( scattering_information ), ref( scattering_mutex ),
@@ -209,9 +215,6 @@ void Gantry::RadiateModel( const Model& model, TomographyProperties tomography_p
 		rays = std::move( rays_for_next_iteration );
 
 	}
-
-
-
 }
 
 void Gantry::ResetGantry( void ){

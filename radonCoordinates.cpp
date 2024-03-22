@@ -24,20 +24,19 @@
  * RadonCoordinates implementation
 */
 
-RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Line l )
-
+RadonCoordinates::RadonCoordinates( const CoordinateSystem* const radon_coordinate_system, 
+																		const Line line )
 {
-	// project Ray on XY plane
-	const Line projectedLine = l.ProjectOnXYPlane( cSys );
+	// project ray on xy-plane
+	const Line projected_line = line.ProjectOnXYPlane( radon_coordinate_system );
 
-	// get perpendicualar to projected Ray through coordinate system's origin_
-	Vector3D lot = projectedLine.GetLot( cSys->GetOriginPoint() );
+	// get perpendicualar to projected ray through coordinate system's origin
+	Vector3D lot = projected_line.GetLot( radon_coordinate_system->GetOriginPoint() );
 
-
-	// ray intersects origin_
+	// ray intersects origin
 	if( IsNearlyEqualDistance( lot.length(), 0. ) ){
 		// lot vector only for angle calculation
-		lot = projectedLine.direction() ^ cSys->GetEz();
+		lot = projected_line.direction() ^ radon_coordinate_system->GetEz();
 		distance = 0.;
 	}
 	// no intersection -> distance from perpendicular
@@ -61,8 +60,8 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const cSys, const Li
 	// y component is zero
 	if( IsNearlyEqualDistance( lot.Y(), 0 ) ) theta = 0;
 	// y component is greater than zero
-	else if( lot.Y() > 0. ) theta = cSys->GetEx().GetAngle( lot );
+	else if( lot.Y() > 0. ) theta = radon_coordinate_system->GetEx().GetAngle( lot );
 	// y component is less than zero
-	else theta = PI - cSys->GetEx().GetAngle( lot );
+	else theta = PI - radon_coordinate_system->GetEx().GetAngle( lot );
 
 }

@@ -72,7 +72,7 @@ class DetectorPixel : public BoundedSurface{
 	 * @param start_intensity Start intensities of rays
 	 * @return Value of radon point
 	*/
-	optional<double> GetDetectedLineIntegral( const bool use_simple_absorption, const size_t expected_ray_hits, const double start_intensity ) const;
+	optional<double> GetProjectionValue( const bool use_simple_absorption, const size_t expected_ray_hits, const double start_intensity ) const;
 
 	/*!
 	 * @brief Convert this pixel ot given coordinate system

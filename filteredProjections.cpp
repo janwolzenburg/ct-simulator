@@ -27,9 +27,9 @@ using std::cref;
 const string FilteredProjections::FILE_PREAMBLE{ "FILTEREDPROJECTIONS_FILE_PREAMBLE" };
 
 FilteredProjections::FilteredProjections( 
-																	const Projections& projections, 
-																	const BackprojectionFilter::TYPE filter_type, 
-																	Fl_Progress_Window* progress_window ) :
+											const Projections& projections, 
+											const BackprojectionFilter::TYPE filter_type, 
+											Fl_Progress_Window* progress_window ) :
 
 	DataGrid{ projections.data().size(), projections.data().start(), 
 						projections.data().resolution(), 0. },
@@ -100,7 +100,6 @@ FilteredProjections::FilteredProjections(
 		}
 		Fl::check();
 	}
-
 }
 
 
@@ -110,10 +109,10 @@ double FilteredProjections::GetValue( const size_t angle_index,
 	const double distance_resolution = resolution().r;	// distance resolution
 	const size_t number_of_distances = size().r;				// number of distances
 
-	// exact "index" of distance. Ideally we want to get the value at this index
+	// exact 'index' of distance. ideally we want to get the value at this index
 	const double exact_index = ForceRange( 
-								distance / distance_resolution 
-								+ static_cast<double>( number_of_distances - 1 ) / 2.,
+								distance / distance_resolution + 
+								static_cast<double>( number_of_distances - 1 ) / 2.,
 								0., static_cast<double>( number_of_distances ) - 1. );		
 
 	// if the exact index is a whole number skip interpolation
@@ -129,10 +128,10 @@ double FilteredProjections::GetValue( const size_t angle_index,
 	const double value_floor = this->operator()( 
 		GridIndex{ angle_index, index_floor } );	// value at floor index
 	const double value_ceil  = this->operator()( 
-		GridIndex{ angle_index, index_ceil } );	// value at ceil index
+		GridIndex{ angle_index, index_ceil } );		// value at ceil index
 
 	// return the interpolated value
-	return value_floor + ( value_ceil - value_floor ) 
-											 * ( exact_index - static_cast<double>( index_floor ) );
+	return value_floor + ( value_ceil - value_floor ) * 
+											 ( exact_index - static_cast<double>( index_floor ) );
 
 }

@@ -59,9 +59,7 @@ unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 	generator_state_[1] = new_state_1;
 	mutex_.unlock();
 
-
 	return static_cast<unsigned int>( result & 0x00000000FFFFFFFF );
-
 }
 
 bool RandomNumberGenerator::DidARandomEventHappen( const double event_propability ){

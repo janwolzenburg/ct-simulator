@@ -33,7 +33,7 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 	scattering_plane_normal_( scattering_normal ),
 	max_angle_to_lie_in_scatter_plane_( maximum_angle_to_lie_in_scatter_plane )
 {
-	// iterate all frequencies
+	// iterate all energies
 	for( size_t energy_index = 0; energy_index < number_of_energies_; energy_index++ ){
 
 		const double energy = energy_range_.start() + 
@@ -50,7 +50,7 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 			
 			const double angle = -PI + static_cast<double>( angle_index ) * angle_resolution_;
 			const double t = angle;
-			const double pseudoProbability = 
+			const double pseudo_probability = 
 				( 1. + pow( cos( t ), 2 ) ) / 
 				( 2 * pow( 1. + a * ( 1. - cos( t ) ), 2 ) ) *
 				( 1. + 
@@ -58,15 +58,14 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 					( ( 1. + pow( cos( t ), 2 ) ) * ( 1. + a * ( 1. - cos( t ) ) ) ) 
 				);
 
-			pseudo_distribution.emplace_back( t, pseudoProbability );
+			pseudo_distribution.emplace_back( t, pseudo_probability );
 
 			if( angle_index == ( number_of_angles - 1 ) / 2 ) 
-				pseudo_distribution.emplace_back( t, pseudoProbability );
+				pseudo_distribution.emplace_back( t, pseudo_probability );
 
 		}
 		scattering_angle_distributions_.emplace_back( energy, 
 																			PropabilityDistribution{ pseudo_distribution } );
-	
 	}
 }
 

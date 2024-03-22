@@ -130,21 +130,24 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / 
 																		absorption_water_Per_mm;
 
-	// attenuation coefficient at reference energy. For simple intensity
+	// attenuation coefficient at reference energy. for simple intensity
 	const double cross_section_at_reference_energy_mm = 
 		ScatteringCrossSection::GetInstance().GetCrossSection( reference_energy_for_mu_eV );
+
 	const double coefficient_at_reference_energy_1Permm = 
 		cross_section_at_reference_energy_mm * electron_density_water_1Permm3 * 
 		coefficient_factor;
+
 	const double simple_fraction = exp( -distance_traveled_mm * 
-																	coefficient_at_reference_energy_1Permm  );
+																 coefficient_at_reference_energy_1Permm  );
+
 	properties_.simple_intensity_ *= simple_fraction;													
 
 
 	// ---------------------------- Scattering -------------------------
 	
 	vector<Ray> scattered_rays;
-	// skip if scattering is really inpropable
+	// skip if scattering is extremely inpropable
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
 	
 
@@ -163,11 +166,13 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		// calculate scattering propability from compton scattering cross section
 		const double cross_section_mm = 
 			ScatteringCrossSection::GetInstance().GetCrossSection( energy );
+
 		const double coefficient_1Permm = cross_section_mm * 
 																			electron_density_water_1Permm3 * 
 																			coefficient_factor;
-		const double scatter_propability = 
-			1. - exp( -coefficient_1Permm * distance_traveled_mm );
+
+		const double scatter_propability =  1. - exp( -coefficient_1Permm * 
+																								  distance_traveled_mm );
 
 		// iterate through energy bins
 		for( size_t bin = 0; bin < simulation_properties.bins_per_energy; bin++ ){
@@ -184,34 +189,38 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			
 				// random angle inside scattering plane
 				const double angle = ForceRange( scattering_information.GetRandomAngle( 
-																				energy, scattering_properties_mutex ), -PI, PI );		
+																				 energy, scattering_properties_mutex ), -PI, PI );
 				
 				// if angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
 
 				// calculate scattered photons energy via compton-wavelength
-				const double new_energy = 1. / 
-															( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
+				const double new_energy = 
+					1. / ( 1. / ( me_c2_eV ) * ( 1. - cos( angle ) )  + 1. / energy );
 					
 				// new photonflow
-				const double new_photonflow = tomography_properties.scattered_ray_absorption_factor * 
-										photons / static_cast<double>( simulation_properties.bins_per_energy );
+				const double new_photonflow = 
+					tomography_properties.scattered_ray_absorption_factor * photons / 
+					static_cast<double>( simulation_properties.bins_per_energy );
 
-				scattered_angles.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
+				scattered_angles.emplace_back( angle, 
+																			 pair<double, double>{ new_energy, new_photonflow });
 			}
 
-			// scalar for energy in incoming ray. Only accounts for energy lost to new rays without
-			// considering der angle dependent energy loss (Compton-Aporption). This is because 
-			// the compton-absorption is already accounted for in the absorption routine
-			const double energy_scalar = 1. - tomography_properties.scattered_ray_absorption_factor / 
-																		static_cast<double>( simulation_properties.bins_per_energy );
+			// scalar for energy in incoming ray. only accounts for energy lost to new rays
+			// without considering der angle dependent energy loss (Compton-Aporption). 
+			// this is because the compton-absorption is already accounted for in the absorption 
+			// routine
+			const double energy_scalar = 
+				1. - tomography_properties.scattered_ray_absorption_factor / 
+				static_cast<double>( simulation_properties.bins_per_energy );
+
 			properties_.energy_spectrum_.ScaleEnergy( energy_index, energy_scalar );
 			#ifdef TRANSMISSION_TRACKING
 			properties_.only_scattering_spectrum.ScaleEnergy( energy_index, energy_scalar );
 			#endif
 			
 			scattered_bins_sum++;
-			
 		}
 
 		energy_index++;
@@ -222,7 +231,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		return {};
 
 	// sort scattered angles
-	std::sort( scattered_angles.begin(), scattered_angles.end(), []( const auto& a, const auto& b ){ return a.first > b.first; } );
+	std::sort( scattered_angles.begin(), scattered_angles.end(), 
+						 []( const auto& a, const auto& b ){ return a.first > b.first; } );
 
 	double previous_angle = -1.;	// angle currently handled
 	size_t scattered_bins_for_current_angle = 0;
@@ -232,6 +242,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 	// iterate through sorted angles
 	for( size_t angle_index = 0; angle_index < scattered_angles.size(); angle_index++ ){
+		
 		const double angle = scattered_angles.at( angle_index ).first;
 		const double energy = scattered_angles.at( angle_index ).second.first;
 		const double photonflow = scattered_angles.at( angle_index ).second.second;
@@ -262,6 +273,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			spectral_photonflows.emplace_back( energy, photonflow );
 		}
 		
+		// flag to know whether the current angle has power and needs to be created
 		bool build_ray = false;
 		
 		// at least one angle left
@@ -289,20 +301,20 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 			RayProperties new_properties{ new_spectrum };
 			new_properties.voxel_hits_ = properties_.voxel_hits_;
 			new_properties.simple_intensity_ = properties_.simple_intensity_ * 
-																					scattered_bins_fraction * 
-																					simple_fraction;
+																				 scattered_bins_fraction * 
+																				 simple_fraction;
 			new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
-			const UnitVector3D new_direction = direction_.RotateConstant(	
-																			scattering_information.scattering_plane_normal(),
-																			angle );
+			const UnitVector3D new_direction = 
+				direction_.RotateConstant( scattering_information.scattering_plane_normal(),
+																	 angle );
 
 			// save scattered ray																				
 			scattered_rays.emplace_back( new_direction, new_origin, new_properties );
 	
-
+			// reset for next angle
 			scattered_bins_for_current_angle = 0;
-			spectral_photonflows.clear();	// clear spectrum
+			spectral_photonflows.clear();				
 		}
 		
 		// remember previous angle
@@ -311,7 +323,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 	}
 
 	return scattered_rays;
-
 }
 
 
