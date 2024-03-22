@@ -66,7 +66,7 @@ MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 	const double len = this->GetLength();
 
 	// length must not by zero
-	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "Normalization only possible with vector that has length!" );
+	if( IsNearlyEqualDistance( len, 0 ) ) return CheckForAndOutputError( MathError::Operation, "normalization only possible with vector that has length!" );
 
 	// exit when length is already one
 	if( IsNearlyEqualDistance( len, 1 ) ) return MathError::Ok;
@@ -119,7 +119,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 
 	// n must have direction
 	if( IsNearlyEqualDistance( rotation_vector.GetLength(), 0 ) ) 
-		return CheckForAndOutputError( MathError::Input, "Rotation axis must have length!" );
+		return CheckForAndOutputError( MathError::Input, "rotation axis must have length!" );
 
 	// create copy and Normalise
 	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
@@ -130,7 +130,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 																			 + pow( rotation_vector_copy.y, 2 ) );		
 	// error doing square root?
 	if (errno != 0)
-		return CheckForAndOutputError(MathError::General, "Error calculation square root!");
+		return CheckForAndOutputError(MathError::General, "error calculation square root!");
 	
 	// sine and cosine of angle theta:
 	// angle between rotation axis projection onto x-y plane and x-axis

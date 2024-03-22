@@ -32,8 +32,8 @@ Matrix::Matrix( const size_t n_, const size_t m_ ) :
 	number_of_columns_( n_ ),
 	number_of_rows_( m_ ),
 	data_( number_of_rows_ * number_of_columns_, 0. ) {
-	if (number_of_rows_ == 0) { CheckForAndOutputError( MathError::Input, "Matrix rows amount must be greater than zero!" ); number_of_rows_ = 1; }
-	if (number_of_columns_ == 0) { CheckForAndOutputError( MathError::Input, "Matrix columns amount must be greater than zero!" ); number_of_columns_ = 1; }
+	if (number_of_rows_ == 0) { CheckForAndOutputError( MathError::Input, "matrix rows amount must be greater than zero!" ); number_of_rows_ = 1; }
+	if (number_of_columns_ == 0) { CheckForAndOutputError( MathError::Input, "matrix columns amount must be greater than zero!" ); number_of_columns_ = 1; }
 }
 
 string Matrix::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
@@ -53,20 +53,20 @@ string Matrix::ToString( [[maybe_unused]] const unsigned int newline_tabulators 
 }
 
 double& Matrix::operator() ( const size_t col, const size_t row ) {
-	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
-	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
 
 	return data_.at(number_of_columns_ * row + col);
 }
 
 double Matrix::operator() ( const size_t col, const size_t row ) const {
-	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "Row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
-	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "Column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (row >= number_of_rows_) { CheckForAndOutputError( MathError::Input, "row exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
+	if (col >= number_of_columns_) { CheckForAndOutputError( MathError::Input, "column exceeds matrix size!" ); return data_.at( number_of_columns_ * (number_of_rows_ - 1) + (number_of_columns_ - 1) ); }
 	return data_.at(number_of_columns_ * row + col);
 }
 
 MathematicalObject::MathError Matrix::SwapColumns( const size_t c1, const size_t c2 ) {
-	if (c1 >= number_of_columns_ || c2 >= number_of_columns_) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
+	if (c1 >= number_of_columns_ || c2 >= number_of_columns_) return CheckForAndOutputError( MathError::Bounds, "column or row indices exceed matrix size!" );
 
 	double tempVal;
 
@@ -81,7 +81,7 @@ MathematicalObject::MathError Matrix::SwapColumns( const size_t c1, const size_t
 }
 
 MathematicalObject::MathError Matrix::SwapRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Column or row indices exceed matrix size!" );
+	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "column or row indices exceed matrix size!" );
 
 	double tempVal;
 
@@ -101,7 +101,7 @@ GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCor
 
 
 	if (topCorner.r >= number_of_rows_ || topCorner.c >= number_of_columns_ || botCorner.r >= number_of_rows_ || botCorner.c >= number_of_columns_) {
-		CheckForAndOutputError( MathError::Bounds, "Top of bottom corner of submatrix is outside matrix!" );
+		CheckForAndOutputError( MathError::Bounds, "top of bottom corner of submatrix is outside matrix!" );
 		return curMaxIndx;
 	}
 
@@ -124,7 +124,7 @@ GridIndex Matrix::FindMaximum( const GridIndex topCorner, const GridIndex botCor
 }
 
 MathematicalObject::MathError Matrix::ScaleRow( const size_t r, const double scalar ) {
-	if (r >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
+	if (r >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "row index exceeds matrix size!" );
 	// iterate all columns
 	for (unsigned int c = 0; c < number_of_columns_; c++) {
 		data_.at( number_of_columns_ * r + c ) = data_.at( number_of_columns_ * r + c ) * scalar;
@@ -134,7 +134,7 @@ MathematicalObject::MathError Matrix::ScaleRow( const size_t r, const double sca
 }
 
 MathematicalObject::MathError Matrix::SubstractRows( const size_t r1, const size_t r2 ) {
-	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "Row index exceeds matrix size!" );
+	if (r1 >= number_of_rows_ || r2 >= number_of_rows_) return CheckForAndOutputError( MathError::Bounds, "row index exceeds matrix size!" );
 
 	// iterate all columns
 	for (size_t c = 0; c < number_of_columns_; c++) {
@@ -154,7 +154,7 @@ SystemOfEquations::SystemOfEquations( const size_t varNum_ )
 	: Matrix ( varNum_ + 1, varNum_ ),
 	number_of_variables_( varNum_ ),
 	currently_populated_columns_( 0 ){
-	if( number_of_variables_ == 0 ) CheckForAndOutputError( MathError::Input, "Number of variables must be greater than 0!" );
+	if( number_of_variables_ == 0 ) CheckForAndOutputError( MathError::Input, "number of variables must be greater than 0!" );
 };
 
 std::string SystemOfEquations::ToString( const unsigned int newline_tabulators ) const{
@@ -177,7 +177,7 @@ std::string SystemOfEquations::ToString( const unsigned int newline_tabulators )
 MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple3D v ){
 
 	// for now only implemented with three variable_values_
-	if( IsPopulated() || number_of_variables_ != 3 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to three!" );
+	if( IsPopulated() || number_of_variables_ != 3 ) return CheckForAndOutputError( MathError::Input, "system already populated or variables amount not equal to three!" );
 
 	// assign vector values to matrix columns
 	( *this )( currently_populated_columns_, 0 ) = v.x;
@@ -191,7 +191,7 @@ MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple3D v
 MathematicalObject::MathError SystemOfEquations::PopulateColumn( const Tuple2D v ){
 
 	// for now only implemented with three variable_values_
-	if( IsPopulated() || number_of_variables_ != 2 ) return CheckForAndOutputError( MathError::Input, "System already populated or variables amount not equal to two!" );
+	if( IsPopulated() || number_of_variables_ != 2 ) return CheckForAndOutputError( MathError::Input, "system already populated or variables amount not equal to two!" );
 
 	// assign vector values to matrix columns
 	( *this )( currently_populated_columns_, 0 ) = v.x;
@@ -326,12 +326,12 @@ string SystemOfEquationsSolution::ToString( const unsigned int newline_tabulator
 }
 
 void SystemOfEquationsSolution::SetVariableValue( const size_t idx, const double val ){
-	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
+	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "index exceeds amount of variables!" );
 
 	variable_values_[ idx ] = val;
 }
 
 double SystemOfEquationsSolution::GetVariableValue( const size_t idx ) const{
-	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "Index exceeds amount of variables!" );
+	if( idx >= number_of_variables_ ) CheckForAndOutputError( MathError::Input, "index exceeds amount of variables!" );
 	return variable_values_[ idx ];
 }

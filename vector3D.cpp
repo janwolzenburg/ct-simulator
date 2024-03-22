@@ -120,7 +120,7 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 	length_ = sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 
 	// check error flag from sqrt()
-	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "Error calculating square root!" );
+	if( errno != 0 ) return CheckForAndOutputError( MathError::General, "error calculating square root!" );
 	return MathError::Ok;
 }
 

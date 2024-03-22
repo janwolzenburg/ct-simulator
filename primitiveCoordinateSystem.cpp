@@ -38,7 +38,7 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const PrimitiveVector3 ori
 	// vector have to be orthogonal to each other
 	if( !IsNearlyEqualDistance( ex_ * ey_, 0 ) ||
 		!IsNearlyEqualDistance( ey_ * ez_, 0 ) ||
-		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "Unit axis must be orthogonal to each other!" );
+		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "unit axis must be orthogonal to each other!" );
 }
 
 PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
@@ -55,7 +55,7 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary
 	// vector have to be orthogonal to each other
 	if( !IsNearlyEqualDistance( ex_ * ey_, 0 ) ||
 		!IsNearlyEqualDistance( ey_ * ez_, 0 ) ||
-		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "Unit axis must be orthogonal to each other!" );
+		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "unit axis must be orthogonal to each other!" );
 }
 
 string PrimitiveCoordinateSystem::ToString( const unsigned int newline_tabulators ) const{

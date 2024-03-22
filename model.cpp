@@ -53,7 +53,7 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 	name_( name_ ),
 	voxel_data_( number_of_voxel_, defaultData )
 {
-	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "Model coordinate system must be child of global system!" );
+	if( coordinate_system_->IsGlobal() ) CheckForAndOutputError( MathError::Input, "model coordinate system must be child of global system!" );
 }
 
 
@@ -128,7 +128,7 @@ Index3D Model::GetVoxelIndices( const Tuple3D local_coordinates ) const{
 	if( local_coordinates.x < 0 || local_coordinates.y < 0 || 
 			local_coordinates.z < 0 ){
 		CheckForAndOutputError( MathError::Input, 
-			"Only positive Coordinates allowed in model!" );
+			"only positive coordinates allowed in model!" );
 		return Index3D{ 0, 0, 0 };
 	}
 
@@ -146,7 +146,7 @@ Index3D Model::GetVoxelIndices( const Tuple3D local_coordinates ) const{
 
 	// are indices too big?
 	if( !AreIndicesValid( indices ) )
-		CheckForAndOutputError( MathError::Input, "Coordinates exceed model size!" );
+		CheckForAndOutputError( MathError::Input, "coordinates exceed model size!" );
 
 	indices.x = ForceToMax( indices.x, number_of_voxel_3D_.x - 1 );
 	indices.y = ForceToMax( indices.y, number_of_voxel_3D_.y - 1 );
@@ -184,7 +184,7 @@ bool Model::SetVoxelProperties( const VoxelData::SpecialProperty property, const
 Voxel Model::GetVoxel( const Index3D indices ) const{
 
 	if( !AreIndicesValid( indices ) ){
-		CheckForAndOutputError( MathError::Input, "Indices exceed model!" );
+		CheckForAndOutputError( MathError::Input, "indices exceed model!" );
 		return Voxel{};
 	}
 

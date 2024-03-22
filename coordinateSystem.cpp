@@ -159,7 +159,7 @@ Surface CoordinateSystem::GetXZPlane( void ) const{
 
 MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
 	if( this->IsGlobal() ){
-		return CheckForAndOutputError( MathError::Operation, "Global coordinate system cannot be translated!" );
+		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be translated!" );
 	}
 
 	PrimitiveCoordinateSystem::Translate( dV.GetComponents( parent_ ) );
@@ -169,7 +169,7 @@ MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
 
 MathematicalObject::MathError CoordinateSystem::Rotate( const UnitVector3D n, const double phi ){
 	if( this->IsGlobal() ){
-		return CheckForAndOutputError( MathError::Operation, "Global coordinate system cannot be rotated!" );
+		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be rotated!" );
 	}
 
 	return PrimitiveCoordinateSystem::Rotate( n.GetComponents( parent_ ), phi );

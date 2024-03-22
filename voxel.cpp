@@ -118,7 +118,7 @@ Voxel::Voxel( const Point3D o_, const Tuple3D size, const VoxelData data ) :
 				BoundedSurface{ origin_corner_.GetCoordinateSystem()->GetEy(), origin_corner_.GetCoordinateSystem()->GetEz(), origin_corner_, 0, size_.y, 0, size_.z }
 }
 {
-	if( size_.x <= 0 || size_.y <= 0 || size_.z <= 0 ) CheckForAndOutputError( MathError::Input, "Size of voxel in each dimension must be greater than zero!" );
+	if( size_.x <= 0 || size_.y <= 0 || size_.z <= 0 ) CheckForAndOutputError( MathError::Input, "size of voxel in each dimension must be greater than zero!" );
 };
 
 

@@ -36,9 +36,9 @@ Surface::Surface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p 
 {
 	
 	if( !direction_1_.HasSameSystem( origin_ ) || !direction_2_.HasSameSystem( origin_ ) ||
-		!direction_1_.HasSameSystem( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Surface origin_ and trajectories must be defined in the same coordinate system!" );
+		!direction_1_.HasSameSystem( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "surface origin and trajectories must be defined in the same coordinate system!" );
 
-	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Trajectory vectors must be orthogonal!" );
+	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "trajectory vectors must be orthogonal!" );
 
 };
 
@@ -48,7 +48,7 @@ Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator&
 	direction_2_ = UnitVector3D{ Tuple3D{ binary_data, it }, cSys };
 	origin_ = Point3D{ Tuple3D{ binary_data, it }, cSys };
 
-	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "Trajectory vectors must be orthogonal!" );
+	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "trajectory vectors must be orthogonal!" );
 
 	normal_ = direction_1_ ^ direction_2_;
 }
