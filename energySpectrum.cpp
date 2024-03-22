@@ -17,7 +17,7 @@ using std::sort;
 using std::for_each;
 
 #include <numeric>
-#include "spectrum.h"
+#include "energySpectrum.h"
 #include "generelMath.h"
 #include "rayScattering.h"
 

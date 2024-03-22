@@ -15,7 +15,7 @@
 
 #include "line.h"
 #include "voxel.h"
-#include "spectrum.h"
+#include "energySpectrum.h"
 #include "rayScattering.h"
 #include "tomography.fwd.h"
 

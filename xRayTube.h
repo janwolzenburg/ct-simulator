@@ -16,7 +16,7 @@
 
 #include "generel.h"
 #include "coordinateSystem.h"
-#include "spectrum.h"
+#include "energySpectrum.h"
 #include "ray.h"
 #include "simulation.h"
 #include "detectorPixel.h"
