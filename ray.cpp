@@ -143,7 +143,6 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 
 	// ---------------------------- Scattering -------------------------
 	
-	
 	vector<Ray> scattered_rays;
 	// skip if scattering is really inpropable
 	if( IsNearlyEqual( coefficient_factor, 0., 1e-6, Relative ) ) return scattered_rays;
@@ -201,7 +200,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 				scattered_angles.emplace_back( angle, pair<double, double>{ new_energy, new_photonflow });
 			}
 
-			// scaler for energy in incoming ray. Only accounts for energy lost to new rays without
+			// scalar for energy in incoming ray. Only accounts for energy lost to new rays without
 			// considering der angle dependent energy loss (Compton-Aporption). This is because 
 			// the compton-absorption is already accounted for in the absorption routine
 			const double energy_scalar = 1. - tomography_properties.scattered_ray_absorption_factor / 
