@@ -233,7 +233,7 @@
     <ClInclude Include="test_processing.h" />
     <ClInclude Include="projections.h" />
     <ClInclude Include="ray.h" />
-    <ClInclude Include="spectrum.h" />
+    <ClInclude Include="energySpectrum.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surface.h" />
     <ClInclude Include="tests_linear_algebra.h" />
@@ -307,7 +307,7 @@
     <ClCompile Include="test_processing.cpp" />
     <ClCompile Include="projections.cpp" />
     <ClCompile Include="ray.cpp" />
-    <ClCompile Include="spectrum.cpp" />
+    <ClCompile Include="energySpectrum.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="tests_linear_algebra.cpp" />
     <ClCompile Include="test_device.cpp" />

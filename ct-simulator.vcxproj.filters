@@ -321,7 +321,7 @@
     <ClInclude Include="xRayTube.h">
       <Filter>Headerdateien\13 Device</Filter>
     </ClInclude>
-    <ClInclude Include="spectrum.h">
+    <ClInclude Include="energySpectrum.h">
       <Filter>Headerdateien\12 Physics\03 Rays</Filter>
     </ClInclude>
     <ClInclude Include="propabilityDistribution.h">
@@ -548,7 +548,7 @@
     <ClCompile Include="rayScattering.cpp">
       <Filter>Quelldateien\12 Physics\03 Rays</Filter>
     </ClCompile>
-    <ClCompile Include="spectrum.cpp">
+    <ClCompile Include="energySpectrum.cpp">
       <Filter>Quelldateien\12 Physics\03 Rays</Filter>
     </ClCompile>
     <ClCompile Include="generelMath.cpp">
