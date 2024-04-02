@@ -149,6 +149,7 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	export_projections_button_.activate();
 
 	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
+	ptr->color(FL_WHITE);
 	processing_windows_.push_back( std::move( ptr ) );
 }
 

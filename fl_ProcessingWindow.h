@@ -56,7 +56,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 	private:
 
 	Fl_AdjustableGrayscaleImage projections_image_;				/*!< Widget for sinogram display*/
-	
+	Fl_Multiline_Output projections_tooltip_;
+
 	Fl_Multiline_Output information_output_;
 
 	Fl_Group filter_group_;										/*!< Group for filter*/
@@ -73,7 +74,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
 	Fl_Button export_image_button_;								/*!< Export button for image*/
 
-	Projections projections_;										/*!< Projection data and properties*/
+	Projections raw_projections_;										/*!< Projection data and properties*/
+	Projections limited_projections_;								/*!< Projections with upper value limit*/
 	PersistingObject<FilteredProjections> filtered_projections_;	/*!< Current filtered projections*/
 	PersistingObject<Backprojection> backprojection_;				/*!< Current image reconstructed from filtered projections*/
 

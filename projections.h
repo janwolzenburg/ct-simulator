@@ -79,6 +79,18 @@ class Projections : private DataGrid<> {
 	GridCoordinates resolution( void ) const{ return DataGrid<>::resolution(); };
 
 	/*!
+	 * @brief Get size
+	 * @return Get grid size
+	*/
+	GridIndex size(void) const { return DataGrid<>::size(); };
+
+	/*!
+	 * @brief Get maximum value
+	 * @return The maximum value
+	*/
+	double max_value(void) const { return DataGrid<>::max_value(); };
+
+	/*!
 	 * @brief Get projection properties
 	 * @return Properties of projections
 	*/
@@ -95,6 +107,13 @@ class Projections : private DataGrid<> {
 	 * @param data Data to assign
 	*/
 	void AssignData( const GridIndex index, const double value ){ this->SetData( index, value ); };
+
+	/*!
+	 * @brief Get data at index
+	 * @param index index of data
+	 * @return value at index
+	*/
+	double GetData(const GridIndex index) { return DataGrid<>::GetData(index); };
 
 	/*!
 	 * @brief Assign data to grid

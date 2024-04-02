@@ -30,7 +30,9 @@ template<class D>
 DataGrid<D>::DataGrid( void ) : 
 	size_{ 3, 3 },
 	start_{ 0. ,0. },
-	resolution_{ 1., 1. }
+	resolution_{ 1., 1. },
+	min_value_(D()),
+	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
 	FillVectors( D() );
@@ -40,7 +42,9 @@ template<class D>
 DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D defaultValue ) :
 	size_( size ),
 	resolution_( resolution ),
-	start_( start )
+	start_( start ),
+	min_value_(D()),
+	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
 	FillVectors( defaultValue );
@@ -53,7 +57,9 @@ DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange
 	start_{ GridCoordinates{	columnRange.start(),
 								rowRange.start() } },
 	resolution_{ GridCoordinates{ ( columnRange.end() - start_.c )	/ static_cast<double>( size_.c - 1 ),
-								  ( rowRange.end() - start_.r )		/ static_cast<double>( size_.r - 1 ) } }
+								  ( rowRange.end() - start_.r )		/ static_cast<double>( size_.r - 1 ) } },
+	min_value_(D()),
+	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
 	FillVectors( defaultValue );
@@ -63,7 +69,9 @@ template<class D>
 DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	size_( GridIndex{ binary_data, it } ),
 	start_( GridCoordinates{ binary_data, it } ),
-	resolution_( GridCoordinates{ binary_data, it } )
+	resolution_( GridCoordinates{ binary_data, it } ),
+	min_value_(D()),
+	max_value_(D())
 {
 
 	if( size_.c > maximum_vector_size || size_.r > maximum_vector_size ){
