@@ -139,11 +139,11 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 		
 	model_size_group_{		X( *this, .015 ),				Y( *this, .075 ),				W( *this, .25 ),				H( *this, .9 ),				"Model size" },
 	model_size_x_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .05 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
-	model_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .125 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
-	model_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .20 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel x: " },
+	model_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .125 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel y: " },
+	model_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .20 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"# Voxel z: " },
 	voxel_size_x_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-	voxel_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
-	voxel_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
+	voxel_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize y in mm: " },
+	voxel_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize z in mm: " },
 	name_input_{			X( model_size_group_, .450 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
 	store_size_button_{		X( model_size_group_, .2 ),		Y( model_size_group_, .7 ),		W( model_size_group_, .6 ),		H( model_size_group_, .075 ),	"Store size" },
 
@@ -296,11 +296,11 @@ void Fl_ModelCreator::BuildModel( void ){
 
 		
 
-	for( size_t x = 0; x < model.size().x; x++ ){
-		progress_window->ChangeLineText( 0, string{ "Builing model slice " + to_string( x + 1) + " of " + to_string( model.size().x ) } );
+	for( size_t x = 0; x < model.number_of_voxel_3D().x; x++ ){
+		progress_window->ChangeLineText( 0, string{ "Builing model slice " + to_string( x + 1) + " of " + to_string( model.number_of_voxel_3D().x ) } );
 		Fl::check(); 
-		for( size_t y = 0; y < model.size().y; y++ ){
-			for( size_t z = 0; z < model.size().z; z++ ){
+		for( size_t y = 0; y < model.number_of_voxel_3D().y; y++ ){
+			for( size_t z = 0; z < model.number_of_voxel_3D().z; z++ ){
 
 				const Point3D point( Tuple3D( (static_cast<double>( x ) + 0.5) * voxel_size_.x , (static_cast<double>( y ) + 0.5) * voxel_size_.y , (static_cast<double>( z ) + 0.5) * voxel_size_.z ), model.coordinate_system() );
 
