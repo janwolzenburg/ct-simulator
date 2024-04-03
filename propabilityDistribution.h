@@ -43,6 +43,10 @@ class RandomNumberGenerator{
 	*/
 	unsigned int GetRandomNumber( void );
 
+	/*!
+	 * @brief Get a random short
+	 * @return Random short integer
+	*/
 	unsigned short int GetRandomShortNumber(void);
 
 	/*!
