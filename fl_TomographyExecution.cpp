@@ -155,6 +155,11 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 
 
 void Fl_TomographyExecution::UpdateProperties( void ){
+
+	if (use_simple_absorption_button_.value() == 1 && disable_scattering_button_.value() == 1) {
+		disable_scattering_button_.value(0);
+	}
+
 		tomography_properties_ = TomographyProperties{	static_cast<bool>( disable_scattering_button_.value() ), 
 														static_cast<size_t>( maximum_scatterings_input_.value() ), 
 														scattering_propability_factor_input_.value()/100., 
@@ -186,6 +191,7 @@ void Fl_TomographyExecution::DoTomography( void ){
 
 		main_window_.activate();
 }
+
 
 void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube ){
 		string informationString = "";
