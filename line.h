@@ -102,7 +102,7 @@ class Line : public MathematicalObject{
 	 * @param suface Surface
 	 * @return Angle in radians
 	*/
-	double GetAngle( Surface suface ) const;
+	double GetAngle( const Surface& suface ) const;
 
 	/*!
 	 * @brief Get perpendicular vector from this Line to point point
