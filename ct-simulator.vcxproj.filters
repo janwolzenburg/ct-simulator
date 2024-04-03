@@ -282,23 +282,8 @@
     <ClInclude Include="fl_ProgressWindow.h">
       <Filter>Headerdateien\15 Program\02 GUI\01 Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="test_processing.h">
-      <Filter>Headerdateien\01 Verification</Filter>
-    </ClInclude>
-    <ClInclude Include="test_device.h">
-      <Filter>Headerdateien\01 Verification</Filter>
-    </ClInclude>
-    <ClInclude Include="test_all.h">
-      <Filter>Headerdateien\01 Verification</Filter>
-    </ClInclude>
-    <ClInclude Include="test_rays.h">
-      <Filter>Headerdateien\01 Verification</Filter>
-    </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Headerdateien\12 Physics\02 Model</Filter>
-    </ClInclude>
-    <ClInclude Include="test_model.h">
-      <Filter>Headerdateien\01 Verification</Filter>
     </ClInclude>
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\00 Forward Declerations</Filter>
@@ -527,18 +512,6 @@
     <ClCompile Include="xRayTube.cpp">
       <Filter>Quelldateien\13 Device</Filter>
     </ClCompile>
-    <ClCompile Include="test_device.cpp">
-      <Filter>Quelldateien\01 Verification</Filter>
-    </ClCompile>
-    <ClCompile Include="tests_linear_algebra.cpp">
-      <Filter>Quelldateien\01 Verification</Filter>
-    </ClCompile>
-    <ClCompile Include="test_model.cpp">
-      <Filter>Quelldateien\01 Verification</Filter>
-    </ClCompile>
-    <ClCompile Include="test_rays.cpp">
-      <Filter>Quelldateien\01 Verification</Filter>
-    </ClCompile>
     <ClCompile Include="propabilityDistribution.cpp">
       <Filter>Quelldateien\12 Physics\03 Rays</Filter>
     </ClCompile>
@@ -553,9 +526,6 @@
     </ClCompile>
     <ClCompile Include="generelMath.cpp">
       <Filter>Quelldateien\11 Generel</Filter>
-    </ClCompile>
-    <ClCompile Include="test_processing.cpp">
-      <Filter>Quelldateien\01 Verification</Filter>
     </ClCompile>
     <ClCompile Include="fl_ModelCreator.cpp">
       <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
