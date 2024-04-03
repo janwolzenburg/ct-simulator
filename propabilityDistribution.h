@@ -56,10 +56,7 @@ class RandomNumberGenerator{
 	private:
 
 	unsigned long long int generator_state_[2];
-	//std::subtract_with_carry_engine<unsigned int, 24, 10, 12>   generator_;							/*!< Generator*/
-	//std::uniform_int_distribution<unsigned long long int> distribution_;		/*!< Uniform distribution*/
-	//mutex mutex_;													/*!< Mutex for thread safety*/
-	
+
 };
 
 
@@ -76,12 +73,12 @@ class PropabilityDistribution{
 	 * @brief Constructor
 	 * @param distribution Pseudo distribution. Sum of y values must not be equal to one
 	*/
-	PropabilityDistribution( vector<Tuple2D> distribution );//, const size_t max_number_of_bins );
+	PropabilityDistribution( vector<Tuple2D> distribution );
 
 	/*!
 	 * @brief Get a random value according to distribution
 	*/
-	double GetRandomNumber( RandomNumberGenerator& generator ) const; //mutex& distribution_mutex ){
+	double GetRandomNumber( RandomNumberGenerator& generator ) const; 
 
 
 	private:
@@ -90,8 +87,5 @@ class PropabilityDistribution{
 
 	vector<double> values_;
 	vector<unsigned int> discrete_distribution_;
-	//RandomNumberGenerator generator_;
-	//std::minstd_rand generator_;							/*!< Generator*/
-	//std::discrete_distribution<unsigned int> distribution_;
 
 };

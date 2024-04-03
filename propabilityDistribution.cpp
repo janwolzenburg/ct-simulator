@@ -30,15 +30,15 @@
 	randomNumberGenerator implementation
 */
 
-//RandomNumberGenerator integer_random_number_generator{};
+
 
 RandomNumberGenerator::RandomNumberGenerator(const unsigned long long int extra_seed) :
-	//generator_{ (unsigned int)  },
+	
 	generator_state_{ static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) |
 										( static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) << 32 ),
 										static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) |
 										( static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) << 32 ) }//,
-	//distribution_{ minValue, maxValue }
+
 {
 
 }
@@ -54,10 +54,8 @@ unsigned int RandomNumberGenerator::GetRandomNumber( void ){
 	const unsigned long long int new_state_0 = std::rotl(s0, 24) ^ s1 ^ (s1 << 16);
 	const unsigned long long int new_state_1 = std::rotl(s1, 37);
 	
-	//mutex_.lock();
 	generator_state_[0] = new_state_0;
 	generator_state_[1] = new_state_1;
-	//mutex_.unlock();
 
 	return static_cast<unsigned int>( result & 0x00000000FFFFFFFF );
 }
@@ -88,33 +86,13 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 */
 
 PropabilityDistribution::PropabilityDistribution( vector<Tuple2D> distribution ) :	
-	values_( distribution.size(), 0. )//,
-	//generator_{ (unsigned int) std::chrono::system_clock::now().time_since_epoch().count() }		
+	values_( distribution.size(), 0. )
 {
-	/*
-	// vector with weights of variates
-	vector<double> weights( distribution.size(), 0. );
-
-	// get values and weight from distribution
-	for( size_t value_index = 0; value_index < distribution.size(); value_index++ ){
-	
-		
-		weights.at( value_index ) = distribution.at( value_index ).y;
-
-	}*/
-
 	std::sort(distribution.begin(), distribution.end(), [](Tuple2D a, Tuple2D b) { return a.y < b.y; });
 
-	double smallest_weight = INFINITY;
 	double weight_sum = 0.;
-
 	for (const auto& [value, weight] : distribution) {
-
-		if (weight < smallest_weight)
-			smallest_weight = weight;
-
 		weight_sum += weight;
-
 	}
 
 	const double weight_per_bin = weight_sum / static_cast<double>( number_of_elements );
@@ -133,19 +111,14 @@ PropabilityDistribution::PropabilityDistribution( vector<Tuple2D> distribution )
 	if( number_of_elements > discrete_distribution_.size() )
 		discrete_distribution_.insert(discrete_distribution_.end(), number_of_elements - discrete_distribution_.size(), current_index - 1);
 
-	// build distribution from weights
-	//distribution_ = std::discrete_distribution<unsigned int>( weights.begin(), weights.end() );
-
 }
 
 double PropabilityDistribution::GetRandomNumber( RandomNumberGenerator& generator ) const{//mutex& distribution_mutex ){
 
-	//distribution_mutex.lock();
-	//double value =  values_.at( distribution_( generator_ ) );
 	unsigned short int random_number = generator.GetRandomShortNumber();
 	unsigned int index = discrete_distribution_.at(random_number);
 	const double value = values_.at(index);
-	//distribution_mutex.unlock();
+
 	return value;
 
 }
