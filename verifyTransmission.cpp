@@ -12,9 +12,10 @@ void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomogr
 
 	#ifdef TRANSMISSION_TRACKING
 
+	RandomNumberGenerator generator;
 	mutex dummy_mutex;
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, true );
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, true );
 
 	vector<Tuple2D> simple_intensity_values;
 	vector<Tuple2D> intensity_values;
@@ -198,9 +199,10 @@ void VerifyHardening( void ){
 	
 	ofstream mean_energy_axis = openAxis( GetPath( "MeanEnergy"), true);
 	ofstream single_intensity_axis = openAxis( GetPath( "single_intensity"), true);
+	RandomNumberGenerator generator;
 	mutex dummy_mutex;
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, dummy_mutex, true);
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, dummy_mutex, generator, true);
 	vector<Tuple2D> mean_energies, intensities;
 	
 
@@ -257,7 +259,7 @@ void VerifyScattering( void ){
 
 	#ifdef TRANSMISSION_TRACKING
 
-	
+	RandomNumberGenerator generator;
 	mutex dummy_mutex;
 
 	path model_path{ "./verification only water.model" };
@@ -317,7 +319,7 @@ void VerifyScattering( void ){
 			pixel.AddDetectedRayProperties( ray.properties() );
 		}
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
 	addSingleObject( axis, "Ray", ray, "r", 1.5*gantry.detector().properties().detector_focus_distance );
 
 
@@ -347,7 +349,7 @@ void VerifyScattering( void ){
 	size_t ray_iterations = 500; size_t num_scattered_rays = 0;
 	for( auto it = 0; it < ray_iterations; it++ ){
 
-		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
+		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
 
 		for( auto& [energy, attenuation] : scattering_attenuations ){
 			double photon_flow = returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow( energy );		
@@ -402,7 +404,7 @@ void VerifyScattering( void ){
 
 
 
-	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, false );
+	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
 
 	double distance = 0.;
 	for( const auto& step : returned_rays_loc.first.properties().ray_tracing.tracing_steps ){
@@ -462,7 +464,7 @@ void VerifyScattering( void ){
 
 		for( int e_i = 0; e_i < num_energies; e_i++ ){
 			
-			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ), dummy_mutex ) );
+			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ), generator ) );
 			size_t angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
 			angles.at(e_i).second.at( ForceToMax( angle_index, angles.at(e_i).second.size() - 1 ) )++;
 		}
@@ -499,7 +501,7 @@ void VerifyScattering( void ){
 		const double scatter_propability = 1. - exp( -coefficient_1Permm * 1. );
 
 		for( size_t i = 0; i < iterations; i++ ){
-			if( integer_random_number_generator.DidARandomEventHappen( scatter_propability  ) ){
+			if( generator.DidARandomEventHappen( scatter_propability  ) ){
 				number++;
 			}
 		}
@@ -533,6 +535,8 @@ void verifyRNG( void ){
 
 	double propabiltiy = 0.;
 	size_t i = 0;
+
+	RandomNumberGenerator integer_random_number_generator{};
 
 	for( size_t i = 0; i < num_props; i++ ){
 

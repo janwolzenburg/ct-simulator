@@ -69,11 +69,11 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 	}
 }
 
-double RayScattering::GetRandomAngle( const double energy, mutex& scattering_properties_mutex ){
+double RayScattering::GetRandomAngle( const double energy, RandomNumberGenerator& dedicated_rng ){
 
 	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() )  / energy_resolution_ + 0.5 ) ), scattering_angle_distributions_.size() - 1 );
 
-	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber( scattering_properties_mutex );
+	return scattering_angle_distributions_.at( distributionIndex ).second.GetRandomNumber( dedicated_rng );
 
 }
 

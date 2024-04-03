@@ -111,6 +111,15 @@ optional<Projections> Tomography::RecordSlice(
 	// create projections 
 	Projections projections{ projection_properties, properties_ };
 
+
+	RayScattering scattering_information{
+		simulation_properties.number_of_scatter_angles,
+		gantry.tube().GetEmittedEnergyRange(),
+		simulation_properties.number_of_energies_for_scattering,
+		gantry.coordinate_system()->GetEz(),
+		atan(gantry.detector().properties().row_width /
+				 gantry.detector().properties().detector_focus_distance / 2) };
+
 	// radiate the model for each frame
 	for( size_t frame_index = 0; 
 							frame_index < projection_properties.number_of_frames_to_fill();			 
@@ -121,8 +130,10 @@ optional<Projections> Tomography::RecordSlice(
 				ToString( frame_index ) + " of " + 
 				ToString( projection_properties.number_of_frames_to_fill() ) );
 
+
+
 		// radiate
-		gantry.RadiateModel( model, properties_ );
+		gantry.RadiateModel( model, properties_, scattering_information );
 
 		// get the detection result
 		const vector<DetectorPixel> pixel_array = std::move( gantry.pixel_array() );

@@ -70,7 +70,8 @@ void Gantry::TransmitRaysThreaded(
 							 const vector<Ray>& rays, const bool second_to_last_iteration,
 							 size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
 							 vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
-							 XRayDetector& detector, mutex& detector_mutex ){
+							 XRayDetector& detector, mutex& detector_mutex,
+							 RandomNumberGenerator& dedicated_rng ){
 
 	size_t local_ray_index;
 	Ray current_ray;
@@ -94,7 +95,7 @@ void Gantry::TransmitRaysThreaded(
 		rays_to_return = std::move( 
 			model.TransmitRay( cref( current_ray ), cref( tomography_properties ), 
 												 ref( ray_scattering ), 
-												 ref( scattering_properties_mutex ) ) );
+												 ref( scattering_properties_mutex ) , ref(dedicated_rng) ) );
 
 		// detect the ray
 		detector.DetectRay( ref( rays_to_return.first ), ref( detector_mutex ) );
@@ -133,7 +134,8 @@ void Gantry::TransmitRaysThreaded(
 }
 
 void Gantry::RadiateModel( const Model& model, 
-													 TomographyProperties tomography_properties ) {
+													 TomographyProperties tomography_properties,
+													 RayScattering& scattering_information ) {
 
 	// current rays. start with rays from source
 	vector<Ray> rays = std::move( 
@@ -153,13 +155,6 @@ void Gantry::RadiateModel( const Model& model,
 	const UnitVector3D scattering_rotation_axis = 
 		this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
-	RayScattering scattering_information{ 
-		simulation_properties.number_of_scatter_angles, 
-		tube_.GetEmittedEnergyRange(), 
-		simulation_properties.number_of_energies_for_scattering, 
-		coordinate_system_->GetEz(), 
-		atan( this->detector_.properties().row_width / 
-					this->detector_.properties().detector_focus_distance / 2 ) };
 
 	detector_.ResetDetectedRayPorperties(); // reset all pixel
 
@@ -189,11 +184,15 @@ void Gantry::RadiateModel( const Model& model,
 		vector<Ray> rays_for_next_iteration;				// rays to process in the next iteration
 		shared_current_ray_index = 0;								// reset current ray index
 
+		const size_t number_of_threads = std::thread::hardware_concurrency();
+
+		vector<RandomNumberGenerator> dedicated_rngs( number_of_threads );
+
 		// start threads
 		vector<std::thread> threads;
 		for( size_t thread_index = 0; 
-								thread_index < std::thread::hardware_concurrency(); thread_index++ ){
-			
+								thread_index < number_of_threads; thread_index++ ){
+
 			// transmit rays
 			threads.emplace_back( TransmitRaysThreaded,	
 														cref( model ), cref( tomography_properties ), 
@@ -202,7 +201,8 @@ void Gantry::RadiateModel( const Model& model,
 														ref( shared_current_ray_index ), 
 														ref( current_ray_index_mutex ), ref( rays_for_next_iteration ), 
 														ref( rays_for_next_iteration_mutex ),
-														ref( detector_ ), ref( detector_mutex ) );
+														ref( detector_ ), ref( detector_mutex ),
+														ref( dedicated_rngs.at( thread_index ) ) );
 
 			// for debugging
 			if( thread_index == 0 ) first_thread_id = threads.back().get_id();

@@ -201,7 +201,7 @@ class Model : public MathematicalObject{
 	 * @return Rays that has been scattered or left the model
 	*/
 	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, RayScattering& scattering_properties, 
-																					 mutex& scattering_properties_mutex, const bool disable_scattering = false ) const;
+																					 mutex& scattering_properties_mutex, RandomNumberGenerator& dedicated_rng, const bool disable_scattering = false ) const;
 
 	/*!
 	 * @brief Crop model

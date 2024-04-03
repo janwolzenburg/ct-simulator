@@ -59,9 +59,10 @@ class RayScattering{
 	/*!
 	 * @brief Get a random angle to given energy
 	 * @param energy Mean energy of Ray
+	 * @param dedicated_rng RNG to use
 	 * @return Random angöe
 	*/
-	double GetRandomAngle( const double energy_eV,  mutex& scattering_properties_mutex );
+	double GetRandomAngle( const double energy_eV, RandomNumberGenerator& dedicated_rng );
 
 
 	private:

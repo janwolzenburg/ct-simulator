@@ -104,7 +104,8 @@ class Gantry{
 	 * @param model Model to radiate
 	 * @param tomography_properties tomogrpahy properties
 	*/
-	void RadiateModel( const Model& model, TomographyProperties tomography_properties ) ;
+	void RadiateModel( const Model& model, TomographyProperties tomography_properties,
+										 RayScattering& scattering_information) ;
 
 	/*!
 	 * @brief Reset gantry to its initial position and reset detector
@@ -140,6 +141,7 @@ class Gantry{
 										mutex& scattering_properties_mutex,	const vector<Ray>& rays, const bool second_to_last_iteration,
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
-										XRayDetector& detector,					mutex& detector_mutex );
+										XRayDetector& detector,					mutex& detector_mutex,
+										RandomNumberGenerator& dedicated_rng);
 
 };

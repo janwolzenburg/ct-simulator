@@ -115,8 +115,15 @@ bool test_modelTransmission( void ){
 
 	closeAxis( ax1 );
 
+	RayScattering scattering_information{
+		simulation_properties.number_of_scatter_angles,
+		testGantry.tube().GetEmittedEnergyRange(),
+		simulation_properties.number_of_energies_for_scattering,
+		testGantry.coordinate_system()->GetEz(),
+		atan(testGantry.detector().properties().row_width /
+				 testGantry.detector().properties().detector_focus_distance / 2) };
 
-	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05, true, 1. } );
+	testGantry.RadiateModel( mod, TomographyProperties{ false, 16, .05, true, 1. }, scattering_information );
 	vector<DetectorPixel> detectorPixel = testGantry.pixel_array();
 
 	std::sort( detectorPixel.begin(), detectorPixel.end(), [] ( const DetectorPixel& p1, const DetectorPixel& p2 ){ return p1.origin().Y() < p2.origin().Y(); });

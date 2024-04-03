@@ -124,7 +124,8 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 													const VoxelData& voxel_data, 
 													const double distance_traveled_mm, 
 													const TomographyProperties& tomography_properties, 
-													const Point3D& new_origin ){
+													const Point3D& new_origin,
+													RandomNumberGenerator& dedicated_rng ){
 
 	// voxel's absorption with respect to water's absorption
 	const double coefficient_factor = voxel_data.GetAbsorptionAtReferenceEnergy() / 
@@ -178,18 +179,18 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 		for( size_t bin = 0; bin < simulation_properties.bins_per_energy; bin++ ){
 
 			// does scattering happen?
-			if( !integer_random_number_generator.DidARandomEventHappen( 
+			if( !dedicated_rng.DidARandomEventHappen( 
 					scatter_propability * tomography_properties.scatter_propability_correction ) )
 				continue;
 			
 			// check if angle is scattered inside scattering plane
 			if( abs( scattering_information.GetRandomAngle( 
-																energy, scattering_properties_mutex ) ) <= 
+																energy, dedicated_rng ) ) <=
 																scattering_information.max_angle_to_lie_in_plane() ){
 			
 				// random angle inside scattering plane
 				const double angle = ForceRange( scattering_information.GetRandomAngle( 
-																				 energy, scattering_properties_mutex ), -PI, PI );
+																				 energy, dedicated_rng ), -PI, PI );
 				
 				// if angle is almost zero -> treat as if no scattering happened
 				if( IsNearlyEqual( angle, 0., 1e-3, Relative ) ) continue;
