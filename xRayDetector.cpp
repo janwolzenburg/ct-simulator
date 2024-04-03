@@ -165,7 +165,7 @@ void XRayDetector::UpdateProperties( const ProjectionsProperties radon_propertie
 
 }
 
-optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
+optional<size_t> XRayDetector::GetHitPixelIndex( Ray& ray ) const{
 
 	const size_t expected_pixel_index = ray.properties().expected_detector_pixel_index();
 
@@ -194,16 +194,18 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 		// check if ray hit anti scattering structure hit is possible
 		// if detector has anti scattering structure and angle not allowed by structure
 		// goto next pixel
-		if( properties_.has_anti_scattering_structure && 
-					( PI / 2. - ray.GetAngle( current_pixel ) ) > 
-					properties_.max_angle_allowed_by_structure )
+		if (properties_.has_anti_scattering_structure &&
+			(PI / 2. - ray.GetAngle(current_pixel)) >
+			properties_.max_angle_allowed_by_structure) {
 			continue;
+		}
 
 		// check for intersection of ray with current pixel
 		const RayPixelIntersection pixel_hit{ ray, current_pixel };
 
 		// do they intersect?
 		if( pixel_hit.intersection_exists_ ){
+			ray.SetExpectedPixelIndex( pixel_index, true );
 			return pixel_index;
 		}
 	}
@@ -215,7 +217,7 @@ optional<size_t> XRayDetector::GetHitPixelIndex( const Ray& ray ) const{
 #ifdef TRANSMISSION_TRACKING // only enabled for verification
 bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_mutex ){
 #else
-bool XRayDetector::DetectRay( const Ray& ray, mutex& pixel_array_mutex ){
+bool XRayDetector::DetectRay( Ray& ray, mutex& pixel_array_mutex ){
 #endif
 
 	optional<size_t> pixel_index = GetHitPixelIndex( ray );

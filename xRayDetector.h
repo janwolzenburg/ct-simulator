@@ -82,7 +82,7 @@ class XRayDetector{
 	#ifdef TRANSMISSION_TRACKING
 	bool DetectRay( Ray& ray, mutex& pixel_array_mutex );
 	#else
-	bool DetectRay( const Ray& ray, mutex& pixel_array_mutex );
+	bool DetectRay( Ray& ray, mutex& pixel_array_mutex );
 	#endif
 
 	/*!
@@ -101,7 +101,7 @@ class XRayDetector{
 
 	DetectorProperties properties_;					/*!< Properties*/
 
-	optional<size_t> GetHitPixelIndex( const Ray& ray ) const;
+	optional<size_t> GetHitPixelIndex( Ray& ray ) const;
 
 };
 
