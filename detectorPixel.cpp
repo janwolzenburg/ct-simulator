@@ -43,16 +43,13 @@ optional<double> DetectorPixel::GetProjectionValue(
 		return {};
 
 	// calculate line inegral
-	const double line_integral_spectrum = ForceToMin( 
-																					log( start_intensity * 
+	const double line_integral_spectrum = log( start_intensity * 
 																							 static_cast<double>( expected_ray_hits ) / 
-																							 sum_of_end_intensity ),
-																					0. );
+																							 sum_of_end_intensity ) ;
 
-	const double line_integral_simple = ForceToMin( 
-																				log( 1.* 
+	const double line_integral_simple = log( 1.* 
 																						 static_cast<double>( expected_ray_hits ) / 
-																						 sum_of_simple_end_intensity ), 0. );
+																						 sum_of_simple_end_intensity );
 
 	return !use_simple_absorption ? line_integral_spectrum : line_integral_simple;
 }
