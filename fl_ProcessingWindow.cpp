@@ -25,11 +25,12 @@
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_filteredProjections_file_chooser_{ FileChooser{ "Export", "*.filteredprojections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportFilteredProjections.chooser" };
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_image_chooser_{ FileChooser{ "Export", "*.backprojection", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportBackprojection.chooser" };
 
-Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections projections ) :
+Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections ) :
 	Fl_Window{ w, h, label },
 	
 	projections_image_{				X( *this, .025 ),			Y( *this, .03 ),	W( *this, .45 ),			H( *this, .35 ), "Projections"},
-	projections_tooltip_{				X(*this, .1),			Y(*this, .4),				W(*this, .35),				H(*this, .075), "" },
+	limit_values_button_{			X(*this, .15),			Y(*this, .4),				W(*this, .1),			H(*this, .03), "Limit projection values" },
+	recalculate_button_{			X(*this, .3),			Y(*this, .4),				W(*this, .08),			H(*this, .03), "Recalculate" },
 	information_output_{			X( *this, .1 ),			Y( *this, .5),			W( *this, .35 ),			H( *this, .225 ), "Information"}, 
 
 	filter_group_{					X( *this, .025 ),			Y( *this, 0.775 ),			W( *this, .45 ),			H( *this, .2  ) },
@@ -51,6 +52,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	filtered_projections_{ FilteredProjections{}, "saved.filteredprojections", true },
 	backprojection_{ Backprojection{}, "saved.backprojection", true },
 
+	recalculate_callback_{ *this, &Fl_ProcessingWindow::FilterAndReconstructImage },
 	filter_change_callback_{ *this, &Fl_ProcessingWindow::FilterAndReconstructImage },
 	hu_mu_selection_changed_callback_{ *this, &Fl_ProcessingWindow::UpdateImage },
 	hu_mu_input_changed_callback_{  *this, &Fl_ProcessingWindow::HandleMUChange },
@@ -62,7 +64,8 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 
 	Fl_Window::add( filter_group_ );
 	Fl_Window::add( projections_image_ );
-	Fl_Window::add(projections_tooltip_);
+	Fl_Window::add( limit_values_button_ );
+	Fl_Window::add( recalculate_button_ );
 	Fl_Window::add( information_output_ );
 	Fl_Window::add( filtered_projections_image_ );
 	Fl_Window::add( reconstructed_image_ );
@@ -71,12 +74,14 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	Fl_Window::add( processing_properties_group_ );
 	Fl_Window::resizable( *this );
 	
-	projections_tooltip_.textfont(FL_COURIER);
-	projections_tooltip_.value(string{
-		"The \'High\' value limits the values of the projections to\n" 
-		"this value when filtering.This is equivivalent to a limited\n" 
-		"sensitiviy of the detector pixel."
-	}.c_str());
+	limit_values_button_.tooltip(
+		"Limit projections values to current slider positions.\nLimiting to a lower bound is equivalent to pixel saturation.\nLimiting to a upper bound is equivalent to a limited pixel sensitivity.");
+	limit_values_button_.color(FL_BACKGROUND_COLOR, FL_DARK_GREEN);
+	limit_values_button_.value( 1 );
+	limit_values_button_.type(FL_TOGGLE_BUTTON);
+
+	recalculate_button_.callback(CallbackFunction<Fl_ProcessingWindow>::Fl_Callback, &recalculate_callback_);
+	recalculate_button_.type(FL_NORMAL_BUTTON);
 
 	information_output_.textfont( FL_COURIER );
 	information_output_.value(	string{
@@ -118,7 +123,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 
 	projections_image_.align( FL_ALIGN_TOP );
 	filtered_projections_image_.align( FL_ALIGN_TOP );
-	reconstructed_image_.align( FL_ALIGN_TOP );
+	reconstructed_image_.align(FL_ALIGN_CENTER);
 
 	projections_image_.labelsize( 20 );
 	filtered_projections_image_.labelsize( 20 );
@@ -138,6 +143,12 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	projections_image_.AssignImage(std::move(GrayscaleImage{ raw_projections_.data(), true }));
 	projections_image_.SetAxis({ raw_projections_.start().c, raw_projections_.start().r }, { raw_projections_.resolution().c, raw_projections_.resolution().r }, { 7, 4 });
 	
+	projections_image_.ChangeSliderValues(NumberRange{
+		ForceToMin(projections_image_.GetContrast().start(), 0.),
+		projections_image_.GetContrast().end()
+	});
+	
+	
 	this->show();
 
 
@@ -145,24 +156,26 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 }
 
 
-void Fl_ProcessingWindow::FilterAndReconstructImage( void ){
+void Fl_ProcessingWindow::FilterAndReconstructImage(void) {
 
 	this->deactivate();
 
-	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*) this, 16, 2, "Processing progress"};
+	Fl_Progress_Window* processingProgressWindow = new Fl_Progress_Window{ (Fl_Window*)this, 16, 2, "Processing progress" };
 
-	//const double current_max_value = projections_image_.GetContrast().end();
-	//projections_image_.ChangeSliderValues( { projections_image_.GetContrast().start(), current_max_value});
+	Projections *projections_to_use = &raw_projections_;
 
-	for (size_t column_index = 0; column_index < limited_projections_.size().c; column_index++) {
-		for (size_t row_index = 0; row_index < limited_projections_.size().r; row_index++) {
-		
-			limited_projections_.AssignData(GridIndex{ column_index, row_index }, ForceToMax(raw_projections_.GetData(GridIndex{ column_index, row_index }), projections_image_.GetContrast().end()));
-
+	if (limit_values_button_.value() == 1){
+		for (size_t column_index = 0; column_index < limited_projections_.size().c; column_index++) {
+			for (size_t row_index = 0; row_index < limited_projections_.size().r; row_index++) {
+				limited_projections_.AssignData(GridIndex{ column_index, row_index }, ForceRange(raw_projections_.GetData(GridIndex{ column_index, row_index }), 
+																																												 projections_image_.GetContrast().start(), 
+																																												 projections_image_.GetContrast().end()));
+			}
 		}
+		projections_to_use = &limited_projections_;
 	}
 
-	filtered_projections_ = std::move( FilteredProjections{ limited_projections_, BackprojectionFilter::GetType( filter_type_selector_.current_element() ), processingProgressWindow } );
+	filtered_projections_ = std::move( FilteredProjections{ *projections_to_use, BackprojectionFilter::GetType( filter_type_selector_.current_element() ), processingProgressWindow } );
 
 	if( filtered_projections_.filter().type() == BackprojectionFilter::TYPE::constant )
 		filter_plot_.hide();

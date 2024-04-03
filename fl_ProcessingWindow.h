@@ -50,13 +50,16 @@ class Fl_ProcessingWindow : public Fl_Window{
 	 * @param h Height
 	 * @param projections Projections the window will process
 	*/
-	Fl_ProcessingWindow( int w, int h, const char* label, Projections projections );
+	Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections );
 
 	
 	private:
 
 	Fl_AdjustableGrayscaleImage projections_image_;				/*!< Widget for sinogram display*/
-	Fl_Multiline_Output projections_tooltip_;
+	
+	Fl_Button limit_values_button_;
+	Fl_Button recalculate_button_;
+	//Fl_Multiline_Output projections_tooltip_;
 
 	Fl_Multiline_Output information_output_;
 
@@ -82,6 +85,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
 	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
 
+	CallbackFunction<Fl_ProcessingWindow> recalculate_callback_;
 	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< Callback function for filter change*/
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;
