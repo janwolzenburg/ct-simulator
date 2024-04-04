@@ -22,7 +22,7 @@
  
 
 /*!
- * @brief Character to pad string when serializing. Only for easier reading of files in hex-editor
+ * @brief character to pad string when serializing. Only for easier reading of files in hex-editor
 */
 constexpr char string_padding = static_cast<char>( 0x9D );
 
@@ -213,7 +213,7 @@ vector<char> ImportSerialized( const string file_name ){
 }
 
 
-bool ValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& it ){
+bool IsValidBinaryData( const string preamble, const vector<char>& binary_data, vector<char>::const_iterator& it ){
 	string readPreamble;
 	
 	// read file preamble

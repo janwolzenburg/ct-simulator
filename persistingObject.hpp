@@ -51,7 +51,7 @@ bool PersistingObject<C>::Load( const path file_path ){
 	vector<char> binaryData = std::move( ImportSerialized( file_path ) );
 	vector<char>::iterator binaryDataIt = binaryData.begin();
 
-	if( !ValidBinaryData( C::FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
+	if( !IsValidBinaryData( C::FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
 	
 	C::operator=( std::move( C{binaryData, binaryDataIt} ) );
 	
