@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_ProcessingWindow.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   May 2023
@@ -46,52 +45,51 @@ class Fl_ProcessingWindow : public Fl_Window{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param projections Projections the window will process
+	 * @param w width
+	 * @param h height
+	 * @param projections projections the window will process
 	*/
 	Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections );
 
 	
 	private:
 
-	Fl_AdjustableGrayscaleImage projections_image_;				/*!< widget for sinogram display*/
+	Fl_AdjustableGrayscaleImage projections_image_;			/*!< widget for sinogram display*/
 	
-	Fl_Button limit_values_button_;
-	Fl_Button recalculate_button_;
-	//Fl_Multiline_Output projections_tooltip_;
+	Fl_Button limit_values_button_;	/*!< button to activate projection value's limits*/
+	Fl_Button recalculate_button_;	/*!< button to recalculate backprojection*/
 
-	Fl_Multiline_Output information_output_;
+	Fl_Multiline_Output information_output_;	/*!< information about the tomography*/
 
 	Fl_Group filter_group_;										/*!< group for filter*/
-	Fl_Selector filter_type_selector_;							/*!< filter selector*/
-	Fl_Plot<DotPlot> filter_plot_;								/*!< filter plot*/
+	Fl_Selector filter_type_selector_;				/*!< filter selector*/
+	Fl_Plot<DotPlot> filter_plot_;						/*!< filter plot*/
 
-	Fl_Group processing_properties_group_;
-	Fl_Toggle_Button hu_mu_selection_button_;
-	Fl_BoundInput<Fl_Float_Input, double> mu_water_input_;
+	Fl_Group processing_properties_group_;									/*!< group for processing properties*/
+	Fl_Toggle_Button hu_mu_selection_button_;								/*!< button to switch between HU and coefficients*/
+	Fl_BoundInput<Fl_Float_Input, double> mu_water_input_;	/*!< input for read coefficient value for water*/
 
 	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< widget for filtered projections display*/
-	Fl_Button export_filteredProjections_button_;				/*!< export button for projections*/
+	Fl_Button export_filteredProjections_button_;							/*!< export button for projections*/
 
 	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< widget for the reconstruced image*/
-	Fl_Button export_image_button_;								/*!< export button for image*/
+	Fl_Button export_image_button_;												/*!< export button for image*/
 
-	Projections raw_projections_;										/*!< projection data and properties*/
-	Projections limited_projections_;								/*!< projections with upper value limit*/
+	Projections raw_projections_;																	/*!< projection data and properties*/
+	Projections limited_projections_;															/*!< projections with upper value limit*/
 	PersistingObject<FilteredProjections> filtered_projections_;	/*!< current filtered projections*/
-	PersistingObject<Backprojection> backprojection_;				/*!< current image reconstructed from filtered projections*/
+	PersistingObject<Backprojection> backprojection_;							/*!< current image reconstructed from filtered projections*/
 
 	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< file chooser for projections export*/
-	static PersistingObject<FileChooser> export_image_chooser_;							/*!< file chooser for projections export*/
+	static PersistingObject<FileChooser> export_image_chooser_;												/*!< file chooser for projections export*/
 
-	CallbackFunction<Fl_ProcessingWindow> recalculate_callback_;
-	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< callback function for filter change*/
-	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;
-	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;
+	CallbackFunction<Fl_ProcessingWindow> recalculate_callback_;							/*!< callback to recalculate*/
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;						/*!< callback function for filter change*/
+	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;	/*!< callback when selection changed*/
+	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;			/*!< callback for when mu input changed*/
 
 	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< callback for projection export*/
-	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;					/*!< callback for image export*/
+	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;									/*!< callback for image export*/
 
 
 		
@@ -106,7 +104,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	void UpdateImage( void );
 
 	/*!
-	 * @brief Handle change of Houndsfield Unit calibration value
+	 * @brief handle change of Houndsfield Unit calibration value
 	*/
 	void HandleMUChange( void );
 

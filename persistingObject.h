@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   persistingObject.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   March 2023
@@ -34,31 +33,31 @@ class PersistingObject : public C{
 
 	/*!
 	 * @brief constructor
-	 * @details Tries to load object from path
-	 * @param standard Standard instance
-	 * @param file_path Path to load from and save file
-	 * @param deactivate_saving Deactivate saving at destruction
+	 * @details tries to load object from path
+	 * @param standard standard instance
+	 * @param file_path path to load from and save file
+	 * @param deactivate_saving deactivate saving at destruction
 	*/
 	PersistingObject( const C&& standard, const path file_path, const bool deactivate_saving = false );
 
 	/*!
 	 * @brief constructor
-	 * @details Tries to load object from program storage
-	 * @param standard Standard instance
-	 * @param file_name Name of file in program storage
-	 * @param deactivate_saving Deactivate saving at destruction
+	 * @details tries to load object from program storage
+	 * @param standard standard instance
+	 * @param file_name name of file in program storage
+	 * @param deactivate_saving deactivate saving at destruction
 	*/
 	PersistingObject( const C&& standard, const char* file_name, const bool deactivate_saving = false );
 
 	/*!
 	 * @brief destructor
-	 * @details Stored instance on Disc
+	 * @details stores instance on disc
 	*/
 	~PersistingObject( void );
 
 	/*!
 	 * @brief copy assignment operator
-	 * @param instance Instance to assign
+	 * @param instance instance to assign
 	 * @return reference to this
 	*/
 	PersistingObject& operator=( const C& instance );
@@ -75,16 +74,16 @@ class PersistingObject : public C{
 	void SetAsLoaded( void ){ was_loaded_ = true; };
 
 	/*!
-	 * @brief Load object from specific file
-	 * @param file_path Path to serialized file
+	 * @brief load object from specific file
+	 * @param file_path path to serialized file
 	 * @return true if file exists and contains valid data
 	*/
 	bool Load( const path file_path );
 
 	/*!
 	 * @brief save obejct to specific path
-	 * @param file_path Path to save object at
-	 * @param force Force saving when not loaded
+	 * @param file_path path to save object at
+	 * @param force force saving when not loaded
 	 * @return true at success
 	*/
 	bool Save( const path file_path, const bool force = false ) const;
@@ -92,19 +91,19 @@ class PersistingObject : public C{
 
 	private:
 
-	path file_path_;		/*!< path to file on filesystem*/
-	bool was_loaded_;		/*!< flag to indicate whether the object was loaded or is default*/
+	path file_path_;			/*!< path to file on filesystem*/
+	bool was_loaded_;			/*!< flag to indicate whether the object was loaded or is default*/
 	bool disable_saving;	/*!< flag to disable saving*/
 
 
 	/*!
-	 * @brief Load file from stored path
+	 * @brief load file from stored path
 	*/
 	bool LoadFromFile( void ){ return Load( file_path_ ); };
 	
 	/*!
 	 * @brief save the object
-	 * @param force When false only store if object was loaded before
+	 * @param force when false only store if object was loaded before
 	*/
 	bool SaveToFile( const bool force = false ) const;
 };

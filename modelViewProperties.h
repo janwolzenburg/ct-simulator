@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   fl_ModelView.h
- * @brief
+ * @file   modelViewProperties.h
  *
  * @author Jan Wolzenburg
  * @date   September 2023
@@ -36,13 +35,14 @@ class ModelViewProperties{
 		{};
 
 	/*!
-	 * @brief serialize this object
-	 * @param binary_data reference to vector where data will be appended
-	*/
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	NumberRange contrast;			/*!< contrast of slice image*/
-	SlicePlane slice_plane;			/*!< surface to slice model with*/
-	double artefact_impact;			/*!< artefact impact factor*/
+	SlicePlane slice_plane;		/*!< surface to slice model with*/
+	double artefact_impact;		/*!< artefact impact factor*/
 };

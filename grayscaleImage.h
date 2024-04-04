@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   grayscaleImage.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   March 2023
@@ -32,8 +31,8 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief construct empty image with given size
-	 * @param width Width
-	 * @param height Height
+	 * @param width width
+	 * @param height height
 	*/
 	GrayscaleImage( const size_t width, const size_t height );
 
@@ -44,8 +43,8 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief construct image from grid
-	 * @param source_grid Source grid
-	 * @param Normalise Flag for normalisation
+	 * @param source_grid source grid
+	 * @param Normalise flag for normalisation
 	*/
 	GrayscaleImage( const DataGrid<>& source_grid, const bool normalise = true );
 
@@ -58,10 +57,10 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief construct image from other image but different size
-	 * @details Constructed image will be scaled in each direction individually
-	 * @param source_image Source image
-	 * @param newWidth Width of constructed image
-	 * @param newHeight Height of constucted image
+	 * @details constructed image will be scaled in each direction individually
+	 * @param source_image source image
+	 * @param new_width width of constructed image
+	 * @param new_height height of constucted image
 	*/
 	GrayscaleImage( const GrayscaleImage& source_image, const size_t new_width, const size_t new_height );
 
@@ -75,11 +74,12 @@ class GrayscaleImage{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief get Width
+	 * @brief get width
 	 * @return image width
 	*/
 	size_t width( void ) const{ return width_; };
@@ -98,7 +98,7 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief get pointer raw image data
-	 * @details Be careful when data vector changes! The returned pointer may then point to false address
+	 * @details be careful when data vector changes! The returned pointer may then point to false address
 	 * @return pointer to raw data
 	*/
 	const unsigned char* GetImageData( void ){ return image_data_.data(); };
@@ -117,24 +117,24 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief get the 1D index of grid element
-	 * @param column Column index
-	 * @param row Row index
-	 * @return index of Row|Column element
+	 * @param column column index
+	 * @param row row index
+	 * @return index of row|column element
 	*/
 	size_t GetIndex( const size_t column, const size_t row ) const;
 
 	/*!
 	 * @brief get character data for image drawing
-	 * @param column Column
-	 * @param row Row
+	 * @param column column
+	 * @param row row
 	 * @return grayscale value
 	*/
 	unsigned char GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 
 	/*!
 	 * @brief get raw data
-	 * @param column Column
-	 * @param row Row
+	 * @param column column
+	 * @param row row
 	 * @return raw value
 	*/
 	double GetData( const size_t column, const size_t row ) const{ return raw_data_.at( GetIndex( column, row ) ); } ;
@@ -142,13 +142,13 @@ class GrayscaleImage{
 	/*!
 	 * @brief set pixel data
 	 * @param pixel Pixel indices
-	 * @param data New data
+	 * @param data new data
 	*/
 	void SetData( const GridIndex pixel, const double data ){ this->operator()( pixel.c, pixel.r ) = data; };
 
 	/*!
 	 * @brief change the images contrast to given range
-	 * @param data_range Range of value to show. Value over or under values in range will be bounded
+	 * @param data_range range of value to show. value over or under values in range will be bounded
 	*/
 	void AdjustContrast( const NumberRange data_range );
 
@@ -160,33 +160,33 @@ class GrayscaleImage{
 
 	private:
 
-	size_t width_;					/*!< image width*/
-	size_t height_;					/*!< image height*/
+	size_t width_;							/*!< image width*/
+	size_t height_;							/*!< image height*/
 	size_t number_of_pixel_;		/*!< amount of pixel in image*/
 
-	vector<double> raw_data_;			/*!< double data*/
+	vector<double> raw_data_;		/*!< double data*/
 	vector<unsigned char> image_data_;	/*!< data as unsigned char values*/
 
 	/*!
 	 * @brief acces operator
-	 * @param c Column
-	 * @param row Row
+	 * @param column column
+	 * @param row row
 	 * @return reference to value at ( column, row )
 	*/
 	double& operator()( const size_t column, const size_t row ){ return raw_data_.at( GetIndex( column, row ) ); };
 	
 	/*!
 	 * @brief acces operator
-	 * @param column Column
-	 * @param row Row
+	 * @param column column
+	 * @param row row
 	 * @return value at ( column, row )
 	*/
 	double operator()( const size_t column, const size_t row ) const{ return raw_data_.at( GetIndex( column, row ) ); };
 
 	/*!
 	 * @brief set image data
-	 * @param pixel Pixel indices
-	 * @param data New data
+	 * @param pixel pixel indices
+	 * @param data new data
 	*/
 	void SetPixelData( const GridIndex pixel, const unsigned char data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = data; };
 };

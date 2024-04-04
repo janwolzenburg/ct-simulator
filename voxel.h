@@ -142,7 +142,7 @@ class VoxelData{
 
 	/*!
 	 * @brief set the metal artifact impact factor
-	 * @param artefact_impact_factor New factor
+	 * @param artefact_impact_factor new factor
 	*/
 	static void SetArtefactImpactFactor( const double artefact_impact_factor );
 

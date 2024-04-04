@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_GrayscaleImageWithAxis.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   November 2023
@@ -37,18 +36,34 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param label Label
+	 * @param w width
+	 * @param h height
+	 * @param label label
 	*/
 	Fl_GrayscaleImageWithAxis( int x, int y, int w, int h, const char* label = 0L );
 
+	/*!
+	 * @brief get the x-postion
+	 * @return x-position
+	 */
 	int x( void )const { return Fl_Group::x(); };
 
+	/*!
+	 * @brief get the y-postion
+	 * @return y-position
+	 */
 	int y( void )const { return Fl_Group::y(); };
 
+	/*!
+	 * @brief get the width
+	 * @return widget width
+	 */
 	int w( void )const { return Fl_Group::w(); };
 
+	/*!
+	 * @brief get the height
+	 * @return widget height
+	 */
 	int h( void )const { return Fl_Group::h(); };
 
 	/*!
@@ -59,8 +74,8 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 
 	/*!
 	 * @brief set axis tics
-	 * @param pixel_start Start of tics
-	 * @param pixel_size Amount of tics
+	 * @param pixel_start start of tics
+	 * @param pixel_size amount of tics
 	*/
 	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics );
 
@@ -71,8 +86,8 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	
 	/*!
 	 * @brief get value for given x and y coordinate
-	 * @param x Local x coordinate
-	 * @param y Local y coordinate
+	 * @param x local x coordinate
+	 * @param y local y coordinate
 	 * @return raw and color value when x and y are inside image
 	*/
 	optional<pair<double, RGB>> GetValue( int x, int y ) const{ 
@@ -84,7 +99,7 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	constexpr static int axis_space_ = 30;	/*!< amount of pixel the axis are spaced from image*/
 	
 	pair<string, string> axis_label_;		/*!< label of axis*/
-	Tuple2D axis_tics_start_;	/*!< start value of tics*/
-	Tuple2D pixel_size_;		/*!< what is one pixel's size in reality*/
-	Index2D number_of_tics_;
+	Tuple2D axis_tics_start_;						/*!< start value of tics*/
+	Tuple2D pixel_size_;								/*!< what is one pixel's size in reality*/
+	Index2D number_of_tics_;						/*!< amount of tics per axis*/
 };

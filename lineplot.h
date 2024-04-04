@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   lineplot.h
- * @brief
+ * @file   linePlot.h
  *
  * @author Jan Wolzenburg
  * @date   April 2023
@@ -23,12 +22,12 @@ class LinePlot : public Plot{
 
 	/*!
 	 * @brief constructor
-	 * @param name Name of plot
+	 * @param name name of plot
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
-	 * @param limits Plot limits
-	 * @param image_size Desired image size_
-	 * @param enable_grid Flag to show grid
+	 * @param limits plot limits
+	 * @param image_size desired image size
+	 * @param enable_grid flag to show grid
 	*/
 	LinePlot( const string name, const string x_label, const string y_label,
 			  const PlotLimits limits, const GridIndex image_size, const bool enable_grid );
@@ -40,14 +39,14 @@ class LinePlot : public Plot{
 
 	/*!
 	 * @brief assign data to plot
-	 * @param X_ vector of x values
-	 * @param Y_ vector of y values
+	 * @param X vector of x values
+	 * @param Y vector of y values
 	*/
-	void AssignData( const vector<double> X_, const vector<double> Y_ );
+	void AssignData( const vector<double> X, const vector<double> Y );
 
 	/*!
 	 * @brief assign data to plot
-	 * @param XY Pair of vectors with data_
+	 * @param XY pair of vectors with data
 	*/
 	void AssignData( const VectorPair XY ){ AssignData( XY.first, XY.second ); };
 

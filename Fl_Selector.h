@@ -37,9 +37,9 @@ class Fl_Selector : public Fl_Group{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param label Label
+	 * @param w width
+	 * @param h height
+	 * @param label label
 	*/
 	Fl_Selector( int x, int y, int w, int h, const char* label = 0L);
 
@@ -51,20 +51,20 @@ class Fl_Selector : public Fl_Group{
 
 	/*!
 	 * @brief set selectable elements
-	 * @param elements Elements
+	 * @param elements elements
 	*/
 	void AssignElements( const vector<string> elements );
 
 	/*!
 	 * @brief set new value of selector
-	 * @param element Selected string
+	 * @param element selected string
 	*/
 	void SetCurrentElement( const string element );
 
 
 	private:
 
-	Fl_Button previous_button_;		/*!< button to select previous element*/
+	Fl_Button previous_button_;	/*!< button to select previous element*/
 	Fl_Output current_text_;		/*!< text outpur for current element*/
 	Fl_Button next_button_;			/*!< button to select next element*/
 
@@ -74,17 +74,17 @@ class Fl_Selector : public Fl_Group{
 
 	/*!
 	 * @brief goto previous selectable option
-	 * @detail Is static because this function is registered as a callback
-	 * @param button_widget Pointer to button widget
-	 * @param fl_selector Pointer to userdata. Here a pointer to the Fl_Selector must be passed
+	 * @detail is static because this function is registered as a callback
+	 * @param button_widget pointer to button widget
+	 * @param fl_selector pointer to userdata. here a pointer to the Fl_Selector must be passed
 	*/
 	static void SelectPrevious( Fl_Widget* button_widget, void* fl_selector );
 
 	/*!
 	 * @brief goto next selectable option
-	 * @detail Is static because this function is registered as a callback
-	 * @param button_widget Pointer to button widget
-	 * @param fl_selector Pointer to userdata. Here a pointer to the Fl_Selector must be passed
+	 * @detail is static because this function is registered as a callback
+	 * @param button_widget pointer to button widget
+	 * @param fl_selector pointer to userdata. here a pointer to the Fl_Selector must be passed
 	*/
 	static void SelectNext( Fl_Widget* button_widget,  void* fl_selector );
 

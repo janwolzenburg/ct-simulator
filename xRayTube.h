@@ -193,7 +193,7 @@ class XRayTube{
 
 	/*!
 	 * @brief update tube properties
-	 * @param tube_properties New properties
+	 * @param tube_properties new properties
 	*/
 	void UpdateProperties( const XRayTubeProperties tube_properties );
 

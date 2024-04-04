@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_ProgressWindow.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   June 2023
@@ -33,19 +32,19 @@ class Fl_Progress_Window : public Fl_Window{
 
 	/*!
 	 * @brief constructor
-	 * @param parent_ Parent used for window placement on screen
-	 * @param textSize Size of text
-	 * @param numLines Amount of lines
-	 * @param label Window label
+	 * @param parent parent used for window placement on screen
+	 * @param text_size size of text
+	 * @param number_of_lines amount of lines
+	 * @param label window label
 	*/
-	Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label );
+	Fl_Progress_Window( const Fl_Window* const parent,  unsigned int text_size, unsigned int number_of_lines, const char* label );
 
 	/*!
-	 * @brief change text in a Line
-	 * @param lineNumber Linenumber to change. Starting at 0
-	 * @param newText New Line text
+	 * @brief change text in a line
+	 * @param line_number line number to change. starting at 0
+	 * @param line_text new line text
 	*/
-	void ChangeLineText( const unsigned int lineNumber, const string newText);
+	void ChangeLineText( const unsigned int line_number, const string line_text);
 
 	/*!
 	 * @brief get amount of lines
@@ -56,14 +55,14 @@ class Fl_Progress_Window : public Fl_Window{
 
 	private:
 
-	constexpr static int padding_ = 20;							/*!< padding of text to window borders*/
+	constexpr static int padding_ = 20;												/*!< padding of text to window borders*/
 	constexpr static int number_of_character_per_line_ = 30;	/*!< approximate amount of characters per Line*/
 
-	unsigned int number_of_lines_;				/*!< amount of lines*/
+	unsigned int number_of_lines_;			/*!< amount of lines*/
 
-	Fl_Multiline_Output text_output_;	/*!< widget for text output*/
-	vector<string> line_texts_;			/*!< line texts*/
-	string continuous_text_;			/*!< string to pass to widget*/
+	Fl_Multiline_Output text_output_;		/*!< widget for text output*/
+	vector<string> line_texts_;					/*!< line texts*/
+	string continuous_text_;						/*!< string to pass to widget*/
 
  
 	/*!

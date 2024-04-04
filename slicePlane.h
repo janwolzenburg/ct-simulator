@@ -43,14 +43,15 @@ class SlicePlane{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
 	CoordinateSystem* coordinate_system;	/*!< coordinate system of slice plane*/
-	Surface surface;						/*!< surface for slicing*/
-	double rotation_angle_x;	/*!< current x-rotation angle*/
-	double rotation_angle_y;	/*!< current y-rotation angle*/
-	double position_z;			/*!< current z-position*/
+	Surface surface;											/*!< surface for slicing*/
+	double rotation_angle_x;							/*!< current x-rotation angle*/
+	double rotation_angle_y;							/*!< current y-rotation angle*/
+	double position_z;										/*!< current z-position*/
 
 };

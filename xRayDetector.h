@@ -57,8 +57,8 @@ class XRayDetector{
 
 	/*!
 	 * @brief update detector properties
-	 * @param projections_properties New radon properties
-	 * @param physical_properties New physical properties
+	 * @param projections_properties new radon properties
+	 * @param physical_properties new physical properties
 	*/
 	void UpdateProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 

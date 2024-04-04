@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   callbackFunction.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   November 2023
@@ -31,8 +30,8 @@ class CallbackFunction{
 
 	/*!
 	 * @brief constructor
-	 * @param class_instance Reference to class instance 
-	 * @param member_function Pointer to member function
+	 * @param class_instance reference to class instance 
+	 * @param member_function pointer to member function
 	*/
 	CallbackFunction( C& class_instance, void ( C::*member_function )( void ) );
 
@@ -43,14 +42,14 @@ class CallbackFunction{
 
 	/*!
 	 * @brief function to pass to FLTK callback() function
-	 * @param widget Pointer to widget
-	 * @param callback Pointer to CallbackFunction instance
+	 * @param widget pointer to widget
+	 * @param callback pointer to CallbackFunction instance
 	*/
 	static void Fl_Callback( Fl_Widget* widget, void* callback );
 
 	private:
 
-	C& instance_;							/*!< reference to class instance*/
+	C& instance_;													/*!< reference to class instance*/
 	void (C::*member_function_)( void );	/*!< pointer to member function*/
 
 };

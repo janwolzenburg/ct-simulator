@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_MainWindow.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   May 2023
@@ -40,9 +39,9 @@ class Fl_MainWindow : public Fl_Window{
 
 	/*!
 	 * @brief constructor
-	 * @param w Width of window
-	 * @param h Height of window
-	 * @param label Window title
+	 * @param w width of window
+	 * @param h height of window
+	 * @param label window title
 	*/
 	Fl_MainWindow( int w, int h, const char* label );
 
@@ -64,20 +63,20 @@ class Fl_MainWindow : public Fl_Window{
 
 	public:
 
-	Fl_Group menu_group_;							/*!< Group at window top for multi purpose items*/
-	Fl_Button model_creator_button_;				/*!< Button for model creation*/
-	Fl_Button import_projections_button_;			/*!< Button for projections import*/
-	Fl_Button reset_program_state_at_exit_button_;	/*!< Button to reset program state*/
+	Fl_Group menu_group_;														/*!< group at window top for multi purpose items*/
+	Fl_Button model_creator_button_;								/*!< button for model creation*/
+	Fl_Button import_projections_button_;						/*!< button for projections import*/
+	Fl_Button reset_program_state_at_exit_button_;	/*!< button to reset program state*/
 
-	Fl_ModelView model_view_;						/*!< model view*/
-	Fl_GantryCreation gantry_creation_;				/*!< Gantry creation*/
-	Fl_TomographyExecution tomography_execution_;	/*!< tomography execution*/
+	Fl_ModelView model_view_;												/*!< model view*/
+	Fl_GantryCreation gantry_creation_;							/*!< gantry creation*/
+	Fl_TomographyExecution tomography_execution_;		/*!< tomography execution*/
 
-	PersistingObject<FileChooser> import_projections_file_chooser_;	/*!< persisting storage of projections import file selection*/
+	PersistingObject<FileChooser> import_projections_file_chooser_;		/*!< persisting storage of projections import file selection*/
 
-	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;	/*!< callback to reset program state at exit*/
-	CallbackFunction<Fl_MainWindow> import_projections_callback_;	/*!< callback to import projections*/
-	CallbackFunction<Fl_MainWindow> create_model_callback_;			/*!< callback to create model*/
+	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;		/*!< callback to reset program state at exit*/
+	CallbackFunction<Fl_MainWindow> import_projections_callback_;			/*!< callback to import projections*/
+	CallbackFunction<Fl_MainWindow> create_model_callback_;						/*!< callback to create model*/
 
-	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;	/*!< storage for creator windows*/
+	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;				/*!< storage for creator windows*/
 };

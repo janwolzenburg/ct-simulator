@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   fileChooser.h
- * @brief  A custom file chooser based on FLTK native file chooser class
+ * @brief  a custom file chooser based on FLTK native file chooser class
  *
  * @author Jan Wolzenburg
  * @date   March 2023
@@ -37,10 +37,10 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	/*!
 	 * @brief constructor
-	 * @param window_title Title of window 
-	 * @param file_filter String with filter
-	 * @param start_directory Directory to start
-	 * @param type File chooser type
+	 * @param window_title title of window 
+	 * @param file_filter string with filter
+	 * @param start_directory directory to start
+	 * @param type file chooser type
 	*/
 	FileChooser( const string window_title, const string file_filter, const path start_directory, const Fl_Native_File_Chooser::Type type = Fl_Native_File_Chooser::Type::BROWSE_FILE );
 
@@ -64,24 +64,25 @@ class FileChooser : private Fl_Native_File_Chooser{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
 	 * @brief set new window title
-	 * @param newTitle New title
+	 * @param new_title wew title
 	*/
 	void SetTitle( const string new_title );
 
 	/*!
 	 * @brief set new filter
-	 * @param newFilter New filter
+	 * @param newFilter new filter
 	*/
 	void SetFilter( const string new_filter );
 
 	/*!
 	 * @brief set the start directory
-	 * @param directory Directory to start
+	 * @param directory directory to start
 	*/
 	void SetStartDirectory( const path directory );
 
@@ -94,8 +95,8 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	private:
 	
-	string title_string_;				/*!< title string*/
-	string filter_string_;				/*!< filter string*/
-	path start_directory_;				/*!< start directory*/
+	string title_string_;								/*!< title string*/
+	string filter_string_;							/*!< filter string*/
+	path start_directory_;							/*!< start directory*/
 	Fl_Native_File_Chooser::Type type_;	/*!< type of file chooser*/
  };

@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   Fl_Plot.h
- * @brief
+ * @file   fl_Plot.h
  *
  * @author Jan Wolzenburg
  * @date   April 2023
@@ -34,35 +33,35 @@ class Fl_Plot : public Fl_Widget{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param label Label
+	 * @param w width
+	 * @param h height
+	 * @param label label
 	*/
 	Fl_Plot( int x, int y, int w, int h,  const char* label = 0L );
 
 	/*!
 	 * @brief initialise plot
-	 * @param image_path Storage path for plot image
+	 * @param image_path storage path for plot image
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
-	 * @param limits Plot limits
+	 * @param limits plot limits
 	 * @param x_format x-ticks format string
 	 * @param y_format y-ticks format string
-	 * @param are_axis_equal Flag to make axis equally scaled
-	 * @param enable_grid Flag to show grid
+	 * @param are_axis_equal flag to make axis equally scaled
+	 * @param enable_grid flag to show grid
 	*/
 	void Initialise( const path image_path, const string x_label, const string y_label, const PlotLimits limits, 
 					 const string x_format, const string y_format, const bool are_axis_equal, const bool enable_grid );
 
 	/*!
 	 * @brief set new axis limits
-	 * @param newLimits New limits
+	 * @param new_limits new limits
 	*/
-	void SetLimits( const PlotLimits limits ){ plot_.SetLimits( limits ); };
+	void SetLimits( const PlotLimits new_limits ){ plot_.SetLimits( limits ); };
 
 	/*!
 	 * @brief get reference to plot
-	 * @return Underlying plot
+	 * @return underlying plot
 	*/
 	P& plot( void ){ return plot_; };
 
@@ -78,10 +77,10 @@ class Fl_Plot : public Fl_Widget{
 
 	/*!
 	 * @brief resize the image
-	 * @param x New x postion
-	 * @param y New y positon
-	 * @param w New width
-	 * @param h New height
+	 * @param x new x postion
+	 * @param y new y positon
+	 * @param w new width
+	 * @param h new height
 	*/
 	void resize( int x, int y, int w, int h ) override;
 
@@ -94,9 +93,9 @@ class Fl_Plot : public Fl_Widget{
 	private:
 
 	string label_;				/*!< label*/
-	P plot_;		/*!< a plot*/
+	P plot_;							/*!< a plot*/
 	std::unique_ptr<Fl_PNG_Image> raw_image_;	/*!< raw image*/
-	std::unique_ptr<Fl_Image> image_;			/*!< scaled FL-image*/
+	std::unique_ptr<Fl_Image> image_;					/*!< scaled FL-image*/
 
 
 	/*!

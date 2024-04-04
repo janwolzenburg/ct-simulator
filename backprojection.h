@@ -65,7 +65,7 @@ class Backprojection : private DataGrid<> {
 	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 
-	 private:
+	private:
 
 	/*!
 	 * @brief reconstruct image column wise

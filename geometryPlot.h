@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   geoplot.h
- * @brief
+ * @file   geometryPlot.h
  *
  * @author Jan Wolzenburg
  * @date   April 2023
@@ -23,12 +22,12 @@ class Geometryplot : public Plot{
 
 	/*!
 	 * @brief constructor
-	 * @param name Name of plot
+	 * @param name name of plot
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
-	 * @param limits Plot limits
-	 * @param image_size Desired image size_
-	 * @param enable_grid Flag to show grid
+	 * @param limits plot limits
+	 * @param image_size desired image size
+	 * @param enable_grid flag to show grid
 	*/
 	Geometryplot( const string name, const string x_label, const string y_label,
 				  const PlotLimits limits, const GridIndex image_size, const bool enable_grid ) :
@@ -41,9 +40,9 @@ class Geometryplot : public Plot{
 	Geometryplot( void ) : Plot{}{};
 
 	/*!
-	 * @brief add a Line to plot
-	 * @param start Start of Line
-	 * @param end End of Line
+	 * @brief add a line to plot
+	 * @param start start of Line
+	 * @param end end of Line
 	*/
 	void AddLine( const Tuple2D start, const Tuple2D end ){
 		lines_.emplace_back( Tuple2D{ limits_.xFactor * start.x, limits_.yFactor * start.y }, Tuple2D{ limits_.xFactor * end.x, limits_.yFactor * end.y } ); };
@@ -54,8 +53,6 @@ class Geometryplot : public Plot{
 	*/
 	void AddPoint( const Tuple2D point, const string name = string{}){
 		points_.emplace_back( Tuple2D{ limits_.xFactor * point.x, limits_.yFactor * point.y }, name ); };
-
-
 
 	/*!
 	 * @brief remove all lines and points

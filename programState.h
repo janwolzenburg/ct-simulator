@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   programState.h
- * @brief  
  *
  * @author Jan Wolzenburg
  * @date   March 2023
@@ -38,7 +37,7 @@ class ProgramState{
 	
 	/*!
 	 * @brief destructor
-	 * @details Stores objects in persisting storage
+	 * @details stores objects in persisting storage
 	*/
 	~ProgramState( void );
 	
@@ -55,10 +54,10 @@ class ProgramState{
 	
 	/*!
 	 * @brief get persitent storage path of file with given name
-	 * @param filename Name of file
+	 * @param file_name name of file
 	 * @return absoulte path of file
 	*/
-	path GetAbsolutePath( const string filename ) const{ return storage_path_ / filename; };
+	path GetAbsolutePath( const string file_name ) const{ return storage_path_ / file_name; };
 
 
 	private:
@@ -73,13 +72,13 @@ class ProgramState{
 
 	/*!
 	 * @brief copy constructor 
-	 * @details Deleted for singleton pattern
+	 * @details deleted for singleton pattern
 	*/
 	ProgramState( const ProgramState& ) = delete;
 
 	/*!
 	 * @brief copy assignment 
-	 * @details Deleted for singleton pattern
+	 * @details deleted for singleton pattern
 	*/
 	ProgramState& operator=( const ProgramState& ) = delete;
 

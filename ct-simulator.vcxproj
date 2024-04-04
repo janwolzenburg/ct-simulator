@@ -308,7 +308,6 @@
     <ClCompile Include="vector3D.cpp" />
     <ClCompile Include="vectorAlgotrithm.cpp" />
     <ClCompile Include="voxel.cpp" />
-    <ClCompile Include="widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notes.txt" />

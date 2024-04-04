@@ -49,14 +49,14 @@ class Fl_ModelView : public Fl_Group{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param main_window Reference to the main window
+	 * @param w width
+	 * @param h height
+	 * @param main_window reference to the main window
 	*/
 	Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_window );
 
 	/*!
-	 * @brief get Reference to model
+	 * @brief get reference to model
 	 * @return constant reference to model
 	*/
 	const Model& model( void ){ return model_; };
@@ -72,34 +72,34 @@ class Fl_ModelView : public Fl_Group{
 	
 	Fl_Box title_;					/*!< title*/
 	
-	Fl_Group head_group_;			/*!< header group*/
+	Fl_Group head_group_;					/*!< header group*/
 	Fl_Button load_model_button_;	/*!< button to load model*/
 
-	Fl_Group model_inspection_group_;				/*!< group to view the model*/
-	Fl_Multiline_Output model_information_;			/*!< model properties_*/
-	Fl_Button reset_model_button_;					/*!< button to reset model to default*/
-	Fl_Box loading_status_;							/*!< box to show test when no model is loaded*/
+	Fl_Group model_inspection_group_;								/*!< group to view the model*/
+	Fl_Multiline_Output model_information_;					/*!< model properties_*/
+	Fl_Button reset_model_button_;									/*!< button to reset model to default*/
+	Fl_Box loading_status_;													/*!< box to show test when no model is loaded*/
 	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< image with adjustable contrast to show model slice*/
 	
 	Fl_Group model_movement_group_;	/*!< group for the model movement*/
-	Fl_Counter x_rotation_;			/*!< input for x-rotation*/
-	Fl_Counter y_rotation_;			/*!< input for y-rotation*/
-	Fl_Counter z_position_;			/*!< input for z-transloation*/
-	Fl_Counter artefact_impact_;	/*!< input for artefact impact*/
+	Fl_Counter x_rotation_;					/*!< input for x-rotation*/
+	Fl_Counter y_rotation_;					/*!< input for y-rotation*/
+	Fl_Counter z_position_;					/*!< input for z-transloation*/
+	Fl_Counter artefact_impact_;		/*!< input for artefact impact*/
 	
 	PersistingObject<ModelViewProperties> properties_;	/*!< persisting storage of view parameters*/
-	Fl_MainWindow& main_window_;						/*!< reference to main window*/
-	PersistingObject<FileChooser> model_chooser_;		/*!< persisting storage of model chooser*/
-	PersistingObject<Model> model_;						/*!< persisting storage of current model*/
+	Fl_MainWindow& main_window_;												/*!< reference to main window*/
+	PersistingObject<FileChooser> model_chooser_;				/*!< persisting storage of model chooser*/
+	PersistingObject<Model> model_;											/*!< persisting storage of current model*/
 
-	string model_information_string_;					/*!< string with model properties_*/
-	DataGrid<VoxelData> model_slice_;					/*!< slice through model as gridded data*/
+	string model_information_string_;			/*!< string with model properties_*/
+	DataGrid<VoxelData> model_slice_;			/*!< slice through model as gridded data*/
 	
 
 	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< callback for model loading*/
-	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< callback for model update*/
+	CallbackFunction<Fl_ModelView> update_model_callback_;	/*!< callback for model update*/
 	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< callback for model reset*/
-	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< callback for change of artifact impact*/
+	CallbackFunction<Fl_ModelView> update_artefact_impact_;	/*!< callback for change of artifact impact*/
 
 	/*!
 	 * @brief get the model description
@@ -108,16 +108,16 @@ class Fl_ModelView : public Fl_Group{
 	string GetModelDescription( void ) const;
 
 	/*!
-	 * @brief Load the model a stored path
+	 * @brief load the model a stored path
 	 * @return true at success
 	*/
 	void LoadModel( void );
 
 	/*!
 	 * @brief move model to given values with respect to the slice plane coordinate system
-	 * @param target_x_angle Rotation around x-axis
-	 * @param target_y_angle Rotation around y-axis
-	 * @param target_z_position Translation in z-direction
+	 * @param target_x_angle rotation around x-axis
+	 * @param target_y_angle rotation around y-axis
+	 * @param target_z_position translation in z-direction
 	 * @return true at success
 	*/
 	bool MoveModel( double& target_x_angle, double& target_y_angle, double& target_z_position );
@@ -144,7 +144,7 @@ class Fl_ModelView : public Fl_Group{
 	void UpdateModel( void );
 
 	/*!
-	 * @brief update VoxelData artefact impact inputted
+	 * @brief update artefact impact
 	*/
 	void UpdateArtefactImpact( void );
 };

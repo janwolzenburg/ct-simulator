@@ -25,7 +25,7 @@ using std::pair;
 
 
 /*!
- * @brief rGB value
+ * @brief rgb value
 */
 struct RGB{
 	unsigned char red;
@@ -67,8 +67,8 @@ class ColorImage{
 	/*!
 	 * @brief construct from grayscale image with new width and overlay
 	 * @param source_image Grayscale image
-	 * @param new_width New width
-	 * @param newHeight New height
+	 * @param new_width new width
+	 * @param newHeight new height
 	 * @param overlay Overlay to draw
 	*/
 	ColorImage( const GrayscaleImage& source_image, const size_t new_width, const size_t new_height, const vector<pair<bool, RGB>>& overlay = vector<pair<bool, RGB>>( 0 ) );
@@ -83,18 +83,19 @@ class ColorImage{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief get Width
-	 * @return image width
+	 * @brief get width
+	 * @return image's width
 	*/
 	size_t width( void ) const{ return width_; };
 
 	/*!
 	 * @brief get height
-	 * @return image height
+	 * @return image's height
 	*/
 	size_t height( void ) const{ return height_; };
 	
@@ -106,23 +107,23 @@ class ColorImage{
 
 	/*!
 	 * @brief get pointer raw image data
-	 * @details Be careful when data vector changes! The returned pointer may then point to false address
+	 * @details be careful when data vector changes! the returned pointer may then point to false address
 	 * @return pointer to raw data
 	*/
 	const RGB* GetImageData( void ){ return image_data_.data(); };
 
 	/*!
 	 * @brief get the 1D index of grid element
-	 * @param column Column index
-	 * @param row Row index
+	 * @param column column index
+	 * @param row row index
 	 * @return index of Row|Column element
 	*/
 	size_t GetIndex( const size_t column, const size_t row ) const;
 
 	/*!
-	 * @brief get the image data_
-	 * @param c Column
-	 * @param row Row
+	 * @brief get the image data
+	 * @param c column
+	 * @param row row
 	 * @return color at row and column
 	*/
 	RGB GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
@@ -130,8 +131,8 @@ class ColorImage{
 
 	private:
 
-	size_t width_;					/*!< image width*/
-	size_t height_;					/*!< image height*/
+	size_t width_;							/*!< image width*/
+	size_t height_;							/*!< image height*/
 	size_t number_of_pixel_;		/*!< amount of pixel in image*/
 
 	vector<RGB> image_data_;		/*!< data as unsigned char values*/
@@ -139,8 +140,8 @@ class ColorImage{
 
 	/*!
 	 * @brief get reference to image data
-	 * @param column Column
-	 * @param row Row
+	 * @param column column
+	 * @param row row
 	 * @return reference to color data
 	*/
 	void SetPixelData( const GridIndex pixel, const RGB new_data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = new_data; };

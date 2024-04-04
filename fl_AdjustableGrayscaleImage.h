@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_AdjustableGrayscaleImage.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -33,9 +32,9 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param label Label
+	 * @param w width
+	 * @param h height
+	 * @param label label
 	*/
 	Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label = 0L );
 
@@ -63,34 +62,33 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	void ResetBounds( void ){ bounds_set_ = false; };
 
 	/*!
-	 * @brief Handle FLTK events
-	 * @param event Eventnumber
+	 * @brief handle FLTK events
+	 * @param event event number
 	 * @return 1 if handled, 0 otheriwse
 	*/
 	int handle( int event );
 
 	/*!
 	 * @brief assign grayscale image as new image data
-	 * @param grayscale_image Grayscale image
+	 * @param grayscale_image grayscale image
 	*/
 	void AssignImage( const GrayscaleImage& grayscale_image );
 
 	/*!
 	 * @brief assign gridded voxel data 
-	 * @param data_grid Data grid
-	 * @param Normalise Flag for normalisation
+	 * @param data_grid data grid to make into the image
 	*/
 	void AssignImage( const DataGrid<VoxelData>& data_grid );
 
 	/*!
 	 * @brief change slider values
-	 * @param bounds Lower and upper limit. Values below lower limit are black; values beyond upper limit are white
+	 * @param new_contrast lower and upper limit. values below lower limit are black; values beyond upper limit are white
 	*/
 	void ChangeSliderValues( const NumberRange new_contrast );
 
 	/*!
 	 * @brief set the slider range
-	 * @param newBound Raw limits
+	 * @param new_slider_bounds raw limits
 	*/
 	void SetSliderBounds( const NumberRange new_slider_bounds );
 
@@ -113,8 +111,8 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 
 	/*!
 	 * @brief set axis tics
-	 * @param pixel_start Start of tics
-	 * @param pixel_size Amount of tics
+	 * @param pixel_start start of tics
+	 * @param pixel_size amount of tics
 	*/
 	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics ){ image_widget_.SetAxis( pixel_start, pixel_size, number_of_tics ); };
 
@@ -122,21 +120,21 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	private:
 
 	Fl_GrayscaleImageWithAxis image_widget_;	/*!< the image widget*/
-	Fl_Hor_Value_Slider lower_bound_;			/*!< low bound*/
-	Fl_Hor_Value_Slider upper_bound_;			/*!< high bound*/
+	Fl_Hor_Value_Slider lower_bound_;					/*!< low bound*/
+	Fl_Hor_Value_Slider upper_bound_;					/*!< high bound*/
 			
 	Fl_Box current_value_text_;			/*!< output for common factor*/
 	Fl_Box current_value_tip_;			/*!< output for common factor*/
 	Fl_Box common_factor_text_;			/*!< output for common factor*/
 
-	int common_power_;					/*!< common power of ten*/
+	int common_power_;				/*!< common power of ten*/
 	bool bounds_set_;					/*!< flag indicating whether the bounds were set before*/
-	bool contrast_changed_;				/*!< flag indicating constrast change*/
+	bool contrast_changed_;		/*!< flag indicating constrast change*/
 
 
 	/*!
 	 * @brief callback for value change
-	 * @param widget Pointer to widget that triggered the callback
+	 * @param widget pointer to widget that triggered the callback
 	*/
 	static void HandleValueChange( Fl_Widget* widgetPtr, void* image_widget );
 

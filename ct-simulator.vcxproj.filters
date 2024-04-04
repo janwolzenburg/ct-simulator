@@ -419,9 +419,6 @@
     <ClCompile Include="programState.cpp">
       <Filter>Quelldateien\15 Program</Filter>
     </ClCompile>
-    <ClCompile Include="widgets.cpp">
-      <Filter>Quelldateien\15 Program\02 GUI\01 Widgets</Filter>
-    </ClCompile>
     <ClCompile Include="fl_ModelView.cpp">
       <Filter>Quelldateien\15 Program\02 GUI\02 Windows</Filter>
     </ClCompile>

@@ -59,7 +59,7 @@ class Fl_ModelFeature : public Fl_Group{
 		
 	/*!
 	 * @brief get shape enumeration from string
-	 * @param shape_string Name of enumeration
+	 * @param shape_string name of enumeration
 	 * @return enumeration of shape fitting to name
 	*/
 	static Shape GetShapeEnum( const string shape_string );		
@@ -68,18 +68,18 @@ class Fl_ModelFeature : public Fl_Group{
 	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
-	 * @param w Width
-	 * @param h Height
-	 * @param label Label
+	 * @param w width
+	 * @param h height
+	 * @param label label
 	*/
 	Fl_ModelFeature( int x, int y, int w, int h, const char* label = 0L );
 
 	/*!
 	 * @brief register same function to all elements as callback
-	 * @param callback_function Function to assign as callback
-	 * @param p User data
+	 * @param callback_function function to assign as callback
+	 * @param user_data user data
 	*/
-	void callback( Fl_Callback* callback_function, void* p );
+	void callback( Fl_Callback* callback_function, void* user_data );
 
 	/*!
 	 * @brief get if this feature is active
@@ -119,13 +119,12 @@ class Fl_ModelFeature : public Fl_Group{
 
 	/*!
 	 * @brief set this feature to be active
-	 * @param  
 	*/
 	void SetActive( void ){
 		active_button_.value( 1 ); ShowFields(); };
 
 	/*!
-	 * @brief Hide fields
+	 * @brief hide fields
 	*/
 	void HideFields( void );
 
@@ -137,14 +136,14 @@ class Fl_ModelFeature : public Fl_Group{
 
 	private:
 
-	Fl_Toggle_Button active_button_;		/*!< button to activate feature*/
-	Fl_Selector special_property_input_;	/*!< selector for special property*/
-	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< absorption in 1/mm at reference energy*/
+	Fl_Toggle_Button active_button_;												/*!< button to activate feature*/
+	Fl_Selector special_property_input_;										/*!< selector for special property*/
+	Fl_BoundInput<Fl_Float_Input, double> value_input_;			/*!< absorption in 1/mm at reference energy*/
 	Fl_BoundInput<Fl_Float_Input, double> x_positon_input_;	/*!< x position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> y_positon_input_;	/*!< y position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> z_positon_input_;	/*!< z position in mm*/
-	Fl_BoundInput<Fl_Float_Input, double> size_input_;		/*!< size in mm*/
-	Fl_Selector shape_input_;				/*!< selector for feature shape*/
+	Fl_BoundInput<Fl_Float_Input, double> size_input_;			/*!< size in mm*/
+	Fl_Selector shape_input_;																/*!< selector for feature shape*/
 
 	bool is_visible_;						/*!< flag to indicate visability*/
 
@@ -162,8 +161,8 @@ class Fl_ModelCreator : public Fl_Window{
 
 	/*!
 	 * @brief constructor
-	 * @param w Width of window
-	 * @param h Height of window
+	 * @param w width of window
+	 * @param h height of window
 	 * @param label Window title
 	*/
 	Fl_ModelCreator( int w, int h, const char* label );

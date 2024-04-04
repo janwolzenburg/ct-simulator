@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   guiPlot.h
- * @brief
+ * @file   plot.h
  *
  * @author Jan Wolzenburg
  * @date   April 2023
@@ -53,28 +52,28 @@ class Plot{
 
 	/*!
 	 * @brief initialise plot
-	 * @param image_path Storage path for plot image
-	 * @param label Plot label
+	 * @param image_path storage path for plot image
+	 * @param label plot label
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
-	 * @param limits Plot limits
-	 * @param image_size Size of image in pixel
+	 * @param limits plot limits
+	 * @param image_size size of image in pixel
 	 * @param x_format x-ticks format string
 	 * @param y_format y-ticks format string
-	 * @param are_axis_equal Flag to make axis equally scaled
-	 * @param enable_grid Flag to show grid
+	 * @param are_axis_equal flag to make axis equally scaled
+	 * @param enable_grid flag to show grid
 	*/
 	void Initialise( const path image_path, const string label, const string x_label, const string y_label, const PlotLimits limits, const GridIndex image_size,
 					 const string x_format, const string y_format, const bool are_axis_equal, const bool enable_grid );
 	/*!
 	 * @brief set plot limits
-	 * @param newLimits New limits
+	 * @param new_limits new limits
 	*/
-	void SetLimits( const PlotLimits newLimits ){ limits_ = newLimits; };
+	void SetLimits( const PlotLimits new_limits ){ limits_ = new_limits; };
 
 	/*!
 	 * @brief set image size
-	 * @param size New size of image
+	 * @param size new size of image
 	*/
 	void SetSize( const GridIndex size ){ image_size_ = size; };
 
@@ -88,12 +87,12 @@ class Plot{
 
 	/*!
 	 * @brief constructor
-	 * @param image_path Storage path for plot image
+	 * @param image_path storage path for plot image
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
 	 * @param limits Plot limits
-	 * @param image_size Desired image size
-	 * @param enable_grid Flag to show grid
+	 * @param image_size desired image size
+	 * @param enable_grid flag to show grid
 	*/
 	Plot( const path image_path, const string x_label, const string y_label,
 		  const PlotLimits limits, const GridIndex image_size, const bool enable_grid );
@@ -110,14 +109,14 @@ class Plot{
 
 	/*!
 	 * @brief draw the plot
-	 * @details Draws and stored plot image at given path
+	 * @details draws and stored plot image at given path
 	*/
 	void DrawPlot( void );
 	
 
 	protected:
 	
-	string label_;	/*!< figure label*/
+	string label_;		/*!< figure label*/
 	path image_path_;	/*!< path to image. Plots are exported to this direction*/
 	string x_label_;	/*!< label of x-axis*/
 	string y_label_;	/*!< lable of y-axis*/
@@ -129,7 +128,7 @@ class Plot{
 	string y_format_;		/*!< format string for y-axis tick values*/
 	PlotLimits limits_;	/*!< limits of plot*/
 
-	GridIndex image_size_;				/*!< size of image*/
+	GridIndex image_size_;			/*!< size of image*/
 	sciplot::Plot2D plot_2D_;		/*!< instance of sciplot 2D-plot*/
 
  };
