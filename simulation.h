@@ -38,7 +38,7 @@ class SimulationProperties{
 	
 	size_t quality;															/*!< the simulation quality*/
 	double ray_step_size_mm;										/*!< stepsize during Ray iteration in Ray direction vector's unit*/
-	size_t number_of_points_in_spectrum_;				/*!< amount of discrete datapoints in spectrum*/
+	size_t number_of_points_in_spectrum;				/*!< amount of discrete datapoints in spectrum*/
 	size_t number_of_energies_for_scattering;		/*!< amount of discrete angles available for scattering - should be odd to include 0°*/
 	size_t number_of_scatter_angles;						/*!< amount of energies used */
 	size_t bins_per_energy;											/*!< when scattering: Into how many bins should the photons with the same energy be divided into*/

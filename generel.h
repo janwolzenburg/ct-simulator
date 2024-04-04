@@ -325,25 +325,25 @@ class NumberRange{
 	 * @brief get the start
 	 * @return start of range
 	 */
-	signed long long start( void ) const{ return start_; };
+	double start( void ) const{ return start_; };
 
 	/*!
 	 * @brief get the end
 	 * @return end of range
 	 */
-	signed long long end( void ) const{ return end_; };
+	double end( void ) const{ return end_; };
 
 	/*!
 	 * @brief set new start
 	 * @param new_start new start
 	 */
-	void start( const signed long long new_start ){ start_ = ( new_start < end_ ) ? new_start : end_ - 1.; };
+	void start( const double new_start ){ start_ = ( new_start < end_ ) ? new_start : end_ - 1.; };
 
 	/*!
 	 * @brief set new end
 	 * @param new_start new end
 	 */
-	void end( const signed long long new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1.; };
+	void end( const double new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1.; };
 
 	/*!
 	 * @brief get the size of the range
