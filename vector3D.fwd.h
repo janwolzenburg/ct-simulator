@@ -1,5 +1,5 @@
 #pragma once
 
-class Vector3D;
+class vector3D;
 class Point3D;
-class UnitVector3D;
+class Unitvector3D;

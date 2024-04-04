@@ -19,24 +19,24 @@
 *********************************************************************/
 
 template <typename T>
-constexpr typename std::underlying_type_t<T> ToUnderlying( T var ){
+constexpr typename std::underlying_type_t<T> ConvertToUnderlying( T var ){
 	return static_cast<typename std::underlying_type_t<T>>( var );
 }
 
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var ){
-	var = T( ToUnderlying( var ) + 1 );
+	var = T( ConvertToUnderlying( var ) + 1 );
 	return var;
 }
 
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T val2 ){
-	T diff = ToUnderlying( val1 ) - ToUnderlying( val2 );
+	T diff = ConvertToUnderlying( val1 ) - ConvertToUnderlying( val2 );
 	return diff;
 }
 
 template<typename T>
-string ToString<T>( T value, const int precision ){
+string ConvertToString<T>( T value, const int precision ){
 
 	std::ostringstream out;
 

@@ -64,7 +64,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	 * @brief convert coordinate tree's data
 	 * @return string with tree's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief get dummy system
@@ -88,7 +88,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	 * @param name Name of the system
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const CoordinateSystem* parent, const string name );
+	CoordinateSystem* AddSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const CoordinateSystem* parent, const string name );
 	
 	/*!
 	 * @brief constructor from serialized data_
@@ -107,7 +107,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	 * @param name Name of the system
 	 * @return Pointer to new system
 	*/
-	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name );
+	CoordinateSystem* AddSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name );
 
 	/*!
 	 * @brief add system to tree at origin_ of parent_

@@ -77,7 +77,7 @@ class FilteredProjections : private DataGrid<> {
 
 	/*!
 	 * @brief return used filter
-	 * @return Filter used in backprojections
+	 * @return filter used in backprojections
 	*/
 	BackprojectionFilter filter( void ) const { return filter_; };
 
@@ -85,7 +85,7 @@ class FilteredProjections : private DataGrid<> {
 	 * @brief get value at angle index at given distance
 	 * @param angle_index Angle index
 	 * @param distance Distance
-	 * @return Filtered value
+	 * @return filtered value
 	*/
 	double GetValue( const size_t angle_index, const double distance ) const;
 

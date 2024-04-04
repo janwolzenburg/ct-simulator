@@ -40,7 +40,7 @@ class Matrix : public MathematicalObject{
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return string with Line's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief element assignment
@@ -154,11 +154,11 @@ class SystemOfEquations : private Matrix{
 	 * @brief convert system's data to string
 	 * @return string with system's data
 	*/
-	string ToString( unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Populate column of three variable equation system with vector
-	 * @param coefficients Vector to populate column with
+	 * @brief populate column of three variable equation system with vector
+	 * @param coefficients vector to populate column with
 	 * @return Error code
 	*/
 	MathError PopulateColumn( const Tuple3D coefficients );
@@ -213,7 +213,7 @@ class SystemOfEquationsSolution : public MathematicalObject{
 	 * @brief convert solutions's data to string
 	 * @return string with solutions's data
 	*/
-	string ToString( unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief get amount of variables

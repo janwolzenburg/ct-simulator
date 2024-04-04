@@ -64,7 +64,7 @@ string getObjectString<Point3D>( const Point3D p ){
 }
 
 template<>
-string getObjectString<Vector3D, Point3D>( const Vector3D v, const Point3D o ){
+string getObjectString<vector3D, Point3D>( const vector3D v, const Point3D o ){
 
 	char tempCharArr[256];
 	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GetGlobalX(), v.GetGlobalY(), v.GetGlobalZ(), o.GetGlobalX(), o.GetGlobalY(), o.GetGlobalZ() );
@@ -74,9 +74,9 @@ string getObjectString<Vector3D, Point3D>( const Vector3D v, const Point3D o ){
 }
 
 template<>
-string getObjectString<UnitVector3D, Point3D>( const UnitVector3D v, const Point3D o ){
+string getObjectString<Unitvector3D, Point3D>( const Unitvector3D v, const Point3D o ){
 
-	return getObjectString<Vector3D, Point3D>( Vector3D{ v }, o );
+	return getObjectString<vector3D, Point3D>( vector3D{ v }, o );
 
 }
 
@@ -300,7 +300,7 @@ template<>
 void addObject<Model, double>( std::ofstream& axis, std::string name, Model mod, std::string voxel_data_, double threshold ){
 	Voxel modVox = mod.GetModelVoxel();
 	for( Voxel::Face i = Voxel::Face::Begin; i < Voxel::Face::End; ++i ){
-		addSingleObject( axis, "modelFace" + to_string( ToUnderlying( i ) ), modVox.GetFace( i ), "b", 0.2 );
+		addSingleObject( axis, "modelFace" + to_string( ConvertToUnderlying( i ) ), modVox.GetFace( i ), "b", 0.2 );
 	}
 
 	for( size_t iX = 0; iX < mod.number_of_voxel_3D().x; iX++ ){

@@ -69,7 +69,7 @@ class Model : public MathematicalObject{
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return string with model's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 	
 	/*!
 	 * @brief serialize this object
@@ -109,7 +109,7 @@ class Model : public MathematicalObject{
 
 	/*!
 	 * @brief get model name_
-	 * @return Name
+	 * @return name
 	*/
 	string name( void ) const{ return name_; };
 
@@ -145,7 +145,7 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief get voxel indices for given Coordinates in local coordinate system
 	 * @param point Point in coordinate system of model
-	 * @return Indices of voxels where Coordinates are located
+	 * @return indices of voxels where Coordinates are located
 	*/
 	Index3D GetVoxelIndices( const Point3D point ) const;
 
@@ -182,7 +182,7 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief get voxel instance for given indices
 	 * @param voxel_indices Indices of voxel
-	 * @return Instance of voxel
+	 * @return instance of voxel
 	*/
 	Voxel GetVoxel( const Index3D voxel_indices ) const;
 
@@ -259,7 +259,7 @@ class Model : public MathematicalObject{
 	* @param x x-coordinate
 	* @param y y-coordinate
 	* @param z	z-coordinate
-	* @return Indices of voxels where Coordinates are located
+	* @return indices of voxels where Coordinates are located
 	*/
 	Index3D GetVoxelIndices( const Tuple3D locCoords ) const;
 

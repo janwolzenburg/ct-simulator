@@ -31,7 +31,7 @@ constexpr double efficiancy_constant_PerV = 1.1E-9;			// efficiancy constant for
 
 
 /*!
- * @brief Parameter for x-Ray tube
+ * @brief parameter for x-Ray tube
 */
 class XRayTubeProperties {
 	
@@ -75,7 +75,7 @@ class XRayTubeProperties {
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
 		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
 		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) ),
-		spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum_ - 1 ) )
+		spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum - 1 ) )
 	{};
 
 	/*!
@@ -123,7 +123,7 @@ class XRayTube{
 
 	/*!
 	 * @brief get beam created by tube
-	 * @param detector_pixel Vector with all pixel
+	 * @param detector_pixel vector with all pixel
 	 * @param detector_focus_distance Distance from pixel to focus (this tube)
 	 * @return vector with rays in XY-plane of tube's coordinate system and parallel to pixel normals
 	*/

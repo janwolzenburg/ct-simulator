@@ -84,7 +84,7 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 }
 
 
-string Model::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string Model::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	return string( "" );
 }
 
@@ -243,7 +243,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 	vector<Ray> all_scattered_rays;	// vector for all scattered rays
 
 	// the possible exit faces of voxel
-	const array<bool, ToUnderlying( Voxel::Face::End )> possible_exit_faces = 
+	const array<bool, ConvertToUnderlying( Voxel::Face::End )> possible_exit_faces = 
 		std::move( local_ray.GetPossibleVoxelExits() );
 
 	// iterate through model while current point is inside model
@@ -265,7 +265,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 			switch( current_face ){
 
 				case Voxel::Face::YZ_Xp:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) + 1. ) *
 															 this->voxel_size_.x;		// position of positive yz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) /
@@ -273,7 +273,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					break;
 
 				case Voxel::Face::YZ_Xm:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.x ) ) * 
 															 this->voxel_size_.x;		// position of negative yz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.X() ) / 
@@ -281,7 +281,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					break;
 
 				case Voxel::Face::XZ_Yp:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) + 1. ) * 
 															 this->voxel_size_.y;		// position of positive xz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
@@ -289,7 +289,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					break;
 
 				case Voxel::Face::XZ_Ym:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.y ) ) * 
 															 this->voxel_size_.y;		// position of negative xz-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Y() ) / 
@@ -297,7 +297,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					break;
 
 				case Voxel::Face::XY_Zp:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.z ) + 1. ) * 
 															 this->voxel_size_.z;		// position of positive xy-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 
@@ -305,7 +305,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					break;
 
 				case Voxel::Face::XY_Zm:
-					if( possible_exit_faces.at( ToUnderlying( current_face ) ) == false ) break;
+					if( possible_exit_faces.at( ConvertToUnderlying( current_face ) ) == false ) break;
 					exit_face_position = ( static_cast<double>( current_voxel_indices.z )   ) * 
 															 this->voxel_size_.z;		// position of negative xy-plane
 					distance_to_current_face = ( exit_face_position - current_point_on_ray.Z() ) / 

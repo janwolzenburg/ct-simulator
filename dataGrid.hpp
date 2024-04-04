@@ -35,7 +35,7 @@ DataGrid<D>::DataGrid( void ) :
 	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
-	FillVectors( D() );
+	Fillvectors( D() );
 }
 
 template<class D>
@@ -47,7 +47,7 @@ DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const 
 	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
-	FillVectors( defaultValue );
+	Fillvectors( defaultValue );
 }
 
 template<class D>
@@ -62,7 +62,7 @@ DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange
 	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
-	FillVectors( defaultValue );
+	Fillvectors( defaultValue );
 }
 
 template<class D>
@@ -78,7 +78,7 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 		size_ = { 0, 0 };return;
 	}
 
-	FillVectors( D() );
+	Fillvectors( D() );
 
 	if constexpr( std::is_fundamental_v<D> ){
 		min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
@@ -101,7 +101,7 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 }
 
 template<class D>
-void DataGrid<D>::FillVectors( const D defaultValue ){
+void DataGrid<D>::Fillvectors( const D defaultValue ){
 
 	if( size_.c == 0 || size_.r == 0 ) return;
 

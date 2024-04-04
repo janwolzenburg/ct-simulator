@@ -51,8 +51,8 @@ FilteredProjections::FilteredProjections(
 
 		if( progress_window != nullptr )
 			progress_window->ChangeLineText( 0, "Filtering angle " 
-																					+ ToString( angle_index + 1 )
-																				  + " of " + ToString( number_of_angles ) );
+																					+ ConvertToString( angle_index + 1 )
+																				  + " of " + ConvertToString( number_of_angles ) );
 
 		// iterate all distances
 		for( size_t distance_index = 0; 

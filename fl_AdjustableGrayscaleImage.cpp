@@ -116,7 +116,7 @@ int Fl_AdjustableGrayscaleImage::handle( int event ){
 					double factored_value = pixel_value.value().first * pow( 10., common_power_ );
 					
 
-					string value_string = string{ ToString( factored_value, 0 ) };
+					string value_string = string{ ConvertToString( factored_value, 0 ) };
 					current_value_text_.copy_label( value_string.c_str() );
 				}
 			}

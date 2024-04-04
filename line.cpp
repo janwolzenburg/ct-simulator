@@ -27,32 +27,32 @@
 	Line implementation
 */
 
-Line::Line( const UnitVector3D v, const Point3D p ) : 
+Line::Line( const Unitvector3D v, const Point3D p ) : 
 	direction_( v ), origin_( p )
 {
 	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
 }
 
-Line::Line( const Vector3D v, const Point3D p ) : 
-	direction_( UnitVector3D{ v } ), origin_( p )
+Line::Line( const vector3D v, const Point3D p ) : 
+	direction_( Unitvector3D{ v } ), origin_( p )
 {
 	if( IsNearlyEqualDistance( direction_.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "trajectory vector must have length!" );
 	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
 }
 
 Line::Line( void ) : 
-	Line{ Vector3D{ Tuple3D{1, 0, 0}, DummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }}
+	Line{ vector3D{ Tuple3D{1, 0, 0}, DummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }}
 {
 
 }
 
-string Line::ToString( unsigned int newline_tabulators ) const{
+string Line::ConvertToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += "r=" + direction_.ToString() + newLine + "u=" + origin_.ToString();
+	str += "r=" + direction_.ConvertToString() + newLine + "u=" + origin_.ConvertToString();
 	return str;
 }
 
@@ -83,17 +83,17 @@ double Line::GetAngle( const Surface& s ) const{
 	return abs( PI / 2 - arc_angle );
 };
 
-Vector3D Line::GetLot( const Point3D p ) const{
-	Vector3D vP{ p.ConvertTo( direction_.GetCoordinateSystem() ) };
+vector3D Line::GetLot( const Point3D p ) const{
+	vector3D vP{ p.ConvertTo( direction_.GetCoordinateSystem() ) };
 
 	double linePara = ( direction_ * vP - direction_ * origin_ );
-	Vector3D s{ origin_ + direction_ * linePara };
+	vector3D s{ origin_ + direction_ * linePara };
 	return s - vP;
 }
 
 
 double Line::GetDistance( const Line l ) const{
-	Vector3D n{ direction_ ^ l.direction_ };
+	vector3D n{ direction_ ^ l.direction_ };
 	return abs( ( l.origin_ - origin_ ) * n ) / n.length();
 }
 

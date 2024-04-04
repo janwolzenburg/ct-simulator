@@ -243,7 +243,7 @@ class MathematicalObject{
 	 * @return string with object's data
 	 * @details virtual for object specific implementation
 	*/
-	virtual string ToString( [[maybe_unused]] const unsigned int newline_tabulators = 0 ) const = 0;
+	virtual string ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators = 0 ) const = 0;
 
 	/*!
 	 * @brief dump object's type and data to output stream

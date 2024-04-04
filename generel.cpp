@@ -136,31 +136,31 @@ NaturalNumberRange::NaturalNumberRange( const signed long long start, const sign
 
 
 template<>
-double ToNum<double>( const string str ){
+double ConvertToNumber<double>( const string str ){
 	if( str.length() == 0 ) return 0.;
 	return std::stod( str );
 }
 
 template<>
-int ToNum<int>( const string str ){
+int ConvertToNumber<int>( const string str ){
 	if( str.length() == 0 ) return 0;
 	return std::stoi( str );
 }
 
 template<>
-unsigned int ToNum<unsigned int>( const string str ){
+unsigned int ConvertToNumber<unsigned int>( const string str ){
 	if( str.length() == 0 ) return 0;
 	return std::stoul( str );
 }
 
 template<>
-long long ToNum<long long>( const string str ){
+long long ConvertToNumber<long long>( const string str ){
 	if( str.length() == 0 ) return 0;
 	return std::stoll( str );
 }
 
 template<>
-size_t ToNum<size_t>( const string str ){
+size_t ConvertToNumber<size_t>( const string str ){
 	if( str.length() == 0 ) return 0;
 	return static_cast<size_t>( std::stoll( str ) );
 }
@@ -179,7 +179,7 @@ vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair ){
 	size_t size = vector_pair.first.size();
 
 	if( vector_pair.first.size() != vector_pair.second.size() ){
-		cerr << "Vectors in VectorPair do not match in size!" << endl;
+		cerr << "vectors in VectorPair do not match in size!" << endl;
 		size_t size = Min( vector_pair.first.size(), vector_pair.second.size() );
 	}
 

@@ -36,7 +36,7 @@ Matrix::Matrix( const size_t n_, const size_t m_ ) :
 	if (number_of_columns_ == 0) { CheckForAndOutputError( MathError::Input, "matrix columns amount must be greater than zero!" ); number_of_columns_ = 1; }
 }
 
-string Matrix::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string Matrix::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	char tempCharArr[ 256 ];
@@ -157,7 +157,7 @@ SystemOfEquations::SystemOfEquations( const size_t varNum_ )
 	if( number_of_variables_ == 0 ) CheckForAndOutputError( MathError::Input, "number of variables must be greater than 0!" );
 };
 
-std::string SystemOfEquations::ToString( const unsigned int newline_tabulators ) const{
+std::string SystemOfEquations::ConvertToString( const unsigned int newline_tabulators ) const{
 
 	std::string str;
 	std::string newLine = { '\n' };
@@ -168,7 +168,7 @@ std::string SystemOfEquations::ToString( const unsigned int newline_tabulators )
 	str += "varNum=" + std::to_string( number_of_variables_ );
 	str += newLine + "popCols=" + std::to_string( currently_populated_columns_ );
 
-	str += newLine + Matrix::ToString();
+	str += newLine + Matrix::ConvertToString();
 
 	return str;
 
@@ -306,7 +306,7 @@ SystemOfEquationsSolution::SystemOfEquationsSolution( const size_t number_of_var
 	solution_found_( false ){};
 
 
-string SystemOfEquationsSolution::ToString( const unsigned int newline_tabulators ) const{
+string SystemOfEquationsSolution::ConvertToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 

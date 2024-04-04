@@ -113,7 +113,7 @@ class DataGrid{
 	/*!
 	 * @brief get indices corresponding to Coordinates
 	 * @param coordinate Coordinates
-	 * @return Indices of coordinate
+	 * @return indices of coordinate
 	*/
 	GridIndex GetIndex( const GridCoordinates coordinate ) const;
 	
@@ -177,9 +177,9 @@ class DataGrid{
 	GridCoordinates start_;				/*!< start of axis*/
 	GridCoordinates resolution_;		/*!< resolution of grid*/
 
-	vector<double> column_points_;		/*!< Vector with values on column axis*/
-	vector<double> row_points_;			/*!< Vector with values on row axis*/
-	vector<vector<D>> data_;			/*!< 2D Vector with data points*/
+	vector<double> column_points_;		/*!< vector with values on column axis*/
+	vector<double> row_points_;			/*!< vector with values on row axis*/
+	vector<vector<D>> data_;			/*!< 2D vector with data points*/
 
 	D max_value_;						/*!< maximum value in grid*/
 	D min_value_;						/*!< minimum value in grid*/
@@ -209,7 +209,7 @@ class DataGrid{
 	 * @brief fill the points and data vectors with value
 	 * @param value Value to fill
 	*/
-	void FillVectors( const D value );
+	void Fillvectors( const D value );
 
 };
 

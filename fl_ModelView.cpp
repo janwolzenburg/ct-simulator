@@ -89,7 +89,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	// labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
-	model_slice_image_.SetValueTip( "µ_a at " + ToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
+	model_slice_image_.SetValueTip( "µ_a at " + ConvertToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
 	model_slice_image_.Setlabel( { "x in mm", " y in mm" } ); 
 
 	// Hide image initially
@@ -149,9 +149,9 @@ string Fl_ModelView::GetModelDescription( void ) const{
 
 	modelDataString.clear();
 	modelDataString += "Name: \t" + model_.name() + '\n';
-	modelDataString += "Voxel: \t\t\t" + ToString( model_.number_of_voxel_3D().x ) + " x " + ToString( model_.number_of_voxel_3D().y ) + " x " + ToString( model_.number_of_voxel_3D().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + ToString( model_.voxel_size().x, 2 ) + " x " + ToString( model_.voxel_size().y, 2 ) + " x " + ToString( model_.voxel_size().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + ToString( model_.size().x ) + " x " + ToString( model_.size().y ) + " x " + ToString( model_.size().z ) + "  mm^3";
+	modelDataString += "Voxel: \t\t\t" + ConvertToString( model_.number_of_voxel_3D().x ) + " x " + ConvertToString( model_.number_of_voxel_3D().y ) + " x " + ConvertToString( model_.number_of_voxel_3D().z ) + "\n";
+	modelDataString += "Voxel Größe: \t" + ConvertToString( model_.voxel_size().x, 2 ) + " x " + ConvertToString( model_.voxel_size().y, 2 ) + " x " + ConvertToString( model_.voxel_size().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model Größe: \t" + ConvertToString( model_.size().x ) + " x " + ConvertToString( model_.size().y ) + " x " + ConvertToString( model_.size().z ) + "  mm^3";
 
 	return modelDataString;
 }
@@ -188,7 +188,7 @@ bool Fl_ModelView::MoveModel( double& targetXRot, double& targetYRot, double& ta
 		const double translation = targetZTrans - planeInstance.position_z;
 		planeInstance.position_z = targetZTrans;
 
-		model_.coordinate_system()->Translate( ( (Vector3D) planeInstance.surface.GetNormal() ) * translation );
+		model_.coordinate_system()->Translate( ( (vector3D) planeInstance.surface.GetNormal() ) * translation );
 	}
 
 	// return if succeeded
@@ -228,7 +228,7 @@ bool Fl_ModelView::SliceModel( void ){
 void Fl_ModelView::CenterModel( void ){
 
 	// center model
-	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
+	Tuple3D center = Primitivevector3{ model_.size() } / -2.;
 
 	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 

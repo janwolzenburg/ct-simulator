@@ -99,7 +99,7 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief get number of discrete energies in spectrum
-	 * @return Number of energies
+	 * @return number of energies
 	*/
 	size_t GetNumberOfEnergies( void ) const{ return photonflow_per_energy_.size(); };
 
@@ -113,7 +113,7 @@ class EnergySpectrum {
 	/*!
 	 * @brief get index of energy
 	 * @param energy Energy
-	 * @return Index of energy in data
+	 * @return index of energy in data
 	*/
 	size_t GetEnergyIndex( const double energy ) const;
 

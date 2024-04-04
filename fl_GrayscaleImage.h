@@ -107,13 +107,13 @@ class Fl_GrayscaleImage : public Fl_Widget{
 
 	/*!
 	 * @brief get size of scaled image
-	 * @return Width and height of scaled image
+	 * @return width and height of scaled image
 	*/
 	Index2D GetImageSize( void ) const{ return {grayscale_image_scaled_.width(), grayscale_image_scaled_.height() }; };
 
 	/*!
 	 * @brief get size of original image 
-	 * @return Width and height of original image
+	 * @return width and height of original image
 	*/
 	Index2D GetOriginalImageSize( void ) const{ return {grayscale_image_.width(), grayscale_image_.height() }; };
 

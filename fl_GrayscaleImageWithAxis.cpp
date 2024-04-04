@@ -86,7 +86,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		for( double divided_tic = x_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
 			digits_befor_comma++;
 
-		string number_string = ToString( x_axis_tic, 3 - digits_befor_comma );
+		string number_string = ConvertToString( x_axis_tic, 3 - digits_befor_comma );
 			
 		PixelCoordinates tic_position{ axis_origin.x + axis_space_ / 2 + i * ( x_axis_tip.x - axis_origin.x - axis_space_ ) / ( static_cast<int>( number_of_tics_.x ) - 1),  axis_origin.y };
 			
@@ -103,7 +103,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		for( double divided_tic = y_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
 			digits_befor_comma++;
 
-		string number_string = ToString( y_axis_tic, 3 - digits_befor_comma );
+		string number_string = ConvertToString( y_axis_tic, 3 - digits_befor_comma );
 		
 		PixelCoordinates tic_position{
 			axis_origin.x,

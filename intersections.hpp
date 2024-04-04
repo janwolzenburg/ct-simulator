@@ -38,9 +38,9 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& 
 	intersection_exists_( false )
 {
 	// primitve vectors without coordinate system context
-	PrimitiveVector3 surface_origin, surface_direction_1, surface_direction_2;
-	PrimitiveVector3 line_direction = line.direction().GetComponents();
-	PrimitiveVector3 line_origin = line.origin().GetComponents();
+	Primitivevector3 surface_origin, surface_direction_1, surface_direction_2;
+	Primitivevector3 line_direction = line.direction().GetComponents();
+	Primitivevector3 line_origin = line.origin().GetComponents();
 
 	// same system?
 	if( line.direction().GetCoordinateSystem() == 
@@ -88,13 +88,13 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& 
 
 
 template<class L, class S>
-string LineSurfaceIntersection<L, S>::ToString( unsigned int newline_tabulators ) const{
+string LineSurfaceIntersection<L, S>::ConvertToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	str += "solution=" + intersection_exists_;
-	str += newLine + intersection_point_.ToString();
+	str += newLine + intersection_point_.ConvertToString();
 	return str;
 }

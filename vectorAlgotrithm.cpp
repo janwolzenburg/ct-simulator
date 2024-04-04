@@ -63,11 +63,11 @@ void Normalise( vector<Tuple2D>& vec ){
 
 vector<Tuple2D> Normalise( const vector<Tuple2D>& vec ){
 
-	vector<Tuple2D> normalisedVector{ vec };
+	vector<Tuple2D> normalisedvector{ vec };
 
-	Normalise( ref( normalisedVector ) );
+	Normalise( ref( normalisedvector ) );
 
-	return normalisedVector;
+	return normalisedvector;
 
 }
 

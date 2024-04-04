@@ -43,10 +43,10 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 	const double detector_focus_distance = properties_.detector_focus_distance / 2.;		
 
 	// y-axis of coordinate system is the middle normal vector
-	const UnitVector3D middle_normal_vector = coordinate_system_->GetEy();
+	const Unitvector3D middle_normal_vector = coordinate_system_->GetEy();
 	// pixel normals should lie in xy-plane
 	// the middle normal vector will be rotated around this vector
-	const UnitVector3D rotation_vector = coordinate_system_->GetEz();		
+	const Unitvector3D rotation_vector = coordinate_system_->GetEz();		
 
 
 	// persistent variables
@@ -63,7 +63,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 																	* delta_theta;
 
 		// middle normal vector rotation by rotation angle around rotation vector
-		const UnitVector3D normal_vector = 
+		const Unitvector3D normal_vector = 
 			middle_normal_vector.RotateConstant( rotation_vector, rotation_angle );
 
 
@@ -71,7 +71,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		// the point's origin vector must be perpendicular to the current normal vector
 
 		// the lot is perpendicular to the current normal vector and it lies in xy-plane
-		const UnitVector3D normal_lot = rotation_vector ^ normal_vector;
+		const Unitvector3D normal_lot = rotation_vector ^ normal_vector;
 
 		// distance from origin to normal. Is the distance in the sinogram
 		const double current_distance = distance_range / 2. - 
@@ -79,7 +79,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 			  - static_cast<double>( pixel_index ) - 1 ) * delta_distance;
 															
 		// point which lies on the current normal and has the correct distance from the origin
-		const Point3D lot_end_point = Vector3D{ normal_lot } * current_distance;
+		const Point3D lot_end_point = vector3D{ normal_lot } * current_distance;
 
 		// the current normal 
 		const Line normal{ normal_vector, lot_end_point };
@@ -104,7 +104,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 
 			// lot vector from current normal to intersection point
 			// vector is pointing to the normal
-			const Vector3D intersection_lot = normal.GetLot( intersection );
+			const vector3D intersection_lot = normal.GetLot( intersection );
 
 			// get the pixel normal's origin which lies on the shortest Line connection the 
 			// intersection with current normal
@@ -122,7 +122,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		previous_pixel_size = pixel_size;
 
 		// vector perpendicualr to the normal pointing to the next pixel
-		const UnitVector3D surface_vector = -pixel_normal.direction() ^ rotation_vector;
+		const Unitvector3D surface_vector = -pixel_normal.direction() ^ rotation_vector;
 
 		// add pixel
 		pixel_array_.emplace_back(  BoundedSurface{ 
@@ -139,7 +139,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 		};
 
 		// add mirrored pixel
-		const UnitVector3D mirrored_surface_vector = - mirroredPixelNormal.direction() 
+		const Unitvector3D mirrored_surface_vector = - mirroredPixelNormal.direction() 
 																								 ^ rotation_vector;
 		pixel_array_.emplace_back(	BoundedSurface{ 
 								mirrored_surface_vector, rotation_vector,

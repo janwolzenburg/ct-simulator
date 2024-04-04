@@ -13,7 +13,7 @@
 	Includes
 *********************************************************************/
 #include "generelMath.h"
-#include "primitiveVector3.h"
+#include "primitivevector3.h"
 #include "coordinateSystem.h"
 #include "coordinateSystemTree.h"
 
@@ -26,7 +26,7 @@
  /*!
  * @brief class for Coordinates with coordinate system with context
 */
-class Coordinates : protected PrimitiveVector3{
+class Coordinates : protected Primitivevector3{
 
 	protected:
 	const CoordinateSystem* coordinate_system_;						/*!< pointer to coordinate system*/
@@ -38,7 +38,7 @@ class Coordinates : protected PrimitiveVector3{
 	 * @brief constructor
 	 * @param vec3_ Values
 	*/
-	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ components }, coordinate_system_( coordinate_system ) {};
+	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : Primitivevector3{ components }, coordinate_system_( coordinate_system ) {};
 
 	/*!
 	 * @brief defaulkt constructor
@@ -49,7 +49,7 @@ class Coordinates : protected PrimitiveVector3{
 	 * @brief convert coordinate's data to string
 	 * @return string with coordinate's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief comparison operator
@@ -73,8 +73,8 @@ class Coordinates : protected PrimitiveVector3{
 	Coordinates operator- ( const Coordinates subtrahend ) const;
 
 	/*!
-	 * @brief Negation operator
-	 * @return Negated Coordinates
+	 * @brief negation operator
+	 * @return negated Coordinates
 	*/
 	Coordinates operator- ( void ) const;
 

@@ -75,7 +75,7 @@ size_t DeSerializeBuildIn<string>( string& value, string default_value, const ve
  * @brief deserialize build in data type
  * @tparam T type
  * @param default_value default value when reading fails
- * @param binary_data Vector with binary data
+ * @param binary_data vector with binary data
  * @param current_byte iterator to start reading from. will be advanced
  * @return deserialized object
 */
@@ -85,7 +85,7 @@ T DeSerializeBuildIn( T default_value, const vector<char>& binary_data, vector<c
 /*!
  * @brief deserialize and return object
  * @tparam T type
- * @param binary_data Vector with binary data
+ * @param binary_data vector with binary data
  * @param current_byte iterator to start reading from. will be advanced
  * @return deserialized object
 */
@@ -94,7 +94,7 @@ T DeSerialize( const vector<char>& binary_data, vector<char>::const_iterator& cu
 
 /*!
  * @brief deserialize 2D-vector of grid coordinates
- * @param binary_data Vector with binary data
+ * @param binary_data vector with binary data
  * @param current_byte iterator to start reading from. will be advanced
  * @return deserialized object
  */

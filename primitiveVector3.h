@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   PrimitiveVector3.h
+ * @file   Primitivevector3.h
  * @brief  class for a primitve 3D vector
  *
  * @author Jan Wolzenburg
@@ -21,9 +21,9 @@
 
 
 /*!
- * @brief class for a primitive 3D Vector with some operations
+ * @brief class for a primitive 3D vector with some operations
 */
-class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
+class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	public:
 
@@ -33,80 +33,80 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	 * @param y_ y value
 	 * @param z_ z value
 	*/
-	PrimitiveVector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
+	Primitivevector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
 
 	/*!
 	* @brief constructor
 	* @param xyz_ x, y and z values
 	*/
-	PrimitiveVector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
+	Primitivevector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
 
 	/*!
 	 * @brief default constructor
 	*/
-	PrimitiveVector3( void ) : PrimitiveVector3{ 0., 0., 0. } {};
+	Primitivevector3( void ) : Primitivevector3{ 0., 0., 0. } {};
 
 	/*!
 	 * @brief constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
 	 * @param it Iterator to start of data in vector
 	*/
-	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
+	Primitivevector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
 	 * @brief convert data to string
 	 * @param newline_tabulators
 	 * @return string with data_
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief comparison operator
-	 * @param operand Vector to compare with
+	 * @param operand vector to compare with
 	 * @return true when all components between this and second vector are almost equal
 	*/
-	bool operator== ( const PrimitiveVector3 operand ) const;
+	bool operator== ( const Primitivevector3 operand ) const;
 
 	/*!
 	 * @brief add second vector to this
-	 * @param summand Vector to add
+	 * @param summand vector to add
 	 * @return sum of this and summand
 	*/
-	PrimitiveVector3 operator+ ( const PrimitiveVector3 summand ) const{ return PrimitiveVector3{ x + summand.x, y + summand.y, z + summand.z }; };
+	Primitivevector3 operator+ ( const Primitivevector3 summand ) const{ return Primitivevector3{ x + summand.x, y + summand.y, z + summand.z }; };
 
 	/*!
 	 * @brief substract second vector to this
-	 * @param subtrahend Vector to substract
+	 * @param subtrahend vector to substract
 	 * @return GetDifference of this and v
 	*/
-	PrimitiveVector3 operator- ( const PrimitiveVector3 subtrahend ) const{ return PrimitiveVector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
+	Primitivevector3 operator- ( const Primitivevector3 subtrahend ) const{ return Primitivevector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
 
 	/*!
-	 * @brief Negation operator
-	 * @return Negated vector
+	 * @brief negation operator
+	 * @return negated vector
 	*/
-	PrimitiveVector3 operator- ( void ) const{ return PrimitiveVector3{ -x, -y, -z }; };
+	Primitivevector3 operator- ( void ) const{ return Primitivevector3{ -x, -y, -z }; };
 
 	/*!
 	 * @brief scale this vector
 	 * @param scalar Factor to scale with
 	 * @return scaled vector
 	*/
-	PrimitiveVector3 operator* ( const double scalar ) const{ return PrimitiveVector3{ scalar * x, scalar * y, scalar * z }; };
+	Primitivevector3 operator* ( const double scalar ) const{ return Primitivevector3{ scalar * x, scalar * y, scalar * z }; };
 
 	/*!
 	 * @brief scalar product
 	 * @param v Second vector
 	 * @return scalar product of vectors
 	*/
-	double operator* ( const PrimitiveVector3 vec ) const{ return this->x * vec.x + this->y * vec.y + this->z * vec.z; };
+	double operator* ( const Primitivevector3 vec ) const{ return this->x * vec.x + this->y * vec.y + this->z * vec.z; };
 
 	/*!
 	 * @brief divide this vector
 	 * @param divisor Value to divide by
 	 * @return Divided vector
 	*/
-	PrimitiveVector3 operator/ ( const double divisor ) const;
+	Primitivevector3 operator/ ( const double divisor ) const;
 
 	/*!
 	 * @brief get length of primitive vector
@@ -121,7 +121,7 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	void Scale( const double scalar );
 
 	/*!
-	 * @brief Normalise values of components
+	 * @brief normalise values of components
 	 * @return Error code
 	*/
 	MathError Normalise( void );
@@ -171,6 +171,6 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	 * @param angle Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const PrimitiveVector3 axis, const double angle );
+	MathError Rotate( const Primitivevector3 axis, const double angle );
 
 };

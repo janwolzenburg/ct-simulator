@@ -35,7 +35,7 @@ using std::map;
 */
 
 /*!
- * @brief Physical voxel data_
+ * @brief physical voxel data_
 */
 #pragma pack(push, 1)	// memory alignment for serializing model data without serializing single voxel data 
 class VoxelData{
@@ -79,7 +79,7 @@ class VoxelData{
 
 	/*!
 	 * @brief constructor from serialized data
-	 * @param binary_data Vector with serialized data
+	 * @param binary_data vector with serialized data
 	 * @param current_byte Start of data for this object
 	*/
 	VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
@@ -113,13 +113,13 @@ class VoxelData{
 	 * @brief add special property
 	 * @param property Property to add
 	*/
-	void AddSpecialProperty( const SpecialProperty property ){ specialProperties_ |= ToUnderlying( property ); };
+	void AddSpecialProperty( const SpecialProperty property ){ specialProperties_ |= ConvertToUnderlying( property ); };
 
 	/*!
 	 * @brief remove special property
 	 * @param property Property to remove
 	*/
-	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
+	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ConvertToUnderlying( property ); };
 
 	/*!
 	 * @brief get the absorption_ at given energy
@@ -205,7 +205,7 @@ class Voxel : public MathematicalObject{
 	 * @brief convert result's data to string
 	 * @return string with result's data
 	*/
-	string ToString( unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief get origin point of voxel
@@ -230,13 +230,13 @@ class Voxel : public MathematicalObject{
 	 * @param face Face ID
 	 * @return Bounded surface which is the face
 	*/
-	BoundedSurface GetFace( Face face ) const{ return faces[ ToUnderlying( face ) ]; };
+	BoundedSurface GetFace( Face face ) const{ return faces[ ConvertToUnderlying( face ) ]; };
 
 	/*!
 	 * @brief get center of voxel
 	 * @return Point at center of voxel
 	*/
-	Point3D GetCenter( void ) const{ return origin_corner_ + Vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
+	Point3D GetCenter( void ) const{ return origin_corner_ + vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
 
 	/*!
 	 * @brief check if voxel contains point
@@ -251,5 +251,5 @@ class Voxel : public MathematicalObject{
 	Tuple3D size_;				/*!< size in local coordinate system*/
 	VoxelData data_;			/*!< physical voxel data_*/
 	Point3D origin_corner_;		/*!< point as origin_ of voxel in coordinate system*/
-	array<BoundedSurface, ToUnderlying( Face::End )> faces;	/*!< Faces in global context*/
+	array<BoundedSurface, ConvertToUnderlying( Face::End )> faces;	/*!< Faces in global context*/
 };

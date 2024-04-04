@@ -58,9 +58,9 @@ void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
 		properties_.AttenuateSpectrum( data_, distance );
 }
 
-array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void ) const{
+array<bool, ConvertToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void ) const{
 
-	array<bool, ToUnderlying( Voxel::Face::End )> face_possiblities{ false };
+	array<bool, ConvertToUnderlying( Voxel::Face::End )> face_possiblities{ false };
 
 	// iterate all faces of voxel
 	for( Voxel::Face currentFace = Voxel::Face::Begin; 
@@ -72,24 +72,24 @@ array<bool, ToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void )
 		switch( currentFace ){
 			case Voxel::Face::YZ_Xp:
 				if( direction_.X() > 0 ) 
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::YZ_Xm:
 				if( direction_.X() < 0 ) 
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XZ_Yp:
 				if( direction_.Y() > 0 ) 
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XZ_Ym:
 				if( direction_.Y() < 0 )
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 
 			case Voxel::Face::XY_Zp:
 				if( direction_.Z() > 0  )
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 			case Voxel::Face::XY_Zm:
 				if( direction_.Z() < 0 ) 
-					face_possiblities.at( ToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
 
 			default: break;
 		}
@@ -109,7 +109,7 @@ void Ray::SetOrigin( const Point3D new_origin ){
 }
 
 
-void Ray::SetDirection( const UnitVector3D new_direction ){
+void Ray::SetDirection( const Unitvector3D new_direction ){
 		if( !new_direction.HasSameSystem( direction_ ) ){
 		direction_ = new_direction.ConvertTo( direction_ );
 		return;
@@ -306,7 +306,7 @@ vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 																				 simple_fraction;
 			new_properties.initial_power_ = new_spectrum.GetTotalPower();
 
-			const UnitVector3D new_direction = 
+			const Unitvector3D new_direction = 
 				direction_.RotateConstant( scattering_information.scattering_plane_normal(),
 																	 angle );
 

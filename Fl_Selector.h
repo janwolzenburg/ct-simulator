@@ -45,7 +45,7 @@ class Fl_Selector : public Fl_Group{
 
 	/*!
 	 * @brief get selected item
-	 * @return Item
+	 * @return item
 	*/
 	string current_element( void ) const{ return *current_element_; };
 

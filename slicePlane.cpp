@@ -23,8 +23,8 @@
 
 SlicePlane::SlicePlane( void ) :
 	coordinate_system( CoordinateSystems().AddSystem( "Slice plane system" ) ),
-	surface{ UnitVector3D{ Tuple3D{ 1, 0, 0 }, coordinate_system },
-				UnitVector3D{ Tuple3D{ 0, 1, 0 }, coordinate_system },
+	surface{ Unitvector3D{ Tuple3D{ 1, 0, 0 }, coordinate_system },
+				Unitvector3D{ Tuple3D{ 0, 1, 0 }, coordinate_system },
 				Point3D{  Tuple3D{0, 0, 0}, coordinate_system } },
 	rotation_angle_x( 0. ),
 	rotation_angle_y( 0. ),

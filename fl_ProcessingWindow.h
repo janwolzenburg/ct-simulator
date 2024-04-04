@@ -36,7 +36,7 @@
  *********************************************************************/
 
 /*!
- * @brief Window for processing the projections
+ * @brief window for processing the projections
 */
 class Fl_ProcessingWindow : public Fl_Window{
 

@@ -39,22 +39,22 @@
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="origin_" Type="PrimitiveVector3">
+    <AssociationLine Name="origin_" Type="Primitivevector3">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.607" Y="0.852" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="ex_" Type="PrimitiveVector3">
+    <AssociationLine Name="ex_" Type="Primitivevector3">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.639" Y="0.003" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="ey_" Type="PrimitiveVector3">
+    <AssociationLine Name="ey_" Type="Primitivevector3">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.646" Y="-0.006" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="ez_" Type="PrimitiveVector3">
+    <AssociationLine Name="ez_" Type="Primitivevector3">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-1.851" Y="-0.469" />
       </MemberNameLabel>
@@ -70,7 +70,7 @@
       <Field Name="ez_" />
     </ShowAsAssociation>
   </class>
-  <class Name="PrimitiveVector3" Collapsed="true" HideInheritanceLine="true">
+  <class Name="Primitivevector3" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -78,10 +78,10 @@
     <InheritanceLine Type="Tuple3D" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEBAIAAQgAEAAAAAAAAgRgAgAAAAA=</HashCode>
-      <FileName>primitiveVector3.h</FileName>
+      <FileName>primitivevector3.h</FileName>
     </TypeIdentifier>
   </class>
-  <class Name="Vector3D" Collapsed="true" HideInheritanceLine="true">
+  <class Name="vector3D" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="3.25" Width="1.5" />
     <InheritanceLine Type="Coordinates" IsHidden="true" />
     <TypeIdentifier>
@@ -89,9 +89,9 @@
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
   </class>
-  <class Name="UnitVector3D" Collapsed="true">
+  <class Name="Unitvector3D" Collapsed="true">
     <Position X="5.25" Y="3.25" Width="1.5" />
-    <InheritanceLine Type="Vector3D">
+    <InheritanceLine Type="vector3D">
       <InheritanceModifierLabel ManuallyPlaced="true">
         <Position X="0.124" Y="0.055" />
       </InheritanceModifierLabel>
@@ -103,7 +103,7 @@
   </class>
   <class Name="Point3D" Collapsed="true" HideInheritanceLine="true">
     <Position X="17" Y="13.25" Width="1.5" />
-    <InheritanceLine Type="Vector3D" IsHidden="true" />
+    <InheritanceLine Type="vector3D" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAACAAAIAAAAAAAEAAAAAAcgAAAAACAAAAAAAAAgAAA=</HashCode>
       <FileName>vector3D.h</FileName>
@@ -139,7 +139,7 @@
     <Members>
       <Field Name="origin_" Hidden="true" />
     </Members>
-    <AssociationLine Name="direction_1_" Type="UnitVector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="direction_1_" Type="Unitvector3D" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.375" Y="4.5" />
         <Point X="7.375" Y="3.75" />
@@ -149,7 +149,7 @@
         <Position X="0.078" Y="0.064" Height="0.182" Width="1.025" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="direction_2_" Type="UnitVector3D" FixedToPoint="true">
+    <AssociationLine Name="direction_2_" Type="Unitvector3D" FixedToPoint="true">
       <Path>
         <Point X="6.312" Y="4.5" />
         <Point X="6.312" Y="3.941" />

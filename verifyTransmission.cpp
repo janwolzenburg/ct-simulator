@@ -85,7 +85,7 @@ void VerifyTransmission( void ){
 
 	PersistingObject<Model> model{ Model{}, model_path, true };
 	
-	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
+	Tuple3D center = Primitivevector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 
@@ -116,7 +116,7 @@ void VerifyTransmission( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 
 
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
@@ -154,7 +154,7 @@ void VerifyHardening( void ){
 	
 	path model_path{ "./verification only water.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
-	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
+	Tuple3D center = Primitivevector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 1.275*measurefield_size };
@@ -187,7 +187,7 @@ void VerifyHardening( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
 		}
 	}
@@ -264,10 +264,10 @@ void VerifyScattering( void ){
 
 	path model_path{ "./verification only water.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
-	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
+	Tuple3D center = Primitivevector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
-	simulation_properties.number_of_points_in_spectrum_ = 128;
+	simulation_properties.number_of_points_in_spectrum = 128;
 	simulation_properties.bins_per_energy = 16;
 	ProjectionsProperties projections_properties{number_of_projections, number_of_pixel, 100 };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
@@ -300,7 +300,7 @@ void VerifyScattering( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
 		}
 	}

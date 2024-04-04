@@ -35,7 +35,7 @@ class Surface : public MathematicalObject{
 	 * @param direction_2 Second direction vector. Must be orthogonal to first vector
 	 * @param origin Origin
 	*/
-	explicit Surface( const UnitVector3D direction_1, const UnitVector3D  direction_2, const Point3D  origin );
+	explicit Surface( const Unitvector3D direction_1, const Unitvector3D  direction_2, const Point3D  origin );
 
 	/*!
 	 * @brief construct from binary data_
@@ -55,7 +55,7 @@ class Surface : public MathematicalObject{
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return string with surface's data_
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief serialize this object
@@ -73,13 +73,13 @@ class Surface : public MathematicalObject{
 	 * @brief get first direction vector
 	 * @return direction_1_ of surface
 	*/
-	UnitVector3D  direction_1( void ) const{ return direction_1_; };
+	Unitvector3D  direction_1( void ) const{ return direction_1_; };
 
 	/*!
 	 * @brief get second direction vector
 	 * @return direction_2_ of surface
 	*/
-	UnitVector3D  direction_2( void ) const{ return direction_2_; };
+	Unitvector3D  direction_2( void ) const{ return direction_2_; };
 
 	/*!
 	 * @brief get point on the surface based on parameters
@@ -93,7 +93,7 @@ class Surface : public MathematicalObject{
 	 * @brief get surface normal by cross product
 	 * @return surface normal
 	*/
-	UnitVector3D GetNormal( void ) const{ return normal_; };
+	Unitvector3D GetNormal( void ) const{ return normal_; };
 
 	/*!
 	 * @brief convert surface to different coordinate system
@@ -112,10 +112,10 @@ class Surface : public MathematicalObject{
 
 
 	protected:
-	UnitVector3D  direction_1_;			/*!< First direction vector*/
-	UnitVector3D  direction_2_;			/*!< second direction vector*/
+	Unitvector3D  direction_1_;			/*!< First direction vector*/
+	Unitvector3D  direction_2_;			/*!< second direction vector*/
 	Point3D  origin_;								/*!< origin*/
-	UnitVector3D normal_;						/*!< The surfaces normal*/
+	Unitvector3D normal_;						/*!< The surfaces normal*/
 
 };
 
@@ -136,7 +136,7 @@ class BoundedSurface : public Surface{
 	 * @param direction_1_range Limits for parameter a
 	 * @param direction_2_range Limits for parameter b
 	*/
-	explicit BoundedSurface( const UnitVector3D  direction_1, const UnitVector3D  direction_2, const Point3D  origin,
+	explicit BoundedSurface( const Unitvector3D  direction_1, const Unitvector3D  direction_2, const Point3D  origin,
 							 const NumberRange direction_1_range, const NumberRange direction_2_range );
 
 	/*!
@@ -149,7 +149,7 @@ class BoundedSurface : public Surface{
 	 * @param parameter_2_min Lower bound for parameter 2
 	 * @param parameter_2_max Upper bound for parameter 2
 	*/
-	explicit BoundedSurface( const UnitVector3D  direction_1, const UnitVector3D  direction_2, const Point3D  origin,
+	explicit BoundedSurface( const Unitvector3D  direction_1, const Unitvector3D  direction_2, const Point3D  origin,
 							 const double parameter_1_min, const double parameter_1_max,
 							 const double parameter_2_min, const double parameter_2_max );
 
@@ -192,7 +192,7 @@ class BoundedSurface : public Surface{
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
 	 * @return string with surface's data_
 	*/
-	std::string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	std::string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief serialize this object

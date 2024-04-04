@@ -80,13 +80,13 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief get Width
-	 * @return Image width
+	 * @return image width
 	*/
 	size_t width( void ) const{ return width_; };
 	
 	/*!
 	 * @brief get height
-	 * @return Image height
+	 * @return image height
 	*/
 	size_t height( void ) const{ return height_; };
 	
@@ -119,7 +119,7 @@ class GrayscaleImage{
 	 * @brief get the 1D index of grid element
 	 * @param column Column index
 	 * @param row Row index
-	 * @return Index of Row|Column element
+	 * @return index of Row|Column element
 	*/
 	size_t GetIndex( const size_t column, const size_t row ) const;
 

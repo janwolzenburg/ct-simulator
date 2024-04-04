@@ -374,72 +374,72 @@ class NumberRange{
 
 /*!
  * @brief converts variable to underlying type
- * @tparam T Type of var
- * @param var Variable
- * @return value of var cast to underlying type
+ * @tparam T type of variable
+ * @param variable variable to convert
+ * @return value of variable cast to underlying type
 */
 template <typename T>
-constexpr typename std::underlying_type_t<T> ToUnderlying( T var );
+constexpr typename std::underlying_type_t<T> ConvertToUnderlying( T variable );
 
 /*!
- * @brief Postincrement operator for enumeratable variable
- * @tparam T Type of var
- * @param var Reference to variable
- * @return Incremented variable
+ * @brief postincrement operator for enumeratable variable
+ * @tparam T type of variable
+ * @param variable reference to variable
+ * @return incremented variable
 */
 template <typename T>
-typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
+typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& variable );
 
 /*!
  * @brief substraction operator for enum classes. Assumes value 1 is greater than value 2
- * @tparam T Type of values
+ * @tparam T type of values
  * @param left_operand Minuend
  * @param right_operand Subtrahend
- * @return GetDifference val1 - val2 cast to its their underlying type
+ * @return GetDifference left_operand - right_operand cast to their underlying type
 */
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand, const T right_operand );
 
 /*!
- * @brief convert number_of_pixel to string with given precision
- * @tparam T Type of number_of_pixel
+ * @brief convert number to string with given precision
+ * @tparam T type of number
  * @param value Value
- * @param precision Precision of converted number_of_pixel. Negative rounds number_of_pixel to significant digits
- * @return Number as string
+ * @param precision Precision of converted number. Negative rounds number to significant digits
+ * @return number as string
 */
 template<typename T>
-string ToString( T value, const int precision = 0 );
+string ConvertToString( T value, const int precision = 0 );
 
 /*!
- * @brief convert string to number_of_pixel
- * @tparam T Type of number_of_pixel
- * @param str String
- * @return Number corresponding to string
+ * @brief convert string to number
+ * @tparam T type of number
+ * @param string_to_convert string to convert
+ * @return number corresponding to string
 */
 template<typename T>
-T ToNum( const string str );
+T ConvertToNumber( const string string_to_convert );
 
 /*!
- * @brief Write to a variable used in multiple threads
- * @tparam T Type of variable
- * @param var Reference to variable
- * @param value Value to write
- * @param var_mutex Reference to mutex
- * @return Written value
+ * @brief write to a variable used in multiple threads
+ * @tparam T type of variable
+ * @param variable reference to variable
+ * @param new_value value to write
+ * @param variable_mutex reference to mutex
+ * @return written value
 */
 template<typename T>
-T WriteThreadVar( T& var, const T& value, mutex& var_mutex );
+T WriteThreadVar( T& variable, const T& new_value, mutex& variable_mutex );
 
 /*!
  * @brief set flag to false but return previous state of flag
- * @param flag Flag to set to false
- * @return Flag value before its reset
+ * @param flag flag to set to false
+ * @return flag value before its reset
 */
 bool UnsetFlag( bool& flag );
 
 /*!
  * @brief convert a vector pair to a vector uf 2D-Tuples
- * @param vector_pair Vector pair
+ * @param vector_pair vector pair
  * @return vector with 2D-Tuples
 */
 vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair );

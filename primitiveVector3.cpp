@@ -1,5 +1,5 @@
 /*********************************************************************
- * @file   PrimitiveVector3.cpp
+ * @file   Primitivevector3.cpp
  * @brief  Implementations
  *
  * @author Jan Wolzenburg
@@ -16,7 +16,7 @@
 using std::string;
 
 #include "generelMath.h"
-#include "primitiveVector3.h"
+#include "primitivevector3.h"
 
 
 
@@ -26,10 +26,10 @@ using std::string;
 
 
 /*
-	PrimitiveVector3 implementation
+	Primitivevector3 implementation
 */
 
-string PrimitiveVector3::ToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string Primitivevector3::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	string str;
 	char tempCharArr[ 64 ] = { 0 };
 	snprintf( tempCharArr, 64, "(%.6f,%.6f,%.6f)", x, y, z );
@@ -38,29 +38,29 @@ string PrimitiveVector3::ToString( [[maybe_unused]] const unsigned int newline_t
 	return str;
 }
 
-bool PrimitiveVector3::operator== ( const PrimitiveVector3 v ) const{
+bool Primitivevector3::operator== ( const Primitivevector3 v ) const{
 
-	const PrimitiveVector3 diffVec = v - *this;
+	const Primitivevector3 diffVec = v - *this;
 
 	return IsNearlyEqualDistance( diffVec.GetLength(), 0 );
 }
 
-PrimitiveVector3 PrimitiveVector3::operator/ ( const double divisor ) const{
+Primitivevector3 Primitivevector3::operator/ ( const double divisor ) const{
 	if( divisor == 0 ) return *this;
-	return PrimitiveVector3{ x / divisor, y / divisor, z / divisor };
+	return Primitivevector3{ x / divisor, y / divisor, z / divisor };
 }
 
-double PrimitiveVector3::GetLength( void ) const{
+double Primitivevector3::GetLength( void ) const{
 	return sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 }
 
-void PrimitiveVector3::Scale( const double scalar ){
+void Primitivevector3::Scale( const double scalar ){
 	x *= scalar;
 	y *= scalar;
 	z *= scalar;
 }
 
-MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
+MathematicalObject::MathError Primitivevector3::Normalise( void ){
 
 	// new length
 	const double len = this->GetLength();
@@ -80,7 +80,7 @@ MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 	return MathError::Ok;
 }
 
-void PrimitiveVector3::RotateAroundXAxis( const double sinPhi, const double cosPhi ){
+void Primitivevector3::RotateAroundXAxis( const double sinPhi, const double cosPhi ){
 	// apply rotation matrix
 	double x_ = x;
 	double y_ = y * cosPhi - z * sinPhi;
@@ -89,7 +89,7 @@ void PrimitiveVector3::RotateAroundXAxis( const double sinPhi, const double cosP
 	x = x_; y = y_; z = z_;
 }
 
-void PrimitiveVector3::RotateAroundYAxis( const double sinPhi, const double cosPhi ){
+void Primitivevector3::RotateAroundYAxis( const double sinPhi, const double cosPhi ){
 	// apply rotation matrix
 	double x_ = x * cosPhi + z * sinPhi;
 	double y_ = y;
@@ -98,7 +98,7 @@ void PrimitiveVector3::RotateAroundYAxis( const double sinPhi, const double cosP
 	x = x_; y = y_; z = z_;
 }
 
-void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosPhi ){
+void Primitivevector3::RotateAroundZAxis( const double sinPhi, const double cosPhi ){
 	// apply rotation matrix
 	double x_ = x * cosPhi - y * sinPhi;
 	double y_ = x * sinPhi + y * cosPhi;
@@ -107,8 +107,8 @@ void PrimitiveVector3::RotateAroundZAxis( const double sinPhi, const double cosP
 	x = x_; y = y_; z = z_;
 }
 
-MathematicalObject::MathError PrimitiveVector3::Rotate( 
-																const PrimitiveVector3 rotation_vector, 
+MathematicalObject::MathError Primitivevector3::Rotate( 
+																const Primitivevector3 rotation_vector, 
 																const double rotation_angle ){
 	// steps for rotation:
 	// 1: rotate around z axis to tilt rot. axis into x-z plane 
@@ -122,7 +122,7 @@ MathematicalObject::MathError PrimitiveVector3::Rotate(
 		return CheckForAndOutputError( MathError::Input, "rotation axis must have length!" );
 
 	// create copy and Normalise
-	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
+	Primitivevector3 rotation_vector_copy{ rotation_vector };
 	rotation_vector_copy.Normalise();
 	
 	// length of the axis projection on x-y plane

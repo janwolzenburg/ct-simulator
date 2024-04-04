@@ -23,7 +23,7 @@
 RayScattering::RayScattering(	const size_t number_of_angles, 
 															const NumberRange energy_range, 
 															const size_t number_of_energies, 
-															const UnitVector3D scattering_normal, 
+															const Unitvector3D scattering_normal, 
 															const double maximum_angle_to_lie_in_scatter_plane ) :
 	number_of_energies_( ForcePositive( number_of_energies ) ),
 	angle_resolution_( ( 2. * PI ) / static_cast<double>( number_of_angles - 1 ) ),

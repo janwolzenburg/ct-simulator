@@ -86,14 +86,14 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	information_output_.textfont( FL_COURIER );
 	information_output_.value(	string{
 									"Name:                               " + raw_projections_.tomography_properties().name + '\n' +
-									"Sinogramgröße:                      " + ToString( raw_projections_.properties().number_of_projections()) + " x " + ToString(raw_projections_.properties().number_of_distances()) + '\n' +
-									"Sinogramauflösung:                  " + ToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
+									"Sinogramgröße:                      " + ConvertToString( raw_projections_.properties().number_of_projections()) + " x " + ConvertToString(raw_projections_.properties().number_of_distances()) + '\n' +
+									"Sinogramauflösung:                  " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
 									"Röntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
-									"Mittlere Röhrenenergie:             " + ToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " keV" + '\n' +
+									"Mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " keV" + '\n' +
 									"Energieabhängige Schwächung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + '\n' +
 									"Streuung aktiviert:                 " + (raw_projections_.tomography_properties().scattering_enabled == true ? "ja" : "nein") + '\n' +
-									"Faktor für Streuwahrscheinlichkeit: " + ToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
-									"Faktor für Streuintensität:         " + ToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n'
+									"Faktor für Streuwahrscheinlichkeit: " + ConvertToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
+									"Faktor für Streuintensität:         " + ConvertToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n'
 								}.c_str() );
 
 	filter_group_.add( filter_plot_ );

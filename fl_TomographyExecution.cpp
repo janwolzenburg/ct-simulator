@@ -197,14 +197,14 @@ void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection
 		string informationString = "";
 
 
-		informationString += "Sinogramgröße:      " + ToString( projection_properties.number_of_projections() ) + " x " + ToString( projection_properties.number_of_distances() ) + '\n';
-		informationString += "Sinogramauflösung:  " + ToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ToString( projection_properties.number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Sinogramgröße:      " + ConvertToString( projection_properties.number_of_projections() ) + " x " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
+		informationString += "Sinogramauflösung:  " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "Gantryrotationen:   " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
+		informationString += "Detektorwinkel:	  " + ConvertToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
-		informationString += "Elektrische Leistung:	  " + ToString( tube.GetElectricalPower()) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ToString( tube.GetEmittedBeamPower() ) + "W" + '\n';
+		informationString += "Elektrische Leistung:	  " + ConvertToString( tube.GetElectricalPower()) + "W" + '\n';
+		informationString += "Strahlleistung:	  " + ConvertToString( tube.GetEmittedBeamPower() ) + "W" + '\n';
 		
 		information_.value( informationString.c_str() );
 }

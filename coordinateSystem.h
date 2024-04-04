@@ -39,7 +39,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief convert coordinate system's data to string
 	 * @return string with coordinate system's data_
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief serialize this object
@@ -93,7 +93,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param name_ Name of the system
 	 * @return Pointer to created system with this system as parent_
 	*/
-	CoordinateSystem* AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name ) const;
+	CoordinateSystem* AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const;
 
 	/*!
 	 * @brief get path from global system to this system
@@ -117,19 +117,19 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief get unit vector of x-axis in this system's context
 	 * @return x-axis unit vector
 	*/
-	UnitVector3D GetEx( void ) const;
+	Unitvector3D GetEx( void ) const;
 
 	/*!
 	 * @brief get unit vector of y-axis in this system's context
 	 * @return y-axis unit vector
 	*/
-	UnitVector3D GetEy( void ) const;
+	Unitvector3D GetEy( void ) const;
 
 	/*!
 	 * @brief get unit vector of z-axis in this system's context
 	 * @return z-axis unit vector
 	*/
-	UnitVector3D GetEz( void ) const;
+	Unitvector3D GetEz( void ) const;
 
 	/*!
 	 * @brief get x-axis in parent_ coordinate system
@@ -171,7 +171,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief Translate coordinate system
 	 * @param dV Translation vector
 	*/
-	MathError Translate( const Vector3D direction );
+	MathError Translate( const vector3D direction );
 
 	/*!
 	 * @brief rotate coordinate system around vector
@@ -179,7 +179,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param phi Angle
 	 * @return Error code
 	*/
-	MathError Rotate( const UnitVector3D axis, const double arc_angle );
+	MathError Rotate( const Unitvector3D axis, const double arc_angle );
 
 	/*!
 	 * @brief rotate coordinate system
@@ -203,7 +203,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 		* @param parent Pointer to parent_ system
 		* @param name Name of the system
 	*/
-	CoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez,
+	CoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez,
 				const CoordinateSystem* const parent, const string name );
 
 	/*!

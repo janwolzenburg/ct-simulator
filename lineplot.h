@@ -40,8 +40,8 @@ class LinePlot : public Plot{
 
 	/*!
 	 * @brief assign data to plot
-	 * @param X_ Vector of x values
-	 * @param Y_ Vector of y values
+	 * @param X_ vector of x values
+	 * @param Y_ vector of y values
 	*/
 	void AssignData( const vector<double> X_, const vector<double> Y_ );
 
@@ -59,7 +59,7 @@ class LinePlot : public Plot{
 
 	protected:
 
-	vector<double> X, Y;	/*!< Vectors with points*/
+	vector<double> X, Y;	/*!< vectors with points*/
 
 };
 

@@ -59,7 +59,7 @@ Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label 
 	special_property_input_.tooltip( "Select if the model feature has a special property.");
 		
 	Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
-	value_input_.copy_tooltip( string{ "Absorption coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
+	value_input_.copy_tooltip( string{ "Absorption coefficient at " + ConvertToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
 	value_input_.SetProperties( 0., 100., 5, None );
 	value_input_.value( absorption_water_Per_mm );
 
@@ -208,7 +208,7 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 
 	features_group_.add( background_input_ );
 	background_input_.SetProperties( 0., 100., 5, None );
-	background_input_.copy_tooltip( string{ "Background of model. The absorption coefficient at " + ToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1." }.c_str() );
+	background_input_.copy_tooltip( string{ "Background of model. The absorption coefficient at " + ConvertToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1." }.c_str() );
 	background_input_.value( background_absorption_ );
 		
 	features_group_.add( information_ );

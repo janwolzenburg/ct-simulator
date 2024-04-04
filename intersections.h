@@ -53,7 +53,7 @@ class LineSurfaceIntersection : public MathematicalObject{
 	 * @brief convert result's data to string
 	 * @return string with result's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 
 	Point3D intersection_point_;				/*!< point of intersection */

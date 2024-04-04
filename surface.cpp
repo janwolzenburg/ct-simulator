@@ -28,7 +28,7 @@
 	Surface implementation
 */
 
-Surface::Surface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p )
+Surface::Surface( const Unitvector3D v1, const Unitvector3D v2, const Point3D p )
 	: direction_1_( v1 ),
 	direction_2_( v2 ),
 	origin_( p ),
@@ -44,8 +44,8 @@ Surface::Surface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p 
 
 Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator& it, CoordinateSystem* cSys )
 {
-	direction_1_ = UnitVector3D{ Tuple3D{ binary_data, it }, cSys };
-	direction_2_ = UnitVector3D{ Tuple3D{ binary_data, it }, cSys };
+	direction_1_ = Unitvector3D{ Tuple3D{ binary_data, it }, cSys };
+	direction_2_ = Unitvector3D{ Tuple3D{ binary_data, it }, cSys };
 	origin_ = Point3D{ Tuple3D{ binary_data, it }, cSys };
 
 	if( !direction_1_.IsOrthogonal( direction_2_ ) ) CheckForAndOutputError( MathError::Input, "trajectory vectors must be orthogonal!" );
@@ -54,16 +54,16 @@ Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator&
 }
 
 Surface::Surface( void ) : 
-Surface( UnitVector3D{ Tuple3D{1,0,0}, GlobalSystem() }, UnitVector3D{ Tuple3D{0,1,0}, GlobalSystem() }, Point3D{ Tuple3D{0,0,0}, GlobalSystem() })
+Surface( Unitvector3D{ Tuple3D{1,0,0}, GlobalSystem() }, Unitvector3D{ Tuple3D{0,1,0}, GlobalSystem() }, Point3D{ Tuple3D{0,0,0}, GlobalSystem() })
 {}
 
-string Surface::ToString( const unsigned int newline_tabulators ) const{
+string Surface::ConvertToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += "r1=" + direction_1_.ToString() + newLine + "r2=" + direction_2_.ToString() + newLine + "u=" + origin_.ToString();
+	str += "r1=" + direction_1_.ConvertToString() + newLine + "r2=" + direction_2_.ConvertToString() + newLine + "u=" + origin_.ConvertToString();
 
 	return str;
 }
@@ -88,7 +88,7 @@ size_t Surface::Serialize( vector<char>& binary_data ) const{
 	BoundedSurface implementation
 */
 
-BoundedSurface::BoundedSurface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p,
+BoundedSurface::BoundedSurface( const Unitvector3D v1, const Unitvector3D v2, const Point3D p,
 								const NumberRange direction_1_range,
 								const NumberRange direction_2_range )
 	: Surface{ v1, v2, p },
@@ -96,7 +96,7 @@ BoundedSurface::BoundedSurface( const UnitVector3D v1, const UnitVector3D v2, co
 	parameter_2_range_( direction_2_range )
 {}
 
-BoundedSurface::BoundedSurface( const UnitVector3D v1, const UnitVector3D v2, const Point3D p,
+BoundedSurface::BoundedSurface( const Unitvector3D v1, const Unitvector3D v2, const Point3D p,
 								const double parameter_1_min, const double parameter_1_max,
 								const double parameter_2_min, const double parameter_2_max ) :
 	BoundedSurface{ v1, v2, p, NumberRange{ parameter_1_min, parameter_1_max }, NumberRange{ parameter_2_min, parameter_2_max } }
@@ -122,7 +122,7 @@ BoundedSurface::BoundedSurface( const vector<char>& binary_data, vector<char>::c
 	parameter_2_range_{ binary_data, it }
 {}
 
-string BoundedSurface::ToString( const unsigned int newline_tabulators ) const{
+string BoundedSurface::ConvertToString( const unsigned int newline_tabulators ) const{
 	char tempCharArray[ 256 ];
 	snprintf( tempCharArray, 256, "aMin=%.6f;aMax=%.6f;bMin=%.6f;bMax=%.6f", parameter_1_range_.start(), parameter_1_range_.end(), parameter_2_range_.start(), parameter_2_range_.end() );
 
@@ -131,7 +131,7 @@ string BoundedSurface::ToString( const unsigned int newline_tabulators ) const{
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += Surface::ToString() + newLine + tempCharArray;
+	str += Surface::ConvertToString() + newLine + tempCharArray;
 
 	return str;
 }

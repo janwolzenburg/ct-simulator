@@ -17,7 +17,7 @@ void VerifyFilteredprojections( void ){
 
 	path model_path{ "./phantom 2.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
-	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
+	Tuple3D center = Primitivevector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 	ProjectionsProperties projections_properties{ 6*number_of_projections, 6*number_of_pixel, sqrt( pow( model.size().x, 2. ) + pow( model.size().y, 2. ) ) };

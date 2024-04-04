@@ -30,16 +30,16 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 				const ProjectionsProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
 	coordinate_system_( coordinate_system ),
 	initial_position_( coordinate_system_->GetPrimitive() ),
-	detector_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
+	detector_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, -1, 0 }, Primitivevector3{ 0, 0, 1 }, "xRay detector" ),
 					radonParameter, indipendentParameter },
-	tube_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tubeParameter_ }
+	tube_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0}, Primitivevector3{1, 0, 0}, Primitivevector3{0, -1, 0}, Primitivevector3{0, 0, 1}, "xRay tube"), tubeParameter_ }
 
 {
 	// align detector - tube axis with x axis
-	PrimitiveCoordinateSystem xAxisAligned{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
+	PrimitiveCoordinateSystem xAxisAligned{ Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } };
 	coordinate_system_->SetPrimitive( xAxisAligned );
 
-	tube_.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
+	tube_.coordinate_system()->Translate( vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
 	
 }
 
@@ -48,7 +48,7 @@ void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_prop
 									const PhysicalDetectorProperties physical_detector_properties ){
 	
 	tube_.UpdateProperties( tube_properties );
-	tube_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ PrimitiveVector3{ 0, physical_detector_properties.detector_focus_distance / 2, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } } );
+	tube_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ Primitivevector3{ 0, physical_detector_properties.detector_focus_distance / 2, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } } );
 	
 	detector_.UpdateProperties( radon_properties, physical_detector_properties );
 
@@ -152,7 +152,7 @@ void Gantry::RadiateModel( const Model& model,
 	detector_.ConvertPixelArray( model.coordinate_system() );
 
 	// scattered rays should lie in the same plane as the detector 
-	const UnitVector3D scattering_rotation_axis = 
+	const Unitvector3D scattering_rotation_axis = 
 		this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
 

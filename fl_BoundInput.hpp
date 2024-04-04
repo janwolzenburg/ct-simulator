@@ -22,7 +22,7 @@ Fl_BoundInput<C, T>::Fl_BoundInput( int x, int y, int w, int h, const char* labe
 	input_widget_{ x, y, w, h, label },
 	precision_( 0 ),
 	current_value_( static_cast<T>( 0 ) ),
-	value_string_( ToString( current_value_, precision_ ) ),
+	value_string_( ConvertToString( current_value_, precision_ ) ),
 	max_allowed_( static_cast<T>( 100 ) ),
 	min_allowed_( static_cast<T>( 0 ) ),
 	constraint_( None )
@@ -43,7 +43,7 @@ template< class C, typename T>
 
 template< class C, typename T>
 void Fl_BoundInput<C, T>::value( const T newValue ){
-	value_string_ = ToString( newValue, precision_ );
+	value_string_ = ConvertToString( newValue, precision_ );
 	input_widget_.value( value_string_.c_str() );
 	CheckAndForceConstraints();
 }
@@ -60,7 +60,7 @@ void Fl_BoundInput<C, T>::SetProperties( const T min, const T max, const int pre
 template< class C, typename T>
 void Fl_BoundInput<C, T>::CheckAndForceConstraints( void ){
 
-	current_value_ = ToNum<T>( input_widget_.value() );
+	current_value_ = ConvertToNumber<T>( input_widget_.value() );
 	if( current_value_ < min_allowed_ ) current_value_ = min_allowed_;
 	if( current_value_ > max_allowed_ ) current_value_ = max_allowed_;
 
@@ -80,6 +80,6 @@ void Fl_BoundInput<C, T>::CheckAndForceConstraints( void ){
 	}
 
 
-	value_string_ = ToString( current_value_, precision_ );
+	value_string_ = ConvertToString( current_value_, precision_ );
 	input_widget_.value( value_string_.c_str() );
 }

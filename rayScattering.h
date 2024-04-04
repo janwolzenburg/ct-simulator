@@ -40,13 +40,13 @@ class RayScattering{
 	 * @param max_angle_to_lie_in_plane Maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded
 	*/
 	RayScattering(	const size_t number_of_angles, const NumberRange energy_range, const size_t number_of_energies, 
-					const UnitVector3D scatter_plane_normal, const double max_angle_to_lie_in_plane );
+					const Unitvector3D scatter_plane_normal, const double max_angle_to_lie_in_plane );
 
 	/*!
 	 * @brief get scattering plane normal
 	 * @return Plane normal
 	*/
-	UnitVector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
+	Unitvector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
 
 	/*!
 	 * @brief get angle resolution
@@ -72,9 +72,9 @@ class RayScattering{
 	NumberRange energy_range_;				/*!< range of energies*/
 	double energy_resolution_;				/*!< energy resolution*/
 
-	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!< Vector with energies and the correspondeing angle distribution*/
+	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!< vector with energies and the correspondeing angle distribution*/
 
-	UnitVector3D scattering_plane_normal_;	/*!< rotation normal for scattered rays*/
+	Unitvector3D scattering_plane_normal_;	/*!< rotation normal for scattered rays*/
  
 	double max_angle_to_lie_in_scatter_plane_;		/*!< maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded*/
  };
@@ -114,7 +114,7 @@ class ScatteringCrossSection{
 	
 	size_t number_of_energies_;			/*!< amount of energies calculated*/
 	double energy_resolution_;			/*!< resolution of energies*/
-	vector<Tuple2D> cross_sections_;	/*!< Vector with energies in eV and corresponding cross sections in mm^2 */
+	vector<Tuple2D> cross_sections_;	/*!< vector with energies in eV and corresponding cross sections in mm^2 */
 
 	/*!
 	 * @brief constructor

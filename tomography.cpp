@@ -127,8 +127,8 @@ optional<Projections> Tomography::RecordSlice(
 		
 		if( progress_window != nullptr ) 
 			progress_window->ChangeLineText( 0, "Radiating frame " + 
-				ToString( frame_index ) + " of " + 
-				ToString( projection_properties.number_of_frames_to_fill() ) );
+				ConvertToString( frame_index ) + " of " + 
+				ConvertToString( projection_properties.number_of_frames_to_fill() ) );
 
 
 

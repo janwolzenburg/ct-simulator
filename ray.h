@@ -93,13 +93,13 @@ class RayProperties{
 
 	/*!
 	 * @brief get intensity at start
-	 * @return Intensity at start
+	 * @return intensity at start
 	*/
 	double start_intensity( void ) const{ return initial_power_; };
 
 	/*!
 	 * @brief get index of the pixel in detector-pixel vector this ray is likely to hit
-	 * @return Index of detector pixel
+	 * @return index of detector pixel
 	*/
 	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
 
@@ -111,7 +111,7 @@ class RayProperties{
 
 	/*!
 	 * @brief get the intensity if ray is attenuated after lampert beer's model without energy dependence. Start value is 1.
-	 * @return Intensity.
+	 * @return intensity.
 	*/
 	double simple_intensity( void ) const{ return simple_intensity_; };
 
@@ -161,7 +161,7 @@ class Ray : public Line{
 	 * @param p_ Origin
 	 * @param intensity_ Intensity
 	*/
-	explicit Ray( const Vector3D v_, const Point3D p_, const RayProperties properties_ ) : 
+	explicit Ray( const vector3D v_, const Point3D p_, const RayProperties properties_ ) : 
 		Line{ v_, p_ }, properties_{ properties_ }{};
 
 	/*!
@@ -179,7 +179,7 @@ class Ray : public Line{
 
 	/*!
 	 * @brief get intensity
-	 * @return Intensity
+	 * @return intensity
 	*/
 	RayProperties properties( void ) const{ return properties_; };
 
@@ -218,7 +218,7 @@ class Ray : public Line{
 	 * @brief set direction
 	 * @param new_direction 
 	*/
-	void SetDirection( const UnitVector3D new_direction );
+	void SetDirection( const Unitvector3D new_direction );
 
 	/*!
 	 * @brief Update Ray properties_ passing through voxel for specific distance
@@ -243,7 +243,7 @@ class Ray : public Line{
 	double GetLineParameter( const Point3D point_on_ray, bool* const solution_found ) const;
 
 	/*!
-	 * @brief Project Ray on XY plane of coordinate system
+	 * @brief project Ray on XY plane of coordinate system
 	 * @param coordinate_system System to project on
 	 * @return Projected Ray
 	*/
@@ -260,7 +260,7 @@ class Ray : public Line{
 	 * @brief get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
 	 * @return array with flag for voxel faces. True when possible
 	*/
-	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
+	array<bool, ConvertToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
 	/*!
 	 * @brief scatter this ray

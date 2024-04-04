@@ -28,23 +28,23 @@
 	CoordinateSystem implementation
 */
 
-CoordinateSystem::CoordinateSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_,
+CoordinateSystem::CoordinateSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_,
 					const CoordinateSystem* const parent_, const string name_ )
 	: PrimitiveCoordinateSystem{ origin_, ex_, ey_, ez_ },
 	parent_( parent_ ),
 	name_( name_ ){};
 
 CoordinateSystem::CoordinateSystem( void )
-	: CoordinateSystem( PrimitiveVector3{ Tuple3D{ 0, 0, 0 } }, PrimitiveVector3{ Tuple3D{ 1, 0, 0 } }, PrimitiveVector3{ Tuple3D{ 0, 1, 0 } }, PrimitiveVector3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
+	: CoordinateSystem( Primitivevector3{ Tuple3D{ 0, 0, 0 } }, Primitivevector3{ Tuple3D{ 1, 0, 0 } }, Primitivevector3{ Tuple3D{ 0, 1, 0 } }, Primitivevector3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
 
-string CoordinateSystem::ToString( const unsigned int newline_tabulators ) const{
+string CoordinateSystem::ConvertToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
 	str += newLine + name_;
-	str += newLine + PrimitiveCoordinateSystem::ToString();
+	str += newLine + PrimitiveCoordinateSystem::ConvertToString();
 	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( parent_ ) );
 	return str;
 }
@@ -70,7 +70,7 @@ void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const sourceCS
 
 }
 
-CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const PrimitiveVector3 origin_, const PrimitiveVector3 ex_, const PrimitiveVector3 ey_, const PrimitiveVector3 ez_, const string name_ ) const{
+CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const string name_ ) const{
 	return CoordinateSystems().AddSystem( origin_, ex_, ey_, ez_, this, name_ );
 }
 
@@ -103,61 +103,61 @@ Point3D CoordinateSystem::GetOriginInParentSystem( void ) const{
 	return Point3D{ origin_, parent_ };
 }
 
-UnitVector3D CoordinateSystem::GetEx( void ) const{
-	return UnitVector3D{ Tuple3D{1, 0, 0},  this };
+Unitvector3D CoordinateSystem::GetEx( void ) const{
+	return Unitvector3D{ Tuple3D{1, 0, 0},  this };
 }
 
-UnitVector3D CoordinateSystem::GetEy( void ) const{
-	return UnitVector3D{ Tuple3D{0, 1, 0},   this };
+Unitvector3D CoordinateSystem::GetEy( void ) const{
+	return Unitvector3D{ Tuple3D{0, 1, 0},   this };
 }
 
-UnitVector3D CoordinateSystem::GetEz( void ) const{
-	return UnitVector3D{ Tuple3D{0, 0, 1},  this };
+Unitvector3D CoordinateSystem::GetEz( void ) const{
+	return Unitvector3D{ Tuple3D{0, 0, 1},  this };
 }
 
 Line CoordinateSystem::GetXAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Line{ Vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetYAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Line{ Vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetZAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Line{ Vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Surface CoordinateSystem::GetXYPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetYZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Surface{ Vector3D{ey_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ vector3D{ey_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetXZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
 
-	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
+MathematicalObject::MathError CoordinateSystem::Translate( const vector3D dV ){
 	if( this->IsGlobal() ){
 		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be translated!" );
 	}
@@ -167,7 +167,7 @@ MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D dV ){
 	return MathError::Ok;
 }
 
-MathematicalObject::MathError CoordinateSystem::Rotate( const UnitVector3D n, const double phi ){
+MathematicalObject::MathError CoordinateSystem::Rotate( const Unitvector3D n, const double phi ){
 	if( this->IsGlobal() ){
 		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be rotated!" );
 	}

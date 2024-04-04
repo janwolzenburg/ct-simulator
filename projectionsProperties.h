@@ -51,13 +51,13 @@ class ProjectionsProperties{
 
 	/*!
 	 * @brief get number of projections
-	 * @return Number of projections
+	 * @return number of projections
 	*/
 	size_t number_of_projections( void ) const{ return number_of_projections_; };
 
 	/*!
 	 * @brief get number of distances
-	 * @return Number of distances
+	 * @return number of distances
 	*/
 	size_t number_of_distances( void ) const{ return number_of_distances_; };
 

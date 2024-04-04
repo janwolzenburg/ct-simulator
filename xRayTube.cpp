@@ -40,12 +40,12 @@ const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTu
 XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
 	anode_voltage_V( DeSerializeBuildIn<double>( 120000., binary_data, it ) ),
 	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, it ) ),
-	anode_material( (Material) DeSerializeBuildIn<>( ToUnderlying( Material::Thungsten ), binary_data, it ) ),
+	anode_material( (Material) DeSerializeBuildIn<>( ConvertToUnderlying( Material::Thungsten ), binary_data, it ) ),
 	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
 	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) ),
 	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, it ) ),
 	filter_gradient( DeSerializeBuildIn<double>( 10., binary_data, it ) ),
-	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum_ - 1 ) )
+	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum - 1 ) )
 {}
 
 
@@ -64,7 +64,7 @@ size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 
 	num_bytes += SerializeBuildIn<double>( anode_voltage_V, binary_data );
 	num_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
-	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ToUnderlying( anode_material ), binary_data );
+	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ConvertToUnderlying( anode_material ), binary_data );
 	num_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
 	num_bytes += SerializeBuildIn<bool>( has_filter_, binary_data );
 	num_bytes += SerializeBuildIn<double>( filter_cut_of_energy, binary_data );
@@ -95,8 +95,8 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 	// second holds the photonflow in an arbitrary unit
 	VectorPair energy_spectrum{ CreateLinearSpace( minimum_energy_in_tube_spectrum, 
 							max_photon_energy_eV_, 
-							simulation_properties.number_of_points_in_spectrum_ ), 
-							vector<double>( simulation_properties.number_of_points_in_spectrum_, 0. ) };
+							simulation_properties.number_of_points_in_spectrum ), 
+							vector<double>( simulation_properties.number_of_points_in_spectrum, 0. ) };
 	
 	const double energy_resolution = energy_spectrum.first.at( 1 ) - 
 																	 energy_spectrum.first.at( 0 );

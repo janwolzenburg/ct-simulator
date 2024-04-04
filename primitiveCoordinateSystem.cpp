@@ -24,7 +24,7 @@
 	PrimitiveCoordinateSystem implementation
 */
 
-PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez )
+PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez )
 	: origin_( origin ),
 	ex_( ex ),
 	ey_( ey ),
@@ -42,10 +42,10 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const PrimitiveVector3 ori
 }
 
 PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	origin_( DeSerialize<PrimitiveVector3>( binary_data, it ) ),
-	ex_( DeSerialize<PrimitiveVector3>( binary_data, it ) ),
-	ey_( DeSerialize<PrimitiveVector3>( binary_data, it ) ),
-	ez_( DeSerialize<PrimitiveVector3>( binary_data, it ) )
+	origin_( DeSerialize<Primitivevector3>( binary_data, it ) ),
+	ex_( DeSerialize<Primitivevector3>( binary_data, it ) ),
+	ey_( DeSerialize<Primitivevector3>( binary_data, it ) ),
+	ez_( DeSerialize<Primitivevector3>( binary_data, it ) )
 {
 	// normalise vectors
 	ex_.Normalise();
@@ -58,18 +58,18 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary
 		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "unit axis must be orthogonal to each other!" );
 }
 
-string PrimitiveCoordinateSystem::ToString( const unsigned int newline_tabulators ) const{
+string PrimitiveCoordinateSystem::ConvertToString( const unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
 	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
 
-	str += newLine + "p=" + origin_.ToString();
-	str += newLine + "ex_=" + ex_.ToString() + newLine + "ey_=" + ey_.ToString() + newLine + "ez_=" + ez_.ToString();
+	str += newLine + "p=" + origin_.ConvertToString();
+	str += newLine + "ex_=" + ex_.ConvertToString() + newLine + "ey_=" + ey_.ConvertToString() + newLine + "ez_=" + ez_.ConvertToString();
 	return str;
 }
 
-MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const PrimitiveVector3 n, const double phi ){
+MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const Primitivevector3 n, const double phi ){
 	MathError tErr = MathError::Ok;
 	MathError errCode = MathError::Ok;
 

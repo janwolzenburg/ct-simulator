@@ -34,14 +34,14 @@ class Line : public MathematicalObject{
 	 * @param direction Unit vector
 	 * @param origin Origin
 	*/
-	explicit Line( const UnitVector3D direction, const Point3D origin );
+	explicit Line( const Unitvector3D direction, const Point3D origin );
 
 	/*!
 	 * @brief constructor
 	 * @param direction Line direction
 	 * @param origin Origin
 	*/
-	explicit Line( const Vector3D direction, const Point3D origin );
+	explicit Line( const vector3D direction, const Point3D origin );
 
 	/*!
 	 * @brief default constructor
@@ -52,7 +52,7 @@ class Line : public MathematicalObject{
 	 * @brief convert Line's data to string
 	 * @return string with Line's data
 	*/
-	string ToString( const unsigned int newline_tabulators = 0 ) const override;
+	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief get origin_ of Line
@@ -71,7 +71,7 @@ class Line : public MathematicalObject{
 	 * @brief get Line trajectory
 	 * @return trajectory
 	*/
-	UnitVector3D direction( void ) const { return direction_; };
+	Unitvector3D direction( void ) const { return direction_; };
 
 	/*!
 	 * @brief convert Line components to different coordinate system
@@ -109,7 +109,7 @@ class Line : public MathematicalObject{
 	 * @param point Point to get the lot to
 	 * @return to this Line perpendicular vector connecting this Line and point point
 	*/
-	Vector3D GetLot( const Point3D point ) const;
+	vector3D GetLot( const Point3D point ) const;
 
 	/*!
 	 * @brief get shortest distance between Line and point
@@ -126,7 +126,7 @@ class Line : public MathematicalObject{
 	double GetDistance( const Line line ) const;
 
 	/*!
-	 * @brief Project Line on XY plane of coordinate system
+	 * @brief project Line on XY plane of coordinate system
 	 * @param coordinate_system System to project on
 	 * @return Projected Line
 	*/
@@ -142,6 +142,6 @@ class Line : public MathematicalObject{
 
 	protected:
 
-	UnitVector3D direction_;			/*!< Line trajectory */
+	Unitvector3D direction_;			/*!< Line trajectory */
 	Point3D origin_;		 		/*!< Line origin_ */
 };

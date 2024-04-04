@@ -43,7 +43,7 @@ class BackprojectionFilter{
 	/*!
 	 * @brief get filter type by string
 	 * @param search_string Name of filter type
-	 * @return Filter enumeration value
+	 * @return filter enumeration value
 	*/
 	static BackprojectionFilter::TYPE GetType( const string search_string );
 
@@ -69,7 +69,7 @@ class BackprojectionFilter{
 
 	/*!
 	 * @brief get filter type
-	 * @return Filter type
+	 * @return filter type
 	*/
 	TYPE type( void ) const{ return type_; };
 
@@ -100,7 +100,7 @@ class BackprojectionFilter{
 		return this->GetValue( GetUnsignedIndex( signed_index ) ); }
 
 	/*!
-	 * @brief Normalise to make sum of values equal to one
+	 * @brief normalise to make sum of values equal to one
 	*/
 	void Normalise( void );
 

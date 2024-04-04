@@ -93,7 +93,7 @@ double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorptionAtEnerg
 
 bool VoxelData::HasSpecificProperty( const SpecialProperty property ) const{
 
-	SpecialPropertyEnumType propertyToCheck = ToUnderlying( property );
+	SpecialPropertyEnumType propertyToCheck = ConvertToUnderlying( property );
 
 	if( specialProperties_ & propertyToCheck ) return true;
 	return false;
@@ -122,7 +122,7 @@ Voxel::Voxel( const Point3D o_, const Tuple3D size, const VoxelData data ) :
 };
 
 
-string Voxel::ToString( unsigned int newline_tabulators ) const{
+string Voxel::ConvertToString( unsigned int newline_tabulators ) const{
 	string str;
 	string newLine = { '\n' };
 
@@ -132,15 +132,15 @@ string Voxel::ToString( unsigned int newline_tabulators ) const{
 	char tempCharArr[ 256 ];
 	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f)", size_.x, size_.y, size_.z );
 
-	str += "o=" + newLine + origin_corner_.ToString( newline_tabulators + 1 );
+	str += "o=" + newLine + origin_corner_.ConvertToString( newline_tabulators + 1 );
 	str += "size=" + string( tempCharArr );
 	str += newLine + "data=" + std::to_string( data_.GetAbsorptionAtReferenceEnergy() );
-	str += newLine + "face[0]=" + newLine + faces[ 0 ].ToString( newline_tabulators + 1 );
-	str += newLine + "face[1]=" + newLine + faces[ 1 ].ToString( newline_tabulators + 1 );
-	str += newLine + "face[2]=" + newLine + faces[ 2 ].ToString( newline_tabulators + 1 );
-	str += newLine + "face[3]=" + newLine + faces[ 3 ].ToString( newline_tabulators + 1 );
-	str += newLine + "face[4]=" + newLine + faces[ 4 ].ToString( newline_tabulators + 1 );
-	str += newLine + "face[5]=" + newLine + faces[ 5 ].ToString( newline_tabulators + 1 );
+	str += newLine + "face[0]=" + newLine + faces[ 0 ].ConvertToString( newline_tabulators + 1 );
+	str += newLine + "face[1]=" + newLine + faces[ 1 ].ConvertToString( newline_tabulators + 1 );
+	str += newLine + "face[2]=" + newLine + faces[ 2 ].ConvertToString( newline_tabulators + 1 );
+	str += newLine + "face[3]=" + newLine + faces[ 3 ].ConvertToString( newline_tabulators + 1 );
+	str += newLine + "face[4]=" + newLine + faces[ 4 ].ConvertToString( newline_tabulators + 1 );
+	str += newLine + "face[5]=" + newLine + faces[ 5 ].ConvertToString( newline_tabulators + 1 );
 
 	return str;
 }
