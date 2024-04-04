@@ -162,7 +162,7 @@ class EnergySpectrum {
 
 	vector<Tuple2D> photonflow_per_energy_;		/*!< 2D data sorted by energy. x is energy. y is the number of photons per second with energy in the interval dE */
 	double mean_energy_;		/*!< mean energy of spectrum*/
-	bool mean_energy_valid_;	/*!< Flag to track whether mean energy is valid*/
+	bool mean_energy_valid_;	/*!< flag to track whether mean energy is valid*/
 
 	/*!
 	 * @brief Update mean energy

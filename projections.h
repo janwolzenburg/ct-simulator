@@ -125,6 +125,6 @@ class Projections : private DataGrid<> {
 	private:
 
 	ProjectionsProperties properties_;				/*!< proeprties of projection*/
-	TomographyProperties tomography_properties_;	/*!< Tomography properties used*/
+	TomographyProperties tomography_properties_;	/*!< tomography properties used*/
 	vector<vector<GridCoordinates>> grid_errors_;	/*!< Grid errors when interpolating*/
 };

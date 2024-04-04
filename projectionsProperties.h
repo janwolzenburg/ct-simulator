@@ -100,8 +100,8 @@ class ProjectionsProperties{
 
 	private:
 
-	size_t number_of_projections_;			/*/*!< number of angles. Is the number of projections*/
-	size_t number_of_distances_;			/*/*!< number of distances. Is the number of point in one projection*/
+	size_t number_of_projections_;			/*!< number of angles. Is the number of projections*/
+	size_t number_of_distances_;			/*!< number of distances. Is the number of point in one projection*/
 	double measuring_field_size_;			/*!< measuring field in mm*/
 
 	double angles_resolution_;				/*!< angle resolution*/

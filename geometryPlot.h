@@ -70,7 +70,7 @@ class Geometryplot : public Plot{
 
 	private:
 
-	vector<std::pair<Tuple2D, Tuple2D>> lines_;			/*!< Lines in plot*/
+	vector<std::pair<Tuple2D, Tuple2D>> lines_;			/*!< lines in plot*/
 	vector<pair<Tuple2D, string>> points_;					/*!< points in plot*/
 
 };

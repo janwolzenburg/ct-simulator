@@ -340,7 +340,7 @@ class vector3D : protected Coordinates{
 
 
 	private:
-	double length_;				/*!< Length */
+	double length_;				/*!< length */
 
 	/*!
 	 * @brief calculates vector's length corresponding to vector component and stores it in member

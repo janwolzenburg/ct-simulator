@@ -61,7 +61,7 @@ struct PhysicalDetectorProperties{
 
 	double row_width;								/*!< row width. The length of one the pixel side which is connected to the next pixel inside one row*/
 	double detector_focus_distance;					/*!< distance from the detector array to the focus*/
-	bool has_anti_scattering_structure;				/*!< Flag for anti scatter structure*/
+	bool has_anti_scattering_structure;				/*!< flag for anti scatter structure*/
 	double max_angle_allowed_by_structure;		/*!< maximum angle between pixel normal and Ray if structure is enabled*/
 };
 
@@ -86,6 +86,6 @@ class DetectorProperties{
 	double arc_angle;							/*!< angle between outer normals*/
 	double detector_focus_distance;				/*!< distance of focus and detector pixel*/
 
-	bool has_anti_scattering_structure;			/*!< Flag for anti scatter structure*/
+	bool has_anti_scattering_structure;			/*!< flag for anti scatter structure*/
 	double max_angle_allowed_by_structure;	/*!< maximum angle between pixel normal and Ray*/
 };

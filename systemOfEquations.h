@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   equationSystem.h
+ * @file   systemOfEquations.h
  * @brief  classes for systems of equations
  *
  * @author Jan Wolzenburg
@@ -37,36 +37,36 @@ class Matrix : public MathematicalObject{
 	
 	/*!
 	 * @brief convert matrice's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each Line break
+	 * @param newline_tabulators Amount of tabulators to insert after each line break
 	 * @return string with Line's data
 	*/
 	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
 	 * @brief element assignment
-	 * @param column Column index
-	 * @param row Row index
+	 * @param column column index
+	 * @param row row index
 	 * @return reference to matrix element
 	*/
 	double& operator() ( const size_t column, const size_t row );
 
 	/*!
 	 * @brief element assignment
-	 * @param index Cell indices
+	 * @param index cell indices
 	 * @return reference to matrix element
 	*/
 	double& operator() ( const GridIndex index ){ return (*this)( index.c, index.r ); };
 
 	/*!
 	 * @brief element read
-	 * @param column Column index
-	 * @param row Row index
+	 * @param column column index
+	 * @param row row index
 	 * @return value of matrix element
 	*/
 	double operator() ( const size_t column, const size_t row ) const;
 	/*!
 	 * @brief element read
-	 * @param index Cell indices
+	 * @param index cell indices
 	 * @return value of matrix element
 	*/
 	double operator() ( const GridIndex index ) const{ return (*this)( index.c, index.r ); };
@@ -85,31 +85,31 @@ class Matrix : public MathematicalObject{
 
 	/*!
 	 * @brief swap two columns
-	 * @param column_1 Column 1
-	 * @param column_2 Column 2
+	 * @param column_1 column 1
+	 * @param column_2 column 2
 	 * @return error code
 	*/
 	MathError SwapColumns( const size_t column_1, const size_t column_2 );
 
 	/*!
 	 * @brief swap two rows
-	 * @param row_1 Row 1
-	 * @param row_2 Row 2
+	 * @param row_1 row 1
+	 * @param row_2 row 2
 	 * @return error code
 	*/
 	MathError SwapRows( const size_t row_1, const size_t row_2 );
 
 	/*!
 	 * @brief find indices of maximum absolute value in submatrix
-	 * @param topCorner Top-left corner of submatrix
-	 * @param botCorner Bottom-right corner of submatrix
+	 * @param top_corner Top-left corner of submatrix
+	 * @param bottom_corner Bottom-right corner of submatrix
 	 * @return cell indices of maximum
 	*/
 	GridIndex FindMaximum( const GridIndex top_corner, const GridIndex bottom_corner );
 
 	/*!
 	 * @brief scale row by factor
-	 * @param row Row to scale
+	 * @param row row to scale
 	 * @param scalar Factor to scale by
 	 * @return error code
 	*/
@@ -117,8 +117,8 @@ class Matrix : public MathematicalObject{
 
 	/*!
 	 * @brief substract rows with direction_2_ = direction_2_ - direction_1_
-	 * @param row_1 Row to substract
-	 * @param row_2 Row to substract direction_1_ from
+	 * @param row_1 row to substract
+	 * @param row_2 row to substract direction_1_ from
 	 * @return error code
 	*/
 	MathError SubstractRows( const size_t row_1, const size_t row_2 );
@@ -127,16 +127,16 @@ class Matrix : public MathematicalObject{
 	protected:
 
 	
-	size_t number_of_columns_;	/*!< columns*/
-	size_t number_of_rows_;		/*!< rows*/
-	vector<double> data_;		/*!< data-> Access with [index  * row + col] left to right - top to bottom*/
+	size_t number_of_columns_;	/*!< number of columns*/
+	size_t number_of_rows_;			/*!< number of rows*/
+	vector<double> data_;				/*!< data-> Access with [index  * row + col] left to right - top to bottom*/
 };
 
 
 
 /*!
  * @brief class for linear system of equations
- * @details Only systems with one equation per variable solvable. Inherited matrix contains coefficients. Only implemented for system with two or three variables
+ * @details only systems with one equation per variable solvable. inherited matrix contains coefficients. only implemented for system with two or three variables
 */
 class SystemOfEquations : private Matrix{
 
@@ -165,7 +165,7 @@ class SystemOfEquations : private Matrix{
 
 	/*!
 	 * @brief add column to system of equation with two variables
-	 * @param coefficients Column to add
+	 * @param coefficients column to add
 	 * @return error code
 	*/
 	MathError PopulateColumn( const Tuple2D coefficients );
@@ -185,8 +185,8 @@ class SystemOfEquations : private Matrix{
 
 	private:
 
-	const size_t number_of_variables_;			/*/*!< number of variables*/
-	size_t currently_populated_columns_;		/*/*!< number of populated columns*/
+	const size_t number_of_variables_;			/*!< number of variables*/
+	size_t currently_populated_columns_;		/*!< number of populated columns*/
 };
 
 
@@ -200,9 +200,9 @@ class SystemOfEquationsSolution : public MathematicalObject{
 
 	/*!
 	 * @brief constructor
-	 * @param sys System of equation for which this instance holds the solution
+	 * @param number_of_variables number of variables
 	*/
-	SystemOfEquationsSolution( const size_t number_of_variiables );
+	SystemOfEquationsSolution( const size_t number_of_variables );
 
 	/*!
 	 * @brief deleted default constructor
@@ -219,31 +219,31 @@ class SystemOfEquationsSolution : public MathematicalObject{
 	 * @brief get amount of variables
 	 * @return amount of variables
 	*/
-	size_t number_of_variables( void ){ return number_of_variables_; };
+	size_t number_of_variables( void ) const{ return number_of_variables_; };
 
 	/*!
-	 * @brief get value of solution_found_ variable
-	 * @return solution solution_found_
+	 * @brief get solution_found_
+	 * @return whether solution was found
 	*/
-	bool solution_found( void ){ return solution_found_; };
+	bool solution_found( void ) const{ return solution_found_; };
 
 	/*!
-	 * @brief set solution_found_ value
-	 * @param value Value to set to
-	 * @return set value
+	 * @brief set solution_found
+	 * @param value value to set to
+	 * @return the set value
 	*/
 	bool solution_found( const bool value ){ return solution_found_ = value; };
 
 	/*!
 	 * @brief set variable's value
-	 * @param index Index of variable to set
+	 * @param index index of variable to set
 	 * @param value Value to set to
 	*/
 	void SetVariableValue( const size_t index, const double value );
 
 	/*!
 	 * @brief get value of variable
-	 * @param index Index of variable
+	 * @param index index of variable
 	 * @return value
 	*/
 	double GetVariableValue( const size_t index ) const;
@@ -253,5 +253,5 @@ class SystemOfEquationsSolution : public MathematicalObject{
 
 	size_t number_of_variables_;				/*!< amount of variables*/
 	vector<double> variable_values_;		/*!< array of variables*/
-	bool solution_found_;				/*!< system has solution*/
+	bool solution_found_;								/*!< system has solution*/
 };

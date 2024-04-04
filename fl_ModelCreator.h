@@ -137,7 +137,7 @@ class Fl_ModelFeature : public Fl_Group{
 
 	private:
 
-	Fl_Toggle_Button active_button_;		/*!< Button to activate feature*/
+	Fl_Toggle_Button active_button_;		/*!< button to activate feature*/
 	Fl_Selector special_property_input_;	/*!< selector for special property*/
 	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< absorption in 1/mm at reference energy*/
 	Fl_BoundInput<Fl_Float_Input, double> x_positon_input_;	/*!< x position in mm*/
@@ -146,7 +146,7 @@ class Fl_ModelFeature : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> size_input_;		/*!< size in mm*/
 	Fl_Selector shape_input_;				/*!< selector for feature shape*/
 
-	bool is_visible_;						/*!< Flag to indicate visability*/
+	bool is_visible_;						/*!< flag to indicate visability*/
 
  };
 
@@ -181,14 +181,14 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_x_input_;	/*!< Voxel size in x direction*/
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_y_input_;	/*!< Voxel size in y direction*/
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_z_input_;	/*!< Voxel size in z direction*/
-	Fl_Input name_input_;			/*/*!< name of model*/
-	Fl_Button store_size_button_;	/*!< Button to store size and continue*/
+	Fl_Input name_input_;			/*!< name of model*/
+	Fl_Button store_size_button_;	/*!< button to store size and continue*/
 	
 	Fl_Group features_group_;	/*!< Group for all features and model properties*/
 	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< absorption value of background*/
 	Fl_Multiline_Output information_;							/*!< Information about features*/
 	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< all the features*/
-	Fl_Button build_button_;									/*!< Button for building model*/
+	Fl_Button build_button_;									/*!< button for building model*/
 
 	CallbackFunction<Fl_ModelCreator> model_size_changed_callback_;	/*!< callback for model size change*/
 	CallbackFunction<Fl_ModelCreator> model_size_stored_callback_;	/*!< callback for size storage*/
@@ -197,7 +197,7 @@ class Fl_ModelCreator : public Fl_Window{
 
 	Index3D model_size_;		/*!< size of model. The amount of voxel*/
 	Tuple3D voxel_size_;		/*!< Voxel size in mm*/
-	string name_;				/*/*!< name of model*/
+	string name_;				/*!< name of model*/
 
 	double background_absorption_;	/*!< Value of background absorption*/
 

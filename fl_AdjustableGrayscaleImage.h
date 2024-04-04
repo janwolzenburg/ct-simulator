@@ -121,8 +121,8 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 
 	private:
 
-	Fl_GrayscaleImageWithAxis image_widget_;	/*!< The image widget*/
-	Fl_Hor_Value_Slider lower_bound_;			/*!< Low bound*/
+	Fl_GrayscaleImageWithAxis image_widget_;	/*!< the image widget*/
+	Fl_Hor_Value_Slider lower_bound_;			/*!< low bound*/
 	Fl_Hor_Value_Slider upper_bound_;			/*!< high bound*/
 			
 	Fl_Box current_value_text_;			/*!< output for common factor*/
@@ -130,8 +130,8 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	Fl_Box common_factor_text_;			/*!< output for common factor*/
 
 	int common_power_;					/*!< common power of ten*/
-	bool bounds_set_;					/*!< Flag indicating whether the bounds were set before*/
-	bool contrast_changed_;				/*!< Flag indicating constrast change*/
+	bool bounds_set_;					/*!< flag indicating whether the bounds were set before*/
+	bool contrast_changed_;				/*!< flag indicating constrast change*/
 
 
 	/*!

@@ -26,8 +26,8 @@ struct PlotLimits{
 	NumberRange xRange = NumberRange{ 0., 1. };		/*!< x-range*/
 	NumberRange yRange = NumberRange{ 0., 1. };		/*!< y-range*/
 
-	double xFactor = 1.;				/*!< Factor for x-axis sclaing*/
-	double yFactor = 1.;				/*!< Factor for y-axis sclaing*/
+	double xFactor = 1.;				/*!< factor for x-axis sclaing*/
+	double yFactor = 1.;				/*!< factor for y-axis sclaing*/
 
  };
 
@@ -117,17 +117,17 @@ class Plot{
 
 	protected:
 	
-	string label_;	/*!< Figure label*/
+	string label_;	/*!< figure label*/
 	path image_path_;	/*!< path to image. Plots are exported to this direction*/
-	string x_label_;	/*!< Label of x-axis*/
-	string y_label_;	/*!< Lable of y-axis*/
+	string x_label_;	/*!< label of x-axis*/
+	string y_label_;	/*!< lable of y-axis*/
 
-	bool are_axis_equal_ = false;	/*!< Flag to make axis equally scaled*/
-	bool enable_grid_ = false;		/*!< Flag to make grid visible*/
+	bool are_axis_equal_ = false;	/*!< flag to make axis equally scaled*/
+	bool enable_grid_ = false;		/*!< flag to make grid visible*/
 
-	string x_format_;		/*!< Format string for x-axis tick values*/
-	string y_format_;		/*!< Format string for y-axis tick values*/
-	PlotLimits limits_;	/*!< Limits of plot*/
+	string x_format_;		/*!< format string for x-axis tick values*/
+	string y_format_;		/*!< format string for y-axis tick values*/
+	PlotLimits limits_;	/*!< limits of plot*/
 
 	GridIndex image_size_;				/*!< size of image*/
 	sciplot::Plot2D plot_2D_;		/*!< Instance of sciplot 2D-plot*/

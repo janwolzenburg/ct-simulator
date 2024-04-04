@@ -93,7 +93,7 @@ class Fl_Plot : public Fl_Widget{
 
 	private:
 
-	string label_;				/*!< Label*/
+	string label_;				/*!< label*/
 	P plot_;		/*!< a plot*/
 	std::unique_ptr<Fl_PNG_Image> raw_image_;	/*!< raw image*/
 	std::unique_ptr<Fl_Image> image_;			/*!< scaled FL-image*/

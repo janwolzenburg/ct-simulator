@@ -101,8 +101,8 @@ class XRayTubeProperties {
 	double anode_voltage_V;				/*!< anode Voltage in volts*/
 	double anode_current_A;				/*!< current in ampere*/
 	Material anode_material;			/*!< atomic Number of anode material*/
-	size_t number_of_rays_per_pixel_;	/*!< The amount of discrete rays to emit per detector pixel*/
-	bool has_filter_;					/*!< Flag for Al-Filter*/
+	size_t number_of_rays_per_pixel_;	/*!< the amount of discrete rays to emit per detector pixel*/
+	bool has_filter_;					/*!< flag for Al-Filter*/
 	double filter_cut_of_energy;		/*!< energy under which all radiating is absorbed by filter*/
 	double filter_gradient;				/*!< Gradient of filter*/
 	double spectral_energy_resolution;	/*!< resolution of equally spaced spectrum*/
@@ -201,10 +201,10 @@ class XRayTube{
 	
 	CoordinateSystem* coordinate_system_;	/*!< coordinate system of tube*/
 
-	XRayTubeProperties properties_;			/*!< Tube properties*/
+	XRayTubeProperties properties_;			/*!< tube properties*/
 	size_t anode_material_atomic_number_;	/*!< atomic number_of_pixel of anode material*/
 
-	double radiation_power_W_;				/*!< Total radiation power of tube in watts*/
+	double radiation_power_W_;				/*!< total radiation power of tube in watts*/
 	double max_photon_energy_eV_;			/*!< maximum radiation energy in eV based on anode voltage*/ 
 
 	EnergySpectrum emitted_spectrum_;		/*!< output spectrum of tube*/

@@ -93,8 +93,8 @@ class PersistingObject : public C{
 	private:
 
 	path file_path_;		/*!< path to file on filesystem*/
-	bool was_loaded_;		/*!< Flag to indicate whether the object was loaded or is default*/
-	bool disable_saving;	/*!< Flag to disable saving*/
+	bool was_loaded_;		/*!< flag to indicate whether the object was loaded or is default*/
+	bool disable_saving;	/*!< flag to disable saving*/
 
 
 	/*!

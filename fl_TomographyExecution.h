@@ -68,13 +68,13 @@ class Fl_TomographyExecution : public Fl_Group{
 
 	private:
 
-	Fl_Box title_;				/*!< Title*/
+	Fl_Box title_;				/*!< title*/
 
 	Fl_Group tomography_properties_group_;			/*!< Group for parameters*/
-	Fl_Box properties_title_;						/*!< Title of parameter group*/
+	Fl_Box properties_title_;						/*!< title of parameter group*/
 	Fl_Simple_Counter maximum_scatterings_input_;	/*!< maximum amount a Ray can be scattered*/
 	Fl_Counter scattering_propability_factor_input_;/*!< scatter propability*/
-	Fl_Toggle_Button disable_scattering_button_;	/*!< Toggle scattering*/
+	Fl_Toggle_Button disable_scattering_button_;	/*!< toggle scattering*/
 	Fl_Counter scattering_absorption_factor_input_;
 	Fl_Toggle_Button use_simple_absorption_button_;/*!< simple or "real" absorption*/
 
@@ -89,11 +89,11 @@ class Fl_TomographyExecution : public Fl_Group{
 	
 	Fl_MainWindow& main_window_;					/*!< reference to main window*/
 
-	PersistingObject<FileChooser> export_projections_file_chooser_;		/*!< File chooser for projections export*/
+	PersistingObject<FileChooser> export_projections_file_chooser_;		/*!< file chooser for projections export*/
 
 	PersistingObject<TomographyProperties> tomography_properties_;		/*!< parameter of tomography*/
 	Tomography tomography_;												/*!< Instance of the tomography*/
-	PersistingObject<Projections> projections_;							/*!< Latest projections*/
+	PersistingObject<Projections> projections_;							/*!< latest projections*/
 	
 	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;	/*!< collection of opened processing windows*/
  

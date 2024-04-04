@@ -64,8 +64,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_Multiline_Output information_output_;
 
 	Fl_Group filter_group_;										/*!< Group for filter*/
-	Fl_Selector filter_type_selector_;							/*!< Filter selector*/
-	Fl_Plot<DotPlot> filter_plot_;								/*!< Filter plot*/
+	Fl_Selector filter_type_selector_;							/*!< filter selector*/
+	Fl_Plot<DotPlot> filter_plot_;								/*!< filter plot*/
 
 	Fl_Group processing_properties_group_;
 	Fl_Toggle_Button hu_mu_selection_button_;
@@ -82,8 +82,8 @@ class Fl_ProcessingWindow : public Fl_Window{
 	PersistingObject<FilteredProjections> filtered_projections_;	/*!< current filtered projections*/
 	PersistingObject<Backprojection> backprojection_;				/*!< current image reconstructed from filtered projections*/
 
-	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
-	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
+	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< file chooser for projections export*/
+	static PersistingObject<FileChooser> export_image_chooser_;							/*!< file chooser for projections export*/
 
 	CallbackFunction<Fl_ProcessingWindow> recalculate_callback_;
 	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< callback function for filter change*/

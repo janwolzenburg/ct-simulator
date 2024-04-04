@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   intersections.h
- * @brief  classes for operations on mathematical objects
+ * @brief  classes for intersections
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -57,8 +57,8 @@ class LineSurfaceIntersection : public MathematicalObject{
 
 
 	Point3D intersection_point_;				/*!< point of intersection */
-	bool intersection_exists_;					/*!< Line intersects surface */
-	double line_parameter_;						/*!< Line parameter where intersection occurs */
+	bool intersection_exists_;					/*!< line intersects surface */
+	double line_parameter_;							/*!< line parameter where intersection occurs */
 	double surface_parameter_1_;				/*!< surface parameter a where intersection occurs */
 	double surface_parameter_2_;				/*!< surface parameter b where intersection occurs */
 
@@ -66,7 +66,7 @@ class LineSurfaceIntersection : public MathematicalObject{
 
 
 /*!
- * @brief class for calculation the intersection of a Line and a surface
+ * @brief class for calculation the intersection of a line and a surface
 */
 class RayVoxelIntersection {
 
@@ -74,16 +74,17 @@ class RayVoxelIntersection {
 
 	/*!
 	 * @brief constructor
-	 * @param v_ Voxel
-	 * @param r_ Ray
+	 * @details directly calculates intersection
+	 * @param voxel voxel
+	 * @param ray ray
 	*/
 	RayVoxelIntersection( const Voxel& voxel, const Ray& ray );
 
 
-	Voxel::Face entrance_face_;										/*!< entrance face*/
+	Voxel::Face entrance_face_;																/*!< entrance face*/
 	LineSurfaceIntersection<Ray, BoundedSurface> entrance_;		/*!< entrance*/
 
-	Voxel::Face exit_face_;										/*!< exit face*/
+	Voxel::Face exit_face_;																/*!< exit face*/
 	LineSurfaceIntersection<Ray, BoundedSurface> exit_;		/*!Exit*/
 
 };

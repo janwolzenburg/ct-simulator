@@ -94,8 +94,8 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	private:
 	
-	string title_string_;				/*!< Title string*/
-	string filter_string_;				/*!< Filter string*/
+	string title_string_;				/*!< title string*/
+	string filter_string_;				/*!< filter string*/
 	path start_directory_;				/*!< start directory*/
-	Fl_Native_File_Chooser::Type type_;	/*!< Type of file chooser*/
+	Fl_Native_File_Chooser::Type type_;	/*!< type of file chooser*/
  };

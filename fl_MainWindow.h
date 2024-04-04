@@ -71,7 +71,7 @@ class Fl_MainWindow : public Fl_Window{
 
 	Fl_ModelView model_view_;						/*!< model view*/
 	Fl_GantryCreation gantry_creation_;				/*!< Gantry creation*/
-	Fl_TomographyExecution tomography_execution_;	/*!< Tomography execution*/
+	Fl_TomographyExecution tomography_execution_;	/*!< tomography execution*/
 
 	PersistingObject<FileChooser> import_projections_file_chooser_;	/*!< persisting storage of projections import file selection*/
 

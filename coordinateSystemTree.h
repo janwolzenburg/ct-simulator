@@ -151,6 +151,6 @@ class CoordinateSystemTree : public MathematicalObject{
 
 
 	private:
-	size_t system_count_;																		/*/*!< number of systems in tree*/
+	size_t system_count_;																		/*!< number of systems in tree*/
 	array<CoordinateSystem, max_systems_in_tree> systems_;	/*!< array with all systems*/
 };

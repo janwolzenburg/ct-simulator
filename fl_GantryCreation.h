@@ -76,16 +76,16 @@ class Fl_GantryCreation : public Fl_Group{
 
 	private:
 
-	Fl_Box title_;		/*!< Title*/
+	Fl_Box title_;		/*!< title*/
 
 	Fl_Group tube_group_;				/*!< Group of tube elements*/
-	Fl_Box tube_title_;					/*!< Tube group title*/
-	Fl_BoundInput<Fl_Float_Input, double> voltage_input_;	/*!< Tube voltage*/
-	Fl_BoundInput<Fl_Float_Input, double> current_input_;	/*!< Tube current*/
+	Fl_Box tube_title_;					/*!< tube group title*/
+	Fl_BoundInput<Fl_Float_Input, double> voltage_input_;	/*!< tube voltage*/
+	Fl_BoundInput<Fl_Float_Input, double> current_input_;	/*!< tube current*/
 	Fl_Selector anode_material_input_;		/*!< anode material*/
-	Fl_Toggle_Button toggle_filter_button_;	/*!< Toggle Filter*/
-	Fl_BoundInput<Fl_Float_Input, double> filter_cutoff_input;		/*!< Filter cut of energy*/
-	Fl_BoundInput<Fl_Float_Input, double> filter_gradient_input;	/*!< Filter strength*/
+	Fl_Toggle_Button toggle_filter_button_;	/*!< toggle Filter*/
+	Fl_BoundInput<Fl_Float_Input, double> filter_cutoff_input;		/*!< filter cut of energy*/
+	Fl_BoundInput<Fl_Float_Input, double> filter_gradient_input;	/*!< filter strength*/
 	Fl_Plot<LinePlot> spectrum_plot_;		/*!< plot of tube sepctrum*/
 
 	Fl_Group detector_group_;	/*!< Group for detector elemnts*/

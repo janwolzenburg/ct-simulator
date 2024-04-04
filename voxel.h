@@ -42,7 +42,7 @@ class VoxelData{
 	
 	public:
 
-	typedef unsigned char SpecialPropertyEnumType;		/*!< Type to store up tu 8 special properties_*/
+	typedef unsigned char SpecialPropertyEnumType;		/*!< type to store up tu 8 special properties_*/
 
 	/*!
 	 * @brief special propterties a voxel can have
@@ -53,7 +53,7 @@ class VoxelData{
 		Undefined =	0b00000010
 	};
 
-	static const std::map<SpecialProperty, string> special_property_names;	/*/*!< names of enumerated properties*/
+	static const std::map<SpecialProperty, string> special_property_names;	/*!< names of enumerated properties*/
 	
 	/*!
 	 * @brief get enumeration from string
@@ -156,7 +156,7 @@ class VoxelData{
 
 	private:
 
-	static double artefact_impact_factor_;			/*!< Factor for altering metal artefact strength*/
+	static double artefact_impact_factor_;			/*!< factor for altering metal artefact strength*/
 
 	double absorption_	= -1;										/*!< absorption coefficient at reference Energy*/
 	SpecialPropertyEnumType specialProperties_;	/*!< special properties in voxel*/
@@ -209,7 +209,7 @@ class Voxel : public MathematicalObject{
 
 	/*!
 	 * @brief get origin point of voxel
-	 * @return Origin point
+	 * @return origin point
 	*/
 	Point3D origin_corner( void ) const{ return origin_corner_; };
 
@@ -251,5 +251,5 @@ class Voxel : public MathematicalObject{
 	Tuple3D size_;				/*!< size in local coordinate system*/
 	VoxelData data_;			/*!< physical voxel data_*/
 	Point3D origin_corner_;		/*!< point as origin_ of voxel in coordinate system*/
-	array<BoundedSurface, ConvertToUnderlying( Face::End )> faces;	/*!< Faces in global context*/
+	array<BoundedSurface, ConvertToUnderlying( Face::End )> faces;	/*!< faces in global context*/
 };

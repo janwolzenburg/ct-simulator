@@ -73,10 +73,10 @@ class TomographyProperties{
 	bool scattering_enabled;				/*!< enable scattering*/
 	size_t max_scattering_occurrences;		/*!< max. amount each rays can be scattered*/
 	double scatter_propability_correction;	/*!< correction of scattering propability. Adjusts propabiltiy to make simulation possible*/
-	bool use_simple_absorption;				/*!< Flag for using simple absorption*/
-	double scattered_ray_absorption_factor;	/*!< Factor to scale the scattered rays energies by*/
+	bool use_simple_absorption;				/*!< flag for using simple absorption*/
+	double scattered_ray_absorption_factor;	/*!< factor to scale the scattered rays energies by*/
 	double mean_energy_of_tube;			/*!< mean energy of tube when radiated*/
-	string name;							/*/*!< name for identifiaction*/
+	string name;							/*!< name for identifiaction*/
 	bool filter_active;
 	size_t simulation_quality;
 };

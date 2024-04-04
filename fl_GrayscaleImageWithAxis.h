@@ -83,7 +83,7 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 
 	constexpr static int axis_space_ = 30;	/*!< amount of pixel the axis are spaced from image*/
 	
-	pair<string, string> axis_label_;		/*!< Label of axis*/
+	pair<string, string> axis_label_;		/*!< label of axis*/
 	Tuple2D axis_tics_start_;	/*!< start value of tics*/
 	Tuple2D pixel_size_;		/*!< what is one pixel's size in reality*/
 	Index2D number_of_tics_;

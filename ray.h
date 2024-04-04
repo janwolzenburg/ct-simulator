@@ -136,7 +136,7 @@ class RayProperties{
 	double initial_power_;					/*!< Intensity before radiation in watts*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
 	double simple_intensity_;				/*!< current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
-	bool definitely_hits_expected_pixel_;	/*!< Flag to indicate that this ray definitely hits the expected ray*/
+	bool definitely_hits_expected_pixel_;	/*!< flag to indicate that this ray definitely hits the expected ray*/
 
 	#ifdef TRANSMISSION_TRACKING
 	public:

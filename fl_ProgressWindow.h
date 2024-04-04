@@ -62,7 +62,7 @@ class Fl_Progress_Window : public Fl_Window{
 	unsigned int number_of_lines_;				/*!< amount of lines*/
 
 	Fl_Multiline_Output text_output_;	/*!< widget for text output*/
-	vector<string> line_texts_;			/*!< Line texts*/
+	vector<string> line_texts_;			/*!< line texts*/
 	string continuous_text_;			/*!< string to pass to widget*/
 
  
