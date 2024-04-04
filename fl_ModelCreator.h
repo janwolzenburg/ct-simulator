@@ -174,7 +174,7 @@ class Fl_ModelCreator : public Fl_Window{
 	constexpr static size_t num_features = 10;		/*!< max. amount of features*/
 	constexpr static double h_feature = .05;		/*!< height of each feature in GUI*/
 
-	Fl_Group model_size_group_;	/*!< Group for model size*/
+	Fl_Group model_size_group_;	/*!< group for model size*/
 	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_x_input_;	/*!< voxel amount in x direction*/
 	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_y_input_;	/*!< voxel amount in y direction*/
 	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_z_input_;	/*!< voxel amount in z direction*/
@@ -184,7 +184,7 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_Input name_input_;			/*!< name of model*/
 	Fl_Button store_size_button_;	/*!< button to store size and continue*/
 	
-	Fl_Group features_group_;	/*!< Group for all features and model properties*/
+	Fl_Group features_group_;	/*!< group for all features and model properties*/
 	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< absorption value of background*/
 	Fl_Multiline_Output information_;							/*!< information about features*/
 	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< all the features*/

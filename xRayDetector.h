@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   detector.h
- * @brief  Detector class
+ * @file   xRayDetector.h
+ * @brief  detector class
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -37,9 +37,9 @@ class XRayDetector{
 
 	/*!
 	 * @brief constructor
-	 * @param coordinate_system Coordinate system
-	 * @param projections_properties Projection properties
-	 * @param physical_properties Parameter indipendent of projection properties
+	 * @param coordinate_system coordinate system
+	 * @param projections_properties projection properties
+	 * @param physical_properties physical properties indipendent of projection properties
 	*/
 	XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 
@@ -57,10 +57,10 @@ class XRayDetector{
 
 	/*!
 	 * @brief update detector properties
-	 * @param radon_properties New radon properties
+	 * @param projections_properties New radon properties
 	 * @param physical_properties New physical properties
 	*/
-	void UpdateProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	void UpdateProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
 	 * @brief convert all comnverted pixel to this system
@@ -74,9 +74,9 @@ class XRayDetector{
 	void ResetDetectedRayPorperties( void );
 
 	/*!
-	 * @brief detect Ray
-	 * @param ray Ray to detect
-	 * @param pixel_mutex Mutex for multi threaded access to pixel array
+	 * @brief detect ray
+	 * @param ray ray to detect
+	 * @param pixel_mutex mutex for multi threaded access to pixel array
 	 * @return true when ray hit the detector
 	*/
 	#ifdef TRANSMISSION_TRACKING
@@ -87,7 +87,7 @@ class XRayDetector{
 
 	/*!
 	 * @brief check if ray is detectable
-	 * @param ray Ray to check. Expected pixel index is adjusted
+	 * @param ray Ray to check. expected pixel index is adjusted
 	 * @return true when ray can reach the detector
 	 */
 	bool TryDetection( Ray& ray ) const;
@@ -95,12 +95,17 @@ class XRayDetector{
 
 	private:
 
-	CoordinateSystem* coordinate_system_;			/*!< local coordinate system*/
-	vector<DetectorPixel> pixel_array_;				/*!< all pixel of detector*/
+	CoordinateSystem* coordinate_system_;					/*!< local coordinate system*/
+	vector<DetectorPixel> pixel_array_;						/*!< all pixel of detector*/
 	vector<DetectorPixel> converted_pixel_array_;	/*!< pixel in different coordinate system*/
 
-	DetectorProperties properties_;					/*!< properties*/
+	DetectorProperties properties_;								/*!< properties*/
 
+	/*!
+	 * @brief get the index of the pixel which the ray will hit
+	 * @param ray ray to check
+	 * @return index when a pixel is hit. empty when no pixel is hit
+	 */
 	optional<size_t> GetHitPixelIndex( Ray& ray ) const;
 
 };

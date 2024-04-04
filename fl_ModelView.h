@@ -75,13 +75,13 @@ class Fl_ModelView : public Fl_Group{
 	Fl_Group head_group_;			/*!< header group*/
 	Fl_Button load_model_button_;	/*!< button to load model*/
 
-	Fl_Group model_inspection_group_;				/*!< Group to view the model*/
+	Fl_Group model_inspection_group_;				/*!< group to view the model*/
 	Fl_Multiline_Output model_information_;			/*!< model properties_*/
 	Fl_Button reset_model_button_;					/*!< button to reset model to default*/
 	Fl_Box loading_status_;							/*!< box to show test when no model is loaded*/
 	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< image with adjustable contrast to show model slice*/
 	
-	Fl_Group model_movement_group_;	/*!< Group for the model movement*/
+	Fl_Group model_movement_group_;	/*!< group for the model movement*/
 	Fl_Counter x_rotation_;			/*!< input for x-rotation*/
 	Fl_Counter y_rotation_;			/*!< input for y-rotation*/
 	Fl_Counter z_position_;			/*!< input for z-transloation*/

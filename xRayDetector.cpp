@@ -159,9 +159,9 @@ void XRayDetector::ResetDetectedRayPorperties( void ){
 	for( DetectorPixel& currentPixel : pixel_array_ ) currentPixel.ResetDetectedRayProperties();
 }
 
-void XRayDetector::UpdateProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties ){
+void XRayDetector::UpdateProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties ){
 
-	*this = XRayDetector{ coordinate_system_, radon_properties, physical_properties };
+	*this = XRayDetector{ coordinate_system_, projections_properties, physical_properties };
 
 }
 

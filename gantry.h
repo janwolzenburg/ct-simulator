@@ -40,12 +40,12 @@ class Gantry{
 	
 	/*!
 	 * @brief constructor
-	 * @param coordinate_system Coordinate system
-	 * @param tube_properties Parameter of xRay tube
-	 * @param radon_properties Radon parameter of xRay detector
-	 * @param physical_detector_properties Other parameter
+	 * @param coordinate_system coordinate system
+	 * @param tube_properties parameter of x-ray tube
+	 * @param projections_properties radon parameter of x-ray detector
+	 * @param physical_detector_properties other parameter
 	*/
-	Gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tube_properties, const ProjectionsProperties radon_properties,
+	Gantry( CoordinateSystem* const coordinate_system,  const XRayTubeProperties tube_properties, const ProjectionsProperties projections_properties,
 			const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
@@ -80,28 +80,28 @@ class Gantry{
 
 	/*!
 	 * @brief update tube and detector properties
-	 * @param tube_properties New tube proerties
-	 * @param radon_properties New radon properties
-	 * @param physical_detector_properties New detector properties
+	 * @param tube_properties new tube proerties
+	 * @param projections_properties new radon properties
+	 * @param physical_detector_properties new detector properties
 	*/
-	void UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const ProjectionsProperties radon_properties,
+	void UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const ProjectionsProperties projections_properties,
 								const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
 	 * @brief rotate gantry counter clockwise around ZAxis
-	 * @param angle Rotation angle
+	 * @param angle rotation angle
 	*/
 	void RotateCounterClockwise( const double angle );
 
 	/*!
 	 * @brief translate gantry in z-direction
-	 * @param distance Distance to translate
+	 * @param distance distance to translate
 	*/
 	void TranslateInZDirection( const double distance );
 
 	/*!
 	 * @brief radiate model with beam
-	 * @param model Model to radiate
+	 * @param model model to radiate
 	 * @param tomography_properties tomogrpahy properties
 	*/
 	void RadiateModel( const Model& model, TomographyProperties tomography_properties,
@@ -115,29 +115,31 @@ class Gantry{
 
 	private:
 	
-	CoordinateSystem* coordinate_system_;			/*!< coordinate system*/
+	CoordinateSystem* coordinate_system_;					/*!< coordinate system*/
 	PrimitiveCoordinateSystem initial_position_;	/*!< initial position of coordinate system*/
 
-	XRayDetector detector_;							/*!< ray detector*/
-	XRayTube tube_;									/*!< xRay source*/
+	XRayDetector detector_;												/*!< x-ray detector*/
+	XRayTube tube_;																/*!< x-ray source*/
 	
 
 	/*!
 	 * @brief thread function to speed up transmission of multiple rays through model
-	 * @param model Model to radiate through
-	 * @param tomography_properties Properties of tomography
-	 * @param rayScatterAngles Reference to object with information about Ray scattering
-	 * @param rays Reference to vector with rays to transmit
-	 * @param second_to_last_iteration Flag to indicate that this is the last iteration
-	 * @param current_ray_index Index of the next Ray in vector to transmit. Will be changed at each call
-	 * @param current_ray_index_mutex Mutex instance for Ray index
-	 * @param rays_for_next_iteration Reference to vector which hold the rays for the next iteration
-	 * @param rays_for_next_iteration_mutex Mutex for vector with rays for next iteration 
-	 * @param detector Reference to Ray detector
-	 * @param detector_mutexMutex for the detector Object
+	 * @param model model to radiate through
+	 * @param tomography_properties properties of tomography
+	 * @param ray_scattering reference to object with information about Ray scattering
+	 * @param scattering_properties_mutex mutex for ray scattering
+	 * @param rays reference to vector with rays to transmit
+	 * @param second_to_last_iteration flag to indicate that this is the last iteration
+	 * @param current_ray_index index of the next Ray in vector to transmit. Will be changed at each call
+	 * @param current_ray_index_mutex mutex instance for Ray index
+	 * @param rays_for_next_iteration reference to vector which hold the rays for the next iteration
+	 * @param rays_for_next_iteration_mutex mutex for vector with rays for next iteration 
+	 * @param detector reference to ray detector
+	 * @param detector_mutex mutex for the detector instance
+	 * @param dedicated_rng a dedicated RNG with exclusive access
 	*/
 	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties& tomography_properties, 
-										RayScattering& rayScatterAngles, 
+										RayScattering& ray_scattering, 
 										mutex& scattering_properties_mutex,	const vector<Ray>& rays, const bool second_to_last_iteration,
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,

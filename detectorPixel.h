@@ -33,7 +33,7 @@ class DetectorPixel : public BoundedSurface{
 
 	/*!
 	 * @brief constructor
-	 * @param surface Surface as base object
+	 * @param surface surface as base object
 	*/
 	DetectorPixel( const BoundedSurface surface ) :
 		BoundedSurface( surface ), detected_ray_properties_( 0, RayProperties{} )
@@ -41,15 +41,15 @@ class DetectorPixel : public BoundedSurface{
 
 	/*!
 	 * @brief constructor
-	 * @param surface Surface as base object
-	 * @param properties Detected Ray's properties
+	 * @param surface surface as base object
+	 * @param properties detected ray's properties
 	*/
 	DetectorPixel( const BoundedSurface surface, const vector<RayProperties> properties ) :
 		BoundedSurface{ surface }, detected_ray_properties_( properties )
 	{};
 
 	/*!
-	 * @brief get the detected Ray properties
+	 * @brief get the detected ray properties
 	 * @return vector with properties
 	*/
 	vector<RayProperties> detected_ray_properties( void ) const{ return detected_ray_properties_; };
@@ -67,23 +67,23 @@ class DetectorPixel : public BoundedSurface{
 
 	/*!
 	 * @brief get the value of radon point for the detected Ray properties
-	 * @param use_simple_absorption If set use ideal model absorption which is not energy dependent
-	 * @param expected_ray_hits The expected amount of rays to hit the pixel
-	 * @param start_intensity Start intensities of rays
+	 * @param use_simple_absorption if set use ideal model absorption which is not energy dependent
+	 * @param expected_ray_hits the expected amount of rays to hit the pixel
+	 * @param start_intensity start intensities of rays
 	 * @return value of radon point
 	*/
 	optional<double> GetProjectionValue( const bool use_simple_absorption, const size_t expected_ray_hits, const double start_intensity ) const;
 
 	/*!
 	 * @brief convert this pixel ot given coordinate system
-	 * @param target_coordinate_system Target system 
+	 * @param target_coordinate_system target system 
 	 * @return this pixel in given coordiante system
 	*/
 	DetectorPixel ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
-	 * @brief add Ray properties
-	 * @param properties_ properties to add
+	 * @brief add ray properties
+	 * @param properties properties to add
 	*/
 	void  AddDetectedRayProperties( const RayProperties properties ){
 		detected_ray_properties_.push_back( properties ); };
@@ -105,8 +105,8 @@ class RayPixelIntersection : public LineSurfaceIntersection<Ray, DetectorPixel>{
 
 	/*!
 	 * @brief constructor
-	 * @param ray Ray
-	 * @param pixel Pixel
+	 * @param ray ray
+	 * @param pixel pixel
 	*/
 	RayPixelIntersection( const Ray& ray, const DetectorPixel& pixel );
 

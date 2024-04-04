@@ -106,14 +106,14 @@ class Tomography{
 
 	/*!
 	 * @brief record a slice via simulated computed tomography
-	 * @param radon_properties Properties of radon transformed
+	 * @param projections_properties Properties of radon transformed
 	 * @param gantry Gantry of CT-Device
 	 * @param model Model to slice
 	 * @param z_position z-positon of slice
 	 * @param progress_window Window to show progress
 	 * @return the sinogram when process was not terminated
 	*/
-	optional<Projections> RecordSlice( const ProjectionsProperties radon_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
+	optional<Projections> RecordSlice( const ProjectionsProperties projections_properties, Gantry gantry, const Model& model, const double z_position, Fl_Progress_Window* progress_window = nullptr );
 
 	
 

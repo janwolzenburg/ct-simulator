@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   physical_detector_properties_.h
- * @brief  Detector parameter classes
+ * @file   detectorProperties_.h
+ * @brief  detector parameter classes
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -37,10 +37,10 @@ struct PhysicalDetectorProperties{
 
 	/*!
 	 * @brief constructor
-	 * @param row_width Width of one detector row
-	 * @param detector_focus_distance Distance from detector pixel array to its focus
-	 * @param has_anti_scattering_structure Enable anti scattering structure for pixel
-	 * @param max_angle_allowed_by_structure 
+	 * @param row_width width of one detector row
+	 * @param detector_focus_distance distance from detector pixel array to its focus
+	 * @param has_anti_scattering_structure enable anti scattering structure for pixel
+	 * @param max_angle_allowed_by_structure maximum angle between ray and pixel normal
 	*/
 	PhysicalDetectorProperties( const double row_width, const double detector_focus_distance, const bool has_anti_scattering_structure = false, 
 								const double max_angle_allowed_by_structure = default_max_ray_angle_allowed_by_structure );
@@ -53,16 +53,17 @@ struct PhysicalDetectorProperties{
 	PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	* @brief serialize this object
-	* @param binary_data reference to vector where data will be appended
+	 * @brief serialize this object
+	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double row_width;								/*!< row width. The length of one the pixel side which is connected to the next pixel inside one row*/
+	double row_width;												/*!< row width. The length of one the pixel side which is connected to the next pixel inside one row*/
 	double detector_focus_distance;					/*!< distance from the detector array to the focus*/
-	bool has_anti_scattering_structure;				/*!< flag for anti scatter structure*/
-	double max_angle_allowed_by_structure;		/*!< maximum angle between pixel normal and Ray if structure is enabled*/
+	bool has_anti_scattering_structure;			/*!< flag for anti scatter structure*/
+	double max_angle_allowed_by_structure;	/*!< maximum angle between pixel normal and Ray if structure is enabled*/
 };
 
 
@@ -75,16 +76,16 @@ class DetectorProperties{
 
 	/*!
 	 * @brief constructor
-	 * @param radon_properties Radon properties
-	 * @param physical_properties Physical detector properties
+	 * @param projections_properties radon properties
+	 * @param physical_properties physical detector properties
 	*/
-	DetectorProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
+	DetectorProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 
 
 	GridIndex number_of_pixel;					/*!< amount of pixel in each dimension*/
-	double row_width;							/*!< size of one pixel in column direction*/
-	double arc_angle;							/*!< angle between outer normals*/
-	double detector_focus_distance;				/*!< distance of focus and detector pixel*/
+	double row_width;										/*!< size of one pixel in column direction*/
+	double arc_angle;										/*!< angle between outer normals*/
+	double detector_focus_distance;			/*!< distance of focus and detector pixel*/
 
 	bool has_anti_scattering_structure;			/*!< flag for anti scatter structure*/
 	double max_angle_allowed_by_structure;	/*!< maximum angle between pixel normal and Ray*/

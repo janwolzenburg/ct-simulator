@@ -34,6 +34,8 @@ constexpr double h_Js = 6.626196E-34;													/*!< planck's constant */
 constexpr double h_eVs = 4.1357E-15;													/*!< planck's constant */
 constexpr double h_c_eVmm = c_mPers * h_eVs * 1000.;					/*!< product of h and c in eV*mm*/
 
+constexpr double efficiancy_constant_PerV = 1.1E-9;						/*!< efficiancy constant for roentgen power */
+
 constexpr double me_c2_eV = 0.511e6;													/*!< compton Wavelength in eV */
 constexpr double me_c2_J = me_c2_eV * J_Per_eV;								/*!< compton wavelenth in Joule */
 constexpr double Per_me_c2_eV = 1 / me_c2_eV;									/*!< reciprocal of compton wavelength*/

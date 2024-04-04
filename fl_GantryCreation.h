@@ -78,7 +78,7 @@ class Fl_GantryCreation : public Fl_Group{
 
 	Fl_Box title_;		/*!< title*/
 
-	Fl_Group tube_group_;				/*!< Group of tube elements*/
+	Fl_Group tube_group_;				/*!< group of tube elements*/
 	Fl_Box tube_title_;					/*!< tube group title*/
 	Fl_BoundInput<Fl_Float_Input, double> voltage_input_;	/*!< tube voltage*/
 	Fl_BoundInput<Fl_Float_Input, double> current_input_;	/*!< tube current*/
@@ -88,7 +88,7 @@ class Fl_GantryCreation : public Fl_Group{
 	Fl_BoundInput<Fl_Float_Input, double> filter_gradient_input;	/*!< filter strength*/
 	Fl_Plot<LinePlot> spectrum_plot_;		/*!< plot of tube sepctrum*/
 
-	Fl_Group detector_group_;	/*!< Group for detector elemnts*/
+	Fl_Group detector_group_;	/*!< group for detector elemnts*/
 	Fl_Box detector_title_;	/*!< detector group title*/
 	Fl_BoundInput<Fl_Int_Input, size_t> number_of_angles_input_;			/*!< amount of angles in sinogram*/
 	Fl_BoundInput<Fl_Int_Input, size_t> number_of_distances_input_;			/*!< amount of distances in sinogram*/

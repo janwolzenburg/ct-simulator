@@ -44,13 +44,13 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 }
 
 
-void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const ProjectionsProperties radon_properties,
+void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_properties, const ProjectionsProperties projections_properties,
 									const PhysicalDetectorProperties physical_detector_properties ){
 	
 	tube_.UpdateProperties( tube_properties );
 	tube_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ Primitivevector3{ 0, physical_detector_properties.detector_focus_distance / 2, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } } );
 	
-	detector_.UpdateProperties( radon_properties, physical_detector_properties );
+	detector_.UpdateProperties( projections_properties, physical_detector_properties );
 
 	ResetGantry();
 
