@@ -48,7 +48,7 @@ struct PhysicalDetectorProperties{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	PhysicalDetectorProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 

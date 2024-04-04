@@ -29,7 +29,7 @@ class ModelViewProperties{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	ModelViewProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
 		contrast{ binary_data, current_byte }, slice_plane{ binary_data, current_byte }, artefact_impact( DeSerializeBuildIn<double>( 1., binary_data, current_byte ) )

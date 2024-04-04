@@ -76,7 +76,7 @@ class ColorImage{
 	/*!
 	 * @brief construct image from binary data
 	 * @param binary_data Binary data
-	 * @param current_byte Iterator to start reading from
+	 * @param current_byte iterator to start reading from
 	*/
 	ColorImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
@@ -107,7 +107,7 @@ class ColorImage{
 	/*!
 	 * @brief get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
-	 * @return Pointer to raw data
+	 * @return pointer to raw data
 	*/
 	const RGB* GetImageData( void ){ return image_data_.data(); };
 
@@ -141,7 +141,7 @@ class ColorImage{
 	 * @brief get reference to image data
 	 * @param column Column
 	 * @param row Row
-	 * @return Reference to color data
+	 * @return reference to color data
 	*/
 	void SetPixelData( const GridIndex pixel, const RGB new_data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = new_data; };
 

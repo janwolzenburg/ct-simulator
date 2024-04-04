@@ -41,7 +41,7 @@ Line::Line( const vector3D v, const Point3D p ) :
 }
 
 Line::Line( void ) : 
-	Line{ vector3D{ Tuple3D{1, 0, 0}, DummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }}
+	Line{ vector3D{ Tuple3D{1, 0, 0}, GetDummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, GetDummySystem() }}
 {
 
 }

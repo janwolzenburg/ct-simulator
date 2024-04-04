@@ -292,7 +292,7 @@ void Fl_ModelCreator::BuildModel( void ){
 
 	deactivate();
 
-	PersistingObject<Model> model{ Model{ GlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_absorption_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
+	PersistingObject<Model> model{ Model{ GetGlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_absorption_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
 
 		
 

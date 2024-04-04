@@ -68,7 +68,7 @@ class GrayscaleImage{
 	/*!
 	 * @brief construct image from binary data
 	 * @param binary_data Binary data
-	 * @param current_byte Iterator to start reading from
+	 * @param current_byte iterator to start reading from
 	*/
 	GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 	
@@ -99,7 +99,7 @@ class GrayscaleImage{
 	/*!
 	 * @brief get pointer raw image data
 	 * @details Be careful when data vector changes! The returned pointer may then point to false address
-	 * @return Pointer to raw data
+	 * @return pointer to raw data
 	*/
 	const unsigned char* GetImageData( void ){ return image_data_.data(); };
 
@@ -135,7 +135,7 @@ class GrayscaleImage{
 	 * @brief get raw data
 	 * @param column Column
 	 * @param row Row
-	 * @return Raw value
+	 * @return raw value
 	*/
 	double GetData( const size_t column, const size_t row ) const{ return raw_data_.at( GetIndex( column, row ) ); } ;
 
@@ -171,7 +171,7 @@ class GrayscaleImage{
 	 * @brief acces operator
 	 * @param c Column
 	 * @param row Row
-	 * @return Reference to value at ( column, row )
+	 * @return reference to value at ( column, row )
 	*/
 	double& operator()( const size_t column, const size_t row ){ return raw_data_.at( GetIndex( column, row ) ); };
 	

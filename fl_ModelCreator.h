@@ -107,7 +107,7 @@ class Fl_ModelFeature : public Fl_Group{
 
 	/*!
 	 * @brief get special property
-	 * @return Property of feature
+	 * @return property of feature
 	*/
 	VoxelData::SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
 
@@ -181,7 +181,7 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_x_input_;	/*!< Voxel size in x direction*/
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_y_input_;	/*!< Voxel size in y direction*/
 	Fl_BoundInput<Fl_Float_Input, double> voxel_size_z_input_;	/*!< Voxel size in z direction*/
-	Fl_Input name_input_;			/*!< Name of model*/
+	Fl_Input name_input_;			/*/*!< name of model*/
 	Fl_Button store_size_button_;	/*!< Button to store size and continue*/
 	
 	Fl_Group features_group_;	/*!< Group for all features and model properties*/
@@ -197,7 +197,7 @@ class Fl_ModelCreator : public Fl_Window{
 
 	Index3D model_size_;		/*!< size of model. The amount of voxel*/
 	Tuple3D voxel_size_;		/*!< Voxel size in mm*/
-	string name_;				/*!< Name of model*/
+	string name_;				/*/*!< name of model*/
 
 	double background_absorption_;	/*!< Value of background absorption*/
 

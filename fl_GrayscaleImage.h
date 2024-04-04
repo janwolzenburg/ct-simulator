@@ -68,7 +68,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 	 * @brief get value for given x and y coordinate
 	 * @param x Local x coordinate
 	 * @param y Local y coordinate
-	 * @return Raw and color value when x and y are inside image
+	 * @return raw and color value when x and y are inside image
 	*/
 	optional<pair<double, RGB>> GetValue( int x, int y ) const;
 

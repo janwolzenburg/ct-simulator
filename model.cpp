@@ -64,7 +64,7 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it 
 			static_cast<double>( number_of_voxel_3D_.y ) * voxel_size_.y,
 			static_cast<double>( number_of_voxel_3D_.z ) * voxel_size_.z } ,
 	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
-	coordinate_system_( CoordinateSystems().AddSystem( binary_data, it ) ),
+	coordinate_system_( GetCoordinateSystemTree().AddSystem( binary_data, it ) ),
 	min_absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
 	max_absorption_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
 	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) ),

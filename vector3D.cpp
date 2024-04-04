@@ -97,7 +97,7 @@ Primitivevector3 vector3D::GetComponents( const vector3D targetV ) const{
 }
 
 Primitivevector3 vector3D::GetGlobalComponents( void ) const{
-	return this->GetComponents( GlobalSystem() );
+	return this->GetComponents( GetGlobalSystem() );
 };
 
 double vector3D::GetGlobalX( void ) const{
@@ -275,7 +275,7 @@ Primitivevector3 Point3D::GetComponents( const Point3D targetP ) const{
 }
 
 Primitivevector3 Point3D::GetGlobalComponents( void ) const{
-	return this->Point3D::ConvertTo( GlobalSystem() ).GetComponents();
+	return this->Point3D::ConvertTo( GetGlobalSystem() ).GetComponents();
 }
 
 double Point3D::GetGlobalX( void ) const{

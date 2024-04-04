@@ -53,12 +53,12 @@ class VoxelData{
 		Undefined =	0b00000010
 	};
 
-	static const std::map<SpecialProperty, string> special_property_names;	/*!< Names of enumerated properties*/
+	static const std::map<SpecialProperty, string> special_property_names;	/*/*!< names of enumerated properties*/
 	
 	/*!
 	 * @brief get enumeration from string
 	 * @param property_string String to find property for
-	 * @return Proeprty enumeration
+	 * @return proeprty enumeration
 	*/
 	static SpecialProperty GetPropertyEnum( const string property_string );
 
@@ -199,7 +199,7 @@ class Voxel : public MathematicalObject{
 	/*!
 	 * @brief default constructor
 	*/
-	Voxel( void ) : Voxel{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{ 1, 1, 1 }, VoxelData{} }{};
+	Voxel( void ) : Voxel{ Point3D{ Tuple3D{ 0, 0, 0 }, GetDummySystem() }, Tuple3D{ 1, 1, 1 }, VoxelData{} }{};
 
 	/*!
 	 * @brief convert result's data to string
@@ -234,7 +234,7 @@ class Voxel : public MathematicalObject{
 
 	/*!
 	 * @brief get center of voxel
-	 * @return Point at center of voxel
+	 * @return point at center of voxel
 	*/
 	Point3D GetCenter( void ) const{ return origin_corner_ + vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
 

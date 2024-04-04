@@ -11,7 +11,7 @@ void BuildTestDetector( void ){
 	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, measurefield_size };
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	
-	CoordinateSystem* detector_system = GlobalSystem()->CreateCopy("Detector system");
+	CoordinateSystem* detector_system = GetGlobalSystem()->CreateCopy("Detector system");
 	detector_system->Rotate( detector_system->GetEz(), PI );
 	XRayDetector detector{ detector_system, projections_properties, physical_detector_properties };
 	
@@ -39,8 +39,8 @@ void TestRadonCoordinates( void ){
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
-	CoordinateSystem* radon_system = GlobalSystem()->CreateCopy("Radon system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* radon_system = GetGlobalSystem()->CreateCopy("Radon system");
 
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 
@@ -115,7 +115,7 @@ void TestSpectrum( void ){
 
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Thungsten, 1, false, 16000., 3.5 };
 	
-	CoordinateSystem* tube_system = GlobalSystem()->CreateCopy("Tube system");
+	CoordinateSystem* tube_system = GetGlobalSystem()->CreateCopy("Tube system");
 	
 	XRayTube tube{ tube_system, tube_properties };
 
@@ -137,7 +137,7 @@ void TestSpectrum( void ){
 
 	XRayTubeProperties tube_properties_filter{ 140000., 0.4, XRayTubeProperties::Thungsten, 1, true, 16000., 3.5 };
 	
-	CoordinateSystem* tube_system_filter = GlobalSystem()->CreateCopy("Tube with filter system");
+	CoordinateSystem* tube_system_filter = GetGlobalSystem()->CreateCopy("Tube with filter system");
 	
 	XRayTube tube_filter{ tube_system_filter, tube_properties_filter };
 
@@ -165,7 +165,7 @@ void TestBeamCreation( void ){
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 3, false, 20000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
 
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	gantry.RotateCounterClockwise( PI / 2. );

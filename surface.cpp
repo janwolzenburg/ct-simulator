@@ -54,7 +54,7 @@ Surface::Surface( const vector<char>& binary_data, vector<char>::const_iterator&
 }
 
 Surface::Surface( void ) : 
-Surface( Unitvector3D{ Tuple3D{1,0,0}, GlobalSystem() }, Unitvector3D{ Tuple3D{0,1,0}, GlobalSystem() }, Point3D{ Tuple3D{0,0,0}, GlobalSystem() })
+Surface( Unitvector3D{ Tuple3D{1,0,0}, GetGlobalSystem() }, Unitvector3D{ Tuple3D{0,1,0}, GetGlobalSystem() }, Point3D{ Tuple3D{0,0,0}, GetGlobalSystem() })
 {}
 
 string Surface::ConvertToString( const unsigned int newline_tabulators ) const{

@@ -32,7 +32,7 @@ class ProgramState{
 	
 	/*!
 	 * @brief get reference of singlular instance
-	 * @return Reference to program state
+	 * @return reference to program state
 	*/
 	static ProgramState& GetInstance();
 	

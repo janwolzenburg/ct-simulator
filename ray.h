@@ -230,7 +230,7 @@ class Ray : public Line{
 	/*!
 	 * @brief convert Ray components to different coordinate system
 	 * @param target_coordinate_system Target system
-	 * @return Ray in target system
+	 * @return ray in target system
 	*/
 	Ray ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
@@ -238,14 +238,14 @@ class Ray : public Line{
 	 * @brief get Ray parameter corresponding to point
 	 * @param point_on_ray Point on Ray
 	 * @param solution_found Is set to true when the given point lies on the Ray. False if not
-	 * @return Ray parameter
+	 * @return ray parameter
 	*/
 	double GetLineParameter( const Point3D point_on_ray, bool* const solution_found ) const;
 
 	/*!
 	 * @brief project Ray on XY plane of coordinate system
 	 * @param coordinate_system System to project on
-	 * @return Projected Ray
+	 * @return projected Ray
 	*/
 	Ray ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 

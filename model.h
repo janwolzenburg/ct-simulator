@@ -55,14 +55,14 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	Model( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	 * @brief default constructor
 	*/
-	Model( void ) : Model( DummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } , string{}, VoxelData{} ){};
+	Model( void ) : Model( GetDummySystem(), Index3D{ 1, 1, 1 }, Tuple3D{ 1, 1, 1 } , string{}, VoxelData{} ){};
 
 	/*!
 	 * @brief convert model's data to string
@@ -103,7 +103,7 @@ class Model : public MathematicalObject{
 
 	/*!
 	 * @brief get range of absorption in model
-	 * @return Range of absorption
+	 * @return range of absorption
 	*/
 	NumberRange absorptionRange( void ) const{ return NumberRange{ min_absorption_, max_absorption_ + ( min_absorption_ == max_absorption_ ) ? min_absorption_ + 1e-18 : 0. }; };
 
@@ -198,7 +198,7 @@ class Model : public MathematicalObject{
 	 * @param tomography_parameter Simulation parameter used in ray tracing
 	 * @param scattering_properties Information for ray scattering
 	 * @param disable_scattering Flag to override eneabled scattering in tomography_properties
-	 * @return Rays that has been scattered or left the model
+	 * @return rays that has been scattered or left the model
 	*/
 	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, RayScattering& scattering_properties, 
 																					 mutex& scattering_properties_mutex, RandomNumberGenerator& dedicated_rng, const bool disable_scattering = false ) const;
@@ -274,7 +274,7 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief element access
 	 * @param index index of voxel
-	 * @return Reference to voxel data_
+	 * @return reference to voxel data_
 	*/
 	VoxelData& operator()( const Index3D index );
 

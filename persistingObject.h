@@ -59,7 +59,7 @@ class PersistingObject : public C{
 	/*!
 	 * @brief copy assignment operator
 	 * @param instance Instance to assign
-	 * @return Reference to this
+	 * @return reference to this
 	*/
 	PersistingObject& operator=( const C& instance );
 

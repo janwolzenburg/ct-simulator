@@ -57,7 +57,7 @@ class FileChooser : private Fl_Native_File_Chooser{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	FileChooser( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
@@ -87,7 +87,7 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	/*!
 	 * @brief choose a file
-	 * @return Path to chosen file
+	 * @return path to chosen file
 	*/
 	path ChooseFile( void );
 	

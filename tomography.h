@@ -57,7 +57,7 @@ class TomographyProperties{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
@@ -76,7 +76,7 @@ class TomographyProperties{
 	bool use_simple_absorption;				/*!< Flag for using simple absorption*/
 	double scattered_ray_absorption_factor;	/*!< Factor to scale the scattered rays energies by*/
 	double mean_energy_of_tube;			/*!< mean energy of tube when radiated*/
-	string name;							/*!< Name for identifiaction*/
+	string name;							/*/*!< name for identifiaction*/
 	bool filter_active;
 	size_t simulation_quality;
 };
@@ -94,14 +94,14 @@ class Tomography{
 	 * @param properties Properties of computed tomography
 	*/
 	Tomography( const TomographyProperties properties ) :
-		properties_( properties ), radon_coordinate_system_( DummySystem() )
+		properties_( properties ), radon_coordinate_system_( GetDummySystem() )
 	{};
 
 	/*!
 	 * @brief default constructor
 	*/
 	Tomography( void ) :
-		properties_( TomographyProperties{} ), radon_coordinate_system_(DummySystem())
+		properties_( TomographyProperties{} ), radon_coordinate_system_(GetDummySystem())
 	{};
 
 	/*!

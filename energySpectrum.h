@@ -62,7 +62,7 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief get sum of photons per second
-	 * @return Photons per second
+	 * @return photons per second
 	*/
 	double GetSum( void ) const;
 
@@ -106,7 +106,7 @@ class EnergySpectrum {
 	/*!
 	 * @brief get photonflow for energy
 	 * @param energy Energy
-	 * @return Photonflow for given energy
+	 * @return photonflow for given energy
 	*/
 	double GetPhotonflow( const double energy ) const;
 

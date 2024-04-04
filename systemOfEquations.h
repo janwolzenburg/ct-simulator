@@ -46,14 +46,14 @@ class Matrix : public MathematicalObject{
 	 * @brief element assignment
 	 * @param column Column index
 	 * @param row Row index
-	 * @return Reference to matrix element
+	 * @return reference to matrix element
 	*/
 	double& operator() ( const size_t column, const size_t row );
 
 	/*!
 	 * @brief element assignment
 	 * @param index Cell indices
-	 * @return Reference to matrix element
+	 * @return reference to matrix element
 	*/
 	double& operator() ( const GridIndex index ){ return (*this)( index.c, index.r ); };
 
@@ -185,8 +185,8 @@ class SystemOfEquations : private Matrix{
 
 	private:
 
-	const size_t number_of_variables_;			/*!< Number of variables*/
-	size_t currently_populated_columns_;		/*!< Number of populated columns*/
+	const size_t number_of_variables_;			/*/*!< number of variables*/
+	size_t currently_populated_columns_;		/*/*!< number of populated columns*/
 };
 
 

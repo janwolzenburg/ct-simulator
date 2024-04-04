@@ -46,8 +46,8 @@ bool Coordinates::operator== ( const Coordinates coords ) const{
 	if( this->HasSameSystem( coords ) ) return this->Primitivevector3::operator==( coords );
 
 	// convert both Coordinates to global system
-	Coordinates globalCoords_1 = this->ConvertTo( GlobalSystem() );
-	Coordinates globalCoords_2 = coords.ConvertTo( GlobalSystem() );
+	Coordinates globalCoords_1 = this->ConvertTo( GetGlobalSystem() );
+	Coordinates globalCoords_2 = coords.ConvertTo( GetGlobalSystem() );
 
 	// compare components
 	return globalCoords_1.Primitivevector3::operator==( globalCoords_2 );

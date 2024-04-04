@@ -132,7 +132,7 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief get Pointer to coordinate system
-	 * @return Pointer to this vector's coordinate system
+	 * @return pointer to this vector's coordinate system
 	*/
 	const CoordinateSystem* GetCoordinateSystem( void ) const{ return coordinate_system_; };
 
@@ -321,14 +321,14 @@ class vector3D : protected Coordinates{
 	 * @brief counterclockwise rotation of vector around second vector
 	 * @param n Rotation axis vector
 	 * @param arc_angle arc_angle in radians
-	 * @return Rotated vector
+	 * @return rotated vector
 	*/
 	vector3D RotateConstant( const vector3D axis, const double arc_angle ) const;
 
 	/*!
 	 * @brief project vector on XY plane of given coordinate system
 	 * @param coordinate_system Coordinate system
-	 * @return Projected vector
+	 * @return projected vector
 	*/
 	vector3D ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 
@@ -377,7 +377,7 @@ class Unitvector3D : public vector3D{
 	/*!
 	 * @brief default constructor
 	*/
-	Unitvector3D( void ) : Unitvector3D{ Tuple3D{ 1, 0, 0 }, DummySystem() } {};
+	Unitvector3D( void ) : Unitvector3D{ Tuple3D{ 1, 0, 0 }, GetDummySystem() } {};
 
 	/*!
 	 * @brief scaling unit vector does not have an effect
@@ -492,7 +492,7 @@ class Point3D : public vector3D{
 	/*!
 	 * @brief project point on XY plane of given coordinate system
 	 * @param coordinate_system Coordinate system
-	 * @return Projected point
+	 * @return projected point
 	*/
 	Point3D ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 };

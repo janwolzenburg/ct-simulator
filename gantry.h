@@ -56,13 +56,13 @@ class Gantry{
 
 	/*!
 	 * @brief get reference to detector instance
-	 * @return Reference to detector instance
+	 * @return reference to detector instance
 	*/
 	XRayDetector detector( void ) const{ return detector_; };
 
 	/*!
 	 * @brief get reference to tube instance
-	 * @return Reference to tube instance
+	 * @return reference to tube instance
 	*/
 	XRayTube tube( void ) const{ return tube_; };
 
@@ -94,7 +94,7 @@ class Gantry{
 	void RotateCounterClockwise( const double angle );
 
 	/*!
-	 * @brief Translate gantry in z-direction
+	 * @brief translate gantry in z-direction
 	 * @param distance Distance to translate
 	*/
 	void TranslateInZDirection( const double distance );
@@ -123,7 +123,7 @@ class Gantry{
 	
 
 	/*!
-	 * @brief Thread function to speed up transmission of multiple rays through model
+	 * @brief thread function to speed up transmission of multiple rays through model
 	 * @param model Model to radiate through
 	 * @param tomography_properties Properties of tomography
 	 * @param rayScatterAngles Reference to object with information about Ray scattering

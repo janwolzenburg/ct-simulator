@@ -53,10 +53,10 @@ string CoordinateSystem::ConvertToString( const unsigned int newline_tabulators 
 CoordinateSystem* CoordinateSystem::CreateCopy( const string newName ) const{
 	// only one global coordinate system allowed! Parent of copy will be global system
 	if (this->IsGlobal()) {
-		return CoordinateSystems().AddSystem(origin_, ex_, ey_, ez_, this, newName);
+		return GetCoordinateSystemTree().AddSystem(origin_, ex_, ey_, ez_, this, newName);
 	}
 
-	return CoordinateSystems().AddSystem( origin_, ex_, ey_, ez_, parent_, newName );
+	return GetCoordinateSystemTree().AddSystem( origin_, ex_, ey_, ez_, parent_, newName );
 }
 
 void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const sourceCSys ){
@@ -71,7 +71,7 @@ void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const sourceCS
 }
 
 CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const string name_ ) const{
-	return CoordinateSystems().AddSystem( origin_, ex_, ey_, ez_, this, name_ );
+	return GetCoordinateSystemTree().AddSystem( origin_, ex_, ey_, ez_, this, name_ );
 }
 
 vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) const{
@@ -117,42 +117,42 @@ Unitvector3D CoordinateSystem::GetEz( void ) const{
 
 Line CoordinateSystem::GetXAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Line{ vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetYAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Line{ vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetZAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Line{ vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Surface CoordinateSystem::GetXYPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetYZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Surface{ vector3D{ey_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetXZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
-	if( this->IsGlobal() ) parent_ptr = GlobalSystem();
+	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
 	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }

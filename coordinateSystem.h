@@ -49,7 +49,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief get pointer to this system's parent_
-	 * @return Pointer to parent_
+	 * @return pointer to parent_
 	*/
 	const CoordinateSystem* parent( void ) const{ return parent_; };
 
@@ -74,7 +74,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	/*!
 	 * @brief create copy of this system
 	 * @param newName Name of new system
-	 * @return Pointer to new coordiante system with same baseCartSystem and parent_ as this
+	 * @return pointer to new coordiante system with same baseCartSystem and parent_ as this
 	*/
 	CoordinateSystem* CreateCopy( const string new_name ) const;
 	
@@ -91,7 +91,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param ey y-axis
 	 * @param ez z-axis
 	 * @param name_ Name of the system
-	 * @return Pointer to created system with this system as parent_
+	 * @return pointer to created system with this system as parent_
 	*/
 	CoordinateSystem* AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const;
 
@@ -103,13 +103,13 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief get origin point in this system's context
-	 * @return Point of system's origin_
+	 * @return point of system's origin_
 	*/
 	Point3D GetOriginPoint( void ) const;
 
 	/*!
 	 * @brief get origin point in this parent_'s context
-	 * @return Point of system's origin_
+	 * @return point of system's origin_
 	*/
 	Point3D GetOriginInParentSystem( void ) const;
 
@@ -168,7 +168,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	Surface GetXZPlane( void ) const;
 
 	/*!
-	 * @brief Translate coordinate system
+	 * @brief translate coordinate system
 	 * @param dV Translation vector
 	*/
 	MathError Translate( const vector3D direction );
@@ -215,5 +215,5 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	private:
 
 	const CoordinateSystem* parent_;	/*!< pointer to parent system*/
-	string name_;						/*!< Name of system*/
+	string name_;						/*/*!< name of system*/
 };

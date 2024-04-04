@@ -93,7 +93,7 @@ void VerifyTransmission( void ){
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
 
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
@@ -161,7 +161,7 @@ void VerifyHardening( void ){
 	PhysicalDetectorProperties physical_detector_properties{ 25., 650 };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 
@@ -273,7 +273,7 @@ void VerifyScattering( void ){
 	PhysicalDetectorProperties physical_detector_properties{ 25., 400 };
 	XRayTubeProperties tube_properties{ 210000, 0.5, XRayTubeProperties::Material::Thungsten, 1, false, 16000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 	auto rays = gantry.tube().GetEmittedBeam( gantry.pixel_array(), gantry.detector().properties().detector_focus_distance );
 

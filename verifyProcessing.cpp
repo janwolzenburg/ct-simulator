@@ -24,7 +24,7 @@ void VerifyFilteredprojections( void ){
 	PhysicalDetectorProperties physical_detector_properties{ .5, projections_properties.measuring_field_size() * 1.1, false };
 	XRayTubeProperties tube_properties{ 140000., 0.5, XRayTubeProperties::Material::Thungsten, 1, true, 16000., 3.5 };
 
-	CoordinateSystem* gantry_system = GlobalSystem()->CreateCopy("Gantry system");
+	CoordinateSystem* gantry_system = GetGlobalSystem()->CreateCopy("Gantry system");
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 
 	RayScattering ray_scattering{ simulation_properties.number_of_scatter_angles, {10000., 200000.}, 32,  gantry_system->GetEz(), PI / 2. };

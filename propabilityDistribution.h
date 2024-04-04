@@ -39,13 +39,13 @@ class RandomNumberGenerator{
 
 	/*!
 	 * @brief get a random number
-	 * @return Random integer
+	 * @return random integer
 	*/
 	unsigned int GetRandomNumber( void );
 
 	/*!
 	 * @brief get a random short
-	 * @return Random short integer
+	 * @return random short integer
 	*/
 	unsigned short int GetRandomShortNumber(void);
 

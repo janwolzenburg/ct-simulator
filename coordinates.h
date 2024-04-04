@@ -43,7 +43,7 @@ class Coordinates : protected Primitivevector3{
 	/*!
 	 * @brief defaulkt constructor
 	*/
-	Coordinates( void ) : Coordinates{ Tuple3D{}, DummySystem() } {};
+	Coordinates( void ) : Coordinates{ Tuple3D{}, GetDummySystem() } {};
 
 	/*!
 	 * @brief convert coordinate's data to string

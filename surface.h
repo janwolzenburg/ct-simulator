@@ -40,7 +40,7 @@ class Surface : public MathematicalObject{
 	/*!
 	 * @brief construct from binary data_
 	 * @param binary_data Data vector
-	 * @param current_byte Iterator
+	 * @param current_byte iterator
 	 * @param coordinate_system System to assign surface to
 	*/
 	Surface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );
@@ -85,7 +85,7 @@ class Surface : public MathematicalObject{
 	 * @brief get point on the surface based on parameters
 	 * @param surface_parameter_1 Surface parameter a
 	 * @param surface_parameter_2 Surface parameter b
-	 * @return Point p = origin_ + direction_1_*a + direction_2_*b
+	 * @return point p = origin_ + direction_1_*a + direction_2_*b
 	*/
 	Point3D GetPoint( const double surface_parameter_1, const double surface_parameter_2 ) const{ return  origin_ + ( direction_1_ * surface_parameter_1 + direction_2_ * surface_parameter_2 ); };
 
@@ -182,7 +182,7 @@ class BoundedSurface : public Surface{
 	/*!
 	 * @brief construct from binary data_
 	 * @param binary_data Data vector
-	 * @param current_byte Iterator
+	 * @param current_byte iterator
 	 * @param coordinate_system System to assign surface to
 	*/
 	BoundedSurface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );

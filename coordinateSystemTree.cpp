@@ -21,16 +21,16 @@
  *********************************************************************/
 
 
-CoordinateSystemTree& CoordinateSystems( void ){
+CoordinateSystemTree& GetCoordinateSystemTree( void ){
 	return CoordinateSystemTree::GetInstance();
 }
 
-const CoordinateSystem* GlobalSystem( void ){
-	return CoordinateSystems().GetGlobal();
+const CoordinateSystem* GetGlobalSystem( void ){
+	return GetCoordinateSystemTree().GetGlobal();
 }
 
-CoordinateSystem* DummySystem( void ){
-	return CoordinateSystems().GetDummy();
+CoordinateSystem* GetDummySystem( void ){
+	return GetCoordinateSystemTree().GetDummy();
 }
 
 
@@ -80,7 +80,7 @@ CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin
 };
 
 CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const string name_ ){
-	return AddSystem( origin_, ex_, ey_, ez_, GlobalSystem(), name_ );
+	return AddSystem( origin_, ex_, ey_, ez_, GetGlobalSystem(), name_ );
 }
 
 CoordinateSystem* CoordinateSystemTree::AddSystem( const CoordinateSystem* parent_, const string name_ ){
@@ -101,7 +101,7 @@ CoordinateSystem* CoordinateSystemTree::AddSystem( const vector<char>& binary_da
 
 	string name = DeSerializeBuildIn<string>( string{""}, binary_data, it);
 
-	return AddSystem( origin, ex, ey, ez, GlobalSystem(), name );
+	return AddSystem( origin, ex, ey, ez, GetGlobalSystem(), name );
 
 }
 

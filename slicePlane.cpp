@@ -22,7 +22,7 @@
 
 
 SlicePlane::SlicePlane( void ) :
-	coordinate_system( CoordinateSystems().AddSystem( "Slice plane system" ) ),
+	coordinate_system( GetCoordinateSystemTree().AddSystem( "Slice plane system" ) ),
 	surface{ Unitvector3D{ Tuple3D{ 1, 0, 0 }, coordinate_system },
 				Unitvector3D{ Tuple3D{ 0, 1, 0 }, coordinate_system },
 				Point3D{  Tuple3D{0, 0, 0}, coordinate_system } },
@@ -32,7 +32,7 @@ SlicePlane::SlicePlane( void ) :
 }
 
 SlicePlane::SlicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	coordinate_system{ CoordinateSystems().AddSystem( binary_data, it ) },
+	coordinate_system{ GetCoordinateSystemTree().AddSystem( binary_data, it ) },
 	surface{ binary_data, it, coordinate_system },
 	rotation_angle_x( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
 	rotation_angle_y( DeSerializeBuildIn<double>( 0., binary_data, it ) ),

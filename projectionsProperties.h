@@ -39,7 +39,7 @@ class ProjectionsProperties{
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
@@ -100,8 +100,8 @@ class ProjectionsProperties{
 
 	private:
 
-	size_t number_of_projections_;			/*!< Number of angles. Is the number of projections*/
-	size_t number_of_distances_;			/*!< Number of distances. Is the number of point in one projection*/
+	size_t number_of_projections_;			/*/*!< number of angles. Is the number of projections*/
+	size_t number_of_distances_;			/*/*!< number of distances. Is the number of point in one projection*/
 	double measuring_field_size_;			/*!< measuring field in mm*/
 
 	double angles_resolution_;				/*!< angle resolution*/

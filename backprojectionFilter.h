@@ -34,7 +34,7 @@ class BackprojectionFilter{
 	enum TYPE{
 		ramLak,			/*!< ramachandran and Lakshminarayanan*/
 		sheppLogan,		/*!< shepp and Logan*/
-		constant,		/*!< No filter*/
+		constant,		/*/*!< no filter*/
 	};
 
 	static const std::map<TYPE, string> filter_types;				/*!< Filter types with names*/
@@ -75,7 +75,7 @@ class BackprojectionFilter{
 
 	/*!
 	 * @brief get range of kernel
-	 * @return Range
+	 * @return range
 	*/
 	NaturalNumberRange points_range( void ) const{ return points_range_; };
 
@@ -87,7 +87,7 @@ class BackprojectionFilter{
 
 	/*!
 	 * @brief get the relevant range by threshold
-	 * @return Range of indices where the filter values are significant
+	 * @return range of indices where the filter values are significant
 	*/
 	NaturalNumberRange GetRelevantRange( void ) const;
 
@@ -131,7 +131,7 @@ class BackprojectionFilter{
 	/*!
 	 * @brief set value at index
 	 * @param index Index
-	 * @return Reference to value at index
+	 * @return reference to value at index
 	*/
 	bool SetValue( const size_t index, const double new_value );
 

@@ -73,7 +73,7 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	 * @brief get value for given x and y coordinate
 	 * @param x Local x coordinate
 	 * @param y Local y coordinate
-	 * @return Raw and color value when x and y are inside image
+	 * @return raw and color value when x and y are inside image
 	*/
 	optional<pair<double, RGB>> GetValue( int x, int y ) const{ 
 		return Fl_GrayscaleImage::GetValue( x - axis_space_ / 2, y - axis_space_ / 2); };

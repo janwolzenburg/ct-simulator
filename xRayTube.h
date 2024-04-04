@@ -87,7 +87,7 @@ class XRayTubeProperties {
 	/*!
 	 * @brief constructor from serialized data_
 	 * @param binary_data reference to vector with binary data_
-	 * @param current_byte Iterator to start of data in vector
+	 * @param current_byte iterator to start of data in vector
 	*/
 	XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
@@ -131,13 +131,13 @@ class XRayTube{
 
 	/*!
 	 * @brief get coordinate system
-	 * @return Pointer to coordinate system
+	 * @return pointer to coordinate system
 	*/
 	CoordinateSystem* coordinate_system( void ) const { return coordinate_system_; };
 
 	/*!
 	 * @brief get the set number_of_pixel of pixel per ray
-	 * @return Rays per Pixel
+	 * @return rays per Pixel
 	*/
 	size_t number_of_rays_per_pixel( void ) const{ return properties_.number_of_rays_per_pixel_; };
 
@@ -156,13 +156,13 @@ class XRayTube{
 
 	/*!
 	 * @brief get Ray power
-	 * @return Ray power in watt
+	 * @return ray power in watt
 	*/
 	double GetEmittedBeamPower( void ) const{ return radiation_power_W_; };
 
 	/*!
 	 * @brief get the electrical power
-	 * @return Power in watt
+	 * @return power in watt
 	*/
 	double GetElectricalPower( void ) const{ return properties_.anode_voltage_V * properties_.anode_current_A; };
 
@@ -174,7 +174,7 @@ class XRayTube{
 
 	/*!
 	 * @brief get tube properties
-	 * @return Properties
+	 * @return properties
 	*/
 	XRayTubeProperties properties( void ) const{ return properties_; };
 

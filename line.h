@@ -83,7 +83,7 @@ class Line : public MathematicalObject{
 	/*!
 	 * @brief get point on the Line based on parameter
 	 * @param line_parameter Line parameter t
-	 * @return Point point = origin_ + direction_*t
+	 * @return point point = origin_ + direction_*t
 	*/
 	Point3D GetPoint( const double line_parameter ) const{ return origin_ + ( direction_ * line_parameter ); };
 	
@@ -128,7 +128,7 @@ class Line : public MathematicalObject{
 	/*!
 	 * @brief project Line on XY plane of coordinate system
 	 * @param coordinate_system System to project on
-	 * @return Projected Line
+	 * @return projected Line
 	*/
 	Line ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 

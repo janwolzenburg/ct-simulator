@@ -51,7 +51,7 @@ class XRayDetector{
 	
 	/*!
 	 * @brief get the physical parameters of detector
-	 * @return Physical parameters of detector
+	 * @return physical parameters of detector
 	*/
 	DetectorProperties properties( void ) const{ return properties_; };
 

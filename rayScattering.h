@@ -44,13 +44,13 @@ class RayScattering{
 
 	/*!
 	 * @brief get scattering plane normal
-	 * @return Plane normal
+	 * @return plane normal
 	*/
 	Unitvector3D scattering_plane_normal( void ) const{ return scattering_plane_normal_; };
 
 	/*!
 	 * @brief get angle resolution
-	 * @return Resolution in rad
+	 * @return resolution in rad
 	*/
 	double angle_resolution( void ) const{ return angle_resolution_; };
 
@@ -60,7 +60,7 @@ class RayScattering{
 	 * @brief get a random angle to given energy
 	 * @param energy Mean energy of Ray
 	 * @param dedicated_rng RNG to use
-	 * @return Random angöe
+	 * @return random angöe
 	*/
 	double GetRandomAngle( const double energy_eV, RandomNumberGenerator& dedicated_rng );
 

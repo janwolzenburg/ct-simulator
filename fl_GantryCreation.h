@@ -52,7 +52,7 @@ class Fl_GantryCreation : public Fl_Group{
 
 	/*!
 	 * @brief get reference to gantry instance
-	 * @return Reference to gantry
+	 * @return reference to gantry
 	*/
 	Gantry& gantry( void ){ return gantry_; };
 
