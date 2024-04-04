@@ -15,14 +15,14 @@
 #include "plot.h"
 
 /*!
- * @brief Class for a 2D plot for lines and points
+ * @brief class for a 2D plot for lines and points
 */
 class Geometryplot : public Plot{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param name Name of plot
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
@@ -36,12 +36,12 @@ class Geometryplot : public Plot{
 			lines_( 0, std::pair<Tuple2D, Tuple2D>{} ), points_( 0, { Tuple2D{}, string{} } ){};
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	Geometryplot( void ) : Plot{}{};
 
 	/*!
-	 * @brief Add a Line to plot
+	 * @brief add a Line to plot
 	 * @param start Start of Line
 	 * @param end End of Line
 	*/
@@ -49,7 +49,7 @@ class Geometryplot : public Plot{
 		lines_.emplace_back( Tuple2D{ limits_.xFactor * start.x, limits_.yFactor * start.y }, Tuple2D{ limits_.xFactor * end.x, limits_.yFactor * end.y } ); };
 
 	/*!
-	 * @brief Add point to plot
+	 * @brief add point to plot
 	 * @param point Point coordiantes
 	*/
 	void AddPoint( const Tuple2D point, const string name = string{}){
@@ -58,12 +58,12 @@ class Geometryplot : public Plot{
 
 
 	/*!
-	 * @brief Remove all lines and points
+	 * @brief remove all lines and points
 	*/
 	void ResetObjects( void );
 
 	/*!
-	 * @brief Create the plot
+	 * @brief create the plot
 	*/
 	void CreatePlot( void );
 
@@ -71,6 +71,6 @@ class Geometryplot : public Plot{
 	private:
 
 	vector<std::pair<Tuple2D, Tuple2D>> lines_;			/*!< Lines in plot*/
-	vector<pair<Tuple2D, string>> points_;					/*!< Points in plot*/
+	vector<pair<Tuple2D, string>> points_;					/*!< points in plot*/
 
 };

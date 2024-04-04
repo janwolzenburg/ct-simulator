@@ -21,8 +21,8 @@
 
 
  /*!
- * @brief Class to store information about an object instance and a pointer to a member function
- * @tparam C Class
+ * @brief class to store information about an object instance and a pointer to a member function
+ * @tparam C class
 */
 template<typename C>
 class CallbackFunction{
@@ -30,19 +30,19 @@ class CallbackFunction{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param class_instance Reference to class instance 
 	 * @param member_function Pointer to member function
 	*/
 	CallbackFunction( C& class_instance, void ( C::*member_function )( void ) );
 
 	/*!
-	 * @brief Execute member function
+	 * @brief execute member function
 	*/
 	void Execute( void );
 
 	/*!
-	 * @brief Function to pass to FLTK callback() function
+	 * @brief function to pass to FLTK callback() function
 	 * @param widget Pointer to widget
 	 * @param callback Pointer to CallbackFunction instance
 	*/
@@ -50,8 +50,8 @@ class CallbackFunction{
 
 	private:
 
-	C& instance_;							/*!< Reference to class instance*/
-	void (C::*member_function_)( void );	/*!< Pointer to member function*/
+	C& instance_;							/*!< reference to class instance*/
+	void (C::*member_function_)( void );	/*!< pointer to member function*/
 
 };
 

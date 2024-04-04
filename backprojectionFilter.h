@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   backprojectionFilter.h
- * @brief  Class for a filter kernel
+ * @brief  class for a filter kernel
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -22,18 +22,18 @@
 *********************************************************************/
 
 /*!
- * @brief Class for a 1D symmetric filter kernel
+ * @brief class for a 1D symmetric filter kernel
 */
 class BackprojectionFilter{
 	
 	public:
 
 	/*!
-	 * @brief Available filter types
+	 * @brief available filter types
 	*/
 	enum TYPE{
-		ramLak,			/*!< Ramachandran and Lakshminarayanan*/
-		sheppLogan,		/*!< Shepp and Logan*/
+		ramLak,			/*!< ramachandran and Lakshminarayanan*/
+		sheppLogan,		/*!< shepp and Logan*/
 		constant,		/*!< No filter*/
 	};
 
@@ -41,14 +41,14 @@ class BackprojectionFilter{
 	static constexpr double significance_percentage = 1e-3;			/*!< Threshold to determine significant range*/
 	
 	/*!
-	 * @brief Get filter type by string
+	 * @brief get filter type by string
 	 * @param search_string Name of filter type
 	 * @return Filter enumeration value
 	*/
 	static BackprojectionFilter::TYPE GetType( const string search_string );
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param points_range Range of whole numbers to calculate the filter values for
 	 * @param sampling_interval Sampling interval
 	 * @param filter_type Filter type
@@ -56,45 +56,45 @@ class BackprojectionFilter{
 	BackprojectionFilter( const NaturalNumberRange points_range, const double sampling_interval, const TYPE filter_type );
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	BackprojectionFilter( void ) : 
 		BackprojectionFilter( NaturalNumberRange{ -5, 5 }, 1., ramLak ) {};
 
 	/*!
-	 * @brief Get values of filter kernel
-	 * @return Vector with values
+	 * @brief get values of filter kernel
+	 * @return vector with values
 	*/
 	vector<double> values( void ) const{ return values_; };
 
 	/*!
-	 * @brief Get filter type
+	 * @brief get filter type
 	 * @return Filter type
 	*/
 	TYPE type( void ) const{ return type_; };
 
 	/*!
-	 * @brief Get range of kernel
+	 * @brief get range of kernel
 	 * @return Range
 	*/
 	NaturalNumberRange points_range( void ) const{ return points_range_; };
 
 	/*!
-	 * @brief Get the filter as points
-	 * @return Vector with x,y points
+	 * @brief get the filter as points
+	 * @return vector with x,y points
 	*/
 	VectorPair GetPlotValues( void ) const;
 
 	/*!
-	 * @brief Get the relevant range by threshold
+	 * @brief get the relevant range by threshold
 	 * @return Range of indices where the filter values are significant
 	*/
 	NaturalNumberRange GetRelevantRange( void ) const;
 
 	/*!
-	 * @brief Get value of filter at index
+	 * @brief get value of filter at index
 	 * @param signed_index Signed index
-	 * @return Value at index
+	 * @return value at index
 	*/
 	double operator()( const signed long long signed_index ) const{ 
 		return this->GetValue( GetUnsignedIndex( signed_index ) ); }
@@ -108,28 +108,28 @@ class BackprojectionFilter{
 	private:
 
 	TYPE type_;							/*!< Type of filter*/
-	NaturalNumberRange points_range_;	/*!< Range of discrete sampling points*/
-	size_t number_of_points_;			/*!< Amount of points*/
-	double sampling_interval_;			/*!< Sampling interval*/
+	NaturalNumberRange points_range_;	/*!< range of discrete sampling points*/
+	size_t number_of_points_;			/*!< amount of points*/
+	double sampling_interval_;			/*!< sampling interval*/
 	vector<double> values_;				/*!< Values*/
 
 
 	/*!
-	 * @brief Get unsigned index corresponding to signed index
+	 * @brief get unsigned index corresponding to signed index
 	 * @param signed_index signed index
 	 * @return Unsigned index
 	*/
 	size_t GetUnsignedIndex( const signed long long signed_index ) const;
 
 	/*!
-	 * @brief Get value at index
+	 * @brief get value at index
 	 * @param index Index
-	 * @return Value
+	 * @return value
 	*/
 	double GetValue( const size_t index ) const;
 
 	/*!
-	 * @brief Set value at index
+	 * @brief set value at index
 	 * @param index Index
 	 * @return Reference to value at index
 	*/

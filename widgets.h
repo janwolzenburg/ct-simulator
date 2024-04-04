@@ -43,7 +43,7 @@ int hOff( const C& parent );
 
 
 /*!
- * @brief Storage of x and y pixel coordinates
+ * @brief storage of x and y pixel coordinates
 */
 struct PixelCoordinates{
 

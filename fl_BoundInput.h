@@ -23,7 +23,7 @@ using std::string;
  *********************************************************************/
 
 /*!
- * @brief Constraints for the bound input
+ * @brief constraints for the bound input
 */
 enum Input_Constraints{
 	None,
@@ -32,8 +32,8 @@ enum Input_Constraints{
 };
 
 /*!
- * @brief Class for a bound number input
- * @tparam C Class derived from Fl_Input
+ * @brief class for a bound number input
+ * @tparam C class derived from Fl_Input
  * @tparam T Arithmetic type to input
 */
 template< class C, typename T>
@@ -46,7 +46,7 @@ class Fl_BoundInput : public Fl_Group{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -56,25 +56,25 @@ class Fl_BoundInput : public Fl_Group{
 	Fl_BoundInput( int x, int y, int w, int h, const char* label );
 	
 	/*!
-	 * @brief Get current value 
+	 * @brief get current value 
 	 * @return Current value
 	*/
 	T value( void ) const{ return current_value_; }; 
 
 	/*!
-	 * @brief Set alignment for title
+	 * @brief set alignment for title
 	 * @param alignment Alignment
 	*/
 	void align( Fl_Align alignment ){ input_widget_.align( alignment ); };
 
 	/*!
-	 * @brief Set new value
+	 * @brief set new value
 	 * @param newValue New value
 	*/
 	void value( const T newValue );
 
 	/*!
-	 * @brief Set properties of input
+	 * @brief set properties of input
 	 * @param min_value Minimum value
 	 * @param max_value Maximum value
 	 * @param precision Precision of number_of_pixel to show. Use negative numbers to round to multiples of ten
@@ -85,24 +85,24 @@ class Fl_BoundInput : public Fl_Group{
 
 	private:
 
-	C input_widget_;				/*!< A Fl_Input derivation*/
+	C input_widget_;				/*!< a Fl_Input derivation*/
 				
-	int precision_;					/*!< Precision of number_of_pixel. Negative to round to significant digits*/
-	T current_value_;				/*!< Current value*/
-	string value_string_;			/*!< String with formatted value*/
+	int precision_;					/*!< precision of number_of_pixel. Negative to round to significant digits*/
+	T current_value_;				/*!< current value*/
+	string value_string_;			/*!< string with formatted value*/
 
-	T max_allowed_;					/*!< Maximum allowed value*/
-	T min_allowed_;					/*!< Minimum allowed value*/
-	Input_Constraints constraint_;	/*!< Constraints for the input*/
+	T max_allowed_;					/*!< maximum allowed value*/
+	T min_allowed_;					/*!< minimum allowed value*/
+	Input_Constraints constraint_;	/*!< constraints for the input*/
 
 	/*!
-	 * @brief Check if current value is in bounds and violating constrains
+	 * @brief check if current value is in bounds and violating constrains
 	 * @details Updates value to conform
 	*/
 	void CheckAndForceConstraints( void );
 
 	/*!
-	 * @brief Callback for value change
+	 * @brief callback for value change
 	 * @param widget Pointer to widget which triggered the callback
 	 * @param p Pointer to userdata. Here a pointer to the Fl_BoundInput must be passed
 	*/

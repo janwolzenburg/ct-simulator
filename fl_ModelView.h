@@ -39,14 +39,14 @@
 
 
 /*!
- * @brief Class for the model viewer
+ * @brief class for the model viewer
 */
 class Fl_ModelView : public Fl_Group{
 
 	public: 
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -56,14 +56,14 @@ class Fl_ModelView : public Fl_Group{
 	Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_window );
 
 	/*!
-	 * @brief Get Reference to model
+	 * @brief get Reference to model
 	 * @return Constant reference to model
 	*/
 	const Model& model( void ){ return model_; };
 
 	/*!
-	 * @brief Check if a model has been loaded
-	 * @return True when a model has been loaded
+	 * @brief check if a model has been loaded
+	 * @return true when a model has been loaded
 	*/
 	bool IsModelLoaded( void ) const{ return model_.was_loaded(); };
 
@@ -72,11 +72,11 @@ class Fl_ModelView : public Fl_Group{
 	
 	Fl_Box title_;					/*!< Title*/
 	
-	Fl_Group head_group_;			/*!< Header group*/
+	Fl_Group head_group_;			/*!< header group*/
 	Fl_Button load_model_button_;	/*!< Button to load model*/
 
 	Fl_Group model_inspection_group_;				/*!< Group to view the model*/
-	Fl_Multiline_Output model_information_;			/*!< Model properties_*/
+	Fl_Multiline_Output model_information_;			/*!< model properties_*/
 	Fl_Button reset_model_button_;					/*!< Button to reset model to default*/
 	Fl_Box loading_status_;							/*!< Box to show test when no model is loaded*/
 	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< Image with adjustable contrast to show model slice*/
@@ -87,29 +87,29 @@ class Fl_ModelView : public Fl_Group{
 	Fl_Counter z_position_;			/*!< Input for z-transloation*/
 	Fl_Counter artefact_impact_;	/*!< Input for artefact impact*/
 	
-	PersistingObject<ModelViewProperties> properties_;	/*!< Persisting storage of view parameters*/
-	Fl_MainWindow& main_window_;						/*!< Reference to main window*/
-	PersistingObject<FileChooser> model_chooser_;		/*!< Persisting storage of model chooser*/
-	PersistingObject<Model> model_;						/*!< Persisting storage of current model*/
+	PersistingObject<ModelViewProperties> properties_;	/*!< persisting storage of view parameters*/
+	Fl_MainWindow& main_window_;						/*!< reference to main window*/
+	PersistingObject<FileChooser> model_chooser_;		/*!< persisting storage of model chooser*/
+	PersistingObject<Model> model_;						/*!< persisting storage of current model*/
 
-	string model_information_string_;					/*!< String with model properties_*/
-	DataGrid<VoxelData> model_slice_;					/*!< Slice through model as gridded data*/
+	string model_information_string_;					/*!< string with model properties_*/
+	DataGrid<VoxelData> model_slice_;					/*!< slice through model as gridded data*/
 	
 
-	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< Callback for model loading*/
-	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< Callback for model update*/
-	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< Callback for model reset*/
-	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< Callback for change of artifact impact*/
+	CallbackFunction<Fl_ModelView> load_model_callback_;		/*!< callback for model loading*/
+	CallbackFunction<Fl_ModelView> update_model_callback_;		/*!< callback for model update*/
+	CallbackFunction<Fl_ModelView> reset_model_callback_;		/*!< callback for model reset*/
+	CallbackFunction<Fl_ModelView> update_artefact_impact_;		/*!< callback for change of artifact impact*/
 
 	/*!
-	 * @brief Get the model description
-	 * @return String with model information
+	 * @brief get the model description
+	 * @return string with model information
 	*/
 	string GetModelDescription( void ) const;
 
 	/*!
 	 * @brief Load the model a stored path
-	 * @return True at success
+	 * @return true at success
 	*/
 	void LoadModel( void );
 
@@ -118,23 +118,23 @@ class Fl_ModelView : public Fl_Group{
 	 * @param target_x_angle Rotation around x-axis
 	 * @param target_y_angle Rotation around y-axis
 	 * @param target_z_position Translation in z-direction
-	 * @return True at success
+	 * @return true at success
 	*/
 	bool MoveModel( double& target_x_angle, double& target_y_angle, double& target_z_position );
 	
 	/*!
-	 * @brief Center the model
+	 * @brief center the model
 	*/
 	void CenterModel( void );
 	
 	/*!
-	 * @brief Reset model's position
+	 * @brief reset model's position
 	*/
 	void ResetModel( void );
 
 	/*!
-	 * @brief Slice model with stored slice plane
-	 * @return True at success
+	 * @brief slice model with stored slice plane
+	 * @return true at success
 	*/
 	bool SliceModel( void );
 

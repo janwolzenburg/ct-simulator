@@ -13,21 +13,21 @@
 
 
 /*!
- * @brief Class to store parameters used in model view
+ * @brief class to store parameters used in model view
 */
 class ModelViewProperties{
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< string to prepend to file when storing as file*/
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	ModelViewProperties( void ) : contrast{}, slice_plane{}, artefact_impact( 10 ){};
 
 	/*!
-	 * @brief Constructor from serialized data
+	 * @brief constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
@@ -36,13 +36,13 @@ class ModelViewProperties{
 		{};
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	NumberRange contrast;			/*!< Contrast of slice image*/
-	SlicePlane slice_plane;			/*!< Surface to slice model with*/
-	double artefact_impact;			/*!< Artefact impact factor*/
+	NumberRange contrast;			/*!< contrast of slice image*/
+	SlicePlane slice_plane;			/*!< surface to slice model with*/
+	double artefact_impact;			/*!< artefact impact factor*/
 };

@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   filteredProjections.h
- * @brief  Classes for backprojections
+ * @brief  classes for backprojections
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -25,21 +25,21 @@
 *********************************************************************/
 
 /*!
- * @brief Class for storing the filtered projections
+ * @brief class for storing the filtered projections
 */
 class FilteredProjections : private DataGrid<> {
 
 	public:
 
-	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< string to prepend to file when storing as file*/
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	FilteredProjections( void ) : DataGrid{} {};
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param projections Unfiltered projections 
 	 * @param filter_type Type of filter to apply
 	 * @param progress_window FL window to track progress
@@ -52,37 +52,37 @@ class FilteredProjections : private DataGrid<> {
 	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 	/*!
-	 * @brief Get gridded data
+	 * @brief get gridded data
 	 * @return Gridded data
 	*/
 	DataGrid<> data_grid( void ) const{ return static_cast<DataGrid<>>( *this ); };
 
 	/*!
-	 * @brief Get size of projections
-	 * @return Size of projections
+	 * @brief get size of projections
+	 * @return size of projections
 	*/
 	GridIndex size( void ) const{ return DataGrid::size(); };
 
 	/*!
-	 * @brief Get starts of axis
-	 * @return Start of axis
+	 * @brief get starts of axis
+	 * @return start of axis
 	*/
 	GridCoordinates start( void ) const{ return DataGrid::start(); };
 
 	/*!
-	 * @brief Get resolution of axis
+	 * @brief get resolution of axis
 	 * @return GetResolution of axis
 	*/
 	GridCoordinates resolution( void ) const{ return DataGrid::resolution(); };
 
 	/*!
-	 * @brief Return used filter
+	 * @brief return used filter
 	 * @return Filter used in backprojections
 	*/
 	BackprojectionFilter filter( void ) const { return filter_; };
 
 	/*!
-	 * @brief Get value at angle index at given distance
+	 * @brief get value at angle index at given distance
 	 * @param angle_index Angle index
 	 * @param distance Distance
 	 * @return Filtered value

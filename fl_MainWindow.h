@@ -32,14 +32,14 @@
  *********************************************************************/
 
 /*!
- * @brief Class for main window with model view, gantry creation and tomography execution
+ * @brief class for main window with model view, gantry creation and tomography execution
 */
 class Fl_MainWindow : public Fl_Window{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param w Width of window
 	 * @param h Height of window
 	 * @param label Window title
@@ -47,17 +47,17 @@ class Fl_MainWindow : public Fl_Window{
 	Fl_MainWindow( int w, int h, const char* label );
 
 	/*!
-	 * @brief Import projections
+	 * @brief import projections
 	*/
 	void ImportProjections( void );
 
 	/*!
-	 * @brief Set reset at exit flat
+	 * @brief set reset at exit flat
 	*/
 	void SetResetAtExit( void );
 
 	/*!
-	 * @brief Create a  model
+	 * @brief create a  model
 	*/
 	void CreateModel( void );
 
@@ -69,15 +69,15 @@ class Fl_MainWindow : public Fl_Window{
 	Fl_Button import_projections_button_;			/*!< Button for projections import*/
 	Fl_Button reset_program_state_at_exit_button_;	/*!< Button to reset program state*/
 
-	Fl_ModelView model_view_;						/*!< Model view*/
+	Fl_ModelView model_view_;						/*!< model view*/
 	Fl_GantryCreation gantry_creation_;				/*!< Gantry creation*/
 	Fl_TomographyExecution tomography_execution_;	/*!< Tomography execution*/
 
-	PersistingObject<FileChooser> import_projections_file_chooser_;	/*!< Persisting storage of projections import file selection*/
+	PersistingObject<FileChooser> import_projections_file_chooser_;	/*!< persisting storage of projections import file selection*/
 
-	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;	/*!< Callback to reset program state at exit*/
-	CallbackFunction<Fl_MainWindow> import_projections_callback_;	/*!< Callback to import projections*/
-	CallbackFunction<Fl_MainWindow> create_model_callback_;			/*!< Callback to create model*/
+	CallbackFunction<Fl_MainWindow> reset_program_state_callback_;	/*!< callback to reset program state at exit*/
+	CallbackFunction<Fl_MainWindow> import_projections_callback_;	/*!< callback to import projections*/
+	CallbackFunction<Fl_MainWindow> create_model_callback_;			/*!< callback to create model*/
 
-	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;	/*!< Storage for creator windows*/
+	vector<std::unique_ptr<Fl_ModelCreator>> creator_windows_;	/*!< storage for creator windows*/
 };

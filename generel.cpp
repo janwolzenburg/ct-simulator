@@ -1,6 +1,6 @@
 /*********************************************************************
  * @file   generel.cpp
- * @brief  Generel function implementation
+ * @brief  generel function implementation
  *
  * @author Jan Wolzenburg
  * @date   December 2022

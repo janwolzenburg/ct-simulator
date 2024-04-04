@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   generel.h
- * @brief  Generel definitions and useful functions
+ * @brief  generel definitions and useful functions
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -192,8 +192,8 @@ class GridIndex{
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	size_t c;	/*!< Column*/
-	size_t r;	/*!< Row*/
+	size_t c;	/*!< column*/
+	size_t r;	/*!< row*/
 };
 
 
@@ -352,7 +352,7 @@ class NumberRange{
 	double GetDifference( void ) const{ return end_ - start_; };
 
 	/*!
-	 * @brief Get the difference between two elements when range is divided equally spaced
+	 * @brief get the difference between two elements when range is divided equally spaced
 	 * @param number_of_elements Amount of elements in range
 	 * @return ( end_ - start_ ) / ( number_of_elements - 1 )
 	*/
@@ -373,10 +373,10 @@ class NumberRange{
  *********************************************************************/
 
 /*!
- * @brief Converts variable to underlying type
+ * @brief converts variable to underlying type
  * @tparam T Type of var
  * @param var Variable
- * @return Value of var cast to underlying type
+ * @return value of var cast to underlying type
 */
 template <typename T>
 constexpr typename std::underlying_type_t<T> ToUnderlying( T var );
@@ -391,7 +391,7 @@ template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& var );
 
 /*!
- * @brief Substraction operator for enum classes. Assumes value 1 is greater than value 2
+ * @brief substraction operator for enum classes. Assumes value 1 is greater than value 2
  * @tparam T Type of values
  * @param left_operand Minuend
  * @param right_operand Subtrahend
@@ -401,7 +401,7 @@ template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand, const T right_operand );
 
 /*!
- * @brief Convert number_of_pixel to string with given precision
+ * @brief convert number_of_pixel to string with given precision
  * @tparam T Type of number_of_pixel
  * @param value Value
  * @param precision Precision of converted number_of_pixel. Negative rounds number_of_pixel to significant digits
@@ -411,7 +411,7 @@ template<typename T>
 string ToString( T value, const int precision = 0 );
 
 /*!
- * @brief Convert string to number_of_pixel
+ * @brief convert string to number_of_pixel
  * @tparam T Type of number_of_pixel
  * @param str String
  * @return Number corresponding to string
@@ -431,16 +431,16 @@ template<typename T>
 T WriteThreadVar( T& var, const T& value, mutex& var_mutex );
 
 /*!
- * @brief Set flag to false but return previous state of flag
+ * @brief set flag to false but return previous state of flag
  * @param flag Flag to set to false
  * @return Flag value before its reset
 */
 bool UnsetFlag( bool& flag );
 
 /*!
- * @brief Convert a vector pair to a vector uf 2D-Tuples
+ * @brief convert a vector pair to a vector uf 2D-Tuples
  * @param vector_pair Vector pair
- * @return Vector with 2D-Tuples
+ * @return vector with 2D-Tuples
 */
 vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair );
 

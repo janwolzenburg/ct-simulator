@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   rays.h
- * @brief  Classes for rays
+ * @brief  classes for rays
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -49,7 +49,7 @@ class RayTrace{
 #endif
 
 /*!
- * @brief Class for Ray properties_
+ * @brief class for Ray properties_
 */
 class RayProperties{
 	
@@ -60,7 +60,7 @@ class RayProperties{
 
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param spectrum Ray spectrum
 	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
 	*/
@@ -74,7 +74,7 @@ class RayProperties{
 		{};
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	RayProperties( void ) :
 		energy_spectrum_( EnergySpectrum{} ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( 0 ), simple_intensity_( 1. ),
@@ -86,43 +86,43 @@ class RayProperties{
 	{};
 	
 	/*!
-	 * @brief Get copy of energy spectrum
+	 * @brief get copy of energy spectrum
 	 * @return Energy spectrum
 	*/
 	EnergySpectrum energy_spectrum( void ) const{ return energy_spectrum_; };
 
 	/*!
-	 * @brief Get intensity at start
+	 * @brief get intensity at start
 	 * @return Intensity at start
 	*/
 	double start_intensity( void ) const{ return initial_power_; };
 
 	/*!
-	 * @brief Get index of the pixel in detector-pixel vector this ray is likely to hit
+	 * @brief get index of the pixel in detector-pixel vector this ray is likely to hit
 	 * @return Index of detector pixel
 	*/
 	size_t expected_detector_pixel_index( void ) const{ return expected_detector_pixel_index_; };
 
 	/*!
-	 * @brief Get whether this ray's expected pixel index is definitely
-	 * @return True when the stored pixel will definitely be hit
+	 * @brief get whether this ray's expected pixel index is definitely
+	 * @return true when the stored pixel will definitely be hit
 	 */
 	bool definitely_hits_expected_pixel( void ) const{ return definitely_hits_expected_pixel_; };
 
 	/*!
-	 * @brief Get the intensity if ray is attenuated after lampert beer's model without energy dependence. Start value is 1.
+	 * @brief get the intensity if ray is attenuated after lampert beer's model without energy dependence. Start value is 1.
 	 * @return Intensity.
 	*/
 	double simple_intensity( void ) const{ return simple_intensity_; };
 
 	/*!
-	 * @brief Scale specturm linearly
+	 * @brief scale specturm linearly
 	 * @param factor Factor
 	*/
 	void ScaleSpectrumEvenly( const double factor ){ energy_spectrum_.ScaleEvenly( factor ); };
 
 	/*!
-	 * @brief Attenuate spectrum according to distance in given voxel
+	 * @brief attenuate spectrum according to distance in given voxel
 	 * @param voxel_data Data of voxel
 	 * @param distance_traveled Distance traversed in Voxel
 	*/
@@ -131,11 +131,11 @@ class RayProperties{
 
 	private:
 
-	EnergySpectrum energy_spectrum_;		/*!< Energy spectrum*/
-	size_t voxel_hits_;						/*!< Counter for voxels hit during transmission*/
+	EnergySpectrum energy_spectrum_;		/*!< energy spectrum*/
+	size_t voxel_hits_;						/*!< counter for voxels hit during transmission*/
 	double initial_power_;					/*!< Intensity before radiation in watts*/
 	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
-	double simple_intensity_;				/*!< Current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
+	double simple_intensity_;				/*!< current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
 	bool definitely_hits_expected_pixel_;	/*!< Flag to indicate that this ray definitely hits the expected ray*/
 
 	#ifdef TRANSMISSION_TRACKING
@@ -149,14 +149,14 @@ class RayProperties{
 
 
 /*!
- * @brief Class for rays
+ * @brief class for rays
 */
 class Ray : public Line{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param v_ Trajectory
 	 * @param p_ Origin
 	 * @param intensity_ Intensity
@@ -165,7 +165,7 @@ class Ray : public Line{
 		Line{ v_, p_ }, properties_{ properties_ }{};
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param line_ Line
 	 * @param intensity_ Intensity
 	*/
@@ -173,24 +173,24 @@ class Ray : public Line{
 	Line{ line_ }, properties_{ properties_ }{};
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	Ray( void ) : Ray{ Line{}, RayProperties{} }{};
 
 	/*!
-	 * @brief Get intensity
+	 * @brief get intensity
 	 * @return Intensity
 	*/
 	RayProperties properties( void ) const{ return properties_; };
 
 	/*!
-	 * @brief Get voxel hits
-	 * @return Amount of voxel the Ray has hit
+	 * @brief get voxel hits
+	 * @return amount of voxel the Ray has hit
 	*/
 	size_t voxel_hits( void ) const { return properties_.voxel_hits_; };
 
 	/*!
-	 * @brief Scale specturm linearly
+	 * @brief scale specturm linearly
 	 * @param factor Factor
 	*/
 	void ScaleSpectrumEvenly( const double factor ){ 
@@ -199,23 +199,23 @@ class Ray : public Line{
 	};
 
 	/*!
-	 * @brief Increment the voxel hit count
+	 * @brief increment the voxel hit count
 	*/
 	void IncrementHitCounter( void ){ properties_.voxel_hits_++; };
 
 	/*!
-	 * @brief Reset hit counter 
+	 * @brief reset hit counter 
 	*/
 	void ResetHitCounter( void ){ properties_.voxel_hits_ = 0; };
 	
 	/*!
-	 * @brief Set origin
+	 * @brief set origin
 	 * @param new_origin 
 	*/
 	void SetOrigin( const Point3D new_origin );
 
 	/*!
-	 * @brief Set direction
+	 * @brief set direction
 	 * @param new_direction 
 	*/
 	void SetDirection( const UnitVector3D new_direction );
@@ -228,14 +228,14 @@ class Ray : public Line{
 	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
 	
 	/*!
-	 * @brief Convert Ray components to different coordinate system
+	 * @brief convert Ray components to different coordinate system
 	 * @param target_coordinate_system Target system
 	 * @return Ray in target system
 	*/
 	Ray ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
-	 * @brief Get Ray parameter corresponding to point
+	 * @brief get Ray parameter corresponding to point
 	 * @param point_on_ray Point on Ray
 	 * @param solution_found Is set to true when the given point lies on the Ray. False if not
 	 * @return Ray parameter
@@ -250,32 +250,32 @@ class Ray : public Line{
 	Ray ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 
 	/*!
-	 * @brief Checks if parameter is greater than one
+	 * @brief checks if parameter is greater than one
 	 * @param parameter Parameter
-	 * @return True when parameter is valid
+	 * @return true when parameter is valid
 	*/
 	bool IsParameterInBounds( const double voxel_data_ ) const override{ return voxel_data_ >= 0; };
 
 	/*!
-	 * @brief Get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
-	 * @return Array with flag for voxel faces. True when possible
+	 * @brief get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
+	 * @return array with flag for voxel faces. True when possible
 	*/
 	array<bool, ToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
 	/*!
-	 * @brief Scatter this ray
+	 * @brief scatter this ray
 	 * @param scattering_information Scattering properties 
 	 * @param voxel_data Voxel data
 	 * @param distance_traveled_mm Distance traveled in voxel
 	 * @param tomography_properties Properties of tomogrpahy
 	 * @param newOrigin Point where sattering occured
-	 * @return Vector with scattered rays
+	 * @return vector with scattered rays
 	*/
 	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData& voxel_data, const double distance_traveled_mm, 
 											 const TomographyProperties& tomography_properties, const Point3D& newOrigin, RandomNumberGenerator& dedicated_rng );
 
 	/*!
-	 * @brief Set expected pixel index
+	 * @brief set expected pixel index
 	 * @param pixel_index The pixel index
 	 * @param definitely_hits Indication whether given pixel is definitely hit
 	 */
@@ -284,7 +284,7 @@ class Ray : public Line{
 
 	private:
 
-	RayProperties properties_;			/*!< Properties of Ray*/
+	RayProperties properties_;			/*!< properties of Ray*/
 
 
 	#ifdef TRANSMISSION_TRACKING

@@ -23,37 +23,37 @@ using std::vector;
  *********************************************************************/
 
 /*!
- * @brief Create vector with equally spaced elements
+ * @brief create vector with equally spaced elements
  * @param start First element
  * @param end Last element
  * @param number_of_points Total amount of points
- * @return Vector with elements
+ * @return vector with elements
 */
 vector<double> CreateLinearSpace(const double start, const double end, const size_t number_of_points);
 
 /*!
- * @brief Sum of all elements
+ * @brief sum of all elements
  * @param vec Vector to sum
- * @return Sum
+ * @return sum
 */
 double Sum( const vector<double> vec );
 
 /*!
- * @brief Sum all y-values of vector elements
+ * @brief sum all y-values of vector elements
  * @param vec Vector of 2D points
- * @return Sum of y-values
+ * @return sum of y-values
 */
 double SumYValues( const vector<Tuple2D> vec );
 
 /*!
- * @brief Scale each element in vector
+ * @brief scale each element in vector
  * @param vec Vector with elements to scale
  * @param factor Factor to scale by
 */
 void Scale( vector<double>& vec, const double factor );
 
 /*!
- * @brief Scale all y-values
+ * @brief scale all y-values
  * @param vec Vector with 2D elements
  * @param factor Factor to scael
 */
@@ -73,7 +73,7 @@ void Normalise( vector<Tuple2D>& vec );
 vector<Tuple2D> Normalise( const vector<Tuple2D>& vec );
 
 /*!
- * @brief Search element in vector closest to value
+ * @brief search element in vector closest to value
  * @param vec Vector to search. Must be sorted ascending
  * @param value Value to search for
  * @return Index of closest element in vector
@@ -81,37 +81,37 @@ vector<Tuple2D> Normalise( const vector<Tuple2D>& vec );
 size_t GetClosestElementIndex( const vector<double>& vec, const double value );
 
 /*!
- * @brief Get maximum element of vector
+ * @brief get maximum element of vector
  * @param v Vector to search
- * @return Maximum value
+ * @return maximum value
 */
 double GetMaxElement( const vector<double>& vec );
 
 /*!
- * @brief Get minimum element of vector
+ * @brief get minimum element of vector
  * @param v Vector to search
- * @return Minimum value
+ * @return minimum value
 */
 double GetMinElement( const vector<double>& vec );
 
 /*!
- * @brief Get maximum value in 2D vector
+ * @brief get maximum value in 2D vector
  * @param v Vector
- * @return Maximum value
+ * @return maximum value
 */
 double GetMaxElement( const vector<vector<double>>& vec );
 
 /*! 
- * @brief Get minimum value in 2D vector
+ * @brief get minimum value in 2D vector
  * @param v Vector
- * @return Minimum value
+ * @return minimum value
 */
 double GetMinElement( const vector<vector<double>>& vec );
 
 /*! 
- * @brief Add two tuples. When x-value match it adds the y-values. Otherwise a new x-value is created
+ * @brief add two tuples. When x-value match it adds the y-values. Otherwise a new x-value is created
  * @param vector_1 Vector 1  
  * @param vector_2 Vector 1
- * @return Sum of vectors
+ * @return sum of vectors
 */
 vector<Tuple2D> AddTuple2D( const vector<Tuple2D>& vector_1, const vector<Tuple2D>& vector_2 );

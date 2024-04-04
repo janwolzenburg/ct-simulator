@@ -29,14 +29,14 @@ using std::vector;
 
 
 /*!
- * @brief Class for Ray detector
+ * @brief class for Ray detector
 */
 class XRayDetector{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param coordinate_system Coordinate system
 	 * @param projections_properties Projection properties
 	 * @param physical_properties Parameter indipendent of projection properties
@@ -44,13 +44,13 @@ class XRayDetector{
 	XRayDetector( CoordinateSystem* const coordinate_system, const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
-	 * @brief Get all detector pixel
-	 * @return Vector of pixels in one row
+	 * @brief get all detector pixel
+	 * @return vector of pixels in one row
 	*/
 	vector<DetectorPixel> pixel_array( void ) const{ return pixel_array_; };
 	
 	/*!
-	 * @brief Get the physical parameters of detector
+	 * @brief get the physical parameters of detector
 	 * @return Physical parameters of detector
 	*/
 	DetectorProperties properties( void ) const{ return properties_; };
@@ -63,21 +63,21 @@ class XRayDetector{
 	void UpdateProperties( const ProjectionsProperties radon_properties, const PhysicalDetectorProperties physical_properties );
 
 	/*!
-	 * @brief Convert all comnverted pixel to this system
+	 * @brief convert all comnverted pixel to this system
 	 * @param target_coordinate_system Target
 	*/
 	void ConvertPixelArray( const CoordinateSystem* const target_coordinate_system );
 
 	/*!
-	 * @brief Reset all pixel
+	 * @brief reset all pixel
 	*/
 	void ResetDetectedRayPorperties( void );
 
 	/*!
-	 * @brief Detect Ray
+	 * @brief detect Ray
 	 * @param ray Ray to detect
 	 * @param pixel_mutex Mutex for multi threaded access to pixel array
-	 * @return True when ray hit the detector
+	 * @return true when ray hit the detector
 	*/
 	#ifdef TRANSMISSION_TRACKING
 	bool DetectRay( Ray& ray, mutex& pixel_array_mutex );
@@ -86,9 +86,9 @@ class XRayDetector{
 	#endif
 
 	/*!
-	 * @brief Check if ray is detectable
+	 * @brief check if ray is detectable
 	 * @param ray Ray to check. Expected pixel index is adjusted
-	 * @return True when ray can reach the detector
+	 * @return true when ray can reach the detector
 	 */
 	bool TryDetection( Ray& ray ) const;
 
@@ -96,10 +96,10 @@ class XRayDetector{
 	private:
 
 	CoordinateSystem* coordinate_system_;			/*!< Local coordinate system*/
-	vector<DetectorPixel> pixel_array_;				/*!< All pixel of detector*/
-	vector<DetectorPixel> converted_pixel_array_;	/*!< Pixel in different coordinate system*/
+	vector<DetectorPixel> pixel_array_;				/*!< all pixel of detector*/
+	vector<DetectorPixel> converted_pixel_array_;	/*!< pixel in different coordinate system*/
 
-	DetectorProperties properties_;					/*!< Properties*/
+	DetectorProperties properties_;					/*!< properties*/
 
 	optional<size_t> GetHitPixelIndex( Ray& ray ) const;
 

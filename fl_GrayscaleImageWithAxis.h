@@ -26,7 +26,7 @@
 
 
 /*!
- * @brief Grayscale image with axis
+ * @brief grayscale image with axis
 */
 class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 
@@ -34,7 +34,7 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -52,25 +52,25 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 	int h( void )const { return Fl_Group::h(); };
 
 	/*!
-	 * @brief Set label of axis
+	 * @brief set label of axis
 	 * @param label x and y label
 	*/
 	void SetAxisLabel( const pair<string, string> label );
 
 	/*!
-	 * @brief Set axis tics
+	 * @brief set axis tics
 	 * @param pixel_start Start of tics
 	 * @param pixel_size Amount of tics
 	*/
 	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics );
 
 	/*!
-	 * @brief Draw the image
+	 * @brief draw the image
 	*/
 	void draw( void ) override;
 	
 	/*!
-	 * @brief Get value for given x and y coordinate
+	 * @brief get value for given x and y coordinate
 	 * @param x Local x coordinate
 	 * @param y Local y coordinate
 	 * @return Raw and color value when x and y are inside image
@@ -81,10 +81,10 @@ class Fl_GrayscaleImageWithAxis : public Fl_Group, public Fl_GrayscaleImage{
 
 	private:
 
-	constexpr static int axis_space_ = 30;	/*!< Amount of pixel the axis are spaced from image*/
+	constexpr static int axis_space_ = 30;	/*!< amount of pixel the axis are spaced from image*/
 	
 	pair<string, string> axis_label_;		/*!< Label of axis*/
-	Tuple2D axis_tics_start_;	/*!< Start value of tics*/
-	Tuple2D pixel_size_;		/*!< What is one pixel's size in reality*/
+	Tuple2D axis_tics_start_;	/*!< start value of tics*/
+	Tuple2D pixel_size_;		/*!< what is one pixel's size in reality*/
 	Index2D number_of_tics_;
 };

@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   CoordinateSystemTree.h
- * @brief  Class for collection of cartesian coordinate systems_
+ * @brief  class for collection of cartesian coordinate systems_
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -25,19 +25,19 @@ using std::array;
 
 
 /*!
- * @brief Get singleton instance of cartesian system tree
+ * @brief get singleton instance of cartesian system tree
  * @return Reference to tree
 */
 CoordinateSystemTree& CoordinateSystems( void );
 
 /*!
- * @brief Get global coordinate system
+ * @brief get global coordinate system
  * @return Pointer to global system
 */
 const CoordinateSystem* GlobalSystem( void );
 
 /*!
- * @brief Get dummy system
+ * @brief get dummy system
  * @return Pointer to dummy system
 */
 CoordinateSystem* DummySystem( void );
@@ -45,7 +45,7 @@ CoordinateSystem* DummySystem( void );
 
 
 /*!
- * @brief Class to store related coordinate systems_. Singleton pattern
+ * @brief class to store related coordinate systems_. Singleton pattern
 */
 class CoordinateSystemTree : public MathematicalObject{
 
@@ -55,31 +55,31 @@ class CoordinateSystemTree : public MathematicalObject{
 	public:
 
 	/*!
-	 * @brief Get single instance
+	 * @brief get single instance
 	 * @return Reference to instance
 	*/
 	static CoordinateSystemTree& GetInstance();
 
 	/*!
-	 * @brief Convert coordinate tree's data
-	 * @return String with tree's data
+	 * @brief convert coordinate tree's data
+	 * @return string with tree's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get dummy system
+	 * @brief get dummy system
 	 * @return Pointer to dummy
 	*/
 	CoordinateSystem* GetDummy( void ){ return &( *systems_.begin() ); };
 
 	/*!
-	 * @brief Get global system
+	 * @brief get global system
 	 * @return Pointer to global system
 	*/
 	const CoordinateSystem* GetGlobal( void ){ return &( systems_.at( 1 ) ); };
 
 	/*!
-	 * @brief Add system to tree
+	 * @brief add system to tree
 	 * @param origin Origin of coordinate system
 	 * @param ex x-axis
 	 * @param ey y-axis
@@ -91,7 +91,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const CoordinateSystem* parent, const string name );
 	
 	/*!
-	 * @brief Constructor from serialized data_
+	 * @brief constructor from serialized data_
 	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
@@ -99,7 +99,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	CoordinateSystem* AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	 * @brief Add system to tree with global system as parent_
+	 * @brief add system to tree with global system as parent_
 	 * @param origin Origin of coordinate system
 	 * @param ex x-axis
 	 * @param ey y-axis
@@ -110,7 +110,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	CoordinateSystem* AddSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name );
 
 	/*!
-	 * @brief Add system to tree at origin_ of parent_
+	 * @brief add system to tree at origin_ of parent_
 	 * @param parent_ Parent system
 	 * @param name Name
 	 * @return Pointer to new system
@@ -118,16 +118,16 @@ class CoordinateSystemTree : public MathematicalObject{
 	CoordinateSystem* AddSystem( const CoordinateSystem* parent, const string name );
 
 	/*!
-	 * @brief Ass system to tree at origin_ of global system
+	 * @brief ass system to tree at origin_ of global system
 	 * @param name Name
 	 * @return Pointer to new system
 	*/
 	CoordinateSystem* AddSystem( const string name );
 
 	/*!
-	 * @brief Check if pointed to system is valid
+	 * @brief check if pointed to system is valid
 	 * @param element System to check
-	 * @return True when system is part of this tree
+	 * @return true when system is part of this tree
 	*/
 	bool IsValidTreeElement( const CoordinateSystem* const element ) const;
 
@@ -135,23 +135,23 @@ class CoordinateSystemTree : public MathematicalObject{
 	private:
 
 	/*!
-	 * @brief Default Constructor
+	 * @brief default Constructor
 	 * @details Initialises all systems_ in array to default CoordinateSystem
 	*/
 	CoordinateSystemTree( void );
 
 	/*!
-	 * @brief Deleted copy constructor
+	 * @brief deleted copy constructor
 	*/
 	CoordinateSystemTree( const CoordinateSystemTree& tree ) = delete;
 
 	/*!
-	 * @brief Deleted assignment operator
+	 * @brief deleted assignment operator
 	*/
 	CoordinateSystemTree& operator=( const CoordinateSystemTree& tree ) = delete;
 
 
 	private:
 	size_t system_count_;									/*!< Number of systems_ in tree*/
-	array<CoordinateSystem, max_systems_in_tree> systems_;	/*!< Array with all systems_*/
+	array<CoordinateSystem, max_systems_in_tree> systems_;	/*!< array with all systems_*/
 };

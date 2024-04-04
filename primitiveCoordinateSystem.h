@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   PrimitiveCoordinateSystem.h
- * @brief  Classes for cartesian coordinate systems
+ * @brief  classes for cartesian coordinate systems
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -23,14 +23,14 @@
 
 
 /*!
- * @brief Class describing a right-handed cartesian coordinate system
+ * @brief class describing a right-handed cartesian coordinate system
 */
 class PrimitiveCoordinateSystem : public MathematicalObject{
 	
 	public:
 	
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param origin Origin of coordinate system
 	 * @param ex x-axis
 	 * @param ey y-axis
@@ -40,44 +40,44 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez );
 
 	/*!
-	 * @brief Constructor from serialized data
+	 * @brief constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
 	PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	 * @brief Convert coordinate system's data to string
-	 * @return String with coordinate system's data
+	 * @brief convert coordinate system's data to string
+	 * @return string with coordinate system's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get primitive origin_
+	 * @brief get primitive origin_
 	 * @return Primitive represantation of the origin_
 	*/
 	PrimitiveVector3 origin( void ) const{ return origin_; };
 
 	/*!
-	 * @brief Get primitive x Axis
+	 * @brief get primitive x Axis
 	 * @return Primitive represantation of the x Axis
 	*/
 	PrimitiveVector3 ex( void ) const{ return ex_; };
 
 	/*!
-	 * @brief Get primitive y Axis
+	 * @brief get primitive y Axis
 	 * @return Primitive represantation of the y Axis
 	*/
 	PrimitiveVector3 ey( void ) const{ return ey_; };
 
 	/*!
-	 * @brief Get primitive z Axis
+	 * @brief get primitive z Axis
 	 * @return Primitive represantation of the z Axis
 	*/
 	PrimitiveVector3 ez( void ) const{ return ez_; };
@@ -92,7 +92,7 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	void Translate( const PrimitiveVector3 direction ){ origin_ = origin_ + direction; };
 
 	/*!
-	 * @brief Rotate coordinate system
+	 * @brief rotate coordinate system
 	 * @param axis Rotation axis
 	 * @param angle Rotation angle
 	*/
@@ -101,7 +101,7 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 
 	protected:
 
-	PrimitiveVector3 origin_;		/*!< Origin point */
+	PrimitiveVector3 origin_;		/*!< origin point */
 	PrimitiveVector3 ex_;			/*!< x-axis unit vector */
 	PrimitiveVector3 ey_;			/*!< y-axis unit vector */
 	PrimitiveVector3 ez_;			/*!< z-axis unit vector */

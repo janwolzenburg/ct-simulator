@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="Coordinates" Collapsed="true">
+<classDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <class Name="Coordinates" Collapsed="true">
     <Position X="3" Y="2" Width="1.5" />
     <Members>
       <Field Name="coordinate_system_" Hidden="true" />
@@ -15,8 +15,8 @@
     <ShowAsAssociation>
       <Field Name="coordinate_system_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="CoordinateSystem" Collapsed="true" HideInheritanceLine="true">
+  </class>
+  <class Name="CoordinateSystem" Collapsed="true" HideInheritanceLine="true">
     <Position X="14.25" Y="11.25" Width="1.75" />
     <Members>
       <Field Name="parent_" Hidden="true" />
@@ -33,8 +33,8 @@
     <ShowAsAssociation>
       <Field Name="parent_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="PrimitiveCoordinateSystem" Collapsed="true">
+  </class>
+  <class Name="PrimitiveCoordinateSystem" Collapsed="true">
     <Position X="6.25" Y="0.75" Width="2.25" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -69,8 +69,8 @@
       <Field Name="ey_" />
       <Field Name="ez_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="PrimitiveVector3" Collapsed="true" HideInheritanceLine="true">
+  </class>
+  <class Name="PrimitiveVector3" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -80,16 +80,16 @@
       <HashCode>AAAAAAAAAAAAAAAEBAIAAQgAEAAAAAAAAgRgAgAAAAA=</HashCode>
       <FileName>primitiveVector3.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Vector3D" Collapsed="true" HideInheritanceLine="true">
+  </class>
+  <class Name="Vector3D" Collapsed="true" HideInheritanceLine="true">
     <Position X="3" Y="3.25" Width="1.5" />
     <InheritanceLine Type="Coordinates" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>QAACAAAgAAAACAIEBMIAIQ8gUAAAACAAAgQgAgAoYAM=</HashCode>
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="UnitVector3D" Collapsed="true">
+  </class>
+  <class Name="UnitVector3D" Collapsed="true">
     <Position X="5.25" Y="3.25" Width="1.5" />
     <InheritanceLine Type="Vector3D">
       <InheritanceModifierLabel ManuallyPlaced="true">
@@ -100,16 +100,16 @@
       <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAgAAAAAAAAAQAAAAAAAA=</HashCode>
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Point3D" Collapsed="true" HideInheritanceLine="true">
+  </class>
+  <class Name="Point3D" Collapsed="true" HideInheritanceLine="true">
     <Position X="17" Y="13.25" Width="1.5" />
     <InheritanceLine Type="Vector3D" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAACAAAIAAAAAAAEAAAAAAcgAAAAACAAAAAAAAAgAAA=</HashCode>
       <FileName>vector3D.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Tuple3D" Collapsed="true">
+  </class>
+  <class Name="Tuple3D" Collapsed="true">
     <Position X="11.75" Y="13.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -118,8 +118,8 @@
       <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAAABgAQAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Line" Collapsed="true">
+  </class>
+  <class Name="Line" Collapsed="true">
     <Position X="0.75" Y="5.5" Width="1.5" />
     <Members>
       <Field Name="direction_" Hidden="true" />
@@ -133,8 +133,8 @@
       <Field Name="direction_" />
       <Field Name="origin_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Surface" Collapsed="true">
+  </class>
+  <class Name="Surface" Collapsed="true">
     <Position X="6" Y="4.5" Width="1.5" />
     <Members>
       <Field Name="origin_" Hidden="true" />
@@ -167,16 +167,16 @@
       <Field Name="direction_2_" />
       <Field Name="origin_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="BoundedSurface" Collapsed="true" HideInheritanceLine="true">
+  </class>
+  <class Name="BoundedSurface" Collapsed="true" HideInheritanceLine="true">
     <Position X="6" Y="5.5" Width="1.5" />
     <InheritanceLine Type="Surface" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>ABAAEAAACEAAAAAMAAAAAABAICAAAGAAAAAAAIAEAAA=</HashCode>
       <FileName>surface.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="RayProperties" Collapsed="true">
+  </class>
+  <class Name="RayProperties" Collapsed="true">
     <Position X="3.5" Y="6.5" Width="1.5" />
     <AssociationLine Name="energy_spectrum_" Type="EnergySpectrum">
       <MemberNameLabel ManuallyPlaced="true">
@@ -190,8 +190,8 @@
     <ShowAsAssociation>
       <Field Name="energy_spectrum_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Ray" Collapsed="true">
+  </class>
+  <class Name="Ray" Collapsed="true">
     <Position X="0.75" Y="6.5" Width="1.5" />
     <InheritanceLine Type="Line">
       <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
@@ -216,15 +216,15 @@
     <ShowAsAssociation>
       <Field Name="properties_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="EnergySpectrum" Collapsed="true">
+  </class>
+  <class Name="EnergySpectrum" Collapsed="true">
     <Position X="3.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAYAAAAAAAAAwCAAEAAAAgACAAAAQAJUASBAAAAQA=</HashCode>
       <FileName>spectrum.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="DetectorPixel" Collapsed="true">
+  </class>
+  <class Name="DetectorPixel" Collapsed="true">
     <Position X="6" Y="6.5" Width="1.5" />
     <InheritanceLine Type="BoundedSurface">
       <InheritanceModifierLabel ManuallyPlaced="true" ManuallySized="true">
@@ -235,8 +235,8 @@
       <HashCode>AACAAAAAAACAAAAAIAAAAgAAAAAAAGAAAIAAAAAAAAA=</HashCode>
       <FileName>detectorPixel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="XRayDetector" Collapsed="true">
+  </class>
+  <class Name="XRayDetector" Collapsed="true">
     <Position X="8.75" Y="6.5" Width="1.25" />
     <Members>
       <Field Name="coordinate_system_" Hidden="true" />
@@ -254,15 +254,15 @@
       <Field Name="coordinate_system_" />
       <Field Name="properties_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="XRayTubeProperties" Collapsed="true">
+  </class>
+  <class Name="XRayTubeProperties" Collapsed="true">
     <Position X="1.25" Y="9.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AQAAAAUAAICEQAAAAABAAAAAgCAQAAAAAAACAABAAAA=</HashCode>
       <FileName>xRayTube.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="XRayTube" Collapsed="true">
+  </class>
+  <class Name="XRayTube" Collapsed="true">
     <Position X="3.75" Y="9.75" Width="1.5" />
     <Members>
       <Field Name="coordinate_system_" Hidden="true" />
@@ -278,8 +278,8 @@
       <Field Name="properties_" />
       <Field Name="emitted_spectrum_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Gantry" Collapsed="true">
+  </class>
+  <class Name="Gantry" Collapsed="true">
     <Position X="6" Y="9.75" Width="1.75" />
     <Members>
       <Field Name="coordinate_system_" Hidden="true" />
@@ -299,22 +299,22 @@
       <Field Name="detector_" />
       <Field Name="tube_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="DetectorProperties" Collapsed="true">
+  </class>
+  <class Name="DetectorProperties" Collapsed="true">
     <Position X="11" Y="6.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAIgAAAAEAAAAAAAAAAAEAAAABAEAAAAAAAAAI=</HashCode>
       <FileName>detectorProperties.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="ProjectionsProperties" Collapsed="true">
+  </class>
+  <class Name="ProjectionsProperties" Collapsed="true">
     <Position X="8.75" Y="5.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAEIAAAAAAAAAAgSAgAoASAACIAAAAAUAAAAAAA=</HashCode>
       <FileName>projectionsProperties.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Model" Collapsed="true">
+  </class>
+  <class Name="Model" Collapsed="true">
     <Position X="11.75" Y="12.25" Width="1.5" />
     <AssociationLine Name="coordinate_system_" Type="CoordinateSystem" FixedFromPoint="true">
       <Path>
@@ -355,8 +355,8 @@
       <Field Name="voxel_size_" />
       <Field Name="number_of_voxel_3D_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="VoxelData" Collapsed="true">
+  </class>
+  <class Name="VoxelData" Collapsed="true">
     <Position X="14.25" Y="12.25" Width="1.5" />
     <NestedTypes>
       <Typedef Name="VoxelData::SpecialPropertyEnumType" Collapsed="true">
@@ -374,8 +374,8 @@
       <HashCode>AIAAAAAAggAAAAAAQQEAAgYAQCAAAAAAAAAgAAMAAAA=</HashCode>
       <FileName>voxel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="Voxel" Collapsed="true">
+  </class>
+  <class Name="Voxel" Collapsed="true">
     <Position X="14.25" Y="13.25" Width="1.5" />
     <NestedTypes>
       <Enum Name="Voxel::Face" Collapsed="true">
@@ -408,42 +408,42 @@
       <Field Name="data_" />
       <Field Name="origin_corner_" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Index3D" Collapsed="true">
+  </class>
+  <class Name="Index3D" Collapsed="true">
     <Position X="11" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAQAAAAAAAAAAAAAQAAACAAAAAAAABgAQAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="GridIndex" Collapsed="true">
+  </class>
+  <class Name="GridIndex" Collapsed="true">
     <Position X="21.5" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAACAAAACAAAABAAAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="GridCoordinates" Collapsed="true">
+  </class>
+  <class Name="GridCoordinates" Collapsed="true">
     <Position X="19.75" Y="7.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIACAAAACAAAABAAAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="NaturalNumberRange" Collapsed="true">
+  </class>
+  <class Name="NaturalNumberRange" Collapsed="true">
     <Position X="19.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAABAAgAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="NumberRange" Collapsed="true">
+  </class>
+  <class Name="NumberRange" Collapsed="true">
     <Position X="21.5" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAABEAgAIAAAAAAACAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>generel.h</FileName>
     </TypeIdentifier>
-  </Class>
+  </class>
   <Struct Name="PhysicalDetectorProperties" Collapsed="true">
     <Position X="8.75" Y="7.5" Width="2.25" />
     <TypeIdentifier>
@@ -466,4 +466,4 @@
     </TypeIdentifier>
   </Struct>
   <Font Name="Segoe UI" Size="9" />
-</ClassDiagram>
+</classDiagram>

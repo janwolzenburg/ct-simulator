@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   backprojection.h
- * @brief  Class for the reconstructed image
+ * @brief  class for the reconstructed image
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -23,28 +23,28 @@
 *********************************************************************/
 
 /*!
- * @brief Class to store reconstructed image
+ * @brief class to store reconstructed image
 */
 class Backprojection : private DataGrid<> {
 
 	public:
 	
-	static const string FILE_PREAMBLE; /*!< String to prepend to file when storing as file*/
+	static const string FILE_PREAMBLE; /*!< string to prepend to file when storing as file*/
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	Backprojection( void ) : DataGrid{} {};
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param filtered_projections Filtered projections 
 	 * @param progress_window FL window to track progress
 	*/
 	Backprojection( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
 
 	/*!
-	 * @brief Constructor from serialized data
+	 * @brief constructor from serialized data
 	 * @param binary_data Reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
@@ -52,13 +52,13 @@ class Backprojection : private DataGrid<> {
 	DataGrid<>{ binary_data, current_byte }{};
 
 	/*!
-	 * @brief Get gridded data
+	 * @brief get gridded data
 	 * @return Gridded data
 	*/
 	DataGrid<> getGrid( void ) const{ return static_cast<DataGrid<>>( *this ); };
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
@@ -67,7 +67,7 @@ class Backprojection : private DataGrid<> {
 	 private:
 
 	/*!
-	 * @brief Reconstruct image column wise
+	 * @brief reconstruct image column wise
 	 * @param current_x_index Current x-index
 	 * @param current_x_index_mutex Mutex for x-index
 	 * @param reconstructed_image Reference to image

@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   Coordinates.h
- * @brief  Classes for Coordinates in cartesian system
+ * @brief  classes for Coordinates in cartesian system
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -24,49 +24,49 @@
 
 
  /*!
- * @brief Class for Coordinates with coordinate system with context
+ * @brief class for Coordinates with coordinate system with context
 */
 class Coordinates : protected PrimitiveVector3{
 
 	protected:
-	const CoordinateSystem* coordinate_system_;						/*!< Pointer to coordinate system*/
+	const CoordinateSystem* coordinate_system_;						/*!< pointer to coordinate system*/
 
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param vec3_ Values
 	*/
 	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ components }, coordinate_system_( coordinate_system ) {};
 
 	/*!
-	 * @brief Defaulkt constructor
+	 * @brief defaulkt constructor
 	*/
 	Coordinates( void ) : Coordinates{ Tuple3D{}, DummySystem() } {};
 
 	/*!
-	 * @brief Convert coordinate's data to string
-	 * @return String with coordinate's data
+	 * @brief convert coordinate's data to string
+	 * @return string with coordinate's data
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Comparison operator
+	 * @brief comparison operator
 	 * @param operand Coordinates to compare with
-	 * @return True when all components are the same in global coordinate system
+	 * @return true when all components are the same in global coordinate system
 	*/
 	bool operator== ( const Coordinates operand ) const;
 
 	/*!
-	 * @brief Addition operator
+	 * @brief addition operator
 	 * @param summand Coordinates to add
 	 * @return Coordinates with sum of components in coordinate system of first operand
 	*/
 	Coordinates operator+ ( const Coordinates summand ) const;
 
 	/*!
-	 * @brief Substraction operator
+	 * @brief substraction operator
 	 * @param subtrahend Coordinates to add
 	 * @return Coordinates with difference of components in coordinate system of first operand
 	*/
@@ -79,35 +79,35 @@ class Coordinates : protected PrimitiveVector3{
 	Coordinates operator- ( void ) const;
 
 	/*!
-	 * @brief Scale Coordinates
+	 * @brief scale Coordinates
 	 * @param scalar Factor to scale by
-	 * @return Scaled Coordinates
+	 * @return scaled Coordinates
 	*/
 	Coordinates operator* ( const double scalar ) const;
 
 	/*!
-	 * @brief Divide Coordinates
+	 * @brief divide Coordinates
 	 * @param divisor Value to divide by
 	 * @return Divided Coordinates
 	*/
 	Coordinates operator/ ( const double divisor ) const;
 
 	/*!
-	 * @brief Check if coordinate system is this coordinate's system
+	 * @brief check if coordinate system is this coordinate's system
 	 * @param coordinate_system System to check
-	 * @return True when given system is this coordinate's system
+	 * @return true when given system is this coordinate's system
 	*/
 	bool HasSameSystem( const CoordinateSystem* const coordinate_system ) const { return this->coordinate_system_ == coordinate_system; };
 
 	/*!
-	 * @brief Check if two Coordinates have the same coordiante system
+	 * @brief check if two Coordinates have the same coordiante system
 	 * @param c Second set of Coordinates
-	 * @return True when both Coordinates have the same coordiante system
+	 * @return true when both Coordinates have the same coordiante system
 	*/
 	bool HasSameSystem( const Coordinates coordinates ) const { return HasSameSystem( coordinates.coordinate_system_ ); };
 
 	/*!
-	 * @brief Convert Coordinates to a different coordinate system
+	 * @brief convert Coordinates to a different coordinate system
 	 * @param target_coordinate_system System to convert to
 	 * @return Coordinates in target system
 	*/
@@ -117,13 +117,13 @@ class Coordinates : protected PrimitiveVector3{
 	private:
 
 	/*!
-		* @brief Convert coordinate values to parent_ coordinate system
+		* @brief convert coordinate values to parent_ coordinate system
 		* @return Coordinates in parent_'s system
 	*/
 	Coordinates ConvertToParentSystem( void ) const;
 
 	/*!
-		* @brief Convert coordiante values to child coordinate system
+		* @brief convert coordiante values to child coordinate system
 		* @param child_coordinate_system
 		* @return Coordinates in child system
 	*/

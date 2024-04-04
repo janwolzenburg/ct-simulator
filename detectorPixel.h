@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   detectorPixel.h
- * @brief  Class for a detector pixel
+ * @brief  class for a detector pixel
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -25,14 +25,14 @@
  *********************************************************************/
 
 /*!
- * @brief Class for detector pixel
+ * @brief class for detector pixel
 */
 class DetectorPixel : public BoundedSurface{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param surface Surface as base object
 	*/
 	DetectorPixel( const BoundedSurface surface ) :
@@ -40,7 +40,7 @@ class DetectorPixel : public BoundedSurface{
 	{};
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param surface Surface as base object
 	 * @param properties Detected Ray's properties
 	*/
@@ -49,40 +49,40 @@ class DetectorPixel : public BoundedSurface{
 	{};
 
 	/*!
-	 * @brief Get the detected Ray properties
-	 * @return Vector with properties
+	 * @brief get the detected Ray properties
+	 * @return vector with properties
 	*/
 	vector<RayProperties> detected_ray_properties( void ) const{ return detected_ray_properties_; };
 
 	/*!
-	 * @brief Reset detected rays
+	 * @brief reset detected rays
 	*/
 	void ResetDetectedRayProperties( void ){ detected_ray_properties_.clear(); };
 
 	/*!
-	 * @brief Get the normal of the pixel
+	 * @brief get the normal of the pixel
 	 * @return Line with pixel's center as origin and direction of surface normal
 	*/
 	Line NormalLine( void ) const{ return Line{ Surface::GetNormal(), this->origin_ }; };
 
 	/*!
-	 * @brief Get the value of radon point for the detected Ray properties
+	 * @brief get the value of radon point for the detected Ray properties
 	 * @param use_simple_absorption If set use ideal model absorption which is not energy dependent
 	 * @param expected_ray_hits The expected amount of rays to hit the pixel
 	 * @param start_intensity Start intensities of rays
-	 * @return Value of radon point
+	 * @return value of radon point
 	*/
 	optional<double> GetProjectionValue( const bool use_simple_absorption, const size_t expected_ray_hits, const double start_intensity ) const;
 
 	/*!
-	 * @brief Convert this pixel ot given coordinate system
+	 * @brief convert this pixel ot given coordinate system
 	 * @param target_coordinate_system Target system 
-	 * @return This pixel in given coordiante system
+	 * @return this pixel in given coordiante system
 	*/
 	DetectorPixel ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
-	 * @brief Add Ray properties
+	 * @brief add Ray properties
 	 * @param properties_ properties to add
 	*/
 	void  AddDetectedRayProperties( const RayProperties properties ){
@@ -91,27 +91,27 @@ class DetectorPixel : public BoundedSurface{
 
 	private:
 
-	vector<RayProperties> detected_ray_properties_;		/*!< Ray properties of rays detected with this pixel*/
+	vector<RayProperties> detected_ray_properties_;		/*!< ray properties of rays detected with this pixel*/
 
  };
 
 
 /*!
- * @brief Class for the intersection of pixel and ray
+ * @brief class for the intersection of pixel and ray
 */
 class RayPixelIntersection : public LineSurfaceIntersection<Ray, DetectorPixel>{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param ray Ray
 	 * @param pixel Pixel
 	*/
 	RayPixelIntersection( const Ray& ray, const DetectorPixel& pixel );
 
 
-	RayProperties ray_properties;	/*!< Properties of detected ray*/
+	RayProperties ray_properties;	/*!< properties of detected ray*/
 
  };
 

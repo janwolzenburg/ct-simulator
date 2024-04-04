@@ -15,14 +15,14 @@
  #include "plot.h"
 
 /*!
- * @brief Class for a 2D lineplot
+ * @brief class for a 2D lineplot
 */
 class LinePlot : public Plot{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param name Name of plot
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
@@ -34,25 +34,25 @@ class LinePlot : public Plot{
 			  const PlotLimits limits, const GridIndex image_size, const bool enable_grid );
 
 	/*!
-	 * @brief Default constructor 
+	 * @brief default constructor 
 	*/
 	LinePlot( void );
 
 	/*!
-	 * @brief Assign data to plot
+	 * @brief assign data to plot
 	 * @param X_ Vector of x values
 	 * @param Y_ Vector of y values
 	*/
 	void AssignData( const vector<double> X_, const vector<double> Y_ );
 
 	/*!
-	 * @brief Assign data to plot
+	 * @brief assign data to plot
 	 * @param XY Pair of vectors with data_
 	*/
 	void AssignData( const VectorPair XY ){ AssignData( XY.first, XY.second ); };
 
 	/*!
-	 * @brief Create the plot
+	 * @brief create the plot
 	*/
 	virtual void CreatePlot( void );
 
@@ -65,7 +65,7 @@ class LinePlot : public Plot{
 
 
 /*!
- * @brief Class for a 2D dot-plot
+ * @brief class for a 2D dot-plot
 */
 class DotPlot : public LinePlot{
 
@@ -74,7 +74,7 @@ class DotPlot : public LinePlot{
 	public:
 
 	/*!
-	 * @brief Create the plot
+	 * @brief create the plot
 	*/
 	void CreatePlot( void ) override;
 

@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   propability.h
- * @brief  Classes for randomness and probability distributions
+ * @brief  classes for randomness and probability distributions
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -22,37 +22,37 @@
 *********************************************************************/
 
 
-//extern class RandomNumberGenerator integer_random_number_generator;		/*!< One instance of integer random number generator*/
+//extern class RandomNumberGenerator integer_random_number_generator;		/*!< one instance of integer random number generator*/
 
 
 /*!
- * @brief Class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
+ * @brief class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
 */
 class RandomNumberGenerator{
 
 	public:
 	
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	*/
 	RandomNumberGenerator( const unsigned long long int extra_seed = 0 );
 
 	/*!
-	 * @brief Get a random number
+	 * @brief get a random number
 	 * @return Random integer
 	*/
 	unsigned int GetRandomNumber( void );
 
 	/*!
-	 * @brief Get a random short
+	 * @brief get a random short
 	 * @return Random short integer
 	*/
 	unsigned short int GetRandomShortNumber(void);
 
 	/*!
-	 * @brief Check if an event with given propability "happened"
+	 * @brief check if an event with given propability "happened"
 	 * @param event_propability Event propabilitx 
-	 * @return True when event "happened"
+	 * @return true when event "happened"
 	*/
 	bool DidARandomEventHappen( const double event_propability );
 
@@ -65,7 +65,7 @@ class RandomNumberGenerator{
 
 
 /*!
- * @brief Class to store a custom propability distribution
+ * @brief class to store a custom propability distribution
  * @details The distribution is described by a vector of 2D-Tuples. The x-value is the variate and the y-value is the propability corrensponding to that variate.
  * From the distribution a vector is created. The vector contains repeatitions of the variates. The amount repeatitions ist proportional to the propability of the variate.
 */
@@ -74,13 +74,13 @@ class PropabilityDistribution{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param distribution Pseudo distribution. Sum of y values must not be equal to one
 	*/
 	PropabilityDistribution( vector<Tuple2D> distribution );
 
 	/*!
-	 * @brief Get a random value according to distribution
+	 * @brief get a random value according to distribution
 	*/
 	double GetRandomNumber( RandomNumberGenerator& generator ) const; 
 

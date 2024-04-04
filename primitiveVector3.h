@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   PrimitiveVector3.h
- * @brief  Class for a primitve 3D vector
+ * @brief  class for a primitve 3D vector
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -21,14 +21,14 @@
 
 
 /*!
- * @brief Class for a primitive 3D Vector with some operations
+ * @brief class for a primitive 3D Vector with some operations
 */
 class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x_ x value
 	 * @param y_ y value
 	 * @param z_ z value
@@ -36,46 +36,46 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	PrimitiveVector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
 
 	/*!
-	* @brief Constructor
+	* @brief constructor
 	* @param xyz_ x, y and z values
 	*/
 	PrimitiveVector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	PrimitiveVector3( void ) : PrimitiveVector3{ 0., 0., 0. } {};
 
 	/*!
-	 * @brief Constructor from serialized data_
+	 * @brief constructor from serialized data_
 	 * @param binary_data Reference to vector with binary data_
 	 * @param it Iterator to start of data in vector
 	*/
 	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
-	 * @brief Convert data to string
+	 * @brief convert data to string
 	 * @param newline_tabulators
-	 * @return String with data_
+	 * @return string with data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Comparison operator
+	 * @brief comparison operator
 	 * @param operand Vector to compare with
-	 * @return True when all components between this and second vector are almost equal
+	 * @return true when all components between this and second vector are almost equal
 	*/
 	bool operator== ( const PrimitiveVector3 operand ) const;
 
 	/*!
-	 * @brief Add second vector to this
+	 * @brief add second vector to this
 	 * @param summand Vector to add
-	 * @return Sum of this and summand
+	 * @return sum of this and summand
 	*/
 	PrimitiveVector3 operator+ ( const PrimitiveVector3 summand ) const{ return PrimitiveVector3{ x + summand.x, y + summand.y, z + summand.z }; };
 
 	/*!
-	 * @brief Substract second vector to this
+	 * @brief substract second vector to this
 	 * @param subtrahend Vector to substract
 	 * @return GetDifference of this and v
 	*/
@@ -88,34 +88,34 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	PrimitiveVector3 operator- ( void ) const{ return PrimitiveVector3{ -x, -y, -z }; };
 
 	/*!
-	 * @brief Scale this vector
+	 * @brief scale this vector
 	 * @param scalar Factor to scale with
-	 * @return Scaled vector
+	 * @return scaled vector
 	*/
 	PrimitiveVector3 operator* ( const double scalar ) const{ return PrimitiveVector3{ scalar * x, scalar * y, scalar * z }; };
 
 	/*!
-	 * @brief Scalar product
+	 * @brief scalar product
 	 * @param v Second vector
-	 * @return Scalar product of vectors
+	 * @return scalar product of vectors
 	*/
 	double operator* ( const PrimitiveVector3 vec ) const{ return this->x * vec.x + this->y * vec.y + this->z * vec.z; };
 
 	/*!
-	 * @brief Divide this vector
+	 * @brief divide this vector
 	 * @param divisor Value to divide by
 	 * @return Divided vector
 	*/
 	PrimitiveVector3 operator/ ( const double divisor ) const;
 
 	/*!
-	 * @brief Get length of primitive vector
+	 * @brief get length of primitive vector
 	 * @return Length
 	*/
 	double GetLength( void ) const;
 
 	/*!
-	 * @brief Scale this vector
+	 * @brief scale this vector
 	 * @param scalar Factor to scale by
 	*/
 	void Scale( const double scalar );
@@ -127,46 +127,46 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	MathError Normalise( void );
 
 	/*!
-	 * @brief Add value to x component
+	 * @brief add value to x component
 	 * @param x_ Value to add
 	*/
 	void AddToX( const double x_ ){ x += x_; };
 
 	/*!
-	 * @brief Add value to y component
+	 * @brief add value to y component
 	 * @param y_ Value to add
 	*/
 	void AddToY( const double y_ ){ y += y_; };
 
 	/*!
-	 * @brief Add value to z component
+	 * @brief add value to z component
 	 * @param z_ Value to add
 	*/
 	void AddToZ( const double z_ ){ z += z_; };
 
 	/*!
-	 * @brief Rotate the point of all three components around x-axis of coordinate system
+	 * @brief rotate the point of all three components around x-axis of coordinate system
 	 * @param sinPhi Sine of the angle
 	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundXAxis( const double sinPhi, const double cosPhi );
 
 	/*!
-	 * @brief Rotate the point of all three components around y-axis of coordinate system
+	 * @brief rotate the point of all three components around y-axis of coordinate system
 	 * @param sinPhi Sine of the angle
 	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundYAxis( const double sinPhi, const double cosPhi );
 
 	/*!
-	 * @brief Rotate the point of all three components around z-axis of coordinate system
+	 * @brief rotate the point of all three components around z-axis of coordinate system
 	 * @param sinPhi Sine of the angle
 	 * @param cosPhi Cosine of the angle
 	*/
 	void RotateAroundZAxis( const double sinPhi, const double cosPhi );
 
 	/*!
-	 * @brief Rotate point that these three components form around a vector the components of n form
+	 * @brief rotate point that these three components form around a vector the components of n form
 	 * @param axis Rotation axis
 	 * @param angle Angle
 	 * @return Error code

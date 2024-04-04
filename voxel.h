@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   voxel.h
- * @brief  Classes for 3D volume elements
+ * @brief  classes for 3D volume elements
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -31,7 +31,7 @@ using std::map;
 
 
 /*
-	Classes
+	classes
 */
 
 /*!
@@ -45,7 +45,7 @@ class VoxelData{
 	typedef unsigned char SpecialPropertyEnumType;		/*!< Type to store up tu 8 special properties_*/
 
 	/*!
-	 * @brief Special propterties a voxel can have
+	 * @brief special propterties a voxel can have
 	*/
 	enum SpecialProperty : SpecialPropertyEnumType{
 		None =			0b00000000,
@@ -56,99 +56,99 @@ class VoxelData{
 	static const std::map<SpecialProperty, string> special_property_names;	/*!< Names of enumerated properties*/
 	
 	/*!
-	 * @brief Get enumeration from string
+	 * @brief get enumeration from string
 	 * @param property_string String to find property for
 	 * @return Proeprty enumeration
 	*/
 	static SpecialProperty GetPropertyEnum( const string property_string );
 
 	/*!
-	 * @brief Get the absorption at reference energy
+	 * @brief get the absorption at reference energy
 	 * @param absorptionAtEnergy Absorption at given energy
 	 * @param energy Energy
-	 * @return Absorption coefficient
+	 * @return absorption coefficient
 	*/
 	static double GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy );
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param absorption_at_energy Absorption coefficient at given energy
 	 * @param energy_eV Energy in eV
 	*/
 	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty = None );
 
 	/*!
-	 * @brief Constructor from serialized data
+	 * @brief constructor from serialized data
 	 * @param binary_data Vector with serialized data
 	 * @param current_byte Start of data for this object
 	*/
 	VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	VoxelData( void ) : absorption_( -1 ), specialProperties_( Undefined ){};
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Comparison
+	 * @brief comparison
 	 * @param d2 Second voxel data
-	 * @return True when absorption of left operand is smaller than right's
+	 * @return true when absorption of left operand is smaller than right's
 	*/
 	bool operator<( const VoxelData& d2 ) const{ return this->absorption_ < d2.absorption_; };
 
 	/*!
-	 * @brief Comparison
+	 * @brief comparison
 	 * @param d2 Second voxel data
-	 * @return True when absorption of left operand is greater than right's
+	 * @return true when absorption of left operand is greater than right's
 	*/
 	bool operator>( const VoxelData& d2 ) const{ return !operator<( d2 ); };
 
 	/*!
-	 * @brief Add special property
+	 * @brief add special property
 	 * @param property Property to add
 	*/
 	void AddSpecialProperty( const SpecialProperty property ){ specialProperties_ |= ToUnderlying( property ); };
 
 	/*!
-	 * @brief Remove special property
+	 * @brief remove special property
 	 * @param property Property to remove
 	*/
 	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ToUnderlying( property ); };
 
 	/*!
-	 * @brief Get the absorption_ at given energy
+	 * @brief get the absorption_ at given energy
 	 * @param energy_eV Energy in eV
-	 * @return Absorption at given energy
+	 * @return absorption at given energy
 	*/
 	double GetAbsorptionAtEnergy( const double energy_eV ) const;
 
 	/*!
-	 * @brief Get absorption_ at reference energy
-	 * @return Absorption at reference energy 
+	 * @brief get absorption_ at reference energy
+	 * @return absorption at reference energy 
 	*/
 	double GetAbsorptionAtReferenceEnergy( void ) const{ return absorption_; };
 
 	/*!
-	 * @brief Check if there is a special property
-	 * @return True when is has at least one property
+	 * @brief check if there is a special property
+	 * @return true when is has at least one property
 	*/
 	bool HasSpecialProperty( void ) const{ return specialProperties_ != None; };
 	
 	/*!
-	 * @brief Check for specific property
+	 * @brief check for specific property
 	 * @param property Property to check
-	 * @return True when voxel has specific property
+	 * @return true when voxel has specific property
 	*/
 	bool HasSpecificProperty( const SpecialProperty property ) const;
 
 	/*!
-	 * @brief Set the metal artifact impact factor
+	 * @brief set the metal artifact impact factor
 	 * @param artefact_impact_factor New factor
 	*/
 	static void SetArtefactImpactFactor( const double artefact_impact_factor );
@@ -158,8 +158,8 @@ class VoxelData{
 
 	static double artefact_impact_factor_;			/*!< Factor for altering metal artefact strength*/
 
-	double absorption_	= -1;										/*!< Absorption coefficient at reference Energy*/
-	SpecialPropertyEnumType specialProperties_;	/*!< Special properties in voxel*/
+	double absorption_	= -1;										/*!< absorption coefficient at reference Energy*/
+	SpecialPropertyEnumType specialProperties_;	/*!< special properties in voxel*/
 
 };
 #pragma pack(pop)
@@ -167,14 +167,14 @@ class VoxelData{
 
 
 /*!
- * @brief Class for voxels
+ * @brief class for voxels
 */
 class Voxel : public MathematicalObject{
 
 	public:
 	
 	 /*!
-	  * @brief Face identifiers of voxel
+	  * @brief face identifiers of voxel
 	 */
 	enum class Face : unsigned char{
 		Begin,
@@ -189,7 +189,7 @@ class Voxel : public MathematicalObject{
 	};
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param origin Origin point of voxel
 	 * @param size	Size of voxel in unit of coordinate system's axes
 	 * @param data	Physical data of voxel
@@ -197,59 +197,59 @@ class Voxel : public MathematicalObject{
 	Voxel( const Point3D origin, const Tuple3D size, const VoxelData data );
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	Voxel( void ) : Voxel{ Point3D{ Tuple3D{ 0, 0, 0 }, DummySystem() }, Tuple3D{ 1, 1, 1 }, VoxelData{} }{};
 
 	/*!
-	 * @brief Convert result's data to string
-	 * @return String with result's data
+	 * @brief convert result's data to string
+	 * @return string with result's data
 	*/
 	string ToString( unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Get origin point of voxel
+	 * @brief get origin point of voxel
 	 * @return Origin point
 	*/
 	Point3D origin_corner( void ) const{ return origin_corner_; };
 
 	/*!
-	 * @brief Get size of voxel
-	 * @return Size of voxel
+	 * @brief get size of voxel
+	 * @return size of voxel
 	*/
 	Tuple3D size( void ) const{ return size_; };
 
 	/*!
-	 * @brief Get data of voxel
-	 * @return Voxel data
+	 * @brief get data of voxel
+	 * @return voxel data
 	*/
 	VoxelData data( void ) const{ return data_; };
 
 	/*!
-	 * @brief Get face of voxel
+	 * @brief get face of voxel
 	 * @param face Face ID
 	 * @return Bounded surface which is the face
 	*/
 	BoundedSurface GetFace( Face face ) const{ return faces[ ToUnderlying( face ) ]; };
 
 	/*!
-	 * @brief Get center of voxel
+	 * @brief get center of voxel
 	 * @return Point at center of voxel
 	*/
 	Point3D GetCenter( void ) const{ return origin_corner_ + Vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
 
 	/*!
-	 * @brief Check if voxel contains point
+	 * @brief check if voxel contains point
 	 * @param point Point to check
-	 * @return True when p is inside the voxel
+	 * @return true when p is inside the voxel
 	*/
 	bool Contains( const Point3D point ) const;
 
 
 	private:
 
-	Tuple3D size_;				/*!< Size in local coordinate system*/
-	VoxelData data_;			/*!< Physical voxel data_*/
-	Point3D origin_corner_;		/*!< Point as origin_ of voxel in coordinate system*/
+	Tuple3D size_;				/*!< size in local coordinate system*/
+	VoxelData data_;			/*!< physical voxel data_*/
+	Point3D origin_corner_;		/*!< point as origin_ of voxel in coordinate system*/
 	array<BoundedSurface, ToUnderlying( Face::End )> faces;	/*!< Faces in global context*/
 };

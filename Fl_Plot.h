@@ -19,7 +19,7 @@
 #include "plot.h"
 
 /*!
- * @brief A plot widget
+ * @brief a plot widget
  * @tparam plotType Type of plot
 */
 template< class P >
@@ -31,7 +31,7 @@ class Fl_Plot : public Fl_Widget{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -41,7 +41,7 @@ class Fl_Plot : public Fl_Widget{
 	Fl_Plot( int x, int y, int w, int h,  const char* label = 0L );
 
 	/*!
-	 * @brief Initialise plot
+	 * @brief initialise plot
 	 * @param image_path Storage path for plot image
 	 * @param x_label x-axis label
 	 * @param y_label y-axis label
@@ -55,29 +55,29 @@ class Fl_Plot : public Fl_Widget{
 					 const string x_format, const string y_format, const bool are_axis_equal, const bool enable_grid );
 
 	/*!
-	 * @brief Set new axis limits
+	 * @brief set new axis limits
 	 * @param newLimits New limits
 	*/
 	void SetLimits( const PlotLimits limits ){ plot_.SetLimits( limits ); };
 
 	/*!
-	 * @brief Get reference to plot
+	 * @brief get reference to plot
 	 * @return Underlying plot
 	*/
 	P& plot( void ){ return plot_; };
 
 	/*!
-	 * @brief Assign image data from persisting storage
+	 * @brief assign image data from persisting storage
 	*/
 	void AssignData( void ){ AssignImage( plot_.image_path() ); };
 
 	/*!
-	 * @brief Draw plot as image
+	 * @brief draw plot as image
 	*/
 	void draw( void ) override;
 
 	/*!
-	 * @brief Resize the image
+	 * @brief resize the image
 	 * @param x New x postion
 	 * @param y New y positon
 	 * @param w New width
@@ -86,7 +86,7 @@ class Fl_Plot : public Fl_Widget{
 	void resize( int x, int y, int w, int h ) override;
 
 	/*!
-	 * @brief Calculate scaled plot image
+	 * @brief calculate scaled plot image
 	*/
 	void CalculateScaled( void );
 
@@ -94,13 +94,13 @@ class Fl_Plot : public Fl_Widget{
 	private:
 
 	string label_;				/*!< Label*/
-	P plot_;		/*!< A plot*/
-	std::unique_ptr<Fl_PNG_Image> raw_image_;	/*!< Raw image*/
-	std::unique_ptr<Fl_Image> image_;			/*!< Scaled FL-image*/
+	P plot_;		/*!< a plot*/
+	std::unique_ptr<Fl_PNG_Image> raw_image_;	/*!< raw image*/
+	std::unique_ptr<Fl_Image> image_;			/*!< scaled FL-image*/
 
 
 	/*!
-	 * @brief Assign plot image
+	 * @brief assign plot image
 	 * @param filename Path to image
 	*/
 	void AssignImage( const path filename );

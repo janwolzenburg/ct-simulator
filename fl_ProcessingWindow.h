@@ -43,7 +43,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -55,7 +55,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	
 	private:
 
-	Fl_AdjustableGrayscaleImage projections_image_;				/*!< Widget for sinogram display*/
+	Fl_AdjustableGrayscaleImage projections_image_;				/*!< widget for sinogram display*/
 	
 	Fl_Button limit_values_button_;
 	Fl_Button recalculate_button_;
@@ -71,32 +71,32 @@ class Fl_ProcessingWindow : public Fl_Window{
 	Fl_Toggle_Button hu_mu_selection_button_;
 	Fl_BoundInput<Fl_Float_Input, double> mu_water_input_;
 
-	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< Widget for filtered projections display*/
-	Fl_Button export_filteredProjections_button_;				/*!< Export button for projections*/
+	Fl_AdjustableGrayscaleImage filtered_projections_image_;	/*!< widget for filtered projections display*/
+	Fl_Button export_filteredProjections_button_;				/*!< export button for projections*/
 
-	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< Widget for the reconstruced image*/
-	Fl_Button export_image_button_;								/*!< Export button for image*/
+	Fl_AdjustableGrayscaleImage reconstructed_image_;			/*!< widget for the reconstruced image*/
+	Fl_Button export_image_button_;								/*!< export button for image*/
 
-	Projections raw_projections_;										/*!< Projection data and properties*/
-	Projections limited_projections_;								/*!< Projections with upper value limit*/
-	PersistingObject<FilteredProjections> filtered_projections_;	/*!< Current filtered projections*/
-	PersistingObject<Backprojection> backprojection_;				/*!< Current image reconstructed from filtered projections*/
+	Projections raw_projections_;										/*!< projection data and properties*/
+	Projections limited_projections_;								/*!< projections with upper value limit*/
+	PersistingObject<FilteredProjections> filtered_projections_;	/*!< current filtered projections*/
+	PersistingObject<Backprojection> backprojection_;				/*!< current image reconstructed from filtered projections*/
 
 	static PersistingObject<FileChooser> export_filteredProjections_file_chooser_;		/*!< File chooser for projections export*/
 	static PersistingObject<FileChooser> export_image_chooser_;							/*!< File chooser for projections export*/
 
 	CallbackFunction<Fl_ProcessingWindow> recalculate_callback_;
-	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< Callback function for filter change*/
+	CallbackFunction<Fl_ProcessingWindow> filter_change_callback_;					/*!< callback function for filter change*/
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_selection_changed_callback_;
 	CallbackFunction<Fl_ProcessingWindow> hu_mu_input_changed_callback_;
 
-	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< Callback for projection export*/
-	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;					/*!< Callback for image export*/
+	CallbackFunction<Fl_ProcessingWindow> export_filteredProjections_callback_;		/*!< callback for projection export*/
+	CallbackFunction<Fl_ProcessingWindow> export_image_callback_;					/*!< callback for image export*/
 
 
 		
 	/*!
-	 * @brief Reconstruct the image from projections
+	 * @brief reconstruct the image from projections
 	*/
 	void FilterAndReconstructImage( void );
 
@@ -111,12 +111,12 @@ class Fl_ProcessingWindow : public Fl_Window{
 	void HandleMUChange( void );
 
 	/*!
-	 * @brief Export the filtered projections
+	 * @brief export the filtered projections
 	*/
 	void ExportFilteredProjections( void );
 
 	/*!
-	 * @brief Export the backprojection image 
+	 * @brief export the backprojection image 
 	*/
 	void ExportBackprojections( void );
 

@@ -32,14 +32,14 @@ using std::mutex;
 *********************************************************************/
 
 /*!
- * @brief Class for a gantry with xRay source and detector
+ * @brief class for a gantry with xRay source and detector
 */
 class Gantry{
 	
 	public:
 	
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param coordinate_system Coordinate system
 	 * @param tube_properties Parameter of xRay tube
 	 * @param radon_properties Radon parameter of xRay detector
@@ -49,31 +49,31 @@ class Gantry{
 			const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
-	 * @brief Get the coordinate system of gantry
+	 * @brief get the coordinate system of gantry
 	 * @return Coordinate system of this gantry
 	*/
 	const CoordinateSystem* coordinate_system( void ) const{ return coordinate_system_; };
 
 	/*!
-	 * @brief Get reference to detector instance
+	 * @brief get reference to detector instance
 	 * @return Reference to detector instance
 	*/
 	XRayDetector detector( void ) const{ return detector_; };
 
 	/*!
-	 * @brief Get reference to tube instance
+	 * @brief get reference to tube instance
 	 * @return Reference to tube instance
 	*/
 	XRayTube tube( void ) const{ return tube_; };
 
 	/*!
-	 * @brief Get all pixel from detector 
-	 * @return Vector with pixel
+	 * @brief get all pixel from detector 
+	 * @return vector with pixel
 	*/
 	vector<DetectorPixel> pixel_array( void ) const{ return detector_.pixel_array();  };
 
 	/*!
-	 * @brief Get center of gantry
+	 * @brief get center of gantry
 	 * @return Center point
 	*/
 	Point3D GetCenter( void ) const{ return coordinate_system_->GetOriginPoint(); };
@@ -88,7 +88,7 @@ class Gantry{
 								const PhysicalDetectorProperties physical_detector_properties );
 
 	/*!
-	 * @brief Rotate gantry counter clockwise around ZAxis
+	 * @brief rotate gantry counter clockwise around ZAxis
 	 * @param angle Rotation angle
 	*/
 	void RotateCounterClockwise( const double angle );
@@ -100,7 +100,7 @@ class Gantry{
 	void TranslateInZDirection( const double distance );
 
 	/*!
-	 * @brief Radiate model with beam
+	 * @brief radiate model with beam
 	 * @param model Model to radiate
 	 * @param tomography_properties tomogrpahy properties
 	*/
@@ -108,17 +108,17 @@ class Gantry{
 										 RayScattering& scattering_information) ;
 
 	/*!
-	 * @brief Reset gantry to its initial position and reset detector
+	 * @brief reset gantry to its initial position and reset detector
 	*/
 	void ResetGantry( void );
 
 
 	private:
 	
-	CoordinateSystem* coordinate_system_;			/*!< Coordinate system*/
+	CoordinateSystem* coordinate_system_;			/*!< coordinate system*/
 	PrimitiveCoordinateSystem initial_position_;	/*!< Initial position of coordinate system*/
 
-	XRayDetector detector_;							/*!< Ray detector*/
+	XRayDetector detector_;							/*!< ray detector*/
 	XRayTube tube_;									/*!< xRay source*/
 	
 

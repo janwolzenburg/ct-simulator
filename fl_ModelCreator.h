@@ -41,31 +41,31 @@ using std::array;
  *********************************************************************/
 
 /*!
- * @brief Class used by Fl_ModelCreator to store model features
+ * @brief class used by Fl_ModelCreator to store model features
 */
 class Fl_ModelFeature : public Fl_Group{
 
 	public:
 
 	/*!
-	 * @brief Shape of feature
+	 * @brief shape of feature
 	*/
 	enum Shape{
 		Sphere,
 		Cube
 	};
 
-	static const std::map<Shape, string> shape_names;			/*!< Map for shape names*/
+	static const std::map<Shape, string> shape_names;			/*!< map for shape names*/
 		
 	/*!
-	 * @brief Get shape enumeration from string
+	 * @brief get shape enumeration from string
 	 * @param shape_string Name of enumeration
 	 * @return Enumeration of shape fitting to name
 	*/
 	static Shape GetShapeEnum( const string shape_string );		
 	
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param x x-position
 	 * @param y y-position
 	 * @param w Width
@@ -75,50 +75,50 @@ class Fl_ModelFeature : public Fl_Group{
 	Fl_ModelFeature( int x, int y, int w, int h, const char* label = 0L );
 
 	/*!
-	 * @brief Register same function to all elements as callback
+	 * @brief register same function to all elements as callback
 	 * @param callback_function Function to assign as callback
 	 * @param p User data
 	*/
 	void callback( Fl_Callback* callback_function, void* p );
 
 	/*!
-	 * @brief Get if this feature is active
-	 * @return True if active
+	 * @brief get if this feature is active
+	 * @return true if active
 	*/
 	bool IsActive( void ) const{ return static_cast<bool>( active_button_.value() ); };
 
 	/*!
-	 * @brief Get feature shape
-	 * @return Shape
+	 * @brief get feature shape
+	 * @return shape
 	*/
 	Shape GetShape( void ) const{ return GetShapeEnum( string{ shape_input_.current_element() } ); };
 
 	/*!
-	 * @brief Get center of feature
+	 * @brief get center of feature
 	 * @return Center of feature in mm
 	*/
 	Tuple3D GetCenter( void ) const{ return { x_positon_input_.value(), y_positon_input_.value(), z_positon_input_.value() }; };
 
 	/*!
-	 * @brief Get size of feature
-	 * @return Size in mm
+	 * @brief get size of feature
+	 * @return size in mm
 	*/
 	double GetSize( void ) const{ return size_input_.value(); };
 
 	/*!
-	 * @brief Get special property
+	 * @brief get special property
 	 * @return Property of feature
 	*/
 	VoxelData::SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
 
 	/*!
-	 * @brief Get absorption of feature
-	 * @return Absorption at reference energy
+	 * @brief get absorption of feature
+	 * @return absorption at reference energy
 	*/
 	double GetValue( void ) const{ return value_input_.value(); };
 
 	/*!
-	 * @brief Set this feature to be active
+	 * @brief set this feature to be active
 	 * @param  
 	*/
 	void SetActive( void ){
@@ -130,7 +130,7 @@ class Fl_ModelFeature : public Fl_Group{
 	void HideFields( void );
 
 	/*!
-	 * @brief Show fields
+	 * @brief show fields
 	*/
 	void ShowFields( void );
 
@@ -138,13 +138,13 @@ class Fl_ModelFeature : public Fl_Group{
 	private:
 
 	Fl_Toggle_Button active_button_;		/*!< Button to activate feature*/
-	Fl_Selector special_property_input_;	/*!< Selector for special property*/
-	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< Absorption in 1/mm at reference energy*/
+	Fl_Selector special_property_input_;	/*!< selector for special property*/
+	Fl_BoundInput<Fl_Float_Input, double> value_input_;		/*!< absorption in 1/mm at reference energy*/
 	Fl_BoundInput<Fl_Float_Input, double> x_positon_input_;	/*!< x position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> y_positon_input_;	/*!< y position in mm*/
 	Fl_BoundInput<Fl_Float_Input, double> z_positon_input_;	/*!< z position in mm*/
-	Fl_BoundInput<Fl_Float_Input, double> size_input_;		/*!< Size in mm*/
-	Fl_Selector shape_input_;				/*!< Selector for feature shape*/
+	Fl_BoundInput<Fl_Float_Input, double> size_input_;		/*!< size in mm*/
+	Fl_Selector shape_input_;				/*!< selector for feature shape*/
 
 	bool is_visible_;						/*!< Flag to indicate visability*/
 
@@ -153,7 +153,7 @@ class Fl_ModelFeature : public Fl_Group{
 
 
 /*!
- * @brief Class for a window that can build models
+ * @brief class for a window that can build models
 */
 class Fl_ModelCreator : public Fl_Window{
 
@@ -161,7 +161,7 @@ class Fl_ModelCreator : public Fl_Window{
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param w Width of window
 	 * @param h Height of window
 	 * @param label Window title
@@ -171,8 +171,8 @@ class Fl_ModelCreator : public Fl_Window{
 
 	private:
 
-	constexpr static size_t num_features = 10;		/*!< Max. amount of features*/
-	constexpr static double h_feature = .05;		/*!< Height of each feature in GUI*/
+	constexpr static size_t num_features = 10;		/*!< max. amount of features*/
+	constexpr static double h_feature = .05;		/*!< height of each feature in GUI*/
 
 	Fl_Group model_size_group_;	/*!< Group for model size*/
 	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_x_input_;	/*!< Voxel amount in x direction*/
@@ -185,17 +185,17 @@ class Fl_ModelCreator : public Fl_Window{
 	Fl_Button store_size_button_;	/*!< Button to store size and continue*/
 	
 	Fl_Group features_group_;	/*!< Group for all features and model properties*/
-	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< Absorption value of background*/
+	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< absorption value of background*/
 	Fl_Multiline_Output information_;							/*!< Information about features*/
-	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< All the features*/
+	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< all the features*/
 	Fl_Button build_button_;									/*!< Button for building model*/
 
-	CallbackFunction<Fl_ModelCreator> model_size_changed_callback_;	/*!< Callback for model size change*/
-	CallbackFunction<Fl_ModelCreator> model_size_stored_callback_;	/*!< Callback for size storage*/
-	CallbackFunction<Fl_ModelCreator> feature_changed_callback_;	/*!< Callback for feature change*/
-	CallbackFunction<Fl_ModelCreator> build_model_callback_;		/*!< Callback for model building*/
+	CallbackFunction<Fl_ModelCreator> model_size_changed_callback_;	/*!< callback for model size change*/
+	CallbackFunction<Fl_ModelCreator> model_size_stored_callback_;	/*!< callback for size storage*/
+	CallbackFunction<Fl_ModelCreator> feature_changed_callback_;	/*!< callback for feature change*/
+	CallbackFunction<Fl_ModelCreator> build_model_callback_;		/*!< callback for model building*/
 
-	Index3D model_size_;		/*!< Size of model. The amount of voxel*/
+	Index3D model_size_;		/*!< size of model. The amount of voxel*/
 	Tuple3D voxel_size_;		/*!< Voxel size in mm*/
 	string name_;				/*!< Name of model*/
 
@@ -208,7 +208,7 @@ class Fl_ModelCreator : public Fl_Window{
 	void UpdateModelSize( void );
 
 	/*!
-	 * @brief Store model size and continue to next step  
+	 * @brief store model size and continue to next step  
 	*/
 	void StoreModelSize( void );
 

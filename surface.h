@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   Surface.h
- * @brief  Classes for surfaces
+ * @brief  classes for surfaces
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -23,14 +23,14 @@
 
 
 /*!
- * @brief Class for unconfined surfaces
+ * @brief class for unconfined surfaces
 */
 class Surface : public MathematicalObject{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param direction_1 First direction vector
 	 * @param direction_2 Second direction vector. Must be orthogonal to first vector
 	 * @param origin Origin
@@ -38,7 +38,7 @@ class Surface : public MathematicalObject{
 	explicit Surface( const UnitVector3D direction_1, const UnitVector3D  direction_2, const Point3D  origin );
 
 	/*!
-	 * @brief Construct from binary data_
+	 * @brief construct from binary data_
 	 * @param binary_data Data vector
 	 * @param current_byte Iterator
 	 * @param coordinate_system System to assign surface to
@@ -46,43 +46,43 @@ class Surface : public MathematicalObject{
 	Surface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	Surface( void );
 
 	/*!
-	 * @brief Convert surface's data to string
+	 * @brief convert surface's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with surface's data_
+	 * @return string with surface's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get origin_ of surface
+	 * @brief get origin_ of surface
 	 * @return Origing
 	*/
 	Point3D origin( void ) const{ return origin_; };
 
 	/*!
-	 * @brief Get first direction vector
+	 * @brief get first direction vector
 	 * @return direction_1_ of surface
 	*/
 	UnitVector3D  direction_1( void ) const{ return direction_1_; };
 
 	/*!
-	 * @brief Get second direction vector
+	 * @brief get second direction vector
 	 * @return direction_2_ of surface
 	*/
 	UnitVector3D  direction_2( void ) const{ return direction_2_; };
 
 	/*!
-	 * @brief Get point on the surface based on parameters
+	 * @brief get point on the surface based on parameters
 	 * @param surface_parameter_1 Surface parameter a
 	 * @param surface_parameter_2 Surface parameter b
 	 * @return Point p = origin_ + direction_1_*a + direction_2_*b
@@ -90,31 +90,31 @@ class Surface : public MathematicalObject{
 	Point3D GetPoint( const double surface_parameter_1, const double surface_parameter_2 ) const{ return  origin_ + ( direction_1_ * surface_parameter_1 + direction_2_ * surface_parameter_2 ); };
 
 	/*!
-	 * @brief Get surface normal by cross product
-	 * @return Surface normal
+	 * @brief get surface normal by cross product
+	 * @return surface normal
 	*/
 	UnitVector3D GetNormal( void ) const{ return normal_; };
 
 	/*!
-	 * @brief Convert surface to different coordinate system
+	 * @brief convert surface to different coordinate system
 	 * @param coordinate_system System to convert to
 	 * @return Converted surface
 	*/
 	Surface ConvertTo( const CoordinateSystem* const coordinate_system ) const;
 
 	/*!
-	 * @brief Checks if parameters are inside surface bounds
+	 * @brief checks if parameters are inside surface bounds
 	 * @param a Surface parameter a
 	 * @param b Surface parameter b
-	 * @return Always true for unconfined surfaces
+	 * @return always true for unconfined surfaces
 	*/
 	virtual bool AreParametersInBounds( [[maybe_unused]] const double parameter_1, [[maybe_unused]] const double parameter_2 ) const { return true; };
 
 
 	protected:
 	UnitVector3D  direction_1_;			/*!< First direction vector*/
-	UnitVector3D  direction_2_;			/*!< Second direction vector*/
-	Point3D  origin_;								/*!< Origin*/
+	UnitVector3D  direction_2_;			/*!< second direction vector*/
+	Point3D  origin_;								/*!< origin*/
 	UnitVector3D normal_;						/*!< The surfaces normal*/
 
 };
@@ -122,14 +122,14 @@ class Surface : public MathematicalObject{
 
 
 /*!
- * @brief Confined surface with limited parameters creating a rectangle
+ * @brief confined surface with limited parameters creating a rectangle
 */
 class BoundedSurface : public Surface{
 
 	public:
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param direction_1 First direction vector
 	 * @param direction_2 Second direction vector. Must be orthogonal to first vector
 	 * @param origin Origin
@@ -140,7 +140,7 @@ class BoundedSurface : public Surface{
 							 const NumberRange direction_1_range, const NumberRange direction_2_range );
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param direction_1 First direction vector
 	 * @param direction_2 Second direction vector. Must be orthogonal to first vector
 	 * @param origin Origin
@@ -154,7 +154,7 @@ class BoundedSurface : public Surface{
 							 const double parameter_2_min, const double parameter_2_max );
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param s Base surface
 	 * @param direction_1_range Limits for parameter a
 	 * @param direction_2_range Limits for parameter b
@@ -163,7 +163,7 @@ class BoundedSurface : public Surface{
 							 const NumberRange direction_1_range,  const NumberRange direction_2_range );
 
 	/*!
-	 * @brief Constructor
+	 * @brief constructor
 	 * @param s Base surface
 	 * @param parameter_1_min Lower bound for parameter 1
 	 * @param parameter_1_max Upper bound for parameter 1
@@ -175,12 +175,12 @@ class BoundedSurface : public Surface{
 							 const double parameter_2_min, const double parameter_2_max );
 
 	/*!
-	 * @brief Default constructor
+	 * @brief default constructor
 	*/
 	BoundedSurface( void ) : BoundedSurface( Surface{}, NumberRange{ 0., 1. }, NumberRange{ 0., 1. } ){};
 
 	/*!
-	 * @brief Construct from binary data_
+	 * @brief construct from binary data_
 	 * @param binary_data Data vector
 	 * @param current_byte Iterator
 	 * @param coordinate_system System to assign surface to
@@ -188,66 +188,66 @@ class BoundedSurface : public Surface{
 	BoundedSurface( const vector<char>& binary_data, vector<char>::const_iterator& current_byte, CoordinateSystem* coordinate_system );
 
 	/*!
-	 * @brief Convert surface's data to string
+	 * @brief convert surface's data to string
 	 * @param newline_tabulators Amount of tabulators to insert after each Line break
-	 * @return String with surface's data_
+	 * @return string with surface's data_
 	*/
 	std::string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get minimum of parameter a
-	 * @return Value of aMin
+	 * @brief get minimum of parameter a
+	 * @return value of aMin
 	*/
 	double parameter_1_min( void ) const{ return parameter_1_range_.start(); };
 
 	/*!
-	 * @brief Get maximum of parameter a
-	 * @return Value of aMax
+	 * @brief get maximum of parameter a
+	 * @return value of aMax
 	*/
 	double parameter_1_max( void ) const{ return parameter_1_range_.end(); };
 
 	/*!
-	 * @brief Get minimum of parameter b
-	 * @return Value of bMin
+	 * @brief get minimum of parameter b
+	 * @return value of bMin
 	*/
 	double parameter_2_min( void ) const{ return parameter_2_range_.start(); };
 
 	/*!
-	 * @brief Get maximum of parameter b
-	 * @return Value of bMax
+	 * @brief get maximum of parameter b
+	 * @return value of bMax
 	*/
 	double parameter_2_max( void ) const{ return parameter_2_range_.end(); };
 
 	/*!
-	 * @brief Convert surface to different coordinate system
+	 * @brief convert surface to different coordinate system
 	 * @param coordinate_system System to convert to
 	 * @return Converted surface
 	*/
 	BoundedSurface ConvertTo( const CoordinateSystem* const coordinate_system ) const{ return BoundedSurface{ this->Surface::ConvertTo( coordinate_system ), parameter_1_range_, parameter_2_range_ }; };
 
 	/*!
-	 * @brief Checks if parameters are inside surface bounds
+	 * @brief checks if parameters are inside surface bounds
 	 * @param parameter_1 Surface parameter a
 	 * @param parameter_2 Surface parameter b
-	 * @return True when parameters are inside surface bounds
+	 * @return true when parameters are inside surface bounds
 	*/
 	bool AreParametersInBounds( const double parameter_1, const double parameter_2 ) const override{ 
 		return parameter_1_min() <= parameter_1 && parameter_1 <= parameter_1_max() && parameter_2_min() <= parameter_2 && parameter_2 <= parameter_2_max();  };
 
 	/*!
-	 * @brief Get center point of limited surface
-	 * @return The center point
+	 * @brief get center point of limited surface
+	 * @return the center point
 	*/
 	Point3D  GetCenter( void ) const{ return this->GetPoint( ( parameter_1_max() + parameter_1_min() ) / 2, ( parameter_2_max() + parameter_2_min() ) / 2); };
 
 	/*!
-	 * @brief Get the surfaces normal as Line through its center
+	 * @brief get the surfaces normal as Line through its center
 	 * @return GetCenterNormal Line
 	*/
 	Line  GetCenterNormal( void ) const;

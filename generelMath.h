@@ -2,7 +2,7 @@
 
 /*********************************************************************
  * @file   generelMath.h
- * @brief  Mathematical constants and objects
+ * @brief  mathematical constants and objects
  * 
  * @author Jan Wolzenburg
  * @date   December 2022

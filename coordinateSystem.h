@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   cartesian.h
- * @brief  Classes for cartesian coordinate systems_
+ * @brief  classes for cartesian coordinate systems_
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -27,7 +27,7 @@
 
 
 /*!
- * @brief Class for coordinate system with context in another system
+ * @brief class for coordinate system with context in another system
 */
 class CoordinateSystem : private PrimitiveCoordinateSystem {
 	
@@ -36,56 +36,56 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	public:
 
 	/*!
-	 * @brief Convert coordinate system's data to string
-	 * @return String with coordinate system's data_
+	 * @brief convert coordinate system's data to string
+	 * @return string with coordinate system's data_
 	*/
 	string ToString( const unsigned int newline_tabulators = 0 ) const override;
 
 	/*!
-	 * @brief Serialize this object
+	 * @brief serialize this object
 	 * @param binary_data Reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief Get pointer to this system's parent_
+	 * @brief get pointer to this system's parent_
 	 * @return Pointer to parent_
 	*/
 	const CoordinateSystem* parent( void ) const{ return parent_; };
 
 	/*!
-	 * @brief Get the primitve coordinate system of this system
+	 * @brief get the primitve coordinate system of this system
 	 * @return Coordinate system without parent_ context
 	*/
 	PrimitiveCoordinateSystem GetPrimitive( void ) const{ return static_cast<PrimitiveCoordinateSystem>( *this ); };
 
 	/*!
-	 * @brief Set the primitve coordinate system of this system
+	 * @brief set the primitve coordinate system of this system
 	 * @param primitiveCSys primitve system to set
 	*/
 	void SetPrimitive( const PrimitiveCoordinateSystem new_primitive );
 
 	/*!
-	 * @brief Checks if this system is a global system
-	 * @return True when this system is the global system in tree
+	 * @brief checks if this system is a global system
+	 * @return true when this system is the global system in tree
 	*/
 	bool IsGlobal( void ) const{ return parent_ == nullptr; };
 
 	/*!
-	 * @brief Create copy of this system
+	 * @brief create copy of this system
 	 * @param newName Name of new system
 	 * @return Pointer to new coordiante system with same baseCartSystem and parent_ as this
 	*/
 	CoordinateSystem* CreateCopy( const string new_name ) const;
 	
 	/*!
-	 * @brief Copy data from source to this
+	 * @brief copy data from source to this
 	 * @param sourceCSys Source system
 	*/
 	void CopyPrimitiveFrom( const CoordinateSystem* const source_system );
 
 	/*!
-	 * @brief Add coordinate system to this system's tree
+	 * @brief add coordinate system to this system's tree
 	 * @param origin Origin of coordinate system
 	 * @param ex x-axis
 	 * @param ey y-axis
@@ -96,73 +96,73 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	CoordinateSystem* AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name ) const;
 
 	/*!
-	 * @brief Get path from global system to this system
-	 * @return Vector with pointers to intermediate coordinate systems_ excluding global and this system
+	 * @brief get path from global system to this system
+	 * @return vector with pointers to intermediate coordinate systems_ excluding global and this system
 	*/
 	vector<const CoordinateSystem *> GetPathFromGlobal( void ) const;
 
 	/*!
-	 * @brief Get origin point in this system's context
+	 * @brief get origin point in this system's context
 	 * @return Point of system's origin_
 	*/
 	Point3D GetOriginPoint( void ) const;
 
 	/*!
-	 * @brief Get origin point in this parent_'s context
+	 * @brief get origin point in this parent_'s context
 	 * @return Point of system's origin_
 	*/
 	Point3D GetOriginInParentSystem( void ) const;
 
 	/*!
-	 * @brief Get unit vector of x-axis in this system's context
+	 * @brief get unit vector of x-axis in this system's context
 	 * @return x-axis unit vector
 	*/
 	UnitVector3D GetEx( void ) const;
 
 	/*!
-	 * @brief Get unit vector of y-axis in this system's context
+	 * @brief get unit vector of y-axis in this system's context
 	 * @return y-axis unit vector
 	*/
 	UnitVector3D GetEy( void ) const;
 
 	/*!
-	 * @brief Get unit vector of z-axis in this system's context
+	 * @brief get unit vector of z-axis in this system's context
 	 * @return z-axis unit vector
 	*/
 	UnitVector3D GetEz( void ) const;
 
 	/*!
-	 * @brief Get x-axis in parent_ coordinate system
-	 * @return The x-axis as a Line
+	 * @brief get x-axis in parent_ coordinate system
+	 * @return the x-axis as a Line
 	*/
 	Line GetXAxis( void ) const;
 
 	/*!
-	 * @brief Get y-axis in parent_ coordinate system
-	 * @return The y-axis as a Line
+	 * @brief get y-axis in parent_ coordinate system
+	 * @return the y-axis as a Line
 	*/
 	Line GetYAxis( void ) const;
 
 	/*!
-	 * @brief Get z-axis in parent_ coordinate system
-	 * @return The z-axis as a Line
+	 * @brief get z-axis in parent_ coordinate system
+	 * @return the z-axis as a Line
 	*/
 	Line GetZAxis( void ) const;
 
 	/*!
-	 * @brief Get the xy-plane in parent_ coordinate system
+	 * @brief get the xy-plane in parent_ coordinate system
 	 * @return xy-plane as surface
 	*/
 	Surface GetXYPlane( void ) const;
 
 	/*!
-	 * @brief Get the yz-plane in parent_ coordinate system
+	 * @brief get the yz-plane in parent_ coordinate system
 	 * @return yz-plane as surface
 	*/
 	Surface GetYZPlane( void ) const;
 
 	/*!
-	 * @brief Get the xz-plane in parent_ coordinate system
+	 * @brief get the xz-plane in parent_ coordinate system
 	 * @return xz-plane as surface
 	*/
 	Surface GetXZPlane( void ) const;
@@ -174,7 +174,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	MathError Translate( const Vector3D direction );
 
 	/*!
-	 * @brief Rotate coordinate system around vector
+	 * @brief rotate coordinate system around vector
 	 * @param n Rotation axis
 	 * @param phi Angle
 	 * @return Error code
@@ -182,7 +182,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	MathError Rotate( const UnitVector3D axis, const double arc_angle );
 
 	/*!
-	 * @brief Rotate coordinate system
+	 * @brief rotate coordinate system
 	 * @param l Rotation axis
 	 * @param phi Angle
 	 * @return Error code
@@ -195,7 +195,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	private:
 
 	/*!
-		* @brief Constructor
+		* @brief constructor
 		* @param origin Origin of coordinate system
 		* @param ex x-axis
 		* @param ey y-axis
@@ -207,13 +207,13 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 				const CoordinateSystem* const parent, const string name );
 
 	/*!
-		* @brief Default constructor
+		* @brief default constructor
 	*/
 	CoordinateSystem( void );
 
 
 	private:
 
-	const CoordinateSystem* parent_;	/*!< Pointer to parent system*/
+	const CoordinateSystem* parent_;	/*!< pointer to parent system*/
 	string name_;						/*!< Name of system*/
 };
