@@ -45,7 +45,7 @@ class Backprojection : private DataGrid<> {
 
 	/*!
 	 * @brief constructor from serialized data
-	 * @param binary_data Reference to vector with binary data
+	 * @param binary_data reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
 	Backprojection( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
@@ -59,7 +59,7 @@ class Backprojection : private DataGrid<> {
 
 	/*!
 	 * @brief serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 

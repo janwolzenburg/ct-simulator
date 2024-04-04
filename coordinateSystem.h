@@ -43,7 +43,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief serialize this object
-	 * @param binary_data Reference to vector where data will be appended
+	 * @param binary_data reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -177,7 +177,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief rotate coordinate system around vector
 	 * @param n Rotation axis
 	 * @param phi Angle
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Rotate( const Unitvector3D axis, const double arc_angle );
 
@@ -185,7 +185,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief rotate coordinate system
 	 * @param l Rotation axis
 	 * @param phi Angle
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Rotate( const Line axis, const double arc_angle );
 

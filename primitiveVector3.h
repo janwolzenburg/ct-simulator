@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   Primitivevector3.h
+ * @file   primitiveVector3.h
  * @brief  class for a primitve 3D vector
  *
  * @author Jan Wolzenburg
@@ -29,15 +29,15 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief constructor
-	 * @param x_ x value
-	 * @param y_ y value
-	 * @param z_ z value
+	 * @param x x value
+	 * @param y y value
+	 * @param z z value
 	*/
 	Primitivevector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
 
 	/*!
 	* @brief constructor
-	* @param xyz_ x, y and z values
+	* @param xyz x, y and z values
 	*/
 	Primitivevector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
 
@@ -47,16 +47,16 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	Primitivevector3( void ) : Primitivevector3{ 0., 0., 0. } {};
 
 	/*!
-	 * @brief constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
-	 * @param it Iterator to start of data in vector
+	 * @brief constructor from serialized data
+	 * @param binary_data reference to vector with binary data
+	 * @param current_byte iterator to start of data in vector
 	*/
 	Primitivevector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
 	 * @brief convert data to string
-	 * @param newline_tabulators
-	 * @return string with data_
+	 * @param newline_tabulators tabulator to insert 
+	 * @return string with data
 	*/
 	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -77,7 +77,7 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	/*!
 	 * @brief substract second vector to this
 	 * @param subtrahend vector to substract
-	 * @return GetDifference of this and v
+	 * @return difference of this and v
 	*/
 	Primitivevector3 operator- ( const Primitivevector3 subtrahend ) const{ return Primitivevector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
 
@@ -103,14 +103,14 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief divide this vector
-	 * @param divisor Value to divide by
-	 * @return Divided vector
+	 * @param divisor value to divide by
+	 * @return divided vector
 	*/
 	Primitivevector3 operator/ ( const double divisor ) const;
 
 	/*!
 	 * @brief get length of primitive vector
-	 * @return Length
+	 * @return length
 	*/
 	double GetLength( void ) const;
 
@@ -122,54 +122,54 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief normalise values of components
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Normalise( void );
 
 	/*!
 	 * @brief add value to x component
-	 * @param x_ Value to add
+	 * @param x value to add
 	*/
 	void AddToX( const double x_ ){ x += x_; };
 
 	/*!
 	 * @brief add value to y component
-	 * @param y_ Value to add
+	 * @param y value to add
 	*/
 	void AddToY( const double y_ ){ y += y_; };
 
 	/*!
 	 * @brief add value to z component
-	 * @param z_ Value to add
+	 * @param z value to add
 	*/
 	void AddToZ( const double z_ ){ z += z_; };
 
 	/*!
 	 * @brief rotate the point of all three components around x-axis of coordinate system
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	*/
-	void RotateAroundXAxis( const double sinPhi, const double cosPhi );
+	void RotateAroundXAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief rotate the point of all three components around y-axis of coordinate system
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	*/
-	void RotateAroundYAxis( const double sinPhi, const double cosPhi );
+	void RotateAroundYAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief rotate the point of all three components around z-axis of coordinate system
-	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	*/
-	void RotateAroundZAxis( const double sinPhi, const double cosPhi );
+	void RotateAroundZAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief rotate point that these three components form around a vector the components of n form
 	 * @param axis Rotation axis
 	 * @param angle Angle
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Rotate( const Primitivevector3 axis, const double angle );
 

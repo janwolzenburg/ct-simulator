@@ -120,7 +120,7 @@ class EnergySpectrum {
 	/*!
 	 * @brief get energy value at index
 	 * @param index Index of energy
-	 * @return Energy value at index
+	 * @return energy value at index
 	*/
 	double GetEnergy( const size_t index ) const;
 

@@ -87,7 +87,7 @@ class RayProperties{
 	
 	/*!
 	 * @brief get copy of energy spectrum
-	 * @return Energy spectrum
+	 * @return energy spectrum
 	*/
 	EnergySpectrum energy_spectrum( void ) const{ return energy_spectrum_; };
 

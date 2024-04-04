@@ -88,14 +88,14 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief divide vector
 	 * @param divisor Divisor
-	 * @return Divided vector
+	 * @return divided vector
 	*/
 	vector3D operator/ ( const double divisor ) const{ return this->Coordinates::operator/( divisor ); };
 
 	/*!
 	 * @brief calculate dot product between to vectors
 	 * @param operand Second vector
-	 * @return Dot product in unit of this vector squared
+	 * @return dot product in unit of this vector squared
 	*/
 	double operator* ( const vector3D operand ) const;
 
@@ -218,13 +218,13 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief scale vector by factor
 	 * @param scalar Factor
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Scale( const double scalar );
 
 	/*!
 	 * @brief normalise vector's length to one
-	 * @return Error code
+	 * @return error code
 	 * @details Error code ist set when vector's length is zero
 	*/
 	MathError Normalise( void );
@@ -232,21 +232,21 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief add value to x component of this vector
 	 * @param x_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToX( const double x_ );
 
 	/*!
 	 * @brief add value to y component of this vector
 	 * @param y_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToY( const double y_ );
 
 	/*!
 	 * @brief add value to z component of this vector
 	 * @param z_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToZ( const double z_ );
 
@@ -267,45 +267,45 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief counterclockwise rotation of this vector around x-axis
 	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
-	 * @return Error code
+	 * @param cosine_phi Cosine of the angle
+	 * @return error code
 	*/
-	MathError RotateAroundXAxis( const double sinPhi, const double cosPhi );
+	MathError RotateAroundXAxis( const double sinPhi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around y-axis
 	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
-	 * @return Error code
+	 * @param cosine_phi Cosine of the angle
+	 * @return error code
 	*/
-	MathError RotateAroundYAxis( const double sinPhi, const double cosPhi );
+	MathError RotateAroundYAxis( const double sinPhi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around z-axis
 	 * @param sinPhi Sine of the angle
-	 * @param cosPhi Cosine of the angle
-	 * @return Error code
+	 * @param cosine_phi Cosine of the angle
+	 * @return error code
 	*/
-	MathError RotateAroundZAxis( const double sinPhi, const double cosPhi );
+	MathError RotateAroundZAxis( const double sinPhi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around x-axis
 	 * @param arc_angle Angle in radians
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError RotateAroundXAxis( const double arc_angle );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around y-axis
 	 * @param arc_angle Angle in radians
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError RotateAroundYAxis( const double arc_angle );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around z-axis
 	 * @param arc_angle Angle in radians
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError RotateAroundZAxis( const double arc_angle );
 
@@ -313,7 +313,7 @@ class vector3D : protected Coordinates{
 	 * @brief counterclockwise rotation of this vector around second vector
 	 * @param n Rotation axis vector
 	 * @param arc_angle Angle in radians
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError Rotate( const vector3D n, const double arc_angle );
 
@@ -344,7 +344,7 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief calculates vector's length corresponding to vector component and stores it in member
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError UpdateLength( void );
 
@@ -389,21 +389,21 @@ class Unitvector3D : public vector3D{
 	/*!
 	 * @brief add value to x component of this vector and Normalise again
 	 * @param x_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToX( const double x_ ) = delete;
 
 	/*!
 	 * @brief add value to y component of this vector and Normalise again
 	 * @param y_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToY( const double y_ ) = delete;
 
 	/*!
 	 * @brief add value to z component of this vector and Normalise again
 	 * @param z_ Value to add in vector's unit
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError AddToZ( const double z_ ) = delete;
 };

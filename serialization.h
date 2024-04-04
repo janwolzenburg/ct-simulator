@@ -33,7 +33,7 @@ size_t SerializeBuildIn( const T& value, vector<char>& binary_data );
 /*!
  * @brief serialize string
  * @param value String to serialize
- * @param binary_data Reference to vector to append to
+ * @param binary_data reference to vector to append to
  * @return amount of bytes appended
 */
 template<>
@@ -136,7 +136,7 @@ vector<char> ImportSerialized( const path file_path );
 /*!
 	* @brief check if data in vector is from a valid file
 	* @param preamble preamble to check for
-	* @param binary_data Reference to vector with binary data
+	* @param binary_data reference to vector with binary data
 	* @param current_byte iterator to start of data in vector
 	* @return true when preambles match
 */

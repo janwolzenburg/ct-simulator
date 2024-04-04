@@ -179,18 +179,18 @@ bool vector3D::IsOrthogonal( const vector3D v2 ) const{
 	return IsNearlyEqualDistance( ( *this ) * v2, 0 );
 }
 
-MathematicalObject::MathError vector3D::RotateAroundXAxis( const double sinPhi, const double cosPhi ){
-	Primitivevector3::RotateAroundXAxis( sinPhi, cosPhi );
+MathematicalObject::MathError vector3D::RotateAroundXAxis( const double sinPhi, const double cosine_phi ){
+	Primitivevector3::RotateAroundXAxis( sinPhi, cosine_phi );
 	return UpdateLength();
 }
 
-MathematicalObject::MathError vector3D::RotateAroundYAxis( const double sinPhi, const double cosPhi ){
-	Primitivevector3::RotateAroundYAxis( sinPhi, cosPhi );
+MathematicalObject::MathError vector3D::RotateAroundYAxis( const double sinPhi, const double cosine_phi ){
+	Primitivevector3::RotateAroundYAxis( sinPhi, cosine_phi );
 	return UpdateLength();
 }
 
-MathematicalObject::MathError vector3D::RotateAroundZAxis( const double sinPhi, const double cosPhi ){
-	Primitivevector3::RotateAroundZAxis( sinPhi, cosPhi );
+MathematicalObject::MathError vector3D::RotateAroundZAxis( const double sinPhi, const double cosine_phi ){
+	Primitivevector3::RotateAroundZAxis( sinPhi, cosine_phi );
 	return UpdateLength();
 }
 

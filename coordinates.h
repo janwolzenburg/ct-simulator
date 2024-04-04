@@ -88,7 +88,7 @@ class Coordinates : protected Primitivevector3{
 	/*!
 	 * @brief divide Coordinates
 	 * @param divisor Value to divide by
-	 * @return Divided Coordinates
+	 * @return divided Coordinates
 	*/
 	Coordinates operator/ ( const double divisor ) const;
 

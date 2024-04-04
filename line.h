@@ -114,14 +114,14 @@ class Line : public MathematicalObject{
 	/*!
 	 * @brief get shortest distance between Line and point
 	 * @param point Point
-	 * @return Distance in this Line's unit
+	 * @return distance in this Line's unit
 	*/
 	double GetDistance( const Point3D point ) const{ return GetLot( point ).length(); };
 
 	/*!
 	 * @brief get shortest distance between two lines
 	 * @param line Line
-	 * @return Distance in this Line's unit
+	 * @return distance in this Line's unit
 	*/
 	double GetDistance( const Line line ) const;
 

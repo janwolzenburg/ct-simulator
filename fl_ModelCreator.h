@@ -60,7 +60,7 @@ class Fl_ModelFeature : public Fl_Group{
 	/*!
 	 * @brief get shape enumeration from string
 	 * @param shape_string Name of enumeration
-	 * @return Enumeration of shape fitting to name
+	 * @return enumeration of shape fitting to name
 	*/
 	static Shape GetShapeEnum( const string shape_string );		
 	

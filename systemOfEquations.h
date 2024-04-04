@@ -87,7 +87,7 @@ class Matrix : public MathematicalObject{
 	 * @brief swap two columns
 	 * @param column_1 Column 1
 	 * @param column_2 Column 2
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError SwapColumns( const size_t column_1, const size_t column_2 );
 
@@ -95,7 +95,7 @@ class Matrix : public MathematicalObject{
 	 * @brief swap two rows
 	 * @param row_1 Row 1
 	 * @param row_2 Row 2
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError SwapRows( const size_t row_1, const size_t row_2 );
 
@@ -111,7 +111,7 @@ class Matrix : public MathematicalObject{
 	 * @brief scale row by factor
 	 * @param row Row to scale
 	 * @param scalar Factor to scale by
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError ScaleRow( const size_t row, const double scalar );
 
@@ -119,7 +119,7 @@ class Matrix : public MathematicalObject{
 	 * @brief substract rows with direction_2_ = direction_2_ - direction_1_
 	 * @param row_1 Row to substract
 	 * @param row_2 Row to substract direction_1_ from
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError SubstractRows( const size_t row_1, const size_t row_2 );
 
@@ -159,14 +159,14 @@ class SystemOfEquations : private Matrix{
 	/*!
 	 * @brief populate column of three variable equation system with vector
 	 * @param coefficients vector to populate column with
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError PopulateColumn( const Tuple3D coefficients );
 
 	/*!
 	 * @brief add column to system of equation with two variables
 	 * @param coefficients Column to add
-	 * @return Error code
+	 * @return error code
 	*/
 	MathError PopulateColumn( const Tuple2D coefficients );
 

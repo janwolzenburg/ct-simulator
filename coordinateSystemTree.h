@@ -93,7 +93,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	/*!
 	 * @brief constructor from serialized data_
 	 * @details Before calling this constructor check with static method validModelData( binbData, it ) whether the data is from model file
-	 * @param binary_data Reference to vector with binary data
+	 * @param binary_data reference to vector with binary data
 	 * @param current_byte Iterator to start of data in vector
 	*/
 	CoordinateSystem* AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );

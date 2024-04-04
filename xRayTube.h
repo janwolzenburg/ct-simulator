@@ -86,14 +86,14 @@ class XRayTubeProperties {
 
 	/*!
 	 * @brief constructor from serialized data_
-	 * @param binary_data Reference to vector with binary data_
+	 * @param binary_data reference to vector with binary data_
 	 * @param current_byte Iterator to start of data in vector
 	*/
 	XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 	/*!
 	* @brief serialize this object
-	* @param binary_data Reference to vector where data will be appended
+	* @param binary_data reference to vector where data will be appended
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -143,14 +143,14 @@ class XRayTube{
 
 	/*!
 	 * @brief get the range of energies the tube emits
-	 * @return Energy Range
+	 * @return energy Range
 	*/
 	NumberRange GetEmittedEnergyRange( void ) const{ return NumberRange{ emitted_spectrum_.GetMinEnergy(), emitted_spectrum_.GetMaxEnergy() }; };
 
 	/*!
 	 * @brief get energy of beam when switched on for exposure time
 	 * @param exposure_time Time in seconds
-	 * @return Energy in joule
+	 * @return energy in joule
 	*/
 	double GetEmittedEnergy( const double exposureTime ) const{ return radiation_power_W_ * exposureTime; };
 
@@ -168,7 +168,7 @@ class XRayTube{
 
 	/*!
 	 * @brief get the energy resolution of spectrum
-	 * @return Energy resolution of spectrum
+	 * @return energy resolution of spectrum
 	*/
 	double GetSpectralEnergyResolution( void ) const{ return properties_.spectral_energy_resolution; };
 
