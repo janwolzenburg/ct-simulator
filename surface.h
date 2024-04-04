@@ -98,7 +98,7 @@ class Surface : public MathematicalObject{
 	/*!
 	 * @brief convert surface to different coordinate system
 	 * @param coordinate_system System to convert to
-	 * @return Converted surface
+	 * @return converted surface
 	*/
 	Surface ConvertTo( const CoordinateSystem* const coordinate_system ) const;
 
@@ -227,7 +227,7 @@ class BoundedSurface : public Surface{
 	/*!
 	 * @brief convert surface to different coordinate system
 	 * @param coordinate_system System to convert to
-	 * @return Converted surface
+	 * @return converted surface
 	*/
 	BoundedSurface ConvertTo( const CoordinateSystem* const coordinate_system ) const{ return BoundedSurface{ this->Surface::ConvertTo( coordinate_system ), parameter_1_range_, parameter_2_range_ }; };
 

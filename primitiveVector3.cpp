@@ -80,28 +80,28 @@ MathematicalObject::MathError Primitivevector3::Normalise( void ){
 	return MathError::Ok;
 }
 
-void Primitivevector3::RotateAroundXAxis( const double sinPhi, const double cosine_phi ){
+void Primitivevector3::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
 	double x_ = x;
-	double y_ = y * cosine_phi - z * sinPhi;
-	double z_ = y * sinPhi + z * cosine_phi;
+	double y_ = y * cosine_phi - z * sine_phi;
+	double z_ = y * sine_phi + z * cosine_phi;
 
 	x = x_; y = y_; z = z_;
 }
 
-void Primitivevector3::RotateAroundYAxis( const double sinPhi, const double cosine_phi ){
+void Primitivevector3::RotateAroundYAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
-	double x_ = x * cosine_phi + z * sinPhi;
+	double x_ = x * cosine_phi + z * sine_phi;
 	double y_ = y;
-	double z_ = z * cosine_phi - x * sinPhi;
+	double z_ = z * cosine_phi - x * sine_phi;
 
 	x = x_; y = y_; z = z_;
 }
 
-void Primitivevector3::RotateAroundZAxis( const double sinPhi, const double cosine_phi ){
+void Primitivevector3::RotateAroundZAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
-	double x_ = x * cosine_phi - y * sinPhi;
-	double y_ = x * sinPhi + y * cosine_phi;
+	double x_ = x * cosine_phi - y * sine_phi;
+	double y_ = x * sine_phi + y * cosine_phi;
 	double z_ = z;
 
 	x = x_; y = y_; z = z_;

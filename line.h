@@ -76,7 +76,7 @@ class Line : public MathematicalObject{
 	/*!
 	 * @brief convert Line components to different coordinate system
 	 * @param target_coordinate_system Target system
-	 * @return Line in target system
+	 * @return line in target system
 	*/
 	Line ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{ return Line{ direction_.ConvertTo( target_coordinate_system ), origin_.ConvertTo( target_coordinate_system ) }; };
 
@@ -93,7 +93,7 @@ class Line : public MathematicalObject{
 	 * @brief get Line parameter corresponding to point
 	 * @param point_on_line Point on Line
 	 * @param solution_found Is set to true when the given point lies on the Line. False if not
-	 * @return Line parameter
+	 * @return line parameter
 	*/
 	double GetLineParameter( const Point3D point_on_line, bool* const solution_found ) const;
 

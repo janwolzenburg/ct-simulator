@@ -58,7 +58,7 @@ class Fl_GantryCreation : public Fl_Group{
 
 	/*!
 	 * @brief get projection properties
-	 * @return Current porjection properties
+	 * @return current porjection properties
 	*/
 	ProjectionsProperties projections_properties( void ){ return projections_properties_; };
 

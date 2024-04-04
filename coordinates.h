@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   Coordinates.h
- * @brief  classes for Coordinates in cartesian system
+ * @file   coordinates.h
+ * @brief  classes for coordinates in cartesian system
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -36,12 +36,13 @@ class Coordinates : protected Primitivevector3{
 
 	/*!
 	 * @brief constructor
-	 * @param vec3_ Values
+	 * @param components coordinate components
+	 * @param coordinate_system system in which these coordinates are defined
 	*/
 	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : Primitivevector3{ components }, coordinate_system_( coordinate_system ) {};
 
 	/*!
-	 * @brief defaulkt constructor
+	 * @brief default constructor
 	*/
 	Coordinates( void ) : Coordinates{ Tuple3D{}, GetDummySystem() } {};
 
@@ -61,14 +62,14 @@ class Coordinates : protected Primitivevector3{
 	/*!
 	 * @brief addition operator
 	 * @param summand Coordinates to add
-	 * @return Coordinates with sum of components in coordinate system of first operand
+	 * @return coordinates with sum of components in coordinate system of first operand
 	*/
 	Coordinates operator+ ( const Coordinates summand ) const;
 
 	/*!
 	 * @brief substraction operator
 	 * @param subtrahend Coordinates to add
-	 * @return Coordinates with difference of components in coordinate system of first operand
+	 * @return coordinates with difference of components in coordinate system of first operand
 	*/
 	Coordinates operator- ( const Coordinates subtrahend ) const;
 
@@ -100,16 +101,16 @@ class Coordinates : protected Primitivevector3{
 	bool HasSameSystem( const CoordinateSystem* const coordinate_system ) const { return this->coordinate_system_ == coordinate_system; };
 
 	/*!
-	 * @brief check if two Coordinates have the same coordiante system
-	 * @param c Second set of Coordinates
-	 * @return true when both Coordinates have the same coordiante system
+	 * @brief check if two coordinates have the same coordiante system
+	 * @param coordinates second set of coordinates
+	 * @return true when both coordinates have the same coordiante system
 	*/
 	bool HasSameSystem( const Coordinates coordinates ) const { return HasSameSystem( coordinates.coordinate_system_ ); };
 
 	/*!
-	 * @brief convert Coordinates to a different coordinate system
+	 * @brief convert coordinates to a different coordinate system
 	 * @param target_coordinate_system System to convert to
-	 * @return Coordinates in target system
+	 * @return coordinates in target system
 	*/
 	Coordinates ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
@@ -117,15 +118,15 @@ class Coordinates : protected Primitivevector3{
 	private:
 
 	/*!
-		* @brief convert coordinate values to parent_ coordinate system
-		* @return Coordinates in parent_'s system
+		* @brief convert coordinate values to parent coordinate system
+		* @return coordinates in parent's system
 	*/
 	Coordinates ConvertToParentSystem( void ) const;
 
 	/*!
 		* @brief convert coordiante values to child coordinate system
 		* @param child_coordinate_system
-		* @return Coordinates in child system
+		* @return coordinates in child system
 	*/
 	Coordinates ConvertToChildSystem( const CoordinateSystem* const child_coordinate_system ) const;
 };

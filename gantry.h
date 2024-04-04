@@ -50,7 +50,7 @@ class Gantry{
 
 	/*!
 	 * @brief get the coordinate system of gantry
-	 * @return Coordinate system of this gantry
+	 * @return coordinate system of this gantry
 	*/
 	const CoordinateSystem* coordinate_system( void ) const{ return coordinate_system_; };
 
@@ -74,7 +74,7 @@ class Gantry{
 
 	/*!
 	 * @brief get center of gantry
-	 * @return Center point
+	 * @return center point
 	*/
 	Point3D GetCenter( void ) const{ return coordinate_system_->GetOriginPoint(); };
 

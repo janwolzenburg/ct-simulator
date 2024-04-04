@@ -41,7 +41,7 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 
 	/*!
 	 * @brief get the current slider values 
-	 * @return Current contrast
+	 * @return current contrast
 	*/
 	NumberRange GetContrast( void ) const{ return NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value()* pow( 10., -common_power_ ) }; };
 

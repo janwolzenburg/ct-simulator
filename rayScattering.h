@@ -100,7 +100,7 @@ class ScatteringCrossSection{
 	/*!
 	 * @brief get cross section for photon with given energy
 	 * @param energy Energy of photon
-	 * @return Cross section in mm^2
+	 * @return cross section in mm^2
 	*/
 	double GetCrossSection( const double energy ) const;
 	

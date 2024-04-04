@@ -95,7 +95,7 @@ class Fl_ModelFeature : public Fl_Group{
 
 	/*!
 	 * @brief get center of feature
-	 * @return Center of feature in mm
+	 * @return center of feature in mm
 	*/
 	Tuple3D GetCenter( void ) const{ return { x_positon_input_.value(), y_positon_input_.value(), z_positon_input_.value() }; };
 

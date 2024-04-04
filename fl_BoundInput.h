@@ -57,7 +57,7 @@ class Fl_BoundInput : public Fl_Group{
 	
 	/*!
 	 * @brief get current value 
-	 * @return Current value
+	 * @return current value
 	*/
 	T value( void ) const{ return current_value_; }; 
 

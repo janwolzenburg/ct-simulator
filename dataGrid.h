@@ -120,7 +120,7 @@ class DataGrid{
 	/*!
 	 * @brief get Coordinates to given indices
 	 * @param index Indices
-	 * @return Coordinate of indices
+	 * @return coordinate of indices
 	*/
 	GridCoordinates GetCoordinates( const GridIndex index ) const;
 

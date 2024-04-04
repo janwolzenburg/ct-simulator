@@ -57,7 +57,7 @@ class Fl_ModelView : public Fl_Group{
 
 	/*!
 	 * @brief get Reference to model
-	 * @return Constant reference to model
+	 * @return constant reference to model
 	*/
 	const Model& model( void ){ return model_; };
 

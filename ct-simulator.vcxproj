@@ -234,7 +234,6 @@
     <ClInclude Include="energySpectrum.h" />
     <ClInclude Include="surf.fwd.h" />
     <ClInclude Include="surface.h" />
-    <ClInclude Include="tests_linear_algebra.h" />
     <ClInclude Include="fl_TomographyExecution.h" />
     <ClInclude Include="xRayTube.h" />
     <ClInclude Include="vector3D.fwd.h" />

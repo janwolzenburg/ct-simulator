@@ -132,9 +132,6 @@
     <ClInclude Include="systemOfEquations.h">
       <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
     </ClInclude>
-    <ClInclude Include="tests_linear_algebra.h">
-      <Filter>Headerdateien\12 Physics\01 Linear algebra</Filter>
-    </ClInclude>
     <ClInclude Include="voxel.h">
       <Filter>Headerdateien\12 Physics\02 Model</Filter>
     </ClInclude>

@@ -29,14 +29,14 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief constructor
-	 * @param coords Coordinates of vector
+	 * @param coordinates coordinates of vector
 	*/
-	vector3D( const Coordinates coords );
+	vector3D( const Coordinates coordinates );
 
 	/*!
 	 * @brief constructor
-	 * @param components Components of vector
-	 * @param coordinate_system Coordinate system of components
+	 * @param components components of vector
+	 * @param coordinate_system coordinate system of components
 	*/
 	vector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system );
 
@@ -68,7 +68,7 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief substraction operator
 	 * @param subtrahend vector to substract
-	 * @return GetDifference (v1 - v2) of vectors in unit of this vector
+	 * @return difference (v1 - v2) of vectors in unit of this vector
 	*/
 	vector3D operator- ( const vector3D subtrahend ) const{ return this->Coordinates::operator-( subtrahend ); };
 
@@ -102,7 +102,7 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief calculate cross product
 	 * @param operand Second vector
-	 * @return Cross product this * operand in unit of this vector
+	 * @return cross product this * operand in unit of this vector
 	*/
 	vector3D operator^( const vector3D operand ) const;
 
@@ -126,7 +126,7 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief get length of vector
-	 * @return Length of vector in local coordinate system
+	 * @return length of vector in local coordinate system
 	*/
 	double length( void ) const{ return length_; };
 
@@ -138,36 +138,36 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief check if vector's are defined in same system
-	 * @param v Second vector
-	 * @return true when this and vector v are defined in the same coordinate system
+	 * @param vector_to_compare second vector
+	 * @return true when this and vector vector_to_compare are defined in the same coordinate system
 	*/
-	bool HasSameSystem( const vector3D v ) const;
+	bool HasSameSystem( const vector3D vector_to_compare ) const;
 
 	/*!
 	 * @brief convert vector to different coordinate system
 	 * @param target_coordinate_system System to convert to
-	 * @return Converted vector
+	 * @return converted vector
 	*/
 	vector3D ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief convert vector to different coordinate system
 	 * @param coordinate_system_source vector to which system this gets converted
-	 * @return Converted vector
+	 * @return converted vector
 	*/
 	vector3D ConvertTo( const vector3D coordinate_system_source ) const;
 
 	/*!
 	 * @brief convert vector to different coordinate system
 	 * @param coordinate_system_source Line to which system this gets converted
-	 * @return Converted vector
+	 * @return converted vector
 	*/
 	vector3D ConvertTo( const Line coordinate_system_source ) const;
 
 	/*!
 	 * @brief convert vector to different coordinate system
 	 * @param coordinate_system_source Surface to which system this gets converted
-	 * @return Converted vector
+	 * @return converted vector
 	*/
 	vector3D ConvertTo( const Surface coordinate_system_source ) const;
 
@@ -225,7 +225,7 @@ class vector3D : protected Coordinates{
 	/*!
 	 * @brief normalise vector's length to one
 	 * @return error code
-	 * @details Error code ist set when vector's length is zero
+	 * @details error code ist set when vector's length is zero
 	*/
 	MathError Normalise( void );
 
@@ -252,41 +252,41 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief calculate angle between this and another vector
-	 * @param v2 Second vector
+	 * @param second_vector second vector
 	 * @return angle in radians
 	*/
-	double GetAngle( const vector3D v2 ) const;
+	double GetAngle( const vector3D second_vector ) const;
 
 	/*!
 	 * @brief checks whether two vectors are orthogonal
-	 * @param v2 Second vector
+	 * @param second_vector second vector
 	 * @return true when vectors are orthogonal
 	*/
-	bool IsOrthogonal( const vector3D v2 ) const;
+	bool IsOrthogonal( const vector3D second_vector ) const;
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around x-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosine_phi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	 * @return error code
 	*/
-	MathError RotateAroundXAxis( const double sinPhi, const double cosine_phi );
+	MathError RotateAroundXAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around y-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosine_phi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	 * @return error code
 	*/
-	MathError RotateAroundYAxis( const double sinPhi, const double cosine_phi );
+	MathError RotateAroundYAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around z-axis
-	 * @param sinPhi Sine of the angle
-	 * @param cosine_phi Cosine of the angle
+	 * @param sine_phi sine of the angle
+	 * @param cosine_phi cosine of the angle
 	 * @return error code
 	*/
-	MathError RotateAroundZAxis( const double sinPhi, const double cosine_phi );
+	MathError RotateAroundZAxis( const double sine_phi, const double cosine_phi );
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around x-axis
@@ -311,15 +311,15 @@ class vector3D : protected Coordinates{
 
 	/*!
 	 * @brief counterclockwise rotation of this vector around second vector
-	 * @param n Rotation axis vector
-	 * @param arc_angle Angle in radians
+	 * @param axis rotation axis vector
+	 * @param arc_angle angle in radians
 	 * @return error code
 	*/
-	MathError Rotate( const vector3D n, const double arc_angle );
+	MathError Rotate( const vector3D axis, const double arc_angle );
 
 	/*!
 	 * @brief counterclockwise rotation of vector around second vector
-	 * @param n Rotation axis vector
+	 * @param axis rotation axis vector
 	 * @param arc_angle arc_angle in radians
 	 * @return rotated vector
 	*/
@@ -361,16 +361,16 @@ class Unitvector3D : public vector3D{
 
 	/*!
 	 * @brief converting constructor from vector
-	 * @param v vector to convert
+	 * @param source_vector vector to convert
 	*/
-	Unitvector3D( const vector3D v ) : vector3D( v ){
+	Unitvector3D( const vector3D source_vector ) : vector3D( source_vector ){
 		Normalise();
 	};
 
 	/*!
 	 * @brief constructor
-	 * @param components Components
-	 * @param coordinate_system Coordinate system
+	 * @param components components
+	 * @param coordinate_system coordinate system
 	*/
 	Unitvector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : Unitvector3D{ vector3D{ components, coordinate_system } } {};
 
@@ -380,32 +380,24 @@ class Unitvector3D : public vector3D{
 	Unitvector3D( void ) : Unitvector3D{ Tuple3D{ 1, 0, 0 }, GetDummySystem() } {};
 
 	/*!
-	 * @brief scaling unit vector does not have an effect
-	 * @param scalar
-	 * @return
+	 * @brief deleted function
 	*/
 	MathError Scale( const double scalar ) = delete;
 
 	/*!
-	 * @brief add value to x component of this vector and Normalise again
-	 * @param x_ Value to add in vector's unit
-	 * @return error code
+	 * @brief deleted function 
 	*/
-	MathError AddToX( const double x_ ) = delete;
+	MathError AddToX( const double x ) = delete;
 
 	/*!
-	 * @brief add value to y component of this vector and Normalise again
-	 * @param y_ Value to add in vector's unit
-	 * @return error code
+	 * @brief deleted function
 	*/
-	MathError AddToY( const double y_ ) = delete;
+	MathError AddToY( const double y ) = delete;
 
 	/*!
-	 * @brief add value to z component of this vector and Normalise again
-	 * @param z_ Value to add in vector's unit
-	 * @return error code
+	 * @brief deleted function
 	*/
-	MathError AddToZ( const double z_ ) = delete;
+	MathError AddToZ( const double z ) = delete;
 };
 
 
@@ -421,9 +413,9 @@ class Point3D : public vector3D{
 
 	/*!
 	 * @brief converting constructor
-	 * @param v vector to convert from
+	 * @param source_vector vector to convert from
 	*/
-	Point3D( const vector3D v ) : vector3D( v ){};
+	Point3D( const vector3D source_vector ) : vector3D( source_vector ){};
 
 	/*!
 	 * @brief convert point's data to string
@@ -434,14 +426,14 @@ class Point3D : public vector3D{
 	/*!
 	 * @brief convert point to different coordinate system
 	 * @param target_coordinate_system Target system
-	 * @return Converted point
+	 * @return converted point
 	*/
 	Point3D ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief convert point to different coordinate system
 	 * @param coordinate_system_source Point with target system
-	 * @return Converted point
+	 * @return converted point
 	*/
 	Point3D ConvertTo( const Point3D coordinate_system_source ) const;
 

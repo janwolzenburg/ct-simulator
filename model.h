@@ -115,7 +115,7 @@ class Model : public MathematicalObject{
 
 	/*!
 	 * @brief get the longest edge
-	 * @return Length of longest edge
+	 * @return length of longest edge
 	*/
 	double GetLongestEdge( void ) const{ return Max( Max( size_.x, size_.y ), size_.z ); };
 
@@ -152,14 +152,14 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief element access
 	 * @param voxel_indices index of voxel
-	 * @return Const reference to voxel data_
+	 * @return const reference to voxel data_
 	*/
 	VoxelData GetVoxelData( const Index3D voxel_indices ) const;
 
 	/*!
 	 * @brief access voxel data_
 	 * @param point Point in model
-	 * @return Const reference to voxel data_
+	 * @return const reference to voxel data_
 	*/
 	VoxelData GetVoxelData( const Point3D point ) const{ return GetVoxelData( GetVoxelIndices( point ) ); };
 

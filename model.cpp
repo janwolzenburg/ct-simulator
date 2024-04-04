@@ -599,20 +599,20 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 
 	// iterate grid
-	GridCoordinates coords;
+	GridCoordinates coordinates;
 	VoxelData currentData;
 
 	for( size_t colIdx = 0; colIdx < slice.size().c; colIdx++ ){
 
 		for( size_t rowIdx = 0; rowIdx < slice.size().r; rowIdx++ ){
 
-			coords = slice.GetCoordinates( GridIndex( colIdx, rowIdx ) );
-			currentData = largeSlice.GetData( coords );
+			coordinates = slice.GetCoordinates( GridIndex( colIdx, rowIdx ) );
+			currentData = largeSlice.GetData( coordinates );
 
 			if( currentData.HasSpecificProperty( VoxelData::Undefined ) )
-				slice.SetData( coords, VoxelData{ largeSlice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
+				slice.SetData( coordinates, VoxelData{ largeSlice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
 			else
-				slice.SetData( coords, currentData );
+				slice.SetData( coordinates, currentData );
 		}
 	}
 
@@ -623,7 +623,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 
 void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius ){
 	
-	// exit when coords invalid
+	// exit when coordinates invalid
 	if ( !IsPointInside( center ) ) return;
 	
 	// center indices

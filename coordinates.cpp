@@ -42,27 +42,27 @@ string Coordinates::ConvertToString( const unsigned int newline_tabulators ) con
 	return str;
 }
 
-bool Coordinates::operator== ( const Coordinates coords ) const{
-	if( this->HasSameSystem( coords ) ) return this->Primitivevector3::operator==( coords );
+bool Coordinates::operator== ( const Coordinates coordinates ) const{
+	if( this->HasSameSystem( coordinates ) ) return this->Primitivevector3::operator==( coordinates );
 
 	// convert both Coordinates to global system
 	Coordinates globalCoords_1 = this->ConvertTo( GetGlobalSystem() );
-	Coordinates globalCoords_2 = coords.ConvertTo( GetGlobalSystem() );
+	Coordinates globalCoords_2 = coordinates.ConvertTo( GetGlobalSystem() );
 
 	// compare components
 	return globalCoords_1.Primitivevector3::operator==( globalCoords_2 );
 };
 
-Coordinates Coordinates::operator+ ( const Coordinates coords ) const{
+Coordinates Coordinates::operator+ ( const Coordinates coordinates ) const{
 	// add converted Coordinates' components to this componentes
-	Primitivevector3 locCoords = this->Primitivevector3::operator+( coords.ConvertTo( this->coordinate_system_ ) );
+	Primitivevector3 locCoords = this->Primitivevector3::operator+( coordinates.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
 }
 
-Coordinates Coordinates::operator- ( const Coordinates coords ) const{
+Coordinates Coordinates::operator- ( const Coordinates coordinates ) const{
 	// add converted coordinates' components to this componentes
-	Primitivevector3 locCoords = this->Primitivevector3::operator-( coords.ConvertTo( this->coordinate_system_ ) );
+	Primitivevector3 locCoords = this->Primitivevector3::operator-( coordinates.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ locCoords, this->coordinate_system_ };
 }

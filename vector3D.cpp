@@ -26,8 +26,8 @@
 	vec3D implementation
 */
 
-vector3D::vector3D( const Coordinates coords ) :
-	Coordinates{ coords }
+vector3D::vector3D( const Coordinates coordinates ) :
+	Coordinates{ coordinates }
 {
 	UpdateLength();
 }
@@ -179,18 +179,18 @@ bool vector3D::IsOrthogonal( const vector3D v2 ) const{
 	return IsNearlyEqualDistance( ( *this ) * v2, 0 );
 }
 
-MathematicalObject::MathError vector3D::RotateAroundXAxis( const double sinPhi, const double cosine_phi ){
-	Primitivevector3::RotateAroundXAxis( sinPhi, cosine_phi );
+MathematicalObject::MathError vector3D::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
+	Primitivevector3::RotateAroundXAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 
-MathematicalObject::MathError vector3D::RotateAroundYAxis( const double sinPhi, const double cosine_phi ){
-	Primitivevector3::RotateAroundYAxis( sinPhi, cosine_phi );
+MathematicalObject::MathError vector3D::RotateAroundYAxis( const double sine_phi, const double cosine_phi ){
+	Primitivevector3::RotateAroundYAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 
-MathematicalObject::MathError vector3D::RotateAroundZAxis( const double sinPhi, const double cosine_phi ){
-	Primitivevector3::RotateAroundZAxis( sinPhi, cosine_phi );
+MathematicalObject::MathError vector3D::RotateAroundZAxis( const double sine_phi, const double cosine_phi ){
+	Primitivevector3::RotateAroundZAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 

@@ -123,7 +123,7 @@ class ColorImage{
 	 * @brief get the image data_
 	 * @param c Column
 	 * @param row Row
-	 * @return Color at row and column
+	 * @return color at row and column
 	*/
 	RGB GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 

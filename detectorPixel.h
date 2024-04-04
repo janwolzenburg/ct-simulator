@@ -61,7 +61,7 @@ class DetectorPixel : public BoundedSurface{
 
 	/*!
 	 * @brief get the normal of the pixel
-	 * @return Line with pixel's center as origin and direction of surface normal
+	 * @return line with pixel's center as origin and direction of surface normal
 	*/
 	Line NormalLine( void ) const{ return Line{ Surface::GetNormal(), this->origin_ }; };
 

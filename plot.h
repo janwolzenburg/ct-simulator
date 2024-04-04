@@ -47,7 +47,7 @@ class Plot{
 
 	/*!
 	 * @brief get the image size
-	 * @return Current image size
+	 * @return current image size
 	*/
 	GridIndex image_size( void ) const{ return image_size_; };
 

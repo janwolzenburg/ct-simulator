@@ -103,7 +103,7 @@ class Matrix : public MathematicalObject{
 	 * @brief find indices of maximum absolute value in submatrix
 	 * @param topCorner Top-left corner of submatrix
 	 * @param botCorner Bottom-right corner of submatrix
-	 * @return Cell indices of maximum
+	 * @return cell indices of maximum
 	*/
 	GridIndex FindMaximum( const GridIndex top_corner, const GridIndex bottom_corner );
 

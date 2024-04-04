@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   cartesian.h
- * @brief  classes for cartesian coordinate systems_
+ * @file   coordianateSystem.h
+ * @brief  classes for cartesian coordinate systems
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -37,7 +37,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief convert coordinate system's data to string
-	 * @return string with coordinate system's data_
+	 * @return string with coordinate system's data
 	*/
 	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
 
@@ -48,20 +48,20 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief get pointer to this system's parent_
-	 * @return pointer to parent_
+	 * @brief get pointer to this system's parent
+	 * @return pointer to parent
 	*/
 	const CoordinateSystem* parent( void ) const{ return parent_; };
 
 	/*!
 	 * @brief get the primitve coordinate system of this system
-	 * @return Coordinate system without parent_ context
+	 * @return coordinate system without parent's context
 	*/
 	PrimitiveCoordinateSystem GetPrimitive( void ) const{ return static_cast<PrimitiveCoordinateSystem>( *this ); };
 
 	/*!
 	 * @brief set the primitve coordinate system of this system
-	 * @param primitiveCSys primitve system to set
+	 * @param new_primitive primitive system to set
 	*/
 	void SetPrimitive( const PrimitiveCoordinateSystem new_primitive );
 
@@ -73,14 +73,14 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 
 	/*!
 	 * @brief create copy of this system
-	 * @param newName Name of new system
-	 * @return pointer to new coordiante system with same baseCartSystem and parent_ as this
+	 * @param new_name name of new system
+	 * @return pointer to new coordiante system with same primitive and parent as this
 	*/
 	CoordinateSystem* CreateCopy( const string new_name ) const;
 	
 	/*!
 	 * @brief copy data from source to this
-	 * @param sourceCSys Source system
+	 * @param source_system source system
 	*/
 	void CopyPrimitiveFrom( const CoordinateSystem* const source_system );
 
@@ -91,25 +91,25 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param ey y-axis
 	 * @param ez z-axis
 	 * @param name_ Name of the system
-	 * @return pointer to created system with this system as parent_
+	 * @return pointer to created system with this system as parent
 	*/
 	CoordinateSystem* AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const;
 
 	/*!
 	 * @brief get path from global system to this system
-	 * @return vector with pointers to intermediate coordinate systems_ excluding global and this system
+	 * @return vector with pointers to intermediate coordinate systems excluding global and this system
 	*/
 	vector<const CoordinateSystem *> GetPathFromGlobal( void ) const;
 
 	/*!
 	 * @brief get origin point in this system's context
-	 * @return point of system's origin_
+	 * @return point of system's origin
 	*/
 	Point3D GetOriginPoint( void ) const;
 
 	/*!
-	 * @brief get origin point in this parent_'s context
-	 * @return point of system's origin_
+	 * @brief get origin point in this parent's context
+	 * @return point of system's origin
 	*/
 	Point3D GetOriginInParentSystem( void ) const;
 
@@ -132,79 +132,77 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	Unitvector3D GetEz( void ) const;
 
 	/*!
-	 * @brief get x-axis in parent_ coordinate system
+	 * @brief get x-axis in parent coordinate system
 	 * @return the x-axis as a Line
 	*/
 	Line GetXAxis( void ) const;
 
 	/*!
-	 * @brief get y-axis in parent_ coordinate system
+	 * @brief get y-axis in parent coordinate system
 	 * @return the y-axis as a Line
 	*/
 	Line GetYAxis( void ) const;
 
 	/*!
-	 * @brief get z-axis in parent_ coordinate system
+	 * @brief get z-axis in parent coordinate system
 	 * @return the z-axis as a Line
 	*/
 	Line GetZAxis( void ) const;
 
 	/*!
-	 * @brief get the xy-plane in parent_ coordinate system
+	 * @brief get the xy-plane in parent coordinate system
 	 * @return xy-plane as surface
 	*/
 	Surface GetXYPlane( void ) const;
 
 	/*!
-	 * @brief get the yz-plane in parent_ coordinate system
+	 * @brief get the yz-plane in parent coordinate system
 	 * @return yz-plane as surface
 	*/
 	Surface GetYZPlane( void ) const;
 
 	/*!
-	 * @brief get the xz-plane in parent_ coordinate system
+	 * @brief get the xz-plane in parent coordinate system
 	 * @return xz-plane as surface
 	*/
 	Surface GetXZPlane( void ) const;
 
 	/*!
 	 * @brief translate coordinate system
-	 * @param dV Translation vector
+	 * @param direction Translation vector
 	*/
 	MathError Translate( const vector3D direction );
 
 	/*!
 	 * @brief rotate coordinate system around vector
-	 * @param n Rotation axis
-	 * @param phi Angle
+	 * @param axis rotation axis
+	 * @param arc_angle angle
 	 * @return error code
 	*/
 	MathError Rotate( const Unitvector3D axis, const double arc_angle );
 
 	/*!
 	 * @brief rotate coordinate system
-	 * @param l Rotation axis
-	 * @param phi Angle
+	 * @param axis rotation axis
+	 * @param arc_angle angle
 	 * @return error code
 	*/
 	MathError Rotate( const Line axis, const double arc_angle );
-
-
 
 
 	private:
 
 	/*!
 		* @brief constructor
-		* @param origin Origin of coordinate system
+		* @param origin origin of coordinate system
 		* @param ex x-axis
 		* @param ey y-axis
 		* @param ez z-axis
-		* @param parent Pointer to parent_ system
-		* @param name Name of the system
+		* @param parent pointer to parent system
+		* @param name name of the system
 	*/
 	CoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez,
-				const CoordinateSystem* const parent, const string name );
+									  const CoordinateSystem* const parent, const string name );
 
 	/*!
 		* @brief default constructor
@@ -215,5 +213,5 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	private:
 
 	const CoordinateSystem* parent_;	/*!< pointer to parent system*/
-	string name_;						/*/*!< name of system*/
+	string name_;											/*!< name of system*/
 };
