@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   radonTransform.h
- * @brief  classes radon transformation
+ * @file   projections.h
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -42,8 +41,8 @@ class Projections : private DataGrid<> {
 
 	/*!
 	 * @brief constructor
-	 * @param properties Transformation properties
-	 * @param tomography_properties Properties of tomography used to get these projections
+	 * @param properties projections properties
+	 * @param tomography_properties properties of tomography used to get these projections
 	*/
 	Projections( const ProjectionsProperties properties, const TomographyProperties tomography_properties );
 
@@ -57,17 +56,18 @@ class Projections : private DataGrid<> {
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
-	 * @brief get grid data
-	 * @return Grid data
+	 * @brief get gridded data
+	 * @return gridded data
 	*/
 	DataGrid<> data( void ) const{ return static_cast<DataGrid<>>( *this ); };
 	
 	/*!
-	 * @brief get start of projections
+	 * @brief get start angle and distance of projections
 	 * @return smallest angle and distance
 	*/
 	GridCoordinates start( void ) const{ return DataGrid<>::start(); };
@@ -80,7 +80,7 @@ class Projections : private DataGrid<> {
 
 	/*!
 	 * @brief get size
-	 * @return Get grid size
+	 * @return the grid size
 	*/
 	GridIndex size(void) const { return DataGrid<>::size(); };
 
@@ -113,18 +113,18 @@ class Projections : private DataGrid<> {
 	 * @param index index of data
 	 * @return value at index
 	*/
-	double GetData(const GridIndex index) { return DataGrid<>::GetData(index); };
+	double GetData(const GridIndex index) const{ return DataGrid<>::GetData(index); };
 
 	/*!
 	 * @brief assign data to grid
-	 * @param radon_point Data point
+	 * @param radon_point data point
 	*/
 	void AssignData( const RadonPoint radon_point );
 
 
 	private:
 
-	ProjectionsProperties properties_;				/*!< proeprties of projection*/
+	ProjectionsProperties properties_;						/*!< proeprties of projection*/
 	TomographyProperties tomography_properties_;	/*!< tomography properties used*/
-	vector<vector<GridCoordinates>> grid_errors_;	/*!< Grid errors when interpolating*/
+	vector<vector<GridCoordinates>> grid_errors_;	/*!< grid errors when interpolating*/
 };

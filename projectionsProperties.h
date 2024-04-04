@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   radonProperties.h
- * @brief  classes radon transformation
+ * @file   projectionsProperties.h
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -24,9 +23,9 @@ class ProjectionsProperties{
 	public:
 	/*!
 	 * @brief constructor
-	 * @param number_of_projections Amount of projections
-	 * @param number_of_distances Amount of distances
-	 * @param measuring_field_size Distance range
+	 * @param number_of_projections amount of projections
+	 * @param number_of_distances amount of distances
+	 * @param measuring_field_size distance range
 	*/
 	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, 
 							const double measuring_field_size );
@@ -46,6 +45,7 @@ class ProjectionsProperties{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -101,11 +101,11 @@ class ProjectionsProperties{
 	private:
 
 	size_t number_of_projections_;			/*!< number of angles. Is the number of projections*/
-	size_t number_of_distances_;			/*!< number of distances. Is the number of point in one projection*/
-	double measuring_field_size_;			/*!< measuring field in mm*/
+	size_t number_of_distances_;				/*!< number of distances. Is the number of point in one projection*/
+	double measuring_field_size_;				/*!< measuring field in mm*/
 
-	double angles_resolution_;				/*!< angle resolution*/
-	double distances_resolution_;			/*!< distance resolution*/
+	double angles_resolution_;					/*!< angle resolution*/
+	double distances_resolution_;				/*!< distance resolution*/
 	size_t number_of_frames_to_fill_;		/*!< amount of frames to fill sinogram*/
 
 };

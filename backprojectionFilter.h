@@ -32,26 +32,26 @@ class BackprojectionFilter{
 	 * @brief available filter types
 	*/
 	enum TYPE{
-		ramLak,			/*!< ramachandran and Lakshminarayanan*/
+		ramLak,				/*!< ramachandran and Lakshminarayanan*/
 		sheppLogan,		/*!< shepp and Logan*/
-		constant,		/*!< no filter*/
+		constant,			/*!< no filter*/
 	};
 
-	static const std::map<TYPE, string> filter_types;				/*!< filter types with names*/
+	static const std::map<TYPE, string> filter_types;						/*!< filter types with names*/
 	static constexpr double significance_percentage = 1e-3;			/*!< threshold to determine significant range*/
 	
 	/*!
 	 * @brief get filter type by string
-	 * @param search_string Name of filter type
+	 * @param search_string name of filter type
 	 * @return filter enumeration value
 	*/
 	static BackprojectionFilter::TYPE GetType( const string search_string );
 
 	/*!
 	 * @brief constructor
-	 * @param points_range Range of whole numbers to calculate the filter values for
-	 * @param sampling_interval Sampling interval
-	 * @param filter_type Filter type
+	 * @param points_range range of whole numbers to calculate the filter values for
+	 * @param sampling_interval sampling interval
+	 * @param filter_type filter type
 	*/
 	BackprojectionFilter( const NaturalNumberRange points_range, const double sampling_interval, const TYPE filter_type );
 
@@ -107,17 +107,17 @@ class BackprojectionFilter{
 
 	private:
 
-	TYPE type_;							/*!< type of filter*/
+	TYPE type_;												/*!< type of filter*/
 	NaturalNumberRange points_range_;	/*!< range of discrete sampling points*/
-	size_t number_of_points_;			/*!< amount of points*/
-	double sampling_interval_;			/*!< sampling interval*/
-	vector<double> values_;				/*!< values*/
+	size_t number_of_points_;					/*!< amount of points*/
+	double sampling_interval_;				/*!< sampling interval*/
+	vector<double> values_;						/*!< values*/
 
 
 	/*!
 	 * @brief get unsigned index corresponding to signed index
 	 * @param signed_index signed index
-	 * @return Unsigned index
+	 * @return unsigned index
 	*/
 	size_t GetUnsignedIndex( const signed long long signed_index ) const;
 

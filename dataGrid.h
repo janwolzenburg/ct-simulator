@@ -23,7 +23,7 @@
 
 /*!
  * @brief class for gridded data
- * @tparam D Type of data
+ * @tparam D type of data
 */
 template<class D = double>
 class DataGrid{
@@ -37,19 +37,19 @@ class DataGrid{
 
 	/*!
 	 * @brief constructor
-	 * @param size Size of grid
-	 * @param start Starts of axis
-	 * @param resolution Axis resolution
-	 * @param default_value Default value
+	 * @param size size of grid
+	 * @param start starts of axis
+	 * @param resolution axis resolution
+	 * @param default_value default value
 	*/
 	DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D default_value = D{});
 
 	/*!
 	 * @brief constructor
-	 * @param column_range Value range of column axis 
-	 * @param row_range Value range of row axis
-	 * @param resolution Resolutions
-	 * @param default_value Default value
+	 * @param column_range value range of column axis 
+	 * @param row_range value range of row axis
+	 * @param resolution resolutions
+	 * @param default_value default value
 	*/
 	DataGrid( const NumberRange column_range, const NumberRange row_range, const GridCoordinates resolution, D default_value = D{});
 
@@ -63,6 +63,7 @@ class DataGrid{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
@@ -124,8 +125,18 @@ class DataGrid{
 	*/
 	GridCoordinates GetCoordinates( const GridIndex index ) const;
 
+	/*!
+	 * @brief get the row coordinate
+	 * @param row_index index of coordinate
+	 * @return row coordinate
+	 */
 	double GetRowCoordinate( const size_t row_index ) const{ return row_points_.at( row_index ); };
 
+	/*!
+	 * @brief get the columns coordinate
+	 * @param column_index index of coordinate
+	 * @return columns coordinate
+	 */
 	double GetColCoordinate( const size_t col_index ) const{ return column_points_.at( col_index ); };
 
 	/*!
@@ -149,37 +160,41 @@ class DataGrid{
 	*/
 	D GetData( const GridCoordinates coordinates ) const{ return this->GetData( GetIndex( coordinates ) ); };
 
+	/*!
+	 * @brief get the grid as a grid with double values
+	 * @return double grid
+	 */
 	DataGrid<double> GetDoubleGrid( void ) const;
 
 	/*!
-	 * @brief set Element data
-	 * @param index Index of element
-	 * @param new_value New value
+	 * @brief set element data
+	 * @param index index of element
+	 * @param new_value new value
 	 * @return true when index is valid
-	 * @details For non arithmetic types additional code is needed in implementation
+	 * @details for non arithmetic types additional code is needed in implementation
 	*/
 	bool SetData( const GridIndex index, const D new_value );
 
 	/*!
 	 * @brief set Element data
-	 * @param Coordinates Coordinates of element
-	 * @param newValue New value
-	 * @return true when Coordinates are valid
-	 * @details For non arithmetic types additional code is needed in implementation
+	 * @param coordinates coordinates of element
+	 * @param new_value new value
+	 * @return true when coordinates are valid
+	 * @details for non arithmetic types additional code is needed in implementation
 	*/
-	bool SetData( const GridCoordinates coordinates, const D newValue ){
+	bool SetData( const GridCoordinates coordinates, const D new_value ){
 		return this->SetData( GetIndex( coordinates ), newValue ); }
 
 
 	private:
 
-	GridIndex size_;					/*!< size of grid*/
-	GridCoordinates start_;				/*!< start of axis*/
+	GridIndex size_;								/*!< size of grid*/
+	GridCoordinates start_;					/*!< start of axis*/
 	GridCoordinates resolution_;		/*!< resolution of grid*/
 
-	vector<double> column_points_;		/*!< vector with values on column axis*/
+	vector<double> column_points_;	/*!< vector with values on column axis*/
 	vector<double> row_points_;			/*!< vector with values on row axis*/
-	vector<vector<D>> data_;			/*!< 2D vector with data points*/
+	vector<vector<D>> data_;				/*!< 2D vector with data points*/
 
 	D max_value_;						/*!< maximum value in grid*/
 	D min_value_;						/*!< minimum value in grid*/
@@ -201,7 +216,7 @@ class DataGrid{
 
 	/*!
 	 * @brief initialise minimum and maximum value
-	 * @details For own non arithmetic types of D additional code in function implementation is necessary
+	 * @details for own non arithmetic types of D additional code in function implementation is necessary
 	*/
 	void InitialiseMinAndMaxValue( void );
 

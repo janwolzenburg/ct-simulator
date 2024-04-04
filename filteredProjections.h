@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   filteredProjections.h
- * @brief  classes for backprojections
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -40,20 +39,30 @@ class FilteredProjections : private DataGrid<> {
 
 	/*!
 	 * @brief constructor
-	 * @param projections Unfiltered projections 
-	 * @param filter_type Type of filter to apply
-	 * @param progress_window FL window to track progress
+	 * @param projections unfiltered projections 
+	 * @param filter_type type of filter to apply
+	 * @param progress_window FL_window to track progress
 	*/
 	FilteredProjections( const Projections& projections, const BackprojectionFilter::TYPE filter_type, Fl_Progress_Window* progress_window = nullptr );
-	
+
+	/*!
+	 * @brief constructor from serialized data
+	 * @param binary_data vector with serialized data
+	 * @param current_byte Start of data for this object
+	*/
 	FilteredProjections( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
 	DataGrid<>{ binary_data, current_byte }{};
-	
+
+	/*!
+	 * @brief serialize this object
+	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
+	*/
 	size_t Serialize( vector<char>& binary_data ) const{ return DataGrid<>::Serialize( binary_data ); };
 
 	/*!
 	 * @brief get gridded data
-	 * @return Gridded data
+	 * @return gridded data
 	*/
 	DataGrid<> data_grid( void ) const{ return static_cast<DataGrid<>>( *this ); };
 
@@ -71,7 +80,7 @@ class FilteredProjections : private DataGrid<> {
 
 	/*!
 	 * @brief get resolution of axis
-	 * @return GetResolution of axis
+	 * @return resolution of axis
 	*/
 	GridCoordinates resolution( void ) const{ return DataGrid::resolution(); };
 
@@ -83,8 +92,8 @@ class FilteredProjections : private DataGrid<> {
 
 	/*!
 	 * @brief get value at angle index at given distance
-	 * @param angle_index Angle index
-	 * @param distance Distance
+	 * @param angle_index angle index
+	 * @param distance distance
 	 * @return filtered value
 	*/
 	double GetValue( const size_t angle_index, const double distance ) const;

@@ -70,7 +70,7 @@ class Fl_TomographyExecution : public Fl_Group{
 
 	Fl_Box title_;				/*!< title*/
 
-	Fl_Group tomography_properties_group_;			/*!< Group for parameters*/
+	Fl_Group tomography_properties_group_;			/*!< group for parameters*/
 	Fl_Box properties_title_;						/*!< title of parameter group*/
 	Fl_Simple_Counter maximum_scatterings_input_;	/*!< maximum amount a Ray can be scattered*/
 	Fl_Counter scattering_propability_factor_input_;/*!< scatter propability*/
@@ -82,7 +82,7 @@ class Fl_TomographyExecution : public Fl_Group{
 
 	Fl_Multiline_Output information_;				/*!< information about tomography*/
 	
-	Fl_Group control_group_;						/*!< Group for control elements*/
+	Fl_Group control_group_;						/*!< group for control elements*/
 	Fl_Input name_input_;							/*!< input for identifiaction name*/
 	Fl_Button record_slice_button_;					/*!< start button for radiation*/
 	Fl_Button export_projections_button_;			/*!< export button for projections*/

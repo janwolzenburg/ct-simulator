@@ -395,7 +395,7 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator++( T& variable );
  * @tparam T type of values
  * @param left_operand Minuend
  * @param right_operand Subtrahend
- * @return GetDifference left_operand - right_operand cast to their underlying type
+ * @return getDifference left_operand - right_operand cast to their underlying type
 */
 template <typename T>
 typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand, const T right_operand );

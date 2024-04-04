@@ -127,7 +127,7 @@ class GrayscaleImage{
 	 * @brief get character data for image drawing
 	 * @param column Column
 	 * @param row Row
-	 * @return Grayscale value
+	 * @return grayscale value
 	*/
 	unsigned char GetPixelData( const size_t column, const size_t row ) const{ return image_data_.at( GetIndex( column, row ) ); };
 

@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   radonProperties.h
- * @brief  classes radon transformation
+ * @file   radonCoordinates.h
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -28,13 +27,13 @@ class RadonCoordinates{
 
 	/*!
 	 * @brief constructor
-	 * @param coordinate_system Reference coordinate system
-	 * @param line Line
+	 * @param coordinate_system reference coordinate system
+	 * @param line line to calculate the radon coordinates for
 	*/
 	RadonCoordinates( const CoordinateSystem* const coordinate_system, const Line line );
 
 
-	double theta;		/*!< angle*/
+	double theta;			/*!< angle*/
 	double distance;	/*!< distance*/
 	
 };
@@ -49,12 +48,11 @@ class RadonPoint : public RadonCoordinates{
 
 	/*!
 	 * @brief cosntructor
-	 * @param radon_coordinates Coordinates 
-	 * @param value Value
+	 * @param radon_coordinates coordinates 
+	 * @param value value
 	*/
 	RadonPoint( const RadonCoordinates radon_coordinates, const double value ) :
 		RadonCoordinates{ radon_coordinates }, value( value ) {};
-
 
 	double value;				/*!< value*/
 
