@@ -111,7 +111,7 @@ class BackprojectionFilter{
 	NaturalNumberRange points_range_;	/*!< range of discrete sampling points*/
 	size_t number_of_points_;			/*!< amount of points*/
 	double sampling_interval_;			/*!< sampling interval*/
-	vector<double> values_;				/*!< Values*/
+	vector<double> values_;				/*!< values*/
 
 
 	/*!

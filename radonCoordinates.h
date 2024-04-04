@@ -56,6 +56,6 @@ class RadonPoint : public RadonCoordinates{
 		RadonCoordinates{ radon_coordinates }, value( value ) {};
 
 
-	double value;				/*!< Value*/
+	double value;				/*!< value*/
 
 };

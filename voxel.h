@@ -26,16 +26,8 @@ using std::map;
 	Definitions
  *********************************************************************/
 
-
-
-
-
-/*
-	classes
-*/
-
 /*!
- * @brief physical voxel data_
+ * @brief physical voxel data
 */
 #pragma pack(push, 1)	// memory alignment for serializing model data without serializing single voxel data 
 class VoxelData{
@@ -57,23 +49,23 @@ class VoxelData{
 	
 	/*!
 	 * @brief get enumeration from string
-	 * @param property_string String to find property for
-	 * @return proeprty enumeration
+	 * @param property_string string to find property for
+	 * @return property enumeration
 	*/
 	static SpecialProperty GetPropertyEnum( const string property_string );
 
 	/*!
 	 * @brief get the absorption at reference energy
-	 * @param absorptionAtEnergy Absorption at given energy
-	 * @param energy Energy
+	 * @param absorption_at_energy absorption at given energy
+	 * @param energy energy
 	 * @return absorption coefficient
 	*/
-	static double GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy );
+	static double GetAbsorptionAtReferenceEnergy( const double absorption_at_energy, const double energy );
 
 	/*!
 	 * @brief constructor
-	 * @param absorption_at_energy Absorption coefficient at given energy
-	 * @param energy_eV Energy in eV
+	 * @param absorption_at_energy absorption coefficient at given energy
+	 * @param energy_eV energy in eV
 	*/
 	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty = None );
 
@@ -92,44 +84,45 @@ class VoxelData{
 	/*!
 	 * @brief serialize this object
 	 * @param binary_data reference to vector where data will be appended
+	 * @return written bytes
 	*/
 	size_t Serialize( vector<char>& binary_data ) const;
 
 	/*!
 	 * @brief comparison
-	 * @param d2 Second voxel data
+	 * @param voxel_data_to_compare second voxel data
 	 * @return true when absorption of left operand is smaller than right's
 	*/
-	bool operator<( const VoxelData& d2 ) const{ return this->absorption_ < d2.absorption_; };
+	bool operator<( const VoxelData& voxel_data_to_compare ) const{ return this->absorption_ < voxel_data_to_compare.absorption_; };
 
 	/*!
 	 * @brief comparison
-	 * @param d2 Second voxel data
+	 * @param voxel_data_to_compare second voxel data
 	 * @return true when absorption of left operand is greater than right's
 	*/
-	bool operator>( const VoxelData& d2 ) const{ return !operator<( d2 ); };
+	bool operator>( const VoxelData& voxel_data_to_compare ) const{ return !operator<( voxel_data_to_compare ); };
 
 	/*!
 	 * @brief add special property
-	 * @param property Property to add
+	 * @param property property to add
 	*/
 	void AddSpecialProperty( const SpecialProperty property ){ specialProperties_ |= ConvertToUnderlying( property ); };
 
 	/*!
 	 * @brief remove special property
-	 * @param property Property to remove
+	 * @param property property to remove
 	*/
 	void RemoveSpecialProperty( const SpecialProperty property ){ specialProperties_ &= ~ConvertToUnderlying( property ); };
 
 	/*!
 	 * @brief get the absorption_ at given energy
-	 * @param energy_eV Energy in eV
+	 * @param energy_eV energy in eV
 	 * @return absorption at given energy
 	*/
 	double GetAbsorptionAtEnergy( const double energy_eV ) const;
 
 	/*!
-	 * @brief get absorption_ at reference energy
+	 * @brief get absorption at reference energy
 	 * @return absorption at reference energy 
 	*/
 	double GetAbsorptionAtReferenceEnergy( void ) const{ return absorption_; };
@@ -167,7 +160,7 @@ class VoxelData{
 
 
 /*!
- * @brief class for voxels
+ * @brief class for voxel
 */
 class Voxel : public MathematicalObject{
 
@@ -190,9 +183,9 @@ class Voxel : public MathematicalObject{
 
 	/*!
 	 * @brief constructor
-	 * @param origin Origin point of voxel
-	 * @param size	Size of voxel in unit of coordinate system's axes
-	 * @param data	Physical data of voxel
+	 * @param origin origin point of voxel
+	 * @param size	size of voxel in unit of coordinate system's axes
+	 * @param data	physical data of voxel
 	*/
 	Voxel( const Point3D origin, const Tuple3D size, const VoxelData data );
 
@@ -227,8 +220,8 @@ class Voxel : public MathematicalObject{
 
 	/*!
 	 * @brief get face of voxel
-	 * @param face Face ID
-	 * @return Bounded surface which is the face
+	 * @param face face ID
+	 * @return bounded surface which is the face
 	*/
 	BoundedSurface GetFace( Face face ) const{ return faces[ ConvertToUnderlying( face ) ]; };
 
@@ -248,8 +241,8 @@ class Voxel : public MathematicalObject{
 
 	private:
 
-	Tuple3D size_;				/*!< size in local coordinate system*/
-	VoxelData data_;			/*!< physical voxel data_*/
+	Tuple3D size_;						/*!< size in local coordinate system*/
+	VoxelData data_;					/*!< physical voxel data_*/
 	Point3D origin_corner_;		/*!< point as origin_ of voxel in coordinate system*/
 	array<BoundedSurface, ConvertToUnderlying( Face::End )> faces;	/*!< faces in global context*/
 };

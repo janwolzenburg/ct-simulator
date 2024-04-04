@@ -137,7 +137,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 
 	
 	if( IsModelLoaded() ){
-		model_slice_image_.SetSliderBounds( model_.absorptionRange() );
+		model_slice_image_.SetSliderBounds( model_.GetAbsorptionRange() );
 		model_slice_image_.ChangeSliderValues( properties_.contrast );
 		UpdateModel();
 	}
@@ -272,7 +272,7 @@ void Fl_ModelView::LoadModel( void ){
 		return;
 	}
 
-	model_slice_image_.SetSliderBounds( model_.absorptionRange() );
+	model_slice_image_.SetSliderBounds( model_.GetAbsorptionRange() );
 	properties_.contrast = model_slice_image_.GetContrast();
 
 	ResetModel();

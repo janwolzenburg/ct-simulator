@@ -175,12 +175,12 @@ class Fl_ModelCreator : public Fl_Window{
 	constexpr static double h_feature = .05;		/*!< height of each feature in GUI*/
 
 	Fl_Group model_size_group_;	/*!< Group for model size*/
-	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_x_input_;	/*!< Voxel amount in x direction*/
-	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_y_input_;	/*!< Voxel amount in y direction*/
-	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_z_input_;	/*!< Voxel amount in z direction*/
-	Fl_BoundInput<Fl_Float_Input, double> voxel_size_x_input_;	/*!< Voxel size in x direction*/
-	Fl_BoundInput<Fl_Float_Input, double> voxel_size_y_input_;	/*!< Voxel size in y direction*/
-	Fl_BoundInput<Fl_Float_Input, double> voxel_size_z_input_;	/*!< Voxel size in z direction*/
+	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_x_input_;	/*!< voxel amount in x direction*/
+	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_y_input_;	/*!< voxel amount in y direction*/
+	Fl_BoundInput<Fl_Int_Input, unsigned int> model_size_z_input_;	/*!< voxel amount in z direction*/
+	Fl_BoundInput<Fl_Float_Input, double> voxel_size_x_input_;	/*!< voxel size in x direction*/
+	Fl_BoundInput<Fl_Float_Input, double> voxel_size_y_input_;	/*!< voxel size in y direction*/
+	Fl_BoundInput<Fl_Float_Input, double> voxel_size_z_input_;	/*!< voxel size in z direction*/
 	Fl_Input name_input_;			/*!< name of model*/
 	Fl_Button store_size_button_;	/*!< button to store size and continue*/
 	
@@ -196,10 +196,10 @@ class Fl_ModelCreator : public Fl_Window{
 	CallbackFunction<Fl_ModelCreator> build_model_callback_;		/*!< callback for model building*/
 
 	Index3D model_size_;		/*!< size of model. The amount of voxel*/
-	Tuple3D voxel_size_;		/*!< Voxel size in mm*/
+	Tuple3D voxel_size_;		/*!< voxel size in mm*/
 	string name_;				/*!< name of model*/
 
-	double background_absorption_;	/*!< Value of background absorption*/
+	double background_absorption_;	/*!< value of background absorption*/
 
 
 	/*!
