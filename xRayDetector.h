@@ -56,7 +56,7 @@ class XRayDetector{
 	DetectorProperties properties( void ) const{ return properties_; };
 
 	/*!
-	 * @brief Update detector properties
+	 * @brief update detector properties
 	 * @param radon_properties New radon properties
 	 * @param physical_properties New physical properties
 	*/

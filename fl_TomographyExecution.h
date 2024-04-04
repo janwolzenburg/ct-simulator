@@ -80,7 +80,7 @@ class Fl_TomographyExecution : public Fl_Group{
 
 	Fl_Counter simulation_quality_input_;	/*!<input for simulation quality*/
 
-	Fl_Multiline_Output information_;				/*!< Information about tomography*/
+	Fl_Multiline_Output information_;				/*!< information about tomography*/
 	
 	Fl_Group control_group_;						/*!< Group for control elements*/
 	Fl_Input name_input_;							/*!< input for identifiaction name*/
@@ -92,7 +92,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	PersistingObject<FileChooser> export_projections_file_chooser_;		/*!< file chooser for projections export*/
 
 	PersistingObject<TomographyProperties> tomography_properties_;		/*!< parameter of tomography*/
-	Tomography tomography_;												/*!< Instance of the tomography*/
+	Tomography tomography_;												/*!< instance of the tomography*/
 	PersistingObject<Projections> projections_;							/*!< latest projections*/
 	
 	vector<std::unique_ptr<Fl_ProcessingWindow>> processing_windows_;	/*!< collection of opened processing windows*/
@@ -108,7 +108,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	void DoTomography( void );
 
 	/*!
-	 * @brief Update tomography properties
+	 * @brief update tomography properties
 	*/
 	void UpdateProperties( void );
 

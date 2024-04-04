@@ -79,7 +79,7 @@ class Gantry{
 	Point3D GetCenter( void ) const{ return coordinate_system_->GetOriginPoint(); };
 
 	/*!
-	 * @brief Update tube and detector properties
+	 * @brief update tube and detector properties
 	 * @param tube_properties New tube proerties
 	 * @param radon_properties New radon properties
 	 * @param physical_detector_properties New detector properties
@@ -116,7 +116,7 @@ class Gantry{
 	private:
 	
 	CoordinateSystem* coordinate_system_;			/*!< coordinate system*/
-	PrimitiveCoordinateSystem initial_position_;	/*!< Initial position of coordinate system*/
+	PrimitiveCoordinateSystem initial_position_;	/*!< initial position of coordinate system*/
 
 	XRayDetector detector_;							/*!< ray detector*/
 	XRayTube tube_;									/*!< xRay source*/

@@ -51,7 +51,7 @@ class XRayTubeProperties {
 	};
 
 	/*!
-	 * @brief Material map. Combines enumeration with name and atomic number
+	 * @brief material map. Combines enumeration with name and atomic number
 	*/
 	static const std::map<Material, pair<string, size_t>> materials;
 
@@ -191,7 +191,7 @@ class XRayTube{
 	double GetMeanEnergy( void ){ return emitted_spectrum_.mean_energy(); };
 
 	/*!
-	 * @brief Update tube properties
+	 * @brief update tube properties
 	 * @param tube_properties New properties
 	*/
 	void UpdateProperties( const XRayTubeProperties tube_properties );

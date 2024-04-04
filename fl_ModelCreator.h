@@ -186,7 +186,7 @@ class Fl_ModelCreator : public Fl_Window{
 	
 	Fl_Group features_group_;	/*!< Group for all features and model properties*/
 	Fl_BoundInput<Fl_Float_Input, double> background_input_;	/*!< absorption value of background*/
-	Fl_Multiline_Output information_;							/*!< Information about features*/
+	Fl_Multiline_Output information_;							/*!< information about features*/
 	vector<unique_ptr<Fl_ModelFeature>> features_;				/*!< all the features*/
 	Fl_Button build_button_;									/*!< button for building model*/
 
@@ -203,7 +203,7 @@ class Fl_ModelCreator : public Fl_Window{
 
 
 	/*!
-	 * @brief Update size of model and voxel
+	 * @brief update size of model and voxel
 	*/
 	void UpdateModelSize( void );
 
@@ -213,7 +213,7 @@ class Fl_ModelCreator : public Fl_Window{
 	void StoreModelSize( void );
 
 	/*!
-	 * @brief Update model features
+	 * @brief update model features
 	*/
 	void UpdateFeatures( void );
 

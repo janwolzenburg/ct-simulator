@@ -67,7 +67,7 @@ class Fl_Progress_Window : public Fl_Window{
 
  
 	/*!
-	 * @brief Update text output
+	 * @brief update text output
 	*/
 	void UpdateOutput( void );
  

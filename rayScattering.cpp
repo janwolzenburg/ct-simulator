@@ -93,7 +93,7 @@ double ScatteringCrossSection::GetCrossSection( const double energy ) const{
 }
 
 ScatteringCrossSection::ScatteringCrossSection( void ) : 
-	number_of_energies_( static_cast<size_t>( ( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / desired_energy_resolution ) ) + 1 ),
+	number_of_energies_( static_cast<size_t>( ( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / desired_energy_resolution_eV ) ) + 1 ),
 	energy_resolution_( ( maximum_energy_in_tube_spectrum - minimum_energy_in_tube_spectrum ) / static_cast<double>( number_of_energies_ - 1 ) ),
 	cross_sections_( number_of_energies_, Tuple2D{} )
 {

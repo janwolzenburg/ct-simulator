@@ -130,6 +130,6 @@ class Plot{
 	PlotLimits limits_;	/*!< limits of plot*/
 
 	GridIndex image_size_;				/*!< size of image*/
-	sciplot::Plot2D plot_2D_;		/*!< Instance of sciplot 2D-plot*/
+	sciplot::Plot2D plot_2D_;		/*!< instance of sciplot 2D-plot*/
 
  };

@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   propability.h
+ * @file   propabilityDistribution.h
  * @brief  classes for randomness and probability distributions
  *
  * @author Jan Wolzenburg
@@ -22,9 +22,6 @@
 *********************************************************************/
 
 
-//extern class RandomNumberGenerator integer_random_number_generator;		/*!< one instance of integer random number generator*/
-
-
 /*!
  * @brief class for a generic random number generator with a uniform distribution between 0 and 2^32 - 1
 */
@@ -39,19 +36,19 @@ class RandomNumberGenerator{
 
 	/*!
 	 * @brief get a random number
-	 * @return random integer
+	 * @return a random integer
 	*/
 	unsigned int GetRandomNumber( void );
 
 	/*!
 	 * @brief get a random short
-	 * @return random short integer
+	 * @return a random short integer
 	*/
 	unsigned short int GetRandomShortNumber(void);
 
 	/*!
 	 * @brief check if an event with given propability "happened"
-	 * @param event_propability Event propabilitx 
+	 * @param event_propability event propabilitx 
 	 * @return true when event "happened"
 	*/
 	bool DidARandomEventHappen( const double event_propability );
@@ -59,15 +56,13 @@ class RandomNumberGenerator{
 
 	private:
 
-	unsigned long long int generator_state_[2];
+	unsigned long long int generator_state_[2];		/*!< current generator state*/
 
 };
 
 
 /*!
  * @brief class to store a custom propability distribution
- * @details The distribution is described by a vector of 2D-Tuples. The x-value is the variate and the y-value is the propability corrensponding to that variate.
- * From the distribution a vector is created. The vector contains repeatitions of the variates. The amount repeatitions ist proportional to the propability of the variate.
 */
 class PropabilityDistribution{
 
@@ -75,7 +70,7 @@ class PropabilityDistribution{
 
 	/*!
 	 * @brief constructor
-	 * @param distribution Pseudo distribution. Sum of y values must not be equal to one
+	 * @param distribution Pseudo distribution. sum of y values must not be equal to one
 	*/
 	PropabilityDistribution( vector<Tuple2D> distribution );
 
@@ -87,9 +82,9 @@ class PropabilityDistribution{
 
 	private:
 	
-	static constexpr unsigned int number_of_elements = USHRT_MAX + 1;
+	static constexpr unsigned int number_of_elements = USHRT_MAX + 1;	/*!< number of bins*/
 
-	vector<double> values_;
-	vector<unsigned int> discrete_distribution_;
+	vector<double> values_;												/*!< values of distribution*/
+	vector<unsigned int> discrete_distribution_;	/*!< vector filled with indices for the values_ vector according to their propability*/
 
 };

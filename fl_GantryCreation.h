@@ -69,7 +69,7 @@ class Fl_GantryCreation : public Fl_Group{
 	void SetDistances( const double max_corner_distance );
 
 	/*!
-	 * @brief Update gantry
+	 * @brief update gantry
 	*/
 	void UpdateGantry( void );
 
@@ -104,7 +104,7 @@ class Fl_GantryCreation : public Fl_Group{
 	PersistingObject<XRayTubeProperties> tube_properties_;						/*!< xRay tube attributes*/
 	PersistingObject<ProjectionsProperties> projections_properties_;			/*!< parameter in radon space affecting the detector*/
 	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< parameter only dependent on the physical properties_ od detector*/
-	Gantry gantry_;		/*!< Instance of the gantry constructed from tube and detector parameter*/
+	Gantry gantry_;		/*!< instance of the gantry constructed from tube and detector parameter*/
 
 	CallbackFunction<Fl_GantryCreation> update_gantry_callback_;	/*!< callback for gantry update*/
 };

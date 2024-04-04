@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   rays.h
+ * @file   ray.h
  * @brief  classes for rays
  *
  * @author Jan Wolzenburg
@@ -61,8 +61,9 @@ class RayProperties{
 
 	/*!
 	 * @brief constructor
-	 * @param spectrum Ray spectrum
-	 * @param expected_pixel_index Expected index of detector pixel this ray will hit
+	 * @param spectrum ray spectrum
+	 * @param expected_pixel_index expected index of detector pixel this ray will hit
+	 * @param definitely_hits_expected_pixel flag to indicate that the given pixel index is definately valid
 	*/
 	RayProperties( const EnergySpectrum spectrum, const size_t expected_pixel_index = 0, const bool definitely_hits_expected_pixel = false ) :
 		energy_spectrum_( spectrum ), voxel_hits_( 0 ), initial_power_( energy_spectrum_.GetTotalPower() ), expected_detector_pixel_index_( expected_pixel_index ),
@@ -117,7 +118,7 @@ class RayProperties{
 
 	/*!
 	 * @brief scale specturm linearly
-	 * @param factor Factor
+	 * @param factor factor to scale by
 	*/
 	void ScaleSpectrumEvenly( const double factor ){ energy_spectrum_.ScaleEvenly( factor ); };
 
@@ -131,12 +132,12 @@ class RayProperties{
 
 	private:
 
-	EnergySpectrum energy_spectrum_;		/*!< energy spectrum*/
-	size_t voxel_hits_;						/*!< counter for voxels hit during transmission*/
-	double initial_power_;					/*!< Intensity before radiation in watts*/
-	size_t expected_detector_pixel_index_;	/*!< Index of detector pixel the ray is likely to hit*/
-	double simple_intensity_;				/*!< current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
-	bool definitely_hits_expected_pixel_;	/*!< flag to indicate that this ray definitely hits the expected ray*/
+	EnergySpectrum energy_spectrum_;				/*!< energy spectrum*/
+	size_t voxel_hits_;											/*!< counter for voxels hit during transmission*/
+	double initial_power_;									/*!< intensity before radiation in watts*/
+	size_t expected_detector_pixel_index_;	/*!< index of detector pixel the ray is likely to hit*/
+	double simple_intensity_;								/*!< current "simple" intensity. According to lambert beer's equation J = J * exp( -l * mu ) */
+	bool definitely_hits_expected_pixel_;		/*!< flag to indicate that this ray definitely hits the expected ray*/
 
 	#ifdef TRANSMISSION_TRACKING
 	public:
@@ -157,20 +158,20 @@ class Ray : public Line{
 
 	/*!
 	 * @brief constructor
-	 * @param v_ Trajectory
-	 * @param p_ Origin
-	 * @param intensity_ Intensity
+	 * @param direction trajectory
+	 * @param origin origin
+	 * @param ray_properties properties
 	*/
-	explicit Ray( const vector3D v_, const Point3D p_, const RayProperties properties_ ) : 
-		Line{ v_, p_ }, properties_{ properties_ }{};
+	explicit Ray( const vector3D direction, const Point3D origin, const RayProperties ray_properties ) : 
+		Line{ direction, origin }, properties_( ray_properties ){};
 
 	/*!
 	 * @brief constructor
-	 * @param line_ Line
-	 * @param intensity_ Intensity
+	 * @param line line with direction and origin
+	 * @param ray_properties properties
 	*/
-	explicit Ray( const Line line_, const RayProperties  properties_ ) :
-	Line{ line_ }, properties_{ properties_ }{};
+	explicit Ray( const Line line, const RayProperties ray_properties ) :
+	Line( line ), properties_( ray_properties ){};
 
 	/*!
 	 * @brief default constructor
@@ -178,8 +179,8 @@ class Ray : public Line{
 	Ray( void ) : Ray{ Line{}, RayProperties{} }{};
 
 	/*!
-	 * @brief get intensity
-	 * @return intensity
+	 * @brief get properties
+	 * @return properties
 	*/
 	RayProperties properties( void ) const{ return properties_; };
 
@@ -191,7 +192,7 @@ class Ray : public Line{
 
 	/*!
 	 * @brief scale specturm linearly
-	 * @param factor Factor
+	 * @param factor factor
 	*/
 	void ScaleSpectrumEvenly( const double factor ){ 
 		properties_.energy_spectrum_.ScaleEvenly( factor );
@@ -210,81 +211,82 @@ class Ray : public Line{
 	
 	/*!
 	 * @brief set origin
-	 * @param new_origin 
+	 * @param new_origin the new origin
 	*/
 	void SetOrigin( const Point3D new_origin );
 
 	/*!
 	 * @brief set direction
-	 * @param new_direction 
+	 * @param new_direction the new direction 
 	*/
 	void SetDirection( const Unitvector3D new_direction );
 
 	/*!
-	 * @brief Update Ray properties_ passing through voxel for specific distance
-	 * @param voxel_properties Voxel properties
-	 * @param distance_traveled Distance the Ray is inside voxel
+	 * @brief update ray's properties passing through voxel for specific distance
+	 * @param voxel_properties voxel properties
+	 * @param distance_traveled distance the Ray is inside voxel
 	*/
 	void UpdateProperties( const VoxelData& voxel_properties, const double distance_traveled );
 	
 	/*!
-	 * @brief convert Ray components to different coordinate system
+	 * @brief convert ray's components to different coordinate system
 	 * @param target_coordinate_system Target system
 	 * @return ray in target system
 	*/
 	Ray ConvertTo( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
-	 * @brief get Ray parameter corresponding to point
-	 * @param point_on_ray Point on Ray
-	 * @param solution_found Is set to true when the given point lies on the Ray. False if not
+	 * @brief get ray parameter corresponding to point
+	 * @param point_on_ray point on Ray
+	 * @param solution_found is set to true when the given point lies on the Ray. False if not
 	 * @return ray parameter
 	*/
 	double GetLineParameter( const Point3D point_on_ray, bool* const solution_found ) const;
 
 	/*!
-	 * @brief project Ray on XY plane of coordinate system
-	 * @param coordinate_system System to project on
-	 * @return projected Ray
+	 * @brief project ray on XY plane of coordinate system
+	 * @param coordinate_system system to project on
+	 * @return projected ray
 	*/
 	Ray ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const;
 
 	/*!
 	 * @brief checks if parameter is greater than one
-	 * @param parameter Parameter
+	 * @param parameter parameter to check
 	 * @return true when parameter is valid
 	*/
-	bool IsParameterInBounds( const double voxel_data_ ) const override{ return voxel_data_ >= 0; };
+	bool IsParameterInBounds( const double parameter ) const override{ return parameter >= 0; };
 
 	/*!
-	 * @brief get the faces, which are aligned with the coordinate system of the Ray, through which the Ray could exit_
-	 * @return array with flag for voxel faces. True when possible
+	 * @brief get the faces, which are aligned with the coordinate system of the ray, through which the ray could exit
+	 * @return array with flag for voxel faces. true when possible
 	*/
 	array<bool, ConvertToUnderlying( Voxel::Face::End )> GetPossibleVoxelExits( void ) const;
 
 	/*!
-	 * @brief scatter this ray
-	 * @param scattering_information Scattering properties 
-	 * @param voxel_data Voxel data
-	 * @param distance_traveled_mm Distance traveled in voxel
-	 * @param tomography_properties Properties of tomogrpahy
-	 * @param newOrigin Point where sattering occured
+	 * @brief scatter this ray which travelled inside a voxel
+	 * @param scattering_information scattering properties 
+	 * @param voxel_data voxel data of current voxel
+	 * @param distance_traveled_mm distance traveled in voxel
+	 * @param tomography_properties properties of tomogrpahy
+	 * @param new_origin point where scattering occured
+	 * @param dedicated_rng a dedicated RNG with exclusive access
 	 * @return vector with scattered rays
 	*/
 	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData& voxel_data, const double distance_traveled_mm, 
-											 const TomographyProperties& tomography_properties, const Point3D& newOrigin, RandomNumberGenerator& dedicated_rng );
+											 const TomographyProperties& tomography_properties, const Point3D& new_origin, RandomNumberGenerator& dedicated_rng );
 
 	/*!
 	 * @brief set expected pixel index
-	 * @param pixel_index The pixel index
-	 * @param definitely_hits Indication whether given pixel is definitely hit
+	 * @param pixel_index the pixel index
+	 * @param definitely_hits indication whether given pixel is definitely hit
 	 */
 	void SetExpectedPixelIndex( const size_t pixel_index, const bool definitely_hits );
 
 
 	private:
 
-	RayProperties properties_;			/*!< properties of Ray*/
+	RayProperties properties_;			/*!< properties of ray*/
 
 
 	#ifdef TRANSMISSION_TRACKING

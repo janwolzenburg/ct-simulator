@@ -178,7 +178,7 @@ class Voxel : public MathematicalObject{
 		XZ_Ym,				/*!< X-Z plane at negative y*/
 		YZ_Xm,				/*!< Y-Z plane at negative z*/
 		End,
-		Invalid = End	/*!< Invalid face x*/
+		Invalid = End	/*!< invalid face x*/
 	};
 
 	/*!

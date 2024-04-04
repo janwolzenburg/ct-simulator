@@ -79,13 +79,13 @@ class Fl_ModelView : public Fl_Group{
 	Fl_Multiline_Output model_information_;			/*!< model properties_*/
 	Fl_Button reset_model_button_;					/*!< button to reset model to default*/
 	Fl_Box loading_status_;							/*!< box to show test when no model is loaded*/
-	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< Image with adjustable contrast to show model slice*/
+	Fl_AdjustableGrayscaleImage model_slice_image_;	/*!< image with adjustable contrast to show model slice*/
 	
 	Fl_Group model_movement_group_;	/*!< Group for the model movement*/
-	Fl_Counter x_rotation_;			/*!< Input for x-rotation*/
-	Fl_Counter y_rotation_;			/*!< Input for y-rotation*/
-	Fl_Counter z_position_;			/*!< Input for z-transloation*/
-	Fl_Counter artefact_impact_;	/*!< Input for artefact impact*/
+	Fl_Counter x_rotation_;			/*!< input for x-rotation*/
+	Fl_Counter y_rotation_;			/*!< input for y-rotation*/
+	Fl_Counter z_position_;			/*!< input for z-transloation*/
+	Fl_Counter artefact_impact_;	/*!< input for artefact impact*/
 	
 	PersistingObject<ModelViewProperties> properties_;	/*!< persisting storage of view parameters*/
 	Fl_MainWindow& main_window_;						/*!< reference to main window*/
@@ -114,7 +114,7 @@ class Fl_ModelView : public Fl_Group{
 	void LoadModel( void );
 
 	/*!
-	 * @brief Move model to given values with respect to the slice plane coordinate system
+	 * @brief move model to given values with respect to the slice plane coordinate system
 	 * @param target_x_angle Rotation around x-axis
 	 * @param target_y_angle Rotation around y-axis
 	 * @param target_z_position Translation in z-direction
@@ -139,12 +139,12 @@ class Fl_ModelView : public Fl_Group{
 	bool SliceModel( void );
 
 	/*!
-	 * @brief Update the model view
+	 * @brief update the model view
 	*/
 	void UpdateModel( void );
 
 	/*!
-	 * @brief Update VoxelData artefact impact inputted
+	 * @brief update VoxelData artefact impact inputted
 	*/
 	void UpdateArtefactImpact( void );
 };

@@ -101,7 +101,7 @@ class Fl_ProcessingWindow : public Fl_Window{
 	void FilterAndReconstructImage( void );
 
 	/*!
-	 * @brief Update backprojected image
+	 * @brief update backprojected image
 	*/
 	void UpdateImage( void );
 

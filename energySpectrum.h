@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
- * @file   spectrum.h
- * @brief  class for x Ray spectrum
+ * @file   energySpectrum.h
+ * @brief  class for x-ray spectrum
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -38,13 +38,13 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief constructor
-	 * @param energy_quantaties Energy values and their occurrences in spectrum
+	 * @param energy_quantaties energy values and their occurrences in spectrum
 	*/
 	EnergySpectrum( const VectorPair& energy_quantaties );
 
 	/*!
 	 * @brief constructr
-	 * @param energy_quantaties  Energy values and their occurrences in spectrum
+	 * @param energy_quantaties energy values and their occurrences in spectrum
 	 */
 	EnergySpectrum( const vector<Tuple2D>& energy_quantaties );
 
@@ -68,7 +68,7 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief get scaled version of this spectrum
-	 * @param factor Scaling factor
+	 * @param factor scaling factor
 	 * @return scaled spectrum
 	*/
 	EnergySpectrum GetEvenlyScaled( const double factor ) const;
@@ -105,27 +105,27 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief get photonflow for energy
-	 * @param energy Energy
+	 * @param energy energy
 	 * @return photonflow for given energy
 	*/
 	double GetPhotonflow( const double energy ) const;
 
 	/*!
 	 * @brief get index of energy
-	 * @param energy Energy
+	 * @param energy energy
 	 * @return index of energy in data
 	*/
 	size_t GetEnergyIndex( const double energy ) const;
 
 	/*!
 	 * @brief get energy value at index
-	 * @param index Index of energy
+	 * @param index index of energy
 	 * @return energy value at index
 	*/
 	double GetEnergy( const size_t index ) const;
 
 	/*!
-	 * @brief Modify spectrum
+	 * @brief modify spectrum
 	 * @param modification_function Function taking reference to spectrum point to modify
 	*/
 	void Modify( std::function<void( Tuple2D& )> modification_function );
@@ -133,7 +133,7 @@ class EnergySpectrum {
 	/*!
 	 * @brief attenuate spectrum according to voxel data
 	 * @param voxel_data Voxel data
-	 * @param distance Distance traveled in voxel
+	 * @param distance distance traveled in voxel
 	*/
 	void GetAbsorped( const VoxelData& voxel_data, const double distance );
 
@@ -152,8 +152,8 @@ class EnergySpectrum {
 
 	/*!
 	 * @brief scale specific photonflow
-	 * @param energy Energy
-	 * @param factor Factor to scale with
+	 * @param energy energy
+	 * @param factor factor to scale with
 	*/
 	void ScaleEnergy( const double energy, const double factor );
 
@@ -161,11 +161,11 @@ class EnergySpectrum {
 	private:
 
 	vector<Tuple2D> photonflow_per_energy_;		/*!< 2D data sorted by energy. x is energy. y is the number of photons per second with energy in the interval dE */
-	double mean_energy_;		/*!< mean energy of spectrum*/
-	bool mean_energy_valid_;	/*!< flag to track whether mean energy is valid*/
+	double mean_energy_;											/*!< mean energy of spectrum*/
+	bool mean_energy_valid_;									/*!< flag to track whether mean energy is valid*/
 
 	/*!
-	 * @brief Update mean energy
+	 * @brief update mean energy
 	*/
 	void UpdateMeanEnergy( void );
 

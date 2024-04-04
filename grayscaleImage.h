@@ -160,8 +160,8 @@ class GrayscaleImage{
 
 	private:
 
-	size_t width_;					/*!< Image width*/
-	size_t height_;					/*!< Image height*/
+	size_t width_;					/*!< image width*/
+	size_t height_;					/*!< image height*/
 	size_t number_of_pixel_;		/*!< amount of pixel in image*/
 
 	vector<double> raw_data_;			/*!< double data*/
