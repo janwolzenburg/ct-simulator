@@ -199,8 +199,7 @@ Voxel Model::GetVoxel( const Index3D indices ) const{
 pair<Ray, vector<Ray>> Model::TransmitRay( 
 																const Ray& ray, 
 																const TomographyProperties& tomography_properties,
-																RayScattering& scattering_properties, 
-																mutex& scattering_properties_mutex,
+																const RayScattering& scattering_properties,
 																RandomNumberGenerator& dedicated_rng,
 																const bool disable_scattering ) const{
 
@@ -361,7 +360,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 				// scatter the ray
 				const vector<Ray> scattered_rays = std::move( 
 					local_ray.Scatter( 
-														 scattering_properties, scattering_properties_mutex,
+														 scattering_properties,
 														 current_voxel_data, distance_in_voxel, 
 														 tomography_properties, current_point_on_ray,
 														 dedicated_rng ) );

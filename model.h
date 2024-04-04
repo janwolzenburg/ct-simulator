@@ -198,13 +198,12 @@ class Model : public MathematicalObject{
 	 * @param ray_to_transmit ray to trace through model
 	 * @param tomography_parameter Simulation parameter used in ray tracing
 	 * @param scattering_properties information for ray scattering
-	 * @param scattering_properties_mutex mutex for multi threading
 	 * @param dedicated_rng a dedicated RNG for this thread
 	 * @param disable_scattering flag to override eneabled scattering in tomography_properties
 	 * @return transmitted ray and rays, whcih were scattered
 	*/
-	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, RayScattering& scattering_properties, 
-																					 mutex& scattering_properties_mutex, RandomNumberGenerator& dedicated_rng, const bool disable_scattering = false ) const;
+	pair<Ray, vector<Ray>> TransmitRay( const Ray& ray_to_transmit, const TomographyProperties& tomography_parameter, const RayScattering& scattering_properties, 
+																		  RandomNumberGenerator& dedicated_rng, const bool disable_scattering = false ) const;
 
 	/*!
 	 * @brief crop model

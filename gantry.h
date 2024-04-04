@@ -103,9 +103,10 @@ class Gantry{
 	 * @brief radiate model with beam
 	 * @param model model to radiate
 	 * @param tomography_properties tomogrpahy properties
+	 * @param scattering_information scattering_properties
 	*/
 	void RadiateModel( const Model& model, TomographyProperties tomography_properties,
-										 RayScattering& scattering_information) ;
+										 const RayScattering& scattering_information) ;
 
 	/*!
 	 * @brief reset gantry to its initial position and reset detector
@@ -126,8 +127,7 @@ class Gantry{
 	 * @brief thread function to speed up transmission of multiple rays through model
 	 * @param model model to radiate through
 	 * @param tomography_properties properties of tomography
-	 * @param ray_scattering reference to object with information about Ray scattering
-	 * @param scattering_properties_mutex mutex for ray scattering
+	 * @param ray_scattering information about ray scattering
 	 * @param rays reference to vector with rays to transmit
 	 * @param second_to_last_iteration flag to indicate that this is the last iteration
 	 * @param current_ray_index index of the next Ray in vector to transmit. Will be changed at each call
@@ -138,9 +138,9 @@ class Gantry{
 	 * @param detector_mutex mutex for the detector instance
 	 * @param dedicated_rng a dedicated RNG with exclusive access
 	*/
-	static void TransmitRaysThreaded(	const Model& model,						const TomographyProperties& tomography_properties, 
-										RayScattering& ray_scattering, 
-										mutex& scattering_properties_mutex,	const vector<Ray>& rays, const bool second_to_last_iteration,
+	static void TransmitRaysThreaded(	const Model& model,	const TomographyProperties& tomography_properties, 
+										const RayScattering& ray_scattering, 
+										const vector<Ray>& rays, const bool second_to_last_iteration,
 										size_t& current_ray_index,				mutex& current_ray_index_mutex,
 										vector<Ray>& rays_for_next_iteration,	mutex& rays_for_next_iteration_mutex,
 										XRayDetector& detector,					mutex& detector_mutex,

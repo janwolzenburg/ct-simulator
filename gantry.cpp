@@ -66,7 +66,7 @@ void Gantry::TranslateInZDirection( const double distance ){
 
 void Gantry::TransmitRaysThreaded(	
 						   const Model& model, const TomographyProperties& tomography_properties,
-							 RayScattering& ray_scattering, mutex& scattering_properties_mutex,
+							 const RayScattering& ray_scattering,
 							 const vector<Ray>& rays, const bool second_to_last_iteration,
 							 size_t& shared_current_ray_index, mutex& current_ray_index_mutex,
 							 vector<Ray>& rays_for_next_iteration, mutex& rays_for_next_iteration_mutex,
@@ -94,8 +94,8 @@ void Gantry::TransmitRaysThreaded(
 		// transmit ray through model
 		rays_to_return = std::move( 
 			model.TransmitRay( cref( current_ray ), cref( tomography_properties ), 
-												 ref( ray_scattering ), 
-												 ref( scattering_properties_mutex ) , ref(dedicated_rng) ) );
+												 cref( ray_scattering ), 
+												 ref( dedicated_rng ) ) );
 
 		// detect the ray
 		detector.DetectRay( ref( rays_to_return.first ), ref( detector_mutex ) );
@@ -135,7 +135,7 @@ void Gantry::TransmitRaysThreaded(
 
 void Gantry::RadiateModel( const Model& model, 
 													 TomographyProperties tomography_properties,
-													 RayScattering& scattering_information ) {
+													 const RayScattering& scattering_information ) {
 
 	// current rays. start with rays from source
 	vector<Ray> rays = std::move( 
@@ -162,7 +162,6 @@ void Gantry::RadiateModel( const Model& model,
 	mutex current_ray_index_mutex;				// mutual exclusion for ray index
 	mutex rays_for_next_iteration_mutex;	// mutual exclusion for ray storage
 	mutex detector_mutex;									// mutual exclusion for detector
-	mutex scattering_mutex;								// mutual exclusion for scattering
 
 	// loop until maximum loop depth is reached or no more rays are left to transmit
 	for( size_t current_loop = 0; 
@@ -196,7 +195,7 @@ void Gantry::RadiateModel( const Model& model,
 			// transmit rays
 			threads.emplace_back( TransmitRaysThreaded,	
 														cref( model ), cref( tomography_properties ), 
-														ref( scattering_information ), ref( scattering_mutex ),
+														cref( scattering_information ),
 														cref( rays ),  second_to_last_iteration,
 														ref( shared_current_ray_index ), 
 														ref( current_ray_index_mutex ), ref( rays_for_next_iteration ), 

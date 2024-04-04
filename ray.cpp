@@ -119,8 +119,7 @@ void Ray::SetDirection( const Unitvector3D new_direction ){
 }
 
 
-vector<Ray> Ray::Scatter( RayScattering& scattering_information, 
-													mutex& scattering_properties_mutex,
+vector<Ray> Ray::Scatter( RayScattering& scattering_information,
 													const VoxelData& voxel_data, 
 													const double distance_traveled_mm, 
 													const TomographyProperties& tomography_properties, 

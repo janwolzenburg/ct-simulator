@@ -69,7 +69,7 @@ RayScattering::RayScattering(	const size_t number_of_angles,
 	}
 }
 
-double RayScattering::GetRandomAngle( const double energy, RandomNumberGenerator& dedicated_rng ){
+double RayScattering::GetRandomAngle( const double energy, RandomNumberGenerator& dedicated_rng ) const{
 
 	const size_t distributionIndex = ForceToMax( static_cast<size_t>( floor( ( energy - energy_range_.start() )  / energy_resolution_ + 0.5 ) ), scattering_angle_distributions_.size() - 1 );
 

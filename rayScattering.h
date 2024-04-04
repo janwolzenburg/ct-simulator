@@ -66,7 +66,7 @@ class RayScattering{
 	 * @param dedicated_rng RNG to use
 	 * @return random angle
 	*/
-	double GetRandomAngle( const double energy_eV, RandomNumberGenerator& dedicated_rng );
+	double GetRandomAngle( const double energy_eV, RandomNumberGenerator& dedicated_rng ) const;
 
 
 	private:

@@ -273,7 +273,7 @@ class Ray : public Line{
 	 * @param dedicated_rng a dedicated RNG with exclusive access
 	 * @return vector with scattered rays
 	*/
-	vector<Ray> Scatter( RayScattering& scattering_information,  mutex& scattering_properties_mutex, const VoxelData& voxel_data, const double distance_traveled_mm, 
+	vector<Ray> Scatter( const RayScattering& scattering_information, const VoxelData& voxel_data, const double distance_traveled_mm, 
 											 const TomographyProperties& tomography_properties, const Point3D& new_origin, RandomNumberGenerator& dedicated_rng );
 
 	/*!
