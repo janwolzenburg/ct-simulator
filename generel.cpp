@@ -103,7 +103,7 @@ NumberRange::NumberRange( const double start, const double end ) : start_( start
 	}
 }
 
-NumberRange::NumberRange( const NaturalNumberRange naturalRange ) :
+NumberRange::NumberRange( const NaturalNumberRange& naturalRange ) :
 	NumberRange{ static_cast<double>( naturalRange.start() ), static_cast<double>( naturalRange.end() ) }
 {}
 

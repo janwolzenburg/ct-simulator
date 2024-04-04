@@ -32,15 +32,9 @@ using std::cerr; using std::endl; using std::cout;
 #include <mutex>
 using std::mutex;
 
-#include <chrono>
-using namespace std::chrono;
-static microseconds start_tic;
-#define tic start_tic = duration_cast< microseconds >( system_clock::now().time_since_epoch() )
-#define toc ( duration_cast< microseconds >( system_clock::now().time_since_epoch() ) - start_tic ).count()
-
 
  /*********************************************************************
-	Definitions
+	definitions
  *********************************************************************/
 
  //#define VERIFY
@@ -48,7 +42,6 @@ static microseconds start_tic;
  #ifdef VERIFY
  #define TRANSMISSION_TRACKING
  #endif
- //#define TRANSMISSION_TRACKING
  
  // global variable to store a single thread id
  static std::thread::id first_thread_id;
@@ -58,7 +51,7 @@ static microseconds start_tic;
 
 
 /*!
- * @brief Pair of vectors
+ * @brief pair of vectors
 */
 typedef pair<vector<double>, vector<double>> VectorPair;
 
@@ -67,79 +60,135 @@ typedef pair<vector<double>, vector<double>> VectorPair;
  * @brief 2D indices
 */
 struct Index2D{
-	size_t x = 0;
-	size_t y = 0;
+	size_t x = 0;		/*!< x index*/
+	size_t y = 0;		/*!< y index*/
  };
 
 
  /*!
- * @brief Primitive 2D vector
+ * @brief primitive 2D vector
 */
 struct Tuple2D{
-	double x = 0.;
-	double y = 0.;
+	double x = 0.;	/*!< x value*/
+	double y = 0.;	/*!< y value*/
 };
 
 
  /*!
- * @brief Class for 3D indices
+ * @brief class for 3D indices
 */
 class Index3D{
 
 	public:
 
+	/*!
+	 * @brief constructor
+	 * @param x_ x value
+	 * @param y_ y value
+	 * @param z_ z value
+	 */
 	Index3D( const size_t x_, const size_t y_, const size_t z_ ) : x( x_ ), y( y_ ), z( z_ ) {};
 
+	/*!
+	 * @brief default constructor 
+	 */
 	Index3D( void ) : Index3D{ 0, 0, 0 }{};
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	Index3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
+	/*!
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 
+	/*!
+	 * @brief check for equality
+	 * @param operand second instance
+	 * @return true when equal
+	 */
 	bool operator==( const Index3D& operand ) const{ return x == operand.x && y == operand.y && z == operand.y; };
 
 
-	size_t x;
-	size_t y;
-	size_t z;
+	size_t x;	/*!< x index*/
+	size_t y;	/*!< y index*/
+	size_t z;	/*!< z index*/
 };
 
 
 /*!
-* @brief Class for 3D vector
+* @brief class to store three double values with x,y and z coordinate
 */
 class Tuple3D{
 
 	public:
 
+	/*!
+	 * @brief constructor
+	 * @param x_ x value
+	 * @param y_ y value
+	 * @param z_ z value
+	 */
 	Tuple3D( const double x_, const double y_, const double z_ ) : x( x_ ), y( y_ ), z( z_ ){};
-
+	
+	/*!
+	 * @brief default constructor
+	 */
 	Tuple3D( void ) : Tuple3D{ 0., 0., 0. } {};
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
-
+	
+	/*!
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double x;
-	double y;
-	double z;
+	double x;	/*!< x value*/
+	double y;	/*!< y value*/
+	double z;	/*!< z value*/
 };
 
 
 /*!
- * @brief Class for indicies to data organized in row/column structure
-*/
+ * @brief class for indicies to data organized in row/column structure
+ */
 class GridIndex{
 
 	public:
 
 	GridIndex( const size_t column, const size_t row ) : c( column ), r( row ) {};
-
+	
+	/*!
+	 * @brief default constructor
+	 */
 	GridIndex( void ) : GridIndex{ 0, 0 } {};
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
+	/*!
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
@@ -149,76 +198,157 @@ class GridIndex{
 
 
 /*!
- * @brief Class for  data organized in row/column structure
-*/
+ * @brief class for  data organized in row/column structure
+ */
 class GridCoordinates {
 
 	public:
 
+	/*!
+	 * @brief constructor
+	 * @param column column coordinate
+	 * @param row	row coordinate
+	 */
 	GridCoordinates( const double column, const double row ) : c( column ), r( row ) {};
-
+	
+	/*!
+	 * @brief default constructor
+	 */
 	GridCoordinates( void ) : GridCoordinates{ 0., 0. } {};
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
+	/*!
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 
 
-	double c;
-	double r;
+	double c;	/*!< column coordinate*/
+	double r; /*!< row coordinate*/
 };
 
 
 /*!
- * @brief Class for a range of whole numbers
+ * @brief class for a range of whole numbers
 */
 class NaturalNumberRange{
 
 	public:
 
+	/*!
+	 * @brief constructor
+	 * @param start start of range
+	 * @param end end of range
+	 */
 	NaturalNumberRange( const signed long long start, const signed long long end );
 
+	/*!
+	 * @brief get the start
+	 * @return start of range
+	 */
 	signed long long start( void ) const{ return start_; };
 
+	/*!
+	 * @brief get the end
+	 * @return end of range
+	 */
 	signed long long end( void ) const{ return end_; };
 
-	void start( const signed long long newStart ){ start_ = ( newStart < end_ ) ? newStart : end_ - 1; };
+	/*!
+	 * @brief set new start
+	 * @param new_start new start
+	 */
+	void start( const signed long long new_start ){ start_ = ( new_start < end_ ) ? new_start : end_ - 1; };
 
-	void end( const signed long long newEnd ){ end_ = ( newEnd > start_ ) ? newEnd : start_ + 1; };
+	/*!
+	 * @brief set new end
+	 * @param new_start new end
+	 */
+	void end( const signed long long new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1; };
 
 
 	private:
 
-	signed long long start_;
-	signed long long end_;
+	signed long long start_;	/*!< start of range*/
+	signed long long end_;		/*!< end of range*/
 };
 
 
 /*!
- * @brief Class for a range of real numbers with start
+ * @brief class for a range of real numbers 
 */
 class NumberRange{
 
 	public:
 	
+	/*!
+	 * @brief constructor
+	 * @param start start of range
+	 * @param end end of range
+	 */
 	NumberRange( const double start, const double end );
-
+	
+	/*!
+	 * @brief default constructor
+	 */
 	NumberRange( void ) : NumberRange{ 0., 1. }{};
 
-	NumberRange( const NaturalNumberRange naturalRange );
+	/*!
+	 * @brief converting constructor
+	 * @param natural_number_range natural number range
+	 */
+	NumberRange( const NaturalNumberRange& natural_number_range );
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
+	/*!
+	 * @brief serialize this instance
+	 * @param binary_data data to write to
+	 * @return bytes written
+	 */
 	size_t Serialize( vector<char>& binary_data ) const;
 	
-	double start( void ) const{ return start_; };
+	/*!
+	 * @brief get the start
+	 * @return start of range
+	 */
+	signed long long start( void ) const{ return start_; };
 
-	double end( void ) const{ return end_; };
+	/*!
+	 * @brief get the end
+	 * @return end of range
+	 */
+	signed long long end( void ) const{ return end_; };
 
-	void start( const double newStart ){ start_ = ( newStart < end_ ) ? newStart : end_ - 1.; };
+	/*!
+	 * @brief set new start
+	 * @param new_start new start
+	 */
+	void start( const signed long long new_start ){ start_ = ( new_start < end_ ) ? new_start : end_ - 1.; };
 
-	void end( const double newEnd ){ end_ = ( newEnd > start_ ) ? newEnd : start_ + 1.; };
+	/*!
+	 * @brief set new end
+	 * @param new_start new end
+	 */
+	void end( const signed long long new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1.; };
 
+	/*!
+	 * @brief get the size of the range
+	 * @return difference of end to start
+	 */
 	double GetDifference( void ) const{ return end_ - start_; };
 
 	/*!
@@ -231,8 +361,8 @@ class NumberRange{
 
 	private:
 	
-	double start_;
-	double end_;
+	double start_;	/*!< start of range*/
+	double end_;		/*!< end of range*/
 };
 
 

@@ -35,7 +35,6 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 	return diff;
 }
 
-
 template<typename T>
 string ToString<T>( T value, const int precision ){
 
