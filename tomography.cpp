@@ -141,7 +141,7 @@ optional<Projections> Tomography::RecordSlice(
 		// iterate all pixel
 		for( const DetectorPixel& pixel : pixel_array ){
 
-			// get Coordinates for pixel
+			// get coordinates for pixel
 			const RadonCoordinates radon_coordinates{ this->radon_coordinate_system_, 
 																								pixel.NormalLine() };
 

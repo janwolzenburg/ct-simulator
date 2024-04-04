@@ -12,9 +12,9 @@
 diagnoseSession/
 stateStorage/
 tests/
-models/
+#models/
 verification/
-*.model
+#*.model
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -374,3 +374,4 @@ FodyWeavers.xsd
 *.bak
 /html
 /latex
+/models/testModel_Artifact_20x.model
