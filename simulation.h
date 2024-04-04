@@ -27,27 +27,48 @@ constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * P
 constexpr double minimum_energy_in_tube_spectrum = 10000.;		/*!< maximum energy in tube's spectrum*/
 constexpr double maximum_energy_in_tube_spectrum = 210000.;		/*!< minimum energy in tube's spectrum*/
 
-
+/*!
+ * @brief class for storing some simulation properties
+ */
 class SimulationProperties{
 
 	public:
 	
-	static const string FILE_PREAMBLE; 
-	size_t quality;
+	static const string FILE_PREAMBLE;					/*!< preamble to store in front of an exported file*/
+	
+	size_t quality;															/*!< the simulation quality*/
 	double ray_step_size_mm;										/*!< stepsize during Ray iteration in Ray direction vector's unit*/
 	size_t number_of_points_in_spectrum_;				/*!< amount of discrete datapoints in spectrum*/
 	size_t number_of_energies_for_scattering;		/*!< amount of discrete angles available for scattering - should be odd to include 0°*/
 	size_t number_of_scatter_angles;						/*!< amount of energies used */
 	size_t bins_per_energy;											/*!< when scattering: Into how many bins should the photons with the same energy be divided into*/
 
+	/*!
+	 * @brief constructor
+	 * @param simulation_quality quality of simulation between 0 and 99
+	 */
 	SimulationProperties( size_t simulation_quality );
 
-	SimulationProperties( void ) : SimulationProperties{ 9 } {};
+	/*!
+	 * @brief default constructor
+	 */
+	SimulationProperties( void ) : SimulationProperties{ 20 } {};
 
+	/*!
+	 * @brief construct from serialsized data
+	 * @param binary_data data
+	 * @param current_byte iterator pointing to next byte
+	 */
 	SimulationProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
-
+	
+	/*!
+   * @brief serialize this instance
+   * @param binary_data data to write to
+   * @return bytes written
+   */
 	size_t Serialize( vector<char>& binary_data ) const;
 
 };
 
-extern SimulationProperties simulation_properties;
+
+extern SimulationProperties simulation_properties;		/*!< global instance of simulation properties*/
