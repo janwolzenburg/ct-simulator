@@ -30,7 +30,7 @@ RadonCoordinates::RadonCoordinates( const CoordinateSystem* const radon_coordina
 	const Line projected_line = line.ProjectOnXYPlane( radon_coordinate_system );
 
 	// get perpendicualar to projected ray through coordinate system's origin
-	vector3D lot = projected_line.GetLot( radon_coordinate_system->GetOriginPoint() );
+	Vector3D lot = projected_line.GetLot( radon_coordinate_system->GetOriginPoint() );
 
 	// ray intersects origin
 	if( IsNearlyEqualDistance( lot.length(), 0. ) ){

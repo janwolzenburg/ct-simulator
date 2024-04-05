@@ -78,7 +78,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 			  - static_cast<double>( pixel_index ) - 1 ) * delta_distance;
 															
 		// point which lies on the current normal and has the correct distance from the origin
-		const Point3D lot_end_point = vector3D{ normal_lot } * current_distance;
+		const Point3D lot_end_point = Vector3D{ normal_lot } * current_distance;
 
 		// the current normal 
 		const Line normal{ normal_vector, lot_end_point };
@@ -103,7 +103,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 
 			// lot vector from current normal to intersection point
 			// vector is pointing to the normal
-			const vector3D intersection_lot = normal.GetLot( intersection );
+			const Vector3D intersection_lot = normal.GetLot( intersection );
 
 			// get the pixel normal's origin which lies on the shortest Line connection the 
 			// intersection with current normal

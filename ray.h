@@ -162,7 +162,7 @@ class Ray : public Line{
 	 * @param origin origin
 	 * @param ray_properties properties
 	*/
-	explicit Ray( const vector3D direction, const Point3D origin, const RayProperties ray_properties ) : 
+	explicit Ray( const Vector3D direction, const Point3D origin, const RayProperties ray_properties ) : 
 		Line{ direction, origin }, properties_( ray_properties ){};
 
 	/*!

@@ -76,7 +76,7 @@ class FileChooser : private Fl_Native_File_Chooser{
 
 	/*!
 	 * @brief set new filter
-	 * @param newFilter new filter
+	 * @param new_filter new filter
 	*/
 	void SetFilter( const string new_filter );
 

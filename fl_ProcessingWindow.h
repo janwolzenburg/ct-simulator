@@ -43,10 +43,9 @@ class Fl_ProcessingWindow : public Fl_Window{
 
 	/*!
 	 * @brief constructor
-	 * @param x x-position
-	 * @param y y-position
 	 * @param w width
 	 * @param h height
+	 * @param label window label
 	 * @param projections projections the window will process
 	*/
 	Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections );

@@ -127,17 +127,17 @@ class DataGrid{
 
 	/*!
 	 * @brief get the row coordinate
-	 * @param row_index index of coordinate
+	 * @param row_index row index of coordinate
 	 * @return row coordinate
 	 */
 	double GetRowCoordinate( const size_t row_index ) const{ return row_points_.at( row_index ); };
 
 	/*!
 	 * @brief get the columns coordinate
-	 * @param column_index index of coordinate
+	 * @param column_index column index of coordinate
 	 * @return columns coordinate
 	 */
-	double GetColCoordinate( const size_t col_index ) const{ return column_points_.at( col_index ); };
+	double GetColumnCoordinate( const size_t column_index ) const{ return column_points_.at( column_index ); };
 
 	/*!
 	 * @brief get element value
@@ -155,7 +155,7 @@ class DataGrid{
 
 	/*!
 	 * @brief get element value
-	 * @param Coordinates Coordinates of element
+	 * @param coordinates coordinates of element
 	 * @return value of Element
 	*/
 	D GetData( const GridCoordinates coordinates ) const{ return this->GetData( GetIndex( coordinates ) ); };
@@ -208,8 +208,8 @@ class DataGrid{
 	D& operator()( const GridIndex index );
 
 	/*!
-	* @brief access operator for grid elemenrt
-	* @param point Point in grid
+	* @brief access operator for grid element
+	* @param coordinates coordinates in the grid
 	* @return reference to element value
 	*/
 	D& operator()( const GridCoordinates coordinates ){ return this->operator()( GetIndex( coordinates ) ); };

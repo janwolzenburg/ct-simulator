@@ -118,26 +118,26 @@ void Plot::DrawPlot( void ){
 LinePlot::LinePlot( const string name, const string xlabel_, const string ylabel_,
 			const PlotLimits limits, const GridIndex imgSize_, const bool grid_ ) :
 	Plot{ name, xlabel_, ylabel_, limits, imgSize_, grid_ },
-	X(), Y()
+	x_values(), y_values()
 {}
 
 LinePlot::LinePlot( void ) :
-	Plot{}, X(), Y()
+	Plot{}, x_values(), y_values()
 {}
 
 void LinePlot::AssignData( const vector<double> X_, const vector<double> Y_ ){
 
-	X = X_;
-	Y = Y_;
+	x_values = X_;
+	y_values = Y_;
 
 	if( limits_.xFactor != 1. ){
-		for( auto& x : X ){
+		for( auto& x : x_values ){
 			x *= limits_.xFactor;
 		}
 	}
 
 	if( limits_.yFactor != 1. ){
-		for( auto& y : Y ){
+		for( auto& y : y_values ){
 			y *= limits_.yFactor;
 		}
 	}
@@ -147,7 +147,7 @@ void LinePlot::AssignData( const vector<double> X_, const vector<double> Y_ ){
 
 void LinePlot::CreatePlot( void ){
 	Plot::reset();
-	Plot::plot_2D_.drawCurve( X, Y ).labelNone();
+	Plot::plot_2D_.drawCurve( x_values, y_values ).labelNone();
 	
 	plot_2D_.legend().hide();
 	Plot::DrawPlot();
@@ -155,7 +155,7 @@ void LinePlot::CreatePlot( void ){
 
 void DotPlot::CreatePlot( void ){
 	Plot::reset();
-	Plot::plot_2D_.drawPoints( X, Y ).labelNone();
+	Plot::plot_2D_.drawPoints( x_values, y_values ).labelNone();
 	
 	plot_2D_.legend().hide();
 	Plot::DrawPlot();

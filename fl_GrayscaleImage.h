@@ -87,7 +87,7 @@ class Fl_GrayscaleImage : public Fl_Widget{
 
 	/*!
 	 * @brief change the images contrast to given range
-	 * @param data_range range of value to show. value over or under values in range will be bounded
+	 * @param new_contrast range of value to show. value over or under values in range will be bounded
 	*/
 	void AdjustContrast( const NumberRange new_contrast);
 	

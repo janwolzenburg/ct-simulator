@@ -63,7 +63,7 @@ void Backprojection::ReconstructImageColumn(
 
 		// iterate image columns
 		for( size_t column_index = 0; column_index < number_of_distances; column_index++ ){
-			const double column_coordinate = image.GetColCoordinate( column_index );
+			const double column_coordinate = image.GetColumnCoordinate( column_index );
 
 			// iterate image rows
 			for( size_t row_index = 0; row_index < number_of_distances; row_index++ ){

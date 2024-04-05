@@ -116,7 +116,7 @@ void VerifyTransmission( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColumnCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 
 
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
@@ -187,7 +187,7 @@ void VerifyHardening( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColumnCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}},-slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
 		}
 	}
@@ -300,7 +300,7 @@ void VerifyScattering( void ){
 				value = ( slice.GetData( GridIndex{ c, r } ).GetAbsorptionAtReferenceEnergy() - slice.min_value().GetAbsorptionAtReferenceEnergy() ) / 
 							range;
 		
-			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + vector3D{ Tuple3D{ slice.GetColCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
+			const BoundedSurface voxel_surface{ Surface{ gantry_system->GetEx(), gantry_system->GetEy(), gantry_system->GetOriginPoint() + Vector3D{ Tuple3D{ slice.GetColumnCoordinate( c ), slice.GetRowCoordinate(r) , 0.,}, gantry_system}}, -slice.resolution().c/2., slice.resolution().c/2., -slice.resolution().r/2., slice.resolution().r/2.};
 			addSingleObject( axis, "Voxel", voxel_surface, "b", value * 0.6 + 0.3 );
 		}
 	}

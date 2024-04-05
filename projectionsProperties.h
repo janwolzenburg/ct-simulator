@@ -28,7 +28,7 @@ class ProjectionsProperties{
 	 * @param measuring_field_size distance range
 	*/
 	ProjectionsProperties( const size_t number_of_projections, const size_t number_of_distances, 
-							const double measuring_field_size );
+												 const double measuring_field_size );
 
 	/*!
 	 * @brief default constructor

@@ -39,16 +39,16 @@ class LinePlot : public Plot{
 
 	/*!
 	 * @brief assign data to plot
-	 * @param X vector of x values
-	 * @param Y vector of y values
+	 * @param x_values vector with x-values
+	 * @param y_values vector with y-values
 	*/
-	void AssignData( const vector<double> X, const vector<double> Y );
+	void AssignData( const vector<double> x_values, const vector<double> y_values );
 
 	/*!
 	 * @brief assign data to plot
-	 * @param XY pair of vectors with data
+	 * @param x_y_values pair of vectors with x and y values
 	*/
-	void AssignData( const VectorPair XY ){ AssignData( XY.first, XY.second ); };
+	void AssignData( const VectorPair x_y_values ){ AssignData( x_y_values.first, x_y_values.second ); };
 
 	/*!
 	 * @brief create the plot
@@ -58,7 +58,8 @@ class LinePlot : public Plot{
 
 	protected:
 
-	vector<double> X, Y;	/*!< vectors with points*/
+	vector<double> x_values;	/*!< x values of points*/
+	vector<double> y_values;	/*!< y values of points*/
 
 };
 

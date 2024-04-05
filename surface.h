@@ -105,8 +105,8 @@ class Surface : public MathematicalObject{
 
 	/*!
 	 * @brief checks if parameters are inside surface bounds
-	 * @param a surface parameter a
-	 * @param b surface parameter b
+	 * @param parameter_1 surface parameter 1
+	 * @param parameter_2 surface parameter 2
 	 * @return always true for unconfined surfaces
 	*/
 	virtual bool AreParametersInBounds( [[maybe_unused]] const double parameter_1, [[maybe_unused]] const double parameter_2 ) const { return true; };

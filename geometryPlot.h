@@ -49,9 +49,10 @@ class Geometryplot : public Plot{
 
 	/*!
 	 * @brief add point to plot
-	 * @param point Point coordiantes
+	 * @param point point coordiantes
+	 * @param name name of the point
 	*/
-	void AddPoint( const Tuple2D point, const string name = string{}){
+	void AddPoint( const Tuple2D point, const string name = string{} ){
 		points_.emplace_back( Tuple2D{ limits_.xFactor * point.x, limits_.yFactor * point.y }, name ); };
 
 	/*!

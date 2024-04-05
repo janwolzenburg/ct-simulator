@@ -39,7 +39,7 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 	PrimitiveCoordinateSystem x_axis_aligned_system{ Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } };
 	coordinate_system_->SetPrimitive( x_axis_aligned_system );
 
-	tube_.coordinate_system()->Translate( vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
+	tube_.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
 	
 }
 

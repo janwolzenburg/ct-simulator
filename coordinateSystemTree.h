@@ -84,7 +84,7 @@ class CoordinateSystemTree : public MathematicalObject{
 	 * @param ex x-axis
 	 * @param ey y-axis
 	 * @param ez z-axis
-	 * @param parent_ pointer to parent system
+	 * @param parent pointer to parent system
 	 * @param name name of the system
 	 * @return pointer to new system
 	*/

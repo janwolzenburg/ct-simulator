@@ -103,8 +103,9 @@ class Projections : private DataGrid<> {
 	TomographyProperties tomography_properties( void ) const;
 
 	/*!
-	 * @brief assign data at index 
-	 * @param data Data to assign
+	 * @brief assign data at index
+	 * @param index index to assign to
+	 * @param value value to assign
 	*/
 	void AssignData( const GridIndex index, const double value ){ this->SetData( index, value ); };
 
@@ -113,7 +114,7 @@ class Projections : private DataGrid<> {
 	 * @param index index of data
 	 * @return value at index
 	*/
-	double GetData(const GridIndex index) const{ return DataGrid<>::GetData(index); };
+	double GetData( const GridIndex index ) const{ return DataGrid<>::GetData(index); };
 
 	/*!
 	 * @brief assign data to grid

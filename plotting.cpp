@@ -64,7 +64,7 @@ string getObjectString<Point3D>( const Point3D p ){
 }
 
 template<>
-string getObjectString<vector3D, Point3D>( const vector3D v, const Point3D o ){
+string getObjectString<Vector3D, Point3D>( const Vector3D v, const Point3D o ){
 
 	char tempory_character_array[256];
 	snprintf( tempory_character_array, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GetGlobalX(), v.GetGlobalY(), v.GetGlobalZ(), o.GetGlobalX(), o.GetGlobalY(), o.GetGlobalZ() );
@@ -76,7 +76,7 @@ string getObjectString<vector3D, Point3D>( const vector3D v, const Point3D o ){
 template<>
 string getObjectString<Unitvector3D, Point3D>( const Unitvector3D v, const Point3D o ){
 
-	return getObjectString<vector3D, Point3D>( vector3D{ v }, o );
+	return getObjectString<Vector3D, Point3D>( Vector3D{ v }, o );
 
 }
 

@@ -112,7 +112,8 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 	/*!
 	 * @brief set axis tics
 	 * @param pixel_start start of tics
-	 * @param pixel_size amount of tics
+	 * @param pixel_size size of the pixel
+	 * @param number_of_tics amount of tics
 	*/
 	void SetAxis( const Tuple2D pixel_start, const Tuple2D pixel_size, const Index2D number_of_tics ){ image_widget_.SetAxis( pixel_start, pixel_size, number_of_tics ); };
 

@@ -62,16 +62,18 @@ class XRayTubeProperties {
 	/*!
 	 * @brief constructor
 	 * @param anode_Voltage_V anode voltage in V 
-	 * @param anodeCurrent_A anode Current in A
+	 * @param anodeCurrent_A anode current in A
 	 * @param anode_material anode material
 	 * @param number_of_rays_per_pixel amount of rays to emit per pixel
 	 * @param has_filter flag for roentgen-filter
+	 * @param filter_cut_of_energy energy below which the tube has no photon output
+	 * @param filter_gradient gradient of the filter curve
 	*/
 	XRayTubeProperties( const double anode_Voltage_V, const double anodeCurrent_A, const Material anode_material, const size_t number_of_rays_per_pixel, 
-						const bool has_filter, const double filter_cut_of_energy, const double filter_strength ) :
+						const bool has_filter, const double filter_cut_of_energy, const double filter_gradient ) :
 		anode_voltage_V( anode_Voltage_V ), anode_current_A( anodeCurrent_A ),
 		anode_material( anode_material ), number_of_rays_per_pixel_( ForceToMin1( number_of_rays_per_pixel ) ),
-		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_strength, .1, 10. ) ),
+		has_filter_( has_filter ), filter_cut_of_energy( ForceRange( filter_cut_of_energy, 0., 120000. ) ), filter_gradient( ForceRange( filter_gradient, .1, 10. ) ),
 		spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum - 1 ) )
 	{};
 
@@ -118,6 +120,7 @@ class XRayTube{
 
 	/*!
 	 * @brief constructor
+	 * @param coordinate_system tube's coordinate system
 	 * @param properties tube properties
 	*/
 	XRayTube( CoordinateSystem* const coordinate_system, const XRayTubeProperties properties );
@@ -153,7 +156,7 @@ class XRayTube{
 	 * @param exposure_time time in seconds
 	 * @return energy in joule
 	*/
-	double GetEmittedEnergy( const double exposureTime ) const{ return radiation_power_W_ * exposureTime; };
+	double GetEmittedEnergy( const double exposure_time ) const{ return radiation_power_W_ * exposure_time; };
 
 	/*!
 	 * @brief get ray power

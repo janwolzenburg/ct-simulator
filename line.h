@@ -41,7 +41,7 @@ class Line : public MathematicalObject{
 	 * @param direction line direction
 	 * @param origin origin
 	*/
-	explicit Line( const vector3D direction, const Point3D origin );
+	explicit Line( const Vector3D direction, const Point3D origin );
 
 	/*!
 	 * @brief default constructor
@@ -115,7 +115,7 @@ class Line : public MathematicalObject{
 	 * @param point Point to get the lot to
 	 * @return to this line perpendicular vector connecting this line and point point
 	*/
-	vector3D GetLot( const Point3D point ) const;
+	Vector3D GetLot( const Point3D point ) const;
 
 	/*!
 	 * @brief get shortest distance between line and point

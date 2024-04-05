@@ -29,7 +29,7 @@ using std::vector;
 
 
 /*!
- * @brief class for Ray detector
+ * @brief class for x-ray detector
 */
 class XRayDetector{
 
@@ -76,7 +76,7 @@ class XRayDetector{
 	/*!
 	 * @brief detect ray
 	 * @param ray ray to detect
-	 * @param pixel_mutex mutex for multi threaded access to pixel array
+	 * @param pixel_array_mutex mutex for multi threaded access to pixel array
 	 * @return true when ray hit the detector
 	*/
 	#ifdef TRANSMISSION_TRACKING

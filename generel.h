@@ -170,6 +170,11 @@ class GridIndex{
 
 	public:
 
+	/*!
+	 * @brief constructor
+	 * @param column column
+	 * @param row row
+	 */
 	GridIndex( const size_t column, const size_t row ) : c( column ), r( row ) {};
 	
 	/*!
@@ -270,7 +275,7 @@ class NaturalNumberRange{
 
 	/*!
 	 * @brief set new end
-	 * @param new_start new end
+	 * @param new_end new end
 	 */
 	void end( const signed long long new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1; };
 
@@ -341,7 +346,7 @@ class NumberRange{
 
 	/*!
 	 * @brief set new end
-	 * @param new_start new end
+	 * @param new_end new end
 	 */
 	void end( const double new_end ){ end_ = ( new_end > start_ ) ? new_end : start_ + 1.; };
 

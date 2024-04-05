@@ -47,7 +47,7 @@ bool IsNearlyEqualDistance( const double a, const double b ){
 
 
 MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const MathError code ) const{
-	// errorcode is not "OK"?
+	// error code is not "OK"?
 	if( code != MathError::Ok ){
 		// write to error stream
 		math_error_out << '\n' << GetErrorString( code ) << " from " << typeid( *this ).name() << '\n';
@@ -56,14 +56,14 @@ MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const 
 	return code;
 }
 
-MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const MathError code, const std::string message ) const{
+MathematicalObject::MathError MathematicalObject::CheckForAndOutputError( const MathError code, const string message ) const{
 	CheckForAndOutputError( code );
 	math_error_out << message << '\n';
 
 	return code;
 }
 
-std::string MathematicalObject::GetErrorString( const MathError code ) const{
+string MathematicalObject::GetErrorString( const MathError code ) const{
 	// convert error code to string
 	switch( code ){
 		case MathError::Ok:
@@ -86,7 +86,7 @@ std::string MathematicalObject::GetErrorString( const MathError code ) const{
 	}
 }
 
-void MathematicalObject::Dump( std::ostream& output, const std::string object_name ) const{
+void MathematicalObject::Dump( std::ostream& output, const string object_name ) const{
 	// write type, name and data to outstream
 
 	output << typeid( *this ).name() << ' ' << object_name << '\n' << this->ConvertToString() << '\n' << '\n';

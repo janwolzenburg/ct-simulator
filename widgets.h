@@ -95,11 +95,11 @@ struct PixelCoordinates{
 
 	/*!
 	 * @brief constructor
-	 * @param x x-coordinate
-	 * @param y y-coordinate
+	 * @param x_component x component
+	 * @param y_component y component
 	 */
-	PixelCoordinates( const size_t u_x, const size_t u_y ) : 
-		PixelCoordinates{ static_cast<int>( u_x ), static_cast<int>( u_y ) }{};
+	PixelCoordinates( const size_t x_component, const size_t y_component ) :
+		PixelCoordinates{ static_cast<int>( x_component ), static_cast<int>( y_component ) }{};
 
 	/*!
 	 * @brief constructor

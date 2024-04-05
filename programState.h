@@ -22,7 +22,9 @@
 
 ProgramState& PROGRAM_STATE( void );
 
-
+/*!
+ * @brief class handling persistent storage of current program state
+ */
 class ProgramState{
 
 	public:

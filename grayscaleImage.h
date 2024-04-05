@@ -44,14 +44,14 @@ class GrayscaleImage{
 	/*!
 	 * @brief construct image from grid
 	 * @param source_grid source grid
-	 * @param Normalise flag for normalisation
+	 * @param normalise flag for normalisation
 	*/
 	GrayscaleImage( const DataGrid<>& source_grid, const bool normalise = true );
 
 	/*!
 	 * @brief construct image from voxel-data grid
 	 * @param source_grid Source grid with voxel data
-	 * @param Normalise Flag for normalisation
+	 * @param normalise flag for normalisation
 	*/
 	GrayscaleImage( const DataGrid<VoxelData>& source_grid, const bool normalise = true );
 
@@ -66,7 +66,7 @@ class GrayscaleImage{
 
 	/*!
 	 * @brief construct image from binary data
-	 * @param binary_data Binary data
+	 * @param binary_data binary data
 	 * @param current_byte iterator to start reading from
 	*/
 	GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );

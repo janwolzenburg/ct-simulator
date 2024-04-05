@@ -62,7 +62,7 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief comparison operator
-	 * @param operand vector to compare with
+	 * @param vector_to_compare vector to compare with
 	 * @return true when all components between this and second vector are almost equal
 	*/
 	bool operator== ( const Primitivevector3 vector_to_compare ) const;
@@ -128,19 +128,19 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief add value to x component
-	 * @param x value to add
+	 * @param x_ value to add
 	*/
 	void AddToX( const double x_ ){ x += x_; };
 
 	/*!
 	 * @brief add value to y component
-	 * @param y value to add
+	 * @param y_ value to add
 	*/
 	void AddToY( const double y_ ){ y += y_; };
 
 	/*!
 	 * @brief add value to z component
-	 * @param z value to add
+	 * @param z_ value to add
 	*/
 	void AddToZ( const double z_ ){ z += z_; };
 

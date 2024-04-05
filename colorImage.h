@@ -27,9 +27,9 @@ using std::pair;
  * @brief rgb value
 */
 struct RGB{
-	unsigned char red;
-	unsigned char green;
-	unsigned char blue;
+	unsigned char red;		/*!< red component*/
+	unsigned char green;	/*!< green component*/
+	unsigned char blue;		/*!< blue component*/
 };
 
 
@@ -44,8 +44,8 @@ class ColorImage{
 
 	/*!
 	 * @brief construct empty image with given size
-	 * @param width Width
-	 * @param height Height
+	 * @param width width
+	 * @param height height
 	*/
 	ColorImage( const size_t width, const size_t height );
 
@@ -56,25 +56,25 @@ class ColorImage{
 
 	/*!
 	 * @brief construct image from other image but different size
-	 * @details Constructed image will be scaled in each direction individually
-	 * @param source_image Source image
-	 * @param new_width Width of constructed image
-	 * @param new_height Height of constucted image
+	 * @details constructed image will be scaled in each direction individually
+	 * @param source_image source image
+	 * @param new_width width of constructed image
+	 * @param new_height height of constucted image
 	*/
 	ColorImage( const ColorImage& source_image, const size_t new_width, const size_t new_height );
 	
 	/*!
 	 * @brief construct from grayscale image with new width and overlay
-	 * @param source_image Grayscale image
+	 * @param source_image grayscale image
 	 * @param new_width new width
-	 * @param newHeight new height
-	 * @param overlay Overlay to draw
+	 * @param new_height new height
+	 * @param overlay overlay to draw
 	*/
 	ColorImage( const GrayscaleImage& source_image, const size_t new_width, const size_t new_height, const vector<pair<bool, RGB>>& overlay = vector<pair<bool, RGB>>( 0 ) );
 
 	/*!
 	 * @brief construct image from binary data
-	 * @param binary_data Binary data
+	 * @param binary_data binary data
 	 * @param current_byte iterator to start reading from
 	*/
 	ColorImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
@@ -121,7 +121,7 @@ class ColorImage{
 
 	/*!
 	 * @brief get the image data
-	 * @param c column
+	 * @param column column
 	 * @param row row
 	 * @return color at row and column
 	*/
@@ -138,11 +138,10 @@ class ColorImage{
 
 
 	/*!
-	 * @brief get reference to image data
-	 * @param column column
-	 * @param row row
-	 * @return reference to color data
-	*/
-	void SetPixelData( const GridIndex pixel, const RGB new_data ){ image_data_.at( GetIndex( pixel.c, pixel.r ) ) = new_data; };
+	 * @brief set pixel data
+	 * @param pixel_index the pixel's index
+	 * @param new_data pixel data
+	 */
+	void SetPixelData( const GridIndex pixel_index, const RGB new_data ){ image_data_.at( GetIndex( pixel_index.c, pixel_index.r ) ) = new_data; };
 
 };

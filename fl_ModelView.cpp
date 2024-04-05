@@ -187,7 +187,7 @@ bool Fl_ModelView::MoveModel( double& targetXRot, double& targetYRot, double& ta
 		const double translation = targetZTrans - plane_instance.position_z;
 		plane_instance.position_z = targetZTrans;
 
-		model_.coordinate_system()->Translate( ( (vector3D) plane_instance.surface.GetNormal() ) * translation );
+		model_.coordinate_system()->Translate( ( (Vector3D) plane_instance.surface.GetNormal() ) * translation );
 	}
 
 	// return if succeeded

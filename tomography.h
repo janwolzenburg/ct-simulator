@@ -48,6 +48,7 @@ class TomographyProperties{
 	 * @param scattered_ray_absorption_factor factor to scale the scattered rays energies by
 	 * @param name name for identification
 	 * @param filter_active flag for active tube filter
+	 * @param simulation_quality simulation quality
 	*/
 	TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
 						  const bool use_simple_absorption, const double scattered_ray_absorption_factor,

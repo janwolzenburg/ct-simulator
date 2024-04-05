@@ -32,7 +32,7 @@ Line::Line( const Unitvector3D direction, const Point3D origin ) :
 	if( !direction.HasSameSystem( origin ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
 }
 
-Line::Line( const vector3D direction, const Point3D origin ) :
+Line::Line( const Vector3D direction, const Point3D origin ) :
 	direction_( Unitvector3D{ direction } ), origin_( origin )
 {
 	if( IsNearlyEqualDistance( direction_.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "trajectory vector must have length!" );
@@ -40,7 +40,7 @@ Line::Line( const vector3D direction, const Point3D origin ) :
 }
 
 Line::Line( void ) : 
-	Line{ vector3D{ Tuple3D{1, 0, 0}, GetDummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, GetDummySystem() }}
+	Line{ Vector3D{ Tuple3D{1, 0, 0}, GetDummySystem() }, Point3D{ Tuple3D{ 0, 0, 0 }, GetDummySystem() }}
 {
 
 }
@@ -82,18 +82,18 @@ double Line::GetAngle( const Surface& surface ) const{
 	return abs( PI / 2 - rotation_angle );
 };
 
-vector3D Line::GetLot( const Point3D point ) const{
-	const vector3D converted_point{ point.ConvertTo( direction_.GetCoordinateSystem() ) };
+Vector3D Line::GetLot( const Point3D point ) const{
+	const Vector3D converted_point{ point.ConvertTo( direction_.GetCoordinateSystem() ) };
 
 	const double line_parameter = ( direction_ * converted_point - direction_ * origin_ );
-	const vector3D lot_line_intersection_point{ origin_ + direction_ * line_parameter };
+	const Vector3D lot_line_intersection_point{ origin_ + direction_ * line_parameter };
 
 	return lot_line_intersection_point - converted_point;
 }
 
 
 double Line::GetDistance( const Line line ) const{
-	const vector3D normal{ direction_ ^ line.direction_ };
+	const Vector3D normal{ direction_ ^ line.direction_ };
 	return abs( ( line.origin_ - origin_ ) * normal ) / normal.length();
 }
 

@@ -120,45 +120,45 @@ Line CoordinateSystem::GetXAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Line{ vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ex_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetYAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Line{ vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ey_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Line CoordinateSystem::GetZAxis( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Line{ vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
+	return Line{ Vector3D{ez_, parent_ptr},  Point3D{origin_, parent_ptr} };
 }
 
 Surface CoordinateSystem::GetXYPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ey_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetYZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Surface{ vector3D{ey_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ey_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
 Surface CoordinateSystem::GetXZPlane( void ) const{
 	const CoordinateSystem* parent_ptr = parent_;
 	if( this->IsGlobal() ) parent_ptr = GetGlobalSystem();
 
-	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
+	return Surface{ Vector3D{ex_, parent_ptr}, Vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-MathematicalObject::MathError CoordinateSystem::Translate( const vector3D direction ){
+MathematicalObject::MathError CoordinateSystem::Translate( const Vector3D direction ){
 	if( this->IsGlobal() ){
 		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be translated!" );
 	}

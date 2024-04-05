@@ -62,7 +62,7 @@ class RayScattering{
 
 	/*!
 	 * @brief get a random angle to given energy
-	 * @param energy mean energy of Ray
+	 * @param energy_eV mean energy of ray
 	 * @param dedicated_rng RNG to use
 	 * @return random angle
 	*/

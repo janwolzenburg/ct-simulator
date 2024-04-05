@@ -31,9 +31,9 @@ const string ProjectionsProperties::FILE_PREAMBLE{ "Ver03RADONPARAMETER_FILE_PRE
  * radonProperties implementation
 */
 
-ProjectionsProperties::ProjectionsProperties(	const size_t number_of_angles, const size_t number_of_distances, 
+ProjectionsProperties::ProjectionsProperties(	const size_t number_of_projections, const size_t number_of_distances,
 												const double measuring_field_size ) :
-	number_of_projections_( ForceToMin( number_of_angles, static_cast<size_t>( 4 ) ) ),
+	number_of_projections_( ForceToMin( number_of_projections, static_cast<size_t>( 4 ) ) ),
 	number_of_distances_( ForceToMin( ForceEven( number_of_distances ), static_cast<size_t>( 2 ) ) ),
 	measuring_field_size_( ForcePositive( measuring_field_size ) ),
 	angles_resolution_( PI / static_cast<double>( number_of_projections_ ) ),

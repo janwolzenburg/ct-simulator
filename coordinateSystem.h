@@ -90,7 +90,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param ex x-axis
 	 * @param ey y-axis
 	 * @param ez z-axis
-	 * @param name_ Name of the system
+	 * @param name name of the system
 	 * @return pointer to created system with this system as parent
 	*/
 	CoordinateSystem* AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const;
@@ -171,7 +171,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @brief translate coordinate system
 	 * @param direction Translation vector
 	*/
-	MathError Translate( const vector3D direction );
+	MathError Translate( const Vector3D direction );
 
 	/*!
 	 * @brief rotate coordinate system around vector

@@ -66,8 +66,9 @@ class VoxelData{
 	 * @brief constructor
 	 * @param absorption_at_energy absorption coefficient at given energy
 	 * @param energy_eV energy in eV
+	 * @param special_properties special properties
 	*/
-	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty = None );
+	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty special_properties = None );
 
 	/*!
 	 * @brief constructor from serialized data
@@ -229,7 +230,7 @@ class Voxel : public MathematicalObject{
 	 * @brief get center of voxel
 	 * @return point at center of voxel
 	*/
-	Point3D GetCenter( void ) const{ return origin_corner_ + vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
+	Point3D GetCenter( void ) const{ return origin_corner_ + Vector3D{ Tuple3D{ size_.x / 2, size_.y / 2, size_.z / 2 } , origin_corner_.GetCoordinateSystem() }; };
 
 	/*!
 	 * @brief check if voxel contains point
