@@ -146,7 +146,7 @@ class EnergySpectrum {
 	/*!
 	 * @brief scale specific photonflow
 	 * @param energy_index Energy index
-	 * @param factor Factor to scale with
+	 * @param factor factor to scale with
 	*/
 	void ScaleEnergy( const size_t energy_index, const double factor );
 

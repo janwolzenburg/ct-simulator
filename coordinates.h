@@ -54,21 +54,21 @@ class Coordinates : protected Primitivevector3{
 
 	/*!
 	 * @brief comparison operator
-	 * @param operand Coordinates to compare with
+	 * @param coordinates_to_compare coordinates to compare with
 	 * @return true when all components are the same in global coordinate system
 	*/
-	bool operator== ( const Coordinates operand ) const;
+	bool operator== ( const Coordinates coordinates_to_compare ) const;
 
 	/*!
 	 * @brief addition operator
-	 * @param summand Coordinates to add
+	 * @param summand coordinates to add
 	 * @return coordinates with sum of components in coordinate system of first operand
 	*/
 	Coordinates operator+ ( const Coordinates summand ) const;
 
 	/*!
 	 * @brief substraction operator
-	 * @param subtrahend Coordinates to add
+	 * @param subtrahend coordinates to add
 	 * @return coordinates with difference of components in coordinate system of first operand
 	*/
 	Coordinates operator- ( const Coordinates subtrahend ) const;
@@ -81,14 +81,14 @@ class Coordinates : protected Primitivevector3{
 
 	/*!
 	 * @brief scale Coordinates
-	 * @param scalar Factor to scale by
+	 * @param scalar factor to scale by
 	 * @return scaled Coordinates
 	*/
 	Coordinates operator* ( const double scalar ) const;
 
 	/*!
 	 * @brief divide Coordinates
-	 * @param divisor Value to divide by
+	 * @param divisor value to divide by
 	 * @return divided Coordinates
 	*/
 	Coordinates operator/ ( const double divisor ) const;

@@ -51,7 +51,7 @@ class CoordinateSystemTree : public MathematicalObject{
 
 	public:
 
-	static constexpr size_t max_systems_in_tree = 64;	/*!< maximum amount of Coordinate systems in tree */
+	static constexpr size_t max_systems_in_tree = 64;	/*!< maximum amount of coordinate systems in tree */
 
 
 	/*!

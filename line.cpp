@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   Line.cpp
- * @brief  Implementations
+ * @file   line.cpp
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -27,17 +26,17 @@
 	Line implementation
 */
 
-Line::Line( const Unitvector3D v, const Point3D p ) : 
-	direction_( v ), origin_( p )
+Line::Line( const Unitvector3D direction, const Point3D origin ) : 
+	direction_( direction ), origin_( origin )
 {
-	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
+	if( !direction.HasSameSystem( origin ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
 }
 
-Line::Line( const vector3D v, const Point3D p ) : 
-	direction_( Unitvector3D{ v } ), origin_( p )
+Line::Line( const vector3D direction, const Point3D origin ) :
+	direction_( Unitvector3D{ direction } ), origin_( origin )
 {
 	if( IsNearlyEqualDistance( direction_.length(), 0 ) ) CheckForAndOutputError( MathError::Input, "trajectory vector must have length!" );
-	if( !v.HasSameSystem( p ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
+	if( !direction.HasSameSystem( origin ) ) CheckForAndOutputError( MathError::Input, "line origin and trajectory must be defined in the same coordinate system!" );
 }
 
 Line::Line( void ) : 
@@ -47,13 +46,13 @@ Line::Line( void ) :
 }
 
 string Line::ConvertToString( unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
-	str += "r=" + direction_.ConvertToString() + newLine + "u=" + origin_.ConvertToString();
-	return str;
+	new_string += "r=" + direction_.ConvertToString() + new_line + "u=" + origin_.ConvertToString();
+	return new_string;
 }
 
 Point3D Line::GetPointFast( const double line_parameter ) const{
@@ -66,37 +65,38 @@ Point3D Line::GetPointFast( const double line_parameter ) const{
 
 }
 
-double Line::GetLineParameter( const Point3D p, bool* const solution_found_ ) const{
-	Point3D cP = p.ConvertTo( origin_ );
+double Line::GetLineParameter( const Point3D point_on_line, bool* const solution_found ) const{
+	const Point3D converted_point = point_on_line.ConvertTo( origin_ );
 
-	double t = ( cP.X() - origin_.X() ) / direction_.X();
+	const double parameter = ( converted_point.X() - origin_.X() ) / direction_.X();
 
-	*solution_found_ = ( GetPoint( t ) == cP );
-	return t;
+	*solution_found = ( GetPoint( parameter ) == converted_point );
+	return parameter;
 }
 
-double Line::GetAngle( const Surface& s ) const{
+double Line::GetAngle( const Surface& surface ) const{
 
 	// angle between direction vector and surface normal
-	const double arc_angle = direction_.GetAngle( s.GetNormal() );
+	const double rotation_angle = direction_.GetAngle( surface.GetNormal() );
 
-	return abs( PI / 2 - arc_angle );
+	return abs( PI / 2 - rotation_angle );
 };
 
-vector3D Line::GetLot( const Point3D p ) const{
-	vector3D vP{ p.ConvertTo( direction_.GetCoordinateSystem() ) };
+vector3D Line::GetLot( const Point3D point ) const{
+	const vector3D converted_point{ point.ConvertTo( direction_.GetCoordinateSystem() ) };
 
-	double linePara = ( direction_ * vP - direction_ * origin_ );
-	vector3D s{ origin_ + direction_ * linePara };
-	return s - vP;
+	const double line_parameter = ( direction_ * converted_point - direction_ * origin_ );
+	const vector3D lot_line_intersection_point{ origin_ + direction_ * line_parameter };
+
+	return lot_line_intersection_point - converted_point;
 }
 
 
-double Line::GetDistance( const Line l ) const{
-	vector3D n{ direction_ ^ l.direction_ };
-	return abs( ( l.origin_ - origin_ ) * n ) / n.length();
+double Line::GetDistance( const Line line ) const{
+	const vector3D normal{ direction_ ^ line.direction_ };
+	return abs( ( line.origin_ - origin_ ) * normal ) / normal.length();
 }
 
-Line Line::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
-	return Line{ this->direction_.ProjectOnXYPlane( cSys ), this->origin_.ProjectOnXYPlane( cSys ) };
+Line Line::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{
+	return Line{ this->direction_.ProjectOnXYPlane( coordinate_system ), this->origin_.ProjectOnXYPlane( coordinate_system ) };
 }

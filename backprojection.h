@@ -71,7 +71,7 @@ class Backprojection : private DataGrid<> {
 	 * @brief reconstruct image column wise
 	 * @param current_x_index Current x-index
 	 * @param current_x_index_mutex Mutex for x-index
-	 * @param reconstructed_image Reference to image
+	 * @param reconstructed_image reference to image
 	 * @param reconstructed_image_mutex Mutex for image
 	 * @param progress_window Progress window
 	 * @param progress_window_mutex Mutex for progress

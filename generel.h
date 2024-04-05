@@ -353,7 +353,7 @@ class NumberRange{
 
 	/*!
 	 * @brief get the difference between two elements when range is divided equally spaced
-	 * @param number_of_elements Amount of elements in range
+	 * @param number_of_elements amount of elements in range
 	 * @return ( end_ - start_ ) / ( number_of_elements - 1 )
 	*/
 	double GetResolution( const size_t number_of_elements ) const;
@@ -403,7 +403,7 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T left_operand,
 /*!
  * @brief convert number to string with given precision
  * @tparam T type of number
- * @param value Value
+ * @param value value
  * @param precision Precision of converted number. Negative rounds number to significant digits
  * @return number as string
 */

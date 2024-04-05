@@ -1,6 +1,6 @@
 /*********************************************************************
- * @file   PrimitiveCoordinateSystem.cpp
- * @brief  Implementations
+ * @file   primitiveCoordinateSystem.cpp
+ * @brief  implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -24,8 +24,7 @@
 	PrimitiveCoordinateSystem implementation
 */
 
-PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez )
-	: origin_( origin ),
+PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez ) : origin_( origin ),
 	ex_( ex ),
 	ey_( ey ),
 	ez_( ez )
@@ -41,11 +40,11 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 ori
 		!IsNearlyEqualDistance( ex_ * ez_, 0 ) ) CheckForAndOutputError( MathError::Input, "unit axis must be orthogonal to each other!" );
 }
 
-PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	origin_( DeSerialize<Primitivevector3>( binary_data, it ) ),
-	ex_( DeSerialize<Primitivevector3>( binary_data, it ) ),
-	ey_( DeSerialize<Primitivevector3>( binary_data, it ) ),
-	ez_( DeSerialize<Primitivevector3>( binary_data, it ) )
+PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
+	origin_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
+	ex_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
+	ey_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
+	ez_( DeSerialize<Primitivevector3>( binary_data, current_byte ) )
 {
 	// normalise vectors
 	ex_.Normalise();
@@ -59,35 +58,35 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary
 }
 
 string PrimitiveCoordinateSystem::ConvertToString( const unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
-	str += newLine + "p=" + origin_.ConvertToString();
-	str += newLine + "ex_=" + ex_.ConvertToString() + newLine + "ey_=" + ey_.ConvertToString() + newLine + "ez_=" + ez_.ConvertToString();
-	return str;
+	new_string += new_line + "p=" + origin_.ConvertToString();
+	new_string += new_line + "ex_=" + ex_.ConvertToString() + new_line + "ey_=" + ey_.ConvertToString() + new_line + "ez_=" + ez_.ConvertToString();
+	return new_string;
 }
 
-MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const Primitivevector3 n, const double phi ){
-	MathError tErr = MathError::Ok;
-	MathError errCode = MathError::Ok;
+MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const Primitivevector3 axis, const double angle ){
+	MathError tempory_error = MathError::Ok;
+	MathError error_code = MathError::Ok;
 
-	if( ( tErr = ex_.Rotate( n, phi ) ) != MathError::Ok ) errCode = tErr;
-	if( ( tErr = ey_.Rotate( n, phi ) ) != MathError::Ok ) errCode = tErr;
-	if( ( tErr = ez_.Rotate( n, phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tempory_error = ex_.Rotate( axis, angle ) ) != MathError::Ok ) error_code = tempory_error;
+	if( ( tempory_error = ey_.Rotate( axis, angle ) ) != MathError::Ok ) error_code = tempory_error;
+	if( ( tempory_error = ez_.Rotate( axis, angle ) ) != MathError::Ok ) error_code = tempory_error;
 
-	return errCode;
+	return error_code;
 }
 
 
 size_t PrimitiveCoordinateSystem::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += origin_.Serialize( binary_data );
-	num_bytes += ex_.Serialize( binary_data );
-	num_bytes += ey_.Serialize( binary_data );
-	num_bytes += ez_.Serialize( binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += origin_.Serialize( binary_data );
+	number_of_bytes += ex_.Serialize( binary_data );
+	number_of_bytes += ey_.Serialize( binary_data );
+	number_of_bytes += ez_.Serialize( binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }

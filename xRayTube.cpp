@@ -37,14 +37,14 @@ const std::map < XRayTubeProperties::Material, std::pair<string, size_t>> XRayTu
 		{ Thungsten,	std::make_pair( "Thungsten", 74 ) }
 };
 
-XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	anode_voltage_V( DeSerializeBuildIn<double>( 120000., binary_data, it ) ),
-	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, it ) ),
-	anode_material( (Material) DeSerializeBuildIn<>( ConvertToUnderlying( Material::Thungsten ), binary_data, it ) ),
-	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
-	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, it ) ),
-	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, it ) ),
-	filter_gradient( DeSerializeBuildIn<double>( 10., binary_data, it ) ),
+XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	anode_voltage_V( DeSerializeBuildIn<double>( 120000., binary_data, current_byte ) ),
+	anode_current_A( DeSerializeBuildIn<double>( .2, binary_data, current_byte ) ),
+	anode_material( (Material) DeSerializeBuildIn<>( ConvertToUnderlying( Material::Thungsten ), binary_data, current_byte ) ),
+	number_of_rays_per_pixel_( DeSerializeBuildIn<size_t>( 1, binary_data, current_byte ) ),
+	has_filter_( DeSerializeBuildIn<bool>( true, binary_data, current_byte ) ),
+	filter_cut_of_energy( DeSerializeBuildIn<double>( al_filter_cut_off_energy_eV, binary_data, current_byte ) ),
+	filter_gradient( DeSerializeBuildIn<double>( 10., binary_data, current_byte ) ),
 	spectral_energy_resolution( ( anode_voltage_V - minimum_energy_in_tube_spectrum ) / static_cast<double>( simulation_properties.number_of_points_in_spectrum - 1 ) )
 {}
 
@@ -59,18 +59,18 @@ XRayTubeProperties::Material XRayTubeProperties::GetMaterialEnum( const string m
 }
 
 size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
 
-	num_bytes += SerializeBuildIn<double>( anode_voltage_V, binary_data );
-	num_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
-	num_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ConvertToUnderlying( anode_material ), binary_data );
-	num_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
-	num_bytes += SerializeBuildIn<bool>( has_filter_, binary_data );
-	num_bytes += SerializeBuildIn<double>( filter_cut_of_energy, binary_data );
-	num_bytes += SerializeBuildIn<double>( filter_gradient, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( anode_voltage_V, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
+	number_of_bytes += SerializeBuildIn<typename std::underlying_type_t<XRayTubeProperties::Material>>( ConvertToUnderlying( anode_material ), binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( number_of_rays_per_pixel_, binary_data );
+	number_of_bytes += SerializeBuildIn<bool>( has_filter_, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( filter_cut_of_energy, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( filter_gradient, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 

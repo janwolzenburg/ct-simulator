@@ -56,20 +56,20 @@ string ReplaceSpace( const string text ){
 template<>
 string getObjectString<Point3D>( const Point3D p ){
 
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "pnt (%.12f,%.12f,%.12f)", p.GetGlobalX(), p.GetGlobalY(), p.GetGlobalZ() );
+	char tempory_character_array[ 256 ];
+	snprintf( tempory_character_array, 256, "pnt (%.12f,%.12f,%.12f)", p.GetGlobalX(), p.GetGlobalY(), p.GetGlobalZ() );
 
-	return string{ tempCharArr };
+	return string{ tempory_character_array };
 
 }
 
 template<>
 string getObjectString<vector3D, Point3D>( const vector3D v, const Point3D o ){
 
-	char tempCharArr[256];
-	snprintf( tempCharArr, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GetGlobalX(), v.GetGlobalY(), v.GetGlobalZ(), o.GetGlobalX(), o.GetGlobalY(), o.GetGlobalZ() );
+	char tempory_character_array[256];
+	snprintf( tempory_character_array, 256, "vec (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f)", v.GetGlobalX(), v.GetGlobalY(), v.GetGlobalZ(), o.GetGlobalX(), o.GetGlobalY(), o.GetGlobalZ() );
 
-	return string{ tempCharArr };
+	return string{ tempory_character_array };
 
 }
 
@@ -83,30 +83,30 @@ string getObjectString<Unitvector3D, Point3D>( const Unitvector3D v, const Point
 template<>
 string getObjectString<Line, double>( const Line l, const double length ){
 
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.origin().GetGlobalX(), l.origin().GetGlobalY(), l.origin().GetGlobalZ(), l.direction().GetGlobalX(), l.direction().GetGlobalY(), l.direction().GetGlobalZ(), length );
+	char tempory_character_array[ 256 ];
+	snprintf( tempory_character_array, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", l.origin().GetGlobalX(), l.origin().GetGlobalY(), l.origin().GetGlobalZ(), l.direction().GetGlobalX(), l.direction().GetGlobalY(), l.direction().GetGlobalZ(), length );
 
-	return string{ tempCharArr };
+	return string{ tempory_character_array };
 
 }
 
 template<>
 string getObjectString<Ray, double>(const Ray r, const double length) {
 
-	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.origin().GetGlobalX(), r.origin().GetGlobalY(), r.origin().GetGlobalZ(), r.direction().GetGlobalX(), r.direction().GetGlobalY(), r.direction().GetGlobalZ(), length);
+	char tempory_character_array[256];
+	snprintf(tempory_character_array, 256, "lin (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f)", r.origin().GetGlobalX(), r.origin().GetGlobalY(), r.origin().GetGlobalZ(), r.direction().GetGlobalX(), r.direction().GetGlobalY(), r.direction().GetGlobalZ(), length);
 
-	return string{ tempCharArr };
+	return string{ tempory_character_array };
 
 }
 
 template<>
 string getObjectString<BoundedSurface, double>(const BoundedSurface s, const double alpha) {
 
-	char tempCharArr[256];
-	snprintf(tempCharArr, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.origin().GetGlobalX(), s.origin().GetGlobalY(), s.origin().GetGlobalZ(), s.direction_1().GetGlobalX(), s.direction_1().GetGlobalY(), s.direction_1().GetGlobalZ(), s.direction_2().GetGlobalX(), s.direction_2().GetGlobalY(), s.direction_2().GetGlobalZ(), s.parameter_1_min(), s.parameter_1_max(), s.parameter_2_min(), s.parameter_2_max(), alpha );
+	char tempory_character_array[256];
+	snprintf(tempory_character_array, 256, "sLi (%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f;%.12f,%.12f,%.12f,%.12f;%.12f)", s.origin().GetGlobalX(), s.origin().GetGlobalY(), s.origin().GetGlobalZ(), s.direction_1().GetGlobalX(), s.direction_1().GetGlobalY(), s.direction_1().GetGlobalZ(), s.direction_2().GetGlobalX(), s.direction_2().GetGlobalY(), s.direction_2().GetGlobalZ(), s.parameter_1_min(), s.parameter_1_max(), s.parameter_2_min(), s.parameter_2_max(), alpha );
 
-	return string{ tempCharArr };
+	return string{ tempory_character_array };
 
 }
 
@@ -115,33 +115,33 @@ string getObjectString<BoundedSurface, double>(const BoundedSurface s, const dou
 template<>
 string getObjectString<vector<Tuple2D>, int>( const vector<Tuple2D> data_, const int type ){
 	
-	string str;
+	string new_string;
 	switch( type ){
 		default:
 		case 0:
-			str = "plot "; break;
+			new_string = "plot "; break;
 		case 1:
-			str = "polar "; break;
+			new_string = "polar "; break;
 		case 2:
-			str = "loglog "; break;
+			new_string = "loglog "; break;
 	}
 
 	for( auto valIt = data_.cbegin(); valIt < data_.cend(); valIt++ ){
-		str += to_string( valIt->x );
+		new_string += to_string( valIt->x );
 
-		if( valIt < data_.cend() - 1 ) str += ',';
+		if( valIt < data_.cend() - 1 ) new_string += ',';
 	}
 
-	str += ";";
+	new_string += ";";
 
 	for( auto valIt = data_.cbegin(); valIt < data_.cend(); valIt++ ){
-		str += to_string( valIt->y );
+		new_string += to_string( valIt->y );
 
-		if( valIt < data_.cend() - 1 ) str += ',';
+		if( valIt < data_.cend() - 1 ) new_string += ',';
 	}
 
 	
-	return str;
+	return new_string;
 
 }
 
@@ -231,7 +231,7 @@ string getObjectString<DataGrid<>>( const DataGrid<> data_, const bool image ){
 template<>
 void addObject<vector<Line>, double>( ofstream& axis, const string name, const vector<Line> lines, const string data, const double length ){
 
-	for( const Line l : lines ){
+	for( const Line& l : lines ){
 		addSingleObject( axis, name, l, data, length );
 	}
 
@@ -256,7 +256,7 @@ void addObject<vector<DetectorPixel>, double>( ofstream& axis, const string name
 
 template<>
 void addObject<vector<BoundedSurface>, double>( ofstream& axis, const string name, const vector<BoundedSurface> surfaces, const string data, const double alpha ){
-	for( const BoundedSurface surface : surfaces ){
+	for( const BoundedSurface& surface : surfaces ){
 		addSingleObject( axis, name, surface, data, alpha );
 	}
 }

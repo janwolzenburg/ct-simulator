@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   serialization.hpp
- * @brief  
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -20,46 +19,46 @@
 
 
 template< typename T >
-size_t SerializeBuildIn( const T& val, vector<char>& binary_data ){
+size_t SerializeBuildIn( const T& value, vector<char>& binary_data ){
 
-	char* valStartPtr = (char*) &val;
+	char* value_address = (char*) &value;
 
-	binary_data.insert( binary_data.end(), valStartPtr, valStartPtr + sizeof( T ) );
+	binary_data.insert( binary_data.end(), value_address, value_address + sizeof( T ) );
 
 	return sizeof(T);
 
 }
 
 template< typename T >
-size_t DeSerializeBuildIn( T& val, T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& it ){
+size_t DeSerializeBuildIn( T& value, T default_value, const vector<char>& binary_data, vector<char>::const_iterator& current_byte ){
 
-	val = 0;
+	value = 0;
 
 	// not enough data left in vector
-	if( binary_data.cend() - it < sizeof( T ) ) val = defaultVal;
+	if( binary_data.cend() - current_byte < sizeof( T ) ) value = default_value;
 	else{
-		val = *( (T*) &(*it) );
-		it += sizeof( T );
+		value = *( (T*) &( *current_byte ) );
+		current_byte += sizeof( T );
 	}
 
 	return sizeof(T);
 }
 
 template< typename T >
-T DeSerializeBuildIn( T defaultVal, const vector<char>& binary_data, vector<char>::const_iterator& it ){
+T DeSerializeBuildIn( T default_value, const vector<char>& binary_data, vector<char>::const_iterator& current_byte ){
 
-	T temp{};
+	T tempory_value{};
 	
-	DeSerializeBuildIn<T>( temp, defaultVal, binary_data, it );
+	DeSerializeBuildIn<T>( tempory_value, default_value, binary_data, current_byte );
 
-	return temp;
+	return tempory_value;
 
 }
 
 
 template< typename T >
-T DeSerialize( const vector<char>& binary_data, vector<char>::const_iterator& it ){
+T DeSerialize( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ){
 
-	return T{ binary_data, it };
+	return T{ binary_data, current_byte };
 
 }

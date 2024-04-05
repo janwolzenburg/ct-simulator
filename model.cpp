@@ -1,7 +1,5 @@
-
 /*********************************************************************
  * @file   model.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -57,28 +55,28 @@ Model::Model( CoordinateSystem* const coordinate_system, const Index3D numVox3D_
 }
 
 
-Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	number_of_voxel_3D_{ binary_data, it },
-	voxel_size_{ binary_data, it },
+Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	number_of_voxel_3D_{ binary_data, current_byte },
+	voxel_size_{ binary_data, current_byte },
 	size_{	static_cast<double>( number_of_voxel_3D_.x ) * voxel_size_.x,
 			static_cast<double>( number_of_voxel_3D_.y ) * voxel_size_.y,
 			static_cast<double>( number_of_voxel_3D_.z ) * voxel_size_.z } ,
 	number_of_voxel_( number_of_voxel_3D_.x* number_of_voxel_3D_.y* number_of_voxel_3D_.z ),
-	coordinate_system_( GetCoordinateSystemTree().AddSystem( binary_data, it ) ),
-	min_absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	max_absorption_(  DeSerializeBuildIn<double>( 1., binary_data, it )  ),
-	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, it ) ),
+	coordinate_system_( GetCoordinateSystemTree().AddSystem( binary_data, current_byte ) ),
+	min_absorption_( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	max_absorption_(  DeSerializeBuildIn<double>( 1., binary_data, current_byte )  ),
+	name_( DeSerializeBuildIn<string>( string{ "Default model name_"}, binary_data, current_byte ) ),
 	voxel_data_( number_of_voxel_, VoxelData{} )
 {
 	
-	if( number_of_voxel_ * sizeof( VoxelData ) == static_cast<size_t>( binary_data.end() - it ) ){
-		memcpy( voxel_data_.data(), &( *it ), number_of_voxel_ * sizeof(VoxelData));
-		it += static_cast<long long int>( number_of_voxel_ * sizeof( VoxelData ) );
+	if( number_of_voxel_ * sizeof( VoxelData ) == static_cast<size_t>( binary_data.end() - current_byte ) ){
+		memcpy( voxel_data_.data(), &( *current_byte ), number_of_voxel_ * sizeof(VoxelData));
+		current_byte += static_cast<long long int>( number_of_voxel_ * sizeof( VoxelData ) );
 	}
 	else{
 
 		for( size_t i = 0; i < number_of_voxel_; i++ ){
-			voxel_data_[i] = VoxelData( binary_data, it );
+			voxel_data_[i] = VoxelData( binary_data, current_byte );
 		}
 	}
 }
@@ -430,19 +428,19 @@ size_t Model::Serialize( vector<char>& binary_data ) const{
 
 	binary_data.reserve( expectedSize );
 
-	size_t num_bytes = 0;
-	num_bytes += number_of_voxel_3D_.Serialize( binary_data );
-	num_bytes += voxel_size_.Serialize( binary_data );
-	num_bytes += coordinate_system_->Serialize( binary_data );
-	num_bytes += SerializeBuildIn<double>( min_absorption_, binary_data );
-	num_bytes += SerializeBuildIn<double>( max_absorption_, binary_data );
-	num_bytes += SerializeBuildIn<string>( name_, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += number_of_voxel_3D_.Serialize( binary_data );
+	number_of_bytes += voxel_size_.Serialize( binary_data );
+	number_of_bytes += coordinate_system_->Serialize( binary_data );
+	number_of_bytes += SerializeBuildIn<double>( min_absorption_, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( max_absorption_, binary_data );
+	number_of_bytes += SerializeBuildIn<string>( name_, binary_data );
 
 	
 	binary_data.insert( binary_data.end(), (char*) voxel_data_.data(), (char*) voxel_data_.data() + sizeof(VoxelData) * number_of_voxel_);
 	//binary_data.insert( binary_data.end(), parameter.cbegin(), parameter.cend() );
 
-	return num_bytes;
+	return number_of_bytes;
 
 }
 
@@ -537,7 +535,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface sliceLocation, const GridInde
 	if( !forced_resolution.has_value() ){
 		// distance between corners furthest away from each other
 		double cornerDistance = size_.x + size_.y + size_.z; //sqrt( pow( size_.x, 2. ) + pow( size_.y, 2. ) + pow( size_.z, 2. ) );
-		// worst case: origin_ of plane at one corner and plane orianted in a way that it just slices corner on the other side of model cube
+		// worst case: origin_ of plane at one corner and plane orianted in a way that current_byte just slices corner on the other side of model cube
 
 		size_t Mmax_number_of_points = Max( number_of_points.c, number_of_points.r );
 		sliceStart = { - cornerDistance / 2., -cornerDistance / 2. };

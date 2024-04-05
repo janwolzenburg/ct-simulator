@@ -32,7 +32,7 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 	const Tuple3D local_ray_direction = ray.direction().GetComponents( voxel.origin_corner() );
 	bool face_possible = true;
 
-	// find Entrance
+	// find entrance
 
 	using Face = Voxel::Face;
 

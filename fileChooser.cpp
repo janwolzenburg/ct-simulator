@@ -49,14 +49,14 @@ FileChooser::FileChooser( const string windowTitle, const string fileFilter, con
 }
 
 
-FileChooser::FileChooser( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
+FileChooser::FileChooser( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
 	FileChooser{ "", "", path{} }
 {
-	this->SetTitle( DeSerializeBuildIn<string>( string{ "File chooser" }, binary_data, it ) );
-	this->SetFilter( DeSerializeBuildIn<string>( string{ "" }, binary_data, it ) );
-	this->SetStartDirectory( DeSerializeBuildIn<string>( string{ "./" }, binary_data, it ) );
+	this->SetTitle( DeSerializeBuildIn<string>( string{ "File chooser" }, binary_data, current_byte ) );
+	this->SetFilter( DeSerializeBuildIn<string>( string{ "" }, binary_data, current_byte ) );
+	this->SetStartDirectory( DeSerializeBuildIn<string>( string{ "./" }, binary_data, current_byte ) );
 
-	this->Fl_Native_File_Chooser::type( DeSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binary_data, it ) );
+	this->Fl_Native_File_Chooser::type( DeSerializeBuildIn<unsigned char>( (unsigned char) (BROWSE_FILE), binary_data, current_byte ) );
 
 	this->options( SAVEAS_CONFIRM );
 
@@ -81,13 +81,13 @@ FileChooser& FileChooser::operator=( const FileChooser& fC ){
 
 size_t FileChooser::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<string>( string{ this->title() }, binary_data);
-	num_bytes += SerializeBuildIn<string>( string{ this->filter() }, binary_data );
-	num_bytes += SerializeBuildIn<string>( string{ this->directory() }, binary_data );
-	num_bytes += SerializeBuildIn<unsigned char>( (unsigned char) type_, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<string>( string{ this->title() }, binary_data);
+	number_of_bytes += SerializeBuildIn<string>( string{ this->filter() }, binary_data );
+	number_of_bytes += SerializeBuildIn<string>( string{ this->directory() }, binary_data );
+	number_of_bytes += SerializeBuildIn<unsigned char>( (unsigned char) type_, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 
 }
 

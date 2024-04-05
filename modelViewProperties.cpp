@@ -23,12 +23,12 @@ const string ModelViewProperties::FILE_PREAMBLE{ "Ver02MODELVIEWPARAMETER_FILE_P
 
 size_t ModelViewProperties::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
-	num_bytes += contrast.Serialize( binary_data );
-	num_bytes += slice_plane.Serialize( binary_data );
-	num_bytes += SerializeBuildIn<double>( artefact_impact, binary_data );
+	number_of_bytes += contrast.Serialize( binary_data );
+	number_of_bytes += slice_plane.Serialize( binary_data );
+	number_of_bytes += SerializeBuildIn<double>( artefact_impact, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 
 }

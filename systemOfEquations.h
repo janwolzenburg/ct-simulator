@@ -30,14 +30,14 @@ class Matrix : public MathematicalObject{
 
 	/*!
 	 * @brief constructor
-	 * @param number_of_columns Amount of columns
-	 * @param number_of_rows Amount of rows
+	 * @param number_of_columns amount of columns
+	 * @param number_of_rows amount of rows
 	*/
 	Matrix(  const size_t number_of_columns, const size_t number_of_rows );
 	
 	/*!
 	 * @brief convert matrice's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators amount of tabulators to insert after each line break
 	 * @return string with Line's data
 	*/
 	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;
@@ -110,7 +110,7 @@ class Matrix : public MathematicalObject{
 	/*!
 	 * @brief scale row by factor
 	 * @param row row to scale
-	 * @param scalar Factor to scale by
+	 * @param scalar factor to scale by
 	 * @return error code
 	*/
 	MathError ScaleRow( const size_t row, const double scalar );
@@ -146,7 +146,7 @@ class SystemOfEquations : private Matrix{
 
 	/*!
 	 * @brief constructor
-	 * @param number_of_variables Number of variables
+	 * @param number_of_variables number of variables
 	*/
 	SystemOfEquations( const size_t number_of_variables );
 
@@ -237,7 +237,7 @@ class SystemOfEquationsSolution : public MathematicalObject{
 	/*!
 	 * @brief set variable's value
 	 * @param index index of variable to set
-	 * @param value Value to set to
+	 * @param value value to set to
 	*/
 	void SetVariableValue( const size_t index, const double value );
 

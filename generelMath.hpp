@@ -43,8 +43,8 @@ ForceToMin1( T a ){
 
 template <typename T>
 typename std::enable_if_t<std::is_arithmetic_v<T>, T>
-ForceToMin( T a, T minValue ){
-	return Max( minValue, a );
+ForceToMin( T a, T minimum ){
+	return Max( minimum, a );
 }
 
 template <typename T>

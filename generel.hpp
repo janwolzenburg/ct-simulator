@@ -1,6 +1,6 @@
 /*********************************************************************
  * @file   generel.hpp
- * @brief  Template implementations
+ * @brief  template implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022

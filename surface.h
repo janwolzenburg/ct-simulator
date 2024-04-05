@@ -32,7 +32,7 @@ class Surface : public MathematicalObject{
 	/*!
 	 * @brief constructor
 	 * @param direction_1 First direction vector
-	 * @param direction_2 Second direction vector. Must be orthogonal to first vector
+	 * @param direction_2 second direction vector. Must be orthogonal to first vector
 	 * @param origin origin
 	*/
 	explicit Surface( const Unitvector3D direction_1, const Unitvector3D  direction_2, const Point3D  origin );
@@ -134,11 +134,11 @@ class BoundedSurface : public Surface{
 	 * @param direction_1 first direction vector
 	 * @param direction_2 second direction vector. Must be orthogonal to first vector
 	 * @param origin origin
-	 * @param direction_1_range limits for parameter a
-	 * @param direction_2_range limits for parameter b
+	 * @param parameter_1_range limits for parameter a
+	 * @param parameter_2_range limits for parameter b
 	*/
 	explicit BoundedSurface( const Unitvector3D  direction_1, const Unitvector3D  direction_2, const Point3D  origin,
-							 const NumberRange direction_1_range, const NumberRange direction_2_range );
+							 const NumberRange parameter_1_range, const NumberRange parameter_2_range );
 
 	/*!
 	 * @brief constructor
@@ -157,11 +157,11 @@ class BoundedSurface : public Surface{
 	/*!
 	 * @brief constructor
 	 * @param surface base surface
-	 * @param direction_1_range limits for parameter a
-	 * @param direction_2_range limits for parameter b
+	 * @param parameter_1_range limits for parameter a
+	 * @param parameter_2_range limits for parameter b
 	*/
 	explicit BoundedSurface( const Surface surface,
-							 const NumberRange direction_1_range,  const NumberRange direction_2_range );
+							 const NumberRange parameter_1_range,  const NumberRange parameter_2_range );
 
 	/*!
 	 * @brief constructor
@@ -190,7 +190,7 @@ class BoundedSurface : public Surface{
 
 	/*!
 	 * @brief convert surface's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators amount of tabulators to insert after each line break
 	 * @return string with surface's data
 	*/
 	std::string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;

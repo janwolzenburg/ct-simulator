@@ -65,7 +65,7 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	 * @param operand vector to compare with
 	 * @return true when all components between this and second vector are almost equal
 	*/
-	bool operator== ( const Primitivevector3 operand ) const;
+	bool operator== ( const Primitivevector3 vector_to_compare ) const;
 
 	/*!
 	 * @brief add second vector to this
@@ -89,17 +89,17 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief scale this vector
-	 * @param scalar Factor to scale with
+	 * @param scalar factor to scale with
 	 * @return scaled vector
 	*/
 	Primitivevector3 operator* ( const double scalar ) const{ return Primitivevector3{ scalar * x, scalar * y, scalar * z }; };
 
 	/*!
 	 * @brief scalar product
-	 * @param v Second vector
+	 * @param second_vector second vector
 	 * @return scalar product of vectors
 	*/
-	double operator* ( const Primitivevector3 vec ) const{ return this->x * vec.x + this->y * vec.y + this->z * vec.z; };
+	double operator* ( const Primitivevector3 second_vector ) const{ return this->x * second_vector.x + this->y * second_vector.y + this->z * second_vector.z; };
 
 	/*!
 	 * @brief divide this vector
@@ -116,7 +116,7 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 
 	/*!
 	 * @brief scale this vector
-	 * @param scalar Factor to scale by
+	 * @param scalar factor to scale by
 	*/
 	void Scale( const double scalar );
 
@@ -168,7 +168,7 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	/*!
 	 * @brief rotate point that these three components form around a vector the components of n form
 	 * @param axis Rotation axis
-	 * @param angle Angle
+	 * @param angle angle
 	 * @return error code
 	*/
 	MathError Rotate( const Primitivevector3 axis, const double angle );

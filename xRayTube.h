@@ -98,7 +98,7 @@ class XRayTubeProperties {
 
 	double anode_voltage_V;							/*!< anode Voltage in volts*/
 	double anode_current_A;							/*!< current in ampere*/
-	Material anode_material;						/*!< atomic Number of anode material*/
+	Material anode_material;						/*!< atomic number of anode material*/
 	size_t number_of_rays_per_pixel_;		/*!< the amount of discrete rays to emit per detector pixel*/
 	bool has_filter_;										/*!< flag for filter*/
 	double filter_cut_of_energy;				/*!< energy under which all radiating is absorbed by filter*/

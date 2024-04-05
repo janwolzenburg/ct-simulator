@@ -35,7 +35,7 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( void ) :
 
 template<class L, class S>
 LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& surface ) :
-	intersection_exists_( false )
+	LineSurfaceIntersection<L, S>{}
 {
 	// primitve vectors without coordinate system context
 	Primitivevector3 surface_origin, surface_direction_1, surface_direction_2;
@@ -89,12 +89,12 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& 
 
 template<class L, class S>
 string LineSurfaceIntersection<L, S>::ConvertToString( unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
-	str += "solution=" + intersection_exists_;
-	str += newLine + intersection_point_.ConvertToString();
-	return str;
+	new_string += "solution=" + intersection_exists_;
+	new_string += new_line + intersection_point_.ConvertToString();
+	return new_string;
 }

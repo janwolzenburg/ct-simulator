@@ -33,80 +33,80 @@ vector<double> CreateLinearSpace( const double start, const double end, const si
 
 /*!
  * @brief sum of all elements
- * @param double_vector vector to sum
+ * @param vector_to_sum vector to sum
  * @return sum
 */
-double Sum( const vector<double> double_vector );
+double Sum( const vector<double>& vector_to_sum );
 
 /*!
  * @brief sum all y-values of vector elements
- * @param tuple_vector vector of 2D points
+ * @param vector_to_sum vector of 2D points
  * @return sum of y-values
 */
-double SumYValues( const vector<Tuple2D> tuple_vector );
+double SumYValues( const vector<Tuple2D>& vector_to_sum );
 
 /*!
  * @brief scale each element in vector
- * @param double_vector vector with elements to scale
- * @param factor Factor to scale by
+ * @param vector_to_scale vector with elements to scale
+ * @param factor factor to scale by
 */
-void Scale( vector<double>& double_vector, const double factor );
+void Scale( vector<double>& vector_to_scale, const double factor );
 
 /*!
  * @brief scale all y-values
- * @param tuple_vector vector with 2D elements
- * @param factor Factor to scael
+ * @param vector_to_scale vector with 2D elements
+ * @param factor factor to scael
 */
-void ScaleYValues( vector<Tuple2D>& tuple_vector, const double factor );
+void ScaleYValues( vector<Tuple2D>& vector_to_scale, const double factor );
 
 /*!
  * @brief normalise 2D vector. sum of y-values will be one afterwards
- * @param tuple_vector vector to Normalise
+ * @param vector_to_normalise vector to normalise
 */
-void Normalise( vector<Tuple2D>& tuple_vector );
+void Normalise( vector<Tuple2D>& vector_to_normalise );
 
 /*!
  * @brief normalise 2D vector
- * @param tuple_vector vector to Normalise
+ * @param vector_to_normalise vector to normalise
  * @return normalised vector
 */
-vector<Tuple2D> Normalise( const vector<Tuple2D>& tuple_vector );
+vector<Tuple2D> Normalise( const vector<Tuple2D>& vector_to_normalise );
 
 /*!
  * @brief search element in vector closest to value
- * @param double_vector vector to search. Must be sorted ascending
+ * @param vector_to_search vector to search. must be sorted ascending
  * @param value value to search for
  * @return index of closest element in vector
 */
-size_t GetClosestElementIndex( const vector<double>& double_vector, const double value );
+size_t GetClosestElementIndex( const vector<double>& vector_to_search, const double value );
 
 /*!
  * @brief get maximum element of vector
- * @param double_vector vector to search
+ * @param vector_to_search vector to search
  * @return maximum value
 */
-double GetMaxElement( const vector<double>& double_vector );
+double GetMaxElement( const vector<double>& vector_to_search );
 
 /*!
  * @brief get minimum element of vector
- * @param double_vector vector to search
+ * @param vector_to_search vector to search
  * @return minimum value
 */
-double GetMinElement( const vector<double>& double_vector );
+double GetMinElement( const vector<double>& vector_to_search );
 
 /*!
  * @brief get maximum value in 2D vector
- * @param double_2d_vector vector
+ * @param vector_to_search vector to search
  * @return maximum value
 */
-double GetMaxElement( const vector<vector<double>>& double_2d_vector );
+double GetMaxElement( const vector<vector<double>>& vector_to_search );
 
 /*! 
  * @brief get minimum value in 2D vector
- * @param double_2d_vector vector
+ * @param vector_to_search vector to search
  * @return minimum value
 */
-double GetMinElement( const vector<vector<double>>& double_2d_vector );
+double GetMinElement( const vector<vector<double>>& vector_to_search );
 
 /*! 
  * @brief add two tuples. when x-value match it adds the y-values. otherwise a new x-value is created

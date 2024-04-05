@@ -31,23 +31,23 @@ SlicePlane::SlicePlane( void ) :
 	position_z( 0. ){
 }
 
-SlicePlane::SlicePlane( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	coordinate_system{ GetCoordinateSystemTree().AddSystem( binary_data, it ) },
-	surface{ binary_data, it, coordinate_system },
-	rotation_angle_x( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	rotation_angle_y( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	position_z( DeSerializeBuildIn<double>( 0., binary_data, it ) )
+SlicePlane::SlicePlane( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	coordinate_system{ GetCoordinateSystemTree().AddSystem( binary_data, current_byte ) },
+	surface{ binary_data, current_byte, coordinate_system },
+	rotation_angle_x( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	rotation_angle_y( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	position_z( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) )
 {}
 
 size_t SlicePlane::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += coordinate_system->Serialize( binary_data );
-	num_bytes += surface.Serialize( binary_data );
-	num_bytes += SerializeBuildIn<double>( rotation_angle_x, binary_data );
-	num_bytes += SerializeBuildIn<double>( rotation_angle_y, binary_data );
-	num_bytes += SerializeBuildIn<double>( position_z, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += coordinate_system->Serialize( binary_data );
+	number_of_bytes += surface.Serialize( binary_data );
+	number_of_bytes += SerializeBuildIn<double>( rotation_angle_x, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( rotation_angle_y, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( position_z, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 
 }

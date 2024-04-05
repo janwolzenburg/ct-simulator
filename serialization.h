@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   serialization.h
- * @brief  
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -37,16 +36,16 @@ size_t SerializeBuildIn( const T& value, vector<char>& binary_data );
  * @return amount of bytes appended
 */
 template<>
-size_t SerializeBuildIn<string>( const string& value, vector<char>& binary_data );
+size_t SerializeBuildIn<string>( const string& string_to_serialize, vector<char>& binary_data );
 
 /*!
  * @brief serialize 2D-vector of grid points
- * @param value object to serialize
+ * @param vector_to_serialize object to serialize
  * @param binary_data reference to vector to append to
  * @return amount of bytes appended
 */
 template<>
-size_t SerializeBuildIn<vector<vector<GridCoordinates>>>( const vector<vector<GridCoordinates>>& value, vector<char>& binary_data );
+size_t SerializeBuildIn<vector<vector<GridCoordinates>>>( const vector<vector<GridCoordinates>>& vector_to_serialize, vector<char>& binary_data );
 
 /*!
  * @brief deserialize build in data type
@@ -62,14 +61,14 @@ size_t DeSerializeBuildIn( T& value, T default_value, const vector<char>& binary
 
 /*!
  * @brief deserialize string
- * @param value reference to write value to
- * @param default_value default value when reading fails
+ * @param string_to_serialize reference to write value to
+ * @param default_string default value when reading fails
  * @param binary_data vector with binary data
  * @param current_byte iterator to start reading from. will be advanced
  * @return amount of bytes read
  */
 template<>
-size_t DeSerializeBuildIn<string>( string& value, string default_value, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
+size_t DeSerializeBuildIn<string>( string& string_to_serialize, string default_string, const vector<char>& binary_data, vector<char>::const_iterator& current_byte );
 
 /*!
  * @brief deserialize build in data type

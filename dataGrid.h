@@ -222,7 +222,7 @@ class DataGrid{
 
 	/*!
 	 * @brief fill the points and data vectors with value
-	 * @param value Value to fill
+	 * @param value value to fill
 	*/
 	void Fillvectors( const D value );
 

@@ -66,7 +66,7 @@ class Model : public MathematicalObject{
 
 	/*!
 	 * @brief convert model's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each line break
+	 * @param newline_tabulators amount of tabulators to insert after each line break
 	 * @return string with model's data
 	*/
 	string ConvertToString( const unsigned int newline_tabulators = 0 ) const override;

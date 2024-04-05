@@ -54,7 +54,7 @@ XRayDetector::XRayDetector( CoordinateSystem* const coordinate_system,
 	double previous_pixel_size;		// size of previous pixel
 
 
-	// iterate through half of pixel normals. Second half is created by symmetry
+	// iterate through half of pixel normals. second half is created by symmetry
 	// normals will be created inside to outside
 	for( size_t pixel_index = 0; pixel_index < number_of_distances / 2; pixel_index++ ){
 

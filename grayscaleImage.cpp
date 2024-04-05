@@ -79,15 +79,15 @@ GrayscaleImage::GrayscaleImage( const GrayscaleImage& srcImg, const size_t newWi
 }
 
 
-GrayscaleImage::GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	width_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
-	height_( DeSerializeBuildIn<size_t>( 1, binary_data, it ) ),
+GrayscaleImage::GrayscaleImage( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	width_( DeSerializeBuildIn<size_t>( 1, binary_data, current_byte ) ),
+	height_( DeSerializeBuildIn<size_t>( 1, binary_data, current_byte ) ),
 	number_of_pixel_( width_* height_ ),
 	raw_data_( number_of_pixel_, 0. ),
 	image_data_( number_of_pixel_, 0 ){
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		raw_data_.at( i ) = DeSerializeBuildIn<double>( 0., binary_data, it );
+		raw_data_.at( i ) = DeSerializeBuildIn<double>( 0., binary_data, current_byte );
 	}
 
 	AdjustContrast();
@@ -103,15 +103,15 @@ size_t GrayscaleImage::GetIndex( const size_t c, const size_t r ) const{
 
 size_t GrayscaleImage::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<size_t>( width_, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( height_, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<size_t>( width_, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( height_, binary_data );
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		num_bytes += SerializeBuildIn<double>( raw_data_.at( i ), binary_data );
+		number_of_bytes += SerializeBuildIn<double>( raw_data_.at( i ), binary_data );
 	}
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 void GrayscaleImage::AdjustContrast( const NumberRange dataRange ){

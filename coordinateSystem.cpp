@@ -28,69 +28,70 @@
 	CoordinateSystem implementation
 */
 
-CoordinateSystem::CoordinateSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_,
-					const CoordinateSystem* const parent_, const string name_ )
-	: PrimitiveCoordinateSystem{ origin_, ex_, ey_, ez_ },
-	parent_( parent_ ),
-	name_( name_ ){};
+CoordinateSystem::CoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez,
+					const CoordinateSystem* const parent, const string name )
+	: PrimitiveCoordinateSystem{ origin, ex, ey, ez },
+	parent_( parent ),
+	name_( name )
+{}
 
 CoordinateSystem::CoordinateSystem( void )
 	: CoordinateSystem( Primitivevector3{ Tuple3D{ 0, 0, 0 } }, Primitivevector3{ Tuple3D{ 1, 0, 0 } }, Primitivevector3{ Tuple3D{ 0, 1, 0 } }, Primitivevector3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
 
 string CoordinateSystem::ConvertToString( const unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
-	str += newLine + name_;
-	str += newLine + PrimitiveCoordinateSystem::ConvertToString();
-	str += newLine + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( parent_ ) );
-	return str;
+	new_string += new_line + name_;
+	new_string += new_line + PrimitiveCoordinateSystem::ConvertToString();
+	new_string += new_line + "parent coordinate_system_:" + std::format( "{:#X}", reinterpret_cast<std::uintptr_t>( parent_ ) );
+	return new_string;
 }
 
 
-CoordinateSystem* CoordinateSystem::CreateCopy( const string newName ) const{
-	// only one global coordinate system allowed! Parent of copy will be global system
+CoordinateSystem* CoordinateSystem::CreateCopy( const string new_name ) const{
+	// only one global coordinate system allowed! parent of copy will be global system
 	if (this->IsGlobal()) {
-		return GetCoordinateSystemTree().AddSystem(origin_, ex_, ey_, ez_, this, newName);
+		return GetCoordinateSystemTree().AddSystem(origin_, ex_, ey_, ez_, this, new_name);
 	}
 
-	return GetCoordinateSystemTree().AddSystem( origin_, ex_, ey_, ez_, parent_, newName );
+	return GetCoordinateSystemTree().AddSystem( origin_, ex_, ey_, ez_, parent_, new_name );
 }
 
-void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const sourceCSys ){
+void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const source_system ){
 
-	origin_ = sourceCSys->origin_;
-	ex_ = sourceCSys->ex_;
-	ey_ = sourceCSys->ey_;
-	ez_ = sourceCSys->ez_;
+	origin_ = source_system->origin_;
+	ex_ = source_system->ex_;
+	ey_ = source_system->ey_;
+	ez_ = source_system->ez_;
 
-	parent_ = sourceCSys->parent_;
+	parent_ = source_system->parent_;
 
 }
 
-CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const string name_ ) const{
-	return GetCoordinateSystemTree().AddSystem( origin_, ex_, ey_, ez_, this, name_ );
+CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const{
+	return GetCoordinateSystemTree().AddSystem( origin, ex, ey, ez, this, name );
 }
 
 vector<const CoordinateSystem *> CoordinateSystem::GetPathFromGlobal( void ) const{
-	vector<const CoordinateSystem *> path;
+	vector<const CoordinateSystem *> path_from_global;
 
-	if( this->IsGlobal() ) return path;
+	if( this->IsGlobal() ) return path_from_global;
 
-	const CoordinateSystem *cur_cSys = this->parent_;	// start with parent of this system
+	const CoordinateSystem *current_system = this->parent_;	// start with parent of this system
 
 	// loop while current coordinate system is not the global system
-	while( !cur_cSys->IsGlobal() ){
-		path.push_back( cur_cSys );
-		cur_cSys = cur_cSys->parent_;
+	while( !current_system->IsGlobal() ){
+		path_from_global.push_back( current_system );
+		current_system = current_system->parent_;
 	}
 
 	// reverse order to get path of coordinate systems traverse
-	std::reverse( path.begin(), path.end() );
+	std::reverse( path_from_global.begin(), path_from_global.end() );
 
-	return path;
+	return path_from_global;
 }
 
 
@@ -157,64 +158,64 @@ Surface CoordinateSystem::GetXZPlane( void ) const{
 	return Surface{ vector3D{ex_, parent_ptr}, vector3D{ez_, parent_ptr}, Point3D{origin_, parent_ptr } };
 }
 
-MathematicalObject::MathError CoordinateSystem::Translate( const vector3D dV ){
+MathematicalObject::MathError CoordinateSystem::Translate( const vector3D direction ){
 	if( this->IsGlobal() ){
 		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be translated!" );
 	}
 
-	PrimitiveCoordinateSystem::Translate( dV.GetComponents( parent_ ) );
+	PrimitiveCoordinateSystem::Translate( direction.GetComponents( parent_ ) );
 
 	return MathError::Ok;
 }
 
-MathematicalObject::MathError CoordinateSystem::Rotate( const Unitvector3D n, const double phi ){
+MathematicalObject::MathError CoordinateSystem::Rotate( const Unitvector3D axis, const double rotation_angle ){
 	if( this->IsGlobal() ){
 		return CheckForAndOutputError( MathError::Operation, "global coordinate system cannot be rotated!" );
 	}
 
-	return PrimitiveCoordinateSystem::Rotate( n.GetComponents( parent_ ), phi );
+	return PrimitiveCoordinateSystem::Rotate( axis.GetComponents( parent_ ), rotation_angle );
 }
 
-MathematicalObject::MathError CoordinateSystem::Rotate( const Line l, const double phi ){
-	MathError tErr = MathError::Ok;
-	MathError errCode = MathError::Ok;
+MathematicalObject::MathError CoordinateSystem::Rotate( const Line axis, const double rotation_angle ){
+	MathError tempory_error = MathError::Ok;
+	MathError error_code = MathError::Ok;
 
 	// rotate coordinate system's unit vectors
-	if( ( tErr = Rotate( l.direction(), phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tempory_error = Rotate( axis.direction(), rotation_angle ) ) != MathError::Ok ) error_code = tempory_error;
 
 	// move rotation center to origin_ of rotation axis
-	Translate( -l.origin() );
+	Translate( -axis.origin() );
 
 	// rotate position vector of origin_ around rotation axis
-	if( ( tErr = origin_.Rotate( l.direction().GetComponents( parent_ ), phi ) ) != MathError::Ok ) errCode = tErr;
+	if( ( tempory_error = origin_.Rotate( axis.direction().GetComponents( parent_ ), rotation_angle ) ) != MathError::Ok ) error_code = tempory_error;
 
 	// translate back
-	Translate( l.origin() );
+	Translate( axis.origin() );
 
-	return errCode;
+	return error_code;
 }
 
-void CoordinateSystem::SetPrimitive( const PrimitiveCoordinateSystem primitiveCSys ){
+void CoordinateSystem::SetPrimitive( const PrimitiveCoordinateSystem new_primitive ){
 
-	this->origin_ = primitiveCSys.origin();
-	this->ex_ = primitiveCSys.ex();
-	this->ey_ = primitiveCSys.ey();
-	this->ez_ = primitiveCSys.ez();
+	this->origin_ = new_primitive.origin();
+	this->ex_ = new_primitive.ex();
+	this->ey_ = new_primitive.ey();
+	this->ez_ = new_primitive.ez();
 
 }
 
 size_t CoordinateSystem::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
-	num_bytes += GetOriginPoint().GetGlobalComponents().Serialize( binary_data );
+	number_of_bytes += GetOriginPoint().GetGlobalComponents().Serialize( binary_data );
 
-	num_bytes += GetEx().GetGlobalComponents().Serialize( binary_data );
-	num_bytes += GetEy().GetGlobalComponents().Serialize( binary_data );
-	num_bytes += GetEz().GetGlobalComponents().Serialize( binary_data );
+	number_of_bytes += GetEx().GetGlobalComponents().Serialize( binary_data );
+	number_of_bytes += GetEy().GetGlobalComponents().Serialize( binary_data );
+	number_of_bytes += GetEz().GetGlobalComponents().Serialize( binary_data );
 	
-	num_bytes += SerializeBuildIn<string>( name_, binary_data );
+	number_of_bytes += SerializeBuildIn<string>( name_, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 
 }

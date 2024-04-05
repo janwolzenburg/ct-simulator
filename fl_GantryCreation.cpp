@@ -141,8 +141,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_distances_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		distance_range_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 
-		number_of_angles_input_.tooltip( "Amount of projections." );
-		number_of_distances_input_.tooltip( "Amount of distances in projections. Is the amount of detector pixel." );
+		number_of_angles_input_.tooltip( "amount of projections." );
+		number_of_distances_input_.tooltip( "amount of distances in projections. Is the amount of detector pixel." );
 		distance_range_input_.tooltip( "Size of measure field in mm." );
 
 

@@ -22,7 +22,7 @@ constexpr double min_detetector_arc_angle_rad = 2. * PI * ( 40. / 360. );		/*!< 
 
 constexpr double default_scatter_propability_correction = 1.;												/*!< correction factor for scatter propability*/
 constexpr size_t default_max_radiation_loops = 1;																		/*!< how often can a Ray be scattered*/
-constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!< default maximum arc_angle between ray and pixel normal allowed by anti scattering structure*/
+constexpr double default_max_ray_angle_allowed_by_structure = 5. / 360. * 2. * PI;	/*!< default maximum rotation_angle between ray and pixel normal allowed by anti scattering structure*/
 
 constexpr double minimum_energy_in_tube_spectrum = 10000.;		/*!< maximum energy in tube's spectrum*/
 constexpr double maximum_energy_in_tube_spectrum = 210000.;		/*!< minimum energy in tube's spectrum*/
@@ -37,11 +37,11 @@ class SimulationProperties{
 	static const string FILE_PREAMBLE;					/*!< preamble to store in front of an exported file*/
 	
 	size_t quality;															/*!< the simulation quality*/
-	double ray_step_size_mm;										/*!< stepsize during Ray iteration in Ray direction vector's unit*/
+	double ray_step_size_mm;										/*!< stepsize during ray iteration in ray direction vector's unit*/
 	size_t number_of_points_in_spectrum;				/*!< amount of discrete datapoints in spectrum*/
 	size_t number_of_energies_for_scattering;		/*!< amount of discrete angles available for scattering - should be odd to include 0°*/
 	size_t number_of_scatter_angles;						/*!< amount of energies used */
-	size_t bins_per_energy;											/*!< when scattering: Into how many bins should the photons with the same energy be divided into*/
+	size_t bins_per_energy;											/*!< when scattering: into how many bins should the photons with the same energy be divided into*/
 
 	/*!
 	 * @brief constructor

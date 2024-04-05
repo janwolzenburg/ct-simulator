@@ -176,18 +176,18 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	/*!
 	 * @brief rotate coordinate system around vector
 	 * @param axis rotation axis
-	 * @param arc_angle angle
+	 * @param rotation_angle angle
 	 * @return error code
 	*/
-	MathError Rotate( const Unitvector3D axis, const double arc_angle );
+	MathError Rotate( const Unitvector3D axis, const double rotation_angle );
 
 	/*!
 	 * @brief rotate coordinate system
 	 * @param axis rotation axis
-	 * @param arc_angle angle
+	 * @param rotation_angle angle
 	 * @return error code
 	*/
-	MathError Rotate( const Line axis, const double arc_angle );
+	MathError Rotate( const Line axis, const double rotation_angle );
 
 
 	private:

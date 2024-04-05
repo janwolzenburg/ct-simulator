@@ -38,7 +38,7 @@ constexpr double efficiancy_constant_PerV = 1.1E-9;						/*!< efficiancy constan
 
 constexpr double me_c2_eV = 0.511e6;													/*!< compton Wavelength in eV */
 constexpr double me_c2_J = me_c2_eV * J_Per_eV;								/*!< compton wavelenth in Joule */
-constexpr double Per_me_c2_eV = 1 / me_c2_eV;									/*!< reciprocal of compton wavelength*/
+constexpr double per_me_c2_eV = 1 / me_c2_eV;									/*!< reciprocal of compton wavelength*/
 
 constexpr double permitivity_As_Per_Vm = 8.8541878128e-12;		/*!< epsilon0: Permitivity of vaccum in As/Vm */
 constexpr double r_e_mm = 2.8179403262e-12;										/*!< electron radius in mm*/
@@ -83,8 +83,8 @@ enum ComparisonMode{
 
 /*!
  * @brief compares to values for their equality with tolerance
- * @param a Value 1
- * @param b Value 2
+ * @param a value 1
+ * @param b value 2
  * @param tolerance maximum difference between a and b for them to be considered equal. Absolute or relative depending on next argument
  * @param mode comparison mode: tolerance is absolute difference or relative difference
  * @return true when the difference is less than tolerance
@@ -93,8 +93,8 @@ bool IsNearlyEqual( const double a, const double b, const double tolerance, cons
 
 /*!
  * @brief compares to values for their equality with tolerance
- * @param a Value 1
- * @param b Value 2
+ * @param a value 1
+ * @param b value 2
  * @return true when the difference is less than EPSILON
 */
 bool IsNearlyEqualDistance( const double a, const double b );
@@ -112,7 +112,7 @@ double RelativeDeviation( const T a, const T b );
 /*!
  * @brief checks if number is even
  * @tparam T integer type
- * @param integer Value
+ * @param integer value
  * @return true when integer is even
 */
 template <typename T>
@@ -121,9 +121,9 @@ IsEven( const T integer );
 
 /*!
  * @brief return the minimum of two values
- * @tparam T Arithmetic type
- * @param a Value a
- * @param b Value b
+ * @tparam T arithmetic type
+ * @param a value a
+ * @param b value b
  * @return minimum value
 */
 template <typename T>
@@ -155,7 +155,7 @@ ForceToMax( const T value, const T maximum );
 /*!
  * @brief force a minimum value
  * @tparam T arithmetic type
- * @param value Value
+ * @param value value
  * @param  minimum minimum value
  * @return a or minimum when a is less than minimum
 */
@@ -186,7 +186,7 @@ ForcePositive( T a );
 /*!
  * @brief force value to an odd value
  * @tparam T integral type
- * @param a Value
+ * @param a value
  * @return a when add. a + 1 when even
 */
 template <typename T>
@@ -196,7 +196,7 @@ ForceOdd( T a );
 /*!
  * @brief force value to an even value
  * @tparam T integral type
- * @param a Value
+ * @param a value
  * @return a when add. a + 1 when even
 */
 template <typename T>
@@ -206,7 +206,7 @@ ForceEven( T a );
 /*!
  * @brief force value to a range
  * @tparam T arithmetic type
- * @param value Value
+ * @param value value
  * @param minimum minimum value
  * @param maximum maximum value
  * @return value constraint to range
@@ -241,7 +241,7 @@ class MathematicalObject{
 
 	/*!
 	 * @brief convert object's data to string
-	 * @param newline_tabulators Amount of tabulators to insert after each Line break
+	 * @param newline_tabulators amount of tabulators to insert after each line break
 	 * @return string with object's data
 	 * @details virtual for object specific implementation
 	*/
@@ -249,14 +249,14 @@ class MathematicalObject{
 
 	/*!
 	 * @brief dump object's type and data to output stream
-	 * @param output Output stream to dump to
-	 * @param object_name Name of the object to include in the dump
+	 * @param output output stream to dump to
+	 * @param object_name name of the object to include in the dump
 	*/
 	void Dump( std::ostream& output, const string object_name ) const;
 
 	/*!
 	 * @brief convert last error to string
-	 * @param code Error code
+	 * @param code error code
 	 * @return string describing error
 	*/
 	string GetErrorString( const MathError code ) const;
@@ -270,8 +270,8 @@ class MathematicalObject{
 
 	/*!
 	 * @brief outputs error string to stream when it's not MATH_ERR::OK
-	 * @param code Error code
-	 * @param message Message to output on mathErrOut
+	 * @param code error code
+	 * @param message message to output on math_error_out
 	 * @return same as code
 	*/
 	MathError CheckForAndOutputError( const MathError code, const string message ) const;

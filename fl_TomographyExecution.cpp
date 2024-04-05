@@ -94,7 +94,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 
 	maximum_scatterings_input_.tooltip( "Maximum amount of iterations for ray tracing. How often a ray can be scattered." );
 	scattering_propability_factor_input_.tooltip( "Correction factor in % for scattering propability. More scattering with higher value." );
-	scattering_absorption_factor_input_.tooltip( "Factor to scale a ray's energy when it is scattered. In %" );
+	scattering_absorption_factor_input_.tooltip( "factor to scale a ray's energy when it is scattered. In %" );
 	disable_scattering_button_.tooltip( "Enable or disable scattering." );
 	use_simple_absorption_button_.tooltip( "If enabled \"simple\" absorption is active which is not energy dependent." );
 	simulation_quality_input_.tooltip( "Change quality of simulation. Low number is faster but not as realistic." );
@@ -200,7 +200,7 @@ void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection
 		informationString += "Sinogramgröße:      " + ConvertToString( projection_properties.number_of_projections() ) + " x " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
 		informationString += "Sinogramauflösung:  " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
 		informationString += "Gantryrotationen:   " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ConvertToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Detektorwinkel:	  " + ConvertToString( detector_properties.rotation_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
 		informationString += "Elektrische Leistung:	  " + ConvertToString( tube.GetElectricalPower()) + "W" + '\n';

@@ -22,76 +22,76 @@
 
 
 /*!
- * Indices and vector implementation
+ * indices and vector implementation
 */
 
 
-Index3D::Index3D( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	x( DeSerializeBuildIn<size_t>( 0, binary_data, it ) ),
-	y( DeSerializeBuildIn<size_t>( 0, binary_data, it ) ),
-	z( DeSerializeBuildIn<size_t>( 0, binary_data, it ) )
+Index3D::Index3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
+	x( DeSerializeBuildIn<size_t>( 0, binary_data, current_byte ) ),
+	y( DeSerializeBuildIn<size_t>( 0, binary_data, current_byte ) ),
+	z( DeSerializeBuildIn<size_t>( 0, binary_data, current_byte ) )
 {}
 
 size_t Index3D::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<size_t>( this->x, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( this->y, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( this->z, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<size_t>( this->x, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( this->y, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( this->z, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 
-Tuple3D::Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& it ):
-	x( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	y( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	z( DeSerializeBuildIn<double>( 0., binary_data, it ) )
+Tuple3D::Tuple3D( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ):
+	x( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	y( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	z( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) )
 {}
 
 size_t Tuple3D::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<double>( this->x, binary_data );
-	num_bytes += SerializeBuildIn<double>( this->y, binary_data );
-	num_bytes += SerializeBuildIn<double>( this->z, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<double>( this->x, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( this->y, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( this->z, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 
-GridIndex::GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	c( DeSerializeBuildIn<size_t>( 0, binary_data, it ) ),
-	r( DeSerializeBuildIn<size_t>( 0, binary_data, it ) )
+GridIndex::GridIndex( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	c( DeSerializeBuildIn<size_t>( 0, binary_data, current_byte ) ),
+	r( DeSerializeBuildIn<size_t>( 0, binary_data, current_byte ) )
 {}
 
 size_t GridIndex::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<size_t>( this->c, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( this->r, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<size_t>( this->c, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( this->r, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 
-GridCoordinates::GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	c( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	r( DeSerializeBuildIn<double>( 0., binary_data, it ) )
+GridCoordinates::GridCoordinates( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	c( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	r( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) )
 {}
 
 size_t GridCoordinates::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<double>( this->c, binary_data );
-	num_bytes += SerializeBuildIn<double>( this->r, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<double>( this->c, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( this->r, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 
 /*!
- * Ranges implementation
+ * ranges implementation
 */
 
 NumberRange::NumberRange( const double start, const double end ) : start_( start ), end_( end )
@@ -103,27 +103,27 @@ NumberRange::NumberRange( const double start, const double end ) : start_( start
 	}
 }
 
-NumberRange::NumberRange( const NaturalNumberRange& naturalRange ) :
-	NumberRange{ static_cast<double>( naturalRange.start() ), static_cast<double>( naturalRange.end() ) }
+NumberRange::NumberRange( const NaturalNumberRange& natural_number_range ) :
+	NumberRange{ static_cast<double>( natural_number_range.start() ), static_cast<double>( natural_number_range.end() ) }
 {}
 
-NumberRange::NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	start_(	DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	end_(	DeSerializeBuildIn<double>( 0., binary_data, it ) )
+NumberRange::NumberRange( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	start_(	DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	end_(	DeSerializeBuildIn<double>( 0., binary_data, current_byte ) )
 {}
 
-double NumberRange::GetResolution( const size_t number ) const{
-	if( number < 2 ) return 1;
-	return GetDifference() / static_cast<double>( number - 1 );
+double NumberRange::GetResolution( const size_t number_of_elements ) const{
+	if( number_of_elements < 2 ) return 1;
+	return GetDifference() / static_cast<double>( number_of_elements - 1 );
 }
 
 size_t NumberRange::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
-	num_bytes += SerializeBuildIn<double>( start_, binary_data );
-	num_bytes += SerializeBuildIn<double>( end_, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( start_, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( end_, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 
@@ -136,42 +136,42 @@ NaturalNumberRange::NaturalNumberRange( const signed long long start, const sign
 
 
 template<>
-double ConvertToNumber<double>( const string str ){
-	if( str.length() == 0 ) return 0.;
-	return std::stod( str );
+double ConvertToNumber<double>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0.;
+	return std::stod( string_to_convert );
 }
 
 template<>
-int ConvertToNumber<int>( const string str ){
-	if( str.length() == 0 ) return 0;
-	return std::stoi( str );
+int ConvertToNumber<int>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0;
+	return std::stoi( string_to_convert );
 }
 
 template<>
-unsigned int ConvertToNumber<unsigned int>( const string str ){
-	if( str.length() == 0 ) return 0;
-	return std::stoul( str );
+unsigned int ConvertToNumber<unsigned int>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0;
+	return std::stoul( string_to_convert );
 }
 
 template<>
-long long ConvertToNumber<long long>( const string str ){
-	if( str.length() == 0 ) return 0;
-	return std::stoll( str );
+long long ConvertToNumber<long long>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0;
+	return std::stoll( string_to_convert );
 }
 
 template<>
-size_t ConvertToNumber<size_t>( const string str ){
-	if( str.length() == 0 ) return 0;
-	return static_cast<size_t>( std::stoll( str ) );
+size_t ConvertToNumber<size_t>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0;
+	return static_cast<size_t>( std::stoll( string_to_convert ) );
 }
 
 bool UnsetFlag( bool& flag ){
 
-	const bool previouValue = flag;
+	const bool previous_value = flag;
 
 	flag = false;
 
-	return previouValue;
+	return previous_value;
 }
 
 vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair ){
@@ -180,7 +180,7 @@ vector<Tuple2D> ConvertToTuple( const VectorPair vector_pair ){
 
 	if( vector_pair.first.size() != vector_pair.second.size() ){
 		cerr << "vectors in VectorPair do not match in size!" << endl;
-		size_t size = Min( vector_pair.first.size(), vector_pair.second.size() );
+		size = Min( vector_pair.first.size(), vector_pair.second.size() );
 	}
 
 	vector<Tuple2D> tuple_vector( size, Tuple2D{ 0., 0. } );

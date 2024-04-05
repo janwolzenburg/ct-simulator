@@ -56,35 +56,35 @@ TomographyProperties::TomographyProperties( const bool scattering_, const size_t
 	simulation_quality( simulation_quality_ )
 {}
 
-TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, it) ),
-	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, it ) ),
-	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
-	use_simple_absorption( DeSerializeBuildIn<bool>(true, binary_data, it) ),
-	scattered_ray_absorption_factor( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, it ) ),
-	mean_energy_of_tube( DeSerializeBuildIn<double>( reference_energy_for_mu_eV, binary_data, it ) ),
-	name( DeSerializeBuildIn<string>( "Unnamed", binary_data, it ) ),
-	filter_active( DeSerializeBuildIn<bool>(false, binary_data, it) ),
-	simulation_quality( DeSerializeBuildIn<size_t>(9, binary_data, it) )
+TomographyProperties::TomographyProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	scattering_enabled( DeSerializeBuildIn<bool>(true, binary_data, current_byte) ),
+	max_scattering_occurrences( DeSerializeBuildIn<size_t>( default_max_radiation_loops, binary_data, current_byte ) ),
+	scatter_propability_correction( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, current_byte ) ),
+	use_simple_absorption( DeSerializeBuildIn<bool>(true, binary_data, current_byte) ),
+	scattered_ray_absorption_factor( DeSerializeBuildIn<double>( default_scatter_propability_correction, binary_data, current_byte ) ),
+	mean_energy_of_tube( DeSerializeBuildIn<double>( reference_energy_for_mu_eV, binary_data, current_byte ) ),
+	name( DeSerializeBuildIn<string>( "Unnamed", binary_data, current_byte ) ),
+	filter_active( DeSerializeBuildIn<bool>(false, binary_data, current_byte) ),
+	simulation_quality( DeSerializeBuildIn<size_t>(9, binary_data, current_byte) )
 
 {
 }
 
 size_t TomographyProperties::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
-	num_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
-	num_bytes += SerializeBuildIn<bool>( use_simple_absorption, binary_data );
-	num_bytes += SerializeBuildIn<double>( scattered_ray_absorption_factor, binary_data );
-	num_bytes += SerializeBuildIn<double>( mean_energy_of_tube, binary_data );
-	num_bytes += SerializeBuildIn<string>( name, binary_data );
-	num_bytes += SerializeBuildIn<bool>( filter_active, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( simulation_quality, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<bool>( scattering_enabled, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( max_scattering_occurrences, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( scatter_propability_correction, binary_data );
+	number_of_bytes += SerializeBuildIn<bool>( use_simple_absorption, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( scattered_ray_absorption_factor, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( mean_energy_of_tube, binary_data );
+	number_of_bytes += SerializeBuildIn<string>( name, binary_data );
+	number_of_bytes += SerializeBuildIn<bool>( filter_active, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( simulation_quality, binary_data );
 
 
-	return num_bytes;
+	return number_of_bytes;
 
 }
 
@@ -153,7 +153,7 @@ optional<Projections> Tomography::RecordSlice(
 					) );
 			
 			// if no value no ray was detected by pixel, the line integral would be infinite.
-			// set it to a high value instead
+			// set current_byte to a high value instead
 			if( !line_integral.has_value() ){
 				line_integral = 25.; // is like ray's energy is 1 / 10^11 of its start energy
 			}

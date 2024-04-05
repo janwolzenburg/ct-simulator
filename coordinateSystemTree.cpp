@@ -1,6 +1,5 @@
 /*********************************************************
-* @file   CoordinateSystemTree.cpp
-* @brief  Implementations
+* @file   coordinateSystemTree.cpp
 *
 * @author Jan Wolzenburg
 * @date   December 2022
@@ -45,16 +44,16 @@ CoordinateSystemTree& CoordinateSystemTree::GetInstance(){
 }
 
 string CoordinateSystemTree::ConvertToString( const unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
-	for( size_t idx = 0; idx < system_count_; idx++ ){
-		str += newLine + systems_.at( idx ).ConvertToString( 1 );
+	for( size_t system_index = 0; system_index < system_count_; system_index++ ){
+		new_string += new_line + systems_.at( system_index ).ConvertToString( 1 );
 	}
 
-	return str;
+	return new_string;
 }
 
 CoordinateSystemTree::CoordinateSystemTree( void ) :
@@ -65,49 +64,50 @@ CoordinateSystemTree::CoordinateSystemTree( void ) :
 	systems_.at( 0 ).parent_ = &systems_.at( 1 );
 }
 
-CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const CoordinateSystem* parent_, const string name_ ){
-	// is the given parent_ valid in this tree
-	if( !IsValidTreeElement( parent_ ) ){
+CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const CoordinateSystem* parent, const string name ){
+	
+	// is the given parent valid in this tree
+	if( !IsValidTreeElement( parent ) ){
 		CheckForAndOutputError( MathError::Input, "parent is not part of tree!" );
-		parent_ = &( systems_.at( 1 ) );		// set parent_ to global
+		parent = &( systems_.at( 1 ) );		// set parent to global
 	}
 
 	// add new system to tree
-	CoordinateSystem newSys{ origin_, ex_, ey_, ez_, parent_, name_ };
-	systems_.at( system_count_++ ) = newSys;
+	CoordinateSystem new_system{ origin, ex, ey, ez, parent, name };
+	systems_.at( system_count_++ ) = new_system;
 
 	return &systems_.at( system_count_ - 1 );
 };
 
-CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin_, const Primitivevector3 ex_, const Primitivevector3 ey_, const Primitivevector3 ez_, const string name_ ){
-	return AddSystem( origin_, ex_, ey_, ez_, GetGlobalSystem(), name_ );
+CoordinateSystem* CoordinateSystemTree::AddSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ){
+	return AddSystem( origin, ex, ey, ez, GetGlobalSystem(), name );
 }
 
-CoordinateSystem* CoordinateSystemTree::AddSystem( const CoordinateSystem* parent_, const string name_ ){
-	return AddSystem( Primitivevector3{ Tuple3D{ 0, 0, 0 } }, Primitivevector3{ Tuple3D{ 1, 0, 0 } }, Primitivevector3{ Tuple3D{ 0, 1, 0 } }, Primitivevector3{ Tuple3D{ 0, 0, 1 } }, parent_, name_ );
+CoordinateSystem* CoordinateSystemTree::AddSystem( const CoordinateSystem* parent, const string name ){
+	return AddSystem( Primitivevector3{ Tuple3D{ 0, 0, 0 } }, Primitivevector3{ Tuple3D{ 1, 0, 0 } }, Primitivevector3{ Tuple3D{ 0, 1, 0 } }, Primitivevector3{ Tuple3D{ 0, 0, 1 } }, parent, name );
 }
 
-CoordinateSystem* CoordinateSystemTree::AddSystem( const string name_ ){
-	return AddSystem( GetGlobal(), name_ );
+CoordinateSystem* CoordinateSystemTree::AddSystem( const string name ){
+	return AddSystem( GetGlobal(), name );
 }
 
-CoordinateSystem* CoordinateSystemTree::AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& it )
+CoordinateSystem* CoordinateSystemTree::AddSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte )
 {
 
-	Primitivevector3 origin{ binary_data, it };
-	Primitivevector3 ex{ binary_data, it };
-	Primitivevector3 ey{ binary_data, it };
-	Primitivevector3 ez{ binary_data, it };
+	Primitivevector3 origin{ binary_data, current_byte };
+	Primitivevector3 ex{ binary_data, current_byte };
+	Primitivevector3 ey{ binary_data, current_byte };
+	Primitivevector3 ez{ binary_data, current_byte };
 
-	string name = DeSerializeBuildIn<string>( string{""}, binary_data, it);
+	string name = DeSerializeBuildIn<string>( string{""}, binary_data, current_byte);
 
 	return AddSystem( origin, ex, ey, ez, GetGlobalSystem(), name );
 
 }
 
 bool CoordinateSystemTree::IsValidTreeElement( const CoordinateSystem* const element ) const{
-	for( size_t idx = 0; idx < system_count_; idx++ ){
-		if( &( systems_.at( idx ) ) == element ) return true;
+	for( size_t system_index = 0; system_index < system_count_; system_index++ ){
+		if( &( systems_.at( system_index ) ) == element ) return true;
 	}
 
 	return false;

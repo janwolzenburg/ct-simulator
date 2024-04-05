@@ -77,16 +77,16 @@ ColorImage::ColorImage( const GrayscaleImage& srcImg, const size_t newWidth, con
 }
 
 
-ColorImage::ColorImage( const vector<char>& binsourceData, vector<char>::const_iterator& it ) :
-	width_( DeSerializeBuildIn<size_t>( 1, binsourceData, it ) ),
-	height_( DeSerializeBuildIn<size_t>( 1, binsourceData, it ) ),
+ColorImage::ColorImage( const vector<char>& binsourceData, vector<char>::const_iterator& current_byte ) :
+	width_( DeSerializeBuildIn<size_t>( 1, binsourceData, current_byte ) ),
+	height_( DeSerializeBuildIn<size_t>( 1, binsourceData, current_byte ) ),
 	number_of_pixel_( width_* height_ ),
 	image_data_( number_of_pixel_, RGB{ 0, 0, 0 } )
 {
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		image_data_.at( i ).red = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
-		image_data_.at( i ).green = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
-		image_data_.at( i ).blue = DeSerializeBuildIn<unsigned char>( 0, binsourceData, it );
+		image_data_.at( i ).red = DeSerializeBuildIn<unsigned char>( 0, binsourceData, current_byte );
+		image_data_.at( i ).green = DeSerializeBuildIn<unsigned char>( 0, binsourceData, current_byte );
+		image_data_.at( i ).blue = DeSerializeBuildIn<unsigned char>( 0, binsourceData, current_byte );
 	}
 }
 
@@ -102,15 +102,15 @@ size_t ColorImage::GetIndex( const size_t c, const size_t r ) const{
 
 size_t ColorImage::Serialize( vector<char>& binsourceData ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<size_t>( width_, binsourceData );
-	num_bytes += SerializeBuildIn<size_t>( height_, binsourceData );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<size_t>( width_, binsourceData );
+	number_of_bytes += SerializeBuildIn<size_t>( height_, binsourceData );
 
 	for( size_t i = 0; i < number_of_pixel_; i++ ){
-		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).red, binsourceData );
-		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).green, binsourceData );
-		num_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).blue, binsourceData );
+		number_of_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).red, binsourceData );
+		number_of_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).green, binsourceData );
+		number_of_bytes += SerializeBuildIn<unsigned char>( image_data_.at( i ).blue, binsourceData );
 	}
 
-	return num_bytes;
+	return number_of_bytes;
 }

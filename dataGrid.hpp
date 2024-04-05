@@ -66,10 +66,10 @@ DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange
 }
 
 template<class D>
-DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	size_( GridIndex{ binary_data, it } ),
-	start_( GridCoordinates{ binary_data, it } ),
-	resolution_( GridCoordinates{ binary_data, it } ),
+DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	size_( GridIndex{ binary_data, current_byte } ),
+	start_( GridCoordinates{ binary_data, current_byte } ),
+	resolution_( GridCoordinates{ binary_data, current_byte } ),
 	min_value_(D()),
 	max_value_(D())
 {
@@ -81,21 +81,21 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 	Fillvectors( D() );
 
 	if constexpr( std::is_fundamental_v<D> ){
-		min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
-		max_value_ = DeSerializeBuildIn<D>( D{}, binary_data, it );
+		min_value_ = DeSerializeBuildIn<D>( D{}, binary_data, current_byte );
+		max_value_ = DeSerializeBuildIn<D>( D{}, binary_data, current_byte );
 	}
 	else{
 
-		min_value_ = D{ binary_data, it };
-		max_value_ = D{ binary_data, it };
+		min_value_ = D{ binary_data, current_byte };
+		max_value_ = D{ binary_data, current_byte };
 	}
 
 	for( vector<D>& column : data_ ){
 		for( D& rowData : column ){
 			if constexpr( std::is_fundamental_v<D> )
-				rowData = DeSerializeBuildIn<D>( D{}, binary_data, it );
+				rowData = DeSerializeBuildIn<D>( D{}, binary_data, current_byte );
 			else
-				rowData = D{ binary_data, it };
+				rowData = D{ binary_data, current_byte };
 		}
 	}
 }
@@ -230,29 +230,29 @@ bool DataGrid<D>::SetData( const GridIndex index, const D newValue ){
 template<class D>
 size_t DataGrid<D>::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += size_.Serialize( binary_data );
-	num_bytes += start_.Serialize( binary_data );
-	num_bytes += resolution_.Serialize( binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += size_.Serialize( binary_data );
+	number_of_bytes += start_.Serialize( binary_data );
+	number_of_bytes += resolution_.Serialize( binary_data );
 
 	if constexpr( std::is_fundamental_v<D> ){
-		num_bytes += SerializeBuildIn<D>( min_value_, binary_data );
-		num_bytes += SerializeBuildIn<D>( max_value_, binary_data );
+		number_of_bytes += SerializeBuildIn<D>( min_value_, binary_data );
+		number_of_bytes += SerializeBuildIn<D>( max_value_, binary_data );
 	}
 	else{
-		num_bytes += min_value_.Serialize( binary_data );
-		num_bytes += max_value_.Serialize( binary_data );
+		number_of_bytes += min_value_.Serialize( binary_data );
+		number_of_bytes += max_value_.Serialize( binary_data );
 	}
 
 	for( const vector<D>& column : data_ ){
 		for( const D& rowData : column ){
 
 			if constexpr( std::is_fundamental_v<D> )
-				num_bytes += SerializeBuildIn<D>( rowData, binary_data );
+				number_of_bytes += SerializeBuildIn<D>( rowData, binary_data );
 			else
-				num_bytes += rowData.Serialize( binary_data );
+				number_of_bytes += rowData.Serialize( binary_data );
 		}
 	}
 
-	return num_bytes;
+	return number_of_bytes;
 }

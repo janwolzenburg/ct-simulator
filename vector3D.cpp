@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   vector3D.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -23,77 +22,77 @@
 
 
 /*
-	vec3D implementation
+	vector3D implementation
 */
 
 vector3D::vector3D( const Coordinates coordinates ) :
-	Coordinates{ coordinates }
+	Coordinates( coordinates )
 {
 	UpdateLength();
 }
 
-vector3D::vector3D( const Tuple3D xyz_, const CoordinateSystem* const coordinate_system ) :
-	vector3D{ Coordinates{ xyz_, coordinate_system } }
+vector3D::vector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system ) :
+	vector3D{ Coordinates{ components, coordinate_system } }
 {}
 
 vector3D::vector3D( void ) : vector3D{ Coordinates{} }
 {}
 
 string vector3D::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
-	string str;
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f) l=%.6f", X(), Y(), Z(), length() );
+	string new_string;
+	char tempory_character_array[ 256 ];
+	snprintf( tempory_character_array, 256, "(%.6f,%.6f,%.6f) l=%.6f", X(), Y(), Z(), length() );
 
-	str += tempCharArr;
-	return str;
+	new_string += tempory_character_array;
+	return new_string;
 }
 
-double vector3D::operator* ( const vector3D v2 ) const{
-	vector3D convVec = v2.ConvertTo( this->coordinate_system_ );
+double vector3D::operator* ( const vector3D second_vector ) const{
+	const vector3D converted_vector = second_vector.ConvertTo( this->coordinate_system_ );
 
-	return x * convVec.x + y * convVec.y + z * convVec.z;
+	return x * converted_vector.x + y * converted_vector.y + z * converted_vector.z;
 };
 
-vector3D vector3D::operator^( const vector3D v2 ) const{
-	vector3D convVec = v2.ConvertTo( this->coordinate_system_ );
+vector3D vector3D::operator^( const vector3D second_vector ) const{
+	const vector3D converted_vector = second_vector.ConvertTo( this->coordinate_system_ );
 
-	return vector3D{ Tuple3D{ y * convVec.z - z * convVec.y, z * convVec.x - x * convVec.z, x * convVec.y - y * convVec.x }, this->coordinate_system_ };
+	return vector3D{ Tuple3D{ y * converted_vector.z - z * converted_vector.y, z * converted_vector.x - x * converted_vector.z, x * converted_vector.y - y * converted_vector.x }, this->coordinate_system_ };
 };
 
-bool vector3D::HasSameSystem( const vector3D v ) const{
-	return this->Coordinates::HasSameSystem( v );
+bool vector3D::HasSameSystem( const vector3D vector_to_compare ) const{
+	return this->Coordinates::HasSameSystem( vector_to_compare );
 }
 
 vector3D vector3D::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 
 	if( this->coordinate_system_ == target_coordinate_system ) return *this;	// same system return copy of this
 
-	Coordinates tipCoords = this->Coordinates::ConvertTo( target_coordinate_system );
-	Point3D tipPoint{ tipCoords, target_coordinate_system };
+	const Coordinates tip_coordinates = this->Coordinates::ConvertTo( target_coordinate_system );
+	const Point3D tip_point{ tip_coordinates, target_coordinate_system };
 
-	vector3D convVec = tipPoint - this->coordinate_system_->GetOriginInParentSystem();
+	const vector3D converted_vector = tip_point - this->coordinate_system_->GetOriginInParentSystem();
 
-	return convVec;
+	return converted_vector;
 };
 
-vector3D vector3D::ConvertTo( const vector3D v ) const{
-	return this->ConvertTo( v.coordinate_system_ );
+vector3D vector3D::ConvertTo( const vector3D target_coordinate_system ) const{
+	return this->ConvertTo( target_coordinate_system.coordinate_system_ );
 };
 
-vector3D vector3D::ConvertTo( const Line l ) const{
-	return this->ConvertTo( l.direction() );
+vector3D vector3D::ConvertTo( const Line target_coordinate_system ) const{
+	return this->ConvertTo( target_coordinate_system.direction() );
 };
 
-vector3D vector3D::ConvertTo( const Surface s ) const{
-	return this->ConvertTo( s.direction_1() );
+vector3D vector3D::ConvertTo( const Surface target_coordinate_system ) const{
+	return this->ConvertTo( target_coordinate_system.direction_1() );
 };
 
-Primitivevector3 vector3D::GetComponents( const CoordinateSystem* const target ) const{
-	return vector3D::ConvertTo( target ).GetComponents();
+Primitivevector3 vector3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
+	return vector3D::ConvertTo( target_coordinate_system ).GetComponents();
 }
 
-Primitivevector3 vector3D::GetComponents( const vector3D targetV ) const{
-	return vector3D::ConvertTo( targetV.coordinate_system_ ).GetComponents();;
+Primitivevector3 vector3D::GetComponents( const vector3D target_coordinate_system ) const{
+	return vector3D::ConvertTo( target_coordinate_system.coordinate_system_ ).GetComponents();;
 }
 
 Primitivevector3 vector3D::GetGlobalComponents( void ) const{
@@ -133,11 +132,11 @@ MathematicalObject::MathError vector3D::Scale( const double scalar ){
 }
 
 MathematicalObject::MathError vector3D::Normalise( void ){
-	MathematicalObject::MathError tErr = MathError::Ok;
+	MathematicalObject::MathError tempory_error = MathError::Ok;
 	MathematicalObject::MathError err = MathError::Ok;
 
-	if( ( tErr = Primitivevector3::Normalise() ) != MathError::Ok ) err = tErr;
-	if( ( tErr = UpdateLength() ) != MathError::Ok ) err = tErr;
+	if( ( tempory_error = Primitivevector3::Normalise() ) != MathError::Ok ) err = tempory_error;
+	if( ( tempory_error = UpdateLength() ) != MathError::Ok ) err = tempory_error;
 
 	// scale and return error code
 	return err;
@@ -158,25 +157,25 @@ MathematicalObject::MathError vector3D::AddToZ( const double z_ ){
 	return UpdateLength();
 };
 
-double vector3D::GetAngle( const vector3D v2 ) const{
+double vector3D::GetAngle( const vector3D second_vector ) const{
 	// check if one vector has length zero
-	if( IsNearlyEqualDistance( length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return 0.;
+	if( IsNearlyEqualDistance( length_, 0 ) || IsNearlyEqualDistance( second_vector.length_, 0 ) ) return 0.;
 
-	const double scalarProduct = ( ( *this ) * v2 );
-	const double lengthMult = this->length_ * v2.length_;
+	const double scalar_product = ( ( *this ) * second_vector );
+	const double lengt_product = this->length_ * second_vector.length_;
 
-	if( IsNearlyEqualDistance( scalarProduct, lengthMult ) ) return 0.;
+	if( IsNearlyEqualDistance( scalar_product, lengt_product ) ) return 0.;
 
 	// return angle in radians
-	return acos( scalarProduct / lengthMult );
+	return acos( scalar_product / lengt_product );
 }
 
-bool vector3D::IsOrthogonal( const vector3D v2 ) const{
+bool vector3D::IsOrthogonal( const vector3D second_vector ) const{
 	// one vector has no length?
-	if( IsNearlyEqualDistance( this->length_, 0 ) || IsNearlyEqualDistance( v2.length_, 0 ) ) return false;
+	if( IsNearlyEqualDistance( this->length_, 0 ) || IsNearlyEqualDistance( second_vector.length_, 0 ) ) return false;
 
 	// check dot product
-	return IsNearlyEqualDistance( ( *this ) * v2, 0 );
+	return IsNearlyEqualDistance( ( *this ) * second_vector, 0 );
 }
 
 MathematicalObject::MathError vector3D::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
@@ -206,29 +205,29 @@ MathematicalObject::MathError vector3D::RotateAroundZAxis( const double phi ){
 	return RotateAroundZAxis( sin( phi ), cos( phi ) );
 }
 
-MathematicalObject::MathError vector3D::Rotate( const vector3D n, const double phi ){
-	vector3D nCpy{ n.ConvertTo( *this ) };
+MathematicalObject::MathError vector3D::Rotate( const vector3D axis, const double rotation_angle ){
+	vector3D nCpy{ axis.ConvertTo( *this ) };
 
-	MathematicalObject::MathError tErr = MathError::Ok;
+	MathematicalObject::MathError tempory_error = MathError::Ok;
 	MathematicalObject::MathError err = MathError::Ok;
 
-	if( ( tErr = this->Primitivevector3::Rotate( nCpy, phi ) ) != MathError::Ok ) err = tErr;
-	if( ( tErr = this->UpdateLength() ) != MathError::Ok ) err = tErr;
+	if( ( tempory_error = this->Primitivevector3::Rotate( nCpy, rotation_angle ) ) != MathError::Ok ) err = tempory_error;
+	if( ( tempory_error = this->UpdateLength() ) != MathError::Ok ) err = tempory_error;
 
 	return err;
 }
 
 vector3D vector3D::RotateConstant( const vector3D n, const double phi ) const{
-	vector3D v( *this );
-	v.Rotate( n, phi );
-	return v;
+	vector3D rotated_vector( *this );
+	rotated_vector.Rotate( n, phi );
+	return rotated_vector;
 }
 
 vector3D vector3D::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{
-	vector3D projectedVec = this->ConvertTo( coordinate_system );
-	projectedVec.AddToZ( -projectedVec.z );
+	vector3D projected_vector = this->ConvertTo( coordinate_system );
+	projected_vector.AddToZ( -projected_vector.z );
 
-	return projectedVec;
+	return projected_vector;
 }
 
 
@@ -238,40 +237,40 @@ vector3D vector3D::NegateXComponent( void ) const{
 
 
 /*
-	pnt3D implementation
+	Point3D implementation
 */
 
 string Point3D::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
-	string str;
+	string new_string;
 
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f)", x, y, z );
+	char tempory_character_array[ 256 ];
+	snprintf( tempory_character_array, 256, "(%.6f,%.6f,%.6f)", x, y, z );
 
-	str += tempCharArr;
-	return str;
+	new_string += tempory_character_array;
+	return new_string;
 }
 
 Point3D Point3D::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
 
 	if( this->coordinate_system_ == target_coordinate_system ) return *this;
 
-	Coordinates convCoords = this->Coordinates::ConvertTo( target_coordinate_system );
+	const Coordinates converted_coordinates = this->Coordinates::ConvertTo( target_coordinate_system );
 
-	return Point3D( convCoords, target_coordinate_system );
+	return Point3D( converted_coordinates, target_coordinate_system );
 
 
 };
 
-Point3D Point3D::ConvertTo( const Point3D targetP ) const{
-	return Point3D::ConvertTo( targetP.coordinate_system_ );
+Point3D Point3D::ConvertTo( const Point3D target_coordinate_system ) const{
+	return Point3D::ConvertTo( target_coordinate_system.coordinate_system_ );
 }
 
-Primitivevector3 Point3D::GetComponents( const CoordinateSystem* const target ) const{
-	return Point3D::ConvertTo( target ).GetComponents();
+Primitivevector3 Point3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
+	return Point3D::ConvertTo( target_coordinate_system ).GetComponents();
 }
 
-Primitivevector3 Point3D::GetComponents( const Point3D targetP ) const{
-	return Point3D::GetComponents( targetP.coordinate_system_ );
+Primitivevector3 Point3D::GetComponents( const Point3D target_coordinate_system ) const{
+	return Point3D::GetComponents( target_coordinate_system.coordinate_system_ );
 }
 
 Primitivevector3 Point3D::GetGlobalComponents( void ) const{
@@ -291,8 +290,8 @@ double Point3D::GetGlobalZ( void ) const{
 }
 
 Point3D Point3D::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{
-	Point3D projectedPnt = this->ConvertTo( coordinate_system );
-	projectedPnt.AddToZ( -projectedPnt.z );
+	Point3D projected_point = this->ConvertTo( coordinate_system );
+	projected_point.AddToZ( -projected_point.z );
 
-	return projectedPnt;
+	return projected_point;
 }

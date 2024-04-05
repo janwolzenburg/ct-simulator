@@ -1,6 +1,6 @@
 /*********************************************************************
  * @file   main.cpp
- * @brief  Main file
+ * @brief  main file
  *
  * @author Jan Wolzenburg
  * @date   December 2022

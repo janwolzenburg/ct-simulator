@@ -56,8 +56,8 @@ void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_prop
 
 }
 
-void Gantry::RotateCounterClockwise( const double arc_angle ){
-	this->coordinate_system_->Rotate( coordinate_system_->GetZAxis(), arc_angle );
+void Gantry::RotateCounterClockwise( const double rotation_angle ){
+	this->coordinate_system_->Rotate( coordinate_system_->GetZAxis(), rotation_angle );
 }
 
 void Gantry::TranslateInZDirection( const double distance ){

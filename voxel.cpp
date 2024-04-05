@@ -55,9 +55,9 @@ VoxelData::VoxelData( const double absorption_at_energy, const double energy, co
 		absorption_ = absorption_at_energy;
 }
 
-VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	absorption_( DeSerializeBuildIn<double>( 0., binary_data, it ) ),
-	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( SpecialProperty::Undefined, binary_data, it ) )
+VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
+	absorption_( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
+	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( SpecialProperty::Undefined, binary_data, current_byte ) )
 {}
 
 double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
@@ -79,10 +79,10 @@ void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
 }
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<double>( absorption_, binary_data );
-	num_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
-	return num_bytes;
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<double>( absorption_, binary_data );
+	number_of_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
+	return number_of_bytes;
 }
 
 double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy ){
@@ -123,26 +123,26 @@ Voxel::Voxel( const Point3D o_, const Tuple3D size, const VoxelData data ) :
 
 
 string Voxel::ConvertToString( unsigned int newline_tabulators ) const{
-	string str;
-	string newLine = { '\n' };
+	string new_string;
+	string new_line = { '\n' };
 
-	for( unsigned int i = 0; i < newline_tabulators; i++ ) newLine += '\t';
+	for( unsigned int i = 0; i < newline_tabulators; i++ ) new_line += '\t';
 
 
-	char tempCharArr[ 256 ];
-	snprintf( tempCharArr, 256, "(%.6f,%.6f,%.6f)", size_.x, size_.y, size_.z );
+	char tempory_character_array[ 256 ];
+	snprintf( tempory_character_array, 256, "(%.6f,%.6f,%.6f)", size_.x, size_.y, size_.z );
 
-	str += "o=" + newLine + origin_corner_.ConvertToString( newline_tabulators + 1 );
-	str += "size=" + string( tempCharArr );
-	str += newLine + "data=" + std::to_string( data_.GetAbsorptionAtReferenceEnergy() );
-	str += newLine + "face[0]=" + newLine + faces[ 0 ].ConvertToString( newline_tabulators + 1 );
-	str += newLine + "face[1]=" + newLine + faces[ 1 ].ConvertToString( newline_tabulators + 1 );
-	str += newLine + "face[2]=" + newLine + faces[ 2 ].ConvertToString( newline_tabulators + 1 );
-	str += newLine + "face[3]=" + newLine + faces[ 3 ].ConvertToString( newline_tabulators + 1 );
-	str += newLine + "face[4]=" + newLine + faces[ 4 ].ConvertToString( newline_tabulators + 1 );
-	str += newLine + "face[5]=" + newLine + faces[ 5 ].ConvertToString( newline_tabulators + 1 );
+	new_string += "o=" + new_line + origin_corner_.ConvertToString( newline_tabulators + 1 );
+	new_string += "size=" + string( tempory_character_array );
+	new_string += new_line + "data=" + std::to_string( data_.GetAbsorptionAtReferenceEnergy() );
+	new_string += new_line + "face[0]=" + new_line + faces[ 0 ].ConvertToString( newline_tabulators + 1 );
+	new_string += new_line + "face[1]=" + new_line + faces[ 1 ].ConvertToString( newline_tabulators + 1 );
+	new_string += new_line + "face[2]=" + new_line + faces[ 2 ].ConvertToString( newline_tabulators + 1 );
+	new_string += new_line + "face[3]=" + new_line + faces[ 3 ].ConvertToString( newline_tabulators + 1 );
+	new_string += new_line + "face[4]=" + new_line + faces[ 4 ].ConvertToString( newline_tabulators + 1 );
+	new_string += new_line + "face[5]=" + new_line + faces[ 5 ].ConvertToString( newline_tabulators + 1 );
 
-	return str;
+	return new_string;
 }
 
 

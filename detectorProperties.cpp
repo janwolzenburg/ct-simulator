@@ -43,13 +43,13 @@ PhysicalDetectorProperties::PhysicalDetectorProperties( const vector<char>& bina
 
 size_t PhysicalDetectorProperties::Serialize( vector<char>& binary_data ) const{
 
-	size_t num_bytes = 0;
-	num_bytes += SerializeBuildIn<double>( row_width, binary_data );
-	num_bytes += SerializeBuildIn<double>( detector_focus_distance, binary_data );
-	num_bytes += SerializeBuildIn<bool>( has_anti_scattering_structure, binary_data );
-	num_bytes += SerializeBuildIn<double>( max_angle_allowed_by_structure, binary_data );
+	size_t number_of_bytes = 0;
+	number_of_bytes += SerializeBuildIn<double>( row_width, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( detector_focus_distance, binary_data );
+	number_of_bytes += SerializeBuildIn<bool>( has_anti_scattering_structure, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( max_angle_allowed_by_structure, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }
 
 /*!
@@ -59,7 +59,7 @@ size_t PhysicalDetectorProperties::Serialize( vector<char>& binary_data ) const{
 DetectorProperties::DetectorProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties ) :
 	number_of_pixel{ projections_properties.number_of_distances(), 1},
 	row_width( physical_properties.row_width ),
-	arc_angle( static_cast<double>( projections_properties.number_of_distances() - 1 ) * projections_properties.angles_resolution() ),
+	rotation_angle( static_cast<double>( projections_properties.number_of_distances() - 1 ) * projections_properties.angles_resolution() ),
 	detector_focus_distance( physical_properties.detector_focus_distance ),
 	has_anti_scattering_structure( physical_properties.has_anti_scattering_structure ),
 	max_angle_allowed_by_structure( physical_properties.max_angle_allowed_by_structure )

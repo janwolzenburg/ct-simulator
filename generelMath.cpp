@@ -1,6 +1,6 @@
 /*********************************************************************
  * @file   generelMath.cpp
- * @brief  Implementations for generel mathematical objects
+ * @brief  implementations for generel mathematical objects
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -42,7 +42,7 @@ bool IsNearlyEqualDistance( const double a, const double b ){
 
 
 /*
-	mathObj implementation
+	MathematicalObject implementation
 */
 
 
@@ -86,8 +86,8 @@ std::string MathematicalObject::GetErrorString( const MathError code ) const{
 	}
 }
 
-void MathematicalObject::Dump( std::ostream& output, const std::string objName ) const{
+void MathematicalObject::Dump( std::ostream& output, const std::string object_name ) const{
 	// write type, name and data to outstream
 
-	output << typeid( *this ).name() << ' ' << objName << '\n' << this->ConvertToString() << '\n' << '\n';
+	output << typeid( *this ).name() << ' ' << object_name << '\n' << this->ConvertToString() << '\n' << '\n';
 }

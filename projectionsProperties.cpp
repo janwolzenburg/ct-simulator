@@ -61,10 +61,10 @@ ProjectionsProperties::ProjectionsProperties(	const size_t number_of_angles, con
 }
 
 
-ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& it ) :
-	number_of_projections_( DeSerializeBuildIn<size_t>( 5, binary_data, it ) ),
-	number_of_distances_( DeSerializeBuildIn<size_t>( 4, binary_data, it ) ),
-	measuring_field_size_( DeSerializeBuildIn<double>( 400., binary_data, it ) )
+ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) :
+	number_of_projections_( DeSerializeBuildIn<size_t>( 5, binary_data, current_byte ) ),
+	number_of_distances_( DeSerializeBuildIn<size_t>( 4, binary_data, current_byte ) ),
+	measuring_field_size_( DeSerializeBuildIn<double>( 400., binary_data, current_byte ) )
 {
 	*this = ProjectionsProperties{ number_of_projections_, number_of_distances_, measuring_field_size_ };
 }
@@ -72,11 +72,11 @@ ProjectionsProperties::ProjectionsProperties( const vector<char>& binary_data, v
 
 
 size_t ProjectionsProperties::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
-	num_bytes += SerializeBuildIn<size_t>( number_of_projections_, binary_data );
-	num_bytes += SerializeBuildIn<size_t>( number_of_distances_, binary_data );
-	num_bytes += SerializeBuildIn<double>( measuring_field_size_, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( number_of_projections_, binary_data );
+	number_of_bytes += SerializeBuildIn<size_t>( number_of_distances_, binary_data );
+	number_of_bytes += SerializeBuildIn<double>( measuring_field_size_, binary_data );
 
-	return num_bytes;
+	return number_of_bytes;
 }

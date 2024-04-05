@@ -68,19 +68,19 @@ TomographyProperties Projections::tomography_properties( void ) const{
 };
 
 size_t Projections::Serialize( vector<char>& binary_data ) const{
-	size_t num_bytes = 0;
+	size_t number_of_bytes = 0;
 
-	num_bytes += DataGrid<>::Serialize( binary_data );
-	num_bytes += properties_.Serialize( binary_data );
-	num_bytes += tomography_properties_.Serialize( binary_data );
-	num_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
-	return num_bytes;
+	number_of_bytes += DataGrid<>::Serialize( binary_data );
+	number_of_bytes += properties_.Serialize( binary_data );
+	number_of_bytes += tomography_properties_.Serialize( binary_data );
+	number_of_bytes += SerializeBuildIn<vector<vector<GridCoordinates>>>( grid_errors_, binary_data );
+	return number_of_bytes;
 }
 
 
-Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& it ) : 
-	DataGrid<>{ binary_data, it },
-	properties_{ binary_data, it },
-	tomography_properties_{ binary_data, it },
-	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, it ) )
+Projections::Projections( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
+	DataGrid<>{ binary_data, current_byte },
+	properties_{ binary_data, current_byte },
+	tomography_properties_{ binary_data, current_byte },
+	grid_errors_( DeSerialize< vector<vector<GridCoordinates>> >( binary_data, current_byte ) )
 {}
