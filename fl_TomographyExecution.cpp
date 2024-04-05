@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   tomographyExecution.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   September 2023
@@ -24,22 +23,22 @@
 
 Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
-	title_{ X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .035 ), "Tomography"},
+	title_{																X( *this, 0. ), Y( *this, 0. ), W( *this, 1. ), H( *this, .035 ), "Tomography"},
 
-	tomography_properties_group_{		X( *this, .0 ),				Y( *this, .04 ),				W( *this, 1. ),				H( *this, .6 ) },
-	properties_title_{			X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, 0. ),	W( tomography_properties_group_, 1. ),	H( tomography_properties_group_, .05 ), "Parameter" },
-	maximum_scatterings_input_{		X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
+	tomography_properties_group_{					X( *this, .0 ),				Y( *this, .04 ),				W( *this, 1. ),				H( *this, .6 ) },
+	properties_title_{										X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, 0. ),	W( tomography_properties_group_, 1. ),	H( tomography_properties_group_, .05 ), "Parameter" },
+	maximum_scatterings_input_{						X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
 	scattering_propability_factor_input_{	X( tomography_properties_group_, .5 ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Propability factor" },
-	scattering_absorption_factor_input_{X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor"  },
-	disable_scattering_button_{		X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
-	use_simple_absorption_button_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
-	simulation_quality_input_{ X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
-	information_{			X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
+	scattering_absorption_factor_input_{	X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor"  },
+	disable_scattering_button_{						X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
+	use_simple_absorption_button_{				X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
+	simulation_quality_input_{						X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
+	information_{													X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
 
-	control_group_{				X( *this, .0 ), vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
-	name_input_{				X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .9 ), H( control_group_, .4 ), "Name" },			
-	record_slice_button_{		X( control_group_, .05 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
-	export_projections_button_{	X( control_group_, .55 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
+	control_group_{								X( *this, .0 ),						vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
+	name_input_{									X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .9 ), H( control_group_, .4 ), "Name" },			
+	record_slice_button_{					X( control_group_, .05 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Record Slice" },
+	export_projections_button_{		X( control_group_, .55 ), Y( control_group_, .6 ), W( control_group_, .4 ), H( control_group_, .4 ), "Export Projectiions" },
 
 	
 	main_window_( main_window ),
@@ -200,7 +199,7 @@ void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection
 		informationString += "Sinogramgröße:      " + ConvertToString( projection_properties.number_of_projections() ) + " x " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
 		informationString += "Sinogramauflösung:  " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
 		informationString += "Gantryrotationen:   " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  " + ConvertToString( detector_properties.rotation_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "Detektorwinkel:	  "   + ConvertToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
 
 
 		informationString += "Elektrische Leistung:	  " + ConvertToString( tube.GetElectricalPower()) + "W" + '\n';
@@ -211,13 +210,13 @@ void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection
 
 void Fl_TomographyExecution::ExportProjections( void ){
 
-	path exportPath = export_projections_file_chooser_.ChooseFile();
+	path export_path = export_projections_file_chooser_.ChooseFile();
 	export_projections_file_chooser_.SetAsLoaded();
-	if( exportPath.empty() ) return;
+	if( export_path.empty() ) return;
 
-	if( exportPath.extension() != ".projections" )
-		exportPath += ".projections";
+	if( export_path.extension() != ".projections" )
+		export_path += ".projections";
 
-	projections_.Save( exportPath );
+	projections_.Save( export_path );
 
 }

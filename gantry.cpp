@@ -26,18 +26,18 @@ using std::cref;
   Implementations
 *********************************************************************/
 
-Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tubeParameter_, 
-				const ProjectionsProperties radonParameter, const PhysicalDetectorProperties indipendentParameter ) :
+Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubeProperties tube_properties, 
+				const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_detector_properties ) :
 	coordinate_system_( coordinate_system ),
 	initial_position_( coordinate_system_->GetPrimitive() ),
 	detector_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, -1, 0 }, Primitivevector3{ 0, 0, 1 }, "xRay detector" ),
-					radonParameter, indipendentParameter },
-	tube_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0}, Primitivevector3{1, 0, 0}, Primitivevector3{0, -1, 0}, Primitivevector3{0, 0, 1}, "xRay tube"), tubeParameter_ }
+					projections_properties, physical_detector_properties },
+	tube_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0}, Primitivevector3{1, 0, 0}, Primitivevector3{0, -1, 0}, Primitivevector3{0, 0, 1}, "xRay tube"), tube_properties }
 
 {
 	// align detector - tube axis with x axis
-	PrimitiveCoordinateSystem xAxisAligned{ Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } };
-	coordinate_system_->SetPrimitive( xAxisAligned );
+	PrimitiveCoordinateSystem x_axis_aligned_system{ Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } };
+	coordinate_system_->SetPrimitive( x_axis_aligned_system );
 
 	tube_.coordinate_system()->Translate( vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
 	
@@ -164,18 +164,18 @@ void Gantry::RadiateModel( const Model& model,
 	mutex detector_mutex;									// mutual exclusion for detector
 
 	// loop until maximum loop depth is reached or no more rays are left to transmit
-	for( size_t current_loop = 0; 
-							current_loop <= tomography_properties.max_scattering_occurrences && 
+	for( size_t current_iteration = 0; 
+							current_iteration <= tomography_properties.max_scattering_occurrences && 
 														 rays.size() > 0; 
-							current_loop++ ){
+							current_iteration++ ){
 
 		// no scattering in last iteration
 		tomography_properties.scattering_enabled = 
-			current_loop < tomography_properties.max_scattering_occurrences && 
+			current_iteration < tomography_properties.max_scattering_occurrences && 
 			tomography_properties.scattering_enabled;	
 		
 		const bool second_to_last_iteration = 
-			( current_loop == tomography_properties.max_scattering_occurrences - 1 );
+			( current_iteration == tomography_properties.max_scattering_occurrences - 1 );
 
 		// store for information output
 		tomography_properties.mean_energy_of_tube = this->tube_.GetMeanEnergy();

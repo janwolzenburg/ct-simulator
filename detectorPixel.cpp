@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   detectorPixel.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -54,8 +53,8 @@ optional<double> DetectorPixel::GetProjectionValue(
 	return !use_simple_absorption ? line_integral_spectrum : line_integral_simple;
 }
 
-DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSys ) const{
-	return DetectorPixel{ this->BoundedSurface::ConvertTo( target_CSys ), this->detected_ray_properties_ };
+DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
+	return DetectorPixel{ this->BoundedSurface::ConvertTo( target_coordinate_system ), this->detected_ray_properties_ };
 }
 
 
@@ -63,7 +62,7 @@ DetectorPixel DetectorPixel::ConvertTo( const CoordinateSystem* const target_CSy
 	RayPixelIntersection implementation
 */
 
-RayPixelIntersection::RayPixelIntersection( const Ray& r, const DetectorPixel& px ) :
-	LineSurfaceIntersection<Ray, DetectorPixel>{ r, px },
-	ray_properties( r.properties() )
+RayPixelIntersection::RayPixelIntersection( const Ray& ray, const DetectorPixel& pixel ) :
+	LineSurfaceIntersection<Ray, DetectorPixel>{ ray, pixel },
+	ray_properties( ray.properties() )
 {}

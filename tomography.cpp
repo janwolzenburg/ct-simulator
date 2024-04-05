@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   tomography.cpp
- * @brief  Implementation
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -42,17 +41,17 @@ TomographyProperties::TomographyProperties( void ) :
 
 {}
 
-TomographyProperties::TomographyProperties( const bool scattering_, const size_t maxRadiationLoops_, const double scatterPropability_, 
+TomographyProperties::TomographyProperties( const bool scattering_enabled, const size_t max_scattering_occurrences, const double scatter_propability_correction, 
 											const bool use_simple_absorption, const double scattered_ray_absorption_factor,
-											const string identifiaction_name, const bool tube_filter_active, const size_t simulation_quality_ ) :
-	scattering_enabled( scattering_ ),
-	max_scattering_occurrences( maxRadiationLoops_ ),
-	scatter_propability_correction( scatterPropability_ ),
+											const string name_, const bool filter_active_, const size_t simulation_quality_ ) :
+	scattering_enabled( scattering_enabled ),
+	max_scattering_occurrences( max_scattering_occurrences ),
+	scatter_propability_correction( scatter_propability_correction ),
 	use_simple_absorption( use_simple_absorption ),
 	scattered_ray_absorption_factor( scattered_ray_absorption_factor ),
 	mean_energy_of_tube( reference_energy_for_mu_eV ),
-	name( identifiaction_name ),
-	filter_active( tube_filter_active ),
+	name( name_ ),
+	filter_active( filter_active_ ),
 	simulation_quality( simulation_quality_ )
 {}
 

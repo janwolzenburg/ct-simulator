@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   physical_detector_properties_.cpp
- * @brief  Implementations
+ * @file   detectorProperties.cpp
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -59,7 +58,7 @@ size_t PhysicalDetectorProperties::Serialize( vector<char>& binary_data ) const{
 DetectorProperties::DetectorProperties( const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_properties ) :
 	number_of_pixel{ projections_properties.number_of_distances(), 1},
 	row_width( physical_properties.row_width ),
-	rotation_angle( static_cast<double>( projections_properties.number_of_distances() - 1 ) * projections_properties.angles_resolution() ),
+	arc_angle( static_cast<double>( projections_properties.number_of_distances() - 1 ) * projections_properties.angles_resolution() ),
 	detector_focus_distance( physical_properties.detector_focus_distance ),
 	has_anti_scattering_structure( physical_properties.has_anti_scattering_structure ),
 	max_angle_allowed_by_structure( physical_properties.max_angle_allowed_by_structure )

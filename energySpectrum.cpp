@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   spectrum.cpp
- * @brief  Implementations of spectrum class
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -28,9 +27,7 @@ using std::for_each;
 
 EnergySpectrum::EnergySpectrum( const VectorPair& energy_quantaties ) :
 	EnergySpectrum{ ConvertToTuple( energy_quantaties ) }
-{
-	
-}
+{}
 
 
 EnergySpectrum::EnergySpectrum( const vector<Tuple2D>& energy_quantaties ) :
@@ -69,10 +66,10 @@ void EnergySpectrum::ScaleEvenly( const double factor ){
 
 EnergySpectrum EnergySpectrum::GetEvenlyScaled( const double factor ) const {
 
-	EnergySpectrum scaledSpectrum{ *this };
-	scaledSpectrum.ScaleEvenly( factor );
+	EnergySpectrum scaled_spectrum{ *this };
+	scaled_spectrum.ScaleEvenly( factor );
 
-	return scaledSpectrum;
+	return scaled_spectrum;
 
 }
 
@@ -100,16 +97,16 @@ void EnergySpectrum::UpdateMeanEnergy( void ){
 		return;
 	}
 
-	// get the sum of products. In principle an "expected value"
-	const double expectedValue = GetTotalPowerIn_eVPerSecond();
+	// get the sum of products. nn principle an "expected value"
+	const double expected_value = GetTotalPowerIn_eVPerSecond();
 
-	mean_energy_ = expectedValue / GetSum();	
+	mean_energy_ = expected_value / GetSum();	
 	mean_energy_valid_ = true;
 }
 
 void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
-	for( Tuple2D& v : photonflow_per_energy_ ){
-		modFunction( v );
+	for( Tuple2D& current_tuple : photonflow_per_energy_ ){
+		modFunction( current_tuple );
 	}
 
 	mean_energy_valid_ = false;
@@ -117,11 +114,11 @@ void EnergySpectrum::Modify( std::function<void( Tuple2D& )> modFunction ){
 
 void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double distance ){
 	
-	double coefficient;
+	double absorption_coefficient;
 
 	for( auto& photonflow: photonflow_per_energy_ ){
-		coefficient = voxel_data.GetAbsorptionAtEnergy( photonflow.x );
-		photonflow.y *= exp( -coefficient * distance );
+		absorption_coefficient = voxel_data.GetAbsorptionAtEnergy( photonflow.x );
+		photonflow.y *= exp( -absorption_coefficient * distance );
 	}
 
 	mean_energy_valid_ = false;
@@ -131,13 +128,13 @@ void EnergySpectrum::GetAbsorped( const VoxelData& voxel_data, const double dist
 
 size_t EnergySpectrum::GetEnergyIndex( double energy_to_search ) const{
 	
-	double min_difference = INFINITY;
+	double minimum_difference = INFINITY;
 	size_t energy_index = 0, current_energy_index = 0;
 
 	for( const auto& [energy, photonfloy] : photonflow_per_energy_ ){
 		const double difference = abs( energy - energy_to_search );
-		if( difference < min_difference ){
-			min_difference = difference;
+		if( difference < minimum_difference ){
+			minimum_difference = difference;
 			energy_index = current_energy_index;
 		}
 		current_energy_index++;

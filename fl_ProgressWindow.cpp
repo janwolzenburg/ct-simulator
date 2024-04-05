@@ -1,6 +1,5 @@
 /******************************************************************
-* @file   progress.cpp
-* @brief  Implementations
+* @file   fl_ProgressWindow.cpp
 *
 * @author Jan Wolzenburg
 * @date   October 2023
@@ -10,11 +9,11 @@
 
 
 
-Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned int textSize, unsigned int numLines, const char* label ) :
-	Fl_Window( number_of_character_per_line_ * textSize + 2*padding_, static_cast<int>( ForceToMin( numLines, (unsigned int) 1 ) * textSize + 25 ) + 2*padding_, label ),
-	number_of_lines_( ForceToMin( numLines, (unsigned int ) 1 ) ),
+Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned int text_size, unsigned int number_of_lines, const char* label ) :
+	Fl_Window( number_of_character_per_line_ * text_size + 2*padding_, static_cast<int>( ForceToMin( number_of_lines, (unsigned int) 1 ) * text_size + 25 ) + 2*padding_, label ),
+	number_of_lines_( ForceToMin( number_of_lines, (unsigned int ) 1 ) ),
 	text_output_( padding_, padding_, Fl_Window::w() - 2*padding_, Fl_Window::h()-2*padding_ ),
-	line_texts_( numLines ),
+	line_texts_( number_of_lines ),
 	continuous_text_()
 {
 	
@@ -24,13 +23,13 @@ Fl_Progress_Window::Fl_Progress_Window( const Fl_Window* const parent,  unsigned
 
 	Fl_Window::show();
 
-	text_output_.textsize( textSize );
+	text_output_.textsize( text_size );
 
 }
 
-void Fl_Progress_Window::ChangeLineText( const unsigned int lineNumber, const string newText){ 
-	if( lineNumber >= number_of_lines_ ) return;
-	line_texts_.at( lineNumber ) = newText;
+void Fl_Progress_Window::ChangeLineText( const unsigned int line_number, const string line_text){ 
+	if( line_number >= number_of_lines_ ) return;
+	line_texts_.at( line_number ) = line_text;
 	UpdateOutput();
 }
 
@@ -39,11 +38,11 @@ void Fl_Progress_Window::UpdateOutput( void ){
 
 	continuous_text_.clear();
 
-	for( auto currentLine_It = line_texts_.cbegin(); currentLine_It < line_texts_.cend(); currentLine_It++ ){
+	for( auto current_line = line_texts_.cbegin(); current_line < line_texts_.cend(); current_line++ ){
 
-		continuous_text_ += *currentLine_It;
+		continuous_text_ += *current_line;
 
-		if( line_texts_.cend() - currentLine_It > 1 ) continuous_text_ += "\n";
+		if( line_texts_.cend() - current_line > 1 ) continuous_text_ += "\n";
 
 	}
 

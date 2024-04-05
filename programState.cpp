@@ -1,6 +1,5 @@
 /*********************************************************
 * @file   programState.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   March 2023

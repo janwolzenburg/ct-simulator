@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   detector.cpp
- * @brief  Implementations
+ * @file   xRayDetector.cpp
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -254,10 +253,10 @@ bool XRayDetector::TryDetection( Ray& ray ) const{
 
 }
 
-void XRayDetector::ConvertPixelArray( const CoordinateSystem* const targetCSys ){
+void XRayDetector::ConvertPixelArray( const CoordinateSystem* const target_coordinate_system ){
 
 	// iterate all pixel in detector
-	for( size_t pixelIdx = 0; pixelIdx < pixel_array_.size(); pixelIdx++ ){
-		converted_pixel_array_.at( pixelIdx ) = std::move( pixel_array_.at( pixelIdx ).ConvertTo( targetCSys ) );
+	for( size_t pixel_index = 0; pixel_index < pixel_array_.size(); pixel_index++ ){
+		converted_pixel_array_.at( pixel_index ) = std::move( pixel_array_.at( pixel_index ).ConvertTo( target_coordinate_system ) );
 	}
 }

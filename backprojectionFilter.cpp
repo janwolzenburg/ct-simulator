@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   filter.cpp
- * @brief  Implementations of filter class
+ * @file   backprojectionFilter.cpp
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -26,33 +25,33 @@ const std::map < BackprojectionFilter::TYPE, string> BackprojectionFilter::filte
 };
 
 
-BackprojectionFilter::TYPE BackprojectionFilter::GetType( const string searchString ){
-	for( auto& [typeEnum, typeString] : BackprojectionFilter::filter_types ){
-		if( typeString == searchString )
-			return typeEnum;
+BackprojectionFilter::TYPE BackprojectionFilter::GetType( const string filter_type_to_search ){
+	for( auto& [filter_type_enumeration, filter_type_string] : BackprojectionFilter::filter_types ){
+		if( filter_type_string == filter_type_to_search )
+			return filter_type_enumeration;
 	}
 
 	return constant;
 }
 
-BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange_, const double samplingInterval_, const BackprojectionFilter::TYPE type_ ) :
-	type_( type_ ),
-	points_range_( pointsRange_ ),
+BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange points_range, const double sampling_interval, const BackprojectionFilter::TYPE filter_type ) :
+	type_( filter_type ),
+	points_range_( points_range ),
 	number_of_points_( static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1 ), // n - 1 - (-N + 1) + 1 = 2N - 1
-	sampling_interval_( samplingInterval_ ),
+	sampling_interval_( sampling_interval ),
 	values_( number_of_points_, 0. )
 {
 	// iterate over all whole numbers in range
 	for( signed long long n = points_range_.start(); n <= points_range_.end(); n++ ){
 
-		double kernelValue = 0.;
+		double kernel_value = 0.;
 
-		switch( type_ ){
+		switch( filter_type ){
 			
 			case BackprojectionFilter::constant:
 			{
-				if( n == 0 ) kernelValue = 1.;
-				else kernelValue = 0.;
+				if( n == 0 ) kernel_value = 1.;
+				else kernel_value = 0.;
 
 				break;
 			}
@@ -60,31 +59,23 @@ BackprojectionFilter::BackprojectionFilter( const NaturalNumberRange pointsRange
 			case BackprojectionFilter::ramLak:
 			{
 				// conditions for filter calculation
-				if( n == 0 )				kernelValue = 1. / ( 4. * pow( sampling_interval_, 2. ) );
-				else if( IsEven( n ) )		kernelValue = 0.;
-				else						kernelValue = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( static_cast<double>( n ), 2. ) );
+				if( n == 0 )						kernel_value = 1. / ( 4. * pow( sampling_interval_, 2. ) );
+				else if( IsEven( n ) )	kernel_value = 0.;
+				else										kernel_value = -1. / ( pow( PI, 2. ) * pow( sampling_interval_, 2. ) * pow( static_cast<double>( n ), 2. ) );
 
 				break;
 			}
 
 			case BackprojectionFilter::sheppLogan:
 			{
-				kernelValue = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( static_cast<double>( n ), 2. ) - 1.  );
+				kernel_value = - 2. / ( PI_2 * pow( sampling_interval_, 2. ) ) / ( 4. * pow( static_cast<double>( n ), 2. ) - 1.  );
 
 				break;
 			}
 		}
 
-		this->SetValue( GetUnsignedIndex( n ), kernelValue );
+		this->SetValue( GetUnsignedIndex( n ), kernel_value );
 	}
-
-	// crop kernel to relevant range
-	//const NaturalNumberRange new_range = GetRelevantRange();
-	//const size_t offset = new_range.start() - pointsRange_.start();
-	//points_range_ = new_range;
-	//number_of_points_ = static_cast<size_t>( points_range_.end() - points_range_.start() ) + 1;
-	
-	//values_ = vector<double>( values_.cbegin() + offset, values_.cbegin() + offset + number_of_points_ );
 
 }
 

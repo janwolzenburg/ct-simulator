@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
-* @file   Fl_BoundInput.hpp
-* @brief  Implementations
+* @file   fl_BoundInput.hpp
 *
 * @author Jan Wolzenburg
 * @date   October 2023
@@ -34,16 +33,16 @@ Fl_BoundInput<C, T>::Fl_BoundInput( int x, int y, int w, int h, const char* labe
 }
 
 template< class C, typename T>
- void Fl_BoundInput<C, T>::HandleValueChange( [[maybe_unused]] Fl_Widget* widget, void* p ){
-	Fl_BoundInput* parentPtr = static_cast<Fl_BoundInput*>( p );
+ void Fl_BoundInput<C, T>::HandleValueChange( [[maybe_unused]] Fl_Widget* widget, void* user_data ){
+	Fl_BoundInput* instance_pointer = static_cast<Fl_BoundInput*>( user_data );
 
-	parentPtr->CheckAndForceConstraints();
-	parentPtr->Fl_Group::do_callback();
+	instance_pointer->CheckAndForceConstraints();
+	instance_pointer->Fl_Group::do_callback();
 }
 
 template< class C, typename T>
-void Fl_BoundInput<C, T>::value( const T newValue ){
-	value_string_ = ConvertToString( newValue, precision_ );
+void Fl_BoundInput<C, T>::value( const T new_value ){
+	value_string_ = ConvertToString( new_value, precision_ );
 	input_widget_.value( value_string_.c_str() );
 	CheckAndForceConstraints();
 }

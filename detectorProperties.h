@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   detectorProperties_.h
+ * @file   detectorProperties.h
  * @brief  detector parameter classes
  *
  * @author Jan Wolzenburg
@@ -84,7 +84,7 @@ class DetectorProperties{
 
 	GridIndex number_of_pixel;					/*!< amount of pixel in each dimension*/
 	double row_width;										/*!< size of one pixel in column direction*/
-	double rotation_angle;										/*!< angle between outer normals*/
+	double arc_angle;							/*!< angle between outer normals*/
 	double detector_focus_distance;			/*!< distance of focus and detector pixel*/
 
 	bool has_anti_scattering_structure;			/*!< flag for anti scatter structure*/

@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   backprojection.cpp
- * @brief  Implementations of backprojection classes
+ * @file   filteredProjections.cpp
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023

@@ -1,6 +1,5 @@
 /******************************************************************
-* @file   Fl_Grid_Image.cpp
-* @brief  Implementations
+* @file   fl_AdjustableGrayscaleImage.cpp
 *
 * @author Jan Wolzenburg
 * @date   October 2023
@@ -24,12 +23,12 @@
 
 Fl_AdjustableGrayscaleImage::Fl_AdjustableGrayscaleImage( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
-	image_widget_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ), H( *this, .75 ), "Image" },
-	lower_bound_{			X( *this, 0.1 ),	Y( *this, 0.84 ),	W( *this, .6 ), H( *this, .075 ), "Low" },
-	upper_bound_{			X( *this, 0.1 ),	Y( *this, 0.925),	W( *this, .6 ), H( *this, .075 ), "High" },
-	current_value_text_{	X( *this, 0.7 ),	Y( *this, 0.84 ),	W( *this, .2 ), H( *this, .1 ), "" },
-	current_value_tip_{		X( *this, 0.7 ),	Y( *this, 0.94 ),	W( *this, .2 ), H( *this, .05 ), "" },
-	common_factor_text_{	X( *this, 0.9 ),	Y( *this, 0.84 ),	W( *this, .1 ), H( *this, .15 ), "" },
+	image_widget_{				X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ), H( *this, .75 ),	"Image" },
+	lower_bound_{					X( *this, 0.1 ),	Y( *this, 0.84 ),	W( *this, .6 ), H( *this, .075 ), "Low" },
+	upper_bound_{					X( *this, 0.1 ),	Y( *this, 0.925),	W( *this, .6 ), H( *this, .075 ), "High" },
+	current_value_text_{	X( *this, 0.7 ),	Y( *this, 0.84 ),	W( *this, .2 ), H( *this, .1 ),		"" },
+	current_value_tip_{		X( *this, 0.7 ),	Y( *this, 0.94 ),	W( *this, .2 ), H( *this, .05 ),	"" },
+	common_factor_text_{	X( *this, 0.9 ),	Y( *this, 0.84 ),	W( *this, .1 ), H( *this, .15 ),	"" },
 	common_power_( 0 ),
 	bounds_set_( false ),
 	contrast_changed_( false )
@@ -146,15 +145,15 @@ void Fl_AdjustableGrayscaleImage::ChangeSliderValues( const NumberRange bounds )
 	contrast_changed_ = true;
 }
 
-void Fl_AdjustableGrayscaleImage::AssignImage( const GrayscaleImage& img ){
-	image_widget_.AssignImage( img );
+void Fl_AdjustableGrayscaleImage::AssignImage( const GrayscaleImage& grayscale_image ){
+	image_widget_.AssignImage( grayscale_image );
 	SetSliderBoundsFromImage();
 	this->show();
 }
 
-void Fl_AdjustableGrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid ){//, const bool normalise ){
+void Fl_AdjustableGrayscaleImage::AssignImage( const DataGrid<VoxelData>& data_grid ){
 
-	image_widget_.AssignImage( modGrid, false );
+	image_widget_.AssignImage( data_grid, false );
 	SetSliderBoundsFromImage();
 	
 	this->show();
@@ -164,12 +163,12 @@ void Fl_AdjustableGrayscaleImage::SetSliderBoundsFromImage( void ){
 	SetSliderBounds( NumberRange{ image_widget_.GetMinimum(), image_widget_.GetMaximum() } );
 }
 
-void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
+void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange new_slider_bounds ){
 
-	size_t digits_to_display = 4;
+	const size_t digits_to_display = 4;
 
 	int tenth_power_low = 0;
-	double low = abs( newBound.start() );
+	double low = abs( new_slider_bounds.start() );
 
 	if( !IsNearlyEqual( low, 0., 1e-9, ComparisonMode::Absolute ) ){
 		if( low < pow( 10., digits_to_display ) ){
@@ -184,7 +183,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 	}
 
 	int tenth_power_high = 0;
-	double high = abs( newBound.end() );
+	double high = abs( new_slider_bounds.end() );
 	if( !IsNearlyEqual( high, 0., 1e-9, ComparisonMode::Absolute ) ){
 		if( high < pow( 10., digits_to_display ) ){
 			for(; ( high *= 10. ) < pow( 10., digits_to_display ); tenth_power_high++ );
@@ -206,17 +205,17 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 	common_factor_text_.copy_label( string{ "x10^" + to_string( -common_power_ ) }.c_str() );
 
 
-	NumberRange scaledBounds = NumberRange{ newBound.start() * pow (10., common_power_ ),
-											newBound.end() *   pow (10., common_power_ ) };
+	NumberRange scaled_bounds = NumberRange{ new_slider_bounds.start() * pow (10., common_power_ ),
+											new_slider_bounds.end() *   pow (10., common_power_ ) };
 
 	lower_bound_.step( 1 );
 	upper_bound_.step( 1 );
 
-	lower_bound_.bounds( scaledBounds.start(), scaledBounds.end() - upper_bound_.step() );
-	upper_bound_.bounds( scaledBounds.start() - upper_bound_.step(), scaledBounds.end() );
+	lower_bound_.bounds( scaled_bounds.start(), scaled_bounds.end() - upper_bound_.step() );
+	upper_bound_.bounds( scaled_bounds.start() - upper_bound_.step(), scaled_bounds.end() );
 
-	lower_bound_.value( scaledBounds.start() );
-	upper_bound_.value( scaledBounds.end() );
+	lower_bound_.value( scaled_bounds.start() );
+	upper_bound_.value( scaled_bounds.end() );
 
 	image_widget_.AdjustContrast( NumberRange{ lower_bound_.value() * pow( 10., -common_power_ ), upper_bound_.value() * pow( 10., -common_power_ ) } );
 
@@ -225,9 +224,9 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange newBound ){
 }
 
 
-void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widgetPtr, void* image_widget){
+void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widget_pointer, void* image_widget){
 
-	Fl_AdjustableGrayscaleImage* widget = static_cast<Fl_AdjustableGrayscaleImage*>( image_widget );
+	Fl_AdjustableGrayscaleImage* const widget = static_cast<Fl_AdjustableGrayscaleImage*>( image_widget );
 
 	if( widget->lower_bound_.value() >= widget->upper_bound_.value() ){
 		if( widget->lower_bound_.value() > widget->lower_bound_.minimum() )

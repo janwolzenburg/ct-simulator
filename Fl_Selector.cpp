@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
-* @file   Fl_Selector.cpp
-* @brief  Implementations
+* @file   fl_Selector.cpp
 *
 * @author Jan Wolzenburg
 * @date   October 2023
@@ -48,9 +47,9 @@ Fl_Selector::Fl_Selector( int x, int y, int w, int h, const char* label ) :
 
 }
 
-void Fl_Selector::SelectPrevious( [[maybe_unused]] Fl_Widget* widget, void* p ){
+void Fl_Selector::SelectPrevious( [[maybe_unused]] Fl_Widget* widget, void* fl_selector ){
 
-	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
+	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( fl_selector );
 
 	if( selectorGrp->current_element_ > selectorGrp->elements_.cbegin() ) selectorGrp->current_element_--;
 
@@ -61,9 +60,9 @@ void Fl_Selector::SelectPrevious( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 }
 
-void Fl_Selector::SelectNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
+void Fl_Selector::SelectNext( [[maybe_unused]] Fl_Widget* widget, void* fl_selector ){
 
-	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( p );
+	Fl_Selector* selectorGrp = static_cast<Fl_Selector*>( fl_selector );
 
 	if( selectorGrp->current_element_ < selectorGrp->elements_.cend() - 1 ) selectorGrp->current_element_++;
 
@@ -73,8 +72,8 @@ void Fl_Selector::SelectNext( [[maybe_unused]] Fl_Widget* widget, void* p ){
 
 }
 
-void Fl_Selector::AssignElements( const vector<string> newElements ){
-	elements_ = newElements;
+void Fl_Selector::AssignElements( const vector<string> new_elements ){
+	elements_ = new_elements;
 	current_element_ = elements_.cbegin();
 
 	CheckButtonActivation();
@@ -82,12 +81,12 @@ void Fl_Selector::AssignElements( const vector<string> newElements ){
 
 }
 
-void Fl_Selector::SetCurrentElement( const string newValue ){
+void Fl_Selector::SetCurrentElement( const string new_value ){
 
-	for( vector<string>::const_iterator it = elements_.cbegin(); it < elements_.cend(); it++ ){
+	for( vector<string>::const_iterator element = elements_.cbegin(); element < elements_.cend(); element++ ){
 
-		if( newValue == *it ){
-			current_element_ = it;
+		if( new_value == *element ){
+			current_element_ = element;
 			current_text_.value( current_element_->c_str() );
 
 			CheckButtonActivation();

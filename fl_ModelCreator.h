@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   modelCreator.h
- * @brief
+ * @file   fl_ModelCreator.h
  *
  * @author Jan Wolzenburg
  * @date   November 2023

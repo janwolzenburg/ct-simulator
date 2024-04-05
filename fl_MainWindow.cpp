@@ -1,6 +1,5 @@
 /*********************************************************
-* @file   programState.cpp
-* @brief  Implementations
+* @file   fl_MainWindow.cpp
 *
 * @author Jan Wolzenburg
 * @date   October 2023
@@ -24,14 +23,14 @@
 Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
 
-	menu_group_{					X( *this, 0. ),							Y( *this, 0.005 ),		W( *this, 1. ),		H( *this, 0.034 ) },
-	model_creator_button_{			X( menu_group_, .1 ),							Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
-	import_projections_button_{		X( menu_group_, .7 ),							Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
-	reset_program_state_at_exit_button_{	X( menu_group_, .9 ),							Y( menu_group_, 0. ),		W( menu_group_, .1 ),		H( menu_group_, 1. ), "Reset program" },
+	menu_group_{									X( *this, 0. ),								Y( *this, 0.005 ),			W( *this, 1. ),						H( *this, 0.034 ) },
+	model_creator_button_{				X( menu_group_, .1 ),					Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
+	import_projections_button_{		X( menu_group_, .7 ),					Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
+	reset_program_state_at_exit_button_{	X( menu_group_, .9 ),	Y( menu_group_, 0. ),		W( menu_group_, .1 ),			H( menu_group_, 1. ), "Reset program" },
 
-	model_view_{				X( *this, 0. ),							Y( *this, 0.045 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
-	gantry_creation_{			hOff( model_view_ ) + X( *this, .025 ),		Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
-	tomography_execution_{	hOff( gantry_creation_ ) + X( *this, .025 ), Y( *this, 0.045 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
+	model_view_{							X( *this, 0. ),																Y( *this, 0.045 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
+	gantry_creation_{					hOff( model_view_ ) + X( *this, .025 ),				Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
+	tomography_execution_{		hOff( gantry_creation_ ) + X( *this, .025 ),	Y( *this, 0.045 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
 	
 	import_projections_file_chooser_{ FileChooser{ "Import Sinogram", "*.projections", path{ "./" } }, "import.chooser", false },
 	
@@ -81,12 +80,12 @@ void Fl_MainWindow::SetResetAtExit( void ){
 
 void Fl_MainWindow::ImportProjections( void ){
 
-	path sgPath =  import_projections_file_chooser_.ChooseFile();
+	path projections_path =  import_projections_file_chooser_.ChooseFile();
 	import_projections_file_chooser_.SetAsLoaded();
 
-	if( sgPath.empty() ) return;
+	if( projections_path.empty() ) return;
 	
-	PersistingObject<Projections> tempory_projections{ Projections{}, sgPath, true };
+	PersistingObject<Projections> tempory_projections{ Projections{}, projections_path, true };
 
 	tomography_execution_.AssignProjections( static_cast<Projections>( tempory_projections ) );
 	

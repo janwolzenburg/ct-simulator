@@ -1,6 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   Fl_BoundInput.h
+ * @file   fl_BoundInput.h
  * @brief
  *
  * @author Jan Wolzenburg
@@ -104,9 +104,9 @@ class Fl_BoundInput : public Fl_Group{
 	/*!
 	 * @brief callback for value change
 	 * @param widget pointer to widget which triggered the callback
-	 * @param p pointer to userdata. here a pointer to the Fl_BoundInput must be passed
+	 * @param user_data pointer to userdata. here a pointer to the Fl_BoundInput must be passed
 	*/
-	static void HandleValueChange( Fl_Widget* widget, void* p );
+	static void HandleValueChange( Fl_Widget* widget, void* user_data );
 
 };
 

@@ -285,24 +285,6 @@
     <ClInclude Include="tomography.fwd.h">
       <Filter>Headerdateien\00 Forward Declerations</Filter>
     </ClInclude>
-    <ClInclude Include="detectorPixel.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
-    <ClInclude Include="detectorProperties.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
-    <ClInclude Include="gantry.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
-    <ClInclude Include="tomography.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
-    <ClInclude Include="xRayDetector.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
-    <ClInclude Include="xRayTube.h">
-      <Filter>Headerdateien\13 Device</Filter>
-    </ClInclude>
     <ClInclude Include="energySpectrum.h">
       <Filter>Headerdateien\12 Physics\03 Rays</Filter>
     </ClInclude>
@@ -371,6 +353,24 @@
     </ClInclude>
     <ClInclude Include="verifyprocessing.h">
       <Filter>Headerdateien\01 Verification</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorPixel.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="detectorProperties.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="gantry.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="tomography.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayDetector.h">
+      <Filter>Headerdateien\13 Device</Filter>
+    </ClInclude>
+    <ClInclude Include="xRayTube.h">
+      <Filter>Headerdateien\13 Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

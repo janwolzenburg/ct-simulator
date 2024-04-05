@@ -134,8 +134,9 @@ class Fl_AdjustableGrayscaleImage : public Fl_Group{
 
 	/*!
 	 * @brief callback for value change
-	 * @param widget pointer to widget that triggered the callback
+	 * @param widget_pointer pointer to widget that triggered the callback
+	 * @param image_widget void pointer to an image widget
 	*/
-	static void HandleValueChange( Fl_Widget* widgetPtr, void* image_widget );
+	static void HandleValueChange( Fl_Widget* widget_pointer, void* image_widget );
 
 };

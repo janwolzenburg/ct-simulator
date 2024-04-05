@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   plots.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   April 2023
@@ -69,11 +68,11 @@ void Plot::DrawPlot( void ){
 	
 	RGB color = Fl_GrayscaleImage::background_color;
 
-	char colorBuffer[32];
-	snprintf( colorBuffer, 32, "#%2X%2X%2X", color.red, color.green, color.blue );
-	string colorString{ colorBuffer };
+	char color_buffer[32];
+	snprintf( color_buffer, 32, "#%2X%2X%2X", color.red, color.green, color.blue );
+	string color_string{ color_buffer };
 
-	plot_2D_.gnuplot( "set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb \"" + colorString + "\" behind ");
+	plot_2D_.gnuplot( "set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb \"" + color_string + "\" behind ");
 
 	if( !limits_.autoXRange )
 		plot_2D_.xrange( limits_.xRange.start(), limits_.xRange.end() );
@@ -103,8 +102,8 @@ void Plot::DrawPlot( void ){
 
 	plot_2D_.legend().hide();
 
-	sciplot::Figure  fig = { {plot_2D_} };
-	sciplot::Canvas canvas = { {fig} };
+	sciplot::Figure  figure = { {plot_2D_} };
+	sciplot::Canvas canvas = { {figure} };
 
 	canvas.size( static_cast<size_t>( image_size_.c ), static_cast<size_t>( image_size_.r ) );
 	canvas.save( image_path_.string() );

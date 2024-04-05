@@ -49,8 +49,9 @@ class Model : public MathematicalObject{
 	 * @param number_of_voxel_3D	amount of voxels in each spacial dimension
 	 * @param voxel_size spacial size of voxels
 	 * @param name name of model
+	 * @param default_data default voxel data
 	*/
-	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name, const VoxelData defaultData = VoxelData{} );
+	Model( CoordinateSystem* const coordinate_system, const Index3D number_of_voxel_3D, const Tuple3D voxel_size, const string name, const VoxelData default_data = VoxelData{} );
 
 	/*!
 	 * @brief constructor from serialized data
@@ -158,7 +159,7 @@ class Model : public MathematicalObject{
 	VoxelData GetVoxelData( const Index3D voxel_indices ) const;
 
 	/*!
-	 * @brief access voxel data_
+	 * @brief access voxel data
 	 * @param point Point in model
 	 * @return const reference to voxel data_
 	*/
@@ -167,18 +168,18 @@ class Model : public MathematicalObject{
 	/*!
 	 * @brief set voxel data
 	 * @param new_voxel_data data to set
-	 * @param indices indices of target voxel
+	 * @param voxel_indices indices of target voxel
 	 * @return true when indices are valid
 	*/
 	bool SetVoxelData( const VoxelData new_voxel_data, const Index3D voxel_indices );
 
 	/*!
 	 * @brief set voxel's special properties
-	 * @param properties data to set
+	 * @param property property to set
 	 * @param voxel_indices indices of target voxel
 	 * @return true when indices are valid
 	*/
-	bool SetVoxelProperties( const VoxelData::SpecialProperty properties, const Index3D voxel_indices );
+	bool SetVoxelProperties( const VoxelData::SpecialProperty property, const Index3D voxel_indices );
 
 	/*!
 	 * @brief get voxel instance for given indices
@@ -269,26 +270,24 @@ class Model : public MathematicalObject{
 
 	/*!
 	* @brief get voxel indices for given coordinates in local coordinate system
-	* @param x x-coordinate
-	* @param y y-coordinate
-	* @param z	z-coordinate
+	* @param local_coordinates coordinates in model's coordinate system
 	* @return indices of voxels where coordinates are located
 	*/
-	Index3D GetVoxelIndices( const Tuple3D locCoords ) const;
+	Index3D GetVoxelIndices( const Tuple3D local_coordinates ) const;
 
 	/*!
 	 * @brief get data index from indices organized in three dimensions
-	 * @param indices 3D indides
+	 * @param voxel_indices 3D indides
 	 * @return one dimensional index
 	*/
-	size_t GetDataIndex( const Index3D indices ) const{ 
-		return number_of_voxel_3D_.x * number_of_voxel_3D_.y * indices.z + number_of_voxel_3D_.x * indices.y + indices.x; };
+	size_t GetDataIndex( const Index3D voxel_indices ) const{ 
+		return number_of_voxel_3D_.x * number_of_voxel_3D_.y * voxel_indices.z + number_of_voxel_3D_.x * voxel_indices.y + voxel_indices.x; };
 
 	/*!
 	 * @brief element access
-	 * @param index index of voxel
+	 * @param voxel_indices indides of voxel
 	 * @return reference to voxel data
 	*/
-	VoxelData& operator()( const Index3D index );
+	VoxelData& operator()( const Index3D voxel_indices );
 
 };

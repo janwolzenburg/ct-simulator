@@ -78,7 +78,7 @@ class RayScattering{
 
 	vector<pair<double, PropabilityDistribution>> scattering_angle_distributions_;	/*!< vector with energies and the correspondeing angle distribution*/
 
-	Unitvector3D scattering_plane_normal_;	/*!< rotation normal for scattered rays*/
+	Unitvector3D scattering_plane_normal_;				/*!< rotation normal for scattered rays*/
  
 	double max_angle_to_lie_in_scatter_plane_;		/*!< maximum angle between a scattered ray and the scattering plane for a ascttered ray to not be discarded*/
  };

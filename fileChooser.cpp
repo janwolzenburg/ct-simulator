@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   fileChooser.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   March 2023
@@ -30,19 +29,19 @@ using std::vector;
 const string FileChooser::FILE_PREAMBLE{ "Ver01_FILE_CHOOSER_FILE_PREAMBLE" };
 
 
-FileChooser::FileChooser( const string windowTitle, const string fileFilter, const path defaultDirectory, Fl_Native_File_Chooser::Type type ) :
-	title_string_( windowTitle ),
-	filter_string_( fileFilter ),
-	start_directory_( defaultDirectory ),
+FileChooser::FileChooser( const string window_title, const string file_filter, const path start_directory, Fl_Native_File_Chooser::Type type ) :
+	title_string_( window_title ),
+	filter_string_( file_filter ),
+	start_directory_( start_directory ),
 	type_( type )
 {
 
 	this->Fl_Native_File_Chooser::type( type_ );
 	
-	this->title( windowTitle.c_str() );
-	this->filter( fileFilter.c_str() );
+	this->title( window_title.c_str() );
+	this->filter( file_filter.c_str() );
 
-	this->directory( defaultDirectory.string().c_str() );
+	this->directory( start_directory.string().c_str() );
 
 	this->options( SAVEAS_CONFIRM );
 
@@ -62,17 +61,17 @@ FileChooser::FileChooser( const vector<char>& binary_data, vector<char>::const_i
 
 }
 
-FileChooser::FileChooser( const FileChooser& fC ) : 
-	FileChooser{ fC.title_string_, fC.filter_string_, fC.start_directory_, fC.type_ }
+FileChooser::FileChooser( const FileChooser& file_chooser ) : 
+	FileChooser{ file_chooser.title_string_, file_chooser.filter_string_, file_chooser.start_directory_, file_chooser.type_ }
 {}
 
-FileChooser& FileChooser::operator=( const FileChooser& fC ){
+FileChooser& FileChooser::operator=( const FileChooser& file_chooser ){
 
 
-	this->Fl_Native_File_Chooser::type( fC.type_ );
-	this->SetTitle( fC.title_string_ );
-	this->SetFilter( fC.filter_string_ );
-	this->SetStartDirectory( fC.start_directory_ );
+	this->Fl_Native_File_Chooser::type( file_chooser.type_ );
+	this->SetTitle( file_chooser.title_string_ );
+	this->SetFilter( file_chooser.filter_string_ );
+	this->SetStartDirectory( file_chooser.start_directory_ );
 	
 
 	return *this;
@@ -91,18 +90,18 @@ size_t FileChooser::Serialize( vector<char>& binary_data ) const{
 
 }
 
-void FileChooser::SetTitle( const string newTitle ){
-	title_string_ = newTitle;
+void FileChooser::SetTitle( const string new_title ){
+	title_string_ = new_title;
 	this->title( title_string_.c_str() );
 }
 
-void FileChooser::SetFilter( const string newFilter ){
-	filter_string_ = newFilter;
+void FileChooser::SetFilter( const string new_filter ){
+	filter_string_ = new_filter;
 	this->filter( filter_string_.c_str() );
 }
 
-void FileChooser::SetStartDirectory( const path newDirectory ){
-	start_directory_ = newDirectory;
+void FileChooser::SetStartDirectory( const path new_directory ){
+	start_directory_ = new_directory;
 	this->directory( start_directory_.string().c_str() );
 }
 

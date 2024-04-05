@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   radonTransform.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -47,19 +46,19 @@ Projections::Projections( const ProjectionsProperties properties, const Tomograp
 	grid_errors_( vector<vector<GridCoordinates>>( size().c, vector<GridCoordinates>( size().r, GridCoordinates{ INFINITY, INFINITY } ) ) )
 {}
 
-void Projections::AssignData( const RadonPoint dataPoint ){
+void Projections::AssignData( const RadonPoint radon_point ){
 
-	GridCoordinates point{ dataPoint.theta, dataPoint.distance };
-	GridIndex index = GetIndex( point );
-	GridCoordinates gridPoint{ GetCoordinates( index )};
+	const GridCoordinates point{ radon_point.theta, radon_point.distance };
+	const GridIndex index = GetIndex( point );
+	const GridCoordinates gridPoint{ GetCoordinates( index )};
 
-	GridCoordinates error{
+	const GridCoordinates error{
 		gridPoint.c - point.c,
 		gridPoint.r - point.r
 	};
 
 	grid_errors_.at( index.c ).at( index.r ) = error;
-	this->SetData( index, dataPoint.value );
+	this->SetData( index, radon_point.value );
 }
 
 

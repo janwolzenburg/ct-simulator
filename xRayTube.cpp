@@ -49,10 +49,10 @@ XRayTubeProperties::XRayTubeProperties( const vector<char>& binary_data, vector<
 {}
 
 
-XRayTubeProperties::Material XRayTubeProperties::GetMaterialEnum( const string materialString ){
-	for( auto& [matEnum, value] : XRayTubeProperties::materials ){
-		if( materialString == value.first )
-			return matEnum;
+XRayTubeProperties::Material XRayTubeProperties::GetMaterialEnum( const string material_to_get ){
+	for( auto& [material_enumeration, material_string] : XRayTubeProperties::materials ){
+		if( material_to_get == material_string.first )
+			return material_enumeration;
 	}
 
 	return Thungsten;
@@ -60,7 +60,6 @@ XRayTubeProperties::Material XRayTubeProperties::GetMaterialEnum( const string m
 
 size_t XRayTubeProperties::Serialize( vector<char>& binary_data ) const{
 	size_t number_of_bytes = 0;
-
 
 	number_of_bytes += SerializeBuildIn<double>( anode_voltage_V, binary_data );
 	number_of_bytes += SerializeBuildIn<double>( anode_current_A, binary_data );
@@ -102,13 +101,13 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 																	 energy_spectrum.first.at( 0 );
 
 	// fill value vector with values
-	for( auto energy_it = energy_spectrum.first.begin(); 
-						energy_it < energy_spectrum.first.end(); energy_it++) {
+	for( auto current_energy = energy_spectrum.first.begin(); 
+						current_energy < energy_spectrum.first.end(); current_energy++) {
 		
 		// current index
-		size_t energy_index = energy_it - energy_spectrum.first.begin();
+		const size_t energy_index = current_energy - energy_spectrum.first.begin();
 		energy_spectrum.second.at(energy_index) =
-			(energy_spectrum.first.back() - *energy_it + 2 * energy_resolution);
+			(energy_spectrum.first.back() - *current_energy + 2 * energy_resolution);
 	}
 
 	double complete_power = 0.;
@@ -136,23 +135,23 @@ XRayTube::XRayTube( CoordinateSystem* const coordinate_system,
 		const double filter_gradient = properties_.filter_gradient * correction_factor;		
 
 		// iterate energies and attentuate according to filter properties
-		for( auto energy_it = energy_spectrum.first.begin(); 
-							energy_it < energy_spectrum.first.end(); energy_it++ ) {
+		for( auto current_energy = energy_spectrum.first.begin(); 
+							current_energy < energy_spectrum.first.end(); current_energy++ ) {
 				 
 			// current energy index
-			const size_t energy_index = energy_it - energy_spectrum.first.begin();	
+			const size_t energy_index = current_energy - energy_spectrum.first.begin();	
 			
 			// if filter dominates weaken the photonflow
-			if ( *energy_it < change_energy ) {
-				if( *energy_it < properties_.filter_cut_of_energy ){
+			if ( *current_energy < change_energy ) {
+				if( *current_energy < properties_.filter_cut_of_energy ){
 					energy_spectrum.second.at( energy_index ) = 
 						0.5 * energy_resolution * 
-						( *energy_it + properties_.filter_cut_of_energy ) *
+						( *current_energy + properties_.filter_cut_of_energy ) *
 						( 1 / properties_.filter_cut_of_energy ) * filter_gradient;
 				}
 				else{
 					energy_spectrum.second.at( energy_index ) = 
-						( *energy_it - properties_.filter_cut_of_energy + energy_resolution) * 
+						( *current_energy - properties_.filter_cut_of_energy + energy_resolution) * 
 						filter_gradient;
 				}
 			}

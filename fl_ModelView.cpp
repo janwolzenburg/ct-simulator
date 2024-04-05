@@ -1,6 +1,5 @@
 /******************************************************************
-* @file   modelView.cpp
-* @brief  Implementations
+* @file   fl_ModelView.cpp
 *
 * @author Jan Wolzenburg
 * @date   April 2023
@@ -21,21 +20,21 @@
 Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	
-	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Model" },
+	title_{								X( *this, 0. ),				Y( *this, 0. ),					W( *this, 1. ),					H( *this, 0.035 ),	"Model" },
 
-	head_group_{	X( *this, 0. ),		Y( *this, 0.04 ),		W( *this, 1. ),		H( *this, .05 ) },
-	load_model_button_{	X( head_group_, .1 ),	Y( head_group_, .05 ),	W( head_group_, .25 ),	H( head_group_, .9 ),	"Load model" },
+	head_group_{					X( *this, 0. ),				Y( *this, 0.04 ),				W( *this, 1. ),					H( *this, .05 ) },
+	load_model_button_{		X( head_group_, .1 ),	Y( head_group_, .05 ),	W( head_group_, .25 ),	H( head_group_, .9 ),	"Load model" },
 
-	model_inspection_group_{	X( *this, 0. ),		vOff( head_group_ ),	W( *this , 1. ),	H( *this, .75 ) },
-	model_information_{	X( model_inspection_group_, 0.05 ),	Y( model_inspection_group_, 0.01 ),	W( model_inspection_group_, .45 ),	H( model_inspection_group_, .15 ) },
-	reset_model_button_{	X( model_inspection_group_, .6 ),	Y( model_inspection_group_, .06 ),	W( model_inspection_group_, .25 ),	H( model_inspection_group_, .05 ), "Reset model" },
-	loading_status_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .2 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ),	"No model loaded" },
-	model_slice_image_{	X( model_inspection_group_, 0. ),	Y( model_inspection_group_, .2 ),	W( model_inspection_group_, 1. ),	H( model_inspection_group_, .725 ) },
+	model_inspection_group_{		X( *this, 0. ),			vOff( head_group_ ),		W( *this , 1. ),		H( *this, .75 ) },
+	model_information_{					X( model_inspection_group_, 0.05 ),	Y( model_inspection_group_, 0.01 ),	W( model_inspection_group_, .45 ),	H( model_inspection_group_, .15 ) },
+	reset_model_button_{				X( model_inspection_group_, .6 ),		Y( model_inspection_group_, .06 ),	W( model_inspection_group_, .25 ),	H( model_inspection_group_, .05 ), "Reset model" },
+	loading_status_{						X( model_inspection_group_, 0. ),		Y( model_inspection_group_, .2 ),		W( model_inspection_group_, 1. ),		H( model_inspection_group_, .725 ),	"No model loaded" },
+	model_slice_image_{					X( model_inspection_group_, 0. ),		Y( model_inspection_group_, .2 ),		W( model_inspection_group_, 1. ),		H( model_inspection_group_, .725 ) },
 
 	model_movement_group_{	X( *this, 0. ),		vOff( model_inspection_group_ ),	W( *this, 1. ),		H( *this, .165 ) },
-	x_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },
-	y_rotation_{		X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
-	z_position_{		X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
+	x_rotation_{			X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },
+	y_rotation_{			X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
+	z_position_{			X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
 	artefact_impact_{	X( model_movement_group_, .5 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "Artefact factor" },
 
 	
@@ -158,49 +157,49 @@ string Fl_ModelView::GetModelDescription( void ) const{
 
 bool Fl_ModelView::MoveModel( double& targetXRot, double& targetYRot, double& targetZTrans ){
 
-	const SlicePlane backupPlane = properties_.slice_plane; 
-	SlicePlane& planeInstance =  properties_.slice_plane;
+	const SlicePlane backup_plane = properties_.slice_plane; 
+	SlicePlane& plane_instance =  properties_.slice_plane;
 
-	const PrimitiveCoordinateSystem backupCSys = model_.coordinate_system()->GetPrimitive();
+	const PrimitiveCoordinateSystem backup_coordinate_system = model_.coordinate_system()->GetPrimitive();
 
-	if( targetXRot != planeInstance.rotation_angle_x ){
+	if( targetXRot != plane_instance.rotation_angle_x ){
 
-		const double rotationAngle = targetXRot - planeInstance.rotation_angle_x;
-		planeInstance.rotation_angle_x = targetXRot;
+		const double rotation_angle = targetXRot - plane_instance.rotation_angle_x;
+		plane_instance.rotation_angle_x = targetXRot;
 
-		const Line axis{ planeInstance.surface.direction_1(), planeInstance.surface.origin() };
+		const Line axis{ plane_instance.surface.direction_1(), plane_instance.surface.origin() };
 
-		model_.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		model_.coordinate_system()->Rotate( axis, rotation_angle / 360. * 2. * PI );
 	}
 
-	if( targetYRot != planeInstance.rotation_angle_y ){
+	if( targetYRot != plane_instance.rotation_angle_y ){
 
-		const double rotationAngle = targetYRot - planeInstance.rotation_angle_y;
-		planeInstance.rotation_angle_y = targetYRot;
+		const double rotation_angle = targetYRot - plane_instance.rotation_angle_y;
+		plane_instance.rotation_angle_y = targetYRot;
 
-		const Line axis{ planeInstance.surface.direction_2(), planeInstance.surface.origin() };
+		const Line axis{ plane_instance.surface.direction_2(), plane_instance.surface.origin() };
 
-		model_.coordinate_system()->Rotate( axis, rotationAngle / 360. * 2. * PI );
+		model_.coordinate_system()->Rotate( axis, rotation_angle / 360. * 2. * PI );
 	}
 
-	if( targetZTrans != planeInstance.position_z ){
+	if( targetZTrans != plane_instance.position_z ){
 
-		const double translation = targetZTrans - planeInstance.position_z;
-		planeInstance.position_z = targetZTrans;
+		const double translation = targetZTrans - plane_instance.position_z;
+		plane_instance.position_z = targetZTrans;
 
-		model_.coordinate_system()->Translate( ( (vector3D) planeInstance.surface.GetNormal() ) * translation );
+		model_.coordinate_system()->Translate( ( (vector3D) plane_instance.surface.GetNormal() ) * translation );
 	}
 
 	// return if succeeded
 	if( SliceModel() ) return true;
 	
 	// revert changes
-	planeInstance = backupPlane;
-	model_.coordinate_system()->SetPrimitive( backupCSys );
+	plane_instance = backup_plane;
+	model_.coordinate_system()->SetPrimitive( backup_coordinate_system );
 
-	targetXRot = planeInstance.rotation_angle_x;
-	targetYRot = planeInstance.rotation_angle_y;
-	targetZTrans = planeInstance.position_z;
+	targetXRot = plane_instance.rotation_angle_x;
+	targetYRot = plane_instance.rotation_angle_y;
+	targetZTrans = plane_instance.position_z;
 
 
 	return false;

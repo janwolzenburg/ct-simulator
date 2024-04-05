@@ -1,6 +1,5 @@
 /******************************************************************
-* @file   storedObjects.hpp
-* @brief  Template implementations
+* @file   persistingObject.hpp
 *
 * @author Jan Wolzenburg
 * @date   April 2023
@@ -48,12 +47,12 @@ bool PersistingObject<C>::Load( const path file_path ){
 	if( !std::filesystem::exists( file_path ) ) return false;
 
 	// load file
-	vector<char> binaryData = std::move( ImportSerialized( file_path ) );
-	vector<char>::iterator binaryDataIt = binaryData.begin();
+	vector<char> binary_data = std::move( ImportSerialized( file_path ) );
+	vector<char>::iterator current_byte = binary_data.begin();
 
-	if( !IsValidBinaryData( C::FILE_PREAMBLE, binaryData, binaryDataIt ) ) return false;
+	if( !IsValidBinaryData( C::FILE_PREAMBLE, binary_data, current_byte ) ) return false;
 	
-	C::operator=( std::move( C{binaryData, binaryDataIt} ) );
+	C::operator=( std::move( C{ binary_data, current_byte } ) );
 	
 	was_loaded_ = true;
 	return was_loaded_;
@@ -64,11 +63,11 @@ bool PersistingObject<C>::Save( const path file_path, const bool force ) const{
 
 	if( !was_loaded_ && !force ) return false;
 
-	vector<char> binaryData;
-	SerializeBuildIn<string>( C::FILE_PREAMBLE, binaryData );
-	C::Serialize( binaryData );
+	vector<char> binary_data;
+	SerializeBuildIn<string>( C::FILE_PREAMBLE, binary_data );
+	C::Serialize( binary_data );
 
-	return ExportSerialized( file_path, binaryData );
+	return ExportSerialized( file_path, binary_data );
 
 };
 

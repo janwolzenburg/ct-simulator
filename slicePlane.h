@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
- * @file   slicePlan.h
- * @brief  
+ * @file   slicePlane.h
  *
  * @author Jan Wolzenburg
  * @date   April 2023

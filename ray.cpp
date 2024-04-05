@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   rays.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -36,26 +35,26 @@ void RayProperties::AttenuateSpectrum( const VoxelData& voxel_data, const double
 	Ray implementation
 */
 
-Ray Ray::ConvertTo( const CoordinateSystem* const target ) const{
-	return Ray{ this->Line::ConvertTo( target ), properties_ };
+Ray Ray::ConvertTo( const CoordinateSystem* const target_coordinate_system ) const{
+	return Ray{ this->Line::ConvertTo( target_coordinate_system ), properties_ };
 };
 
-double Ray::GetLineParameter( const Point3D p, bool* const solution_found_ ) const{
-	double t = Line::GetLineParameter( p, solution_found_ );
-	*solution_found_ = *solution_found_ && ( t >= 0 );
-	return t;
+double Ray::GetLineParameter( const Point3D point_on_ray, bool* const solution_found ) const{
+	const double parameter = Line::GetLineParameter( point_on_ray, solution_found );
+	*solution_found = *solution_found && ( parameter >= 0 );
+	return parameter;
 }
 
-Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const cSys ) const{
-	return Ray{ this->Line::ProjectOnXYPlane( cSys ), this->properties_ };
+Ray Ray::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{
+	return Ray{ this->Line::ProjectOnXYPlane( coordinate_system ), this->properties_ };
 }
 
-void Ray::UpdateProperties( const VoxelData& data_, const double distance ){
+void Ray::UpdateProperties( const VoxelData& voxel_properties, const double distance ){
 	
 	// implement here handling of new properties
-	if(  !data_.HasSpecialProperty() ||
-		 data_.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
-		properties_.AttenuateSpectrum( data_, distance );
+	if(  !voxel_properties.HasSpecialProperty() ||
+		 voxel_properties.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
+		properties_.AttenuateSpectrum( voxel_properties, distance );
 }
 
 array<bool, ConvertToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits( void ) const{
@@ -63,33 +62,33 @@ array<bool, ConvertToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits(
 	array<bool, ConvertToUnderlying( Voxel::Face::End )> face_possiblities{ false };
 
 	// iterate all faces of voxel
-	for( Voxel::Face currentFace = Voxel::Face::Begin; 
-			 currentFace < Voxel::Face::End; ++currentFace ){
+	for( Voxel::Face current_face = Voxel::Face::Begin; 
+			 current_face < Voxel::Face::End; ++current_face ){
 
-		bool possible = false;
+		bool face_possible = false;
 
 		// check if face can be an exit face of the ray
-		switch( currentFace ){
+		switch( current_face ){
 			case Voxel::Face::YZ_Xp:
 				if( direction_.X() > 0 ) 
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 			case Voxel::Face::YZ_Xm:
 				if( direction_.X() < 0 ) 
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 
 			case Voxel::Face::XZ_Yp:
 				if( direction_.Y() > 0 ) 
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 			case Voxel::Face::XZ_Ym:
 				if( direction_.Y() < 0 )
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 
 			case Voxel::Face::XY_Zp:
 				if( direction_.Z() > 0  )
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 			case Voxel::Face::XY_Zm:
 				if( direction_.Z() < 0 ) 
-					face_possiblities.at( ConvertToUnderlying( currentFace ) ) = true; break;
+					face_possiblities.at( ConvertToUnderlying( current_face ) ) = true; break;
 
 			default: break;
 		}

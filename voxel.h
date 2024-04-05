@@ -135,7 +135,7 @@ class VoxelData{
 	
 	/*!
 	 * @brief check for specific property
-	 * @param property Property to check
+	 * @param property property to check
 	 * @return true when voxel has specific property
 	*/
 	bool HasSpecificProperty( const SpecialProperty property ) const;

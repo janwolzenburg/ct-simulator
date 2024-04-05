@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   grid.hpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   January 2023
@@ -39,7 +38,7 @@ DataGrid<D>::DataGrid( void ) :
 }
 
 template<class D>
-DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D defaultValue ) :
+DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D default_value ) :
 	size_( size ),
 	resolution_( resolution ),
 	start_( start ),
@@ -47,22 +46,22 @@ DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const 
 	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
-	Fillvectors( defaultValue );
+	Fillvectors( default_value );
 }
 
 template<class D>
-DataGrid<D>::DataGrid( const NumberRange columnRange, const NumberRange rowRange, const GridCoordinates resolution_, D defaultValue ) :
-	size_{ GridIndex{	static_cast<size_t>( ( columnRange.end() - columnRange.start() ) / resolution_.c ) + 1,
-						static_cast<size_t>( ( rowRange.end() - rowRange.start() ) / resolution_.r ) + 1 } },
-	start_{ GridCoordinates{	columnRange.start(),
-								rowRange.start() } },
-	resolution_{ GridCoordinates{ ( columnRange.end() - start_.c )	/ static_cast<double>( size_.c - 1 ),
-								  ( rowRange.end() - start_.r )		/ static_cast<double>( size_.r - 1 ) } },
+DataGrid<D>::DataGrid( const NumberRange column_range, const NumberRange row_range, const GridCoordinates resolution, D default_value ) :
+	size_{ GridIndex{	static_cast<size_t>( ( column_range.end() - column_range.start() ) / resolution.c ) + 1,
+										static_cast<size_t>( ( row_range.end() - row_range.start() ) / resolution.r ) + 1 } },
+	start_{ GridCoordinates{	column_range.start(),
+								row_range.start() } },
+	resolution_{ GridCoordinates{ ( column_range.end() - start_.c )	/ static_cast<double>( size_.c - 1 ),
+								  ( row_range.end() - start_.r )		/ static_cast<double>( size_.r - 1 ) } },
 	min_value_(D()),
 	max_value_(D())
 {
 	InitialiseMinAndMaxValue();
-	Fillvectors( defaultValue );
+	Fillvectors( default_value );
 }
 
 template<class D>
@@ -101,7 +100,7 @@ DataGrid<D>::DataGrid( const vector<char>& binary_data, vector<char>::const_iter
 }
 
 template<class D>
-void DataGrid<D>::Fillvectors( const D defaultValue ){
+void DataGrid<D>::Fillvectors( const D default_value ){
 
 	if( size_.c == 0 || size_.r == 0 ) return;
 
@@ -113,7 +112,7 @@ void DataGrid<D>::Fillvectors( const D defaultValue ){
 	row_points_ = CreateLinearSpace( start_.r, start_.r + static_cast<double>( size_.r - 1 ) * resolution_.r, size_.r );
 
 	// create data structure
-	data_ = vector<vector<D>>( size_.c, vector<D>( size_.r, defaultValue ) );
+	data_ = vector<vector<D>>( size_.c, vector<D>( size_.r, default_value ) );
 }
 
 template<class D>

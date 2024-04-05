@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   fl_ModelCreation.cpp
- * @brief  Implementations
+ * @file   fl_ModelCreator.cpp
  *
  * @author Jan Wolzenburg
  * @date   November 2023
@@ -33,14 +32,14 @@
 
 Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label ) :
 	Fl_Group{ x, y, w, h, label },
-	active_button_{				X( *this, .025 ),						Y( *this, .125 ),		H( *this, .75 ),		H( *this, .75 ) },
-	special_property_input_{	hOff( active_button_ ) + 10,			Y( *this, .1 ),			W( *this, .15 ),		H( *this, .8 ) },
-	value_input_{				hOff( special_property_input_ ) + 30,	Y( *this, 0.05 ),		W( *this, .105 ),			H( *this, .9 ), "µ: " },
-	x_positon_input_{			hOff( value_input_ ) + 30,				Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "x: " },
-	y_positon_input_{			hOff( x_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "y: " },
-	z_positon_input_{			hOff( y_positon_input_ ) + 30,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "z: " },
-	size_input_{				hOff( z_positon_input_ ) + 50,			Y( *this, 0.05 ),		W( *this, .085 ),			H( *this, .9 ), "Size: " },
-	shape_input_{				hOff( size_input_ ) + 20,				Y( *this, 0.125 ),		W( *this, .125 ),		H( *this, .75 ) },
+	active_button_{						X( *this, .025 ),											Y( *this, .125 ),		H( *this, .75 ),		H( *this, .75 ) },
+	special_property_input_{	hOff( active_button_ ) + 10,					Y( *this, .1 ),			W( *this, .15 ),		H( *this, .8 ) },
+	value_input_{							hOff( special_property_input_ ) + 30,	Y( *this, 0.05 ),		W( *this, .105 ),		H( *this, .9 ), "µ: " },
+	x_positon_input_{					hOff( value_input_ ) + 30,						Y( *this, 0.05 ),		W( *this, .085 ),		H( *this, .9 ), "x: " },
+	y_positon_input_{					hOff( x_positon_input_ ) + 30,				Y( *this, 0.05 ),		W( *this, .085 ),		H( *this, .9 ), "y: " },
+	z_positon_input_{					hOff( y_positon_input_ ) + 30,				Y( *this, 0.05 ),		W( *this, .085 ),		H( *this, .9 ), "z: " },
+	size_input_{							hOff( z_positon_input_ ) + 50,				Y( *this, 0.05 ),		W( *this, .085 ),		H( *this, .9 ), "Size: " },
+	shape_input_{							hOff( size_input_ ) + 20,							Y( *this, 0.125 ),	W( *this, .125 ),		H( *this, .75 ) },
 	is_visible_( true )
 {
 	Fl_Group::add( active_button_ );		
@@ -144,13 +143,13 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 	voxel_size_x_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .3 ),		W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize x in mm: " },
 	voxel_size_y_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .375 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize y in mm: " },
 	voxel_size_z_input_{	X( model_size_group_, .450 ),	Y( model_size_group_, .45 ),	W( model_size_group_, .45 ),	H( model_size_group_, .05 ),	"Voxelsize z in mm: " },
-	name_input_{			X( model_size_group_, .450 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
+	name_input_{					X( model_size_group_, .450 ),	Y( model_size_group_, .55 ),	W( model_size_group_, .4 ),		H( model_size_group_, .05 ),	"Name: " },
 	store_size_button_{		X( model_size_group_, .2 ),		Y( model_size_group_, .7 ),		W( model_size_group_, .6 ),		H( model_size_group_, .075 ),	"Store size" },
 
-	features_group_{		X( *this, .275 ),				Y( *this, .075 ),				W( *this, .71 ),					H( *this, .9 ),				"Model features" },
-	background_input_{		X( features_group_, .2 ),		Y( features_group_, .05 ),		W( features_group_, .2 ),		H( features_group_, .05 ),		"Background in 1/mm" },
-	information_{			X( features_group_, .5 ),		Y( features_group_, .05 ),		W( features_group_, .45 ),		H( features_group_, .15 ),		"" },
-	build_button_{			X( features_group_, .15 ),		Y( features_group_, .15 ),		W( features_group_, .2 ),		H( features_group_, .05 ),		"Build model" },
+	features_group_{			X( *this, .275 ),							Y( *this, .075 ),							W( *this, .71 ),							H( *this, .9 ),				"Model features" },
+	background_input_{		X( features_group_, .2 ),			Y( features_group_, .05 ),		W( features_group_, .2 ),			H( features_group_, .05 ),		"Background in 1/mm" },
+	information_{					X( features_group_, .5 ),			Y( features_group_, .05 ),		W( features_group_, .45 ),		H( features_group_, .15 ),		"" },
+	build_button_{				X( features_group_, .15 ),		Y( features_group_, .15 ),		W( features_group_, .2 ),			H( features_group_, .05 ),		"Build model" },
 
 	model_size_changed_callback_{ *this, &Fl_ModelCreator::UpdateModelSize },
 	model_size_stored_callback_{ *this, &Fl_ModelCreator::StoreModelSize },
@@ -271,7 +270,6 @@ void Fl_ModelCreator::StoreModelSize( void ){
 
 void Fl_ModelCreator::UpdateFeatures( void ){
 		
-	// backgrouund changed
 	if( background_absorption_ != background_input_.value() ){
 		background_absorption_ = background_input_.value();
 	}

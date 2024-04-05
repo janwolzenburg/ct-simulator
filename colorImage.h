@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   colorImage.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   March 2023

@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   radonProperties.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -43,18 +42,18 @@ ProjectionsProperties::ProjectionsProperties(	const size_t number_of_angles, con
 {
 
 	// check angle
-	double currentAngle = static_cast<double>( number_of_distances_ - 1 ) * angles_resolution_;
+	const double current_angle = static_cast<double>( number_of_distances_ - 1 ) * angles_resolution_;
 
 	// store current number_of_pixel of distances 
-	size_t newNumberPointsRow = number_of_distances_;
+	size_t new_number_of_distances = number_of_distances_;
 
 	// detector angle exceeds maximum or minimum
-	if( currentAngle > max_detetector_arc_angle_rad ) newNumberPointsRow = static_cast<size_t>( floor( max_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
-	if( currentAngle < min_detetector_arc_angle_rad ) newNumberPointsRow = static_cast<size_t>( ceil( min_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
+	if( current_angle > max_detetector_arc_angle_rad ) new_number_of_distances = static_cast<size_t>( floor( max_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
+	if( current_angle < min_detetector_arc_angle_rad ) new_number_of_distances = static_cast<size_t>( ceil( min_detetector_arc_angle_rad / angles_resolution_ ) ) + 1;
 
 	// recalculate if number_of_pixel of point changed
-	if( newNumberPointsRow != number_of_distances_ ){
-		number_of_distances_ = ForceToMin( ForceEven( newNumberPointsRow ), static_cast<size_t>( 3 ) );
+	if( new_number_of_distances != number_of_distances_ ){
+		number_of_distances_ = ForceToMin( ForceEven( new_number_of_distances ), static_cast<size_t>( 3 ) );
 		distances_resolution_ = measuring_field_size_ / static_cast<double>( number_of_distances_ - 1 );
 		number_of_frames_to_fill_ = number_of_projections_ + number_of_distances_ - 1;
 	}

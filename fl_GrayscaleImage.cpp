@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   fl_GrayscaleImage.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   September 2023
@@ -42,9 +41,9 @@ Fl_GrayscaleImage::Fl_GrayscaleImage( int x, int y, int w, int h, const char* la
 	has_overlay_( false )
 {}
 
-void Fl_GrayscaleImage::AssignImage( const GrayscaleImage& img ) 
+void Fl_GrayscaleImage::AssignImage( const GrayscaleImage& grayscale_image ) 
 {
-	grayscale_image_ = img;
+	grayscale_image_ = grayscale_image;
 	image_assigned_ = true;
 	overlay_ = vector<pair<bool, RGB>>( grayscale_image_.number_of_pixel(), pair<bool, RGB>{ false, { 0, 0, 0 } } );
 	has_overlay_ = false;
@@ -52,9 +51,9 @@ void Fl_GrayscaleImage::AssignImage( const GrayscaleImage& img )
 	Update();
 }
 
-void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const bool normalise ){
+void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& data_grid, const bool normalise ){
 
-	grayscale_image_ = GrayscaleImage{ modGrid.size().c, modGrid.size().r };
+	grayscale_image_ = GrayscaleImage{ data_grid.size().c, data_grid.size().r };
 	overlay_ = vector<pair<bool, RGB>>( grayscale_image_.number_of_pixel(), pair<bool, RGB>{ false, { 0, 0, 0 } } );
 
 	const size_t width = grayscale_image_.width();
@@ -66,7 +65,7 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& modGrid, const b
 		for( size_t r = 0; r < height; r++ ){
 			
 			const GridIndex pixel( c, r );
-			const VoxelData& data_ = modGrid.operator()( pixel );
+			const VoxelData& data_ = data_grid.operator()( pixel );
 
 			grayscale_image_.SetData( pixel, data_.GetAbsorptionAtReferenceEnergy() );
 			

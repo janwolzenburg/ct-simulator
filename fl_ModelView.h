@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   fl_ModelView.h
- * @brief
  *
  * @author Jan Wolzenburg
  * @date   March 2023

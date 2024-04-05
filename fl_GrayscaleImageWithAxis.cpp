@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   fl_GrayscaleImageWithAxis.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   November 2023

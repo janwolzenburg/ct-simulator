@@ -41,7 +41,7 @@ class Backprojection : private DataGrid<> {
 	 * @param filtered_projections filtered projections 
 	 * @param progress_window FL window to track progress
 	*/
-	Backprojection( const FilteredProjections filtered_projections, Fl_Progress_Window* progress_window = nullptr );
+	Backprojection( const FilteredProjections& filtered_projections, Fl_Progress_Window* progress_window = nullptr );
 
 	/*!
 	 * @brief constructor from serialized data
@@ -69,15 +69,15 @@ class Backprojection : private DataGrid<> {
 
 	/*!
 	 * @brief reconstruct image column wise
-	 * @param current_x_index Current x-index
-	 * @param current_x_index_mutex Mutex for x-index
+	 * @param current_angle_index current angle index
+	 * @param current_angle_index_mutex mutex for x-index
 	 * @param reconstructed_image reference to image
-	 * @param reconstructed_image_mutex Mutex for image
-	 * @param progress_window Progress window
-	 * @param progress_window_mutex Mutex for progress
-	 * @param filtered_projections Projections
+	 * @param reconstructed_image_mutex mutex for image
+	 * @param progress_window progress window
+	 * @param progress_window_mutex mutex for progress
+	 * @param filtered_projections projections
 	*/
-	static void ReconstructImageColumn(	size_t& current_x_index,				mutex& current_x_index_mutex, 
+	static void ReconstructImageColumn(	size_t& current_angle_index, mutex& current_angle_index_mutex,
 										Backprojection& reconstructed_image,	mutex& reconstructed_image_mutex, 
 										Fl_Progress_Window* progress_window,	mutex& progress_window_mutex, 
 										const FilteredProjections& filtered_projections );

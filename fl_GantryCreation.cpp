@@ -1,6 +1,5 @@
 /******************************************************************
-* @file   gantryCreation.cpp
-* @brief  Implementations
+* @file   fl_GantryCreation.cpp
 *
 * @author Jan Wolzenburg
 * @date   April 2023
@@ -35,28 +34,27 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
-	tube_group_{			X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),					H( *this, .4 ) },
-	tube_title_{			X( tube_group_, 0. ),	Y( tube_group_, 0. ),	W( tube_group_, 1. ),	H( tube_group_, .075 ),	"xRay Tube" },
-	voltage_input_{			X( tube_group_, .0 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Voltage" },
-	current_input_{			X( tube_group_, .25 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Current" },
-	anode_material_input_{	X( tube_group_, .5 ),	Y( tube_group_, .15 ),	W( tube_group_, .5 ),	H( tube_group_, .075 ),	"Material" },
-	toggle_filter_button_{  X( tube_group_, .0 ),	Y( tube_group_, .25 ),	W( tube_group_, .175 ),	H( tube_group_, .075 ),	"Filter" },
-	filter_cutoff_input{	X( tube_group_, .4 ),	Y( tube_group_, .25 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Cut-Off-Energy" },
-	filter_gradient_input{  X( tube_group_, .9 ),	Y( tube_group_, .25 ),	W( tube_group_, .1 ),	H( tube_group_, .075 ),	"Gradient" },
-	spectrum_plot_{			X( tube_group_, .0 ),	Y( tube_group_, .35 ),	W( tube_group_, 1. ),	H( tube_group_, .65 ),	"Spectrum Plot" },
+	tube_group_{						X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),					H( *this, .4 ) },
+	tube_title_{						X( tube_group_, 0. ),		Y( tube_group_, 0. ),		W( tube_group_, 1. ),		H( tube_group_, .075 ),	"xRay Tube" },
+	voltage_input_{					X( tube_group_, .0 ),		Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Voltage" },
+	current_input_{					X( tube_group_, .25 ),	Y( tube_group_, .15 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Current" },
+	anode_material_input_{	X( tube_group_, .5 ),		Y( tube_group_, .15 ),	W( tube_group_, .5 ),		H( tube_group_, .075 ),	"Material" },
+	toggle_filter_button_{  X( tube_group_, .0 ),		Y( tube_group_, .25 ),	W( tube_group_, .175 ),	H( tube_group_, .075 ),	"Filter" },
+	filter_cutoff_input{		X( tube_group_, .4 ),		Y( tube_group_, .25 ),	W( tube_group_, .15 ),	H( tube_group_, .075 ),	"Cut-Off-Energy" },
+	filter_gradient_input{  X( tube_group_, .9 ),		Y( tube_group_, .25 ),	W( tube_group_, .1 ),		H( tube_group_, .075 ),	"Gradient" },
+	spectrum_plot_{					X( tube_group_, .0 ),		Y( tube_group_, .35 ),	W( tube_group_, 1. ),		H( tube_group_, .65 ),	"Spectrum Plot" },
 
-	detector_group_{	X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
-	detector_title_{	X( detector_group_, .0 ),	Y( detector_group_, 0. ),	W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
+	detector_group_{						X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
+	detector_title_{						X( detector_group_, .0 ),	Y( detector_group_, 0. ),		W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
 	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Projections" },
-	number_of_distances_input_{		X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances" },
-	distance_range_input_{		X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distance range" },
+	number_of_distances_input_{	X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances" },
+	distance_range_input_{			X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distance range" },
 
-	number_of_rays_per_pixel_input_{ X( detector_group_, .0 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pixel" },
-	detector_focus_distance_input_{	X( detector_group_, .25 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Focus Dist." },
-	scattering_structure_input_{	X( detector_group_, .75 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Scatter grid" },
-	maximum_ray_angle_input_{	X( detector_group_, .50 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Max. angle" },
-
-	detector_plot_{	X( detector_group_, .0 ),	Y( detector_group_, .35 ),	W( detector_group_, 1. ),	H( detector_group_, .65 ),	"Detector Plot" },
+	number_of_rays_per_pixel_input_{	X( detector_group_, .0 ),		Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pixel" },
+	detector_focus_distance_input_{		X( detector_group_, .25 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Focus Dist." },
+	scattering_structure_input_{			X( detector_group_, .75 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Scatter grid" },
+	maximum_ray_angle_input_{					X( detector_group_, .50 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Max. angle" },
+	detector_plot_{										X( detector_group_, .0 ),		Y( detector_group_, .35 ),	W( detector_group_, 1. ),	H( detector_group_, .65 ),	"Detector Plot" },
 
 	update_gantry_callback_{ *this, &Fl_GantryCreation::UpdateGantry }
 	
@@ -98,13 +96,13 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		
 		toggle_filter_button_.color( FL_BACKGROUND_COLOR, FL_DARK_GREEN );
 
-		vector<string> materialNames;
-		for( auto& el : XRayTubeProperties::materials ) materialNames.push_back( el.second.first );
+		vector<string> material_names;
+		for( auto& material : XRayTubeProperties::materials ) material_names.push_back( material.second.first );
 
-		anode_material_input_.AssignElements( materialNames );
+		anode_material_input_.AssignElements( material_names );
 		XRayTubeProperties::Material anode_material = tube_properties_.anode_material;
-		string materialName = XRayTubeProperties::materials.at( anode_material ).first;
-		anode_material_input_.SetCurrentElement( materialName );
+		string material_name = XRayTubeProperties::materials.at( anode_material ).first;
+		anode_material_input_.SetCurrentElement( material_name );
 
 		voltage_input_.tooltip( "Voltage in Volts." );
 		current_input_.tooltip( "Current in Ampere." );
@@ -211,39 +209,39 @@ void Fl_GantryCreation::UpdateGantry( void ){
 
 
 
-		const XRayTube tubeRef = gantry_.tube();
-		const XRayDetector detectorRef = gantry_.detector();
+		const XRayTube tube = gantry_.tube();
+		const XRayDetector detector = gantry_.detector();
 
-		VectorPair spectrum_points = tubeRef.GetEnergySpectrumPoints();
+		VectorPair spectrum_points = tube.GetEnergySpectrumPoints();
 		//for( auto& spectrum_value : spectrum_points.second ){
 		for( size_t energy_index = 0; energy_index < spectrum_points.first.size(); energy_index++ ){
-			spectrum_points.second.at( energy_index ) *= spectrum_points.first.at( energy_index )  / tubeRef.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
+			spectrum_points.second.at( energy_index ) *= spectrum_points.first.at( energy_index )  / tube.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
 			//spectrum_points.second.at( energy_index ) *= 1.  / tubeRef.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
 		}
 
 		spectrum_plot_.plot().AssignData( spectrum_points );
 		spectrum_plot_.AssignData();
 
-		main_window_.tomography_execution_.UpdateInformation( projections_properties_, detectorRef.properties(), gantry_.tube() );
+		main_window_.tomography_execution_.UpdateInformation( projections_properties_, detector.properties(), gantry_.tube() );
 
 		detector_plot_.plot().ResetObjects();
 
-		const auto allPixel = detectorRef.pixel_array();
+		const auto all_pixel = detector.pixel_array();
 
-		for( const auto& pixel : allPixel ){
+		for( const auto& pixel : all_pixel ){
 
-			const Point3D startP = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( gantry_.coordinate_system() );
-			const Point3D endP = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( gantry_.coordinate_system() );
+			const Point3D start_point = pixel.GetPoint( pixel.parameter_1_min(), 0. ).ConvertTo( gantry_.coordinate_system() );
+			const Point3D end_point = pixel.GetPoint( pixel.parameter_1_max(), 0. ).ConvertTo( gantry_.coordinate_system() );
 
-			const Tuple2D start{ startP.X(), startP.Y() };
-			const Tuple2D end{ endP.X(), endP.Y() };
+			const Tuple2D start{ start_point.X(), start_point.Y() };
+			const Tuple2D end{ end_point.X(), end_point.Y() };
 
 			detector_plot_.plot().AddLine( start, end );
 
 		}
 
-		const Point3D gantryCenter = gantry_.GetCenter();
-		detector_plot_.plot().AddPoint( Tuple2D{ gantryCenter.X(), gantryCenter.Y() }, "Center");
+		const Point3D gantry_center = gantry_.GetCenter();
+		detector_plot_.plot().AddPoint( Tuple2D{ gantry_center.X(), gantry_center.Y() }, "Center");
 		detector_plot_.plot().AddPoint( Tuple2D{ gantry_.tube().coordinate_system()->GetOriginInParentSystem().X(), gantry_.tube().coordinate_system()->GetOriginInParentSystem().Y() }, "Tube");
 		
 		detector_plot_.plot().CreatePlot();

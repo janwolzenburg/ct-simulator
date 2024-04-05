@@ -1,7 +1,6 @@
 #pragma once
 /*********************************************************************
  * @file   voxel.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022
@@ -35,18 +34,18 @@ double VoxelData::artefact_impact_factor_ = 1.;
 
 VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_string ){
 	
-	for( auto& [matEnum, value] : VoxelData::special_property_names ){
-		if( property_string == value )
-			return matEnum;
+	for( const auto& [material_enumeration, material_string] : VoxelData::special_property_names ){
+		if( property_string == material_string )
+			return material_enumeration;
 	}
 
 	return None;
 
 }
 
-VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty specProperty ) :
+VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty special_properties ) :
 	absorption_( -1. ),
-	specialProperties_( specProperty )
+	specialProperties_( special_properties )
 {
 
 	if( energy < change_energy_for_constant_mu )
@@ -85,9 +84,9 @@ size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	return number_of_bytes;
 }
 
-double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorptionAtEnergy, const double energy ){
+double VoxelData::GetAbsorptionAtReferenceEnergy( const double absorption_at_energy, const double energy ){
 
-	return absorptionAtEnergy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / change_energy_for_constant_mu, 3. );
+	return absorption_at_energy * pow( ForceToMax( energy, change_energy_for_constant_mu ) / change_energy_for_constant_mu, 3. );
 	
 }
 
@@ -105,10 +104,10 @@ bool VoxelData::HasSpecificProperty( const SpecialProperty property ) const{
 	Voxel implementation
 */
 
-Voxel::Voxel( const Point3D o_, const Tuple3D size, const VoxelData data ) :
+Voxel::Voxel( const Point3D origin, const Tuple3D size, const VoxelData data ) :
 	size_( size ),
 	data_( data ),
-	origin_corner_( o_ ),
+	origin_corner_( origin ),
 	faces{
 				BoundedSurface{ origin_corner_.GetCoordinateSystem()->GetEy(), origin_corner_.GetCoordinateSystem()->GetEz(), origin_corner_ + origin_corner_.GetCoordinateSystem()->GetEx() * size_.x, 0, size_.y, 0, size_.z },
 				BoundedSurface{ origin_corner_.GetCoordinateSystem()->GetEx(), origin_corner_.GetCoordinateSystem()->GetEz(), origin_corner_ + origin_corner_.GetCoordinateSystem()->GetEy() * size_.y, 0, size_.x, 0, size_.z },
@@ -147,14 +146,14 @@ string Voxel::ConvertToString( unsigned int newline_tabulators ) const{
 
 
 
-bool Voxel::Contains( const Point3D p ) const{
+bool Voxel::Contains( const Point3D point ) const{
 
 	// create copy of point in voxel's coordinate system
-	Point3D pHere { p.ConvertTo( this->origin_corner() ) };
+	const Point3D converted_point { point.ConvertTo( this->origin_corner() ) };
 
 	// check all components
-	return	origin_corner_.X() <= pHere.X() && pHere.X() <= origin_corner_.X() + size_.x &&
-			origin_corner_.Y() <= pHere.Y() && pHere.Y() <= origin_corner_.Y() + size_.y &&
-			origin_corner_.Z() <= pHere.Z() && pHere.Z() <= origin_corner_.Z() + size_.z;
+	return	origin_corner_.X() <= converted_point.X() && converted_point.X() <= origin_corner_.X() + size_.x &&
+			origin_corner_.Y() <= converted_point.Y() && converted_point.Y() <= origin_corner_.Y() + size_.y &&
+			origin_corner_.Z() <= converted_point.Z() && converted_point.Z() <= origin_corner_.Z() + size_.z;
 
 }

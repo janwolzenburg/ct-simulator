@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   widgets.hpp
-* @brief  Template implementations
 *
 * @author Jan Wolzenburg
 * @date   April 2023

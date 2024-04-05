@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   radonCoordinates.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   December 2022

@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   slicePlane.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   April 2023

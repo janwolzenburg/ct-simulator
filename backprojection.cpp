@@ -1,6 +1,5 @@
 /*********************************************************************
- * @file   reconstructedImage.cpp
- * @brief  
+ * @file   backprojection.cpp
  *
  * @author Jan Wolzenburg
  * @date   October 2023
@@ -93,11 +92,11 @@ void Backprojection::ReconstructImageColumn(
 }
 
 
-Backprojection::Backprojection( const FilteredProjections projections, Fl_Progress_Window* progress )
+Backprojection::Backprojection( const FilteredProjections& projections, Fl_Progress_Window* progress )
 {
 
 	const double distance_range =  ( projections.size().r - 1 ) * projections.resolution().r ;
-	const double side_length = distance_range;// / sqrt ( 2 );
+	const double side_length = distance_range;
 	const GridCoordinates image_start{ -side_length / 2., -side_length / 2.  };
 
 	const size_t number_of_pixel = static_cast<size_t>( 2.* floor( ( side_length / projections.resolution().r + 1 ) ) );
@@ -115,7 +114,7 @@ Backprojection::Backprojection( const FilteredProjections projections, Fl_Progre
 	// computation in threads
 	vector<std::thread> threads;
 
-	for( size_t threadIdx = 0; threadIdx < std::thread::hardware_concurrency(); threadIdx++ ){
+	for( size_t thread_index = 0; thread_index < std::thread::hardware_concurrency(); thread_index++ ){
 		threads.emplace_back( ReconstructImageColumn, ref( current_angle_index ), ref( current_angle_index_mutex ), ref( *this ), ref( imageMutex ), progress, ref( progressMutex ), projections );
 	}
 

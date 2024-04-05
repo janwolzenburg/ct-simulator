@@ -27,10 +27,10 @@ class RadonCoordinates{
 
 	/*!
 	 * @brief constructor
-	 * @param coordinate_system reference coordinate system
+	 * @param radon_coordinate_system reference coordinate system
 	 * @param line line to calculate the radon coordinates for
 	*/
-	RadonCoordinates( const CoordinateSystem* const coordinate_system, const Line line );
+	RadonCoordinates( const CoordinateSystem* const radon_coordinate_system, const Line line );
 
 
 	double theta;			/*!< angle*/

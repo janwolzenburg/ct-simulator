@@ -1,6 +1,5 @@
 /******************************************************************
 * @file   modelViewProperties.cpp
-* @brief  Implementations
 *
 * @author Jan Wolzenburg
 * @date   October 2023

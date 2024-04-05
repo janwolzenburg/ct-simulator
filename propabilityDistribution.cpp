@@ -1,6 +1,5 @@
 /*********************************************************************
  * @file   propability.cpp
- * @brief  Implementations
  *
  * @author Jan Wolzenburg
  * @date   Febuary 2023
@@ -25,14 +24,12 @@
 *********************************************************************/
 
 
-
 /*
 	randomNumberGenerator implementation
 */
 
 
-
-RandomNumberGenerator::RandomNumberGenerator(const unsigned long long int extra_seed) :
+RandomNumberGenerator::RandomNumberGenerator( const unsigned long long int extra_seed ) :
 	
 	generator_state_{ static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) |
 										( static_cast<uint64_t>( std::chrono::system_clock::now().time_since_epoch().count() + extra_seed ) << 32 ),
@@ -78,7 +75,6 @@ bool RandomNumberGenerator::DidARandomEventHappen( const double event_propabilit
 
 	return false;
 }
-
 
 
 /*
