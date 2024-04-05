@@ -85,7 +85,7 @@ void VerifyTransmission( void ){
 
 	PersistingObject<Model> model{ Model{}, model_path, true };
 	
-	Tuple3D center = Primitivevector3{ model.size() } / -2.;
+	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 
@@ -154,7 +154,7 @@ void VerifyHardening( void ){
 	
 	path model_path{ "./verification only water.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
-	Tuple3D center = Primitivevector3{ model.size() } / -2.;
+	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 	ProjectionsProperties projections_properties{ number_of_projections, number_of_pixel, 1.275*measurefield_size };
@@ -264,7 +264,7 @@ void VerifyScattering( void ){
 
 	path model_path{ "./verification only water.model" };
 	PersistingObject<Model> model{ Model{}, model_path, true };
-	Tuple3D center = Primitivevector3{ model.size() } / -2.;
+	Tuple3D center = PrimitiveVector3{ model.size() } / -2.;
 	model.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 
 	simulation_properties.number_of_points_in_spectrum = 128;

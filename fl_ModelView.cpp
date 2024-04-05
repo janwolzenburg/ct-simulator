@@ -227,7 +227,7 @@ bool Fl_ModelView::SliceModel( void ){
 void Fl_ModelView::CenterModel( void ){
 
 	// center model
-	Tuple3D center = Primitivevector3{ model_.size() } / -2.;
+	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
 
 	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
 

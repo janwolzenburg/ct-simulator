@@ -93,7 +93,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 	 * @param name name of the system
 	 * @return pointer to created system with this system as parent
 	*/
-	CoordinateSystem* AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const;
+	CoordinateSystem* AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name ) const;
 
 	/*!
 	 * @brief get path from global system to this system
@@ -201,7 +201,7 @@ class CoordinateSystem : private PrimitiveCoordinateSystem {
 		* @param parent pointer to parent system
 		* @param name name of the system
 	*/
-	CoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez,
+	CoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez,
 									  const CoordinateSystem* const parent, const string name );
 
 	/*!

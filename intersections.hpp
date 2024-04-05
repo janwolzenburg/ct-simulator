@@ -38,9 +38,9 @@ LineSurfaceIntersection<L, S>::LineSurfaceIntersection( const L& line, const S& 
 	LineSurfaceIntersection<L, S>{}
 {
 	// primitve vectors without coordinate system context
-	Primitivevector3 surface_origin, surface_direction_1, surface_direction_2;
-	Primitivevector3 line_direction = line.direction().GetComponents();
-	Primitivevector3 line_origin = line.origin().GetComponents();
+	PrimitiveVector3 surface_origin, surface_direction_1, surface_direction_2;
+	PrimitiveVector3 line_direction = line.direction().GetComponents();
+	PrimitiveVector3 line_origin = line.origin().GetComponents();
 
 	// same system?
 	if( line.direction().GetCoordinateSystem() == 

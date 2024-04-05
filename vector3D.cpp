@@ -87,15 +87,15 @@ Vector3D Vector3D::ConvertTo( const Surface target_coordinate_system ) const{
 	return this->ConvertTo( target_coordinate_system.direction_1() );
 };
 
-Primitivevector3 Vector3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
+PrimitiveVector3 Vector3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
 	return Vector3D::ConvertTo( target_coordinate_system ).GetComponents();
 }
 
-Primitivevector3 Vector3D::GetComponents( const Vector3D target_coordinate_system ) const{
+PrimitiveVector3 Vector3D::GetComponents( const Vector3D target_coordinate_system ) const{
 	return Vector3D::ConvertTo( target_coordinate_system.coordinate_system_ ).GetComponents();;
 }
 
-Primitivevector3 Vector3D::GetGlobalComponents( void ) const{
+PrimitiveVector3 Vector3D::GetGlobalComponents( void ) const{
 	return this->GetComponents( GetGlobalSystem() );
 };
 
@@ -125,7 +125,7 @@ MathematicalObject::MathError Vector3D::UpdateLength( void ){
 
 MathematicalObject::MathError Vector3D::Scale( const double scalar ){
 	// scale each component
-	Primitivevector3::Scale( scalar );
+	PrimitiveVector3::Scale( scalar );
 
 	// update vectors length
 	return UpdateLength();
@@ -135,7 +135,7 @@ MathematicalObject::MathError Vector3D::Normalise( void ){
 	MathematicalObject::MathError tempory_error = MathError::Ok;
 	MathematicalObject::MathError err = MathError::Ok;
 
-	if( ( tempory_error = Primitivevector3::Normalise() ) != MathError::Ok ) err = tempory_error;
+	if( ( tempory_error = PrimitiveVector3::Normalise() ) != MathError::Ok ) err = tempory_error;
 	if( ( tempory_error = UpdateLength() ) != MathError::Ok ) err = tempory_error;
 
 	// scale and return error code
@@ -143,17 +143,17 @@ MathematicalObject::MathError Vector3D::Normalise( void ){
 }
 
 MathematicalObject::MathError Vector3D::AddToX( const double x_ ){
-	Primitivevector3::AddToX( x_ );
+	PrimitiveVector3::AddToX( x_ );
 	return UpdateLength();
 };
 
 MathematicalObject::MathError Vector3D::AddToY( const double y_ ){
-	Primitivevector3::AddToY( y_ );
+	PrimitiveVector3::AddToY( y_ );
 	return UpdateLength();
 };
 
 MathematicalObject::MathError Vector3D::AddToZ( const double z_ ){
-	Primitivevector3::AddToZ( z_ );
+	PrimitiveVector3::AddToZ( z_ );
 	return UpdateLength();
 };
 
@@ -179,17 +179,17 @@ bool Vector3D::IsOrthogonal( const Vector3D second_vector ) const{
 }
 
 MathematicalObject::MathError Vector3D::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
-	Primitivevector3::RotateAroundXAxis( sine_phi, cosine_phi );
+	PrimitiveVector3::RotateAroundXAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 
 MathematicalObject::MathError Vector3D::RotateAroundYAxis( const double sine_phi, const double cosine_phi ){
-	Primitivevector3::RotateAroundYAxis( sine_phi, cosine_phi );
+	PrimitiveVector3::RotateAroundYAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 
 MathematicalObject::MathError Vector3D::RotateAroundZAxis( const double sine_phi, const double cosine_phi ){
-	Primitivevector3::RotateAroundZAxis( sine_phi, cosine_phi );
+	PrimitiveVector3::RotateAroundZAxis( sine_phi, cosine_phi );
 	return UpdateLength();
 }
 
@@ -211,7 +211,7 @@ MathematicalObject::MathError Vector3D::Rotate( const Vector3D axis, const doubl
 	MathematicalObject::MathError tempory_error = MathError::Ok;
 	MathematicalObject::MathError err = MathError::Ok;
 
-	if( ( tempory_error = this->Primitivevector3::Rotate( nCpy, rotation_angle ) ) != MathError::Ok ) err = tempory_error;
+	if( ( tempory_error = this->PrimitiveVector3::Rotate( nCpy, rotation_angle ) ) != MathError::Ok ) err = tempory_error;
 	if( ( tempory_error = this->UpdateLength() ) != MathError::Ok ) err = tempory_error;
 
 	return err;
@@ -265,15 +265,15 @@ Point3D Point3D::ConvertTo( const Point3D target_coordinate_system ) const{
 	return Point3D::ConvertTo( target_coordinate_system.coordinate_system_ );
 }
 
-Primitivevector3 Point3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
+PrimitiveVector3 Point3D::GetComponents( const CoordinateSystem* const target_coordinate_system ) const{
 	return Point3D::ConvertTo( target_coordinate_system ).GetComponents();
 }
 
-Primitivevector3 Point3D::GetComponents( const Point3D target_coordinate_system ) const{
+PrimitiveVector3 Point3D::GetComponents( const Point3D target_coordinate_system ) const{
 	return Point3D::GetComponents( target_coordinate_system.coordinate_system_ );
 }
 
-Primitivevector3 Point3D::GetGlobalComponents( void ) const{
+PrimitiveVector3 Point3D::GetGlobalComponents( void ) const{
 	return this->Point3D::ConvertTo( GetGlobalSystem() ).GetComponents();
 }
 

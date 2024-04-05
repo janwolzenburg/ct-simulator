@@ -26,7 +26,7 @@
  /*!
  * @brief class for Coordinates with coordinate system with context
 */
-class Coordinates : protected Primitivevector3{
+class Coordinates : protected PrimitiveVector3{
 
 	protected:
 	const CoordinateSystem* coordinate_system_;						/*!< pointer to coordinate system*/
@@ -39,7 +39,7 @@ class Coordinates : protected Primitivevector3{
 	 * @param components coordinate components
 	 * @param coordinate_system system in which these coordinates are defined
 	*/
-	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : Primitivevector3{ components }, coordinate_system_( coordinate_system ) {};
+	Coordinates( const Tuple3D components, const CoordinateSystem* const coordinate_system ) : PrimitiveVector3{ components }, coordinate_system_( coordinate_system ) {};
 
 	/*!
 	 * @brief default constructor

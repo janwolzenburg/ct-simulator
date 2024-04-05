@@ -30,13 +30,13 @@ Gantry::Gantry( CoordinateSystem* const coordinate_system, const XRayTubePropert
 				const ProjectionsProperties projections_properties, const PhysicalDetectorProperties physical_detector_properties ) :
 	coordinate_system_( coordinate_system ),
 	initial_position_( coordinate_system_->GetPrimitive() ),
-	detector_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, -1, 0 }, Primitivevector3{ 0, 0, 1 }, "xRay detector" ),
+	detector_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, -1, 0 }, PrimitiveVector3{ 0, 0, 1 }, "xRay detector" ),
 					projections_properties, physical_detector_properties },
-	tube_{ coordinate_system_->AddCoordinateSystem( Primitivevector3{ 0, 0, 0}, Primitivevector3{1, 0, 0}, Primitivevector3{0, -1, 0}, Primitivevector3{0, 0, 1}, "xRay tube"), tube_properties }
+	tube_{ coordinate_system_->AddCoordinateSystem( PrimitiveVector3{ 0, 0, 0}, PrimitiveVector3{1, 0, 0}, PrimitiveVector3{0, -1, 0}, PrimitiveVector3{0, 0, 1}, "xRay tube"), tube_properties }
 
 {
 	// align detector - tube axis with x axis
-	PrimitiveCoordinateSystem x_axis_aligned_system{ Primitivevector3{ 0, 0, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } };
+	PrimitiveCoordinateSystem x_axis_aligned_system{ PrimitiveVector3{ 0, 0, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } };
 	coordinate_system_->SetPrimitive( x_axis_aligned_system );
 
 	tube_.coordinate_system()->Translate( Vector3D{ Tuple3D{ 0, detector_.properties().detector_focus_distance / 2, 0 }, coordinate_system_ } );
@@ -48,7 +48,7 @@ void Gantry::UpdateTubeAndDetectorProperties( const XRayTubeProperties tube_prop
 									const PhysicalDetectorProperties physical_detector_properties ){
 	
 	tube_.UpdateProperties( tube_properties );
-	tube_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ Primitivevector3{ 0, physical_detector_properties.detector_focus_distance / 2, 0 }, Primitivevector3{ 0, 1, 0 }, Primitivevector3{ 1, 0, 0 }, Primitivevector3{ 0, 0, 1 } } );
+	tube_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ PrimitiveVector3{ 0, physical_detector_properties.detector_focus_distance / 2, 0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 1, 0, 0 }, PrimitiveVector3{ 0, 0, 1 } } );
 	
 	detector_.UpdateProperties( projections_properties, physical_detector_properties );
 

@@ -37,7 +37,7 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	 * @param ez z-axis
 	 * @details axes must be orthogonal to each other
 	*/
-	PrimitiveCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez );
+	PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez );
 
 	/*!
 	 * @brief constructor from serialized data
@@ -62,25 +62,25 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	 * @brief get primitive origin
 	 * @return primitive represantation of the origin
 	*/
-	Primitivevector3 origin( void ) const{ return origin_; };
+	PrimitiveVector3 origin( void ) const{ return origin_; };
 
 	/*!
 	 * @brief get primitive x Axis
 	 * @return primitive represantation of the x Axis
 	*/
-	Primitivevector3 ex( void ) const{ return ex_; };
+	PrimitiveVector3 ex( void ) const{ return ex_; };
 
 	/*!
 	 * @brief get primitive y Axis
 	 * @return primitive represantation of the y Axis
 	*/
-	Primitivevector3 ey( void ) const{ return ey_; };
+	PrimitiveVector3 ey( void ) const{ return ey_; };
 
 	/*!
 	 * @brief get primitive z Axis
 	 * @return primitive represantation of the z Axis
 	*/
-	Primitivevector3 ez( void ) const{ return ez_; };
+	PrimitiveVector3 ez( void ) const{ return ez_; };
 
 
 	protected:
@@ -89,20 +89,20 @@ class PrimitiveCoordinateSystem : public MathematicalObject{
 	 * @brief translate coordinate system
 	 * @param direction Translation in x, y and z direction
 	*/
-	void Translate( const Primitivevector3 direction ){ origin_ = origin_ + direction; };
+	void Translate( const PrimitiveVector3 direction ){ origin_ = origin_ + direction; };
 
 	/*!
 	 * @brief rotate coordinate system
 	 * @param axis rotation axis
 	 * @param angle rotation angle
 	*/
-	MathError Rotate( const Primitivevector3 axis, const double angle );
+	MathError Rotate( const PrimitiveVector3 axis, const double angle );
 
 
 	protected:
 
-	Primitivevector3 origin_;		/*!< origin point */
-	Primitivevector3 ex_;				/*!< x-axis unit vector */
-	Primitivevector3 ey_;				/*!< y-axis unit vector */
-	Primitivevector3 ez_;				/*!< z-axis unit vector */
+	PrimitiveVector3 origin_;		/*!< origin point */
+	PrimitiveVector3 ex_;				/*!< x-axis unit vector */
+	PrimitiveVector3 ey_;				/*!< y-axis unit vector */
+	PrimitiveVector3 ez_;				/*!< z-axis unit vector */
 };

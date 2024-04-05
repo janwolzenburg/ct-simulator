@@ -23,7 +23,7 @@
 /*!
  * @brief class for a primitive 3D vector with some operations
 */
-class Primitivevector3 : public Tuple3D, public MathematicalObject{
+class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 
 	public:
 
@@ -33,25 +33,25 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	 * @param y y value
 	 * @param z z value
 	*/
-	Primitivevector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
+	PrimitiveVector3( const double x, const double y, const double z ) : Tuple3D{ x, y, z } {};
 
 	/*!
 	* @brief constructor
 	* @param xyz x, y and z values
 	*/
-	Primitivevector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
+	PrimitiveVector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
 
 	/*!
 	 * @brief default constructor
 	*/
-	Primitivevector3( void ) : Primitivevector3{ 0., 0., 0. } {};
+	PrimitiveVector3( void ) : PrimitiveVector3{ 0., 0., 0. } {};
 
 	/*!
 	 * @brief constructor from serialized data
 	 * @param binary_data reference to vector with binary data
 	 * @param current_byte iterator to start of data in vector
 	*/
-	Primitivevector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
+	PrimitiveVector3( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : Tuple3D{ binary_data, current_byte }{};
 
 	/*!
 	 * @brief convert data to string
@@ -65,48 +65,48 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	 * @param vector_to_compare vector to compare with
 	 * @return true when all components between this and second vector are almost equal
 	*/
-	bool operator== ( const Primitivevector3 vector_to_compare ) const;
+	bool operator== ( const PrimitiveVector3 vector_to_compare ) const;
 
 	/*!
 	 * @brief add second vector to this
 	 * @param summand vector to add
 	 * @return sum of this and summand
 	*/
-	Primitivevector3 operator+ ( const Primitivevector3 summand ) const{ return Primitivevector3{ x + summand.x, y + summand.y, z + summand.z }; };
+	PrimitiveVector3 operator+ ( const PrimitiveVector3 summand ) const{ return PrimitiveVector3{ x + summand.x, y + summand.y, z + summand.z }; };
 
 	/*!
 	 * @brief substract second vector to this
 	 * @param subtrahend vector to substract
 	 * @return difference of this and v
 	*/
-	Primitivevector3 operator- ( const Primitivevector3 subtrahend ) const{ return Primitivevector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
+	PrimitiveVector3 operator- ( const PrimitiveVector3 subtrahend ) const{ return PrimitiveVector3{ x - subtrahend.x, y - subtrahend.y, z - subtrahend.z }; };
 
 	/*!
 	 * @brief negation operator
 	 * @return negated vector
 	*/
-	Primitivevector3 operator- ( void ) const{ return Primitivevector3{ -x, -y, -z }; };
+	PrimitiveVector3 operator- ( void ) const{ return PrimitiveVector3{ -x, -y, -z }; };
 
 	/*!
 	 * @brief scale this vector
 	 * @param scalar factor to scale with
 	 * @return scaled vector
 	*/
-	Primitivevector3 operator* ( const double scalar ) const{ return Primitivevector3{ scalar * x, scalar * y, scalar * z }; };
+	PrimitiveVector3 operator* ( const double scalar ) const{ return PrimitiveVector3{ scalar * x, scalar * y, scalar * z }; };
 
 	/*!
 	 * @brief scalar product
 	 * @param second_vector second vector
 	 * @return scalar product of vectors
 	*/
-	double operator* ( const Primitivevector3 second_vector ) const{ return this->x * second_vector.x + this->y * second_vector.y + this->z * second_vector.z; };
+	double operator* ( const PrimitiveVector3 second_vector ) const{ return this->x * second_vector.x + this->y * second_vector.y + this->z * second_vector.z; };
 
 	/*!
 	 * @brief divide this vector
 	 * @param divisor value to divide by
 	 * @return divided vector
 	*/
-	Primitivevector3 operator/ ( const double divisor ) const;
+	PrimitiveVector3 operator/ ( const double divisor ) const;
 
 	/*!
 	 * @brief get length of primitive vector
@@ -171,6 +171,6 @@ class Primitivevector3 : public Tuple3D, public MathematicalObject{
 	 * @param angle angle
 	 * @return error code
 	*/
-	MathError Rotate( const Primitivevector3 axis, const double angle );
+	MathError Rotate( const PrimitiveVector3 axis, const double angle );
 
 };

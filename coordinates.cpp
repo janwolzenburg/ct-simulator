@@ -44,42 +44,42 @@ string Coordinates::ConvertToString( const unsigned int newline_tabulators ) con
 
 bool Coordinates::operator== ( const Coordinates coordinates_to_compare ) const{
 	
-	if( this->HasSameSystem( coordinates_to_compare ) ) return this->Primitivevector3::operator==( coordinates_to_compare );
+	if( this->HasSameSystem( coordinates_to_compare ) ) return this->PrimitiveVector3::operator==( coordinates_to_compare );
 
 	// convert both coordinates to global system
 	Coordinates system_1_global = this->ConvertTo( GetGlobalSystem() );
 	Coordinates system_2_global = coordinates_to_compare.ConvertTo( GetGlobalSystem() );
 
 	// compare components
-	return system_1_global.Primitivevector3::operator==( system_2_global );
+	return system_1_global.PrimitiveVector3::operator==( system_2_global );
 };
 
 Coordinates Coordinates::operator+ ( const Coordinates summand ) const{
 	// add converted coordinates' components to this componentes
-	Primitivevector3 local_coordinates = this->Primitivevector3::operator+( summand.ConvertTo( this->coordinate_system_ ) );
+	PrimitiveVector3 local_coordinates = this->PrimitiveVector3::operator+( summand.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ local_coordinates, this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator- ( const Coordinates subtrahend ) const{
 	// add converted coordinates' components to this componentes
-	Primitivevector3 local_coordinates = this->Primitivevector3::operator-( subtrahend.ConvertTo( this->coordinate_system_ ) );
+	PrimitiveVector3 local_coordinates = this->PrimitiveVector3::operator-( subtrahend.ConvertTo( this->coordinate_system_ ) );
 
 	return Coordinates{ local_coordinates, this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator- ( void ) const{
-	return Coordinates{ this->Primitivevector3::operator-(), this->coordinate_system_ };
+	return Coordinates{ this->PrimitiveVector3::operator-(), this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator* ( const double scalar ) const{
-	Primitivevector3 scaledCoords = this->Primitivevector3::operator*( scalar );
+	PrimitiveVector3 scaledCoords = this->PrimitiveVector3::operator*( scalar );
 
 	return Coordinates{ scaledCoords, this->coordinate_system_ };
 }
 
 Coordinates Coordinates::operator/ ( const double divisor ) const{
-	return Coordinates{ this->Primitivevector3::operator/( divisor ), this->coordinate_system_ };
+	return Coordinates{ this->PrimitiveVector3::operator/( divisor ), this->coordinate_system_ };
 }
 
 Coordinates Coordinates::ConvertTo( const CoordinateSystem* 
@@ -119,7 +119,7 @@ Coordinates Coordinates::ConvertToParentSystem( void ) const{
 	if( this->coordinate_system_->IsGlobal() ) return *this;
 
 	// values of coordinates in parent coordinate system
-	Primitivevector3 components_in_parent_system{ coordinate_system_->GetPrimitive().origin() + coordinate_system_->GetPrimitive().ex() * x + coordinate_system_->GetPrimitive().ey() * y + coordinate_system_->GetPrimitive().ez() * z };
+	PrimitiveVector3 components_in_parent_system{ coordinate_system_->GetPrimitive().origin() + coordinate_system_->GetPrimitive().ex() * x + coordinate_system_->GetPrimitive().ey() * y + coordinate_system_->GetPrimitive().ez() * z };
 	Coordinates coordinate_in_parent_system{ components_in_parent_system, coordinate_system_->parent() };
 
 	return coordinate_in_parent_system;
@@ -136,7 +136,7 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 	equation_system.PopulateColumn( child_coordinate_system->GetPrimitive().ey() );
 	equation_system.PopulateColumn( child_coordinate_system->GetPrimitive().ez() );
 
-	equation_system.PopulateColumn( static_cast<Primitivevector3>( *this ) - child_coordinate_system->GetPrimitive().origin() );
+	equation_system.PopulateColumn( static_cast<PrimitiveVector3>( *this ) - child_coordinate_system->GetPrimitive().origin() );
 
 	// solve
 	const SystemOfEquationsSolution equation_system_solution = std::move( equation_system.Solve() );

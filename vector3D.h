@@ -175,27 +175,27 @@ class Vector3D : protected Coordinates{
 	 * @brief get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( void ) const{ return static_cast<Primitivevector3>( *this ); };
+	PrimitiveVector3 GetComponents( void ) const{ return static_cast<PrimitiveVector3>( *this ); };
 
 	/*!
 	 * @brief get x,y and z component
 	 * @param target_coordinate_system coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
+	PrimitiveVector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief get x,y and z component
 	 * @param target_coordinate_system vector with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( const Vector3D target_coordinate_system ) const;
+	PrimitiveVector3 GetComponents( const Vector3D target_coordinate_system ) const;
 
 	/*!
 	 * @brief get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	Primitivevector3 GetGlobalComponents( void ) const;
+	PrimitiveVector3 GetGlobalComponents( void ) const;
 
 	/*!
 	 * @brief get global x component
@@ -441,21 +441,21 @@ class Point3D : public Vector3D{
 	 * @brief get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( void ) const{ return Vector3D::GetComponents(); };
+	PrimitiveVector3 GetComponents( void ) const{ return Vector3D::GetComponents(); };
 
 	/*!
 	 * @brief get x,y and z component
 	 * @param target_coordinate_system coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
+	PrimitiveVector3 GetComponents( const CoordinateSystem* const target_coordinate_system ) const;
 
 	/*!
 	 * @brief get x,y and z component
 	 * @param target_coordinate_system Point with coordinate system to convert components to
 	 * @return x, y and z component in local coordinate system
 	*/
-	Primitivevector3 GetComponents( const Point3D target_coordinate_system ) const;
+	PrimitiveVector3 GetComponents( const Point3D target_coordinate_system ) const;
 
 	/*!
 	 * @brief get global x component
@@ -479,7 +479,7 @@ class Point3D : public Vector3D{
 	 * @brief get global x,y and z component
 	 * @return x, y and z component in global coordinate system
 	*/
-	Primitivevector3 GetGlobalComponents( void ) const;
+	PrimitiveVector3 GetGlobalComponents( void ) const;
 
 	/*!
 	 * @brief project point on XY plane of given coordinate system

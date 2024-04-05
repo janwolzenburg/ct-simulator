@@ -25,10 +25,10 @@ using std::string;
 
 
 /*
-	Primitivevector3 implementation
+	PrimitiveVector3 implementation
 */
 
-string Primitivevector3::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
+string PrimitiveVector3::ConvertToString( [[maybe_unused]] const unsigned int newline_tabulators ) const{
 	string instance_string;
 	char character_array[ 64 ] = { 0 };
 	snprintf( character_array, 64, "(%.6f,%.6f,%.6f)", x, y, z );
@@ -37,29 +37,29 @@ string Primitivevector3::ConvertToString( [[maybe_unused]] const unsigned int ne
 	return instance_string;
 }
 
-bool Primitivevector3::operator== ( const Primitivevector3 vector_to_compare ) const{
+bool PrimitiveVector3::operator== ( const PrimitiveVector3 vector_to_compare ) const{
 
-	const Primitivevector3 difference_vector = vector_to_compare - *this;
+	const PrimitiveVector3 difference_vector = vector_to_compare - *this;
 
 	return IsNearlyEqualDistance( difference_vector.GetLength(), 0 );
 }
 
-Primitivevector3 Primitivevector3::operator/ ( const double divisor ) const{
+PrimitiveVector3 PrimitiveVector3::operator/ ( const double divisor ) const{
 	if( divisor == 0 ) return *this;
-	return Primitivevector3{ x / divisor, y / divisor, z / divisor };
+	return PrimitiveVector3{ x / divisor, y / divisor, z / divisor };
 }
 
-double Primitivevector3::GetLength( void ) const{
+double PrimitiveVector3::GetLength( void ) const{
 	return sqrt( pow( x, 2 ) + pow( y, 2 ) + pow( z, 2 ) );
 }
 
-void Primitivevector3::Scale( const double scalar ){
+void PrimitiveVector3::Scale( const double scalar ){
 	x *= scalar;
 	y *= scalar;
 	z *= scalar;
 }
 
-MathematicalObject::MathError Primitivevector3::Normalise( void ){
+MathematicalObject::MathError PrimitiveVector3::Normalise( void ){
 
 	// new length
 	const double length = this->GetLength();
@@ -79,7 +79,7 @@ MathematicalObject::MathError Primitivevector3::Normalise( void ){
 	return MathError::Ok;
 }
 
-void Primitivevector3::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
+void PrimitiveVector3::RotateAroundXAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
 	double x_ = x;
 	double y_ = y * cosine_phi - z * sine_phi;
@@ -88,7 +88,7 @@ void Primitivevector3::RotateAroundXAxis( const double sine_phi, const double co
 	x = x_; y = y_; z = z_;
 }
 
-void Primitivevector3::RotateAroundYAxis( const double sine_phi, const double cosine_phi ){
+void PrimitiveVector3::RotateAroundYAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
 	double x_ = x * cosine_phi + z * sine_phi;
 	double y_ = y;
@@ -97,7 +97,7 @@ void Primitivevector3::RotateAroundYAxis( const double sine_phi, const double co
 	x = x_; y = y_; z = z_;
 }
 
-void Primitivevector3::RotateAroundZAxis( const double sine_phi, const double cosine_phi ){
+void PrimitiveVector3::RotateAroundZAxis( const double sine_phi, const double cosine_phi ){
 	// apply rotation matrix
 	double x_ = x * cosine_phi - y * sine_phi;
 	double y_ = x * sine_phi + y * cosine_phi;
@@ -106,8 +106,8 @@ void Primitivevector3::RotateAroundZAxis( const double sine_phi, const double co
 	x = x_; y = y_; z = z_;
 }
 
-MathematicalObject::MathError Primitivevector3::Rotate( 
-																const Primitivevector3 rotation_vector, 
+MathematicalObject::MathError PrimitiveVector3::Rotate( 
+																const PrimitiveVector3 rotation_vector, 
 																const double rotation_angle ){
 	// steps for rotation:
 	// 1: rotate around z axis to tilt rot. axis into x-z plane 
@@ -121,7 +121,7 @@ MathematicalObject::MathError Primitivevector3::Rotate(
 		return CheckForAndOutputError( MathError::Input, "rotation axis must have length!" );
 
 	// create copy and Normalise
-	Primitivevector3 rotation_vector_copy{ rotation_vector };
+	PrimitiveVector3 rotation_vector_copy{ rotation_vector };
 	rotation_vector_copy.Normalise();
 	
 	// length of the axis projection on x-y plane

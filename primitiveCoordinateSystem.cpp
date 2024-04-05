@@ -24,7 +24,7 @@
 	PrimitiveCoordinateSystem implementation
 */
 
-PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez ) : origin_( origin ),
+PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez ) : origin_( origin ),
 	ex_( ex ),
 	ey_( ey ),
 	ez_( ez )
@@ -41,10 +41,10 @@ PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const Primitivevector3 ori
 }
 
 PrimitiveCoordinateSystem::PrimitiveCoordinateSystem( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
-	origin_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
-	ex_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
-	ey_( DeSerialize<Primitivevector3>( binary_data, current_byte ) ),
-	ez_( DeSerialize<Primitivevector3>( binary_data, current_byte ) )
+	origin_( DeSerialize<PrimitiveVector3>( binary_data, current_byte ) ),
+	ex_( DeSerialize<PrimitiveVector3>( binary_data, current_byte ) ),
+	ey_( DeSerialize<PrimitiveVector3>( binary_data, current_byte ) ),
+	ez_( DeSerialize<PrimitiveVector3>( binary_data, current_byte ) )
 {
 	// normalise vectors
 	ex_.Normalise();
@@ -68,7 +68,7 @@ string PrimitiveCoordinateSystem::ConvertToString( const unsigned int newline_ta
 	return new_string;
 }
 
-MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const Primitivevector3 axis, const double angle ){
+MathematicalObject::MathError PrimitiveCoordinateSystem::Rotate( const PrimitiveVector3 axis, const double angle ){
 	MathError tempory_error = MathError::Ok;
 	MathError error_code = MathError::Ok;
 

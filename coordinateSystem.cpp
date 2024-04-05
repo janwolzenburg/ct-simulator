@@ -28,7 +28,7 @@
 	CoordinateSystem implementation
 */
 
-CoordinateSystem::CoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez,
+CoordinateSystem::CoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez,
 					const CoordinateSystem* const parent, const string name )
 	: PrimitiveCoordinateSystem{ origin, ex, ey, ez },
 	parent_( parent ),
@@ -36,7 +36,7 @@ CoordinateSystem::CoordinateSystem( const Primitivevector3 origin, const Primiti
 {}
 
 CoordinateSystem::CoordinateSystem( void )
-	: CoordinateSystem( Primitivevector3{ Tuple3D{ 0, 0, 0 } }, Primitivevector3{ Tuple3D{ 1, 0, 0 } }, Primitivevector3{ Tuple3D{ 0, 1, 0 } }, Primitivevector3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
+	: CoordinateSystem( PrimitiveVector3{ Tuple3D{ 0, 0, 0 } }, PrimitiveVector3{ Tuple3D{ 1, 0, 0 } }, PrimitiveVector3{ Tuple3D{ 0, 1, 0 } }, PrimitiveVector3{ Tuple3D{ 0, 0, 1 } }, nullptr, "Uninitialised system" ){};
 
 string CoordinateSystem::ConvertToString( const unsigned int newline_tabulators ) const{
 	string new_string;
@@ -71,7 +71,7 @@ void CoordinateSystem::CopyPrimitiveFrom( const CoordinateSystem* const source_s
 
 }
 
-CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const Primitivevector3 origin, const Primitivevector3 ex, const Primitivevector3 ey, const Primitivevector3 ez, const string name ) const{
+CoordinateSystem* CoordinateSystem::AddCoordinateSystem( const PrimitiveVector3 origin, const PrimitiveVector3 ex, const PrimitiveVector3 ey, const PrimitiveVector3 ez, const string name ) const{
 	return GetCoordinateSystemTree().AddSystem( origin, ex, ey, ez, this, name );
 }
 
