@@ -183,7 +183,7 @@ class DataGrid{
 	 * @details for non arithmetic types additional code is needed in implementation
 	*/
 	bool SetData( const GridCoordinates coordinates, const D new_value ){
-		return this->SetData( GetIndex( coordinates ), newValue ); }
+		return this->SetData( GetIndex( coordinates ), new_value ); }
 
 
 	private:

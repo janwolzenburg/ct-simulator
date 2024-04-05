@@ -57,7 +57,7 @@ class Fl_Plot : public Fl_Widget{
 	 * @brief set new axis limits
 	 * @param new_limits new limits
 	*/
-	void SetLimits( const PlotLimits new_limits ){ plot_.SetLimits( limits ); };
+	void SetLimits( const PlotLimits new_limits ){ plot_.SetLimits( new_limits ); };
 
 	/*!
 	 * @brief get reference to plot
