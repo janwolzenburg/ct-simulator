@@ -1,7 +1,7 @@
 #pragma once
 /*********************************************************************
  * @file   primitiveVector3.h
- * @brief  class for a primitve 3D vector
+ * @brief  class for a primitive 3D vector
  *
  * @author Jan Wolzenburg
  * @date   December 2022

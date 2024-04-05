@@ -26,7 +26,9 @@
 	RayVoxelIntersection
 */
 
-RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
+RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray ) :
+	entrance_face_( Voxel::Face::Invalid ),
+	exit_face_( Voxel::Face::Invalid )
 {
 	// components of ray trajectory in voxel coordinate system
 	const Tuple3D local_ray_direction = ray.direction().GetComponents( voxel.origin_corner() );
@@ -112,5 +114,6 @@ RayVoxelIntersection::RayVoxelIntersection( const Voxel& voxel, const Ray& ray )
 				exit_face_ = i; break;
 			}
 		}
+
 	}
 }
