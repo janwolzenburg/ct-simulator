@@ -22,8 +22,8 @@
 *********************************************************************/
 
 
-Fl_GrayscaleImageWithAxis::Fl_GrayscaleImageWithAxis( int x, int y, int w, int h, const char* label ) :
-	Fl_Group{ x, y, w, h, label },
+Fl_GrayscaleImageWithAxis::Fl_GrayscaleImageWithAxis( int x, int y, int w, int h, [[maybe_unused]] const char* label ) :
+	Fl_Group{ x, y, w, h },
 	Fl_GrayscaleImage{ x + axis_space_, y, w - axis_space_, h - axis_space_ }
 {
 	Fl_Group::add( static_cast<Fl_GrayscaleImage*>( this ) );

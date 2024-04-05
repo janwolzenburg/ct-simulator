@@ -59,7 +59,7 @@ class Fl_GantryCreation : public Fl_Group{
 	 * @brief get projection properties
 	 * @return current projection properties
 	*/
-	ProjectionsProperties projections_properties( void ){ return projections_properties_; };
+	ProjectionsProperties projections_properties( void ) const{ return projections_properties_; };
 
 	/*!
 	 * @brief set distance range and detector-focus distance

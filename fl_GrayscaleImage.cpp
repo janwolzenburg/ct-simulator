@@ -32,11 +32,11 @@ const RGB Fl_GrayscaleImage::background_color = getBgColor();
 const RGB Fl_GrayscaleImage::metal_color{ 128, 0, 0 };
 
 /*
-	Fl_GridImage implementation
+	Fl_GrayscaleImage implementation
 */
 
-Fl_GrayscaleImage::Fl_GrayscaleImage( int x, int y, int w, int h, const char* label ) :
-	Fl_Widget{ x, y, w, h, label },
+Fl_GrayscaleImage::Fl_GrayscaleImage( int x, int y, int w, int h, [[maybe_unused]] const char* label ) :
+	Fl_Widget{ x, y, w, h },
 	image_assigned_( false ),
 	has_overlay_( false )
 {}
