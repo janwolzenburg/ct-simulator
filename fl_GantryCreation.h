@@ -75,8 +75,6 @@ class Fl_GantryCreation : public Fl_Group{
 
 	private:
 
-	Gantry gantry_;							/*!< instance of the gantry constructed from tube and detector parameter*/
-
 	Fl_Box title_;							/*!< title*/
 
 	Fl_Group tube_group_;																					/*!< group of tube elements*/
@@ -105,6 +103,8 @@ class Fl_GantryCreation : public Fl_Group{
 	PersistingObject<XRayTubeProperties> tube_properties_;											/*!< x-ray tube attributes*/
 	PersistingObject<ProjectionsProperties> projections_properties_;						/*!< parameter in radon space affecting the detector*/
 	PersistingObject<PhysicalDetectorProperties> physical_detector_properties_;	/*!< parameter only dependent on the physical properties_ od detector*/
+
+	Gantry gantry_;							/*!< instance of the gantry constructed from tube and detector parameter*/
 
 	CallbackFunction<Fl_GantryCreation> update_gantry_callback_;	/*!< callback for gantry update*/
 };

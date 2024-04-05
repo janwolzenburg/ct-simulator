@@ -27,11 +27,6 @@
 Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow& main_window ) :
 	Fl_Group{ x, y, w, h },
 	main_window_( main_window ),
-	tube_properties_{ XRayTubeProperties{}, "saved.tubeproperties" },
-	projections_properties_{ ProjectionsProperties{}, "saved.projectionproperties" },
-	physical_detector_properties_{ PhysicalDetectorProperties{}, "saved.physicalproperties" },
-	gantry_{ GetCoordinateSystemTree().AddSystem( "Gantry system"), tube_properties_, projections_properties_, physical_detector_properties_ },
-
 	title_{			X( *this, 0. ),		Y( *this, 0. ),		W( *this, 1. ),		H( *this, 0.035 ),	"Gantry" },
 
 	tube_group_{						X( *this, .0 ),		Y( *this, .04 ) ,	W( *this, 1. ),					H( *this, .4 ) },
@@ -56,6 +51,11 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 	maximum_ray_angle_input_{					X( detector_group_, .50 ),	Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Max. angle" },
 	detector_plot_{										X( detector_group_, .0 ),		Y( detector_group_, .35 ),	W( detector_group_, 1. ),	H( detector_group_, .65 ),	"Detector Plot" },
 
+	tube_properties_{ XRayTubeProperties{}, "saved.tubeproperties" },
+	projections_properties_{ ProjectionsProperties{}, "saved.projectionproperties" },
+	physical_detector_properties_{ PhysicalDetectorProperties{}, "saved.physicalproperties" },
+
+	gantry_{ GetCoordinateSystemTree().AddSystem( "Gantry system" ), tube_properties_, projections_properties_, physical_detector_properties_ },
 	update_gantry_callback_{ *this, &Fl_GantryCreation::UpdateGantry }
 	
 	{
