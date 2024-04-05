@@ -21,7 +21,7 @@ void BuildTestDetector( void ){
 	addObject( axis, "Pixel", detector.pixel_array(), "b", 0.325 );
 	
 	int number = 0;
-	for( auto pixel : detector.pixel_array() ){
+	for( auto& pixel : detector.pixel_array() ){
 		addSingleObject( axis, "Normal"+to_string(number++), pixel.GetCenterNormal(), "r", physical_detector_properties.detector_focus_distance * 1.1 );
 	}
 
@@ -45,10 +45,10 @@ void TestRadonCoordinates( void ){
 	Gantry gantry{ gantry_system, tube_properties, projections_properties, physical_detector_properties };
 
 	Projections projections{ projections_properties, TomographyProperties{} };
-	int frames = 1;
+	size_t frames = 1;
 
 	vector<RadonPoint> radon_points;
-	for( auto pixel : gantry.pixel_array() ){
+	for( auto& pixel : gantry.pixel_array() ){
 		RadonCoordinates radon_coordinate{ radon_system, pixel.GetCenterNormal() };
 		radon_points.emplace_back( radon_coordinate, 1. );
 	}
@@ -63,7 +63,7 @@ void TestRadonCoordinates( void ){
 	for( size_t i = 0; i < 5; i++ ){
 		gantry.RotateCounterClockwise( projections_properties.angles_resolution() );
 		frames++;
-		for( auto pixel : gantry.pixel_array() ){
+		for( auto& pixel : gantry.pixel_array() ){
 			RadonCoordinates radon_coordinate{ radon_system, pixel.GetCenterNormal() };
 			radon_points.emplace_back( radon_coordinate, 1. );
 		}
@@ -79,7 +79,7 @@ void TestRadonCoordinates( void ){
 	for( size_t i = 0; i < 5; i++ ){
 		gantry.RotateCounterClockwise( projections_properties.angles_resolution() );
 		frames++;
-		for( auto pixel : gantry.pixel_array() ){
+		for( auto& pixel : gantry.pixel_array() ){
 			RadonCoordinates radon_coordinate{ radon_system, pixel.GetCenterNormal() };
 			radon_points.emplace_back( radon_coordinate, 1. );
 		}
@@ -96,7 +96,7 @@ void TestRadonCoordinates( void ){
 	while( frames < max_frames - 1 ){
 		gantry.RotateCounterClockwise( projections_properties.angles_resolution() );
 		frames++;
-		for( auto pixel : gantry.pixel_array() ){
+		for( auto& pixel : gantry.pixel_array() ){
 			RadonCoordinates radon_coordinate{ radon_system, pixel.GetCenterNormal() };
 			radon_points.emplace_back( radon_coordinate, 1. );
 		}

@@ -539,7 +539,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface slice_location, const GridInd
 		const size_t max_number_of_points = Max( number_of_points.c, number_of_points.r );
 		slice_start = { - corner_distance / 2., -corner_distance / 2. };
 		slice_end = { corner_distance / 2., corner_distance / 2. };
-		slice_resolution = { ( slice_end.c - slice_start.c ) / max_number_of_points / 4., ( slice_end.r - slice_start.r ) / max_number_of_points / 4. };
+		slice_resolution = { ( slice_end.c - slice_start.c ) / static_cast<double>( max_number_of_points ) / 4., ( slice_end.r - slice_start.r ) / static_cast<double>( max_number_of_points ) / 4. };
 
 	}
 	else{

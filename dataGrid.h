@@ -196,8 +196,8 @@ class DataGrid{
 	vector<double> row_points_;			/*!< vector with values on row axis*/
 	vector<vector<D>> data_;				/*!< 2D vector with data points*/
 
-	D max_value_;						/*!< maximum value in grid*/
 	D min_value_;						/*!< minimum value in grid*/
+	D max_value_;						/*!< maximum value in grid*/
 
 
 	/*!

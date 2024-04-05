@@ -40,8 +40,8 @@ DataGrid<D>::DataGrid( void ) :
 template<class D>
 DataGrid<D>::DataGrid( const GridIndex size, const GridCoordinates start, const GridCoordinates resolution, D default_value ) :
 	size_( size ),
-	resolution_( resolution ),
 	start_( start ),
+	resolution_( resolution ),
 	min_value_(D()),
 	max_value_(D())
 {

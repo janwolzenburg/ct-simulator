@@ -22,7 +22,7 @@ void CallbackFunction<C>::Execute( void ){
 }
 
 template<class C>
-void CallbackFunction<C>::Fl_Callback( Fl_Widget* widget, void* callback ){
+void CallbackFunction<C>::Fl_Callback( [[maybe_unused]] Fl_Widget* widget, void* callback ){
 	CallbackFunction<C>* cb = static_cast<CallbackFunction<C>*>( callback );
 	cb->Execute();
 }

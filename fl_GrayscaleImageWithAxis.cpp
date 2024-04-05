@@ -23,7 +23,7 @@
 
 
 Fl_GrayscaleImageWithAxis::Fl_GrayscaleImageWithAxis( int x, int y, int w, int h, const char* label ) :
-	Fl_Group{ x, y, w, h },
+	Fl_Group{ x, y, w, h, label },
 	Fl_GrayscaleImage{ x + axis_space_, y, w - axis_space_, h - axis_space_ }
 {
 	Fl_Group::add( static_cast<Fl_GrayscaleImage*>( this ) );
@@ -77,7 +77,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 	fl_draw( axis_label_.second.c_str(), y_axis_tip.x - label_width / 2, y_axis_tip.y - 5);
 
 	//const int number_of_tics = 7;
-	for( int i = 0; i < number_of_tics_.x; i++ ){
+	for( unsigned int i = 0; i < number_of_tics_.x; i++ ){
 
 		const double x_axis_tic = axis_tics_start_.x + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().x - 1 ) / static_cast<double>( number_of_tics_.x - 1 ) * ( pixel_size_.x );
 		
@@ -87,7 +87,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 
 		string number_string = ConvertToString( x_axis_tic, 3 - digits_befor_comma );
 			
-		PixelCoordinates tic_position{ axis_origin.x + axis_space_ / 2 + i * ( x_axis_tip.x - axis_origin.x - axis_space_ ) / ( static_cast<int>( number_of_tics_.x ) - 1),  axis_origin.y };
+		PixelCoordinates tic_position{ axis_origin.x + axis_space_ / 2 + static_cast<int>( i ) * ( x_axis_tip.x - axis_origin.x - axis_space_ ) / ( static_cast<int>( number_of_tics_.x ) - 1),  axis_origin.y };
 			
 		int x,y;
 		fl_measure( number_string.c_str(), x, y );
@@ -95,7 +95,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		fl_line( tic_position.x, tic_position.y + 8, tic_position.x, tic_position.y - 8 );
 	}
 
-	for( int i = 0; i < number_of_tics_.y; i++ ){
+	for( unsigned int i = 0; i < number_of_tics_.y; i++ ){
 		const double y_axis_tic = axis_tics_start_.y + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().y - 1 ) / static_cast<double>( number_of_tics_.y - 1 ) * ( pixel_size_.y );
 		
 		int digits_befor_comma = 0;
@@ -106,7 +106,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		
 		PixelCoordinates tic_position{
 			axis_origin.x,
-			axis_origin.y - axis_space_ / 2 - i * ( axis_origin.y - y_axis_tip.y - axis_space_ ) / (static_cast<int>( number_of_tics_.y ) - 1) };
+			axis_origin.y - axis_space_ / 2 - static_cast<int>( i ) * ( axis_origin.y - y_axis_tip.y - axis_space_ ) / (static_cast<int>( number_of_tics_.y ) - 1) };
 		
 		int x,y;
 		fl_measure( number_string.c_str(), x, y );

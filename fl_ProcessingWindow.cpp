@@ -226,7 +226,6 @@ void Fl_ProcessingWindow::ExportBackprojections( void ){
 void Fl_ProcessingWindow::UpdateImage( void ){
 
 	DataGrid<> raw_image_data = backprojection_.getGrid();
-	bool values_changed = false;
 
 	for( size_t column_index = 0; column_index < raw_image_data.size().c; column_index++ ){
 		for( size_t row_index = 0; row_index < raw_image_data.size().r; row_index++ ){

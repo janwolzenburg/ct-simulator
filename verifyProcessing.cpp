@@ -66,7 +66,7 @@ void VerifyFilteredprojections( void ){
 	const double t  = angle;
 	const double ray_length = 480;
 
-	for( int s_index = 0; s_index < distances.size() / 2; s_index++ ){
+	for( size_t s_index = 0; s_index < distances.size() / 2; s_index++ ){
 		
 		if( s_index % 4 != 0 ) continue;
 
@@ -112,7 +112,7 @@ void VerifyFilteredprojections( void ){
 
 	vector<double> single_projection;
 
-	for( int s_index = 0; s_index < distances.size(); s_index++ ){	
+	for( size_t s_index = 0; s_index < distances.size(); s_index++ ){	
 		single_projection.push_back( projections.data().GetData( GridCoordinates{ angle, distances.at( s_index ) } ) );
 	}
 
@@ -134,7 +134,7 @@ void VerifyFilteredprojections( void ){
 
 	vector<double> single_filt_projection;
 
-	for( int s_index = 0; s_index < distances.size(); s_index++ ){	
+	for( size_t s_index = 0; s_index < distances.size(); s_index++ ){	
 		single_filt_projection.push_back( filtered_projections.data_grid().GetData(GridCoordinates{angle, distances.at(s_index)}));
 	}
 

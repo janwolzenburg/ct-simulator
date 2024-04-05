@@ -32,7 +32,6 @@ void Backprojection::ReconstructImageColumn(
 										 const FilteredProjections& projections ){
 
 	const size_t number_of_distances = image.size().r;			// number of distances
-	const double distance_resolution = image.resolution().r;// distance resolution
 
 	const size_t number_of_angles = projections.size().c;				// number of angles
 	const double angle_resolution = projections.resolution().c;	// angle resolution
@@ -95,12 +94,12 @@ void Backprojection::ReconstructImageColumn(
 Backprojection::Backprojection( const FilteredProjections& projections, Fl_Progress_Window* progress )
 {
 
-	const double distance_range =  ( projections.size().r - 1 ) * projections.resolution().r ;
+	const double distance_range =  static_cast<double>( projections.size().r - 1 ) * projections.resolution().r ;
 	const double side_length = distance_range;
 	const GridCoordinates image_start{ -side_length / 2., -side_length / 2.  };
 
 	const size_t number_of_pixel = static_cast<size_t>( 2.* floor( ( side_length / projections.resolution().r + 1 ) ) );
-	const double image_resolution = side_length / ( number_of_pixel - 1 );
+	const double image_resolution = side_length / static_cast<double>( number_of_pixel - 1 );
 	
 	const GridIndex image_size{ number_of_pixel, number_of_pixel };
 

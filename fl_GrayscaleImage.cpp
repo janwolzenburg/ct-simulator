@@ -102,7 +102,7 @@ optional<pair<double, RGB>> Fl_GrayscaleImage::GetValue( int x, int y ) const{
 	x = ForceToMin( x - x_padding, 0 );
 	y = ForceToMin( y - y_padding, 0 );
 
-	return pair{ grayscale_image_scaled_.GetData( x, y ), color_image_.GetPixelData( x, y ) };
+	return pair{ grayscale_image_scaled_.GetData( static_cast<size_t>( x ), static_cast<size_t>( y ) ), color_image_.GetPixelData( static_cast<size_t>( x ), static_cast<size_t>( y ) ) };
 
 }
 

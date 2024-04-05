@@ -8,14 +8,15 @@
 #include "tomography.h"
 #include "projectionsProperties.h"
 
-void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis, ofstream& delta_axis, bool add_inout ){
+#ifdef TRANSMISSION_TRACKING
 
-	#ifdef TRANSMISSION_TRACKING
+void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomography_properties, RayScattering& ray_scattering, 
+											ofstream& axis, ofstream& simple_intensities_axis, ofstream& intensities_axis, ofstream& simple_delta_axis,  ofstream& delta_axis, bool add_inout ){
+
 
 	RandomNumberGenerator generator;
-	mutex dummy_mutex;
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, true );
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, generator, true );
 
 	vector<Tuple2D> simple_intensity_values;
 	vector<Tuple2D> intensity_values;
@@ -75,8 +76,9 @@ void TransmitAndDraw( const Model& model, Ray& ray, TomographyProperties& tomogr
 	addSingleObject( simple_delta_axis, "SimpleIntensityDelta", simple_deltas, "$d$ in mm;ln$(JJ_0^{-1})\\Delta d^{-1}$ in mm$^{-1}$;Step" );
 	addSingleObject( delta_axis, "IntensityDelta", deltas, "$d$ in mm;ln$(J J_0^{-1})\\Delta d^{-1}$ in mm$^{-1}$;Step" );
 
-	#endif
 }
+
+#endif
 
 void VerifyTransmission( void ){
 
@@ -202,14 +204,13 @@ void VerifyHardening( void ){
 	RandomNumberGenerator generator;
 	mutex dummy_mutex;
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, dummy_mutex, generator, true);
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( rays.at( 0 ), tomography_properties, ray_scattering, generator, true);
 	vector<Tuple2D> mean_energies, intensities;
 	
 
 	double current_step = 0.;
 
 	Ray transmitted_ray = returned_rays.first;
-	bool first = true;
 
 	for( RayTrace::TracingStep step : transmitted_ray.properties().ray_tracing.tracing_steps ){
 
@@ -319,7 +320,7 @@ void VerifyScattering( void ){
 			pixel.AddDetectedRayProperties( ray.properties() );
 		}
 
-	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
+	pair<Ray, vector<Ray>> returned_rays = model.TransmitRay( ray, tomography_properties , ray_scattering, generator, false );
 	addSingleObject( axis, "Ray", ray, "r", 1.5*gantry.detector().properties().detector_focus_distance );
 
 
@@ -346,10 +347,10 @@ void VerifyScattering( void ){
 	vector<double> scattering_angles = CreateLinearSpace( 0, PI, ( simulation_properties.number_of_scatter_angles + 1 ) / 2 );
 	vector<vector<Tuple2D>> angle_spectra( ( simulation_properties.number_of_scatter_angles + 1 ) / 2 ,vector<Tuple2D>( 0, Tuple2D{} ) );
 
-	size_t ray_iterations = 500; size_t num_scattered_rays = 0;
+	size_t ray_iterations = 500;
 	for( auto it = 0; it < ray_iterations; it++ ){
 
-		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
+		pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, generator, false );
 
 		for( auto& [energy, attenuation] : scattering_attenuations ){
 			double photon_flow = returned_rays_loc.first.properties().only_scattering_spectrum.GetPhotonflow( energy );		
@@ -381,7 +382,7 @@ void VerifyScattering( void ){
 	vector<Tuple2D> power_fractions( angle_spectra.size(), Tuple2D{} );
 
 	size_t angle_index = 0;
-	for( auto angle_spectrum : angle_spectra ){
+	for( auto& angle_spectrum : angle_spectra ){
 		ScaleYValues( angle_spectrum, 1. / ray_iterations );
 		power_fractions.at( angle_index ).x = scattering_angles.at( angle_index );
 
@@ -404,7 +405,7 @@ void VerifyScattering( void ){
 
 
 
-	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, dummy_mutex, generator, false );
+	pair<Ray, vector<Ray>> returned_rays_loc = model.TransmitRay( ray, tomography_properties , ray_scattering, generator, false );
 
 	double distance = 0.;
 	for( const auto& step : returned_rays_loc.first.properties().ray_tracing.tracing_steps ){
@@ -465,8 +466,8 @@ void VerifyScattering( void ){
 		for( int e_i = 0; e_i < num_energies; e_i++ ){
 			
 			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ), generator ) );
-			size_t angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
-			angles.at(e_i).second.at( ForceToMax( angle_index, angles.at(e_i).second.size() - 1 ) )++;
+			size_t current_angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
+			angles.at(e_i).second.at( ForceToMax( current_angle_index, angles.at(e_i).second.size() - 1 ) )++;
 		}
 
 	}
@@ -534,13 +535,12 @@ void verifyRNG( void ){
 	const int iterations = 100000;
 
 	double propabiltiy = 0.;
-	size_t i = 0;
 
 	RandomNumberGenerator integer_random_number_generator{};
 
 	for( size_t i = 0; i < num_props; i++ ){
 
-		propabiltiy = (pow( 500., static_cast<double>( i ) / num_props ) - 1.) / (500. - 1.) / 10.;
+		propabiltiy = (pow( 500., static_cast<double>( i ) / static_cast<double>( num_props ) ) - 1.) / (500. - 1.) / 10.;
 
 		int counter = 0;
 

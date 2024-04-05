@@ -65,7 +65,6 @@ array<bool, ConvertToUnderlying( Voxel::Face::End )> Ray::GetPossibleVoxelExits(
 	for( Voxel::Face current_face = Voxel::Face::Begin; 
 			 current_face < Voxel::Face::End; ++current_face ){
 
-		bool face_possible = false;
 
 		// check if face can be an exit face of the ray
 		switch( current_face ){
@@ -252,7 +251,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information,
 			
 			// iterate through current spectrum
 			// energy index tracks where to put add photonflow to
-			size_t energy_index = 0;
+			energy_index = 0;
 			for(; energy_index < spectral_photonflows.size(); 
 																		energy_index++ ){
 				// energy is in current spectrum

@@ -98,9 +98,9 @@ PropabilityDistribution::PropabilityDistribution( vector<Tuple2D> distribution )
 
 		values_.at(current_index) = value;
 
-		const unsigned int number_of_elements = static_cast<unsigned int>( round( weight / weight_per_bin) );
+		const unsigned int current_number_of_elements = static_cast<unsigned int>( round( weight / weight_per_bin) );
 
-		discrete_distribution_.insert(discrete_distribution_.end(), number_of_elements, current_index++ );
+		discrete_distribution_.insert(discrete_distribution_.end(), current_number_of_elements, current_index++ );
 	
 	}
 

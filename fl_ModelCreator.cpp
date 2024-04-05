@@ -217,7 +217,7 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 	for( size_t feature_index = 0; feature_index < num_features; feature_index++ ){
 
 		features_.emplace_back( std::make_unique<Fl_ModelFeature>(
-								X( features_group_, .075 ),		Y( features_group_, .25 + feature_index * ( h_feature + 0.02 ) ),		W( features_group_, .85 ),		H( features_group_, h_feature )
+								X( features_group_, .075 ),		Y( features_group_, .25 + static_cast<double>( feature_index ) * ( h_feature + 0.02 ) ),		W( features_group_, .85 ),		H( features_group_, h_feature )
 							) );
 
 		Fl_ModelFeature& feature = *features_.back();

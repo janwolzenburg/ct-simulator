@@ -224,7 +224,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange new_slider_
 }
 
 
-void Fl_AdjustableGrayscaleImage::HandleValueChange( Fl_Widget* widget_pointer, void* image_widget){
+void Fl_AdjustableGrayscaleImage::HandleValueChange( [[maybe_unused]] Fl_Widget* widget_pointer, void* image_widget){
 
 	Fl_AdjustableGrayscaleImage* const widget = static_cast<Fl_AdjustableGrayscaleImage*>( image_widget );
 

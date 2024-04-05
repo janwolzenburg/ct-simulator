@@ -37,8 +37,8 @@ ProgramState& ProgramState::GetInstance(){
 
 ProgramState::ProgramState( void ) :
 
-	reset_state_at_exit_( false ),
-	storage_path_{ STATE_STORAGE }
+	storage_path_{ STATE_STORAGE },
+	reset_state_at_exit_( false )
 
 {
 	CreateStorageDirectory();
