@@ -30,7 +30,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	maximum_scatterings_input_{						X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
 	scattering_propability_factor_input_{	X( tomography_properties_group_, .5 ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Propability factor" },
 	disable_scattering_button_{						X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
-	scattering_absorption_factor_input_{ X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor" },
+	scattering_absorption_factor_input_{  X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor" },
 	use_simple_absorption_button_{				X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
 	simulation_quality_input_{						X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
 	information_{													X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
@@ -148,7 +148,6 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 	export_projections_button_.activate();
 
 	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
-	ptr->color(FL_WHITE);
 	processing_windows_.push_back( std::move( ptr ) );
 }
 

@@ -29,7 +29,7 @@ int main( [[maybe_unused]] int argc, [[maybe_unused]] char** argv ){
 
 	unique_ptr<Fl_MainWindow> mainWindow_ = std::make_unique<Fl_MainWindow>( static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "CT-Simulator" );
 
-	mainWindow_->color(FL_WHITE);
+	// mainWindow_->color(FL_WHITE);
 
 	mainWindow_->hide();
 
