@@ -10,6 +10,7 @@
 	Includes
  *********************************************************************/
 
+#include "fl_MainWindow.h"
 #include "fl_ProcessingWindow.h"
 #include "programState.h"
 #include "widgets.h"
@@ -24,13 +25,13 @@
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_filteredProjections_file_chooser_{ FileChooser{ "Export", "*.filteredprojections", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportFilteredProjections.chooser" };
 PersistingObject<FileChooser> Fl_ProcessingWindow::export_image_chooser_{ FileChooser{ "Export", "*.backprojection", path{ "./" }, Fl_Native_File_Chooser::Type::BROWSE_SAVE_FILE }, "exportBackprojection.chooser" };
 
-Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections ) :
+Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections, Fl_MainWindow* const main_window ) :
 	Fl_Window{ w, h, label },
-	
+	main_window_( main_window ),
 	projections_image_{				X( *this, .025 ),		Y( *this, .03 ),		W( *this, .45 ),		H( *this, .35 ), "Projections"},
 	limit_values_button_{			X(*this, .15),			Y(*this, .4),				W(*this, .1),				H(*this, .03), "Limit projection values" },
 	recalculate_button_{			X(*this, .3),				Y(*this, .4),				W(*this, .08),			H(*this, .03), "Recalculate" },
-	information_output_{			X( *this, .1 ),			Y( *this, .5),			W( *this, .35 ),		H( *this, .225 ), "Information"}, 
+	information_output_{			X( *this, .1 ),			Y( *this, .45),			W( *this, .325 ),		H( *this, .3 ), ""}, 
 
 	filter_group_{						X( *this, .025 ),			Y( *this, 0.775 ),			W( *this, .45 ),			H( *this, .2  ) },
 	filter_type_selector_{		X( filter_group_, 0. ),		Y( filter_group_, 0. ),		W( filter_group_, .3 ),		H( filter_group_, .175 ), "Filter type" },
@@ -84,16 +85,21 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	recalculate_button_.type(FL_NORMAL_BUTTON);
 
 	information_output_.textfont( FL_COURIER );
+
 	information_output_.value(	string{
-									"Name:                               " + raw_projections_.tomography_properties().name + '\n' +
-									"Sinogramgröße:                      " + ConvertToString( raw_projections_.properties().number_of_projections()) + " x " + ConvertToString(raw_projections_.properties().number_of_distances()) + '\n' +
-									"Sinogramauflösung:                  " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
-									"Röntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
-									"Mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " keV" + '\n' +
-									"Energieabhängige Schwächung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + '\n' +
-									"Streuung aktiviert:                 " + (raw_projections_.tomography_properties().scattering_enabled == true ? "ja" : "nein") + '\n' +
-									"Faktor für Streuwahrscheinlichkeit: " + ConvertToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
-									"Faktor für Streuintensität:         " + ConvertToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n'
+									"  Name:                               " + raw_projections_.tomography_properties().name + '\n' + '\n'+
+									"# Projektionswinkel:                  " + ConvertToString( raw_projections_.properties().number_of_projections()) + '\n' +
+									"# Projektionen je Winkel:             " + ConvertToString(raw_projections_.properties().number_of_distances()) + '\n' +
+									"  Auflösung:                          " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
+									"  Röntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
+									"  Mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " eV" + '\n' +
+									"  Energieabhängige Schwächung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + 
+									"# Energien im Spektrum:               " + ConvertToString(simulation_properties.number_of_points_in_spectrum) + '\n' + '\n'+
+									"  Streuung aktiviert:                 " + (raw_projections_.tomography_properties().scattering_enabled == true ? "ja" : "nein") + '\n' +
+									"  Faktor für Streuwahrscheinlichkeit: " + ConvertToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
+									"  Faktor für Streuintensität:         " + ConvertToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n' +
+									"# Streumöglichkeiten je Energie:      " + ConvertToString(simulation_properties.bins_per_energy) + '\n' +
+									"# mögliche Streuwinkel:               " + ConvertToString(simulation_properties.number_of_scatter_angles) + '\n'
 								}.c_str() );
 
 	filter_group_.add( filter_plot_ );
@@ -157,8 +163,9 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 
 
 void Fl_ProcessingWindow::FilterAndReconstructImage(void) {
-
+	main_window_->deactivate();
 	this->deactivate();
+ 
 
 	Fl_Progress_Window* processing_progress_window = new Fl_Progress_Window{ (Fl_Window*)this, 16, 2, "Processing progress" };
 
@@ -196,7 +203,7 @@ void Fl_ProcessingWindow::FilterAndReconstructImage(void) {
 	delete processing_progress_window;
 
 	this->activate();
-
+	main_window_->activate();
 }
 
 void Fl_ProcessingWindow::ExportFilteredProjections( void ){

@@ -51,7 +51,7 @@ class Fl_TomographyExecution : public Fl_Group{
 	/*!
 	 * @brief set information update flag
 	*/
-	void UpdateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube );
+	void UpdateInformation( const ProjectionsProperties& projection_properties, XRayTube tube );
 
 	/*!
 	 * @brief export current projections

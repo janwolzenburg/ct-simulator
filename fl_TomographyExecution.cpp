@@ -29,11 +29,11 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	properties_title_{										X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, 0. ),	W( tomography_properties_group_, 1. ),	H( tomography_properties_group_, .05 ), "Parameter" },
 	maximum_scatterings_input_{						X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Maximum loops" },
 	scattering_propability_factor_input_{	X( tomography_properties_group_, .5 ),	Y( tomography_properties_group_, .1 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Propability factor" },
-	disable_scattering_button_{						X( tomography_properties_group_, .6 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
+	disable_scattering_button_{						X( tomography_properties_group_, .5 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .3 ),	H( tomography_properties_group_, .05 ), "Scattering" },
 	scattering_absorption_factor_input_{  X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .2 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .045 ), "Absorption factor" },
-	use_simple_absorption_button_{				X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
-	simulation_quality_input_{						X( tomography_properties_group_, .05 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .55 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
-	information_{													X( tomography_properties_group_, 0.1 ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .8 ),	H( tomography_properties_group_, .4 ), "Information" },
+	use_simple_absorption_button_{				X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .3 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .05 ), "Simple absorption" },
+	simulation_quality_input_{						X( tomography_properties_group_, .0 ),	Y( tomography_properties_group_, .4 ),	W( tomography_properties_group_, .45 ),	H( tomography_properties_group_, .05 ), "Simulation quality" },
+	information_{													X( tomography_properties_group_, 0. ),	Y( tomography_properties_group_, .5 ),	W( tomography_properties_group_, .95 ),	H( tomography_properties_group_, .4 ), "Information" },
 
 	control_group_{								X( *this, .0 ),						vOff( tomography_properties_group_ ), W( *this, 1. ), H( *this, .1 ) },
 	name_input_{									X( control_group_, .05 ), Y( control_group_, .1 ), W( control_group_, .9 ), H( control_group_, .4 ), "Name" },			
@@ -120,6 +120,7 @@ Fl_TomographyExecution::Fl_TomographyExecution( int x, int y, int w, int h, Fl_M
 	simulation_quality_input_.callback( CallbackFunction<Fl_TomographyExecution>::Fl_Callback, &update_properties_callback_ );
 
 	information_.align( FL_ALIGN_TOP );
+	information_.textfont( FL_COURIER );
 
 	Fl_Group::add( control_group_ );
 	
@@ -147,7 +148,7 @@ void Fl_TomographyExecution::AssignProjections( const Projections projections ){
 
 	export_projections_button_.activate();
 
-	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_ );
+	std::unique_ptr<Fl_ProcessingWindow> ptr = std::make_unique<Fl_ProcessingWindow>(  static_cast<int>( 1920. * 0.9 ), static_cast<int>( 1080. * 0.9 ), "Processing", projections_, &main_window_ );
 	processing_windows_.push_back( std::move( ptr ) );
 }
 
@@ -158,13 +159,21 @@ void Fl_TomographyExecution::UpdateProperties( void ){
 		disable_scattering_button_.value(0);
 	}
 
-		tomography_properties_ = TomographyProperties{	static_cast<bool>( disable_scattering_button_.value() ), 
-														static_cast<size_t>( maximum_scatterings_input_.value() ), 
-														scattering_propability_factor_input_.value()/100., 
-														static_cast<bool>( use_simple_absorption_button_.value() ), 
-														scattering_absorption_factor_input_.value()/100.,
-														name_input_.value(),main_window_.gantry_creation_.gantry().tube().properties().has_filter_,
-														static_cast<size_t>( simulation_quality_input_.value() ) };
+	tomography_properties_ = TomographyProperties{	static_cast<bool>( disable_scattering_button_.value() ), 
+													static_cast<size_t>( maximum_scatterings_input_.value() ), 
+													scattering_propability_factor_input_.value()/100., 
+													static_cast<bool>( use_simple_absorption_button_.value() ), 
+													scattering_absorption_factor_input_.value()/100.,
+													name_input_.value(),main_window_.gantry_creation_.gantry().tube().properties().has_filter_,
+													static_cast<size_t>( simulation_quality_input_.value() ) };
+
+	if( simulation_properties.quality != tomography_properties_.simulation_quality ){
+		simulation_properties = SimulationProperties{ tomography_properties_.simulation_quality };
+		main_window_.gantry_creation_.UpdateGantry();
+	}
+
+	UpdateInformation( main_window_.gantry_creation_.projections_properties(), main_window_.gantry_creation_.gantry().tube() );
+
 }
 
 void Fl_TomographyExecution::DoTomography( void ){
@@ -191,19 +200,19 @@ void Fl_TomographyExecution::DoTomography( void ){
 }
 
 
-void Fl_TomographyExecution::UpdateInformation( ProjectionsProperties projection_properties, DetectorProperties detector_properties, XRayTube tube ){
+void Fl_TomographyExecution::UpdateInformation( const ProjectionsProperties& projection_properties, XRayTube tube ){
 		string informationString = "";
 
 
-		informationString += "Sinogramgröße:      " + ConvertToString( projection_properties.number_of_projections() ) + " x " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
-		informationString += "Sinogramauflösung:  " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
-		informationString += "Gantryrotationen:   " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
-		informationString += "Detektorwinkel:	  "   + ConvertToString( detector_properties.arc_angle / 2. / PI * 360., 2 ) + "°" + '\n';
+		informationString += "# Projektionswinkel:             " + ConvertToString( projection_properties.number_of_projections() ) + '\n'; 
+		informationString += "# Projektionen je Winkel:        " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
+		informationString += "  Auflösung:                     " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "# Gantryrotationen:              " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
+		informationString += "  mittlere Strahlungenergie:     " + ConvertToString( tube.GetMeanEnergy() ) + " eV" + '\n';
+		informationString += "# Energien im Spektrum:          " + ConvertToString( simulation_properties.number_of_points_in_spectrum ) + '\n' + '\n';
+		informationString += "# Streumöglichkeiten je Energie: " + ConvertToString( simulation_properties.bins_per_energy ) + '\n';
+		informationString += "# mögliche Streuwinkel:          " + ConvertToString( simulation_properties.number_of_scatter_angles ) + '\n';
 
-
-		informationString += "Elektrische Leistung:	  " + ConvertToString( tube.GetElectricalPower()) + "W" + '\n';
-		informationString += "Strahlleistung:	  " + ConvertToString( tube.GetEmittedBeamPower() ) + "W" + '\n';
-		
 		information_.value( informationString.c_str() );
 }
 

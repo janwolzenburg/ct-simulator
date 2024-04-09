@@ -62,7 +62,7 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	if( model_view_.IsModelLoaded() ){
 		gantry_creation_.activate();
 		tomography_execution_.activate();
-		tomography_execution_.UpdateInformation( gantry_creation_.projections_properties(), gantry_creation_.gantry().detector().properties(), gantry_creation_.gantry().tube() );
+		tomography_execution_.UpdateInformation( gantry_creation_.projections_properties(), gantry_creation_.gantry().tube() );
 	}
 
 	Fl_Window::show();

@@ -20,6 +20,7 @@
 #include "fl_BoundInput.h"
 #include <FL/Fl_Float_Input.H>
 
+#include "fl_MainWindow.fwd.h"
 #include "fileChooser.h"
 #include "projections.h"
 #include "persistingObject.h"
@@ -47,11 +48,14 @@ class Fl_ProcessingWindow : public Fl_Window{
 	 * @param h height
 	 * @param label window label
 	 * @param projections projections the window will process
+	 * @param main_window pointer to parent main window
 	*/
-	Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections );
+	Fl_ProcessingWindow( int w, int h, const char* label, const Projections& projections, Fl_MainWindow* const main_window );
 
 	
 	private:
+
+	Fl_MainWindow* const main_window_;												/*!< pointer to parent main window*/
 
 	Fl_AdjustableGrayscaleImage projections_image_;			/*!< widget for sinogram display*/
 	

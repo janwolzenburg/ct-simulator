@@ -213,16 +213,14 @@ void Fl_GantryCreation::UpdateGantry( void ){
 		const XRayDetector detector = gantry_.detector();
 
 		VectorPair spectrum_points = tube.GetEnergySpectrumPoints();
-		//for( auto& spectrum_value : spectrum_points.second ){
 		for( size_t energy_index = 0; energy_index < spectrum_points.first.size(); energy_index++ ){
 			spectrum_points.second.at( energy_index ) *= spectrum_points.first.at( energy_index )  / tube.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
-			//spectrum_points.second.at( energy_index ) *= 1.  / tubeRef.GetSpectralEnergyResolution() * J_Per_eV;		// "Convert" to integral to match power
 		}
 
 		spectrum_plot_.plot().AssignData( spectrum_points );
 		spectrum_plot_.AssignData();
 
-		main_window_.tomography_execution_.UpdateInformation( projections_properties_, detector.properties(), gantry_.tube() );
+		main_window_.tomography_execution_.UpdateInformation( projections_properties_, gantry_.tube() );
 
 		detector_plot_.plot().ResetObjects();
 
