@@ -92,7 +92,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 									"# Projektionen je Winkel:             " + ConvertToString(raw_projections_.properties().number_of_distances()) + '\n' +
 									"  Auflösung:                          " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
 									"  Röntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
-									"  Mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " eV" + '\n' +
+									"  mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " eV" + '\n' +
 									"  Energieabhängige Schwächung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + 
 									"# Energien im Spektrum:               " + ConvertToString(simulation_properties.number_of_points_in_spectrum) + '\n' + '\n'+
 									"  Streuung aktiviert:                 " + (raw_projections_.tomography_properties().scattering_enabled == true ? "ja" : "nein") + '\n' +
