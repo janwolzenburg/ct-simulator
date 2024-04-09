@@ -112,7 +112,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 	for( auto& filter_type : BackprojectionFilter::filter_types ) filter_names.push_back( filter_type.second );
 	filter_type_selector_.AssignElements( filter_names );
 
-	filter_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "filterPlot.png" ), "n", "a^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
+	filter_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "filterPlot.png" ), "n", "\\Delta s^2 * h(n)", PlotLimits{ true, true }, "", "", false, true );
 
 	
 	processing_properties_group_.add( mu_water_input_ );

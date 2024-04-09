@@ -38,7 +38,7 @@ class BackprojectionFilter{
 	};
 
 	static const std::map<TYPE, string> filter_types;						/*!< filter types with names*/
-	static constexpr double significance_percentage = 1e-3;			/*!< threshold to determine significant range*/
+	static constexpr double significance_percentage = 1e-2;			/*!< threshold to determine significant range*/
 	
 	/*!
 	 * @brief get filter type by string
