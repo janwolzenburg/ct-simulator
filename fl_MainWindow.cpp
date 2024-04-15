@@ -23,10 +23,12 @@
 Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	Fl_Window{ w, h, label },
 
-	menu_group_{									X( *this, 0. ),								Y( *this, 0.005 ),			W( *this, 1. ),						H( *this, 0.034 ) },
-	model_creator_button_{				X( menu_group_, .1 ),					Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
-	import_projections_button_{		X( menu_group_, .7 ),					Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
+	menu_group_{													X( *this, 0. ),				Y( *this, 0.005 ),			W( *this, 1. ),						H( *this, 0.034 ) },
+	model_creator_button_{								X( menu_group_, .1 ),	Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
+	import_projections_button_{						X( menu_group_, .7 ),	Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
 	reset_program_state_at_exit_button_{	X( menu_group_, .9 ),	Y( menu_group_, 0. ),		W( menu_group_, .1 ),			H( menu_group_, 1. ), "Reset program" },
+	author_name_{													w - 170,							h - 20,									160,												20,										""},
+	git_repository_{											20,										h - 22,									260,											20,										"https://github.com/janwolzenburg/ct-simulator"},
 
 	model_view_{							X( *this, 0. ),																Y( *this, 0.045 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
 	gantry_creation_{					hOff( model_view_ ) + X( *this, .025 ),				Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
@@ -45,6 +47,8 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	Fl_Window::add( model_view_ );
 	Fl_Window::add( gantry_creation_ );
 	Fl_Window::add( tomography_execution_ );
+	Fl_Window::add( author_name_ );
+	Fl_Window::add( git_repository_ );
 
 	menu_group_.add( import_projections_button_ );
 	import_projections_button_.callback( CallbackFunction<Fl_MainWindow>::Fl_Callback, &import_projections_callback_);
@@ -55,6 +59,12 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	menu_group_.add( model_creator_button_ );
 	model_creator_button_.callback( CallbackFunction<Fl_MainWindow>::Fl_Callback, &create_model_callback_ );
 
+	author_name_.align( FL_ALIGN_CENTER );
+	author_name_.labelsize( FL_NORMAL_SIZE );
+	author_name_.copy_label( string{ "Copyright: Jan Wolzenburg" }.c_str() );
+
+	git_repository_.align( FL_ALIGN_CENTER );
+	git_repository_.labelsize( FL_NORMAL_SIZE );
 
 	gantry_creation_.deactivate();
 	tomography_execution_.deactivate();

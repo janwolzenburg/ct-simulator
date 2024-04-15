@@ -67,6 +67,8 @@ class Fl_MainWindow : public Fl_Window{
 	Fl_Button model_creator_button_;								/*!< button for model creation*/
 	Fl_Button import_projections_button_;						/*!< button for projections import*/
 	Fl_Button reset_program_state_at_exit_button_;	/*!< button to reset program state*/
+	Fl_Box author_name_;														/*!< the program author's name*/
+	Fl_Box git_repository_;													/*!< URL to the git repo*/
 
 	Fl_ModelView model_view_;												/*!< model view*/
 	Fl_GantryCreation gantry_creation_;							/*!< gantry creation*/

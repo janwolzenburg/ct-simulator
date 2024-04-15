@@ -31,7 +31,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	loading_status_{						X( model_inspection_group_, 0. ),		Y( model_inspection_group_, .2 ),		W( model_inspection_group_, 1. ),		H( model_inspection_group_, .725 ),	"No model loaded" },
 	model_slice_image_{					X( model_inspection_group_, 0. ),		Y( model_inspection_group_, .2 ),		W( model_inspection_group_, 1. ),		H( model_inspection_group_, .725 ) },
 
-	model_movement_group_{	X( *this, 0. ),		vOff( model_inspection_group_ ),	W( *this, 1. ),		H( *this, .165 ) },
+	model_movement_group_{	X( *this, 0. ),		vOff( model_inspection_group_ ),	W( *this, 1. ),		H( *this, .155 ) },
 	x_rotation_{			X( model_movement_group_, .1 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "x-Rotation" },
 	y_rotation_{			X( model_movement_group_, .1 ),	Y( model_movement_group_, .5 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "y-Rotation" },
 	z_position_{			X( model_movement_group_, .5 ),	Y( model_movement_group_, .0 ),	W( model_movement_group_, .3 ),	H( model_movement_group_, .25 ), "z-Translation" },
