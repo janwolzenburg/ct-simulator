@@ -310,6 +310,7 @@
     <ClCompile Include="voxel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="CMakeLists.txt" />
     <Text Include="notes.txt" />
   </ItemGroup>
   <ItemGroup>
