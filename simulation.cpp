@@ -23,7 +23,7 @@ SimulationProperties simulation_properties{ 20 };
 const string SimulationProperties::FILE_PREAMBLE{ "SimulationProperties_FILE_PREAMBLE" };
 
 SimulationProperties::SimulationProperties( const size_t simulation_quality ) :
-quality( ForceRange( simulation_quality, 0ull, 99ull) ),
+quality( ForceRange( static_cast<unsigned long long>( simulation_quality ), 0ull, 99ull) ),
 	ray_step_size_mm( ForceToMin( 1e-2 / ( 4. * static_cast<double>( quality + 1 ) ), 1e-3 ) ),
 	number_of_points_in_spectrum( 8 + 3 * quality / 2),
 	number_of_energies_for_scattering( 16 * ( quality + 1 ) ),

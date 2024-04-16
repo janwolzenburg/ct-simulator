@@ -160,10 +160,11 @@ long long ConvertToNumber<long long>( const string string_to_convert ){
 }
 
 template<>
-size_t ConvertToNumber<size_t>( const string string_to_convert ){
+unsigned long long int ConvertToNumber<unsigned long long int>( const string string_to_convert ){
 	if( string_to_convert.length() == 0 ) return 0;
-	return static_cast<size_t>( std::stoll( string_to_convert ) );
+	return static_cast<unsigned long long int>( std::stoll( string_to_convert ) );
 }
+
 
 bool UnsetFlag( bool& flag ){
 
