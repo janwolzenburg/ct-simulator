@@ -372,6 +372,9 @@
     <ClInclude Include="xRayTube.h">
       <Filter>Headerdateien\13 Device</Filter>
     </ClInclude>
+    <ClInclude Include="dicomConverter.h">
+      <Filter>Headerdateien\15 Program\01 Elements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -544,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="simulation.cpp">
       <Filter>Quelldateien\11 Generel</Filter>
+    </ClCompile>
+    <ClCompile Include="dicomConverter.cpp">
+      <Filter>Quelldateien\15 Program\01 Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

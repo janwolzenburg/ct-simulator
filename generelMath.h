@@ -46,7 +46,7 @@ constexpr double reduced_energy_divisor_eV = 510998.95;				/*!< divisor in reduc
 
 constexpr double reference_energy_for_mu_eV = 100000.;										/*!< reference energy for stored coefficients*/
 constexpr double absorption_water_Per_mm = 3e-2 * 0.997 / 10.;						/*!< absorption Water in 1 / mm for 100keV*/
-constexpr double mu_air = 0.;																							/*!< absorption coefficient of air*/
+constexpr double absorption_air_Per_mm = 0.;															/*!< absorption coefficient of air*/
 constexpr double absorption_bone_Per_mm = absorption_water_Per_mm * 1.33;	/*!< absorption coefficient of bone tissue*/
 constexpr double absorption_lung_Per_mm = absorption_water_Per_mm * 0.2;	/*!< absorption coefficient of lung tissue*/
 constexpr double absorption_titan_Per_mm = 0.0135;												/*!< absorption coefficient of titan*/

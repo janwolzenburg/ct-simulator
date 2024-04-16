@@ -17,4 +17,5 @@ target_link_directories( ct-simulator PUBLIC ${CMAKE_SOURCE_DIR}/lib )
 target_link_libraries( ct-simulator debug fltkd         optimized fltk 
                                     debug fltk_imagesd  optimized fltk_images
                                     debug fltk_pngd     optimized fltk_png 
-                                    debug fltk_zd       optimized fltk_z )
+                                    debug fltk_zd       optimized fltk_z 
+									debug imebrad       optimized imebra )                                    

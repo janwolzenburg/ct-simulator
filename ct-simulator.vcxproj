@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="callbackFunction.h" />
     <ClInclude Include="callbackFunction.hpp" />
+    <ClInclude Include="dicomConverter.h" />
     <ClInclude Include="filteredProjections.h" />
     <ClInclude Include="coordinateSystem.fwd.h" />
     <ClInclude Include="coordinateSystem.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="widgets.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dicomConverter.cpp" />
     <ClCompile Include="filteredProjections.cpp" />
     <ClCompile Include="coordinateSystem.cpp" />
     <ClCompile Include="coordinates.cpp" />
