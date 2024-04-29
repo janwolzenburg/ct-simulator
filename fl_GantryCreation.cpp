@@ -41,8 +41,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 
 	detector_group_{						X( *this, .0 ),			Y( *this, .45 ),		W( *this, 1. ),		H( *this, .55 ) },
 	detector_title_{						X( detector_group_, .0 ),	Y( detector_group_, 0. ),		W( detector_group_, 1. ),	H( detector_group_, .1 ),	"Detector" },
-	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Projections" },
-	number_of_distances_input_{	X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances" },
+	number_of_angles_input_{		X( detector_group_, .0 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Projection Angles" },
+	number_of_distances_input_{	X( detector_group_, .3 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distances per Angle" },
 	distance_range_input_{			X( detector_group_, .6 ),	Y( detector_group_, .125 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Distance range" },
 
 	number_of_rays_per_pixel_input_{	X( detector_group_, .0 ),		Y( detector_group_, .25 ),	W( detector_group_, .2 ),	H( detector_group_, .05 ),	"Rays / Pixel" },
@@ -139,8 +139,8 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		number_of_distances_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 		distance_range_input_.callback( CallbackFunction<Fl_GantryCreation>::Fl_Callback, &update_gantry_callback_ );
 
-		number_of_angles_input_.tooltip( "amount of projections." );
-		number_of_distances_input_.tooltip( "amount of distances in projections. Is the amount of detector pixel." );
+		number_of_angles_input_.tooltip( "Amount of projection angles." );
+		number_of_distances_input_.tooltip( "Amount of distances in projections. Is the amount of detector pixel." );
 		distance_range_input_.tooltip( "Size of measure field in mm." );
 
 
