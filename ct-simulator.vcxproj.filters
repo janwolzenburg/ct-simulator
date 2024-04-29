@@ -547,10 +547,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="notes.txt" />
     <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Klassendiagram.cd" />
   </ItemGroup>
 </Project>
