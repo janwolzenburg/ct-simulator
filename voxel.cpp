@@ -72,9 +72,9 @@ double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
 
 void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
 
-	// impact factor from 0 to 10 should map from mu_water / mu_iron to 1.
+	// impact factor from 0 to 4 should map from mu_water / mu_titan to 1.    
 
-	artefact_impact_factor_ = ForceToMin( artefact_impact_factor * ( 1 - absorption_water_Per_mm / absorption_titan_Per_mm ) / 10. + absorption_water_Per_mm / absorption_titan_Per_mm, 0. );
+	artefact_impact_factor_ = ForceToMin( artefact_impact_factor * ( 1 - absorption_water_Per_mm / absorption_titan_Per_mm ) / 4. + absorption_water_Per_mm / absorption_titan_Per_mm, 0. );
 }
 
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{

@@ -23,7 +23,7 @@ class ModelViewProperties{
 	/*!
 	 * @brief default constructor
 	*/
-	ModelViewProperties( void ) : contrast{}, slice_plane{}, artefact_impact( 10 ){};
+	ModelViewProperties( void ) : contrast{}, slice_plane{}, artefact_impact( 4 ){};
 
 	/*!
 	 * @brief constructor from serialized data

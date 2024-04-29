@@ -122,7 +122,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	y_rotation_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	z_position_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_model_callback_ );
 	artefact_impact_.callback( CallbackFunction<Fl_ModelView>::Fl_Callback, &update_artefact_impact_ );
-	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 10 it beheaves like titan.");
+	artefact_impact_.tooltip("Values from 0 to 10. When at 0 a metal artifact\nis treated as having the same absorption as water.\nAt 4 it beheaves like titan.");
 
 	// set values
 	x_rotation_.value(properties_.slice_plane.rotation_angle_x );
