@@ -25,7 +25,7 @@
  */
 
  const std::map < SpecialProperty, string> VoxelData::special_property_names{
-		{ SpecialProperty::None,			"None" },
+		{ SpecialProperty::NoneP,			"None" },
 		{ SpecialProperty::Metal,		"Iron" },
 		{ SpecialProperty::Undefined,	"Undefined" }
 };
@@ -39,7 +39,7 @@ SpecialProperty VoxelData::GetPropertyEnum( const string property_string ){
 			return material_enumeration;
 	}
 
-	return SpecialProperty::None;
+	return SpecialProperty::NoneP;
 
 }
 

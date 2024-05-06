@@ -32,7 +32,7 @@ typedef unsigned char SpecialPropertyEnumType;		/*!< type to store up tu 8 speci
 	* @brief special propterties a voxel can have
  */
 enum class SpecialProperty : SpecialPropertyEnumType{
-	None = 0b00000000,
+	NoneP = 0b00000000,
 	Metal = 0b00000001,
 	Undefined = 0b00000010
 };
@@ -68,7 +68,7 @@ class VoxelData{
 	 * @param energy_eV energy in eV
 	 * @param special_properties special properties
 	*/
-	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty special_properties = SpecialProperty::None );
+	VoxelData( const double absorption_at_energy, const double energy_eV, const SpecialProperty special_properties = SpecialProperty::NoneP );
 
 	/*!
 	 * @brief constructor from serialized data
@@ -132,7 +132,7 @@ class VoxelData{
 	 * @brief check if there is a special property
 	 * @return true when is has at least one property
 	*/
-	bool HasSpecialProperty( void ) const{ return specialProperties_ != ConvertToUnderlying( SpecialProperty::None ); };
+	bool HasSpecialProperty( void ) const{ return specialProperties_ != ConvertToUnderlying( SpecialProperty::NoneP ); };
 	
 	/*!
 	 * @brief check for specific property
