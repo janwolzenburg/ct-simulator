@@ -43,7 +43,7 @@ FilteredProjections::FilteredProjections(
 	
 
 	// local copy of projection data
-	const DataGrid<> projections_data = std::move( projections.data() );
+	const DataGrid<> projections_data = projections.data();
 
 	// iterate all angles
 	for( size_t angle_index = 0; angle_index < number_of_angles; angle_index++ ){
