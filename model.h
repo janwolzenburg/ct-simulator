@@ -179,7 +179,7 @@ class Model : public MathematicalObject{
 	 * @param voxel_indices indices of target voxel
 	 * @return true when indices are valid
 	*/
-	bool SetVoxelProperties( const VoxelData::SpecialProperty property, const Index3D voxel_indices );
+	bool SetVoxelProperties( const SpecialProperty property, const Index3D voxel_indices );
 
 	/*!
 	 * @brief get voxel instance for given indices
@@ -229,7 +229,7 @@ class Model : public MathematicalObject{
 	 * @param center center of sphere
 	 * @param radius radius of sphere
 	*/
-	void AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius );
+	void AddSpecialSphere( const SpecialProperty property, const Point3D center, const double radius );
 
 
 	private:

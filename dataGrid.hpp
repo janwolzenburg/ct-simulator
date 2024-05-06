@@ -201,8 +201,8 @@ void DataGrid<D>::InitialiseMinAndMaxValue( void ){
 	}
 	// special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
-		min_value_ = VoxelData{ INFINITY, 1., VoxelData::SpecialProperty::Undefined };
-		max_value_ = VoxelData{ -INFINITY, 1., VoxelData::SpecialProperty::Undefined };
+		min_value_ = VoxelData{ INFINITY, 1., SpecialProperty::Undefined };
+		max_value_ = VoxelData{ -INFINITY, 1., SpecialProperty::Undefined };
 	}
 }
 
@@ -217,8 +217,8 @@ bool DataGrid<D>::SetData( const GridIndex index, const D newValue ){
 	}
 	// special for own VoxelData class
 	else if( std::is_same_v<D, VoxelData> ){
-		if( newValue < min_value_ && !newValue.HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ) min_value_ = newValue;
-		if( newValue > max_value_ && !newValue.HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) ) max_value_ = newValue;
+		if( newValue < min_value_ && !newValue.HasSpecificProperty( SpecialProperty::Undefined ) ) min_value_ = newValue;
+		if( newValue > max_value_ && !newValue.HasSpecificProperty( SpecialProperty::Undefined ) ) max_value_ = newValue;
 	}
 
 	this->operator()( index ) = newValue;

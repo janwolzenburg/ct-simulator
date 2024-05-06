@@ -54,7 +54,7 @@ Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label 
 	for( auto& el : VoxelData::special_property_names ) property_names.push_back( el.second );
 	property_names.pop_back();
 	special_property_input_.AssignElements( property_names );
-	special_property_input_.SetCurrentElement( VoxelData::special_property_names.at( VoxelData::SpecialProperty::None ) );
+	special_property_input_.SetCurrentElement( VoxelData::special_property_names.at( SpecialProperty::None ) );
 	special_property_input_.tooltip( "Select if the model feature has a special property.");
 		
 	Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
@@ -290,7 +290,7 @@ void Fl_ModelCreator::BuildModel( void ){
 
 	deactivate();
 
-	PersistingObject<Model> model{ Model{ GetGlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_absorption_, reference_energy_for_mu_eV, VoxelData::SpecialProperty::None } }, "build model.model", true };
+	PersistingObject<Model> model{ Model{ GetGlobalSystem()->CreateCopy( "Model system"), model_size_, voxel_size_, name_, VoxelData{ background_absorption_, reference_energy_for_mu_eV, SpecialProperty::None } }, "build model.model", true };
 
 		
 
@@ -314,7 +314,7 @@ void Fl_ModelCreator::BuildModel( void ){
 					const Point3D center{ feature.GetCenter(), model.coordinate_system() };
 					const double size = feature.GetSize();
 					const double value = feature.GetValue();
-					const VoxelData::SpecialProperty special_property = feature.GetProperty();
+					const SpecialProperty special_property = feature.GetProperty();
 
 					// check if current point is inside feature
 					bool has_feature = false;

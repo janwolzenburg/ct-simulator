@@ -24,7 +24,7 @@
 	VoxelData implementation
  */
 
- const std::map < VoxelData::SpecialProperty, string> VoxelData::special_property_names{
+ const std::map < SpecialProperty, string> VoxelData::special_property_names{
 		{ SpecialProperty::None,			"None" },
 		{ SpecialProperty::Metal,		"Iron" },
 		{ SpecialProperty::Undefined,	"Undefined" }
@@ -32,7 +32,7 @@
 
 double VoxelData::artefact_impact_factor_ = 1.;
 
-VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_string ){
+SpecialProperty VoxelData::GetPropertyEnum( const string property_string ){
 	
 	for( const auto& [material_enumeration, material_string] : VoxelData::special_property_names ){
 		if( property_string == material_string )
@@ -80,7 +80,7 @@ void VoxelData::SetArtefactImpactFactor( const double artefact_impact_factor ){
 size_t VoxelData::Serialize( vector<char>& binary_data ) const{
 	size_t number_of_bytes = 0;
 	number_of_bytes += SerializeBuildIn<double>( absorption_, binary_data );
-	number_of_bytes += SerializeBuildIn<typename std::underlying_type_t<VoxelData::SpecialProperty>>( specialProperties_, binary_data );
+	number_of_bytes += SerializeBuildIn<typename std::underlying_type_t<SpecialProperty>>( specialProperties_, binary_data );
 	return number_of_bytes;
 }
 

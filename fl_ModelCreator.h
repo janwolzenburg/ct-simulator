@@ -108,7 +108,7 @@ class Fl_ModelFeature : public Fl_Group{
 	 * @brief get special property
 	 * @return property of feature
 	*/
-	VoxelData::SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
+	SpecialProperty GetProperty( void ) const{ return VoxelData::GetPropertyEnum( string{ special_property_input_.current_element() } ); };
 
 	/*!
 	 * @brief get absorption of feature

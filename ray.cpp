@@ -53,7 +53,7 @@ void Ray::UpdateProperties( const VoxelData& voxel_properties, const double dist
 	
 	// implement here handling of new properties
 	if(  !voxel_properties.HasSpecialProperty() ||
-		 voxel_properties.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
+		 voxel_properties.HasSpecificProperty( SpecialProperty::Metal ) )
 		properties_.AttenuateSpectrum( voxel_properties, distance );
 }
 

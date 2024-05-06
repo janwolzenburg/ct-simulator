@@ -169,7 +169,7 @@ bool Model::SetVoxelData( const VoxelData new_voxel_data, const Index3D voxel_in
 	return true;
 }
 
-bool Model::SetVoxelProperties( const VoxelData::SpecialProperty property, const Index3D voxel_indices ){
+bool Model::SetVoxelProperties( const SpecialProperty property, const Index3D voxel_indices ){
 
 	if( !AreIndicesValid( voxel_indices ) ) return false;
 
@@ -486,7 +486,7 @@ void Model::SliceThreaded( size_t& current_x_index, mutex& current_x_index_mutex
 
 		// are cooradinates defined in model?
 		if( !model.IsPointInside( current_point_on_surface ) ){
-			slice.SetData( grid_indices, VoxelData( 0., 1., VoxelData::SpecialProperty::Undefined ) );
+			slice.SetData( grid_indices, VoxelData( 0., 1., SpecialProperty::Undefined ) );
 			continue;	// goto next iteration
 		}
 
@@ -604,8 +604,8 @@ DataGrid<VoxelData> Model::GetSlice( const Surface slice_location, const GridInd
 			coordinates = slice.GetCoordinates( GridIndex( column_index, row_index ) );
 			current_voxel_data = large_slice.GetData( coordinates );
 
-			if( current_voxel_data.HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) )
-				slice.SetData( coordinates, VoxelData{ large_slice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::SpecialProperty::Undefined } );
+			if( current_voxel_data.HasSpecificProperty( SpecialProperty::Undefined ) )
+				slice.SetData( coordinates, VoxelData{ large_slice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, SpecialProperty::Undefined } );
 			else
 				slice.SetData( coordinates, current_voxel_data );
 		}
@@ -616,7 +616,7 @@ DataGrid<VoxelData> Model::GetSlice( const Surface slice_location, const GridInd
 }
 
 
-void Model::AddSpecialSphere( const VoxelData::SpecialProperty property, const Point3D center, const double radius ){
+void Model::AddSpecialSphere( const SpecialProperty property, const Point3D center, const double radius ){
 	
 	// exit when coordinates invalid
 	if ( !IsPointInside( center ) ) return;

@@ -26,6 +26,17 @@ using std::map;
 	Definitions
  *********************************************************************/
 
+typedef unsigned char SpecialPropertyEnumType;		/*!< type to store up tu 8 special properties*/
+
+ /*!
+	* @brief special propterties a voxel can have
+ */
+enum class SpecialProperty : SpecialPropertyEnumType{
+	None = 0b00000000,
+	Metal = 0b00000001,
+	Undefined = 0b00000010
+};
+
 /*!
  * @brief physical voxel data
 */
@@ -33,17 +44,6 @@ using std::map;
 class VoxelData{
 	
 	public:
-
-	typedef unsigned char SpecialPropertyEnumType;		/*!< type to store up tu 8 special properties*/
-
-	/*!
-	 * @brief special propterties a voxel can have
-	*/
-	enum class SpecialProperty{
-		None = 0b00000000,
-		Metal = 0b00000001,
-		Undefined =	0b00000010
-	};
 
 	static const std::map<SpecialProperty, string> special_property_names;	/*!< names of enumerated properties*/
 	
