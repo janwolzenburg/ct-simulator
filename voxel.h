@@ -39,7 +39,7 @@ class VoxelData{
 	/*!
 	 * @brief special propterties a voxel can have
 	*/
-	enum SpecialProperty : unsigned char{
+	enum class SpecialProperty : SpecialPropertyEnumType{
 		None =			0b00000000,
 		Metal =			0b00000001,
 		Undefined =	0b00000010
@@ -80,7 +80,7 @@ class VoxelData{
 	/*!
 	 * @brief default constructor
 	*/
-	VoxelData( void ) : absorption_( -1 ), specialProperties_( SpecialProperty::Undefined ){};
+	VoxelData( void ) : absorption_( -1 ), specialProperties_( ConvertToUnderlying( SpecialProperty::Undefined ) ){};
 
 	/*!
 	 * @brief serialize this object
@@ -132,7 +132,7 @@ class VoxelData{
 	 * @brief check if there is a special property
 	 * @return true when is has at least one property
 	*/
-	bool HasSpecialProperty( void ) const{ return specialProperties_ != SpecialProperty::None; };
+	bool HasSpecialProperty( void ) const{ return specialProperties_ != ConvertToUnderlying( SpecialProperty::None ); };
 	
 	/*!
 	 * @brief check for specific property

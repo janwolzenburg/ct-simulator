@@ -73,10 +73,10 @@ void Fl_GrayscaleImage::AssignImage( const DataGrid<VoxelData>& data_grid, const
 				
 				has_overlay_ = true;
 
-				if( data_.HasSpecificProperty( VoxelData::Metal ) )
+				if( data_.HasSpecificProperty( VoxelData::SpecialProperty::Metal ) )
 					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, metal_color };
 
-				if( data_.HasSpecificProperty( VoxelData::Undefined ) )
+				if( data_.HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) )
 					overlay_.at( grayscale_image_.GetIndex( c, r ) ) = { true, background_color };
 			}
 		}

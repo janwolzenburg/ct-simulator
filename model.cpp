@@ -486,7 +486,7 @@ void Model::SliceThreaded( size_t& current_x_index, mutex& current_x_index_mutex
 
 		// are cooradinates defined in model?
 		if( !model.IsPointInside( current_point_on_surface ) ){
-			slice.SetData( grid_indices, VoxelData( 0., 1., VoxelData::Undefined ) );
+			slice.SetData( grid_indices, VoxelData( 0., 1., VoxelData::SpecialProperty::Undefined ) );
 			continue;	// goto next iteration
 		}
 
@@ -604,8 +604,8 @@ DataGrid<VoxelData> Model::GetSlice( const Surface slice_location, const GridInd
 			coordinates = slice.GetCoordinates( GridIndex( column_index, row_index ) );
 			current_voxel_data = large_slice.GetData( coordinates );
 
-			if( current_voxel_data.HasSpecificProperty( VoxelData::Undefined ) )
-				slice.SetData( coordinates, VoxelData{ large_slice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::Undefined } );
+			if( current_voxel_data.HasSpecificProperty( VoxelData::SpecialProperty::Undefined ) )
+				slice.SetData( coordinates, VoxelData{ large_slice.max_value().GetAbsorptionAtReferenceEnergy(), reference_energy_for_mu_eV, VoxelData::SpecialProperty::Undefined } );
 			else
 				slice.SetData( coordinates, current_voxel_data );
 		}

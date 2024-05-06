@@ -25,9 +25,9 @@
  */
 
  const std::map < VoxelData::SpecialProperty, string> VoxelData::special_property_names{
-		{ None,			"None" },
-		{ Metal,		"Iron" },
-		{ Undefined,	"Undefined" }
+		{ SpecialProperty::None,			"None" },
+		{ SpecialProperty::Metal,		"Iron" },
+		{ SpecialProperty::Undefined,	"Undefined" }
 };
 
 double VoxelData::artefact_impact_factor_ = 1.;
@@ -39,13 +39,13 @@ VoxelData::SpecialProperty VoxelData::GetPropertyEnum( const string property_str
 			return material_enumeration;
 	}
 
-	return None;
+	return SpecialProperty::None;
 
 }
 
 VoxelData::VoxelData( const double absorption_at_energy, const double energy, const SpecialProperty special_properties ) :
 	absorption_( -1. ),
-	specialProperties_( special_properties )
+	specialProperties_( ConvertToUnderlying( special_properties ) )
 {
 
 	if( energy < change_energy_for_constant_mu )
@@ -56,13 +56,13 @@ VoxelData::VoxelData( const double absorption_at_energy, const double energy, co
 
 VoxelData::VoxelData( const vector<char>& binary_data, vector<char>::const_iterator& current_byte ) : 
 	absorption_( DeSerializeBuildIn<double>( 0., binary_data, current_byte ) ),
-	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( SpecialProperty::Undefined, binary_data, current_byte ) )
+	specialProperties_( DeSerializeBuildIn<SpecialPropertyEnumType>( ConvertToUnderlying( SpecialProperty::Undefined ), binary_data, current_byte ) )
 {}
 
 double VoxelData::GetAbsorptionAtEnergy( const double energy ) const{
 
 	// titan absorption is approx. 0.0135 1/mm above 110 keV
-	if( HasSpecificProperty( Metal ) ){
+	if( HasSpecificProperty( SpecialProperty::Metal ) ){
 		return artefact_impact_factor_ * absorption_titan_Per_mm * pow( change_energy_for_constant_mu / ForceToMax( energy, change_energy_for_constant_mu ), 3. );
 	}
 
