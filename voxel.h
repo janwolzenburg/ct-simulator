@@ -40,9 +40,9 @@ class VoxelData{
 	 * @brief special propterties a voxel can have
 	*/
 	enum class SpecialProperty : SpecialPropertyEnumType{
-		None =			0b00000000,
-		Metal =			0b00000001,
-		Undefined =	0b00000010
+		None =			0,
+		Metal =			1 << 0,
+		Undefined =	1 << 1
 	};
 
 	static const std::map<SpecialProperty, string> special_property_names;	/*!< names of enumerated properties*/
