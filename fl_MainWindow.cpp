@@ -11,7 +11,7 @@
  *********************************************************************/
  
 #include "fl_MainWindow.h"
-#include "FL/Fl_ask.H"
+#include "FL/fl_ask.H"
 #include "widgets.h"
 #include "serialization.h"
 
