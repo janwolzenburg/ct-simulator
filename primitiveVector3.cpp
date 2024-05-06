@@ -15,7 +15,7 @@
 using std::string;
 
 #include "generelMath.h"
-#include "primitivevector3.h"
+#include "primitiveVector3.h"
 
 
 
