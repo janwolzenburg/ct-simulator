@@ -36,7 +36,7 @@ typename std::enable_if_t<std::is_enum_v<T>, T> operator-( const T val1, const T
 }
 
 template<typename T>
-string ConvertToString<T>( T value, const int precision ){
+string ConvertToString( T value, const int precision ){
 
 	std::ostringstream out;
 
