@@ -59,19 +59,19 @@ Fl_ModelFeature::Fl_ModelFeature( int x, int y, int w, int h, const char* label 
 		
 	Fl_Group::add( value_input_ ); value_input_.align( FL_ALIGN_LEFT );
 	value_input_.copy_tooltip( string{ "Absorption coefficient at " + ConvertToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1 "}.c_str() );
-	value_input_.SetProperties( 0., 100., 5, None );
+	value_input_.SetProperties( 0., 100., 5, Input_Constraints::None );
 	value_input_.value( absorption_water_Per_mm );
 
 	Fl_Group::add( x_positon_input_ ); Fl_Group::add( y_positon_input_ ); Fl_Group::add( z_positon_input_ );
-	x_positon_input_.align( FL_ALIGN_LEFT ); x_positon_input_.SetProperties( .001, 1000., 3, None );
-	y_positon_input_.align( FL_ALIGN_LEFT ); y_positon_input_.SetProperties( .001, 1000., 3, None );
-	z_positon_input_.align( FL_ALIGN_LEFT ); z_positon_input_.SetProperties( .001, 1000., 3, None );
+	x_positon_input_.align( FL_ALIGN_LEFT ); x_positon_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
+	y_positon_input_.align( FL_ALIGN_LEFT ); y_positon_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
+	z_positon_input_.align( FL_ALIGN_LEFT ); z_positon_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
 	x_positon_input_.tooltip( "x-coordinate of feature center in mm");
 	y_positon_input_.tooltip( "y-coordinate of feature center in mm");
 	z_positon_input_.tooltip( "z-coordinate of feature center in mm");
 
 	Fl_Group::add( size_input_ ); size_input_.align( FL_ALIGN_LEFT ); 
-	size_input_.SetProperties( .001, 1000., 3, None );
+	size_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
 	size_input_.tooltip( "Size of feature in mm. ");
 		
 
@@ -172,11 +172,11 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 	model_size_x_input_.align( FL_ALIGN_LEFT ); model_size_y_input_.align( FL_ALIGN_LEFT ); model_size_z_input_.align( FL_ALIGN_LEFT );
 	voxel_size_x_input_.align( FL_ALIGN_LEFT ); voxel_size_y_input_.align( FL_ALIGN_LEFT ); voxel_size_z_input_.align( FL_ALIGN_LEFT );
 
-	model_size_x_input_.SetProperties( 1, 4096, 0, None ); model_size_y_input_.SetProperties( 1, 4096, 0, None );
-	model_size_z_input_.SetProperties( 1, 4096, 0, None );
+	model_size_x_input_.SetProperties( 1, 4096, 0, Input_Constraints::None ); model_size_y_input_.SetProperties( 1, 4096, 0, Input_Constraints::None );
+	model_size_z_input_.SetProperties( 1, 4096, 0, Input_Constraints::None );
 
-	voxel_size_x_input_.SetProperties( .001, 1000., 3, None ); voxel_size_y_input_.SetProperties( .001, 1000., 3, None );
-	voxel_size_z_input_.SetProperties( .001, 1000., 3, None );
+	voxel_size_x_input_.SetProperties( .001, 1000., 3, Input_Constraints::None ); voxel_size_y_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
+	voxel_size_z_input_.SetProperties( .001, 1000., 3, Input_Constraints::None );
 
 	model_size_x_input_.value( 3 ); model_size_y_input_.value( 3 ); model_size_z_input_.value( 3 );
 	voxel_size_x_input_.value( 1. ); voxel_size_y_input_.value( 1. ); voxel_size_z_input_.value( 1. );
@@ -206,7 +206,7 @@ Fl_ModelCreator::Fl_ModelCreator( int w, int h, const char* label ) :
 	features_group_.box( FL_BORDER_BOX );
 
 	features_group_.add( background_input_ );
-	background_input_.SetProperties( 0., 100., 5, None );
+	background_input_.SetProperties( 0., 100., 5, Input_Constraints::None );
 	background_input_.copy_tooltip( string{ "Background of model. The absorption coefficient at " + ConvertToString<int>( static_cast<int>( reference_energy_for_mu_eV ) / 1000 ) + "keV in mm^-1." }.c_str() );
 	background_input_.value( background_absorption_ );
 		

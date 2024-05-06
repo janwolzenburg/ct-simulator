@@ -24,7 +24,7 @@ Fl_BoundInput<C, T>::Fl_BoundInput( int x, int y, int w, int h, const char* labe
 	value_string_( ConvertToString( current_value_, precision_ ) ),
 	max_allowed_( static_cast<T>( 100 ) ),
 	min_allowed_( static_cast<T>( 0 ) ),
-	constraint_( None )
+	constraint_( Input_Constraints::None )
 {
 	Fl_Group::add( input_widget_ );
 	input_widget_.callback( HandleValueChange, static_cast<Fl_Widget*>( this ) );
@@ -65,15 +65,15 @@ void Fl_BoundInput<C, T>::CheckAndForceConstraints( void ){
 
 	switch( constraint_ ){
 
-		case Odd:
+		case Input_Constraints::Odd:
 			if( IsEven( current_value_ ) ) current_value_++;
 			break;
 
-		case Even:
+		case Input_Constraints::Even:
 			if( !IsEven( current_value_ ) ) current_value_++;
 			break;
 
-		case None:
+		case Input_Constraints::None:
 		default:
 			break;
 	}

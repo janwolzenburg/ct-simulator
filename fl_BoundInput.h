@@ -25,7 +25,7 @@ using std::string;
 /*!
  * @brief constraints for the bound input
 */
-enum Input_Constraints{
+enum class Input_Constraints{
 	None,
 	Even,
 	Odd
@@ -80,7 +80,7 @@ class Fl_BoundInput : public Fl_Group{
 	 * @param precision precision of number_of_pixel to show. Use negative numbers to round to multiples of ten
 	 * @param constraint contrains for inputted values
 	*/
-	void SetProperties( const T min_value, const T max_value, const int precision, const Input_Constraints constraint = None  );
+	void SetProperties( const T min_value, const T max_value, const int precision, const Input_Constraints constraint = Input_Constraints::None  );
 
 
 	private:
