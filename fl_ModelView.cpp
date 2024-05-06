@@ -229,7 +229,7 @@ void Fl_ModelView::CenterModel( void ){
 	// center model
 	Tuple3D center = PrimitiveVector3{ model_.size() } / -2.;
 
-	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ center, Tuple3D{ 1,0,0 }, Tuple3D{ 0, 1, 0 }, Tuple3D{ 0 ,0 ,1} } );
+	model_.coordinate_system()->SetPrimitive( PrimitiveCoordinateSystem{ PrimitiveVector3{ center }, PrimitiveVector3{ 1,0,0 }, PrimitiveVector3{ 0, 1, 0 }, PrimitiveVector3{ 0 ,0 ,1} } );
 
 }
 

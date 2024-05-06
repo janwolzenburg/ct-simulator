@@ -44,7 +44,7 @@ string Coordinates::ConvertToString( const unsigned int newline_tabulators ) con
 
 bool Coordinates::operator== ( const Coordinates coordinates_to_compare ) const{
 	
-	if( this->HasSameSystem( coordinates_to_compare ) ) return this->PrimitiveVector3::operator==( static_cast<PrimitiveVector3>( std::cref( coordinates_to_compare ) ) );
+	if( this->HasSameSystem( coordinates_to_compare ) ) return this->PrimitiveVector3::operator==( coordinates_to_compare );
 
 	// convert both coordinates to global system
 	Coordinates system_1_global = this->ConvertTo( GetGlobalSystem() );
