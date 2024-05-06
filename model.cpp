@@ -13,6 +13,7 @@
 #include <fstream>
 #include <thread>
 using std::thread;
+#include <cstring>
 #include <mutex>
 using std::ref;
 using std::cref;
@@ -23,7 +24,6 @@ using std::cref;
 #include "propabilityDistribution.h"
 #include "tomography.h"
 #include "serialization.h"
-
 
 
   /*********************************************************************
@@ -70,7 +70,7 @@ Model::Model( const vector<char>& binary_data, vector<char>::const_iterator& cur
 {
 	
 	if( number_of_voxel_ * sizeof( VoxelData ) == static_cast<size_t>( binary_data.end() - current_byte ) ){
-		memcpy( voxel_data_.data(), &( *current_byte ), number_of_voxel_ * sizeof(VoxelData));
+		std::memcpy( voxel_data_.data(), &( *current_byte ), number_of_voxel_ * sizeof(VoxelData));
 		current_byte += static_cast<long long int>( number_of_voxel_ * sizeof( VoxelData ) );
 	}
 	else{
@@ -202,7 +202,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 																const bool disable_scattering ) const{
 
 	// current ray in model's coordinate system
-	Ray local_ray = std::move( ray.ConvertTo( this->coordinate_system_ ) );					
+	Ray local_ray = ray.ConvertTo( this->coordinate_system_ ) ;					
 
 	// find entrance inside model
 	const RayVoxelIntersection model_intersection{ GetModelVoxel(), local_ray };
@@ -224,7 +224,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 		return { local_ray, {} };
 
 	// current point on the ray is model entrance
-	Point3D current_point_on_ray = std::move( local_ray.GetPoint( current_ray_step ) );
+	Point3D current_point_on_ray = local_ray.GetPoint( current_ray_step );
 
 	#ifdef TRANSMISSION_TRACKING
 	if( !IsPointInside( local_ray.origin() ) ){
@@ -241,7 +241,7 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 
 	// the possible exit faces of voxel
 	const array<bool, ConvertToUnderlying( Voxel::Face::End )> possible_exit_faces = 
-		std::move( local_ray.GetPossibleVoxelExits() );
+		local_ray.GetPossibleVoxelExits();
 
 	// iterate through model while current point is inside model
 	while( IsPointInside( current_point_on_ray ) ){
@@ -356,12 +356,12 @@ pair<Ray, vector<Ray>> Model::TransmitRay(
 					IsPointInside( current_point_on_ray ) ){
 
 				// scatter the ray
-				const vector<Ray> scattered_rays = std::move( 
+				const vector<Ray> scattered_rays =
 					local_ray.Scatter( 
 														 scattering_properties,
 														 current_voxel_data, distance_in_voxel, 
 														 tomography_properties, current_point_on_ray,
-														 dedicated_rng ) );
+														 dedicated_rng );
 
 				// append scattered rays
 				all_scattered_rays.insert( all_scattered_rays.end(), 
