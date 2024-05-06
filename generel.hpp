@@ -43,11 +43,11 @@ string ConvertToString( T value, const int precision ){
 
 	if( precision < 0 ){
 
-		T factor = static_cast<T>( pow( 10., static_cast<double>( -precision - 1 ) ) );
+		T factor = static_cast<T>( std::pow( 10., static_cast<double>( -precision - 1 ) ) );
 
 		value /= factor;
 
-		value = static_cast<T>( round( value ) );
+		value = static_cast<T>( std::round( value ) );
 		value *= factor;
 
 		out.precision( 0 );

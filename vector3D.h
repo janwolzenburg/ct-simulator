@@ -175,7 +175,7 @@ class Vector3D : protected Coordinates{
 	 * @brief get x,y and z component
 	 * @return x, y and z component in local coordinate system
 	*/
-	PrimitiveVector3 GetComponents( void ) const{ return *this; };
+	PrimitiveVector3 GetComponents( void ) const{ return PrimitiveVector3{ x, y, z }; };
 
 	/*!
 	 * @brief get x,y and z component
