@@ -19,7 +19,7 @@
 #include "FL/Fl_Toggle_Button.H"
 #include "FL/Fl_Multiline_Output.H"
 #include "fl_BoundInput.h"
-#include "Fl_Selector.h"
+#include "fl_Selector.h"
 #include "fl_ProgressWindow.h"
 #include "widgets.h"
 
