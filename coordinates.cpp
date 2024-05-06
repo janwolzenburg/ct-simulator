@@ -136,7 +136,7 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 	equation_system.PopulateColumn( child_coordinate_system->GetPrimitive().ey() );
 	equation_system.PopulateColumn( child_coordinate_system->GetPrimitive().ez() );
 
-	equation_system.PopulateColumn( static_cast<PrimitiveVector3>( *this ) - child_coordinate_system->GetPrimitive().origin() );
+	equation_system.PopulateColumn( PrimitiveVector3{ x, y, z } - child_coordinate_system->GetPrimitive().origin() );
 
 	// solve
 	const SystemOfEquationsSolution equation_system_solution = equation_system.Solve();
