@@ -11,6 +11,7 @@
 	Includes
  *********************************************************************/
 #include <format>
+#include <algorithm>
 #include "coordinateSystem.h"
 #include "coordinateSystemTree.h"
 #include "vector3D.h"
