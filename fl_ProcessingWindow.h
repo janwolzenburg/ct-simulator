@@ -16,7 +16,7 @@
 #include "fl_Selector.h"
 #include "FL/Fl_Toggle_Button.H"
 #include "fl_Plot.h"
-#include "lineplot.h"
+#include "linePlot.h"
 #include "fl_BoundInput.h"
 #include <FL/Fl_Float_Input.H>
 
