@@ -138,10 +138,10 @@ void Gantry::RadiateModel( const Model& model,
 													 const RayScattering& scattering_information ) {
 
 	// current rays. start with rays from source
-	vector<Ray> rays = std::move( 
+	vector<Ray> rays = 
 		tube_.GetEmittedBeam( 
 			detector_.pixel_array(), 
-			detector_.properties().detector_focus_distance ) );		
+			detector_.properties().detector_focus_distance ) ;		
 	
 	// convert rays to model's coordinate system
 	for( Ray& current_ray : rays ){
@@ -152,8 +152,8 @@ void Gantry::RadiateModel( const Model& model,
 	detector_.ConvertPixelArray( model.coordinate_system() );
 
 	// scattered rays should lie in the same plane as the detector 
-	const Unitvector3D scattering_rotation_axis = 
-		this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
+	// const Unitvector3D scattering_rotation_axis = 
+	// this->coordinate_system_->GetEz().ConvertTo( model.coordinate_system() );
 
 
 	detector_.ResetDetectedRayPorperties(); // reset all pixel
