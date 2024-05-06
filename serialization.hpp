@@ -34,8 +34,14 @@ size_t DeSerializeBuildIn( T& value, T default_value, const vector<char>& binary
 
 	value = 0;
 
+	if( binary_data.cend() < current_byte ){
+		value = default_value;
+		return sizeof( T );
+	}
+		
+
 	// not enough data left in vector
-	if( binary_data.cend() - current_byte < sizeof( T ) ) value = default_value;
+	if( static_cast<size_t>( binary_data.cend() - current_byte ) < sizeof( T ) ) value = default_value;
 	else{
 		value = *( (T*) &( *current_byte ) );
 		current_byte += sizeof( T );
