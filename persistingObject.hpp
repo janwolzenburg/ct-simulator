@@ -47,12 +47,12 @@ bool PersistingObject<C>::Load( const path file_path ){
 	if( !std::filesystem::exists( file_path ) ) return false;
 
 	// load file
-	vector<char> binary_data = std::move( ImportSerialized( file_path ) );
-	vector<char>::iterator current_byte = binary_data.begin();
+	vector<char> binary_data = ImportSerialized( file_path );
+	vector<char>::const_iterator current_byte = binary_data.begin();
 
-	if( !IsValidBinaryData( C::FILE_PREAMBLE, binary_data, current_byte ) ) return false;
+	if( !IsValidBinaryData( C::FILE_PREAMBLE, binary_data, std::ref( current_byte ) ) ) return false;
 	
-	C::operator=( std::move( C{ binary_data, current_byte } ) );
+	C::operator=( std::move( C{ binary_data, std::ref( current_byte ) } ) );
 	
 	was_loaded_ = true;
 	return was_loaded_;
