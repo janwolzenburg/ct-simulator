@@ -39,7 +39,7 @@ class PrimitiveVector3 : public Tuple3D, public MathematicalObject{
 	* @brief constructor
 	* @param xyz x, y and z values
 	*/
-	PrimitiveVector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
+	explicit PrimitiveVector3( const Tuple3D xyz ) : Tuple3D{ xyz } {};
 
 	/*!
 	 * @brief default constructor
