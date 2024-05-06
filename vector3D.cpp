@@ -295,3 +295,10 @@ Point3D Point3D::ProjectOnXYPlane( const CoordinateSystem* const coordinate_syst
 
 	return projected_point;
 }
+
+
+Vector3D::Vector3D( const Unitvector3D& unit_vector ) :
+	Coordinates{ Tuple3D{ unit_vector.X(), unit_vector.Y(), unit_vector.Z() }, unit_vector.GetCoordinateSystem() }
+{
+
+}

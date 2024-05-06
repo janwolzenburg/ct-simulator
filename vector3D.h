@@ -39,6 +39,12 @@ class Vector3D : protected Coordinates{
 	 * @param coordinate_system coordinate system of components
 	*/
 	Vector3D( const Tuple3D components, const CoordinateSystem* const coordinate_system );
+	
+	/*!
+	 * @brief converting constructor
+	 * @param unit_vector unit vector
+	 */
+	Vector3D( const class Unitvector3D& unit_vector );
 
 	/*!
 	 * @brief default constructor initializing components to zero coordinate system to global
