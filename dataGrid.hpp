@@ -13,6 +13,7 @@
 
 #include <type_traits>
 #include <limits>
+#include <cmath>
 
 #include "vectorAlgorithm.h"
 #include "dataGrid.h"
