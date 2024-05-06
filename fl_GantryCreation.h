@@ -24,7 +24,7 @@
 
 #include "persistingObject.h"
 #include "linePlot.h"
-#include "geometryplot.h"
+#include "geometryPlot.h"
 #include "widgets.h"
 #include "fl_MainWindow.fwd.h"
 #include "callbackFunction.h"
