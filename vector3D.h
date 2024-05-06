@@ -31,7 +31,7 @@ class Vector3D : protected Coordinates{
 	 * @brief constructor
 	 * @param coordinates coordinates of vector
 	*/
-	Vector3D( const Coordinates coordinates );
+	explicit Vector3D( const Coordinates coordinates );
 
 	/*!
 	 * @brief constructor
@@ -63,34 +63,34 @@ class Vector3D : protected Coordinates{
 	 * @param summand vector to add
 	 * @return sum of vectors in unit of this vector
 	*/
-	Vector3D operator+ ( const Vector3D summand ) const{ return this->Coordinates::operator+( summand ); };
+	Vector3D operator+ ( const Vector3D summand ) const{ return Vector3D{ this->Coordinates::operator+( summand ) }; };
 
 	/*!
 	 * @brief substraction operator
 	 * @param subtrahend vector to substract
 	 * @return difference (v1 - v2) of vectors in unit of this vector
 	*/
-	Vector3D operator- ( const Vector3D subtrahend ) const{ return this->Coordinates::operator-( subtrahend ); };
+	Vector3D operator- ( const Vector3D subtrahend ) const{ return Vector3D{ this->Coordinates::operator-( subtrahend ) }; };
 
 	/*!
 	 * @brief negation operator
 	 * @return negated vector
 	*/
-	Vector3D operator- ( void ) const{ return this->Coordinates::operator-(); };
+	Vector3D operator- ( void ) const{ return Vector3D{ this->Coordinates::operator-() }; };
 
 	/*!
 	 * @brief scale vector
 	 * @param scalar factor
 	 * @return scaled vector
 	*/
-	Vector3D operator* ( const double scalar ) const{ return this->Coordinates::operator*( scalar ); };
+	Vector3D operator* ( const double scalar ) const{ return Vector3D{ this->Coordinates::operator*( scalar ) }; };
 
 	/*!
 	 * @brief divide vector
 	 * @param divisor Divisor
 	 * @return divided vector
 	*/
-	Vector3D operator/ ( const double divisor ) const{ return this->Coordinates::operator/( divisor ); };
+	Vector3D operator/ ( const double divisor ) const{ return Vector3D{ this->Coordinates::operator/( divisor ) }; };
 
 	/*!
 	 * @brief calculate dot product between to vectors
