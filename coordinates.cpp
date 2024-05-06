@@ -44,7 +44,7 @@ string Coordinates::ConvertToString( const unsigned int newline_tabulators ) con
 
 bool Coordinates::operator== ( const Coordinates coordinates_to_compare ) const{
 	
-	if( this->HasSameSystem( coordinates_to_compare ) ) return this->PrimitiveVector3::operator==( coordinates_to_compare );
+	if( this->HasSameSystem( coordinates_to_compare ) ) return this->PrimitiveVector3::operator==( PrimitiveVector3( coordinates_to_compare ) );
 
 	// convert both coordinates to global system
 	Coordinates system_1_global = this->ConvertTo( GetGlobalSystem() );
@@ -139,7 +139,7 @@ Coordinates Coordinates::ConvertToChildSystem( const CoordinateSystem* const chi
 	equation_system.PopulateColumn( static_cast<PrimitiveVector3>( *this ) - child_coordinate_system->GetPrimitive().origin() );
 
 	// solve
-	const SystemOfEquationsSolution equation_system_solution = std::move( equation_system.Solve() );
+	const SystemOfEquationsSolution equation_system_solution = equation_system.Solve();
 
 	// system solution are new coordinates
 	return Coordinates{ Tuple3D{ equation_system_solution.GetVariableValue( 0 ), equation_system_solution.GetVariableValue( 1 ), equation_system_solution.GetVariableValue( 2 ) }, child_coordinate_system };
