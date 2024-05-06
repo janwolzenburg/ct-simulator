@@ -21,7 +21,7 @@
   *********************************************************************/
 
 template<class C>
-void addSingleObject<C>( ofstream& axis, const string name, const C object ){
+void addSingleObject( ofstream& axis, const string name, const C object ){
 
 	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString( object ) << '\n';
@@ -29,7 +29,7 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object ){
 }
 
 template<class C>
-void addSingleObject<C>( ofstream& axis, const string name, const C object, const string data ){
+void addSingleObject( ofstream& axis, const string name, const C object, const string data ){
 
 	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString( object ) << ' ' << data << '\n';
@@ -38,7 +38,7 @@ void addSingleObject<C>( ofstream& axis, const string name, const C object, cons
 
 
 template<class C, typename T>
-void addSingleObject<C, T>(ofstream& axis, const string name, const C object, const string data, const T additional) {
+void addSingleObject(ofstream& axis, const string name, const C object, const string data, const T additional) {
 
 	axis << ReplaceSpace(name);
 	axis << ": " << getObjectString<C, T>(object, additional) << ' ' << data << '\n';

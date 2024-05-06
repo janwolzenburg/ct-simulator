@@ -76,7 +76,7 @@ string getObjectString<Vector3D, Point3D>( const Vector3D v, const Point3D o ){
 template<>
 string getObjectString<Unitvector3D, Point3D>( const Unitvector3D v, const Point3D o ){
 
-	return getObjectString<Vector3D, Point3D>( Vector3D{ v }, o );
+	return getObjectString<Vector3D, Point3D>( Vector3D{ { v.X(), v.Y(), v.Z() }, v.GetCoordinateSystem() }, o );
 
 }
 
@@ -240,7 +240,7 @@ void addObject<vector<Line>, double>( ofstream& axis, const string name, const v
 template<>
 void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vector<Ray> rays, const string data, const double length) {
 
-	for (const Ray r : rays) {
+	for (const Ray& r : rays) {
 		addSingleObject(axis, name, Line{ r }, data, length);
 	}
 
@@ -249,7 +249,7 @@ void addObject<vector<Ray>, double>(ofstream& axis, const string name, const vec
 template<>
 void addObject<vector<DetectorPixel>, double>( ofstream& axis, const string name, const vector<DetectorPixel> allPixels, const string data, const double alpha ){
 	int number = 0;
-	for( const DetectorPixel singlePx : allPixels ){
+	for( const DetectorPixel& singlePx : allPixels ){
 		addSingleObject( axis, name+to_string(number++), BoundedSurface{singlePx}, data, alpha);
 	}
 }
