@@ -22,7 +22,7 @@
 	#define STATE_STORAGE ".\\stateStorage\\"
 #else
 	#define STATE_STORAGE  "./stateStorage/"
-#endif // wIN32
+#endif // WIN32
 
 
 ProgramState& PROGRAM_STATE( void ){
