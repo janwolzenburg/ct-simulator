@@ -112,8 +112,9 @@ Fl_GantryCreation::Fl_GantryCreation( int x, int y, int w, int h, Fl_MainWindow&
 		filter_gradient_input.tooltip( "Gradient of filter." );
 
 		tube_group_.add( spectrum_plot_ );
+		cout << "Initialising plot" << endl;
 		spectrum_plot_.Initialise( PROGRAM_STATE().GetAbsolutePath( "spectrumPlot.png" ), "E in keV", "N_P/sec * E in W/keV", PlotLimits{ false, true, NumberRange{ 10., 200. }, NumberRange{ 0., 1. }, 0.001, 1000. }, "", "", false, false );
-
+		cout << "plot initialized" << endl;
 
 		//-----------------------------
 

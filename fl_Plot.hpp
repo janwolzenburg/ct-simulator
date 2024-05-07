@@ -93,7 +93,7 @@ void Fl_Plot<plotType>::CalculateScaled( void ){
 		scaled_height = static_cast<int>( static_cast<double>( scaled_width ) / aspect_ratio_image );
 
 	}
-
+	image_->~Fl_Image();
 	image_ = std::unique_ptr<Fl_Image>( raw_image_->copy( scaled_width, scaled_height ) );
 
 }
@@ -101,7 +101,7 @@ void Fl_Plot<plotType>::CalculateScaled( void ){
 template<class plotType>
 void Fl_Plot<plotType>::AssignImage( const path filename ){
 
-
+	raw_image_->~Fl_PNG_Image();
 	raw_image_ = std::make_unique<Fl_PNG_Image>( filename.string().c_str() );
 
 	redraw();
