@@ -376,3 +376,4 @@ FodyWeavers.xsd
 /models/HighRes Phantom.model
 .fl_GantryCreation.cpp.swp
 .vscode/tasks.json
+.vscode/settings.json
