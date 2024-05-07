@@ -374,3 +374,4 @@ FodyWeavers.xsd
 /build
 /lib
 /models/HighRes Phantom.model
+.fl_GantryCreation.cpp.swp
