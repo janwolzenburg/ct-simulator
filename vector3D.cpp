@@ -235,6 +235,11 @@ Vector3D Vector3D::NegateXComponent( void ) const{
 	return Vector3D{ Tuple3D{ -this->x, this->y, this->z }, this->coordinate_system_ };
 }
 
+Vector3D::Vector3D( const Unitvector3D& unit_vector ) :
+	Vector3D{ Coordinates{ Tuple3D{ unit_vector.X(), unit_vector.Y(), unit_vector.Z() }, unit_vector.GetCoordinateSystem() } }
+{
+}
+
 
 /*
 	Point3D implementation
@@ -297,8 +302,3 @@ Point3D Point3D::ProjectOnXYPlane( const CoordinateSystem* const coordinate_syst
 }
 
 
-Vector3D::Vector3D( const Unitvector3D& unit_vector ) :
-	Coordinates{ Tuple3D{ unit_vector.X(), unit_vector.Y(), unit_vector.Z() }, unit_vector.GetCoordinateSystem() }
-{
-
-}
