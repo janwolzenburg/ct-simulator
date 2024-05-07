@@ -5,10 +5,15 @@ project( ct-simulator )
 set( CMAKE_CXX_STANDARD 20 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
-add_compile_options(-Wall -Wno-sign-compare -Wno-reorder -Wno-misleading-indentation -fpermissive -MP
--D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT
-)
-add_link_options(  )
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wno-sign-compare -Wno-reorder -Wno-misleading-indentation -fpermissive -MP -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_THREAD_SAFE -D_REENTRANT")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+
 #add_compile_definitions(_CONSOLE WIN32) # Remove WIN32 when not on windows platform
 
 FILE(GLOB SOURCES ${CMAKE_SOURCE_DIR}/*.cpp)
