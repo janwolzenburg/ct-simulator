@@ -235,7 +235,7 @@ Vector3D Vector3D::NegateXComponent( void ) const{
 	return Vector3D{ Tuple3D{ -this->x, this->y, this->z }, this->coordinate_system_ };
 }
 
-Vector3D::Vector3D( const Unitvector3D& unit_vector ) :
+Vector3D::Vector3D( const class Unitvector3D& unit_vector ) :
 	Vector3D{ Coordinates{ Tuple3D{ unit_vector.X(), unit_vector.Y(), unit_vector.Z() }, unit_vector.GetCoordinateSystem() } }
 {
 }
