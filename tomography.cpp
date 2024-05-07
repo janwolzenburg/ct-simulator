@@ -1,4 +1,4 @@
-#pragma once
+
 /*********************************************************************
  * @file   tomography.cpp
  *
@@ -135,7 +135,7 @@ optional<Projections> Tomography::RecordSlice(
 		gantry.RadiateModel( model, properties_, scattering_information );
 
 		// get the detection result
-		const vector<DetectorPixel> pixel_array = std::move( gantry.pixel_array() );
+		const vector<DetectorPixel> pixel_array = gantry.pixel_array();
 
 		// iterate all pixel
 		for( const DetectorPixel& pixel : pixel_array ){
