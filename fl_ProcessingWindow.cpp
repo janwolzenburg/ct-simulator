@@ -45,7 +45,7 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 
 	processing_properties_group_{				X( *this, .65 ),			Y( *this, 0.96 ),		W( *this, .275 ),			H( *this, .03  ) },
 	hu_mu_selection_button_{						X( processing_properties_group_, .1 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .3 ),		H( processing_properties_group_, 1. ), "Enable HU" },
-	mu_water_input_{										X( processing_properties_group_, .6 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .3 ),		H( processing_properties_group_, 1. ), "µ_0 water" },
+	mu_water_input_{										X( processing_properties_group_, .6 ),		Y( processing_properties_group_, 0. ),		W( processing_properties_group_, .3 ),		H( processing_properties_group_, 1. ), "ï¿½_0 water" },
 
 
 	raw_projections_( projections ),
@@ -90,16 +90,16 @@ Fl_ProcessingWindow::Fl_ProcessingWindow( int w, int h, const char* label, const
 									"  Name:                               " + raw_projections_.tomography_properties().name + '\n' + '\n'+
 									"# Projektionswinkel:                  " + ConvertToString( raw_projections_.properties().number_of_projections()) + '\n' +
 									"# Projektionen je Winkel:             " + ConvertToString(raw_projections_.properties().number_of_distances()) + '\n' +
-									"  Auflösung:                          " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
-									"  Röntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
-									"  mittlere Röhrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " eV" + '\n' +
-									"  Energieabhängige Schwächung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + 
+									"  AuflÃ¶sung:                          " + ConvertToString( raw_projections_.properties().angles_resolution() / 2. / PI * 360.,2 ) + "Â° x " + ConvertToString( raw_projections_.properties().distances_resolution(), 2) + " mm" + '\n' + '\n'+
+									"  RÃ¶ntgenfilter:                      " + (raw_projections_.tomography_properties().filter_active == true ? "ja" : "nein") + '\n' + 
+									"  mittlere RÃ¶hrenenergie:             " + ConvertToString(raw_projections_.tomography_properties().mean_energy_of_tube) + " eV" + '\n' +
+									"  EnergieabhÃ¤ngige SchwÃ¤chung:        " + (raw_projections_.tomography_properties().use_simple_absorption == false ? "ja" : "nein") + '\n' + 
 									"# Energien im Spektrum:               " + ConvertToString(simulation_properties.number_of_points_in_spectrum) + '\n' + '\n'+
 									"  Streuung aktiviert:                 " + (raw_projections_.tomography_properties().scattering_enabled == true ? "ja" : "nein") + '\n' +
-									"  Faktor für Streuwahrscheinlichkeit: " + ConvertToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
-									"  Faktor für Streuintensität:         " + ConvertToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n' +
-									"# Streumöglichkeiten je Energie:      " + ConvertToString(simulation_properties.bins_per_energy) + '\n' +
-									"# mögliche Streuwinkel:               " + ConvertToString(simulation_properties.number_of_scatter_angles) + '\n'
+									"  Faktor fÃ¼r Streuwahrscheinlichkeit: " + ConvertToString( raw_projections_.tomography_properties().scatter_propability_correction * 100., 1 ) + "%" + '\n' +
+									"  Faktor fÃ¼r StreuintensitÃ¤t:         " + ConvertToString( raw_projections_.tomography_properties().scattered_ray_absorption_factor * 100., 1 ) + "%" + '\n' +
+									"# StreumÃ¶glichkeiten je Energie:      " + ConvertToString(simulation_properties.bins_per_energy) + '\n' +
+									"# mÃ¶gliche Streuwinkel:               " + ConvertToString(simulation_properties.number_of_scatter_angles) + '\n'
 								}.c_str() );
 
 	filter_group_.add( filter_plot_ );
@@ -257,7 +257,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 				
 			}
 			else{
-				reconstructed_image_.SetValueTip( "µ_0 in mm^-1" );
+				reconstructed_image_.SetValueTip( "ï¿½_0 in mm^-1" );
 			}
 
 		}

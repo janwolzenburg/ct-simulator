@@ -206,12 +206,12 @@ void Fl_TomographyExecution::UpdateInformation( const ProjectionsProperties& pro
 
 		informationString += "# Projektionswinkel:             " + ConvertToString( projection_properties.number_of_projections() ) + '\n'; 
 		informationString += "# Projektionen je Winkel:        " + ConvertToString( projection_properties.number_of_distances() ) + '\n';
-		informationString += "  Auflösung:                     " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
+		informationString += "  AuflÃ¶sung:                     " + ConvertToString( projection_properties.angles_resolution() / 2. / PI * 360.,2 ) + "Â° x " + ConvertToString( projection_properties.distances_resolution(), 2) + " mm" + '\n' + '\n';
 		informationString += "# Gantryrotationen:              " + ConvertToString( projection_properties.number_of_frames_to_fill() ) + '\n';
 		informationString += "  mittlere Strahlungenergie:     " + ConvertToString( tube.GetMeanEnergy() ) + " eV" + '\n';
 		informationString += "# Energien im Spektrum:          " + ConvertToString( simulation_properties.number_of_points_in_spectrum ) + '\n' + '\n';
-		informationString += "# Streumöglichkeiten je Energie: " + ConvertToString( simulation_properties.bins_per_energy ) + '\n';
-		informationString += "# mögliche Streuwinkel:          " + ConvertToString( simulation_properties.number_of_scatter_angles ) + '\n';
+		informationString += "# StreumÃ¶glichkeiten je Energie: " + ConvertToString( simulation_properties.bins_per_energy ) + '\n';
+		informationString += "# mÃ¶gliche Streuwinkel:          " + ConvertToString( simulation_properties.number_of_scatter_angles ) + '\n';
 
 		information_.value( informationString.c_str() );
 }
