@@ -154,6 +154,12 @@ unsigned int ConvertToNumber<unsigned int>( const string string_to_convert ){
 }
 
 template<>
+unsigned long int ConvertToNumber<unsigned long int>( const string string_to_convert ){
+	if( string_to_convert.length() == 0 ) return 0;
+	return std::stoul( string_to_convert );
+}
+
+template<>
 long long ConvertToNumber<long long>( const string string_to_convert ){
 	if( string_to_convert.length() == 0 ) return 0;
 	return std::stoll( string_to_convert );
