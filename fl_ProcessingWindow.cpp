@@ -257,7 +257,7 @@ void Fl_ProcessingWindow::UpdateImage( void ){
 				
 			}
 			else{
-				reconstructed_image_.SetValueTip( "�_0 in mm^-1" );
+				reconstructed_image_.SetValueTip( "µ_0 in mm^-1" );
 			}
 
 		}

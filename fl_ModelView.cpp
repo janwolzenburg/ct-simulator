@@ -88,7 +88,7 @@ Fl_ModelView::Fl_ModelView( int x, int y, int w, int h, Fl_MainWindow& main_wind
 	// labelsize and box
 	loading_status_.labelsize( static_cast<int>( .05 * static_cast<double>( loading_status_.h() ) ) );
 
-	model_slice_image_.SetValueTip( "µ_a at " + ConvertToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
+	model_slice_image_.SetValueTip( "Âµ_a at " + ConvertToString( reference_energy_for_mu_eV/1000, 0 ) + "keV\n In mm^-1");
 	model_slice_image_.Setlabel( { "x in mm", " y in mm" } ); 
 
 	// Hide image initially
@@ -149,8 +149,8 @@ string Fl_ModelView::GetModelDescription( void ) const{
 	modelDataString.clear();
 	modelDataString += "Name: \t" + model_.name() + '\n';
 	modelDataString += "Voxel: \t\t\t" + ConvertToString( model_.number_of_voxel_3D().x ) + " x " + ConvertToString( model_.number_of_voxel_3D().y ) + " x " + ConvertToString( model_.number_of_voxel_3D().z ) + "\n";
-	modelDataString += "Voxel Größe: \t" + ConvertToString( model_.voxel_size().x, 2 ) + " x " + ConvertToString( model_.voxel_size().y, 2 ) + " x " + ConvertToString( model_.voxel_size().z, 2 ) + "  mm^3\n";
-	modelDataString += "Model Größe: \t" + ConvertToString( model_.size().x ) + " x " + ConvertToString( model_.size().y ) + " x " + ConvertToString( model_.size().z ) + "  mm^3";
+	modelDataString += "Voxel GrÃ¶ÃŸe: \t" + ConvertToString( model_.voxel_size().x, 2 ) + " x " + ConvertToString( model_.voxel_size().y, 2 ) + " x " + ConvertToString( model_.voxel_size().z, 2 ) + "  mm^3\n";
+	modelDataString += "Model GrÃ¶ÃŸe: \t" + ConvertToString( model_.size().x ) + " x " + ConvertToString( model_.size().y ) + " x " + ConvertToString( model_.size().z ) + "  mm^3";
 
 	return modelDataString;
 }
