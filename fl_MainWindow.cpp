@@ -27,12 +27,12 @@ Fl_MainWindow::Fl_MainWindow( int w, int h, const char* label ) :
 	model_creator_button_{								X( menu_group_, .1 ),	Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Create model" },
 	import_projections_button_{						X( menu_group_, .7 ),	Y( menu_group_, 0 ),		W( menu_group_, .15 ),		H( menu_group_, 1. ), "Import Sinogram" },
 	reset_program_state_at_exit_button_{	X( menu_group_, .9 ),	Y( menu_group_, 0. ),		W( menu_group_, .1 ),			H( menu_group_, 1. ), "Reset program" },
-	author_name_{													w - 170,							h - 20,									160,												20,										""},
-	git_repository_{											20,										h - 22,									260,											20,										"https://github.com/janwolzenburg/ct-simulator"},
+	author_name_{													w - 185,							h - 20,									160,												20,										""},
+	git_repository_{											35,										h - 22,									260,											20,										"https://github.com/janwolzenburg/ct-simulator"},
 
-	model_view_{							X( *this, 0. ),																Y( *this, 0.045 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
-	gantry_creation_{					hOff( model_view_ ) + X( *this, .025 ),				Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
-	tomography_execution_{		hOff( gantry_creation_ ) + X( *this, .025 ),	Y( *this, 0.045 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
+	model_view_{							X( *this, 0. ),										Y( *this, 0.045 ),	W( *this, 0.4 ),	H( *this, .95 ), *this },
+	tomography_execution_{		X( *this, 0.425 + 0.3 + 0.025 ),	Y( *this, 0.045 ),	W( *this, 0.25 ),	H( *this, .95 ), *this },
+	gantry_creation_{					X( *this, 0.425 ),								Y( *this, 0.045 ),	W( *this, 0.3 ),	H( *this, .95 ), *this },
 	
 	import_projections_file_chooser_{ FileChooser{ "Import Sinogram", "*.projections", path{ "./" } }, "import.chooser", false },
 	

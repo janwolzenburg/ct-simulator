@@ -71,8 +71,8 @@ class Fl_MainWindow : public Fl_Window{
 	Fl_Box git_repository_;													/*!< URL to the git repo*/
 
 	Fl_ModelView model_view_;												/*!< model view*/
-	Fl_GantryCreation gantry_creation_;							/*!< gantry creation*/
 	Fl_TomographyExecution tomography_execution_;		/*!< tomography execution*/
+	Fl_GantryCreation gantry_creation_;							/*!< gantry creation*/
 
 	PersistingObject<FileChooser> import_projections_file_chooser_;		/*!< persisting storage of projections import file selection*/
 
