@@ -79,7 +79,7 @@ double Line::GetAngle( const Surface& surface ) const{
 	// angle between direction vector and surface normal
 	const double rotation_angle = direction_.GetAngle( surface.GetNormal() );
 
-	return abs( PI / 2 - rotation_angle );
+	return std::abs( PI / 2 - rotation_angle );
 };
 
 Vector3D Line::GetLot( const Point3D point ) const{
@@ -94,7 +94,7 @@ Vector3D Line::GetLot( const Point3D point ) const{
 
 double Line::GetDistance( const Line line ) const{
 	const Vector3D normal{ direction_ ^ line.direction_ };
-	return abs( ( line.origin_ - origin_ ) * normal ) / normal.length();
+	return std::abs( ( line.origin_ - origin_ ) * normal ) / normal.length();
 }
 
 Line Line::ProjectOnXYPlane( const CoordinateSystem* const coordinate_system ) const{

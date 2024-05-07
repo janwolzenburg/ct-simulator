@@ -82,7 +82,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		const double x_axis_tic = axis_tics_start_.x + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().x - 1 ) / static_cast<double>( number_of_tics_.x - 1 ) * ( pixel_size_.x );
 		
 		int digits_befor_comma = 0;
-		for( double divided_tic = x_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
+		for( double divided_tic = x_axis_tic ; std::abs( divided_tic ) > 1.; divided_tic /= 10 )
 			digits_befor_comma++;
 
 		string number_string = ConvertToString( x_axis_tic, 3 - digits_befor_comma );
@@ -99,7 +99,7 @@ void Fl_GrayscaleImageWithAxis::draw( void ){
 		const double y_axis_tic = axis_tics_start_.y + static_cast<double>( i ) * static_cast<double>( Fl_GrayscaleImage::GetOriginalImageSize().y - 1 ) / static_cast<double>( number_of_tics_.y - 1 ) * ( pixel_size_.y );
 		
 		int digits_befor_comma = 0;
-		for( double divided_tic = y_axis_tic ; abs( divided_tic ) > 1.; divided_tic /= 10 )
+		for( double divided_tic = y_axis_tic ; std::abs( divided_tic ) > 1.; divided_tic /= 10 )
 			digits_befor_comma++;
 
 		string number_string = ConvertToString( y_axis_tic, 3 - digits_befor_comma );

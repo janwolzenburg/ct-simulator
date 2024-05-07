@@ -168,7 +168,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange new_slider_
 	const size_t digits_to_display = 4;
 
 	int tenth_power_low = 0;
-	double low = abs( new_slider_bounds.start() );
+	double low = std::abs( new_slider_bounds.start() );
 
 	if( !IsNearlyEqual( low, 0., 1e-9, ComparisonMode::Absolute ) ){
 		if( low < pow( 10., digits_to_display ) ){
@@ -183,7 +183,7 @@ void Fl_AdjustableGrayscaleImage::SetSliderBounds( const NumberRange new_slider_
 	}
 
 	int tenth_power_high = 0;
-	double high = abs( new_slider_bounds.end() );
+	double high = std::abs( new_slider_bounds.end() );
 	if( !IsNearlyEqual( high, 0., 1e-9, ComparisonMode::Absolute ) ){
 		if( high < pow( 10., digits_to_display ) ){
 			for(; ( high *= 10. ) < pow( 10., digits_to_display ); tenth_power_high++ );

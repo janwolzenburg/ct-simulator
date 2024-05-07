@@ -109,7 +109,7 @@ GridIndex Matrix::FindMaximum( const GridIndex top_corner, const GridIndex botto
 	for (size_t current_row = top_corner.r; current_row <= bottom_corner.r; current_row++) {
 		for (size_t current_column = top_corner.c; current_column <= bottom_corner.c; current_column++) {
 			// read cell
-			current_value = abs( data_.at( number_of_columns_ * current_row + current_column ) );
+			current_value = std::abs( data_.at( number_of_columns_ * current_row + current_column ) );
 
 			// absolute value in cell greater?
 			if (current_value > current_maximum) {

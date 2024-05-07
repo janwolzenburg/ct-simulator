@@ -181,7 +181,7 @@ vector<Ray> Ray::Scatter( const RayScattering& scattering_information,
 				continue;
 			
 			// check if angle is scattered inside scattering plane
-			if( abs( scattering_information.GetRandomAngle( 
+			if( std::abs( scattering_information.GetRandomAngle( 
 																energy, dedicated_rng ) ) <=
 																scattering_information.max_angle_to_lie_in_plane() ){
 			

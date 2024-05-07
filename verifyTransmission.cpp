@@ -465,7 +465,7 @@ void VerifyScattering( void ){
 
 		for( int e_i = 0; e_i < num_energies; e_i++ ){
 			
-			const double angle = abs(ray_scattering.GetRandomAngle( energies.at( e_i ), generator ) );
+			const double angle = std::abs(ray_scattering.GetRandomAngle( energies.at( e_i ), generator ) );
 			size_t current_angle_index = static_cast<size_t>( floor(angle / angle_resolution + 0.5) );//GetClosestElementIndex( angles.at(e_i).first, angle ) ;
 			angles.at(e_i).second.at( ForceToMax( current_angle_index, angles.at(e_i).second.size() - 1 ) )++;
 		}

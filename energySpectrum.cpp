@@ -132,7 +132,7 @@ size_t EnergySpectrum::GetEnergyIndex( double energy_to_search ) const{
 	size_t energy_index = 0, current_energy_index = 0;
 
 	for( const auto& [energy, photonfloy] : photonflow_per_energy_ ){
-		const double difference = abs( energy - energy_to_search );
+		const double difference = std::abs( energy - energy_to_search );
 		if( difference < minimum_difference ){
 			minimum_difference = difference;
 			energy_index = current_energy_index;

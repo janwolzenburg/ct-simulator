@@ -10,6 +10,7 @@
   Includes
 *********************************************************************/
 
+#include <cmath>
 #include "generelMath.h"
 #include "backprojectionFilter.h"
 #include "vectorAlgorithm.h"
@@ -83,18 +84,18 @@ NaturalNumberRange BackprojectionFilter::GetRelevantRange( void ) const{
 
 	NaturalNumberRange relevant{ - 1, 1 };
 
-	const double most_significant_value = Max( abs( GetMaxElement( values_ ) ), abs( GetMinElement( values_ ) ) );
+	const double most_significant_value = Max<double>( std::abs(  GetMaxElement( values_ ) ), std::abs( GetMinElement( values_ ) ) );
 	const double significance_threshold = most_significant_value * significance_percentage;
 
 	for( signed long long int i = points_range_.start(); i < 0; i++ ){
-		if( abs( this->operator()( i ) ) > significance_threshold ){
+		if( std::abs( this->operator()( i ) ) > significance_threshold ){
 			relevant.start( i );
 			break;
 		}
 	}
 
 	for( signed long long int i = points_range_.end(); i > 0; i-- ){
-		if( abs( this->operator()( i ) ) > significance_threshold ){
+		if( std::abs( this->operator()( i ) ) > significance_threshold ){
 			relevant.end( i );
 			break;
 		}
